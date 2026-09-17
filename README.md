@@ -139,6 +139,11 @@ or apply.
 
 ## Testing and release integrity
 
+GitHub Actions run only on `main`. An update to the publication manifest on
+`main` starts release verification using the tag recorded in that commit.
+Existing tags can also be verified or released by manually dispatching the
+release workflow on `main`. Tag pushes and pull requests do not start workflows.
+
 Every published catalog passes the following automated checks before its release
 tag is created:
 

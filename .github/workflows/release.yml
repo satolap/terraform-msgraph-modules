@@ -2,7 +2,8 @@ name: Release modules
 
 on:
   push:
-    tags: ['graphmodules-*']
+    branches: [main]
+    paths: ['modules/generated/release-manifest.json']
   workflow_dispatch:
     inputs:
       tag:
@@ -19,6 +20,7 @@ concurrency:
 
 jobs:
   release:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -37,5 +39,22 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
-        run: python scripts/release.py --tag "$RELEASE_TAG" --repository "$GH_REPO"
+          RELEASE_TAG: ${{ inputs.tag }}
+          PUBLICATION_COMMIT: ${{ github.sha }}
+        shell: python {0}
+        run: |
+          import json
+          import os
+          import subprocess
+          import sys
+
+          tag = os.environ["RELEASE_TAG"]
+          if os.environ["GITHUB_EVENT_NAME"] == "push":
+              # Read the triggering publication, even if main has advanced while queued.
+              revision = os.environ["PUBLICATION_COMMIT"] + ":modules/generated/release-manifest.json"
+              manifest = subprocess.check_output(["git", "show", revision], text=True)
+              tag = json.loads(manifest)["tag"]
+          subprocess.run([
+              sys.executable, "scripts/release.py", "--tag", tag,
+              "--repository", os.environ["GH_REPO"],
+          ], check=True)
