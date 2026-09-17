@@ -1,0 +1,75 @@
+variable "site_id" {
+  description = "The unique identifier of site"
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = length(trimspace(var.site_id)) > 0
+    error_message = "site_id must not be empty."
+  }
+}
+
+variable "page_template_id" {
+  description = "The unique identifier of pageTemplate"
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = length(trimspace(var.page_template_id)) > 0
+    error_message = "page_template_id must not be empty."
+  }
+}
+
+variable "columns" {
+  description = "The set of vertical columns in this section."
+  type = list(object({
+    odata_type = optional(string, "#microsoft.graph.horizontalSectionColumn")
+    webparts = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.webPart")
+    })))
+    width = optional(number)
+  }))
+  default = null
+}
+
+variable "emphasis" {
+  description = "Enumeration value that indicates the emphasis of the section background. The possible values are: none, netural, soft, strong, unknownFutureValue."
+  type        = any
+  default     = null
+
+  validation {
+    condition     = var.emphasis == null ? true : contains(["none", "neutral", "soft", "strong", "unknownFutureValue"], var.emphasis)
+    error_message = "emphasis must be one of the documented enum values."
+  }
+}
+
+variable "layout" {
+  description = "Layout type of the section. The possible values are: none, oneColumn, twoColumns, threeColumns, oneThirdLeftColumn, oneThirdRightColumn, fullWidth, unknownFutureValue."
+  type        = any
+  default     = null
+
+  validation {
+    condition     = var.layout == null ? true : contains(["none", "oneColumn", "twoColumns", "threeColumns", "oneThirdLeftColumn", "oneThirdRightColumn", "fullWidth", "unknownFutureValue"], var.layout)
+    error_message = "layout must be one of the documented enum values."
+  }
+}
+
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  default     = "#microsoft.graph.horizontalSection"
+  nullable    = false
+}
+
+variable "additional_properties" {
+  description = "Additional writable Graph properties using API field names. Explicit typed inputs take precedence. Null top-level values are omitted; callers must omit nested nulls in untyped values."
+  type        = any
+  default     = {}
+  nullable    = false
+  sensitive   = true
+
+  validation {
+    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["id"], key)]) : false
+    error_message = "additional_properties must be an object without documented read-only properties."
+  }
+}

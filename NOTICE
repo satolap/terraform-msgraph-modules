@@ -1,0 +1,40 @@
+Microsoft Graph metadata
+========================
+
+Generated schema descriptions and module interfaces use the Microsoft Graph
+metadata published at https://github.com/microsoftgraph/msgraph-metadata.
+Each release manifest identifies the exact upstream revision. The following
+upstream license applies to that metadata and its derived content.
+
+MIT License
+Copyright (c) 2018 Microsoft Graph
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Microsoft Graph documentation taxonomy
+======================================
+
+Category labels and resource-reference links are extracted and reorganized from
+Microsoft Graph documentation, copyright Microsoft Corporation and contributors:
+https://github.com/microsoftgraph/microsoft-graph-docs-contrib
+
+The documentation repository identifies Creative Commons Attribution 4.0
+International in its LICENSE:
+https://github.com/microsoftgraph/microsoft-graph-docs-contrib/blob/main/LICENSE
+https://creativecommons.org/licenses/by/4.0/
+
+The generator adapts that navigation into classifications, directory names and module
+indexes. The exact documentation revision is recorded in generated manifests.

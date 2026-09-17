@@ -1,0 +1,58 @@
+variable "access_review_instance_id" {
+  description = "The unique identifier of accessReviewInstance"
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = length(trimspace(var.access_review_instance_id)) > 0
+    error_message = "access_review_instance_id must not be empty."
+  }
+}
+
+variable "access_review_stage_id" {
+  description = "The unique identifier of accessReviewStage"
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = length(trimspace(var.access_review_stage_id)) > 0
+    error_message = "access_review_stage_id must not be empty."
+  }
+}
+
+variable "access_review_instance_decision_item_id" {
+  description = "The unique identifier of accessReviewInstanceDecisionItem"
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = length(trimspace(var.access_review_instance_decision_item_id)) > 0
+    error_message = "access_review_instance_decision_item_id must not be empty."
+  }
+}
+
+variable "insight_created_date_time" {
+  description = "Indicates when the insight was created."
+  type        = string
+  default     = null
+}
+
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  default     = "#microsoft.graph.governanceInsight"
+  nullable    = false
+}
+
+variable "additional_properties" {
+  description = "Additional writable Graph properties using API field names. Explicit typed inputs take precedence. Null top-level values are omitted; callers must omit nested nulls in untyped values."
+  type        = any
+  default     = {}
+  nullable    = false
+  sensitive   = true
+
+  validation {
+    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["id"], key)]) : false
+    error_message = "additional_properties must be an object without documented read-only properties."
+  }
+}

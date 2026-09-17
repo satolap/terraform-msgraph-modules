@@ -1,0 +1,57 @@
+variable "deleted_date_time" {
+  description = "Date and time when this object was deleted. Always null when the object hasn't been deleted."
+  type        = string
+  default     = null
+}
+
+variable "folders" {
+  description = "The collection of folders in the mailbox."
+  type = list(object({
+    odata_type       = optional(string, "#microsoft.graph.mailboxFolder")
+    childFolderCount = optional(number)
+    childFolders     = optional(any)
+    displayName      = optional(string)
+    items = optional(list(object({
+      odata_type                    = optional(string, "#microsoft.graph.mailboxItem")
+      categories                    = optional(list(string))
+      createdDateTime               = optional(string)
+      lastModifiedDateTime          = optional(string)
+      multiValueExtendedProperties  = optional(any)
+      singleValueExtendedProperties = optional(any)
+      size                          = optional(number)
+      type                          = optional(string)
+    })))
+    multiValueExtendedProperties = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.multiValueLegacyExtendedProperty")
+      value      = optional(list(string))
+    })))
+    parentFolderId = optional(string)
+    singleValueExtendedProperties = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.singleValueLegacyExtendedProperty")
+      value      = optional(string)
+    })))
+    totalItemCount = optional(number)
+    type           = optional(string)
+  }))
+  default = null
+}
+
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  default     = "#microsoft.graph.mailbox"
+  nullable    = false
+}
+
+variable "additional_properties" {
+  description = "Additional writable Graph properties using API field names. Explicit typed inputs take precedence. Null top-level values are omitted; callers must omit nested nulls in untyped values."
+  type        = any
+  default     = {}
+  nullable    = false
+  sensitive   = true
+
+  validation {
+    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["id"], key)]) : false
+    error_message = "additional_properties must be an object without documented read-only properties."
+  }
+}

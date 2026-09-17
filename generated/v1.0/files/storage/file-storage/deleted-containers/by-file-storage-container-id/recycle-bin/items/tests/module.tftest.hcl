@@ -1,0 +1,40 @@
+# Offline plan tests: Terraform mocks the provider and never contacts Microsoft Graph.
+mock_provider "msgraph" {}
+
+run "minimal_request" {
+  command = plan
+
+  variables {
+    file_storage_container_id = "test-parent-id"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.url == "storage/fileStorage/deletedContainers/test-parent-id/recycleBin/items"
+    error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
+  }
+
+  assert {
+    condition     = alltrue([for key in ["deletedDateTime", "deletedFromLocation", "description", "name", "parentReference", "size"] : !contains(keys(msgraph_resource.this.body), key)])
+    error_message = "Unset optional inputs must be omitted from the Graph request."
+  }
+}
+
+run "typed_request" {
+  command = plan
+
+  variables {
+    file_storage_container_id = "test-parent-id"
+    deleted_date_time         = "2026-01-01T00:00:00Z"
+    size                      = 0
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["deletedDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
+    error_message = "deletedDateTime must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["size"]) == jsonencode(0)
+    error_message = "size must preserve typed values and omit nested nulls."
+  }
+}

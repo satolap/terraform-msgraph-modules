@@ -1,0 +1,66 @@
+# /admin/configurationManagement/configurationMonitors
+
+Create configurationMonitor
+
+[Catalog](../../../../README.md) · [Tenants](../../../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/configurationmonitor?view=graph-rest-beta&preserve-view=true)
+
+Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
+
+Lifecycle: `POST /admin/configurationManagement/configurationMonitors`, `GET/PATCH/DELETE /admin/configurationManagement/configurationMonitors/{configurationMonitor-id}`.
+
+## Usage
+
+```hcl
+module "graph_resource" {
+  source = "./tenants/admin/configuration-management/configuration-monitors"
+}
+```
+
+Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+
+## Inputs
+
+| Input | Graph property | Type | Required | Sensitive |
+| --- | --- | --- | --- | --- |
+| `baseline` | `baseline` | `object({       odata_type = optional(string, "#microsoft.graph.configurationBaseline")       description = optional(string)       displayName = optional(string)       parameters = optional(list(object({       odata_type = optional(string, "#microsoft.graph.baselineParameter")       description = optional(string)       displayName = optional(string)       parameterType = optional(string)     })))       resources = optional(list(object({       odata_type = optional(string, "#microsoft.graph.baselineResource")       displayName = optional(string)       properties = optional(object({       odata_type = optional(string, "#microsoft.graph.openComplexDictionaryType")     }))       resourceType = optional(string)     })))     })` | no | no |
+| `created_by` | `createdBy` | `object({       odata_type = optional(string, "#microsoft.graph.identitySet")       application = optional(any)       device = optional(any)       user = optional(any)     })` | no | no |
+| `description` | `description` | `string` | no | no |
+| `display_name` | `displayName` | `string` | no | no |
+| `last_modified_by` | `lastModifiedBy` | `object({       odata_type = optional(string, "#microsoft.graph.identitySet")       application = optional(any)       device = optional(any)       user = optional(any)     })` | no | no |
+| `mode` | `mode` | `string` | no | no |
+| `odata_type` | `@odata.type` | `string` | no | no |
+| `parameters` | `parameters` | `any` | no | no |
+| `status` | `status` | `string` | no | no |
+| `additional_properties` | Additional writable API properties | `any` | no | yes |
+
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+
+Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
+
+## Permissions and limitations
+
+Review the Microsoft Graph API documentation for this endpoint's application/delegated permissions, required create fields, licensing, and tenant restrictions. Required inputs come from the request schema and explicit reviewed corrections, not from EDMX response nullability. The generated module is schema-derived; its lifecycle has not been tested against a live tenant.
+
+Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
+
+Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
+
+Generation notes:
+
+- Microsoft Graph beta contracts can change without notice.
+- createdBy.application: polymorphic schema; accepts an untyped value
+- createdBy.device: polymorphic schema; accepts an untyped value
+- createdBy.user: polymorphic schema; accepts an untyped value
+- lastModifiedBy.application: polymorphic schema; accepts an untyped value
+- lastModifiedBy.device: polymorphic schema; accepts an untyped value
+- lastModifiedBy.user: polymorphic schema; accepts an untyped value
+- parameters: polymorphic schema; accepts an untyped value
+
+## Offline test
+
+```sh
+terraform init -backend=false
+terraform test
+```
+
+The included mock test checks URL construction and request omission without Graph credentials. It does not verify permissions or server behavior.

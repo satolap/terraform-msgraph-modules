@@ -1,0 +1,72 @@
+# /identityProtection/agentRiskDetections
+
+Create new navigation property to agentRiskDetections for identityProtection
+
+[Catalog](../../../README.md) · [Identity and access](../../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/agentriskdetection?view=graph-rest-beta&preserve-view=true)
+
+Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
+
+Lifecycle: `POST /identityProtection/agentRiskDetections`, `GET/PATCH/DELETE /identityProtection/agentRiskDetections/{agentRiskDetection-id}`.
+
+## Usage
+
+```hcl
+module "graph_resource" {
+  source = "./identity-and-access/identity-protection/agent-risk-detections"
+}
+```
+
+Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+
+## Inputs
+
+| Input | Graph property | Type | Required | Sensitive |
+| --- | --- | --- | --- | --- |
+| `activity_date_time` | `activityDateTime` | `string` | no | no |
+| `additional_info` | `additionalInfo` | `string` | no | no |
+| `agent_display_name` | `agentDisplayName` | `string` | no | no |
+| `agent_id` | `agentId` | `string` | no | no |
+| `blueprint_id` | `blueprintId` | `string` | no | no |
+| `client_session_id` | `clientSessionId` | `string` | no | no |
+| `detected_date_time` | `detectedDateTime` | `string` | no | no |
+| `detection_timing_type` | `detectionTimingType` | `string` | no | no |
+| `display_name` | `displayName` | `string` | no | no |
+| `graph_source` | `source` | `string` | no | no |
+| `identity_id` | `identityId` | `string` | no | no |
+| `identity_type` | `identityType` | `string` | no | no |
+| `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
+| `odata_type` | `@odata.type` | `string` | no | no |
+| `risk_detail` | `riskDetail` | `string` | no | no |
+| `risk_event_type` | `riskEventType` | `string` | no | no |
+| `risk_evidence` | `riskEvidence` | `string` | no | no |
+| `risk_level` | `riskLevel` | `string` | no | no |
+| `risk_state` | `riskState` | `string` | no | no |
+| `sign_in_client_display_name` | `signInClientDisplayName` | `string` | no | no |
+| `sign_in_correlation_id` | `signInCorrelationId` | `string` | no | no |
+| `sign_in_request_id` | `signInRequestId` | `string` | no | no |
+| `additional_properties` | Additional writable API properties | `any` | no | yes |
+
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+
+Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
+
+## Permissions and limitations
+
+Review the Microsoft Graph API documentation for this endpoint's application/delegated permissions, required create fields, licensing, and tenant restrictions. Required inputs come from the request schema and explicit reviewed corrections, not from EDMX response nullability. The generated module is schema-derived; its lifecycle has not been tested against a live tenant.
+
+Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
+
+Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
+
+Generation notes:
+
+- Microsoft Graph beta contracts can change without notice.
+
+## Offline test
+
+```sh
+terraform init -backend=false
+terraform test
+```
+
+The included mock test checks URL construction and request omission without Graph credentials. It does not verify permissions or server behavior.

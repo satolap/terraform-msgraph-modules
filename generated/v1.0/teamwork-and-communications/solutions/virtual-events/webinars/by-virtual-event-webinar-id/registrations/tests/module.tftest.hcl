@@ -1,0 +1,40 @@
+# Offline plan tests: Terraform mocks the provider and never contacts Microsoft Graph.
+mock_provider "msgraph" {}
+
+run "minimal_request" {
+  command = plan
+
+  variables {
+    virtual_event_webinar_id = "test-parent-id"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.url == "solutions/virtualEvents/webinars/test-parent-id/registrations"
+    error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
+  }
+
+  assert {
+    condition     = alltrue([for key in ["cancelationDateTime", "email", "externalRegistrationInformation", "firstName", "lastName", "preferredLanguage", "preferredTimezone", "registrationDateTime", "registrationQuestionAnswers", "sessions", "userId"] : !contains(keys(msgraph_resource.this.body), key)])
+    error_message = "Unset optional inputs must be omitted from the Graph request."
+  }
+}
+
+run "typed_request" {
+  command = plan
+
+  variables {
+    virtual_event_webinar_id      = "test-parent-id"
+    cancelation_date_time         = "2026-01-01T00:00:00Z"
+    registration_question_answers = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["cancelationDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
+    error_message = "cancelationDateTime must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["registrationQuestionAnswers"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.virtualEventRegistrationQuestionAnswer" }])
+    error_message = "registrationQuestionAnswers must preserve typed values and omit nested nulls."
+  }
+}

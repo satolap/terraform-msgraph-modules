@@ -1,0 +1,23 @@
+# External data connections
+
+[All categories](../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/connectors-api-overview?view=graph-rest-beta&preserve-view=true)
+
+Microsoft Graph **beta** · **13 generated modules**.
+
+| Graph collection | Resource type | Microsoft reference |
+| --- | --- | --- |
+| [`/connections`](connections/README.md) | `microsoft.graph.externalConnectors.externalConnection` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/externalconnectors-externalconnection?view=graph-rest-beta&preserve-view=true) |
+| [`/connections/{externalConnection-id}/groups`](connections/by-external-connection-id/groups/README.md) | `microsoft.graph.externalConnectors.externalGroup` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/externalconnectors-externalgroup?view=graph-rest-beta&preserve-view=true) |
+| [`/connections/{externalConnection-id}/groups/{externalGroup-id}/members`](connections/by-external-connection-id/groups/by-external-group-id/members/README.md) | `microsoft.graph.externalConnectors.identity` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/connectors-api-overview?view=graph-rest-beta&preserve-view=true) |
+| [`/connections/{externalConnection-id}/items`](connections/by-external-connection-id/items/README.md) | `microsoft.graph.externalConnectors.externalItem` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/externalconnectors-externalitem?view=graph-rest-beta&preserve-view=true) |
+| [`/connections/{externalConnection-id}/items/{externalItem-id}/activities`](connections/by-external-connection-id/items/by-external-item-id/activities/README.md) | `microsoft.graph.externalConnectors.externalActivity` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/externalconnectors-externalactivity?view=graph-rest-beta&preserve-view=true) |
+| [`/connections/{externalConnection-id}/operations`](connections/by-external-connection-id/operations/README.md) | `microsoft.graph.externalConnectors.connectionOperation` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/externalconnectors-connectionoperation?view=graph-rest-beta&preserve-view=true) |
+| [`/external/connections`](external/connections/README.md) | `microsoft.graph.externalConnectors.externalConnection` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/externalconnectors-externalconnection?view=graph-rest-beta&preserve-view=true) |
+| [`/external/connections/{externalConnection-id}/groups`](external/connections/by-external-connection-id/groups/README.md) | `microsoft.graph.externalConnectors.externalGroup` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/externalconnectors-externalgroup?view=graph-rest-beta&preserve-view=true) |
+| [`/external/connections/{externalConnection-id}/groups/{externalGroup-id}/members`](external/connections/by-external-connection-id/groups/by-external-group-id/members/README.md) | `microsoft.graph.externalConnectors.identity` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/connectors-api-overview?view=graph-rest-beta&preserve-view=true) |
+| [`/external/connections/{externalConnection-id}/items`](external/connections/by-external-connection-id/items/README.md) | `microsoft.graph.externalConnectors.externalItem` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/externalconnectors-externalitem?view=graph-rest-beta&preserve-view=true) |
+| [`/external/connections/{externalConnection-id}/items/{externalItem-id}/activities`](external/connections/by-external-connection-id/items/by-external-item-id/activities/README.md) | `microsoft.graph.externalConnectors.externalActivity` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/externalconnectors-externalactivity?view=graph-rest-beta&preserve-view=true) |
+| [`/external/connections/{externalConnection-id}/operations`](external/connections/by-external-connection-id/operations/README.md) | `microsoft.graph.externalConnectors.connectionOperation` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/externalconnectors-connectionoperation?view=graph-rest-beta&preserve-view=true) |
+| [`/networkAccess/logs/connections`](network-access/logs/connections/README.md) | `microsoft.graph.networkaccess.connection` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/connectors-api-overview?view=graph-rest-beta&preserve-view=true) |
+
+Modules follow the conservative CRUD subset described in the catalog. Each endpoint appears once, even when Microsoft documentation cross-lists its resource type.

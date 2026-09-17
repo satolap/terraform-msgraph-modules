@@ -1,0 +1,64 @@
+# /education/users/{educationUser-id}/rubrics
+
+Create new navigation property to rubrics for education
+
+[Catalog](../../../../../README.md) · [Education](../../../../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/educationrubric?view=graph-rest-1.0&preserve-view=true)
+
+Generated from Microsoft Graph **v1.0** OpenAPI and optional EDMX metadata.
+
+Lifecycle: `POST /education/users/{educationUser-id}/rubrics`, `GET/PATCH/DELETE /education/users/{educationUser-id}/rubrics/{educationRubric-id}`.
+
+## Usage
+
+```hcl
+module "graph_resource" {
+  source = "./education/education/users/by-education-user-id/rubrics"
+  education_user_id = "parent-object-id"
+}
+```
+
+Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+
+## Inputs
+
+| Input | Graph property | Type | Required | Sensitive |
+| --- | --- | --- | --- | --- |
+| `education_user_id` | URL parameter `educationUser-id` | `string` | yes | no |
+| `description` | `description` | `any` | no | no |
+| `display_name` | `displayName` | `string` | no | no |
+| `grading` | `grading` | `any` | no | no |
+| `levels` | `levels` | `list(object({       odata_type = optional(string, "#microsoft.graph.rubricLevel")       description = optional(any)       displayName = optional(string)       grading = optional(any)       levelId = optional(string)     }))` | no | no |
+| `odata_type` | `@odata.type` | `string` | no | no |
+| `qualities` | `qualities` | `list(object({       odata_type = optional(string, "#microsoft.graph.rubricQuality")       criteria = optional(list(object({       odata_type = optional(string, "#microsoft.graph.rubricCriterion")       description = optional(any)     })))       description = optional(any)       displayName = optional(string)       qualityId = optional(string)       weight = optional(any)     }))` | no | no |
+| `additional_properties` | Additional writable API properties | `any` | no | yes |
+
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+
+Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
+
+## Permissions and limitations
+
+Review the Microsoft Graph API documentation for this endpoint's application/delegated permissions, required create fields, licensing, and tenant restrictions. Required inputs come from the request schema and explicit reviewed corrections, not from EDMX response nullability. The generated module is schema-derived; its lifecycle has not been tested against a live tenant.
+
+Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
+
+Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
+
+Generation notes:
+
+- description: polymorphic schema; accepts an untyped value
+- grading: polymorphic schema; accepts an untyped value
+- levels[].description: polymorphic schema; accepts an untyped value
+- levels[].grading: polymorphic schema; accepts an untyped value
+- qualities[].criteria[].description: polymorphic schema; accepts an untyped value
+- qualities[].description: polymorphic schema; accepts an untyped value
+- qualities[].weight: polymorphic schema; accepts an untyped value
+
+## Offline test
+
+```sh
+terraform init -backend=false
+terraform test
+```
+
+The included mock test checks URL construction and request omission without Graph credentials. It does not verify permissions or server behavior.

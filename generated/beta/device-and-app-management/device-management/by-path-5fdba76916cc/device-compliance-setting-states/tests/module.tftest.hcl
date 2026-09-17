@@ -1,0 +1,45 @@
+# Offline plan tests: Terraform mocks the provider and never contacts Microsoft Graph.
+mock_provider "msgraph" {}
+
+run "minimal_request" {
+  command = plan
+
+  variables {
+    device_compliance_policy_setting_state_summary_id = "test-parent-id"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.url == "deviceManagement/deviceCompliancePolicySettingStateSummaries/test-parent-id/deviceComplianceSettingStates"
+    error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
+  }
+
+  assert {
+    condition     = alltrue([for key in ["complianceGracePeriodExpirationDateTime", "deviceId", "deviceModel", "deviceName", "platformType", "setting", "settingName", "state", "userEmail", "userId", "userName", "userPrincipalName"] : !contains(keys(msgraph_resource.this.body), key)])
+    error_message = "Unset optional inputs must be omitted from the Graph request."
+  }
+}
+
+run "typed_request" {
+  command = plan
+
+  variables {
+    device_compliance_policy_setting_state_summary_id = "test-parent-id"
+    compliance_grace_period_expiration_date_time      = "2026-01-01T00:00:00Z"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["complianceGracePeriodExpirationDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
+    error_message = "complianceGracePeriodExpirationDateTime must preserve typed values and omit nested nulls."
+  }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    device_compliance_policy_setting_state_summary_id = "test-parent-id"
+    platform_type                                     = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.platform_type]
+}
