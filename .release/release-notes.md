@@ -1,12 +1,12 @@
 Generated Microsoft Graph modules for v1.0 and beta, plus the curated modules.
 
-- Generator commit: `aba3ff0ff15fadc86315e438c30ce22d65bf5165`
+- Generator commit: `e931fe1568ae9d0efe8918cd7510fd333c9431a3`
 - Microsoft Graph metadata commit: `28e4d24f3547898328eb52c700f2beb869116cfe`
 - Tested provider `hashicorp/null`: `3.3.2`
 - Tested provider `hashicorp/random`: `3.9.1`
 - Tested provider `hashicorp/time`: `0.14.2`
 - Tested provider `microsoft/msgraph`: `0.5.0`
-- Input fingerprint: `67a6846bf4b9fc488842d775bf0263a9290365f95ee9e5a64a638e8b5d99c8e6`
+- Input fingerprint: `fd775d854782045fbc050e97dd0349a5d94383e12edb6f445e3d8bf77083751a`
 
 Python tests, Terraform validation, and available mocked Terraform tests pass before publication. Beta modules follow Microsoft Graph's preview API and may change incompatibly. Live tenant tests run separately on explicit request.
 
