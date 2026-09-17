@@ -1,0 +1,22 @@
+# Generated from pinned Microsoft Graph sources; do not edit.
+locals {
+  typed_body = { for key, value in {
+    "decisions"         = (var.decisions == null ? null : [for item0 in var.decisions : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "applyDescription" = item0["applyDescription"], "decision" = item0["decision"], "insights" = (item0["insights"] == null ? null : [for item2 in item0["insights"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"], "insightCreatedDateTime" = item2["insightCreatedDateTime"] } : key3 => value3 if value3 != null }) if item2 != null]), "instance" = item0["instance"], "justification" = item0["justification"], "permission" = item0["permission"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "fallbackReviewers" = (var.fallback_reviewers == null ? null : [for item0 in var.fallback_reviewers : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "query" = item0["query"], "queryRoot" = item0["queryRoot"], "queryType" = item0["queryType"], "reviewerId" = item0["reviewerId"], "scopeType" = item0["scopeType"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "@odata.type"       = var.odata_type
+    "reviewers"         = (var.reviewers == null ? null : [for item0 in var.reviewers : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "query" = item0["query"], "queryRoot" = item0["queryRoot"], "queryType" = item0["queryType"], "reviewerId" = item0["reviewerId"], "scopeType" = item0["scopeType"] } : key1 => value1 if value1 != null }) if item0 != null])
+  } : key => value if value != null }
+  body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
+}
+
+resource "msgraph_resource" "this" {
+  url                     = "identityGovernance/accessReviews/instances/${urlencode(var.access_review_instance_id)}/stages"
+  api_version             = "beta"
+  update_method           = "PATCH"
+  body                    = local.body
+  ignore_missing_property = true
+
+  response_export_values = {
+    response = "@"
+  }
+}

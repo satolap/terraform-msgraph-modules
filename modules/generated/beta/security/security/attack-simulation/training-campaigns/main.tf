@@ -1,0 +1,31 @@
+# Generated from pinned Microsoft Graph sources; do not edit.
+locals {
+  typed_body = { for key, value in {
+    "campaignSchedule"           = var.campaign_schedule
+    "createdBy"                  = var.created_by
+    "createdDateTime"            = var.created_date_time
+    "description"                = var.description
+    "displayName"                = var.display_name
+    "endUserNotificationSetting" = var.end_user_notification_setting
+    "excludedAccountTarget"      = var.excluded_account_target
+    "includedAccountTarget"      = var.included_account_target
+    "lastModifiedBy"             = var.last_modified_by
+    "lastModifiedDateTime"       = var.last_modified_date_time
+    "@odata.type"                = var.odata_type
+    "report"                     = var.report
+    "trainingSetting"            = var.training_setting
+  } : key => value if value != null }
+  body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
+}
+
+resource "msgraph_resource" "this" {
+  url                     = "security/attackSimulation/trainingCampaigns"
+  api_version             = "beta"
+  update_method           = "PATCH"
+  body                    = local.body
+  ignore_missing_property = true
+
+  response_export_values = {
+    response = "@"
+  }
+}

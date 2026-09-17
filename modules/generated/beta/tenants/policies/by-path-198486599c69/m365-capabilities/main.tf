@@ -1,0 +1,22 @@
+# Generated from pinned Microsoft Graph sources; do not edit.
+locals {
+  typed_body = { for key, value in {
+    "inboundAccess"        = var.inbound_access
+    "lastModifiedDateTime" = var.last_modified_date_time
+    "name"                 = var.name
+    "@odata.type"          = var.odata_type
+  } : key => value if value != null }
+  body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
+}
+
+resource "msgraph_resource" "this" {
+  url                     = "policies/deletedItems/crossTenantPartners/${urlencode(var.cross_tenant_access_policy_configuration_partner_tenant_id)}/m365Capabilities"
+  api_version             = "beta"
+  update_method           = "PATCH"
+  body                    = local.body
+  ignore_missing_property = true
+
+  response_export_values = {
+    response = "@"
+  }
+}

@@ -1,0 +1,25 @@
+# Generated from pinned Microsoft Graph sources; do not edit.
+locals {
+  typed_body = { for key, value in {
+    "description"  = var.description
+    "displayName"  = var.display_name
+    "isRootScope"  = var.is_root_scope
+    "@odata.type"  = var.odata_type
+    "originId"     = var.origin_id
+    "originSystem" = var.origin_system
+    "resource"     = var.resource
+  } : key => value if value != null }
+  body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
+}
+
+resource "msgraph_resource" "this" {
+  url                     = "identityGovernance/entitlementManagement/catalogs/${urlencode(var.access_package_catalog_id)}/resources/${urlencode(var.access_package_resource_id)}/roles/${urlencode(var.access_package_resource_role_id)}/resource/scopes"
+  api_version             = "v1.0"
+  update_method           = "PATCH"
+  body                    = local.body
+  ignore_missing_property = true
+
+  response_export_values = {
+    response = "@"
+  }
+}

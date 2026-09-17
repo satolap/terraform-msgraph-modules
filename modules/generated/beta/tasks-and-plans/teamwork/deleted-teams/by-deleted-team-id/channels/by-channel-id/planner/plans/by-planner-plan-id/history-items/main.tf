@@ -1,0 +1,25 @@
+# Generated from pinned Microsoft Graph sources; do not edit.
+locals {
+  typed_body = { for key, value in {
+    "actor"            = var.actor
+    "entityId"         = var.entity_id
+    "entityType"       = var.entity_type
+    "eventType"        = var.event_type
+    "occurredDateTime" = var.occurred_date_time
+    "@odata.type"      = var.odata_type
+    "planId"           = var.plan_id
+  } : key => value if value != null }
+  body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
+}
+
+resource "msgraph_resource" "this" {
+  url                     = "teamwork/deletedTeams/${urlencode(var.deleted_team_id)}/channels/${urlencode(var.channel_id)}/planner/plans/${urlencode(var.planner_plan_id)}/historyItems"
+  api_version             = "beta"
+  update_method           = "PATCH"
+  body                    = local.body
+  ignore_missing_property = true
+
+  response_export_values = {
+    response = "@"
+  }
+}

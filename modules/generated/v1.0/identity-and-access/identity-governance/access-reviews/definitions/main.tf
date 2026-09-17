@@ -1,0 +1,30 @@
+# Generated from pinned Microsoft Graph sources; do not edit.
+locals {
+  typed_body = { for key, value in {
+    "additionalNotificationRecipients" = (var.additional_notification_recipients == null ? null : [for item0 in var.additional_notification_recipients : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "notificationRecipientScope" = item0["notificationRecipientScope"], "notificationTemplateType" = item0["notificationTemplateType"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "descriptionForAdmins"             = var.description_for_admins
+    "descriptionForReviewers"          = var.description_for_reviewers
+    "displayName"                      = var.display_name
+    "fallbackReviewers"                = (var.fallback_reviewers == null ? null : [for item0 in var.fallback_reviewers : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "query" = item0["query"], "queryRoot" = item0["queryRoot"], "queryType" = item0["queryType"], "reviewerId" = item0["reviewerId"], "scopeType" = item0["scopeType"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "instanceEnumerationScope"         = var.instance_enumeration_scope
+    "instances"                        = (var.instances == null ? null : [for item0 in var.instances : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "decisions" = (item0["decisions"] == null ? null : [for item2 in item0["decisions"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"], "decision" = item2["decision"], "insights" = (item2["insights"] == null ? null : [for item4 in item2["insights"] : item4 if item4 != null]), "justification" = item2["justification"], "permission" = item2["permission"] } : key3 => value3 if value3 != null }) if item2 != null]), "fallbackReviewers" = (item0["fallbackReviewers"] == null ? null : [for item2 in item0["fallbackReviewers"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"], "query" = item2["query"], "queryRoot" = item2["queryRoot"], "queryType" = item2["queryType"], "reviewerId" = item2["reviewerId"], "scopeType" = item2["scopeType"] } : key3 => value3 if value3 != null }) if item2 != null]), "reviewers" = (item0["reviewers"] == null ? null : [for item2 in item0["reviewers"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"], "query" = item2["query"], "queryRoot" = item2["queryRoot"], "queryType" = item2["queryType"], "reviewerId" = item2["reviewerId"], "scopeType" = item2["scopeType"] } : key3 => value3 if value3 != null }) if item2 != null]), "stages" = (item0["stages"] == null ? null : [for item2 in item0["stages"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"], "decisions" = (item2["decisions"] == null ? null : [for item4 in item2["decisions"] : item4 if item4 != null]), "fallbackReviewers" = (item2["fallbackReviewers"] == null ? null : [for item4 in item2["fallbackReviewers"] : item4 if item4 != null]), "reviewers" = (item2["reviewers"] == null ? null : [for item4 in item2["reviewers"] : item4 if item4 != null]) } : key3 => value3 if value3 != null }) if item2 != null]) } : key1 => value1 if value1 != null }) if item0 != null])
+    "@odata.type"                      = var.odata_type
+    "reviewers"                        = (var.reviewers == null ? null : [for item0 in var.reviewers : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "query" = item0["query"], "queryRoot" = item0["queryRoot"], "queryType" = item0["queryType"], "reviewerId" = item0["reviewerId"], "scopeType" = item0["scopeType"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "scope"                            = var.scope
+    "settings"                         = var.settings
+    "stageSettings"                    = (var.stage_settings == null ? null : [for item0 in var.stage_settings : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "decisionsThatWillMoveToNextStage" = (item0["decisionsThatWillMoveToNextStage"] == null ? null : [for item2 in item0["decisionsThatWillMoveToNextStage"] : item2 if item2 != null]), "dependsOn" = (item0["dependsOn"] == null ? null : [for item2 in item0["dependsOn"] : item2 if item2 != null]), "durationInDays" = item0["durationInDays"], "fallbackReviewers" = (item0["fallbackReviewers"] == null ? null : [for item2 in item0["fallbackReviewers"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"], "query" = item2["query"], "queryRoot" = item2["queryRoot"], "queryType" = item2["queryType"], "reviewerId" = item2["reviewerId"], "scopeType" = item2["scopeType"] } : key3 => value3 if value3 != null }) if item2 != null]), "recommendationInsightSettings" = (item0["recommendationInsightSettings"] == null ? null : [for item2 in item0["recommendationInsightSettings"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"] } : key3 => value3 if value3 != null }) if item2 != null]), "recommendationsEnabled" = item0["recommendationsEnabled"], "reviewers" = (item0["reviewers"] == null ? null : [for item2 in item0["reviewers"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"], "query" = item2["query"], "queryRoot" = item2["queryRoot"], "queryType" = item2["queryType"], "reviewerId" = item2["reviewerId"], "scopeType" = item2["scopeType"] } : key3 => value3 if value3 != null }) if item2 != null]), "stageId" = item0["stageId"] } : key1 => value1 if value1 != null }) if item0 != null])
+  } : key => value if value != null }
+  body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
+}
+
+resource "msgraph_resource" "this" {
+  url                     = "identityGovernance/accessReviews/definitions"
+  api_version             = "v1.0"
+  update_method           = "PUT"
+  body                    = local.body
+  ignore_missing_property = true
+
+  response_export_values = {
+    response = "@"
+  }
+}
