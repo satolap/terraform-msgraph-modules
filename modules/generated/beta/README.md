@@ -4,6 +4,74 @@
 
 Only collections with documented POST and item GET, PATCH/PUT, and DELETE operations are generated. Counts describe this supported CRUD subset; they do not imply coverage of every API in a category. Categories with no generated module are retained for browsing.
 
+## Folder hierarchy
+
+Category folders are shown below; use the category links for the complete endpoint list.
+
+```text
+beta/
+├── README.md
+├── manifest.json
+├── users/  # 23 modules
+├── groups/  # 6 modules
+├── applications/  # 31 modules
+├── agents/  # 4 modules
+├── backup-and-recovery/  # 40 modules
+├── calendars/  # 32 modules
+├── change-notifications/  # 6 modules
+├── compliance/  # 29 modules
+├── cross-device-experiences/  # 10 modules
+├── customer-booking/  # 14 modules
+├── device-and-app-management/  # 474 modules
+├── education/  # 41 modules
+├── employee-experience/  # 10 modules
+├── extensions/  # 44 modules
+├── external-data-connections/  # 13 modules
+├── files/  # 25 modules
+├── financials-preview/  # 41 modules
+├── identity-and-access/  # 555 modules
+├── industry-data-etl-preview/  # 8 modules
+├── mail/  # 21 modules
+├── mailbox-import-and-export/  # 3 modules
+├── notes/  # 70 modules
+├── notifications-deprecated/  # 2 modules
+├── people-and-workplace-intelligence/  # 80 modules
+├── personal-contacts/  # 12 modules
+├── reports/  # 30 modules
+├── search/  # 3 modules
+├── security/  # 137 modules
+├── sites-and-lists/  # 184 modules
+├── tasks-and-plans/  # 107 modules
+├── teamwork-and-communications/  # 332 modules
+├── tenants/  # 29 modules
+├── to-do-tasks/  # 20 modules
+├── workbooks-and-charts/  # 26 modules
+└── other/  # 18 modules
+```
+
+Each category contains a README index. Zero-count categories contain an index only.
+
+Endpoint folders follow the Graph route beneath their category. `by-<parameter>` marks a parent-ID parameter; complex routes can use a stable `by-path-<hash>` segment. The module README and manifest retain the exact Graph URL.
+
+Example: [applications/applications/by-application-id/federated-identity-credentials](applications/applications/by-application-id/federated-identity-credentials/README.md). This is one module from this catalog:
+
+```text
+beta/
+└── applications/
+    └── applications/
+        └── by-application-id/
+            └── federated-identity-credentials/
+                ├── README.md
+                ├── main.tf
+                ├── variables.tf
+                ├── outputs.tf
+                ├── versions.tf
+                └── tests/
+                    └── module.tftest.hcl
+```
+
+## Browse categories
+
 | Category | Modules | Microsoft reference |
 | --- | ---: | --- |
 | [Users](users/README.md) | 23 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-beta&preserve-view=true) |
