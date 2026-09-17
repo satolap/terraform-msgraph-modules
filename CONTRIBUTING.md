@@ -18,10 +18,10 @@ Use [SECURITY.md](SECURITY.md) instead for a suspected vulnerability.
 ## Propose a change
 
 The generated and curated module trees are published from a separate source and
-validation pipeline. Direct pull requests that edit `generated/`, `modules/`,
-`.release/`, `NOTICE`, or release tags cannot be accepted because the next
-validated publication replaces those files. Open an issue describing the desired
-module change so it can be made and tested at the source.
+validation pipeline. Direct pull requests that edit `modules/generated/`,
+`modules/curated/`, `.release/`, `NOTICE`, or release tags cannot be accepted
+because the next validated publication replaces those files. Open an issue
+describing the desired module change so it can be made and tested at the source.
 
 Pull requests are welcome for this repository's public documentation and trusted
 release tooling. Keep changes focused, explain their user impact, and update any

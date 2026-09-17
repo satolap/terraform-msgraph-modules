@@ -3,8 +3,9 @@
 Tested Terraform modules for Microsoft Graph v1.0 and beta, with a curated set
 of modules for common directory and entitlement-management scenarios.
 
-Browse the [v1.0 catalog](generated/v1.0/README.md),
-[beta catalog](generated/beta/README.md), or [curated modules](modules).
+Browse the [v1.0 catalog](modules/generated/v1.0/README.md),
+[beta catalog](modules/generated/beta/README.md), or
+[curated modules](modules/curated).
 Each [release](https://github.com/benhaspalace/GraphModules/releases) includes
 the three module archives, an input provenance manifest, and SHA256 checksums.
 
@@ -14,12 +15,12 @@ Pin a published release tag for repeatable deployments:
 
 ```hcl
 module "application" {
-  source       = "git::https://github.com/benhaspalace/GraphModules.git//generated/v1.0/applications/applications?ref=<release-tag>"
+  source       = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/applications/applications?ref=<release-tag>"
   display_name = "Example application"
 }
 
 module "curated_group" {
-  source           = "git::https://github.com/benhaspalace/GraphModules.git//modules/groups?ref=<release-tag>"
+  source           = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/groups?ref=<release-tag>"
   display_name     = "Example group"
   mail_nickname    = "example-group"
   security_enabled = true
@@ -36,7 +37,7 @@ preview limitations and can change incompatibly between releases.
 ## Provenance and licensing
 
 Every release records the exact upstream revisions and checksums used to build
-the module catalogs in `generated/release-manifest.json` and in the downloadable
+the module catalogs in `modules/generated/release-manifest.json` and in the downloadable
 `release-manifest.json` asset.
 
 The original project code and curated modules are available under the

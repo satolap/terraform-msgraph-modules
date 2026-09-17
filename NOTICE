@@ -36,5 +36,5 @@ International in its LICENSE:
 https://github.com/microsoftgraph/microsoft-graph-docs-contrib/blob/main/LICENSE
 https://creativecommons.org/licenses/by/4.0/
 
-The generator adapts that navigation into classifications, directory names and module
-indexes. The exact documentation revision is recorded in generated manifests.
+The catalog adapts that navigation into classifications, directory names and
+module indexes. The exact documentation revision is recorded in generated manifests.

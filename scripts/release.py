@@ -1,4 +1,4 @@
-"""Reconstruct the exact tested assets from a GraphModules publication."""
+"""Reconstruct and verify release assets from a GraphModules publication."""
 
 from __future__ import annotations
 
@@ -37,14 +37,14 @@ def archive(path: Path, files: dict[str, bytes]) -> None:
 
 def build(tag: str, directory: Path) -> tuple[str, list[Path]]:
     if not re.fullmatch(r"graphmodules-[0-9a-f]{20}", tag):
-        raise ValueError("Invalid release tag")
+        raise ValueError("Invalid GraphModules release tag")
     sha = git("rev-parse", f"refs/tags/{tag}^{{commit}}")
     git("merge-base", "--is-ancestor", sha, "origin/main")
     # A separate worktree avoids running scripts from the publication tag.
     checkout = directory / "publication"
     git("worktree", "add", "--detach", str(checkout), sha)
     try:
-        provenance = (checkout / "generated/release-manifest.json").read_bytes()
+        provenance = (checkout / "modules/generated/release-manifest.json").read_bytes()
         manifest = json.loads(provenance)
         inputs = {k: v for k, v in manifest.items() if k not in {"tag", "fingerprint"}}
         canonical = json.dumps(
@@ -64,8 +64,10 @@ def build(tag: str, directory: Path) -> tuple[str, list[Path]]:
         }
         assets = []
         for api in ("v1.0", "beta", "curated"):
-            root = checkout / ("modules" if api == "curated" else f"generated/{api}")
-            prefix = "modules" if api == "curated" else f"modules/{api}"
+            root = checkout / (
+                "modules/curated" if api == "curated" else f"modules/generated/{api}"
+            )
+            prefix = "modules/curated" if api == "curated" else f"modules/generated/{api}"
             files = {}
             for path in root.rglob("*"):
                 if path.is_symlink():
@@ -162,7 +164,6 @@ def release(repository: str, tag: str, sha: str, assets: list[Path], directory: 
         "--format=%H",
         "origin/main",
         "--",
-        "generated",
         "modules",
         ".release",
     )
