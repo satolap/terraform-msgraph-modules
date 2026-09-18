@@ -4,6 +4,72 @@
 
 Only collections with documented POST and item GET, PATCH/PUT, and DELETE operations are generated. Counts describe this supported CRUD subset; they do not imply coverage of every API in a category. Categories with no generated module are retained for browsing.
 
+## Folder hierarchy
+
+Category folders are shown below; use the category links for the complete endpoint list.
+
+```text
+v1.0/
+├── README.md
+├── manifest.json
+├── users/  # 25 modules
+├── groups/  # 5 modules
+├── applications/  # 23 modules
+├── agents/  # 0 modules
+├── backup-and-recovery/  # 31 modules
+├── calendars/  # 28 modules
+├── change-notifications/  # 6 modules
+├── compliance/  # 3 modules
+├── cross-device-experiences/  # 10 modules
+├── customer-booking/  # 7 modules
+├── device-and-app-management/  # 160 modules
+├── education/  # 41 modules
+├── employee-experience/  # 5 modules
+├── extensions/  # 39 modules
+├── external-data-connections/  # 12 modules
+├── files/  # 23 modules
+├── identity-and-access/  # 322 modules
+├── mail/  # 25 modules
+├── mailbox-import-and-export/  # 1 module
+├── notes/  # 70 modules
+├── people-and-workplace-intelligence/  # 16 modules
+├── personal-contacts/  # 10 modules
+├── reports/  # 5 modules
+├── partner-billing-reports/  # 2 modules
+├── search/  # 3 modules
+├── security/  # 72 modules
+├── sites-and-lists/  # 190 modules
+├── tasks-and-plans/  # 19 modules
+├── teamwork-and-communications/  # 251 modules
+├── tenants/  # 2 modules
+├── to-do-tasks/  # 8 modules
+├── workbooks-and-charts/  # 16 modules
+└── other/  # 1 module
+```
+
+Each category contains a README index. Zero-count categories contain an index only.
+
+Endpoint folders follow the Graph route beneath their category. `by-<parameter>` marks a parent-ID parameter; complex routes can use a stable `by-path-<hash>` segment. The module README and manifest retain the exact Graph URL.
+
+Example: [applications/applications/by-application-id/extension-properties](applications/applications/by-application-id/extension-properties/README.md). This is one module from this catalog:
+
+```text
+v1.0/
+└── applications/
+    └── applications/
+        └── by-application-id/
+            └── extension-properties/
+                ├── README.md
+                ├── main.tf
+                ├── variables.tf
+                ├── outputs.tf
+                ├── versions.tf
+                └── tests/
+                    └── module.tftest.hcl
+```
+
+## Browse categories
+
 | Category | Modules | Microsoft reference |
 | --- | ---: | --- |
 | [Users](users/README.md) | 25 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-1.0&preserve-view=true) |
