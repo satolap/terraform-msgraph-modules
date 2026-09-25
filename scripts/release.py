@@ -102,16 +102,27 @@ def build(tag: str, directory: Path) -> tuple[str, list[Path]]:
 
 
 def request_json(repository: str, suffix: str):
-    request = Request(
-        f"https://api.github.com/repos/{repository}/{suffix}",
-        headers={
-            "Accept": "application/vnd.github+json",
-            "User-Agent": "GraphModules-release",
-            "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
-        },
-    )
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "GraphModules-release",
+    }
+    # Published releases of this public repository can be verified without a token.
+    if os.environ.get("GH_TOKEN"):
+        headers["Authorization"] = f"Bearer {os.environ['GH_TOKEN']}"
+    request = Request(f"https://api.github.com/repos/{repository}/{suffix}", headers=headers)
     with urlopen(request, timeout=60) as response:
         return json.load(response)
+
+
+def verify_assets(repository: str, tag: str, sha: str, assets: list[Path]) -> None:
+    published = request_json(repository, f"releases/tags/{tag}")
+    if published["target_commitish"] != sha:
+        raise ValueError("Published release does not target the validated publication")
+    expected = {p.name: f"sha256:{hashlib.sha256(p.read_bytes()).hexdigest()}" for p in assets}
+    actual = {a["name"]: a.get("digest") for a in published["assets"]}
+    changed = sorted(n for n in expected.keys() | actual.keys() if expected.get(n) != actual.get(n))
+    if changed:
+        raise ValueError(f"Published release assets differ from the rebuild: {', '.join(changed)}")
 
 
 def release(repository: str, tag: str, sha: str, assets: list[Path], directory: Path) -> None:
@@ -182,11 +193,14 @@ def main():
     parser.add_argument("--tag", required=True)
     parser.add_argument("--repository", required=True)
     parser.add_argument("--verify-only", action="store_true")
+    parser.add_argument("--verify-assets", action="store_true")
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix="graphmodules-") as temporary:
         directory = Path(temporary)
         sha, assets = build(args.tag, directory)
-        if not args.verify_only:
+        if args.verify_assets:
+            verify_assets(args.repository, args.tag, sha, assets)
+        elif not args.verify_only:
             release(args.repository, args.tag, sha, assets, directory)
         print(f"Verified {args.tag} at {sha}")
 
