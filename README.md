@@ -164,6 +164,9 @@ tag is created:
    from the tagged commit and requires their byte-level SHA-256 checksums to match
    the already tested artifacts before publishing the GitHub Release.
 
+A daily scheduled workflow rebuilds every published release the same way and fails
+if its tag commit or any asset's SHA-256 digest no longer matches the GitHub Release.
+
 Mock tests and schema validation do not prove that a caller has the required
 Microsoft Graph permissions, license, or tenant configuration. Endpoint READMEs
 link to the public API documentation for those deployment requirements. Live-tenant
