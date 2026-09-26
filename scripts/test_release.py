@@ -20,6 +20,7 @@ SHA = "539975df7dbe162de40f2afff3f5c94f59e5db9e"
 NEWER_TAG = "graphmodules-4002ec490efccb9d7832"
 OLDER_SHA = "f7648218ee56488fe7a18f646a48404bd153464f"
 REPOSITORY = "owner/name"
+FORBIDDEN = "gh: Resource not accessible by integration (HTTP 403)\n"
 
 
 class FakeGitHub:
@@ -253,6 +254,11 @@ class UpdateLatestBranchTest(unittest.TestCase):
         self.assertEqual(len(self.github.ref_writes()), 1)
         self.assertNotIn("force=true", self.github.ref_writes()[0])
 
+    def test_refused_ref_write_is_an_error(self):
+        self.github.gh_api_error = FORBIDDEN
+        with self.assertRaisesRegex(ValueError, f"Could not point branch latest at {SHA}.*403"):
+            self.update()
+
 
 class ReleaseUpdatesLatestBranchTest(unittest.TestCase):
     def setUp(self):
@@ -261,9 +267,21 @@ class ReleaseUpdatesLatestBranchTest(unittest.TestCase):
         self.directory = Path(directory.name)
         self.github = FakeGitHub()
 
-    def publish(self):
-        with self.github.serve():
+    def publish(self, summary: str = "") -> str:
+        with (
+            mock.patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": summary}),
+            self.github.serve() as output,
+        ):
             release.release(REPOSITORY, TAG, SHA, [], self.directory)
+        return output.getvalue()
+
+    def assert_warned(self, output: str):
+        warnings = [line for line in output.splitlines() if line.startswith("::warning::")]
+        self.assertEqual(len(warnings), 1)
+        self.assertIn("Resource not accessible by integration (HTTP 403)", warnings[0])
+        self.assertIn(f"`git push origin {SHA}:refs/heads/latest`", warnings[0])
+        self.assertEqual(len(self.github.ref_writes()), 1)
+        self.assertNotIn("force=true", self.github.ref_writes()[0])
 
     def test_publishing_moves_the_branch_after_the_final_edit(self):
         self.github.release = {"draft": True, "target_commitish": SHA, "html_url": "draft"}
@@ -284,6 +302,27 @@ class ReleaseUpdatesLatestBranchTest(unittest.TestCase):
         self.github.latest = NEWER_TAG
         self.publish()
         self.assertEqual(self.github.ref_writes(), [])
+
+    def test_refused_branch_update_after_publishing_only_warns(self):
+        self.github.release = {"draft": True, "target_commitish": SHA, "html_url": "draft"}
+        self.github.gh_api_error = FORBIDDEN
+        self.assert_warned(self.publish())
+        self.assertIn(["gh", "release", "edit"], [c[:3] for c in self.github.commands])
+
+    def test_refused_branch_update_for_a_published_release_only_warns(self):
+        self.github.release = {"draft": False, "target_commitish": SHA, "html_url": "published"}
+        self.github.gh_api_error = FORBIDDEN
+        self.assert_warned(self.publish())
+
+    def test_refused_branch_update_is_added_to_the_step_summary(self):
+        self.github.release = {"draft": False, "target_commitish": SHA, "html_url": "published"}
+        self.github.gh_api_error = FORBIDDEN
+        summary = self.directory / "summary.md"
+        output = self.publish(str(summary))
+        text = summary.read_text(encoding="utf-8")
+        self.assertIn(f"`git push origin {SHA}:refs/heads/latest`", text)
+        self.assertIn("(HTTP 403)", text)
+        self.assertIn(f"::warning::{text.strip()}", output)
 
 
 if __name__ == "__main__":
