@@ -11,6 +11,7 @@ Category folders are shown below; use the category links for the complete endpoi
 ```text
 v1.0/
 ├── README.md
+├── LICENSING-REVIEW.md
 ├── manifest.json
 ├── users/  # 25 modules
 ├── groups/  # 5 modules
@@ -113,3 +114,46 @@ Open a category, then an endpoint README for inputs, permissions guidance, impor
 License requirements are reviewed for 7 of 1430 modules; every other module carries an explicit unknown licensing record in its README and manifest entry.
 
 1829 candidate collections are not generated; each exclusion and its reason is recorded under `exclusions` in [manifest.json](manifest.json). A request wrapper is never presented as management of the object it creates.
+
+Catalog scope: **Full catalog from pinned API sources**. Full-catalog licensing mapping checks run against the selected API version; partial runs do not claim mapping coverage.
+
+Reviewed generated mapping coverage: 7 generated, 0 explicitly excluded, 0 missing. A mapped endpoint absent from both generated output and explicit exclusions fails full-catalog validation.
+
+## Unknown licensing review queue
+
+1423 unknown endpoints across 32 catalog families. [LICENSING-REVIEW.md](LICENSING-REVIEW.md) lists each path with a link to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
+
+| Family | Unknown endpoints |
+| --- | ---: |
+| Applications (`applications`) | 21 |
+| Backup and recovery (`backup-and-recovery`) | 31 |
+| Calendars (`calendars`) | 28 |
+| Change notifications (`change-notifications`) | 6 |
+| Compliance (`compliance`) | 3 |
+| Cross-device experiences (`cross-device-experiences`) | 10 |
+| Customer booking (`customer-booking`) | 7 |
+| Device and app management (`device-and-app-management`) | 160 |
+| Education (`education`) | 41 |
+| Employee experience (`employee-experience`) | 5 |
+| Extensions (`extensions`) | 39 |
+| External data connections (`external-data-connections`) | 12 |
+| Files (`files`) | 23 |
+| Groups (`groups`) | 4 |
+| Identity and access (`identity-and-access`) | 319 |
+| Mail (`mail`) | 25 |
+| Mailbox import and export (`mailbox-import-and-export`) | 1 |
+| Notes (`notes`) | 70 |
+| Uncategorized (`other`) | 1 |
+| Partner billing reports (`partner-billing-reports`) | 2 |
+| People and workplace intelligence (`people-and-workplace-intelligence`) | 16 |
+| Personal contacts (`personal-contacts`) | 10 |
+| Reports (`reports`) | 5 |
+| Search (`search`) | 3 |
+| Security (`security`) | 72 |
+| Sites and lists (`sites-and-lists`) | 190 |
+| Tasks and plans (`tasks-and-plans`) | 18 |
+| Teamwork and communications (`teamwork-and-communications`) | 251 |
+| Tenants (`tenants`) | 2 |
+| To-do tasks (`to-do-tasks`) | 8 |
+| Users (`users`) | 24 |
+| Workbooks and charts (`workbooks-and-charts`) | 16 |
