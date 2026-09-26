@@ -125,6 +125,58 @@ def verify_assets(repository: str, tag: str, sha: str, assets: list[Path]) -> No
         raise ValueError(f"Published release assets differ from the rebuild: {', '.join(changed)}")
 
 
+def update_latest_branch(repository: str, tag: str, sha: str) -> None:
+    """Fast-forward the latest branch to a publication that is the GitHub Latest release."""
+    try:
+        latest = request_json(repository, "releases/latest")["tag_name"]
+    except HTTPError as error:
+        if error.code != 404:
+            raise
+        latest = None
+    # A recovery run for an older tag must not move the branch backwards.
+    if latest != tag:
+        print(f"Leaving branch latest unchanged: {tag} is not the GitHub Latest release ({latest})")
+        return
+    remote = git("ls-remote", "origin", f"refs/tags/{tag}").split()
+    if not remote or remote[0] != sha:
+        print(f"Leaving branch latest unchanged: remote tag {tag} does not identify {sha}")
+        return
+    try:
+        current = request_json(repository, "git/ref/heads/latest")["object"]["sha"]
+    except HTTPError as error:
+        if error.code != 404:
+            raise
+        current = None
+    if current == sha:
+        print(f"Branch latest already points at {sha}")
+        return
+    if current is None:
+        target = ["--method", "POST", f"repos/{repository}/git/refs", "-f", "ref=refs/heads/latest"]
+    else:
+        # With force=false GitHub rejects any update that is not a fast-forward.
+        path = f"repos/{repository}/git/refs/heads/latest"
+        target = ["--method", "PATCH", path, "-F", "force=false"]
+    result = subprocess.run(
+        ["gh", "api", *target, "-f", f"sha={sha}"],
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    error = result.stderr.strip()
+    if result.returncode and current and "(HTTP 422)" in error:
+        raise ValueError(
+            f"GitHub rejected moving branch latest from {current} to {sha}; "
+            f"it is never force-updated: {error}"
+        )
+    if result.returncode:
+        raise ValueError(f"Could not point branch latest at {sha}: {error}")
+    if json.loads(result.stdout)["object"]["sha"] != sha:
+        raise ValueError("GitHub did not move branch latest to the validated publication")
+    moved = "created at" if current is None else f"moved from {current} to"
+    print(f"Branch latest {moved} {sha}")
+
+
 def release(repository: str, tag: str, sha: str, assets: list[Path], directory: Path) -> None:
     def gh(*args: str):
         subprocess.run(["gh", "release", *args, "--repo", repository], check=True)
@@ -148,6 +200,7 @@ def release(repository: str, tag: str, sha: str, assets: list[Path], directory: 
         raise ValueError("Remote release tag no longer identifies the validated publication")
     if existing and not existing["draft"]:
         print(f"Release already published: {existing['html_url']}")
+        update_latest_branch(repository, tag, sha)
         return
     if existing and existing["target_commitish"] != sha:
         raise ValueError("Existing draft targets a different publication")
@@ -186,6 +239,7 @@ def release(repository: str, tag: str, sha: str, assets: list[Path], directory: 
         "--notes-file",
         notes,
     )
+    update_latest_branch(repository, tag, sha)
 
 
 def main():
