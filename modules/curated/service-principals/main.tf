@@ -7,7 +7,7 @@ locals {
     },
     var.description != null ? { description = var.description } : {},
     var.notes != null ? { notes = var.notes } : {},
-    length(var.tags) > 0 ? { tags = var.tags } : {},
+    var.tags != null ? { tags = var.tags } : {},
     var.login_url != null ? { loginUrl = var.login_url } : {},
     var.preferred_single_sign_on_mode != null ? { preferredSingleSignOnMode = var.preferred_single_sign_on_mode } : {},
   )

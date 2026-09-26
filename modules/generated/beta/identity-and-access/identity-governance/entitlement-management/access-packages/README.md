@@ -133,6 +133,12 @@ Generation notes:
 - incompatibleGroups[].threads[].toRecipients[]: nested schema exceeds depth limit; accepts an untyped value
 - incompatibleGroups[].writebackConfiguration: polymorphic schema; accepts an untyped value
 
+## Licensing and prerequisites
+
+Baseline rules reviewed on 2026-09-18 for the equivalent curated module `curated/identity-governance/entitlement-management/access-packages` (confidence: inferred). Input-dependent rules were not re-verified against this module's inputs.
+
+- **EM-CORE**: Catalogs, access packages with group, application and SharePoint resources, standard approval stages, requestor questions and expiration are included in Microsoft Entra ID P2, Microsoft Entra ID Governance and Microsoft Entra Suite. Evaluate the exact feature combination; not every accepted policy option is core. Any of: Microsoft Entra ID P2 (`AAD_PREMIUM_P2`); Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). Coverage: Every user who can request or receive an access package assignment, including everyone covered by an all-member policy scope; guest scenarios can involve billing. Assignment: direct; capacity: per_user. Sources: [Entitlement management license requirements](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-overview#license-requirements), [Microsoft Entra features by license](https://learn.microsoft.com/en-us/entra/fundamentals/licensing#features-by-license).
+
 ## Offline test
 
 ```sh

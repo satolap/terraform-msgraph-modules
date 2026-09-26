@@ -1,6 +1,6 @@
 locals {
   app_roles_body = [
-    for r in var.app_roles : {
+    for r in coalesce(var.app_roles, []) : {
       id                 = r.id
       displayName        = r.display_name
       description        = r.description
@@ -17,11 +17,11 @@ locals {
     },
     var.description != null ? { description = var.description } : {},
     var.notes != null ? { notes = var.notes } : {},
-    length(var.tags) > 0 ? { tags = var.tags } : {},
-    length(var.app_roles) > 0 ? { appRoles = local.app_roles_body } : {},
-    length(var.web_redirect_uris) > 0 ? { web = { redirectUris = var.web_redirect_uris } } : {},
-    length(var.spa_redirect_uris) > 0 ? { spa = { redirectUris = var.spa_redirect_uris } } : {},
-    length(var.public_client_redirect_uris) > 0 ? { publicClient = { redirectUris = var.public_client_redirect_uris } } : {},
+    var.tags != null ? { tags = var.tags } : {},
+    var.app_roles != null ? { appRoles = local.app_roles_body } : {},
+    var.web_redirect_uris != null ? { web = { redirectUris = var.web_redirect_uris } } : {},
+    var.spa_redirect_uris != null ? { spa = { redirectUris = var.spa_redirect_uris } } : {},
+    var.public_client_redirect_uris != null ? { publicClient = { redirectUris = var.public_client_redirect_uris } } : {},
   )
 }
 

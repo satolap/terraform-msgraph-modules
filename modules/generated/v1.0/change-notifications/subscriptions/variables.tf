@@ -1,7 +1,25 @@
 variable "change_type" {
   description = "Required. Indicates the type of change in the subscribed resource that raises a change notification. The supported values are: created, updated, deleted. Multiple values can be combined using a comma-separated list. Note:  Drive root item and list change notifications support only the updated changeType. User and group change notifications support updated and deleted changeType. Use updated to receive notifications when user or group is created, updated, or soft deleted. Use deleted to receive notifications when user or group is permanently deleted."
   type        = string
-  default     = null
+  nullable    = false
+}
+
+variable "expiration_date_time" {
+  description = "Required. Specifies the date and time when the webhook subscription expires. The time is in UTC, and can be an amount of time from subscription creation that varies for the resource subscribed to. Any value under 45 minutes after the time of the request is automatically set to 45 minutes after the request time. For the maximum supported subscription length of time, see Subscription lifetime."
+  type        = string
+  nullable    = false
+}
+
+variable "notification_url" {
+  description = "Required. The URL of the endpoint that receives the change notifications. This URL must make use of the HTTPS protocol. Any query string parameter included in the notificationUrl property is included in the HTTP POST request when Microsoft Graph sends the change notifications."
+  type        = string
+  nullable    = false
+}
+
+variable "resource" {
+  description = "Required. Specifies the resource that is monitored for changes. Don't include the base URL (https://graph.microsoft.com/v1.0/). See the possible resource path values for each supported resource."
+  type        = string
+  nullable    = false
 }
 
 variable "client_state" {
@@ -18,12 +36,6 @@ variable "encryption_certificate" {
 
 variable "encryption_certificate_id" {
   description = "Optional. A custom app-provided identifier to help identify the certificate needed to decrypt resource data."
-  type        = string
-  default     = null
-}
-
-variable "expiration_date_time" {
-  description = "Required. Specifies the date and time when the webhook subscription expires. The time is in UTC, and can be an amount of time from subscription creation that varies for the resource subscribed to. Any value under 45 minutes after the time of the request is automatically set to 45 minutes after the request time. For the maximum supported subscription length of time, see Subscription lifetime."
   type        = string
   default     = null
 }
@@ -52,12 +64,6 @@ variable "notification_query_options" {
   default     = null
 }
 
-variable "notification_url" {
-  description = "Required. The URL of the endpoint that receives the change notifications. This URL must make use of the HTTPS protocol. Any query string parameter included in the notificationUrl property is included in the HTTP POST request when Microsoft Graph sends the change notifications."
-  type        = string
-  default     = null
-}
-
 variable "notification_url_app_id" {
   description = "Optional. The app ID that the subscription service can use to generate the validation token. The value allows the client to validate the authenticity of the notification received."
   type        = string
@@ -69,12 +75,6 @@ variable "odata_type" {
   type        = string
   default     = "#microsoft.graph.subscription"
   nullable    = false
-}
-
-variable "resource" {
-  description = "Required. Specifies the resource that is monitored for changes. Don't include the base URL (https://graph.microsoft.com/v1.0/). See the possible resource path values for each supported resource."
-  type        = string
-  default     = null
 }
 
 variable "additional_properties" {

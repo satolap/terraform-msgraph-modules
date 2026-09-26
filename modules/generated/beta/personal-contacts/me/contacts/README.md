@@ -91,6 +91,10 @@ Generation notes:
 - tertiaryEmailAddress: polymorphic schema; accepts an untyped value
 - websites[].type: polymorphic schema; accepts an untyped value
 
+## Licensing and prerequisites
+
+License requirements for this endpoint have not been reviewed. Check the Microsoft Graph documentation and Microsoft Entra licensing for the feature this resource belongs to before relying on the module; a successful API call does not establish entitlement.
+
 ## Offline test
 
 ```sh

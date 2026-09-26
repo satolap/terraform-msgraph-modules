@@ -13,6 +13,10 @@ Lifecycle: `POST /subscriptions`, `GET/PATCH/DELETE /subscriptions/{subscription
 ```hcl
 module "graph_resource" {
   source = "./change-notifications/subscriptions"
+  change_type = "example"
+  expiration_date_time = "2026-01-01T00:00:00Z"
+  notification_url = "example"
+  resource = "example"
 }
 ```
 
@@ -22,20 +26,20 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `change_type` | `changeType` | `string` | no | no |
+| `change_type` | `changeType` | `string` | yes | no |
+| `expiration_date_time` | `expirationDateTime` | `string` | yes | no |
+| `notification_url` | `notificationUrl` | `string` | yes | no |
+| `resource` | `resource` | `string` | yes | no |
 | `client_state` | `clientState` | `string` | no | no |
 | `encryption_certificate` | `encryptionCertificate` | `string` | no | no |
 | `encryption_certificate_id` | `encryptionCertificateId` | `string` | no | no |
-| `expiration_date_time` | `expirationDateTime` | `string` | no | no |
 | `include_resource_data` | `includeResourceData` | `bool` | no | no |
 | `latest_supported_tls_version` | `latestSupportedTlsVersion` | `string` | no | no |
 | `lifecycle_notification_url` | `lifecycleNotificationUrl` | `string` | no | no |
 | `notification_content_type` | `notificationContentType` | `string` | no | no |
 | `notification_query_options` | `notificationQueryOptions` | `string` | no | no |
-| `notification_url` | `notificationUrl` | `string` | no | no |
 | `notification_url_app_id` | `notificationUrlAppId` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `resource` | `resource` | `string` | no | no |
 | `vapid_public_key` | `vapidPublicKey` | `string` | no | no |
 | `web_push_encryption_p256dh_public_key` | `webPushEncryptionP256dhPublicKey` | `string` | no | no |
 | `web_push_encryption_secret` | `webPushEncryptionSecret` | `string` | no | yes |
@@ -56,6 +60,12 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- Reviewed create-required correction: changeType, expirationDateTime, notificationUrl, resource.
+- Subscriptions expire and must be renewed before expirationDateTime; the module manages the object, not its renewal or notification delivery.
+
+## Licensing and prerequisites
+
+License requirements for this endpoint have not been reviewed. Check the Microsoft Graph documentation and Microsoft Entra licensing for the feature this resource belongs to before relying on the module; a successful API call does not establish entitlement.
 
 ## Offline test
 

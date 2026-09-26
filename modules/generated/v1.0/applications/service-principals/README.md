@@ -97,6 +97,12 @@ Generation notes:
 - synchronization: polymorphic schema; accepts an untyped value
 - verifiedPublisher: polymorphic schema; accepts an untyped value
 
+## Licensing and prerequisites
+
+Baseline rules reviewed on 2026-09-18 for the equivalent curated module `curated/service-principals` (confidence: inferred). Input-dependent rules were not re-verified against this module's inputs.
+
+- **DIRECTORY-BASIC**: The reviewed create APIs for users, assigned security groups, applications and service principals specify no additional premium license. This covers the object operation only; features built on these objects can require licenses. No additional license specified. Coverage: No per-user entitlement for the object operation itself. Assignment: direct; capacity: per_tenant. Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-users?view=graph-rest-1.0), [Create group](https://learn.microsoft.com/en-us/graph/api/group-post-groups?view=graph-rest-1.0), [Create application](https://learn.microsoft.com/en-us/graph/api/application-post-applications?view=graph-rest-1.0), [Create servicePrincipal](https://learn.microsoft.com/en-us/graph/api/serviceprincipal-post-serviceprincipals?view=graph-rest-1.0).
+
 ## Offline test
 
 ```sh

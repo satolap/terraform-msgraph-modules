@@ -1,6 +1,6 @@
 # Microsoft Graph beta module catalog
 
-**2480 generated modules**, organized by the [Microsoft Graph API reference](https://github.com/microsoftgraph/microsoft-graph-docs-contrib/blob/4ad99fd37a9e2e8538275a0a9cdff7907052f3ec/api-reference/beta/toc.yml).
+**2479 generated modules**, organized by the [Microsoft Graph API reference](https://github.com/microsoftgraph/microsoft-graph-docs-contrib/blob/4ad99fd37a9e2e8538275a0a9cdff7907052f3ec/api-reference/beta/toc.yml).
 
 Only collections with documented POST and item GET, PATCH/PUT, and DELETE operations are generated. Counts describe this supported CRUD subset; they do not imply coverage of every API in a category. Categories with no generated module are retained for browsing.
 
@@ -41,7 +41,7 @@ beta/
 ├── search/  # 3 modules
 ├── security/  # 137 modules
 ├── sites-and-lists/  # 184 modules
-├── tasks-and-plans/  # 107 modules
+├── tasks-and-plans/  # 106 modules
 ├── teamwork-and-communications/  # 332 modules
 ├── tenants/  # 29 modules
 ├── to-do-tasks/  # 20 modules
@@ -103,7 +103,7 @@ beta/
 | [Search](search/README.md) | 3 | [Documentation](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-beta&preserve-view=true) |
 | [Security](security/README.md) | 137 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/security-api-overview?view=graph-rest-beta&preserve-view=true) |
 | [Sites and lists](sites-and-lists/README.md) | 184 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/sharepoint?view=graph-rest-beta&preserve-view=true) |
-| [Tasks and plans](tasks-and-plans/README.md) | 107 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/planner-overview?view=graph-rest-beta&preserve-view=true) |
+| [Tasks and plans](tasks-and-plans/README.md) | 106 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/planner-overview?view=graph-rest-beta&preserve-view=true) |
 | [Teamwork and communications](teamwork-and-communications/README.md) | 332 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview?view=graph-rest-beta&preserve-view=true) |
 | [Tenants](tenants/README.md) | 29 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/tenants-overview?view=graph-rest-beta&preserve-view=true) |
 | [To-do tasks](to-do-tasks/README.md) | 20 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/todo-overview?view=graph-rest-beta&preserve-view=true) |
@@ -113,3 +113,7 @@ beta/
 Each endpoint has one physical module. Resource types and service routes resolve documentation cross-listings; parent paths such as `/users` do not turn mail or calendar modules into user modules. Uncategorized is a generator fallback, not an official Microsoft category.
 
 Open a category, then an endpoint README for inputs, permissions guidance, import notes, and credential-free tests. Exact Graph URLs remain in every module and in [manifest.json](manifest.json).
+
+License requirements are reviewed for 5 of 2479 modules; every other module carries an explicit unknown licensing record in its README and manifest entry.
+
+3123 candidate collections are not generated; each exclusion and its reason is recorded under `exclusions` in [manifest.json](manifest.json). A request wrapper is never presented as management of the object it creates.

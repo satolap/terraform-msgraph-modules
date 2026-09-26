@@ -43,7 +43,12 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- Excluded by conditional read-only prose: description, displayName, isEnabled, resourceScopes, rolePermissions, templateId, version. Add a reviewed contract if the property is writable for your account type.
 - Microsoft Graph beta contracts can change without notice.
+
+## Licensing and prerequisites
+
+License requirements for this endpoint have not been reviewed. Check the Microsoft Graph documentation and Microsoft Entra licensing for the feature this resource belongs to before relying on the module; a successful API call does not establish entitlement.
 
 ## Offline test
 

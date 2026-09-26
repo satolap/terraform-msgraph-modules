@@ -49,6 +49,22 @@ Terraform state still contains the password; protect the state backend and acces
 `additional_properties` accepts mixed value types but cannot override explicit inputs such
 as `passwordProfile` or `accountEnabled`. Set the corresponding module variable instead.
 
+<!-- licensing:begin -->
+## Licensing and prerequisites
+
+Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
+
+| Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
+| --- | --- | --- | --- | --- | --- |
+| Always | DIRECTORY-BASIC | The reviewed create APIs for users, assigned security groups, applications and service principals specify no additional premium license. This covers the object operation only; features built on these objects can require licenses. No additional license specified. | No per-user entitlement for the object operation itself | direct / per_tenant | documented |
+
+Notes:
+
+- Creating a directory user does not provision a mailbox or license the user for premium features. License the fixture for the scenario in which it participates and verify service readiness separately.
+
+Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-users?view=graph-rest-1.0), [Create group](https://learn.microsoft.com/en-us/graph/api/group-post-groups?view=graph-rest-1.0), [Create application](https://learn.microsoft.com/en-us/graph/api/application-post-applications?view=graph-rest-1.0), [Create servicePrincipal](https://learn.microsoft.com/en-us/graph/api/serviceprincipal-post-serviceprincipals?view=graph-rest-1.0).
+<!-- licensing:end -->
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |

@@ -2,19 +2,19 @@
 locals {
   typed_body = { for key, value in {
     "changeType"                       = var.change_type
+    "expirationDateTime"               = var.expiration_date_time
+    "notificationUrl"                  = var.notification_url
+    "resource"                         = var.resource
     "clientState"                      = var.client_state
     "encryptionCertificate"            = var.encryption_certificate
     "encryptionCertificateId"          = var.encryption_certificate_id
-    "expirationDateTime"               = var.expiration_date_time
     "includeResourceData"              = var.include_resource_data
     "latestSupportedTlsVersion"        = var.latest_supported_tls_version
     "lifecycleNotificationUrl"         = var.lifecycle_notification_url
     "notificationContentType"          = var.notification_content_type
     "notificationQueryOptions"         = var.notification_query_options
-    "notificationUrl"                  = var.notification_url
     "notificationUrlAppId"             = var.notification_url_app_id
     "@odata.type"                      = var.odata_type
-    "resource"                         = var.resource
     "vapidPublicKey"                   = var.vapid_public_key
     "webPushEncryptionP256dhPublicKey" = var.web_push_encryption_p256dh_public_key
     "webPushEncryptionSecret"          = var.web_push_encryption_secret

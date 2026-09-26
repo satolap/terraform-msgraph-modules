@@ -48,6 +48,25 @@ module "project_group" {
 Requires the `Group.ReadWrite.All` Microsoft Graph permission (or `Directory.ReadWrite.All`).
 Setting `is_assignable_to_role = true` additionally requires `RoleManagement.ReadWrite.Directory`.
 
+<!-- licensing:begin -->
+## Licensing and prerequisites
+
+Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
+
+| Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
+| --- | --- | --- | --- | --- | --- |
+| Always | DIRECTORY-BASIC | The reviewed create APIs for users, assigned security groups, applications and service principals specify no additional premium license. This covers the object operation only; features built on these objects can require licenses. No additional license specified. | No per-user entitlement for the object operation itself | direct / per_tenant | documented |
+| `group_types` contains `"DynamicMembership"` | GROUP-DYNAMIC | Dynamic user membership requires Microsoft Entra ID P1 or Intune for Education coverage in the tenant for each unique user who is a member of one or more dynamic groups. Licenses do not have to be assigned directly to those users. Device-only dynamic membership has no per-device license requirement. Any of: Microsoft Entra ID P1 (`AAD_PREMIUM`); Intune for Education (`INTUNE_EDU`). | Each unique user who is a member of any dynamic group | group_based / per_tenant | documented |
+| `is_assignable_to_role` is `true` | GROUP-ROLE | Role-assignable groups require Microsoft Entra ID P1. Just-in-time activation of the roles assigned to the group adds Privileged Identity Management licensing requirements. Any of: Microsoft Entra ID P1 (`AAD_PREMIUM`). | Tenant-wide feature; review Privileged Identity Management coverage separately for activation scenarios | group_based / per_tenant | documented |
+
+Notes:
+
+- A dynamic membership rule and a role-assignable group are separate licensed features, not interchangeable variants of the same test.
+- When `group_types` contains `"Unified"`: Microsoft 365 group workloads (mailbox, site, Teams) require their own service and license review.
+
+Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-users?view=graph-rest-1.0), [Create group](https://learn.microsoft.com/en-us/graph/api/group-post-groups?view=graph-rest-1.0), [Create application](https://learn.microsoft.com/en-us/graph/api/application-post-applications?view=graph-rest-1.0), [Create servicePrincipal](https://learn.microsoft.com/en-us/graph/api/serviceprincipal-post-serviceprincipals?view=graph-rest-1.0), [Dynamic membership license requirements](https://learn.microsoft.com/en-us/entra/identity/users/groups-dynamic-membership#license-requirements), [Role-assignable groups license requirements](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/groups-concept#license-requirements).
+<!-- licensing:end -->
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |

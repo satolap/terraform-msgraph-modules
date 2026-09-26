@@ -33,9 +33,9 @@ variable "notes" {
 }
 
 variable "tags" {
-  description = "Custom strings used to categorize the service principal. Setting [\"WindowsAzureActiveDirectoryIntegratedApp\"] makes the app visible as an enterprise application."
+  description = "Custom strings used to categorize the service principal. Null omits tags; [] sends an explicit empty collection. Setting [\"WindowsAzureActiveDirectoryIntegratedApp\"] makes the app visible as an enterprise application."
   type        = list(string)
-  default     = []
+  default     = null
 }
 
 variable "login_url" {

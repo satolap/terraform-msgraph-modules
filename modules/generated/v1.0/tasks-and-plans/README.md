@@ -2,7 +2,7 @@
 
 [All categories](../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/planner-overview?view=graph-rest-1.0&preserve-view=true)
 
-Microsoft Graph **v1.0** · **19 generated modules**.
+Microsoft Graph **v1.0** · **18 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -16,7 +16,6 @@ Microsoft Graph **v1.0** · **19 generated modules**.
 | [`/me/planner/plans/{plannerPlan-id}/tasks`](me/planner/plans/by-planner-plan-id/tasks/README.md) | `microsoft.graph.plannerTask` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true) |
 | [`/me/planner/tasks`](me/planner/tasks/README.md) | `microsoft.graph.plannerTask` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true) |
 | [`/planner/buckets/{plannerBucket-id}/tasks`](planner/buckets/by-planner-bucket-id/tasks/README.md) | `microsoft.graph.plannerTask` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true) |
-| [`/planner/plans`](planner/plans/README.md) | `microsoft.graph.plannerPlan` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/plannerplan?view=graph-rest-1.0&preserve-view=true) |
 | [`/planner/plans/{plannerPlan-id}/buckets`](planner/plans/by-planner-plan-id/buckets/README.md) | `microsoft.graph.plannerBucket` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/plannerbucket?view=graph-rest-1.0&preserve-view=true) |
 | [`/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks`](planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks/README.md) | `microsoft.graph.plannerTask` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true) |
 | [`/planner/plans/{plannerPlan-id}/tasks`](planner/plans/by-planner-plan-id/tasks/README.md) | `microsoft.graph.plannerTask` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true) |

@@ -39,7 +39,7 @@ run "creates_service_principal_with_defaults" {
 
   assert {
     condition     = !contains(keys(msgraph_resource.service_principal.body), "tags")
-    error_message = "tags must be omitted when empty."
+    error_message = "tags must be omitted when unspecified."
   }
 
   assert {
@@ -91,4 +91,26 @@ run "rejects_invalid_sso_mode" {
   }
 
   expect_failures = [var.preferred_single_sign_on_mode]
+}
+
+run "explicit_empty_tags_are_a_clear_request" {
+  command = plan
+  variables {
+    tags = []
+  }
+  assert {
+    condition     = try(jsonencode(msgraph_resource.service_principal.body.tags) == "[]", false)
+    error_message = "Explicit empty tags must remain in the service-principal body."
+  }
+}
+
+run "null_tags_are_omitted" {
+  command = plan
+  variables {
+    tags = null
+  }
+  assert {
+    condition     = !contains(keys(msgraph_resource.service_principal.body), "tags")
+    error_message = "Null tags must omit the property."
+  }
 }

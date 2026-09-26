@@ -1,4 +1,4 @@
-# Integration-test helper: provisions the catalog and access package an
+# Integration-test helper: provisions an isolated test population, catalog and access package an
 # assignment policy needs, with a random suffix so runs against the shared
 # test tenant don't collide.
 terraform {
@@ -20,6 +20,54 @@ resource "random_string" "suffix" {
   upper   = false
   numeric = true
   special = false
+}
+
+variable "verified_domain" {
+  type        = string
+  description = "Verified domain of the commissioned disposable tenant."
+}
+
+variable "initial_user_password" {
+  type        = string
+  sensitive   = true
+  description = "Ephemeral password supplied through TF_VAR_initial_user_password."
+}
+
+module "requestor" {
+  source = "../../../../../../users"
+
+  user_principal_name = "tftest-pol-requestor-${random_string.suffix.result}@${var.verified_domain}"
+  display_name        = "tftest-policy-requestor-${random_string.suffix.result}"
+  mail_nickname       = "tftest-pol-requestor-${random_string.suffix.result}"
+  password            = var.initial_user_password
+  usage_location      = "US"
+}
+
+module "approver" {
+  source = "../../../../../../users"
+
+  user_principal_name = "tftest-pol-approver-${random_string.suffix.result}@${var.verified_domain}"
+  display_name        = "tftest-policy-approver-${random_string.suffix.result}"
+  mail_nickname       = "tftest-pol-approver-${random_string.suffix.result}"
+  password            = var.initial_user_password
+  usage_location      = "US"
+}
+
+module "test_population" {
+  source = "../../../../../../groups"
+
+  display_name     = "tftest-policy-population-${random_string.suffix.result}"
+  mail_nickname    = "tftest-pol-population-${random_string.suffix.result}"
+  security_enabled = true
+  member_ids       = [module.requestor.id]
+}
+
+output "test_population_id" {
+  value = module.test_population.id
+}
+
+output "approver_id" {
+  value = module.approver.id
 }
 
 module "catalog" {

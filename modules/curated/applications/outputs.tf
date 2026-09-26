@@ -15,5 +15,5 @@ output "display_name" {
 
 output "app_role_ids" {
   description = "Map of app role `value` to its `id` (GUID), for use as role_origin_id in the access-packages/resource-role-scopes module."
-  value       = { for r in var.app_roles : r.value => r.id }
+  value       = { for r in coalesce(var.app_roles, []) : r.value => r.id }
 }

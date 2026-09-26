@@ -49,13 +49,11 @@ run "creates_application_with_defaults" {
   }
 
   assert {
-    condition     = !contains(keys(msgraph_resource.application.body), "appRoles")
-    error_message = "appRoles must be omitted when none are defined."
-  }
-
-  assert {
-    condition     = !contains(keys(msgraph_resource.application.body), "web")
-    error_message = "web platform must be omitted when no redirect URIs are given."
+    condition = alltrue([
+      for key in ["tags", "appRoles", "web", "spa", "publicClient"] :
+      !contains(keys(msgraph_resource.application.body), key)
+    ])
+    error_message = "Unspecified collections must all be omitted, preserving default request behavior."
   }
 
   assert {
@@ -148,4 +146,74 @@ run "rejects_invalid_sign_in_audience" {
   }
 
   expect_failures = [var.sign_in_audience]
+}
+
+run "explicit_empty_collections_are_clear_requests" {
+  command = plan
+  variables {
+    tags                        = []
+    app_roles                   = []
+    web_redirect_uris           = []
+    spa_redirect_uris           = []
+    public_client_redirect_uris = []
+  }
+  assert {
+    condition = alltrue([
+      try(jsonencode(msgraph_resource.application.body.tags) == "[]", false),
+      try(jsonencode(msgraph_resource.application.body.appRoles) == "[]", false),
+      try(jsonencode(msgraph_resource.application.body.web.redirectUris) == "[]", false),
+      try(jsonencode(msgraph_resource.application.body.spa.redirectUris) == "[]", false),
+      try(jsonencode(msgraph_resource.application.body.publicClient.redirectUris) == "[]", false),
+    ])
+    error_message = "Explicit empty collections must remain in the request body."
+  }
+}
+
+run "null_collections_are_omitted" {
+  command = plan
+  variables {
+    tags                        = null
+    app_roles                   = null
+    web_redirect_uris           = null
+    spa_redirect_uris           = null
+    public_client_redirect_uris = null
+  }
+  assert {
+    condition = alltrue([
+      for key in ["tags", "appRoles", "web", "spa", "publicClient"] :
+      !contains(keys(msgraph_resource.application.body), key)
+    ])
+    error_message = "Null inputs must omit optional collections, including their platform objects."
+  }
+  assert {
+    condition     = length(output.app_role_ids) == 0
+    error_message = "Omitted app roles must produce an empty role ID map."
+  }
+}
+
+run "populated_collections_and_disabled_roles_are_preserved" {
+  command = plan
+  variables {
+    tags                        = ["curated-test"]
+    web_redirect_uris           = ["https://example.org/web"]
+    spa_redirect_uris           = ["https://example.org/spa"]
+    public_client_redirect_uris = ["https://example.org/native"]
+    app_roles = [{
+      id           = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab"
+      display_name = "Retiring role"
+      description  = "Disable before removing in a separate apply"
+      value        = "RetiringRole"
+      is_enabled   = false
+    }]
+  }
+  assert {
+    condition = (
+      msgraph_resource.application.body.tags[0] == "curated-test" &&
+      msgraph_resource.application.body.web.redirectUris[0] == "https://example.org/web" &&
+      msgraph_resource.application.body.spa.redirectUris[0] == "https://example.org/spa" &&
+      msgraph_resource.application.body.publicClient.redirectUris[0] == "https://example.org/native" &&
+      msgraph_resource.application.body.appRoles[0].isEnabled == false
+    )
+    error_message = "Populated values and the explicit role-disabling stage must be retained."
+  }
 }

@@ -2,7 +2,7 @@
 
 [All categories](../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/planner-overview?view=graph-rest-beta&preserve-view=true)
 
-Microsoft Graph **beta** · **107 generated modules**.
+Microsoft Graph **beta** · **106 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -40,7 +40,6 @@ Microsoft Graph **beta** · **107 generated modules**.
 | [`/planner/buckets/{plannerBucket-id}/tasks`](planner/buckets/by-planner-bucket-id/tasks/README.md) | `microsoft.graph.plannerTask` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-beta&preserve-view=true) |
 | [`/planner/buckets/{plannerBucket-id}/tasks/{plannerTask-id}/messages`](planner/buckets/by-planner-bucket-id/tasks/by-planner-task-id/messages/README.md) | `microsoft.graph.plannerTaskChatMessage` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/plannertaskchatmessage?view=graph-rest-beta&preserve-view=true) |
 | [`/planner/goals`](planner/goals/README.md) | `microsoft.graph.plannerGoal` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/plannergoal?view=graph-rest-beta&preserve-view=true) |
-| [`/planner/plans`](planner/plans/README.md) | `microsoft.graph.plannerPlan` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/plannerplan?view=graph-rest-beta&preserve-view=true) |
 | [`/planner/plans/{plannerPlan-id}/buckets`](planner/plans/by-planner-plan-id/buckets/README.md) | `microsoft.graph.plannerBucket` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/plannerbucket?view=graph-rest-beta&preserve-view=true) |
 | [`/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks`](planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks/README.md) | `microsoft.graph.plannerTask` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-beta&preserve-view=true) |
 | [`/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/{plannerTask-id}/messages`](planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks/by-planner-task-id/messages/README.md) | `microsoft.graph.plannerTaskChatMessage` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/plannertaskchatmessage?view=graph-rest-beta&preserve-view=true) |

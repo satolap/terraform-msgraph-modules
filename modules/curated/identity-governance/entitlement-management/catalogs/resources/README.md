@@ -76,6 +76,23 @@ Permissions needed (application or delegated, in addition to
 | AadApplication | Ownership of, or a directory role permitting modification of, the application |
 | SharePointOnline | `Sites.FullControl.All` |
 
+<!-- licensing:begin -->
+## Licensing and prerequisites
+
+Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
+
+| Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
+| --- | --- | --- | --- | --- | --- |
+| Always | EM-CORE | Catalogs, access packages with group, application and SharePoint resources, standard approval stages, requestor questions and expiration are included in Microsoft Entra ID P2, Microsoft Entra ID Governance and Microsoft Entra Suite. Evaluate the exact feature combination; not every accepted policy option is core. Any of: Microsoft Entra ID P2 (`AAD_PREMIUM_P2`); Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). | Every user who can request or receive an access package assignment, including everyone covered by an all-member policy scope; guest scenarios can involve billing | direct / per_user | documented |
+| `resource_origin_system` is `"SharePointOnline"` | SHAREPOINT | Internal users who access a SharePoint Online site need an assigned license that includes SharePoint Online. Entitlement management licensing does not supply the workload entitlement, and the site must already exist. All of: SharePoint Online (any plan) (`SHAREPOINTENTERPRISE`). | Internal users who will access the site | direct / per_user | documented |
+
+Notes:
+
+- Agent, API-permission or other advanced resource types need a separate reviewed rule; the module's acceptance of an origin system does not establish support.
+
+Sources: [Entitlement management license requirements](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-overview#license-requirements), [Microsoft Entra features by license](https://learn.microsoft.com/en-us/entra/fundamentals/licensing#features-by-license), [SharePoint Online service description](https://learn.microsoft.com/en-us/office365/servicedescriptions/sharepoint-online-service-description/sharepoint-online-service-description).
+<!-- licensing:end -->
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |

@@ -57,6 +57,12 @@ variable "birthday" {
   default     = null
 }
 
+variable "business_phones" {
+  description = "The telephone numbers for the user. NOTE: Although it's a string collection, only one number can be set for this property. Read-only for users synced from the on-premises directory. Returned by default. Supports $filter (eq, not, ge, le, startsWith). This property is subject to sensitive action restrictions; only specific privileged administrator roles can update it."
+  type        = list(string)
+  default     = null
+}
+
 variable "chats" {
   description = "Microsoft Graph chats property."
   type = list(object({
@@ -810,6 +816,12 @@ variable "managed_devices" {
   sensitive = true
 }
 
+variable "mobile_phone" {
+  description = "The primary cellular telephone number for the user. Read-only for users synced from the on-premises directory. Maximum length is 64 characters. Returned by default. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values) and $search. This property is subject to sensitive action restrictions; only specific privileged administrator roles can update it."
+  type        = string
+  default     = null
+}
+
 variable "my_site" {
   description = "The URL for the user's site. Requires $select to retrieve."
   type        = string
@@ -839,6 +851,12 @@ variable "odata_type" {
 variable "office_location" {
   description = "The office location in the user's place of business. Returned by default. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values)."
   type        = string
+  default     = null
+}
+
+variable "on_premises_extension_attributes" {
+  description = "Contains extensionAttributes1-15 for the user. These extension attributes are also known as Exchange custom attributes 1-15. Each attribute can store up to 1024 characters. For an onPremisesSyncEnabled user, the source of authority for this set of properties is the on-premises and is read-only. For a cloud-only user (where onPremisesSyncEnabled is false), these properties can be set during the creation or update of a user object.  For a cloud-only user previously synced from on-premises Active Directory, these properties are read-only in Microsoft Graph but can be fully managed through the Exchange Admin Center or the Exchange Online V2 module in PowerShell. Requires $select to retrieve. Supports $filter (eq, ne, not, in)."
+  type        = any
   default     = null
 }
 
@@ -1116,7 +1134,7 @@ variable "additional_properties" {
   sensitive   = true
 
   validation {
-    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["activities", "adhocCalls", "agreementAcceptances", "assignedPlans", "businessPhones", "calendar", "calendarGroups", "calendarView", "calendars", "cloudPCs", "contactFolders", "contacts", "createdDateTime", "createdObjects", "creationType", "dataSecurityAndGovernance", "directReports", "drive", "drives", "events", "extensions", "id", "imAddresses", "insights", "isManagementRestricted", "legalAgeGroupClassification", "licenseAssignmentStates", "licenseDetails", "mailFolders", "manager", "memberOf", "messages", "mobilePhone", "notes", "onPremisesDistinguishedName", "onPremisesDomainName", "onPremisesExtensionAttributes", "onPremisesLastSyncDateTime", "onPremisesSamAccountName", "onPremisesSecurityIdentifier", "onPremisesSyncEnabled", "onPremisesUserPrincipalName", "ownedDevices", "ownedObjects", "people", "photo", "photos", "planner", "provisionedPlans", "proxyAddresses", "registeredDevices", "securityIdentifier", "signInActivity", "signInSessionsValidFromDateTime", "solutions", "sponsorOf", "teamwork"], key)]) : false
+    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["activities", "adhocCalls", "agreementAcceptances", "assignedPlans", "calendar", "calendarGroups", "calendarView", "calendars", "cloudPCs", "contactFolders", "contacts", "createdDateTime", "createdObjects", "creationType", "dataSecurityAndGovernance", "directReports", "drive", "drives", "events", "extensions", "id", "imAddresses", "insights", "isManagementRestricted", "legalAgeGroupClassification", "licenseAssignmentStates", "licenseDetails", "mailFolders", "manager", "memberOf", "messages", "notes", "onPremisesDistinguishedName", "onPremisesDomainName", "onPremisesLastSyncDateTime", "onPremisesSamAccountName", "onPremisesSecurityIdentifier", "onPremisesSyncEnabled", "onPremisesUserPrincipalName", "ownedDevices", "ownedObjects", "people", "photo", "photos", "planner", "provisionedPlans", "proxyAddresses", "registeredDevices", "securityIdentifier", "signInActivity", "signInSessionsValidFromDateTime", "solutions", "sponsorOf", "teamwork"], key)]) : false
     error_message = "additional_properties must be an object without documented read-only properties."
   }
 }
