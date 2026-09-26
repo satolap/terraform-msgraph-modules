@@ -107,6 +107,14 @@ module "engineering_group" {
 }
 ```
 
+Each release tag covers both generated catalogs and the curated modules. Module
+sources take these forms:
+
+```text
+git::https://github.com/benhaspalace/GraphModules.git//modules/generated/<api-version>/<category>/<collection-path>?ref=<release-tag>
+git::https://github.com/benhaspalace/GraphModules.git//modules/curated/<module-path>?ref=<release-tag>
+```
+
 Replace `<release-tag>` with a `graphmodules-*` tag from
 [Releases](https://github.com/benhaspalace/GraphModules/releases), then run
 `terraform init`. HashiCorp documents the `git::` source, `//` subdirectory, and
@@ -115,6 +123,11 @@ Replace `<release-tag>` with a `graphmodules-*` tag from
 The provider supports Azure CLI, managed identity, service principal, and OpenID
 Connect authentication; choose the method described in the
 [`microsoft/msgraph` provider documentation](https://registry.terraform.io/providers/microsoft/msgraph/latest/docs).
+
+Each release also attaches module-only v1.0, beta, and curated archives. They
+preserve the `modules/generated/...` and `modules/curated/...` paths above, and
+each includes `release-manifest.json`. Verify downloads with
+`sha256sum -c SHA256SUMS`.
 
 For evaluation and non-production use, `?ref=latest` follows new releases without
 editing each source. The `latest` branch moves only forward, to the commit of the
