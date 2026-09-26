@@ -59,3 +59,39 @@ jobs:
               output.write("\n".join(summary) + "\n")
           if failed:
               sys.exit(f"Release verification failed: {', '.join(failed)}")
+      - name: Check that the latest branch points at the GitHub Latest release
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: python {0}
+        run: |
+          import os
+          import subprocess
+          import sys
+
+          repository = os.environ["GH_REPO"]
+          tag = subprocess.check_output([
+              "gh", "api", f"repos/{repository}/releases/latest", "--jq", ".tag_name",
+          ], text=True).strip()
+          names = ["refs/heads/latest", f"refs/tags/{tag}", f"refs/tags/{tag}^{{}}"]
+          listed = subprocess.check_output(["git", "ls-remote", "origin", *names], text=True)
+          refs = {name: sha for sha, name in (line.split("\t") for line in listed.splitlines())}
+          branch = refs.get(names[0])
+          commit = refs.get(names[2]) or refs.get(names[1])  # peeled commit of an annotated tag
+          failure = None
+          if not commit:
+              failure = f"GitHub Latest release {tag} has no tag on origin"
+              summary = f"- Failed: GitHub Latest release `{tag}` has no tag on origin"
+          elif branch is None:
+              print(f"::warning::Branch latest does not exist; a release run for {tag} creates it")
+              summary = f"- Warning: branch `latest` does not exist; Latest release is `{tag}`"
+          elif branch != commit:
+              failure = f"Branch latest is at {branch}, but Latest release {tag} is at {commit}"
+              summary = f"- Failed: branch `latest` is at `{branch}`, not `{tag}` at `{commit}`"
+          else:
+              summary = f"- Verified: branch `latest` is at `{tag}` (`{commit}`)"
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as output:
+              output.write(f"## Latest branch\n\n{summary}\n")
+          if failure:
+              sys.exit(failure)

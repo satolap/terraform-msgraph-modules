@@ -116,6 +116,14 @@ The provider supports Azure CLI, managed identity, service principal, and OpenID
 Connect authentication; choose the method described in the
 [`microsoft/msgraph` provider documentation](https://registry.terraform.io/providers/microsoft/msgraph/latest/docs).
 
+For evaluation and non-production use, `?ref=latest` follows new releases without
+editing each source. The `latest` branch moves only forward, to the commit of the
+GitHub Latest release, after the release workflow has verified that release. Every
+`terraform init -upgrade` then accepts the newest release, including breaking
+interface changes, so first read the "Breaking changes and migration" section of
+each new release's notes, when present. Pin production configurations to a
+`graphmodules-*` tag or a commit SHA.
+
 ## Module sources and provenance
 
 The generated Terraform module interfaces come from public Microsoft sources:
@@ -165,7 +173,8 @@ tag is created:
    the already tested artifacts before publishing the GitHub Release.
 
 A daily scheduled workflow rebuilds every published release the same way and fails
-if its tag commit or any asset's SHA-256 digest no longer matches the GitHub Release.
+if its tag commit or any asset's SHA-256 digest no longer matches the GitHub Release,
+or if the `latest` branch points anywhere other than the GitHub Latest release.
 
 Mock tests and schema validation do not prove that a caller has the required
 Microsoft Graph permissions, license, or tenant configuration. Endpoint READMEs
