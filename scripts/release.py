@@ -84,6 +84,14 @@ def build(tag: str, directory: Path) -> tuple[str, list[Path]]:
         manifest_file = directory / "release-manifest.json"
         manifest_file.write_bytes(provenance)
         assets.append(manifest_file)
+        # Optional: releases published before this asset existed do not have it.
+        changes = checkout / ".release/interface-changes.json"
+        if changes.is_symlink():
+            raise ValueError("Publication contains a symlink")
+        if changes.is_file():
+            changes_file = directory / changes.name
+            changes_file.write_bytes(changes.read_bytes())
+            assets.append(changes_file)
         expected = (checkout / ".release/SHA256SUMS").read_bytes()
         actual = "".join(
             f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}\n" for p in sorted(assets)
