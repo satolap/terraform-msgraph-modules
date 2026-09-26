@@ -177,6 +177,26 @@ def update_latest_branch(repository: str, tag: str, sha: str) -> None:
     print(f"Branch latest {moved} {sha}")
 
 
+def update_latest_branch_or_warn(repository: str, tag: str, sha: str) -> None:
+    """Warn instead of failing the job: the release is already published at this point."""
+    try:
+        update_latest_branch(repository, tag, sha)
+    except Exception as error:
+        # Likely cause: the range changes workflow files, and GITHUB_TOKEN cannot hold the
+        # workflow permission GitHub then requires. The daily verification reports the drift.
+        message = (
+            f"Release {tag} is published, but branch latest was not moved: {error}. "
+            "An account with workflow permission can fast-forward it with "
+            f"`git push origin {sha}:refs/heads/latest`, "
+            "or re-run this workflow after the branch has been created."
+        )
+        annotation = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+        print(f"::warning::{annotation}")
+        if os.environ.get("GITHUB_STEP_SUMMARY"):
+            with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as output:
+                output.write(f"{message}\n")
+
+
 def release(repository: str, tag: str, sha: str, assets: list[Path], directory: Path) -> None:
     def gh(*args: str):
         subprocess.run(["gh", "release", *args, "--repo", repository], check=True)
@@ -200,7 +220,7 @@ def release(repository: str, tag: str, sha: str, assets: list[Path], directory: 
         raise ValueError("Remote release tag no longer identifies the validated publication")
     if existing and not existing["draft"]:
         print(f"Release already published: {existing['html_url']}")
-        update_latest_branch(repository, tag, sha)
+        update_latest_branch_or_warn(repository, tag, sha)
         return
     if existing and existing["target_commitish"] != sha:
         raise ValueError("Existing draft targets a different publication")
@@ -239,7 +259,7 @@ def release(repository: str, tag: str, sha: str, assets: list[Path], directory: 
         "--notes-file",
         notes,
     )
-    update_latest_branch(repository, tag, sha)
+    update_latest_branch_or_warn(repository, tag, sha)
 
 
 def main():

@@ -124,6 +124,12 @@ interface changes, so first read the "Breaking changes and migration" section of
 each new release's notes, when present. Pin production configurations to a
 `graphmodules-*` tag or a commit SHA.
 
+The release job cannot move the branch when the commits it would add change
+workflow files, because GitHub does not give the job's token workflow permission.
+The daily verification then reports the drift, and a maintainer fast-forwards the
+branch with `git push origin <sha>:refs/heads/latest`, where `<sha>` is the commit
+of the Latest release.
+
 ## Module sources and provenance
 
 The generated Terraform module interfaces come from public Microsoft sources:
