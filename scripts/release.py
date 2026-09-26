@@ -92,6 +92,8 @@ def build(tag: str, directory: Path) -> tuple[str, list[Path]]:
             changes_file = directory / changes.name
             changes_file.write_bytes(changes.read_bytes())
             assets.append(changes_file)
+        elif changes.exists():
+            raise ValueError("Publication .release/interface-changes.json is not a regular file")
         expected = (checkout / ".release/SHA256SUMS").read_bytes()
         actual = "".join(
             f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}\n" for p in sorted(assets)

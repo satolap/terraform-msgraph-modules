@@ -263,6 +263,13 @@ class BuildTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Publication contains a symlink"):
             self.build()
 
+    def test_rejects_interface_changes_that_is_not_a_regular_file(self):
+        self.commit(changes=None, listed=None)
+        (self.source / ".release/interface-changes.json").mkdir()
+        (self.source / ".release/interface-changes.json/nested").write_text("{}\n")
+        with self.assertRaisesRegex(ValueError, "is not a regular file"):
+            self.build()
+
     def test_verify_assets_requires_the_published_interface_changes(self):
         self.commit(changes=CHANGES, listed=CHANGES)
         sha, assets = self.build()
