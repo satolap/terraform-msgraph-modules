@@ -20,7 +20,10 @@ concurrency:
 
 jobs:
   release:
-    if: github.ref == 'refs/heads/main'
+    # Only the release publisher App can start a release by pushing a publication.
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'workflow_dispatch' || github.actor == 'graphmodules-release-publisher[bot]')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:

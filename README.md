@@ -139,10 +139,11 @@ or apply.
 
 ## Testing and release integrity
 
-GitHub Actions run only on `main`. An update to the publication manifest on
-`main` starts release verification using the tag recorded in that commit.
-Existing tags can also be verified or released by manually dispatching the
-release workflow on `main`. Tag pushes and pull requests do not start workflows.
+GitHub Actions run only on `main`. An update to the publication manifest pushed
+to `main` by the release publisher App starts release verification using the tag
+recorded in that commit. Existing tags can also be verified or released by
+manually dispatching the release workflow on `main`. Tag pushes and pull requests
+do not start workflows.
 
 Every published catalog passes the following automated checks before its release
 tag is created:
@@ -162,6 +163,9 @@ tag is created:
 5. The GraphModules release workflow rebuilds the v1.0, beta, and curated archives
    from the tagged commit and requires their byte-level SHA-256 checksums to match
    the already tested artifacts before publishing the GitHub Release.
+
+A daily scheduled workflow rebuilds every published release the same way and fails
+if its tag commit or any asset's SHA-256 digest no longer matches the GitHub Release.
 
 Mock tests and schema validation do not prove that a caller has the required
 Microsoft Graph permissions, license, or tenant configuration. Endpoint READMEs
