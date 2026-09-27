@@ -83,9 +83,13 @@ resource "terraform_data" "verification_gate" {
 
 # Removal on destroy: Graph has no DELETE for a catalog resource
 # association, only an adminRemove accessPackageResourceRequest. This uses
-# the ambient Azure CLI session (the same auth the msgraph provider itself
-# defaults to) to submit that request when the resource is destroyed.
+# the ambient Azure CLI session to submit that request when the resource is
+# destroyed. Before requesting a token it requires ARM_TENANT_ID (the tenant
+# variable the msgraph provider reads) to match `az account show`, so the
+# request cannot go to another tenant. curl reads the Authorization header
+# from a config on stdin, so the token never appears in a process argv.
 # Values are passed as environment variables, never interpolated into shell code.
+# Keep `triggers` unchanged: a change replaces this resource and runs the cleanup.
 resource "null_resource" "remove_on_destroy" {
   count = var.enable_destroy_cleanup ? 1 : 0
 
@@ -113,12 +117,17 @@ resource "null_resource" "remove_on_destroy" {
     }
     command = <<-EOT
       set -euo pipefail
+      set +ax
       test -n "$GRAPH_RESOURCE_ID" || { echo "ERROR: no catalog resource ID was captured; reconcile the catalog before destroying." >&2; exit 1; }
+      expected_tenant=$(printf '%s' "$${ARM_TENANT_ID:-}" | tr '[:upper:]' '[:lower:]')
+      test -n "$expected_tenant" || { echo "ERROR: ARM_TENANT_ID is not set. Set it to the tenant ID the msgraph provider uses; destroy cleanup refuses to guess the tenant." >&2; exit 1; }
+      cli_tenant=$(az account show --query tenantId -o tsv | tr '[:upper:]' '[:lower:]')
+      test "$cli_tenant" = "$expected_tenant" || { echo "ERROR: the Azure CLI tenant ($cli_tenant) does not match ARM_TENANT_ID ($expected_tenant). Run 'az login --tenant $expected_tenant' or correct ARM_TENANT_ID, then retry destroy." >&2; exit 1; }
+      unset TOKEN
       TOKEN=$(az account get-access-token --resource https://graph.microsoft.com --query accessToken -o tsv)
-      test -n "$TOKEN"
-      curl --fail-with-body --silent --show-error --connect-timeout 30 --max-time 120 \
+      case "$TOKEN" in "" | *[!A-Za-z0-9._~+/=-]*) echo "ERROR: the Azure CLI returned no usable Microsoft Graph access token." >&2; exit 1 ;; esac
+      printf 'header = "Authorization: Bearer %s"\n' "$TOKEN" | curl --config - --fail-with-body --silent --show-error --connect-timeout 30 --max-time 120 \
         -X POST "https://graph.microsoft.com/$GRAPH_API_VERSION/identityGovernance/entitlementManagement/resourceRequests" \
-        -H "Authorization: Bearer $TOKEN" \
         -H "Content-Type: application/json" \
         --data "$GRAPH_REMOVE_BODY" >/dev/null
       echo "Submitted adminRemove for resource $GRAPH_RESOURCE_ID in catalog $GRAPH_CATALOG_ID. Delivery is asynchronous; verify removal in Graph."

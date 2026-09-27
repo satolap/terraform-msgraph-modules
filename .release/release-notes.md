@@ -1,12 +1,12 @@
 Microsoft Graph modules for v1.0 and beta, plus curated modules.
 
-- Generator commit: `45c7fe8dd8bc12b1b5cb2f61da2533041eb61f78`
+- Generator commit: `c1e982f2a57107dccb8b007525c4ca4ed6f017b4`
 - Microsoft Graph metadata commit: `b8cbef92f6959dca8150bf3edcc650863765e529`
 - Tested provider `hashicorp/null`: `3.3.2`
 - Tested provider `hashicorp/random`: `3.9.1`
 - Tested provider `hashicorp/time`: `0.14.2`
 - Tested provider `microsoft/msgraph`: `0.5.0`
-- Input fingerprint: `e7a8ce8ca695596df2c6e28823194d463b707b971761dc4e50de92cdc3386876`
+- Input fingerprint: `eaf6e735b3bd00cc8ddcc4ef7522f19f43a347416c78714e212913105f6b7daf`
 
 Evidence coverage (all generated modules are in the denominator):
 
@@ -23,12 +23,12 @@ Example using this release's exact tag:
 
 ```hcl
 module "application" {
-  source       = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/applications/applications?ref=graphmodules-e7a8ce8ca695596df2c6"
+  source       = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/applications/applications?ref=graphmodules-eaf6e735b3bd00cc8ddc"
   display_name = "Example application"
 }
 
 module "curated_group" {
-  source           = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/groups?ref=graphmodules-e7a8ce8ca695596df2c6"
+  source           = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/groups?ref=graphmodules-eaf6e735b3bd00cc8ddc"
   display_name     = "Example group"
   mail_nickname    = "example-group"
   security_enabled = true
