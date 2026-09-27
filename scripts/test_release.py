@@ -5,6 +5,7 @@ import hashlib
 import io
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -21,6 +22,22 @@ NEWER_TAG = "graphmodules-4002ec490efccb9d7832"
 OLDER_SHA = "f7648218ee56488fe7a18f646a48404bd153464f"
 REPOSITORY = "owner/name"
 FORBIDDEN = "gh: Resource not accessible by integration (HTTP 403)\n"
+CHANGES = b'{\n  "schema_version": 1\n}\n'
+CATALOGS = {
+    "v1.0": "modules/generated/v1.0",
+    "beta": "modules/generated/beta",
+    "curated": "modules/curated",
+}
+ASSETS = [
+    "graphmodules-v1.0-modules.tar.gz",
+    "graphmodules-beta-modules.tar.gz",
+    "graphmodules-curated-modules.tar.gz",
+    "release-manifest.json",
+]
+
+
+def digest(content: bytes) -> str:
+    return hashlib.sha256(content).hexdigest()
 
 
 class FakeGitHub:
@@ -140,6 +157,148 @@ class VerifyAssetsTest(unittest.TestCase):
         del self.published["assets"][1]["digest"]
         with self.assertRaisesRegex(ValueError, "rebuild: SHA256SUMS$"):
             self.verify()
+
+
+class BuildTest(unittest.TestCase):
+    """Runs build() on a minimal publication; git worktree add copies that tree."""
+
+    def setUp(self):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        self.source = Path(directory.name) / "source"
+        self.output = Path(directory.name) / "output"
+        self.output.mkdir()
+        inputs = {"generator": {"commit": OLDER_SHA}}
+        fingerprint = digest(json.dumps(inputs, sort_keys=True, separators=(",", ":")).encode())
+        self.tag = f"graphmodules-{fingerprint[:20]}"
+        self.provenance = json.dumps(
+            {**inputs, "tag": self.tag, "fingerprint": fingerprint}
+        ).encode()
+        notices = {"LICENSE": b"license\n", "NOTICE": b"notice\n"}
+        files = {
+            **notices,
+            "modules/generated/release-manifest.json": self.provenance,
+            ".release/release-notes.md": b"Notes.\n",
+        }
+        # SHA256SUMS as the publisher writes it for the archives of this tree.
+        self.sums = {"release-manifest.json": digest(self.provenance)}
+        for api, prefix in CATALOGS.items():
+            module = {f"{prefix}/example/main.tf": b"# module\n"}
+            files.update(module)
+            archive = Path(directory.name) / f"graphmodules-{api}-modules.tar.gz"
+            release.archive(
+                archive, {**module, **notices, "release-manifest.json": self.provenance}
+            )
+            self.sums[archive.name] = digest(archive.read_bytes())
+        for name, content in files.items():
+            (self.source / name).parent.mkdir(parents=True, exist_ok=True)
+            (self.source / name).write_bytes(content)
+
+    def git(self, *args: str) -> str:
+        if args[0] == "rev-parse":
+            return SHA
+        if args[0] == "merge-base":
+            return ""
+        if args[:2] == ("worktree", "add"):
+            shutil.copytree(self.source, args[3], symlinks=True)
+            return ""
+        if args[:2] == ("worktree", "remove"):
+            shutil.rmtree(args[2])
+            return ""
+        raise AssertionError(f"Unexpected git command: {args}")
+
+    def commit(self, changes: bytes | None, listed: bytes | None) -> bytes:
+        """Commit interface-changes.json with `changes`, and a SHA256SUMS that lists `listed`."""
+        sums = dict(self.sums)
+        if listed is not None:
+            sums["interface-changes.json"] = digest(listed)
+        checksums = "".join(f"{h}  {n}\n" for n, h in sorted(sums.items())).encode()
+        (self.source / ".release/SHA256SUMS").write_bytes(checksums)
+        if changes is not None:
+            (self.source / ".release/interface-changes.json").write_bytes(changes)
+        return checksums
+
+    def build(self) -> tuple[str, list[Path]]:
+        with mock.patch.object(release, "git", side_effect=self.git):
+            return release.build(self.tag, self.output)
+
+    def test_publication_without_interface_changes_is_unchanged(self):
+        checksums = self.commit(changes=None, listed=None)
+        sha, assets = self.build()
+        self.assertEqual(sha, SHA)
+        self.assertEqual([p.name for p in assets], [*ASSETS, "SHA256SUMS"])
+        self.assertEqual((self.output / "SHA256SUMS").read_bytes(), checksums)
+        self.assertFalse((self.output / "interface-changes.json").exists())
+
+    def test_publishes_committed_interface_changes(self):
+        checksums = self.commit(changes=CHANGES, listed=CHANGES)
+        _, assets = self.build()
+        self.assertEqual(
+            [p.name for p in assets], [*ASSETS, "interface-changes.json", "SHA256SUMS"]
+        )
+        self.assertEqual((self.output / "interface-changes.json").read_bytes(), CHANGES)
+        self.assertEqual((self.output / "SHA256SUMS").read_bytes(), checksums)
+        self.assertIn(f"{digest(CHANGES)}  interface-changes.json\n", checksums.decode())
+
+    def test_rejects_changed_interface_changes(self):
+        self.commit(changes=CHANGES.replace(b"1", b"2"), listed=CHANGES)
+        with self.assertRaisesRegex(ValueError, "do not reproduce the tested SHA256SUMS"):
+            self.build()
+
+    def test_rejects_interface_changes_missing_from_sha256sums(self):
+        self.commit(changes=CHANGES, listed=None)
+        with self.assertRaisesRegex(ValueError, "do not reproduce the tested SHA256SUMS"):
+            self.build()
+
+    def test_rejects_listed_interface_changes_missing_from_the_publication(self):
+        self.commit(changes=None, listed=CHANGES)
+        with self.assertRaisesRegex(ValueError, "do not reproduce the tested SHA256SUMS"):
+            self.build()
+
+    def test_rejects_symlinked_interface_changes(self):
+        # SHA256SUMS lists the link target's bytes, so only the symlink check refuses it.
+        self.commit(changes=None, listed=self.provenance)
+        link = self.source / ".release/interface-changes.json"
+        link.symlink_to("../modules/generated/release-manifest.json")
+        with self.assertRaisesRegex(ValueError, "Publication contains a symlink"):
+            self.build()
+
+    def test_rejects_interface_changes_that_is_not_a_regular_file(self):
+        self.commit(changes=None, listed=None)
+        (self.source / ".release/interface-changes.json").mkdir()
+        (self.source / ".release/interface-changes.json/nested").write_text("{}\n")
+        with self.assertRaisesRegex(ValueError, "is not a regular file"):
+            self.build()
+
+    def test_verify_assets_requires_the_published_interface_changes(self):
+        self.commit(changes=CHANGES, listed=CHANGES)
+        sha, assets = self.build()
+        published = {
+            "target_commitish": sha,
+            "assets": [
+                {"name": p.name, "digest": f"sha256:{digest(p.read_bytes())}"} for p in assets
+            ],
+        }
+        with mock.patch.object(release, "request_json", return_value=published):
+            release.verify_assets(REPOSITORY, self.tag, sha, assets)
+            published["assets"] = [
+                a for a in published["assets"] if a["name"] != "interface-changes.json"
+            ]
+            with self.assertRaisesRegex(ValueError, "rebuild: interface-changes.json$"):
+                release.verify_assets(REPOSITORY, self.tag, sha, assets)
+
+    def test_draft_release_uploads_interface_changes(self):
+        self.commit(changes=CHANGES, listed=CHANGES)
+        sha, assets = self.build()
+        github = FakeGitHub()
+        # GET releases/tags/<tag> is 404 here; release() finds the draft in the release list.
+        github.release = {"tag_name": self.tag, "draft": True, "target_commitish": sha}
+        with github.serve():
+            release.release(REPOSITORY, self.tag, sha, assets, self.output)
+        uploads = [c for c in github.commands if c[:3] == ["gh", "release", "upload"]]
+        self.assertEqual(len(uploads), 1)
+        self.assertIn(str(self.output / "interface-changes.json"), uploads[0])
+        self.assertIn("--clobber", uploads[0])
 
 
 class MainTest(unittest.TestCase):

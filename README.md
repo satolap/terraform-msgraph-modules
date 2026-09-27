@@ -195,7 +195,13 @@ contains:
 - `graphmodules-beta-modules.tar.gz`
 - `graphmodules-curated-modules.tar.gz`
 - `release-manifest.json`
+- `interface-changes.json`
 - `SHA256SUMS`
+
+`interface-changes.json` lists the exact interface changes that each release
+decision accepted, while the release notes summarize them with counts per kind.
+Verify it with the other downloads using `sha256sum -c SHA256SUMS`; releases
+published before this asset was introduced do not have it.
 
 ## Public documentation
 
