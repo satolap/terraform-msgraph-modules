@@ -43,3 +43,26 @@ run "invalid_enum" {
 
   expect_failures = [var.branding_options]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    branding_options = "none, IncludeCompanyLogo"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["brandingOptions"] == "none, IncludeCompanyLogo"
+    error_message = "brandingOptions must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    branding_options = "none,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.branding_options]
+}

@@ -41,9 +41,14 @@ variable "evaluations" {
     executionCount       = optional(number)
     isCancelled          = optional(bool)
     lastModifiedDateTime = optional(string)
-    result               = optional(any)
-    runStartDateTime     = optional(string)
-    state                = optional(string)
+    result = optional(object({
+      odata_type   = optional(string, "#microsoft.graph.security.securityCopilot.evaluationResult")
+      content      = optional(string)
+      previewState = optional(string)
+      type         = optional(string)
+    }))
+    runStartDateTime = optional(string)
+    state            = optional(string)
   }))
   default = null
 }

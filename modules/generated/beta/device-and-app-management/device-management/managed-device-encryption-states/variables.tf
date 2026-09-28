@@ -1,11 +1,11 @@
 variable "advanced_bit_locker_states" {
   description = "Advanced BitLocker State. Possible values are: success, noUserConsent, osVolumeUnprotected, osVolumeTpmRequired, osVolumeTpmOnlyRequired, osVolumeTpmPinRequired, osVolumeTpmStartupKeyRequired, osVolumeTpmPinStartupKeyRequired, osVolumeEncryptionMethodMismatch, recoveryKeyBackupFailed, fixedDriveNotEncrypted, fixedDriveEncryptionMethodMismatch, loggedOnUserNonAdmin, windowsRecoveryEnvironmentNotConfigured, tpmNotAvailable, tpmNotReady, networkError."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.advanced_bit_locker_states == null ? true : contains(["success", "noUserConsent", "osVolumeUnprotected", "osVolumeTpmRequired", "osVolumeTpmOnlyRequired", "osVolumeTpmPinRequired", "osVolumeTpmStartupKeyRequired", "osVolumeTpmPinStartupKeyRequired", "osVolumeEncryptionMethodMismatch", "recoveryKeyBackupFailed", "fixedDriveNotEncrypted", "fixedDriveEncryptionMethodMismatch", "loggedOnUserNonAdmin", "windowsRecoveryEnvironmentNotConfigured", "tpmNotAvailable", "tpmNotReady", "networkError"], var.advanced_bit_locker_states)
-    error_message = "advanced_bit_locker_states must be one of the documented enum values."
+    condition     = var.advanced_bit_locker_states == null ? true : try(alltrue([for value in split(",", var.advanced_bit_locker_states) : contains(["success", "nouserconsent", "osvolumeunprotected", "osvolumetpmrequired", "osvolumetpmonlyrequired", "osvolumetpmpinrequired", "osvolumetpmstartupkeyrequired", "osvolumetpmpinstartupkeyrequired", "osvolumeencryptionmethodmismatch", "recoverykeybackupfailed", "fixeddrivenotencrypted", "fixeddriveencryptionmethodmismatch", "loggedonusernonadmin", "windowsrecoveryenvironmentnotconfigured", "tpmnotavailable", "tpmnotready", "networkerror"], lower(trimspace(value)))]), false)
+    error_message = "advanced_bit_locker_states must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -27,7 +27,7 @@ variable "device_type" {
 }
 
 variable "encryption_policy_setting_state" {
-  description = "Microsoft Graph encryptionPolicySettingState property."
+  description = "Encryption policy setting state"
   type        = string
   default     = null
 
@@ -61,12 +61,12 @@ variable "encryption_state" {
 
 variable "file_vault_states" {
   description = "FileVault State. Possible values are: success, driveEncryptedByUser, userDeferredEncryption, escrowNotEnabled."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.file_vault_states == null ? true : contains(["success", "driveEncryptedByUser", "userDeferredEncryption", "escrowNotEnabled"], var.file_vault_states)
-    error_message = "file_vault_states must be one of the documented enum values."
+    condition     = var.file_vault_states == null ? true : try(alltrue([for value in split(",", var.file_vault_states) : contains(["success", "driveencryptedbyuser", "userdeferredencryption", "escrownotenabled"], lower(trimspace(value)))]), false)
+    error_message = "file_vault_states must be one or more of the documented enum values, separated by commas."
   }
 }
 

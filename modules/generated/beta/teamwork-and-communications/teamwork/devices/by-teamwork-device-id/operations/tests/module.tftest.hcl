@@ -25,11 +25,17 @@ run "typed_request" {
   variables {
     teamwork_device_id  = "test-parent-id"
     completed_date_time = "2026-01-01T00:00:00Z"
+    error               = { "code" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["completedDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
     error_message = "completedDateTime must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["error"]) == jsonencode({ "@odata.type" = "#microsoft.graph.operationError" })
+    error_message = "error must preserve typed values and omit nested nulls."
   }
 }
 

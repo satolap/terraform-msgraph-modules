@@ -24,13 +24,13 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `user_id` | URL parameter `user-id` | `string` | yes | no |
-| `allowed_audiences` | `allowedAudiences` | `any` | no | no |
+| `allowed_audiences` | `allowedAudiences` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `graph_source` | `source` | `any` | no | no |
-| `inference` | `inference` | `any` | no | no |
+| `graph_source` | `source` | `object({       odata_type = optional(string, "#microsoft.graph.personDataSources")       type = optional(list(string))     })` | no | no |
+| `inference` | `inference` | `object({       odata_type = optional(string, "#microsoft.graph.inferenceData")       confidenceScore = optional(any)       userHasVerifiedAccuracy = optional(bool)     })` | no | no |
 | `is_searchable` | `isSearchable` | `bool` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
@@ -57,11 +57,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- allowedAudiences: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- inference: polymorphic schema; accepts an untyped value
+- inference.confidenceScore: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- source: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

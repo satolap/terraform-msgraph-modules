@@ -12,8 +12,12 @@ variable "finish_date" {
 
 variable "notes" {
   description = "Nullable. The notes associated with the goal."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.itemBody")
+    content     = optional(string)
+    contentType = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {

@@ -23,19 +23,25 @@ run "typed_request" {
   command = plan
 
   variables {
-    case_id             = "test-parent-id"
-    completed_date_time = "2026-01-01T00:00:00Z"
-    percent_progress    = -2147483648
+    case_id          = "test-parent-id"
+    action           = "contentExport"
+    percent_progress = -2147483648
+    result_info      = { "code" = null }
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["completedDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
-    error_message = "completedDateTime must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["action"]) == jsonencode("contentExport")
+    error_message = "action must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["percentProgress"]) == jsonencode(-2147483648)
     error_message = "percentProgress must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["resultInfo"]) == jsonencode({ "@odata.type" = "#microsoft.graph.resultInfo" })
+    error_message = "resultInfo must preserve typed values and omit nested nulls."
   }
 }
 

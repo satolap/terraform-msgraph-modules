@@ -24,12 +24,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `user_id` | URL parameter `user-id` | `string` | yes | no |
-| `decisions` | `decisions` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItem")       applyDescription = optional(string)       decision = optional(string)       insights = optional(list(object({       odata_type = optional(string, "#microsoft.graph.governanceInsight")       insightCreatedDateTime = optional(string)     })))       instance = optional(any)       justification = optional(string)       permission = optional(any)     }))` | no | no |
+| `decisions` | `decisions` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItem")       applyDescription = optional(string)       decision = optional(string)       insights = optional(any)       instance = optional(any)       justification = optional(string)       permission = optional(object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItemPermission")       description = optional(string)       displayName = optional(string)       id = optional(string)       type = optional(string)     }))     }))` | no | no |
 | `definition` | `definition` | `any` | no | no |
 | `fallback_reviewers` | `fallbackReviewers` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")       query = optional(string)       queryRoot = optional(string)       queryType = optional(string)       reviewerId = optional(string)       scopeType = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `reviewers` | `reviewers` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")       query = optional(string)       queryRoot = optional(string)       queryType = optional(string)       reviewerId = optional(string)       scopeType = optional(string)     }))` | no | no |
-| `stages` | `stages` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewStage")       decisions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItem")       applyDescription = optional(string)       decision = optional(string)       insights = optional(any)       instance = optional(any)       justification = optional(string)       permission = optional(any)     })))       fallbackReviewers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")       query = optional(string)       queryRoot = optional(string)       queryType = optional(string)       reviewerId = optional(string)       scopeType = optional(string)     })))       reviewers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")       query = optional(string)       queryRoot = optional(string)       queryType = optional(string)       reviewerId = optional(string)       scopeType = optional(string)     })))     }))` | no | no |
+| `stages` | `stages` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewStage")       decisions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItem")       applyDescription = optional(string)       decision = optional(string)       insights = optional(any)       instance = optional(any)       justification = optional(string)       permission = optional(object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItemPermission")       description = optional(string)       displayName = optional(string)       id = optional(string)       type = optional(string)     }))     })))       fallbackReviewers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")       query = optional(string)       queryRoot = optional(string)       queryType = optional(string)       reviewerId = optional(string)       scopeType = optional(string)     })))       reviewers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")       query = optional(string)       queryRoot = optional(string)       queryType = optional(string)       reviewerId = optional(string)       scopeType = optional(string)     })))     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -47,12 +47,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- decisions[].instance: polymorphic schema; accepts an untyped value
-- decisions[].permission: polymorphic schema; accepts an untyped value
-- definition: polymorphic schema; accepts an untyped value
+- decisions[].insights[]: polymorphic schema; accepts an untyped value
+- decisions[].instance: navigation property; accepts an untyped value
+- definition: navigation property; accepts an untyped value
 - stages[].decisions[].insights[]: nested schema exceeds depth limit; accepts an untyped value
-- stages[].decisions[].instance: polymorphic schema; accepts an untyped value
-- stages[].decisions[].permission: polymorphic schema; accepts an untyped value
+- stages[].decisions[].instance: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

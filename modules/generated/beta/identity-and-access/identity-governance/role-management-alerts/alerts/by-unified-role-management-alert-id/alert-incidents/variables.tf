@@ -12,8 +12,12 @@ variable "unified_role_management_alert_id" {
 variable "odata_type" {
   description = "Microsoft Graph @odata.type property."
   type        = string
-  default     = "#microsoft.graph.unifiedRoleManagementAlertIncident"
   nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.invalidLicenseAlertIncident", "#microsoft.graph.noMfaOnRoleActivationAlertIncident", "#microsoft.graph.redundantAssignmentAlertIncident", "#microsoft.graph.rolesAssignedOutsidePrivilegedIdentityManagementAlertIncident", "#microsoft.graph.sequentialActivationRenewalsAlertIncident", "#microsoft.graph.staleSignInAlertIncident", "#microsoft.graph.tooManyGlobalAdminsAssignedToTenantAlertIncident"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
 }
 
 variable "additional_properties" {

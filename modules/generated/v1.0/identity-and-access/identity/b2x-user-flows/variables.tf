@@ -1,7 +1,11 @@
 variable "api_connector_configuration" {
   description = "Configuration for enabling an API connector for use as part of the self-service sign-up user flow. You can only obtain the value of this object using Get userFlowApiConnectorConfiguration."
-  type        = any
-  default     = null
+  type = object({
+    odata_type              = optional(string, "#microsoft.graph.userFlowApiConnectorConfiguration")
+    postAttributeCollection = optional(any)
+    postFederationSignup    = optional(any)
+  })
+  default = null
 }
 
 variable "identity_providers" {
@@ -60,11 +64,8 @@ variable "user_attribute_assignments" {
 
 variable "user_flow_identity_providers" {
   description = "Microsoft Graph userFlowIdentityProviders property."
-  type = list(object({
-    odata_type  = optional(string, "#microsoft.graph.identityProviderBase")
-    displayName = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "user_flow_type" {

@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.androidForWorkMobileAppConfiguration", "#microsoft.graph.androidManagedStoreAppConfiguration", "#microsoft.graph.iosMobileAppConfiguration"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "assignments" {
   description = "The list of group assignemenets for app configration."
   type = list(object({
@@ -57,13 +68,6 @@ variable "last_modified_date_time" {
   description = "DateTime the object was last modified."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.managedDeviceMobileAppConfiguration"
-  nullable    = false
 }
 
 variable "role_scope_tag_ids" {

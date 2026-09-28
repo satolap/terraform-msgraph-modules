@@ -13,7 +13,7 @@ locals {
     "lastModifiedDateTime"                              = var.last_modified_date_time
     "@odata.type"                                       = var.odata_type
     "roleScopeTagIds"                                   = (var.role_scope_tag_ids == null ? null : [for item0 in var.role_scope_tag_ids : item0 if item0 != null])
-    "rolloutSettings"                                   = var.rollout_settings
+    "rolloutSettings"                                   = (var.rollout_settings == null ? null : { for key0, value0 in { "@odata.type" = var.rollout_settings["odata_type"], "offerEndDateTimeInUTC" = var.rollout_settings["offerEndDateTimeInUTC"], "offerIntervalInDays" = var.rollout_settings["offerIntervalInDays"], "offerStartDateTimeInUTC" = var.rollout_settings["offerStartDateTimeInUTC"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

@@ -26,16 +26,16 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `printer_id` | URL parameter `printer-id` | `string` | yes | no |
 | `acknowledged_date_time` | `acknowledgedDateTime` | `string` | no | no |
 | `completed_date_time` | `completedDateTime` | `string` | no | no |
-| `configuration` | `configuration` | `object({       odata_type = optional(string, "#microsoft.graph.printJobConfiguration")       collate = optional(bool)       finishings = optional(any)       fitPdfToPage = optional(bool)       inputBin = optional(string)       margin = optional(any)       mediaSize = optional(string)       mediaType = optional(string)       multipageLayout = optional(any)       orientation = optional(any)       outputBin = optional(string)       pagesPerSheet = optional(number)       scaling = optional(any)     })` | no | no |
+| `configuration` | `configuration` | `object({       odata_type = optional(string, "#microsoft.graph.printJobConfiguration")       collate = optional(bool)       finishings = optional(list(string))       fitPdfToPage = optional(bool)       inputBin = optional(string)       margin = optional(object({       odata_type = optional(string, "#microsoft.graph.printMargin")       bottom = optional(number)       left = optional(number)       right = optional(number)       top = optional(number)     }))       mediaSize = optional(string)       mediaType = optional(string)       multipageLayout = optional(string)       orientation = optional(string)       outputBin = optional(string)       pagesPerSheet = optional(number)       scaling = optional(string)     })` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `documents` | `documents` | `list(object({       odata_type = optional(string, "#microsoft.graph.printDocument")       configuration = optional(object({       odata_type = optional(string, "#microsoft.graph.printerDocumentConfiguration")       collate = optional(bool)       colorMode = optional(any)       copies = optional(number)       dpi = optional(number)       duplexMode = optional(any)       feedDirection = optional(any)       feedOrientation = optional(any)       finishings = optional(any)       fitPdfToPage = optional(bool)       inputBin = optional(string)       margin = optional(any)       mediaSize = optional(string)       mediaType = optional(string)       multipageLayout = optional(any)       orientation = optional(any)       outputBin = optional(string)       pageRanges = optional(list(object({       odata_type = optional(string, "#microsoft.graph.integerRange")       end = optional(number)       maximum = optional(number)       minimum = optional(number)       start = optional(number)     })))       pagesPerSheet = optional(number)       quality = optional(any)       scaling = optional(any)     }))       downloadedDateTime = optional(string)       uploadedDateTime = optional(string)     }))` | no | no |
+| `documents` | `documents` | `list(object({       odata_type = optional(string, "#microsoft.graph.printDocument")       configuration = optional(object({       odata_type = optional(string, "#microsoft.graph.printerDocumentConfiguration")       collate = optional(bool)       colorMode = optional(string)       copies = optional(number)       dpi = optional(number)       duplexMode = optional(string)       feedDirection = optional(string)       feedOrientation = optional(string)       finishings = optional(list(string))       fitPdfToPage = optional(bool)       inputBin = optional(string)       margin = optional(object({       odata_type = optional(string, "#microsoft.graph.printMargin")       bottom = optional(number)       left = optional(number)       right = optional(number)       top = optional(number)     }))       mediaSize = optional(string)       mediaType = optional(string)       multipageLayout = optional(string)       orientation = optional(string)       outputBin = optional(string)       pageRanges = optional(list(object({       odata_type = optional(string, "#microsoft.graph.integerRange")       end = optional(number)       maximum = optional(number)       minimum = optional(number)       start = optional(number)     })))       pagesPerSheet = optional(number)       quality = optional(string)       scaling = optional(string)     }))       downloadedDateTime = optional(string)       uploadedDateTime = optional(string)     }))` | no | no |
 | `error_code` | `errorCode` | `number` | no | no |
 | `is_fetchable` | `isFetchable` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `redirected_from` | `redirectedFrom` | `string` | no | no |
 | `redirected_to` | `redirectedTo` | `string` | no | no |
-| `status` | `status` | `object({       odata_type = optional(string, "#microsoft.graph.printJobStatus")       acquiredByPrinter = optional(bool)       processingState = optional(any)       processingStateDescription = optional(string)       state = optional(string)     })` | no | no |
+| `status` | `status` | `object({       odata_type = optional(string, "#microsoft.graph.printJobStatus")       acquiredByPrinter = optional(bool)       processingState = optional(string)       processingStateDescription = optional(string)       state = optional(string)     })` | no | no |
 | `tasks` | `tasks` | `list(object({       odata_type = optional(string, "#microsoft.graph.printTask")       definition = optional(object({       odata_type = optional(string, "#microsoft.graph.printTaskDefinition")       createdBy = optional(object({       odata_type = optional(string, "#microsoft.graph.appIdentity")       appId = optional(string)       displayName = optional(string)       servicePrincipalId = optional(string)       servicePrincipalName = optional(string)     }))       displayName = optional(string)     }))       status = optional(object({       odata_type = optional(string, "#microsoft.graph.printTaskStatus")       description = optional(string)       state = optional(string)     }))       trigger = optional(object({       odata_type = optional(string, "#microsoft.graph.printTaskTrigger")       definition = optional(object({       odata_type = optional(string, "#microsoft.graph.printTaskDefinition")       createdBy = optional(object({       odata_type = optional(string, "#microsoft.graph.appIdentity")       appId = optional(string)       displayName = optional(string)       servicePrincipalId = optional(string)       servicePrincipalName = optional(string)     }))       displayName = optional(string)     }))       event = optional(string)     }))     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -54,23 +54,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- configuration.finishings[]: polymorphic schema; accepts an untyped value
-- configuration.margin: polymorphic schema; accepts an untyped value
-- configuration.multipageLayout: polymorphic schema; accepts an untyped value
-- configuration.orientation: polymorphic schema; accepts an untyped value
-- configuration.scaling: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- documents[].configuration.colorMode: polymorphic schema; accepts an untyped value
-- documents[].configuration.duplexMode: polymorphic schema; accepts an untyped value
-- documents[].configuration.feedDirection: polymorphic schema; accepts an untyped value
-- documents[].configuration.feedOrientation: polymorphic schema; accepts an untyped value
-- documents[].configuration.finishings[]: polymorphic schema; accepts an untyped value
-- documents[].configuration.margin: polymorphic schema; accepts an untyped value
-- documents[].configuration.multipageLayout: polymorphic schema; accepts an untyped value
-- documents[].configuration.orientation: polymorphic schema; accepts an untyped value
-- documents[].configuration.quality: polymorphic schema; accepts an untyped value
-- documents[].configuration.scaling: polymorphic schema; accepts an untyped value
-- status.processingState: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

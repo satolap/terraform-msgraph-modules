@@ -49,8 +49,12 @@ variable "qr_code_content" {
 
 variable "qr_code_image" {
   description = "String used to generate a QR code for the token."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.mimeContent")
+    type       = optional(string)
+    value      = optional(string)
+  })
+  default = null
 }
 
 variable "token_expiration_date_time" {

@@ -47,7 +47,7 @@ variable "device_name" {
 }
 
 variable "disk_type" {
-  description = "Microsoft Graph diskType property."
+  description = "The user experience analytics device disk type."
   type        = string
   default     = null
 
@@ -70,7 +70,7 @@ variable "group_policy_login_time_in_ms" {
 }
 
 variable "health_status" {
-  description = "Microsoft Graph healthStatus property."
+  description = "The health state of the user experience analytics device."
   type        = string
   default     = null
 

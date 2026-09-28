@@ -44,8 +44,13 @@ variable "workbook_comment_reply_id" {
 
 variable "assignee" {
   description = "The user identity the task is assigned to. Only present when the type property is assign. Nullable."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.workbookEmailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "changed_by" {

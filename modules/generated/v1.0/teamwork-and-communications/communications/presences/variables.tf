@@ -19,20 +19,41 @@ variable "odata_type" {
 
 variable "out_of_office_settings" {
   description = "The out of office settings for a user."
-  type        = any
-  default     = null
+  type = object({
+    odata_type    = optional(string, "#microsoft.graph.outOfOfficeSettings")
+    isOutOfOffice = optional(bool)
+    message       = optional(string)
+  })
+  default = null
 }
 
 variable "status_message" {
   description = "The presence status message of a user."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.presenceStatusMessage")
+    expiryDateTime = optional(object({
+      odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+      dateTime   = optional(string)
+      timeZone   = optional(string)
+    }))
+    message = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.itemBody")
+      content     = optional(string)
+      contentType = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "work_location" {
   description = "Represents the user’s aggregated work location state."
-  type        = any
-  default     = null
+  type = object({
+    odata_type       = optional(string, "#microsoft.graph.userWorkLocation")
+    placeId          = optional(string)
+    source           = optional(string)
+    workLocationType = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

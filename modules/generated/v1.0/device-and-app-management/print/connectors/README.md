@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `app_version` | `appVersion` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `fully_qualified_domain_name` | `fullyQualifiedDomainName` | `string` | no | no |
-| `location` | `location` | `any` | no | no |
+| `location` | `location` | `object({       odata_type = optional(string, "#microsoft.graph.printerLocation")       altitudeInMeters = optional(number)       building = optional(string)       city = optional(string)       countryOrRegion = optional(string)       floor = optional(string)       floorDescription = optional(string)       latitude = optional(any)       longitude = optional(any)       organization = optional(list(string))       postalCode = optional(string)       roomDescription = optional(string)       roomName = optional(string)       site = optional(string)       stateOrProvince = optional(string)       streetAddress = optional(string)       subdivision = optional(list(string))       subunit = optional(list(string))     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `operating_system` | `operatingSystem` | `string` | no | no |
 | `registered_date_time` | `registeredDateTime` | `string` | no | no |
@@ -45,7 +45,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- location: polymorphic schema; accepts an untyped value
+- location.latitude: polymorphic schema; accepts an untyped value
+- location.longitude: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -1,14 +1,7 @@
 variable "access_package_custom_workflow_extensions" {
   description = "The attributes of a logic app, which can be called at various stages of an access package request and assignment cycle."
-  type = list(object({
-    odata_type                  = optional(string, "#microsoft.graph.customCalloutExtension")
-    authenticationConfiguration = optional(any)
-    clientConfiguration         = optional(any)
-    description                 = optional(string)
-    displayName                 = optional(string)
-    endpointConfiguration       = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "access_package_resource_scopes" {
@@ -29,38 +22,8 @@ variable "access_package_resource_scopes" {
 
 variable "access_package_resources" {
   description = "Microsoft Graph accessPackageResources property."
-  type = list(object({
-    odata_type                       = optional(string, "#microsoft.graph.accessPackageResource")
-    accessPackageResourceEnvironment = optional(any)
-    attributes = optional(list(object({
-      odata_type                     = optional(string, "#microsoft.graph.accessPackageResourceAttribute")
-      attributeDestination           = optional(any)
-      attributeName                  = optional(string)
-      attributeSource                = optional(any)
-      isEditable                     = optional(bool)
-      isPersistedOnAssignmentRemoval = optional(bool)
-    })))
-    description  = optional(string)
-    displayName  = optional(string)
-    originId     = optional(string)
-    originSystem = optional(string)
-    resourceType = optional(string)
-    uploadSessions = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.customDataProvidedResourceUploadSession")
-      data         = optional(any)
-      files        = optional(any)
-      isUploadDone = optional(bool)
-      referenceId  = optional(string)
-      stats = optional(object({
-        odata_type         = optional(string, "#microsoft.graph.customDataProvidedResourceUploadStats")
-        filesUploaded      = optional(number)
-        totalBytesUploaded = optional(number)
-      }))
-      status = optional(string)
-    })))
-    url = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "catalog_status" {
@@ -80,10 +43,14 @@ variable "custom_access_package_workflow_extensions" {
   type = list(object({
     odata_type                  = optional(string, "#microsoft.graph.customAccessPackageWorkflowExtension")
     authenticationConfiguration = optional(any)
-    clientConfiguration         = optional(any)
-    description                 = optional(string)
-    displayName                 = optional(string)
-    endpointConfiguration       = optional(any)
+    clientConfiguration = optional(object({
+      odata_type            = optional(string, "#microsoft.graph.customExtensionClientConfiguration")
+      maximumRetries        = optional(number)
+      timeoutInMilliseconds = optional(number)
+    }))
+    description           = optional(string)
+    displayName           = optional(string)
+    endpointConfiguration = optional(any)
   }))
   default = null
 }

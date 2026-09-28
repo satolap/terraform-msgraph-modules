@@ -42,7 +42,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["ccRecipients"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.recipient" }])
+    condition     = jsonencode(msgraph_resource.this.body["ccRecipients"]) == jsonencode([{}])
     error_message = "ccRecipients must preserve typed values and omit nested nulls."
   }
 }

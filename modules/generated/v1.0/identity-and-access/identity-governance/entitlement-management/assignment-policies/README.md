@@ -22,21 +22,21 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `allowed_target_scope` | `allowedTargetScope` | `any` | no | no |
-| `automatic_request_settings` | `automaticRequestSettings` | `any` | no | no |
+| `allowed_target_scope` | `allowedTargetScope` | `string` | no | no |
+| `automatic_request_settings` | `automaticRequestSettings` | `object({       odata_type = optional(string, "#microsoft.graph.accessPackageAutomaticRequestSettings")       gracePeriodBeforeAccessRemoval = optional(string)       removeAccessWhenTargetLeavesAllowedTargets = optional(bool)       requestAccessForAllowedTargets = optional(bool)     })` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `custom_extension_stage_settings` | `customExtensionStageSettings` | `list(object({       odata_type = optional(string, "#microsoft.graph.customExtensionStageSetting")       customExtension = optional(any)       stage = optional(string)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `expiration` | `expiration` | `any` | no | no |
+| `expiration` | `expiration` | `object({       odata_type = optional(string, "#microsoft.graph.expirationPattern")       duration = optional(string)       endDateTime = optional(string)       type = optional(string)     })` | no | no |
 | `modified_date_time` | `modifiedDateTime` | `string` | no | no |
-| `notification_settings` | `notificationSettings` | `any` | no | no |
+| `notification_settings` | `notificationSettings` | `object({       odata_type = optional(string, "#microsoft.graph.accessPackageNotificationSettings")       isAssignmentNotificationDisabled = optional(bool)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `questions` | `questions` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageQuestion")       isAnswerEditable = optional(bool)       isRequired = optional(bool)       localizations = optional(list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageLocalizedText")       languageCode = optional(string)       text = optional(string)     })))       sequence = optional(number)       text = optional(string)     }))` | no | no |
-| `request_approval_settings` | `requestApprovalSettings` | `any` | no | no |
-| `requestor_settings` | `requestorSettings` | `any` | no | no |
-| `review_settings` | `reviewSettings` | `any` | no | no |
-| `specific_allowed_targets` | `specificAllowedTargets` | `list(object({       odata_type = optional(string, "#microsoft.graph.subjectSet")     }))` | no | no |
+| `questions` | `questions` | `any` | no | no |
+| `request_approval_settings` | `requestApprovalSettings` | `object({       odata_type = optional(string, "#microsoft.graph.accessPackageAssignmentApprovalSettings")       isApprovalRequiredForAdd = optional(bool)       isApprovalRequiredForUpdate = optional(bool)       isRequestorJustificationRequired = optional(bool)       stages = optional(list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageApprovalStage")       approverInformationVisibility = optional(string)       durationBeforeAutomaticDenial = optional(string)       durationBeforeEscalation = optional(string)       escalationApprovers = optional(any)       fallbackEscalationApprovers = optional(any)       fallbackPrimaryApprovers = optional(any)       isApproverJustificationRequired = optional(bool)       isEscalationEnabled = optional(bool)       primaryApprovers = optional(any)     })))     })` | no | no |
+| `requestor_settings` | `requestorSettings` | `object({       odata_type = optional(string, "#microsoft.graph.accessPackageAssignmentRequestorSettings")       allowCustomAssignmentSchedule = optional(bool)       enableOnBehalfRequestorsToAddAccess = optional(bool)       enableOnBehalfRequestorsToRemoveAccess = optional(bool)       enableOnBehalfRequestorsToUpdateAccess = optional(bool)       enableTargetsToSelfAddAccess = optional(bool)       enableTargetsToSelfRemoveAccess = optional(bool)       enableTargetsToSelfUpdateAccess = optional(bool)       onBehalfRequestors = optional(any)     })` | no | no |
+| `review_settings` | `reviewSettings` | `object({       odata_type = optional(string, "#microsoft.graph.accessPackageAssignmentReviewSettings")       expirationBehavior = optional(string)       fallbackReviewers = optional(any)       isEnabled = optional(bool)       isRecommendationEnabled = optional(bool)       isReviewerJustificationRequired = optional(bool)       isSelfReview = optional(bool)       primaryReviewers = optional(any)       schedule = optional(object({       odata_type = optional(string, "#microsoft.graph.entitlementManagementSchedule")       expiration = optional(object({       odata_type = optional(string, "#microsoft.graph.expirationPattern")       duration = optional(string)       endDateTime = optional(string)       type = optional(string)     }))       recurrence = optional(object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     }))       startDateTime = optional(string)     }))     })` | no | no |
+| `specific_allowed_targets` | `specificAllowedTargets` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -53,14 +53,16 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- allowedTargetScope: polymorphic schema; accepts an untyped value
-- automaticRequestSettings: polymorphic schema; accepts an untyped value
 - customExtensionStageSettings[].customExtension: polymorphic schema; accepts an untyped value
-- expiration: polymorphic schema; accepts an untyped value
-- notificationSettings: polymorphic schema; accepts an untyped value
-- requestApprovalSettings: polymorphic schema; accepts an untyped value
-- requestorSettings: polymorphic schema; accepts an untyped value
-- reviewSettings: polymorphic schema; accepts an untyped value
+- questions[]: polymorphic schema; accepts an untyped value
+- requestApprovalSettings.stages[].escalationApprovers[]: object without documented properties; accepts an untyped value
+- requestApprovalSettings.stages[].fallbackEscalationApprovers[]: object without documented properties; accepts an untyped value
+- requestApprovalSettings.stages[].fallbackPrimaryApprovers[]: object without documented properties; accepts an untyped value
+- requestApprovalSettings.stages[].primaryApprovers[]: object without documented properties; accepts an untyped value
+- requestorSettings.onBehalfRequestors[]: object without documented properties; accepts an untyped value
+- reviewSettings.fallbackReviewers[]: object without documented properties; accepts an untyped value
+- reviewSettings.primaryReviewers[]: object without documented properties; accepts an untyped value
+- specificAllowedTargets[]: object without documented properties; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -46,7 +46,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - host: polymorphic schema; accepts an untyped value
-- sslCertificate: polymorphic schema; accepts an untyped value
+- sslCertificate: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

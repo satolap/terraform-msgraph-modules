@@ -23,7 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `editions` | `editions` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.edition")       deviceFamily = optional(string)       isInService = optional(bool)       servicingPeriods = optional(list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.servicingPeriod")       name = optional(string)     })))     }))` | no | no |
-| `known_issues` | `knownIssues` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.knownIssue")       description = optional(string)       knownIssueHistories = optional(list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.knownIssueHistoryItem")       body = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.itemBody")       content = optional(string)       contentType = optional(any)     }))     })))       originatingKnowledgeBaseArticle = optional(any)       resolvedDateTime = optional(string)       resolvingKnowledgeBaseArticle = optional(any)       safeguardHoldIds = optional(list(number))       startDateTime = optional(string)       status = optional(string)       title = optional(string)       webViewUrl = optional(string)     }))` | no | no |
+| `known_issues` | `knownIssues` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.knownIssue")       description = optional(string)       knownIssueHistories = optional(list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.knownIssueHistoryItem")       body = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.itemBody")       content = optional(string)       contentType = optional(string)     }))     })))       originatingKnowledgeBaseArticle = optional(any)       resolvedDateTime = optional(string)       resolvingKnowledgeBaseArticle = optional(any)       safeguardHoldIds = optional(list(number))       startDateTime = optional(string)       status = optional(string)       title = optional(string)       webViewUrl = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `revisions` | `revisions` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.productRevision")       catalogEntry = optional(any)       knowledgeBaseArticle = optional(any)       osBuild = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.buildVersionDetails")     }))     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -43,11 +43,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- knownIssues[].knownIssueHistories[].body.contentType: polymorphic schema; accepts an untyped value
-- knownIssues[].originatingKnowledgeBaseArticle: polymorphic schema; accepts an untyped value
-- knownIssues[].resolvingKnowledgeBaseArticle: polymorphic schema; accepts an untyped value
+- knownIssues[].originatingKnowledgeBaseArticle: navigation property; accepts an untyped value
+- knownIssues[].resolvingKnowledgeBaseArticle: navigation property; accepts an untyped value
 - revisions[].catalogEntry: polymorphic schema; accepts an untyped value
-- revisions[].knowledgeBaseArticle: polymorphic schema; accepts an untyped value
+- revisions[].knowledgeBaseArticle: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

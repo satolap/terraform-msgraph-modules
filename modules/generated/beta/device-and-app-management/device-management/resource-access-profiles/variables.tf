@@ -1,14 +1,21 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.windows10XSCEPCertificateProfile", "#microsoft.graph.windows10XTrustedRootCertificate", "#microsoft.graph.windows10XVpnConfiguration", "#microsoft.graph.windows10XWifiConfiguration"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "assignments" {
   description = "The list of assignments for the device configuration profile."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.deviceManagementResourceAccessProfileAssignment")
     intent     = optional(string)
     sourceId   = optional(string)
-    target = optional(object({
-      odata_type                                 = optional(string, "#microsoft.graph.deviceAndAppManagementAssignmentTarget")
-      deviceAndAppManagementAssignmentFilterId   = optional(string)
-      deviceAndAppManagementAssignmentFilterType = optional(string)
-    }))
+    target     = optional(any)
   }))
   default = null
 }
@@ -41,13 +48,6 @@ variable "last_modified_date_time" {
   description = "DateTime profile was last modified"
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.deviceManagementResourceAccessProfileBase"
-  nullable    = false
 }
 
 variable "role_scope_tag_ids" {

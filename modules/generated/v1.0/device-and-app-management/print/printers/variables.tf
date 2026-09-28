@@ -1,7 +1,37 @@
 variable "capabilities" {
   description = "The capabilities of the printer/printerShare."
-  type        = any
-  default     = null
+  type = object({
+    odata_type    = optional(string, "#microsoft.graph.printerCapabilities")
+    bottomMargins = optional(list(number))
+    collation     = optional(bool)
+    colorModes    = optional(list(string))
+    contentTypes  = optional(list(string))
+    copiesPerJob = optional(object({
+      odata_type = optional(string, "#microsoft.graph.integerRange")
+      end        = optional(number)
+      start      = optional(number)
+    }))
+    dpis                 = optional(list(number))
+    duplexModes          = optional(list(string))
+    feedOrientations     = optional(list(string))
+    finishings           = optional(list(string))
+    inputBins            = optional(list(string))
+    isPageRangeSupported = optional(bool)
+    leftMargins          = optional(list(number))
+    mediaColors          = optional(list(string))
+    mediaSizes           = optional(list(string))
+    mediaTypes           = optional(list(string))
+    multipageLayouts     = optional(list(string))
+    orientations         = optional(list(string))
+    outputBins           = optional(list(string))
+    pagesPerSheet        = optional(list(number))
+    qualities            = optional(list(string))
+    rightMargins         = optional(list(number))
+    scalings             = optional(list(string))
+    supportsFitPdfToPage = optional(bool)
+    topMargins           = optional(list(number))
+  })
+  default = null
 }
 
 variable "connectors" {
@@ -11,17 +41,55 @@ variable "connectors" {
     appVersion               = optional(string)
     displayName              = optional(string)
     fullyQualifiedDomainName = optional(string)
-    location                 = optional(any)
-    operatingSystem          = optional(string)
-    registeredDateTime       = optional(string)
+    location = optional(object({
+      odata_type       = optional(string, "#microsoft.graph.printerLocation")
+      altitudeInMeters = optional(number)
+      building         = optional(string)
+      city             = optional(string)
+      countryOrRegion  = optional(string)
+      floor            = optional(string)
+      floorDescription = optional(string)
+      latitude         = optional(any)
+      longitude        = optional(any)
+      organization     = optional(list(string))
+      postalCode       = optional(string)
+      roomDescription  = optional(string)
+      roomName         = optional(string)
+      site             = optional(string)
+      stateOrProvince  = optional(string)
+      streetAddress    = optional(string)
+      subdivision      = optional(list(string))
+      subunit          = optional(list(string))
+    }))
+    operatingSystem    = optional(string)
+    registeredDateTime = optional(string)
   }))
   default = null
 }
 
 variable "defaults" {
   description = "The default print settings of printer/printerShare."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.printerDefaults")
+    colorMode       = optional(string)
+    contentType     = optional(string)
+    copiesPerJob    = optional(number)
+    dpi             = optional(number)
+    duplexMode      = optional(string)
+    finishings      = optional(list(string))
+    fitPdfToPage    = optional(bool)
+    inputBin        = optional(string)
+    mediaColor      = optional(string)
+    mediaSize       = optional(string)
+    mediaType       = optional(string)
+    multipageLayout = optional(string)
+    orientation     = optional(string)
+    outputBin       = optional(string)
+    pagesPerSheet   = optional(number)
+    quality         = optional(string)
+    scaling         = optional(string)
+  })
+  default = null
 }
 
 variable "display_name" {
@@ -41,21 +109,33 @@ variable "jobs" {
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.printJob")
     configuration = optional(object({
-      odata_type      = optional(string, "#microsoft.graph.printJobConfiguration")
-      collate         = optional(bool)
-      finishings      = optional(any)
-      fitPdfToPage    = optional(bool)
-      inputBin        = optional(string)
-      margin          = optional(any)
+      odata_type   = optional(string, "#microsoft.graph.printJobConfiguration")
+      collate      = optional(bool)
+      finishings   = optional(list(string))
+      fitPdfToPage = optional(bool)
+      inputBin     = optional(string)
+      margin = optional(object({
+        odata_type = optional(string, "#microsoft.graph.printMargin")
+        bottom     = optional(number)
+        left       = optional(number)
+        right      = optional(number)
+        top        = optional(number)
+      }))
       mediaSize       = optional(string)
       mediaType       = optional(string)
-      multipageLayout = optional(any)
-      orientation     = optional(any)
+      multipageLayout = optional(string)
+      orientation     = optional(string)
       outputBin       = optional(string)
       pagesPerSheet   = optional(number)
-      scaling         = optional(any)
+      scaling         = optional(string)
     }))
-    createdBy = optional(any)
+    createdBy = optional(object({
+      odata_type        = optional(string, "#microsoft.graph.userIdentity")
+      displayName       = optional(string)
+      id                = optional(string)
+      ipAddress         = optional(string)
+      userPrincipalName = optional(string)
+    }))
     documents = optional(list(object({
       odata_type = optional(string, "#microsoft.graph.printDocument")
     })))
@@ -90,8 +170,27 @@ variable "jobs" {
 
 variable "location" {
   description = "The physical and/or organizational location of the printer/printerShare."
-  type        = any
-  default     = null
+  type = object({
+    odata_type       = optional(string, "#microsoft.graph.printerLocation")
+    altitudeInMeters = optional(number)
+    building         = optional(string)
+    city             = optional(string)
+    countryOrRegion  = optional(string)
+    floor            = optional(string)
+    floorDescription = optional(string)
+    latitude         = optional(any)
+    longitude        = optional(any)
+    organization     = optional(list(string))
+    postalCode       = optional(string)
+    roomDescription  = optional(string)
+    roomName         = optional(string)
+    site             = optional(string)
+    stateOrProvince  = optional(string)
+    streetAddress    = optional(string)
+    subdivision      = optional(list(string))
+    subunit          = optional(list(string))
+  })
+  default = null
 }
 
 variable "manufacturer" {

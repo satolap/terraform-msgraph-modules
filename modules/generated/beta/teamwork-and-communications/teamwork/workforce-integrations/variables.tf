@@ -18,19 +18,24 @@ variable "display_name" {
 
 variable "eligibility_filtering_enabled_entities" {
   description = "Microsoft Graph eligibilityFilteringEnabledEntities property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.eligibility_filtering_enabled_entities == null ? true : contains(["none", "swapRequest", "offerShiftRequest", "unknownFutureValue", "timeOffReason"], var.eligibility_filtering_enabled_entities)
-    error_message = "eligibility_filtering_enabled_entities must be one of the documented enum values."
+    condition     = var.eligibility_filtering_enabled_entities == null ? true : try(alltrue([for value in split(",", var.eligibility_filtering_enabled_entities) : contains(["none", "swaprequest", "offershiftrequest", "unknownfuturevalue", "timeoffreason"], lower(trimspace(value)))]), false)
+    error_message = "eligibility_filtering_enabled_entities must be one or more of the documented enum values, separated by commas."
   }
 }
 
 variable "encryption" {
   description = "The workforce integration encryption resource."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.workforceIntegrationEncryption")
+    protocol   = optional(string)
+    secret     = optional(string)
+  })
+  default   = null
+  sensitive = true
 }
 
 variable "is_active" {
@@ -48,23 +53,23 @@ variable "odata_type" {
 
 variable "supported_entities" {
   description = "This property has replaced supports in v1.0. We recommend that you use this property instead of supports. The supports property is still supported in beta for the time being. The possible values are: none, shift, swapRequest, openshift, openShiftRequest, userShiftPreferences, offerShiftRequest, unknownFutureValue, timeCard, timeOffReason, timeOff, timeOffRequest. Use the Prefer: include-unknown-enum-members request header to get the following values in this evolvable enum: timeCard, timeOffReason, timeOff, timeOffRequest. If selecting more than one value, all values must start with the first letter in uppercase."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.supported_entities == null ? true : contains(["none", "shift", "swapRequest", "userShiftPreferences", "openShift", "openShiftRequest", "offerShiftRequest", "unknownFutureValue", "timeCard", "timeOffReason", "timeOff", "timeOffRequest"], var.supported_entities)
-    error_message = "supported_entities must be one of the documented enum values."
+    condition     = var.supported_entities == null ? true : try(alltrue([for value in split(",", var.supported_entities) : contains(["none", "shift", "swaprequest", "usershiftpreferences", "openshift", "openshiftrequest", "offershiftrequest", "unknownfuturevalue", "timecard", "timeoffreason", "timeoff", "timeoffrequest"], lower(trimspace(value)))]), false)
+    error_message = "supported_entities must be one or more of the documented enum values, separated by commas."
   }
 }
 
 variable "supports" {
   description = "The Shifts entities supported for synchronous change notifications. Shifts make a callback to the url provided on client changes on those entities added here. By default, no entities are supported for change notifications. The possible values are: none, shift, swapRequest, openshift, openShiftRequest, userShiftPreferences, offerShiftRequest, unknownFutureValue, timeCard, timeOffReason, timeOff, timeOffRequest. Use the Prefer: include-unknown-enum-members request header to get the following values in this evolvable enum: timeCard, timeOffReason, timeOff, timeOffRequest. If selecting more than one value, all values must start with the first letter in uppercase."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.supports == null ? true : contains(["none", "shift", "swapRequest", "userShiftPreferences", "openShift", "openShiftRequest", "offerShiftRequest", "unknownFutureValue", "timeCard", "timeOffReason", "timeOff", "timeOffRequest"], var.supports)
-    error_message = "supports must be one of the documented enum values."
+    condition     = var.supports == null ? true : try(alltrue([for value in split(",", var.supports) : contains(["none", "shift", "swaprequest", "usershiftpreferences", "openshift", "openshiftrequest", "offershiftrequest", "unknownfuturevalue", "timecard", "timeoffreason", "timeoff", "timeoffrequest"], lower(trimspace(value)))]), false)
+    error_message = "supports must be one or more of the documented enum values, separated by commas."
   }
 }
 

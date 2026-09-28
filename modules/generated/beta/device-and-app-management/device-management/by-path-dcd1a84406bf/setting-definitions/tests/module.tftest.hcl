@@ -42,7 +42,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["constraints"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.deviceManagementConstraint" }])
+    condition     = jsonencode(msgraph_resource.this.body["constraints"]) == jsonencode([{}])
     error_message = "constraints must preserve typed values and omit nested nulls."
   }
 }

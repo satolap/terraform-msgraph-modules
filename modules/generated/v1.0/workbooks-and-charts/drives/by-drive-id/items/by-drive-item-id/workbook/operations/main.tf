@@ -1,7 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "error"            = var.error
+    "error"            = (var.error == null ? null : { for key0, value0 in { "@odata.type" = var.error["odata_type"], "code" = var.error["code"], "innerError" = var.error["innerError"], "message" = var.error["message"] } : key0 => value0 if value0 != null })
     "@odata.type"      = var.odata_type
     "resourceLocation" = var.resource_location
     "status"           = var.status

@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `allowed_actions` | `allowedActions` | `any` | no | no |
+| `allowed_actions` | `allowedActions` | `object({       odata_type = optional(string, "#microsoft.graph.delegateAllowedActions")       joinActiveCalls = optional(bool)       makeCalls = optional(bool)       manageCallAndDelegateSettings = optional(bool)       pickUpHeldCalls = optional(bool)       receiveCalls = optional(bool)     })` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `is_active` | `isActive` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -43,7 +43,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- allowedActions: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

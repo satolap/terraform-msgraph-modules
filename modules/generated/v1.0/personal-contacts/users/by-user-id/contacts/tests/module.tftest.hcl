@@ -23,14 +23,20 @@ run "typed_request" {
   command = plan
 
   variables {
-    user_id         = "test-parent-id"
-    assistant_name  = "example"
-    business_phones = ["example"]
+    user_id          = "test-parent-id"
+    assistant_name   = "example"
+    business_address = { "city" = null }
+    business_phones  = ["example"]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["assistantName"]) == jsonencode("example")
     error_message = "assistantName must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["businessAddress"]) == jsonencode({ "@odata.type" = "#microsoft.graph.physicalAddress" })
+    error_message = "businessAddress must preserve typed values and omit nested nulls."
   }
 
   assert {

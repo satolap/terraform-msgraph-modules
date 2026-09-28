@@ -9,6 +9,17 @@ variable "policy_set_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.deviceCompliancePolicyPolicySetItem", "#microsoft.graph.deviceConfigurationPolicySetItem", "#microsoft.graph.deviceManagementConfigurationPolicyPolicySetItem", "#microsoft.graph.deviceManagementScriptPolicySetItem", "#microsoft.graph.enrollmentRestrictionsConfigurationPolicySetItem", "#microsoft.graph.iosLobAppProvisioningConfigurationPolicySetItem", "#microsoft.graph.managedAppProtectionPolicySetItem", "#microsoft.graph.managedDeviceMobileAppConfigurationPolicySetItem", "#microsoft.graph.mdmWindowsInformationProtectionPolicyPolicySetItem", "#microsoft.graph.mobileAppPolicySetItem", "#microsoft.graph.targetedManagedAppConfigurationPolicySetItem", "#microsoft.graph.windows10EnrollmentCompletionPageConfigurationPolicySetItem", "#microsoft.graph.windowsAutopilotDeploymentProfilePolicySetItem"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "created_date_time" {
   description = "Creation time of the PolicySetItem."
   type        = string
@@ -22,7 +33,7 @@ variable "display_name" {
 }
 
 variable "error_code" {
-  description = "Microsoft Graph errorCode property."
+  description = "Error code if any occured."
   type        = string
   default     = null
 
@@ -48,13 +59,6 @@ variable "last_modified_date_time" {
   description = "Last modified time of the PolicySetItem."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.policySetItem"
-  nullable    = false
 }
 
 variable "payload_id" {

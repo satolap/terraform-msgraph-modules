@@ -28,7 +28,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `capability_status` | `capabilityStatus` | `string` | no | no |
 | `consumed_units` | `consumedUnits` | `number` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `prepaid_units` | `prepaidUnits` | `any` | no | no |
+| `prepaid_units` | `prepaidUnits` | `object({       odata_type = optional(string, "#microsoft.graph.licenseUnitsDetail")       enabled = optional(number)       lockedOut = optional(number)       suspended = optional(number)       warning = optional(number)     })` | no | no |
 | `service_plans` | `servicePlans` | `list(object({       odata_type = optional(string, "#microsoft.graph.servicePlanInfo")       appliesTo = optional(string)       provisioningStatus = optional(string)       servicePlanId = optional(string)       servicePlanName = optional(string)     }))` | no | no |
 | `sku_id` | `skuId` | `string` | no | no |
 | `sku_part_number` | `skuPartNumber` | `string` | no | no |
@@ -50,7 +50,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- prepaidUnits: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

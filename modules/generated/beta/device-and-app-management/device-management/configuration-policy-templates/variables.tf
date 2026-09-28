@@ -58,43 +58,17 @@ variable "platforms" {
   default     = null
 
   validation {
-    condition     = var.platforms == null ? true : contains(["none", "android", "iOS", "macOS", "windows10X", "windows10", "linux", "unknownFutureValue", "androidEnterprise", "aosp", "visionOS", "tvOS"], var.platforms)
-    error_message = "platforms must be one of the documented enum values."
+    condition     = var.platforms == null ? true : try(alltrue([for value in split(",", var.platforms) : contains(["none", "android", "ios", "macos", "windows10x", "windows10", "linux", "unknownfuturevalue", "androidenterprise", "aosp", "visionos", "tvos"], lower(trimspace(value)))]), false)
+    error_message = "platforms must be one or more of the documented enum values, separated by commas."
   }
 }
 
 variable "setting_templates" {
   description = "Setting templates"
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingTemplate")
-    settingDefinitions = optional(list(object({
-      odata_type                     = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingDefinition")
-      accessTypes                    = optional(string)
-      applicability                  = optional(any)
-      baseUri                        = optional(string)
-      categoryId                     = optional(string)
-      description                    = optional(string)
-      displayName                    = optional(string)
-      helpText                       = optional(string)
-      infoUrls                       = optional(list(string))
-      keywords                       = optional(list(string))
-      name                           = optional(string)
-      occurrence                     = optional(any)
-      offsetUri                      = optional(string)
-      referredSettingInformationList = optional(any)
-      riskLevel                      = optional(string)
-      rootDefinitionId               = optional(string)
-      settingUsage                   = optional(string)
-      uxBehavior                     = optional(string)
-      version                        = optional(string)
-      visibility                     = optional(string)
-    })))
-    settingInstanceTemplate = optional(object({
-      odata_type                = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingInstanceTemplate")
-      isRequired                = optional(bool)
-      settingDefinitionId       = optional(string)
-      settingInstanceTemplateId = optional(string)
-    }))
+    odata_type              = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingTemplate")
+    settingDefinitions      = optional(any)
+    settingInstanceTemplate = optional(any)
   }))
   default = null
 }
@@ -105,8 +79,8 @@ variable "technologies" {
   default     = null
 
   validation {
-    condition     = var.technologies == null ? true : contains(["none", "mdm", "windows10XManagement", "configManager", "intuneManagementExtension", "thirdParty", "documentGateway", "appleRemoteManagement", "microsoftSense", "exchangeOnline", "mobileApplicationManagement", "linuxMdm", "enrollment", "endpointPrivilegeManagement", "unknownFutureValue", "windowsOsRecovery", "android", "intuneOpenExtensibility"], var.technologies)
-    error_message = "technologies must be one of the documented enum values."
+    condition     = var.technologies == null ? true : try(alltrue([for value in split(",", var.technologies) : contains(["none", "mdm", "windows10xmanagement", "configmanager", "intunemanagementextension", "thirdparty", "documentgateway", "appleremotemanagement", "microsoftsense", "exchangeonline", "mobileapplicationmanagement", "linuxmdm", "enrollment", "endpointprivilegemanagement", "unknownfuturevalue", "windowsosrecovery", "android", "intuneopenextensibility"], lower(trimspace(value)))]), false)
+    error_message = "technologies must be one or more of the documented enum values, separated by commas."
   }
 }
 

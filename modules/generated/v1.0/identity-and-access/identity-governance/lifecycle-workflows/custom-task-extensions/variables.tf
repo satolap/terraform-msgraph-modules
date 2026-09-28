@@ -12,8 +12,12 @@ variable "callback_configuration" {
 
 variable "client_configuration" {
   description = "HTTP connection settings that define how long Microsoft Entra ID can wait for a connection to a logic app, how many times you can retry a timed-out connection and the exception scenarios when retries are allowed."
-  type        = any
-  default     = null
+  type = object({
+    odata_type            = optional(string, "#microsoft.graph.customExtensionClientConfiguration")
+    maximumRetries        = optional(number)
+    timeoutInMilliseconds = optional(number)
+  })
+  default = null
 }
 
 variable "created_by" {

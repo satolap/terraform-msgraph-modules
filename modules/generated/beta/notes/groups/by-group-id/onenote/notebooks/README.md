@@ -29,7 +29,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `display_name` | `displayName` | `string` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `links` | `links` | `any` | no | no |
+| `links` | `links` | `object({       odata_type = optional(string, "#microsoft.graph.notebookLinks")       oneNoteClientUrl = optional(object({       odata_type = optional(string, "#microsoft.graph.externalLink")       href = optional(string)     }))       oneNoteWebUrl = optional(object({       odata_type = optional(string, "#microsoft.graph.externalLink")       href = optional(string)     }))     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `self` | `self` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -51,7 +51,6 @@ Generation notes:
 - Microsoft Graph beta contracts can change without notice.
 - createdBy: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- links: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

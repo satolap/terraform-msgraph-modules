@@ -40,7 +40,7 @@ variable "deployment_profile_assigned_date_time" {
 }
 
 variable "deployment_profile_assignment_detailed_status" {
-  description = "Microsoft Graph deploymentProfileAssignmentDetailedStatus property."
+  description = "Profile assignment detailed status of the Windows autopilot device."
   type        = string
   default     = null
 
@@ -51,7 +51,7 @@ variable "deployment_profile_assignment_detailed_status" {
 }
 
 variable "deployment_profile_assignment_status" {
-  description = "Microsoft Graph deploymentProfileAssignmentStatus property."
+  description = "Profile assignment status of the Windows autopilot device."
   type        = string
   default     = null
 
@@ -87,7 +87,7 @@ variable "display_name" {
 }
 
 variable "enrollment_state" {
-  description = "Microsoft Graph enrollmentState property."
+  description = "Intune enrollment state of the Windows autopilot device."
   type        = string
   default     = null
 

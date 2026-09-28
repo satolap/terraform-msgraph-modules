@@ -32,7 +32,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `scope_id` | `scopeId` | `string` | no | no |
 | `scope_type` | `scopeType` | `string` | no | no |
 | `security_impact` | `securityImpact` | `string` | no | no |
-| `severity_level` | `severityLevel` | `any` | no | no |
+| `severity_level` | `severityLevel` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -50,7 +50,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- severityLevel: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

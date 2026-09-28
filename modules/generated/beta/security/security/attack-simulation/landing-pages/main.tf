@@ -1,13 +1,13 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "createdBy"            = var.created_by
+    "createdBy"            = (var.created_by == null ? null : { for key0, value0 in { "@odata.type" = var.created_by["odata_type"], "displayName" = var.created_by["displayName"], "email" = var.created_by["email"], "id" = var.created_by["id"] } : key0 => value0 if value0 != null })
     "createdDateTime"      = var.created_date_time
     "description"          = var.description
     "details"              = (var.details == null ? null : [for item0 in var.details : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "content" = item0["content"], "isDefaultLangauge" = item0["isDefaultLangauge"], "language" = item0["language"] } : key1 => value1 if value1 != null }) if item0 != null])
     "displayName"          = var.display_name
     "source"               = var.graph_source
-    "lastModifiedBy"       = var.last_modified_by
+    "lastModifiedBy"       = (var.last_modified_by == null ? null : { for key0, value0 in { "@odata.type" = var.last_modified_by["odata_type"], "displayName" = var.last_modified_by["displayName"], "email" = var.last_modified_by["email"], "id" = var.last_modified_by["id"] } : key0 => value0 if value0 != null })
     "lastModifiedDateTime" = var.last_modified_date_time
     "locale"               = var.locale
     "@odata.type"          = var.odata_type

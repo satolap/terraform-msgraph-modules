@@ -1,10 +1,10 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "inboundAccess"        = var.inbound_access
+    "@odata.type"          = var.odata_type
+    "inboundAccess"        = (var.inbound_access == null ? null : { for key0, value0 in { "@odata.type" = var.inbound_access["odata_type"], "isAllowed" = var.inbound_access["isAllowed"], "resourceScopes" = (var.inbound_access["resourceScopes"] == null ? null : { for key1, value1 in { "@odata.type" = var.inbound_access["resourceScopes"]["odata_type"], "excluded" = (var.inbound_access["resourceScopes"]["excluded"] == null ? null : [for item2 in var.inbound_access["resourceScopes"]["excluded"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"], "resourceId" = item2["resourceId"], "resourceType" = item2["resourceType"] } : key3 => value3 if value3 != null }) if item2 != null]), "included" = (var.inbound_access["resourceScopes"]["included"] == null ? null : [for item2 in var.inbound_access["resourceScopes"]["included"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"], "resourceId" = item2["resourceId"], "resourceType" = item2["resourceType"] } : key3 => value3 if value3 != null }) if item2 != null]) } : key1 => value1 if value1 != null }) } : key0 => value0 if value0 != null })
     "lastModifiedDateTime" = var.last_modified_date_time
     "name"                 = var.name
-    "@odata.type"          = var.odata_type
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

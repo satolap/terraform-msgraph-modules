@@ -24,19 +24,19 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `drive_id` | URL parameter `drive-id` | `string` | yes | no |
-| `activities` | `activities` | `list(object({       odata_type = optional(string, "#microsoft.graph.itemActivityOLD")       action = optional(any)       actor = optional(any)       driveItem = optional(any)       listItem = optional(any)       times = optional(any)     }))` | no | no |
+| `activities` | `activities` | `list(object({       odata_type = optional(string, "#microsoft.graph.itemActivityOLD")       action = optional(object({       odata_type = optional(string, "#microsoft.graph.itemActionSet")       comment = optional(object({       odata_type = optional(string, "#microsoft.graph.commentAction")       isReply = optional(bool)       parentAuthor = optional(any)       participants = optional(any)     }))       create = optional(any)       delete = optional(object({       odata_type = optional(string, "#microsoft.graph.deleteAction")       name = optional(string)       objectType = optional(string)     }))       edit = optional(any)       mention = optional(object({       odata_type = optional(string, "#microsoft.graph.mentionAction")       mentionees = optional(any)     }))       move = optional(object({       odata_type = optional(string, "#microsoft.graph.moveAction")       from = optional(string)       to = optional(string)     }))       rename = optional(object({       odata_type = optional(string, "#microsoft.graph.renameAction")       newName = optional(string)       oldName = optional(string)     }))       restore = optional(any)       share = optional(object({       odata_type = optional(string, "#microsoft.graph.shareAction")       recipients = optional(any)     }))       version = optional(object({       odata_type = optional(string, "#microsoft.graph.versionAction")       newVersion = optional(string)     }))     }))       actor = optional(any)       driveItem = optional(any)       listItem = optional(any)       times = optional(object({       odata_type = optional(string, "#microsoft.graph.itemActivityTimeSet")       lastRecordedDateTime = optional(string)       observedDateTime = optional(string)       recordedDateTime = optional(string)     }))     }))` | no | no |
 | `analytics` | `analytics` | `any` | no | no |
 | `content` | `content` | `string` | no | no |
 | `content_stream` | `contentStream` | `string` | no | no |
 | `created_by_user` | `createdByUser` | `any` | no | no |
 | `description` | `description` | `string` | no | no |
-| `extensions` | `extensions` | `list(object({       odata_type = optional(string, "#microsoft.graph.extension")     }))` | no | no |
-| `file_system_info` | `fileSystemInfo` | `any` | no | no |
+| `extensions` | `extensions` | `any` | no | no |
+| `file_system_info` | `fileSystemInfo` | `object({       odata_type = optional(string, "#microsoft.graph.fileSystemInfo")       createdDateTime = optional(string)       lastAccessedDateTime = optional(string)       lastModifiedDateTime = optional(string)     })` | no | no |
 | `last_modified_by_user` | `lastModifiedByUser` | `any` | no | no |
-| `media` | `media` | `any` | no | no |
+| `media` | `media` | `object({       odata_type = optional(string, "#microsoft.graph.media")       isTranscriptionShown = optional(bool)     })` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `parent_reference` | `parentReference` | `any` | no | no |
+| `parent_reference` | `parentReference` | `object({       odata_type = optional(string, "#microsoft.graph.itemReference")       driveType = optional(string)       shareId = optional(string)       siteId = optional(string)     })` | no | no |
 | `retention_label` | `retentionLabel` | `any` | no | no |
 | `root` | `root` | `any` | no | no |
 | `subscriptions` | `subscriptions` | `list(object({       odata_type = optional(string, "#microsoft.graph.subscription")       changeType = optional(string)       clientState = optional(string)       encryptionCertificate = optional(string)       encryptionCertificateId = optional(string)       expirationDateTime = optional(string)       includeResourceData = optional(bool)       latestSupportedTlsVersion = optional(string)       lifecycleNotificationUrl = optional(string)       notificationContentType = optional(string)       notificationQueryOptions = optional(string)       notificationUrl = optional(string)       notificationUrlAppId = optional(string)       resource = optional(string)       vapidPublicKey = optional(string)       webPushEncryptionP256dhPublicKey = optional(string)       webPushEncryptionSecret = optional(string)     }))` | no | yes |
@@ -59,20 +59,23 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- activities[].action: polymorphic schema; accepts an untyped value
+- activities[].action.comment.parentAuthor: polymorphic schema; accepts an untyped value
+- activities[].action.comment.participants[]: nested schema exceeds depth limit; accepts an untyped value
+- activities[].action.create: polymorphic schema; accepts an untyped value
+- activities[].action.edit: polymorphic schema; accepts an untyped value
+- activities[].action.mention.mentionees[]: nested schema exceeds depth limit; accepts an untyped value
+- activities[].action.restore: polymorphic schema; accepts an untyped value
+- activities[].action.share.recipients[]: nested schema exceeds depth limit; accepts an untyped value
 - activities[].actor: polymorphic schema; accepts an untyped value
-- activities[].driveItem: polymorphic schema; accepts an untyped value
-- activities[].listItem: polymorphic schema; accepts an untyped value
-- activities[].times: polymorphic schema; accepts an untyped value
-- analytics: polymorphic schema; accepts an untyped value
+- activities[].driveItem: navigation property; accepts an untyped value
+- activities[].listItem: navigation property; accepts an untyped value
+- analytics: navigation property; accepts an untyped value
 - createdByUser: polymorphic schema; accepts an untyped value
-- fileSystemInfo: polymorphic schema; accepts an untyped value
+- extensions[]: polymorphic schema; accepts an untyped value
 - lastModifiedByUser: polymorphic schema; accepts an untyped value
-- media: polymorphic schema; accepts an untyped value
-- parentReference: polymorphic schema; accepts an untyped value
-- retentionLabel: polymorphic schema; accepts an untyped value
+- retentionLabel: navigation property; accepts an untyped value
 - root: polymorphic schema; accepts an untyped value
-- workbook: polymorphic schema; accepts an untyped value
+- workbook: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

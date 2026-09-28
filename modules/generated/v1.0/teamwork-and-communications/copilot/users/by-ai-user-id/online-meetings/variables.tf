@@ -29,7 +29,15 @@ variable "ai_insights" {
       text       = optional(string)
       title      = optional(string)
     })))
-    viewpoint = optional(any)
+    viewpoint = optional(object({
+      odata_type = optional(string, "#microsoft.graph.callAiInsightViewPoint")
+      mentionEvents = optional(list(object({
+        odata_type          = optional(string, "#microsoft.graph.mentionEvent")
+        eventDateTime       = optional(string)
+        speaker             = optional(any)
+        transcriptUtterance = optional(string)
+      })))
+    }))
   }))
   default = null
 }

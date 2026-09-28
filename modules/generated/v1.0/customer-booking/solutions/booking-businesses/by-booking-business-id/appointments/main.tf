@@ -10,7 +10,7 @@ locals {
     "customerNotes"                    = var.customer_notes
     "customerPhone"                    = var.customer_phone
     "customerTimeZone"                 = var.customer_time_zone
-    "customers"                        = (var.customers == null ? null : [for item0 in var.customers : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "customers"                        = (var.customers == null ? null : [for item0 in var.customers : item0 if item0 != null])
     "endDateTime"                      = (var.end_date_time == null ? null : { for key0, value0 in { "@odata.type" = var.end_date_time["odata_type"], "dateTime" = var.end_date_time["dateTime"], "timeZone" = var.end_date_time["timeZone"] } : key0 => value0 if value0 != null })
     "isCustomerAllowedToManageBooking" = var.is_customer_allowed_to_manage_booking
     "isLocationOnline"                 = var.is_location_online

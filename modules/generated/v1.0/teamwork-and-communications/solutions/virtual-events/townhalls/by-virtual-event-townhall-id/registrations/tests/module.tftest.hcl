@@ -23,14 +23,20 @@ run "typed_request" {
   command = plan
 
   variables {
-    virtual_event_townhall_id     = "test-parent-id"
-    cancelation_date_time         = "2026-01-01T00:00:00Z"
-    registration_question_answers = [{}]
+    virtual_event_townhall_id         = "test-parent-id"
+    cancelation_date_time             = "2026-01-01T00:00:00Z"
+    external_registration_information = { "referrer" = null }
+    registration_question_answers     = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["cancelationDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
     error_message = "cancelationDateTime must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["externalRegistrationInformation"]) == jsonencode({ "@odata.type" = "#microsoft.graph.virtualEventExternalRegistrationInformation" })
+    error_message = "externalRegistrationInformation must preserve typed values and omit nested nulls."
   }
 
   assert {

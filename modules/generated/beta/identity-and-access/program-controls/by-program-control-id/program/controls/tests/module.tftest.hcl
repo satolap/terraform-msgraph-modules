@@ -25,10 +25,16 @@ run "typed_request" {
   variables {
     program_control_id = "test-parent-id"
     control_id         = "example"
+    resource           = { "displayName" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["controlId"]) == jsonencode("example")
     error_message = "controlId must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["resource"]) == jsonencode({ "@odata.type" = "#microsoft.graph.programResource" })
+    error_message = "resource must preserve typed values and omit nested nulls."
   }
 }

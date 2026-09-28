@@ -12,14 +12,17 @@ variable "access_review_schedule_definition_id" {
 variable "decisions" {
   description = "Each user reviewed in an accessReviewInstance has a decision item representing if they were approved, denied, or not yet reviewed."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItem")
-    decision   = optional(string)
-    insights = optional(list(object({
-      odata_type             = optional(string, "#microsoft.graph.governanceInsight")
-      insightCreatedDateTime = optional(string)
-    })))
+    odata_type    = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItem")
+    decision      = optional(string)
+    insights      = optional(any)
     justification = optional(string)
-    permission    = optional(any)
+    permission = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItemPermission")
+      description = optional(string)
+      displayName = optional(string)
+      id          = optional(string)
+      type        = optional(string)
+    }))
   }))
   default = null
 }
@@ -66,7 +69,13 @@ variable "stages" {
       decision      = optional(string)
       insights      = optional(any)
       justification = optional(string)
-      permission    = optional(any)
+      permission = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItemPermission")
+        description = optional(string)
+        displayName = optional(string)
+        id          = optional(string)
+        type        = optional(string)
+      }))
     })))
     fallbackReviewers = optional(list(object({
       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")

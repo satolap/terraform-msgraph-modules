@@ -35,7 +35,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["appliesTo"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.directoryObject" }])
+    condition     = jsonencode(msgraph_resource.this.body["appliesTo"]) == jsonencode([{}])
     error_message = "appliesTo must preserve typed values and omit nested nulls."
   }
 }

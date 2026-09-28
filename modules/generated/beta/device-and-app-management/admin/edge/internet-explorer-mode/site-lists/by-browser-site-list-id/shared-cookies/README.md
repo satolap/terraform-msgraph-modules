@@ -28,7 +28,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `history` | `history` | `list(object({       odata_type = optional(string, "#microsoft.graph.browserSharedCookieHistory")       comment = optional(string)       displayName = optional(string)       hostOnly = optional(bool)       hostOrDomain = optional(string)       lastModifiedBy = optional(object({       odata_type = optional(string, "#microsoft.graph.identitySet")       application = optional(any)       device = optional(any)       user = optional(any)     }))       path = optional(string)       publishedDateTime = optional(string)       sourceEnvironment = optional(any)     }))` | no | no |
+| `history` | `history` | `list(object({       odata_type = optional(string, "#microsoft.graph.browserSharedCookieHistory")       comment = optional(string)       displayName = optional(string)       hostOnly = optional(bool)       hostOrDomain = optional(string)       lastModifiedBy = optional(any)       path = optional(string)       publishedDateTime = optional(string)       sourceEnvironment = optional(string)     }))` | no | no |
 | `host_only` | `hostOnly` | `bool` | no | no |
 | `host_or_domain` | `hostOrDomain` | `string` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
@@ -54,10 +54,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- history[].lastModifiedBy.application: polymorphic schema; accepts an untyped value
-- history[].lastModifiedBy.device: polymorphic schema; accepts an untyped value
-- history[].lastModifiedBy.user: polymorphic schema; accepts an untyped value
-- history[].sourceEnvironment: polymorphic schema; accepts an untyped value
+- history[].lastModifiedBy: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

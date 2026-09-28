@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     approval_type               = "manual"
     deployment_deferral_in_days = -2147483648
+    inventory_sync_status       = { "driverInventorySyncState" = null }
     assignments                 = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["deploymentDeferralInDays"]) == jsonencode(-2147483648)
     error_message = "deploymentDeferralInDays must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["inventorySyncStatus"]) == jsonencode({ "@odata.type" = "#microsoft.graph.windowsDriverUpdateProfileInventorySyncStatus" })
+    error_message = "inventorySyncStatus must preserve typed values and omit nested nulls."
   }
 
   assert {

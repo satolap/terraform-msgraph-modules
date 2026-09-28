@@ -7,7 +7,7 @@ locals {
     "clientContext"      = var.client_context
     "completedDateTime"  = var.completed_date_time
     "createdDateTime"    = var.created_date_time
-    "errorInfo"          = var.error_info
+    "errorInfo"          = (var.error_info == null ? null : { for key0, value0 in { "@odata.type" = var.error_info["odata_type"], "code" = var.error_info["code"], "message" = var.error_info["message"], "subcode" = var.error_info["subcode"] } : key0 => value0 if value0 != null })
     "lastActionDateTime" = var.last_action_date_time
     "name"               = var.name
     "@odata.type"        = var.odata_type
@@ -15,7 +15,7 @@ locals {
     "states"             = (var.states == null ? null : [for item0 in var.states : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "appId" = item0["appId"], "status" = item0["status"], "updatedDateTime" = item0["updatedDateTime"], "user" = item0["user"] } : key1 => value1 if value1 != null }) if item0 != null])
     "status"             = var.status
     "user"               = var.user
-    "vendorInformation"  = var.vendor_information
+    "vendorInformation"  = (var.vendor_information == null ? null : { for key0, value0 in { "@odata.type" = var.vendor_information["odata_type"], "provider" = var.vendor_information["provider"], "providerVersion" = var.vendor_information["providerVersion"], "subProvider" = var.vendor_information["subProvider"], "vendor" = var.vendor_information["vendor"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

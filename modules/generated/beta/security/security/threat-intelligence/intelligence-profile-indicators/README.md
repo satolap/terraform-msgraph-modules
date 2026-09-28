@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `artifact` | `artifact` | `object({       odata_type = optional(string, "#microsoft.graph.security.artifact")     })` | no | no |
+| `artifact` | `artifact` | `any` | no | no |
 | `first_seen_date_time` | `firstSeenDateTime` | `string` | no | no |
 | `graph_source` | `source` | `string` | no | no |
 | `last_seen_date_time` | `lastSeenDateTime` | `string` | no | no |
@@ -44,6 +44,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- artifact: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

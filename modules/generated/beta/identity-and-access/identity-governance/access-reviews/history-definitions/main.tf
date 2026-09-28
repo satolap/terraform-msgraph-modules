@@ -1,7 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "createdBy"                        = (var.created_by == null ? null : { for key0, value0 in { "@odata.type" = var.created_by["odata_type"], "displayName" = var.created_by["displayName"], "id" = var.created_by["id"], "ipAddress" = var.created_by["ipAddress"], "userPrincipalName" = var.created_by["userPrincipalName"] } : key0 => value0 if value0 != null })
+    "createdBy"                        = var.created_by
     "createdDateTime"                  = var.created_date_time
     "decisions"                        = (var.decisions == null ? null : [for item0 in var.decisions : item0 if item0 != null])
     "displayName"                      = var.display_name
@@ -11,8 +11,8 @@ locals {
     "@odata.type"                      = var.odata_type
     "reviewHistoryPeriodEndDateTime"   = var.review_history_period_end_date_time
     "reviewHistoryPeriodStartDateTime" = var.review_history_period_start_date_time
-    "scheduleSettings"                 = var.schedule_settings
-    "scopes"                           = (var.scopes == null ? null : [for item0 in var.scopes : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "scheduleSettings"                 = (var.schedule_settings == null ? null : { for key0, value0 in { "@odata.type" = var.schedule_settings["odata_type"], "recurrence" = (var.schedule_settings["recurrence"] == null ? null : { for key1, value1 in { "@odata.type" = var.schedule_settings["recurrence"]["odata_type"], "pattern" = (var.schedule_settings["recurrence"]["pattern"] == null ? null : { for key2, value2 in { "@odata.type" = var.schedule_settings["recurrence"]["pattern"]["odata_type"], "dayOfMonth" = var.schedule_settings["recurrence"]["pattern"]["dayOfMonth"], "daysOfWeek" = (var.schedule_settings["recurrence"]["pattern"]["daysOfWeek"] == null ? null : [for item3 in var.schedule_settings["recurrence"]["pattern"]["daysOfWeek"] : item3 if item3 != null]), "firstDayOfWeek" = var.schedule_settings["recurrence"]["pattern"]["firstDayOfWeek"], "index" = var.schedule_settings["recurrence"]["pattern"]["index"], "interval" = var.schedule_settings["recurrence"]["pattern"]["interval"], "month" = var.schedule_settings["recurrence"]["pattern"]["month"], "type" = var.schedule_settings["recurrence"]["pattern"]["type"] } : key2 => value2 if value2 != null }), "range" = (var.schedule_settings["recurrence"]["range"] == null ? null : { for key2, value2 in { "@odata.type" = var.schedule_settings["recurrence"]["range"]["odata_type"], "endDate" = var.schedule_settings["recurrence"]["range"]["endDate"], "numberOfOccurrences" = var.schedule_settings["recurrence"]["range"]["numberOfOccurrences"], "recurrenceTimeZone" = var.schedule_settings["recurrence"]["range"]["recurrenceTimeZone"], "startDate" = var.schedule_settings["recurrence"]["range"]["startDate"], "type" = var.schedule_settings["recurrence"]["range"]["type"] } : key2 => value2 if value2 != null }) } : key1 => value1 if value1 != null }), "reportRange" = var.schedule_settings["reportRange"] } : key0 => value0 if value0 != null })
+    "scopes"                           = (var.scopes == null ? null : [for item0 in var.scopes : item0 if item0 != null])
     "status"                           = var.status
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)

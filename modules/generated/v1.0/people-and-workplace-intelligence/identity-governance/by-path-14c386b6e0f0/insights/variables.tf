@@ -42,17 +42,21 @@ variable "access_review_instance_decision_item_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.membershipOutlierInsight", "#microsoft.graph.userSignInInsight"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "insight_created_date_time" {
   description = "Indicates when the insight was created."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.governanceInsight"
-  nullable    = false
 }
 
 variable "additional_properties" {

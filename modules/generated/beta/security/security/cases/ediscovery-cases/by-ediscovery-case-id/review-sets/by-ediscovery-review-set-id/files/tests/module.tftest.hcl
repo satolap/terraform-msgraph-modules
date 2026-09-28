@@ -58,3 +58,30 @@ run "invalid_enum" {
 
   expect_failures = [var.processing_status]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    ediscovery_case_id       = "test-parent-id"
+    ediscovery_review_set_id = "test-parent-id"
+    source_type              = "mailbox, Site"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["sourceType"] == "mailbox, Site"
+    error_message = "sourceType must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    ediscovery_case_id       = "test-parent-id"
+    ediscovery_review_set_id = "test-parent-id"
+    source_type              = "mailbox,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.source_type]
+}

@@ -29,6 +29,7 @@ run "typed_request" {
     assignee_priority           = "example"
     is_on_my_day                = false
     active_checklist_item_count = -2147483648
+    recurrence                  = { "nextInSeriesTaskId" = null }
   }
 
   assert {
@@ -44,6 +45,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["activeChecklistItemCount"]) == jsonencode(-2147483648)
     error_message = "activeChecklistItemCount must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["recurrence"]) == jsonencode({ "@odata.type" = "#microsoft.graph.plannerTaskRecurrence" })
+    error_message = "recurrence must preserve typed values and omit nested nulls."
   }
 }
 

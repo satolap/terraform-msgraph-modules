@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `last_shared_method` | `lastSharedMethod` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `resource` | `resource` | `any` | no | no |
-| `sharing_history` | `sharingHistory` | `list(object({       odata_type = optional(string, "#microsoft.graph.sharingDetail")       sharedBy = optional(any)       sharingSubject = optional(string)       sharingType = optional(string)     }))` | no | no |
+| `sharing_history` | `sharingHistory` | `list(object({       odata_type = optional(string, "#microsoft.graph.sharingDetail")       sharedBy = optional(object({       odata_type = optional(string, "#microsoft.graph.insightIdentity")       address = optional(string)       displayName = optional(string)       id = optional(string)     }))       sharingSubject = optional(string)       sharingType = optional(string)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -45,7 +45,6 @@ Generation notes:
 - Microsoft Graph beta contracts can change without notice.
 - lastSharedMethod: polymorphic schema; accepts an untyped value
 - resource: polymorphic schema; accepts an untyped value
-- sharingHistory[].sharedBy: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

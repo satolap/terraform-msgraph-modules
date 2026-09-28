@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.emailFileAssessmentRequest", "#microsoft.graph.fileAssessmentRequest", "#microsoft.graph.mailAssessmentRequest", "#microsoft.graph.urlAssessmentRequest"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "category" {
   description = "Microsoft Graph category property."
   type        = string
@@ -11,7 +22,7 @@ variable "category" {
 
 variable "content_type" {
   description = "The content type of threat assessment. The possible values are: mail, url, file."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -43,16 +54,9 @@ variable "expected_assessment" {
   }
 }
 
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.threatAssessmentRequest"
-  nullable    = false
-}
-
 variable "request_source" {
   description = "The source of the threat assessment request. The possible values are: user, administrator."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -63,7 +67,7 @@ variable "request_source" {
 
 variable "status" {
   description = "The assessment process status. The possible values are: pending, completed."
-  type        = any
+  type        = string
   default     = null
 
   validation {

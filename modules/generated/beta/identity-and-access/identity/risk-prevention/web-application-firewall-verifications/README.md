@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `graph_provider` | `provider` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `provider_type` | `providerType` | `string` | no | no |
-| `verification_result` | `verificationResult` | `any` | no | no |
+| `verification_result` | `verificationResult` | `object({       odata_type = optional(string, "#microsoft.graph.webApplicationFirewallVerificationResult")       errors = optional(list(object({       odata_type = optional(string, "#microsoft.graph.genericError")       code = optional(string)       message = optional(string)     })))       status = optional(string)       verifiedOnDateTime = optional(string)       warnings = optional(list(object({       odata_type = optional(string, "#microsoft.graph.genericError")       code = optional(string)       message = optional(string)     })))     })` | no | no |
 | `verified_details` | `verifiedDetails` | `any` | no | no |
 | `verified_host` | `verifiedHost` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -46,7 +46,6 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - provider: polymorphic schema; accepts an untyped value
-- verificationResult: polymorphic schema; accepts an untyped value
 - verifiedDetails: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

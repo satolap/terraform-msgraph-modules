@@ -12,14 +12,26 @@ variable "unified_role_management_policy_id" {
 variable "odata_type" {
   description = "Microsoft Graph @odata.type property."
   type        = string
-  default     = "#microsoft.graph.unifiedRoleManagementPolicyRule"
   nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.unifiedRoleManagementPolicyApprovalRule", "#microsoft.graph.unifiedRoleManagementPolicyAuthenticationContextRule", "#microsoft.graph.unifiedRoleManagementPolicyEnablementRule", "#microsoft.graph.unifiedRoleManagementPolicyExpirationRule", "#microsoft.graph.unifiedRoleManagementPolicyNotificationRule"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
 }
 
 variable "target" {
   description = "Defines details of scope that's targeted by role management policy rule. The details can include the principal type, the role assignment type, and actions affecting a role. Supports $filter (eq, ne)."
-  type        = any
-  default     = null
+  type = object({
+    odata_type          = optional(string, "#microsoft.graph.unifiedRoleManagementPolicyRuleTarget")
+    caller              = optional(string)
+    enforcedSettings    = optional(list(string))
+    inheritableSettings = optional(list(string))
+    level               = optional(string)
+    operations          = optional(list(string))
+    targetObjects       = optional(any)
+  })
+  default = null
 }
 
 variable "additional_properties" {

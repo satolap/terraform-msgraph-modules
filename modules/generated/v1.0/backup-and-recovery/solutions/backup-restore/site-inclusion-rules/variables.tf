@@ -12,8 +12,31 @@ variable "created_date_time" {
 
 variable "error" {
   description = "Contains error details if an operation on a rule fails."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.publicError")
+    code       = optional(string)
+    details = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+      code       = optional(string)
+      message    = optional(string)
+      target     = optional(string)
+    })))
+    innerError = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicInnerError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    message = optional(string)
+    target  = optional(string)
+  })
+  default = null
 }
 
 variable "is_auto_apply_enabled" {
@@ -49,7 +72,7 @@ variable "site_expression" {
 
 variable "status" {
   description = "The status of the protection rule. The possible values are: draft, active, completed, completedWithErrors, unknownFutureValue, updateRequested, deleteRequested. Use the Prefer: include-unknown-enum-members request header to get the following values in this evolvable enum: updateRequested , deleteRequested. The draft member is currently unsupported."
-  type        = any
+  type        = string
   default     = null
 
   validation {

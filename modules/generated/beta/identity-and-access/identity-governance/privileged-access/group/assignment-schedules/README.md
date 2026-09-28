@@ -22,19 +22,19 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `access_id` | `accessId` | `any` | no | no |
+| `access_id` | `accessId` | `string` | no | no |
 | `activated_using` | `activatedUsing` | `any` | no | no |
-| `assignment_type` | `assignmentType` | `any` | no | no |
+| `assignment_type` | `assignmentType` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `created_using` | `createdUsing` | `string` | no | no |
 | `group` | `group` | `any` | no | no |
 | `group_id` | `groupId` | `string` | no | no |
-| `member_type` | `memberType` | `any` | no | no |
+| `member_type` | `memberType` | `string` | no | no |
 | `modified_date_time` | `modifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `principal` | `principal` | `any` | no | no |
 | `principal_id` | `principalId` | `string` | no | no |
-| `schedule_info` | `scheduleInfo` | `any` | no | no |
+| `schedule_info` | `scheduleInfo` | `object({       odata_type = optional(string, "#microsoft.graph.requestSchedule")       expiration = optional(object({       odata_type = optional(string, "#microsoft.graph.expirationPattern")       duration = optional(string)       endDateTime = optional(string)       type = optional(string)     }))       recurrence = optional(object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     }))       startDateTime = optional(string)     })` | no | no |
 | `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -53,13 +53,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- accessId: polymorphic schema; accepts an untyped value
-- activatedUsing: polymorphic schema; accepts an untyped value
-- assignmentType: polymorphic schema; accepts an untyped value
-- group: polymorphic schema; accepts an untyped value
-- memberType: polymorphic schema; accepts an untyped value
+- activatedUsing: navigation property; accepts an untyped value
+- group: navigation property; accepts an untyped value
 - principal: polymorphic schema; accepts an untyped value
-- scheduleInfo: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

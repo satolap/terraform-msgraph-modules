@@ -6,6 +6,7 @@ run "minimal_request" {
 
   variables {
     cross_tenant_access_policy_configuration_partner_tenant_id = "test-parent-id"
+    odata_type                                                 = "#microsoft.graph.crossTenantCalendarAvailabilityBasic"
   }
 
   assert {
@@ -24,11 +25,34 @@ run "typed_request" {
 
   variables {
     cross_tenant_access_policy_configuration_partner_tenant_id = "test-parent-id"
+    odata_type                                                 = "#microsoft.graph.crossTenantCalendarAvailabilityBasic"
     last_modified_date_time                                    = "2026-01-01T00:00:00Z"
+    inbound_access                                             = { "isAllowed" = null }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.crossTenantCalendarAvailabilityBasic")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["lastModifiedDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
     error_message = "lastModifiedDateTime must preserve typed values and omit nested nulls."
   }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["inboundAccess"]) == jsonencode({ "@odata.type" = "#microsoft.graph.m365CapabilityInboundAccess" })
+    error_message = "inboundAccess must preserve typed values and omit nested nulls."
+  }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    cross_tenant_access_policy_configuration_partner_tenant_id = "test-parent-id"
+    odata_type                                                 = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

@@ -1,6 +1,6 @@
 variable "action" {
   description = "The action to apply if the indicator is matched from within the targetProduct security tool. The possible values are: unknown, allow, block, alert. Required."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -41,7 +41,7 @@ variable "description" {
 
 variable "diamond_model" {
   description = "The area of the Diamond Model in which this indicator exists. The possible values are: unknown, adversary, capability, infrastructure, victim."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -136,7 +136,7 @@ variable "file_created_date_time" {
 
 variable "file_hash_type" {
   description = "Microsoft Graph fileHashType property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -352,7 +352,7 @@ variable "threat_type" {
 
 variable "tlp_level" {
   description = "Traffic Light Protocol value for the indicator. The possible values are: unknown, white, green, amber, red. Required."
-  type        = any
+  type        = string
   default     = null
 
   validation {

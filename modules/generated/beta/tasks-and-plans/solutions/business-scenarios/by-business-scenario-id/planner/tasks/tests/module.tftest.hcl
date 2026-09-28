@@ -23,10 +23,11 @@ run "typed_request" {
   command = plan
 
   variables {
-    business_scenario_id        = "test-parent-id"
-    assignee_priority           = "example"
-    is_on_my_day                = false
-    active_checklist_item_count = -2147483648
+    business_scenario_id         = "test-parent-id"
+    assignee_priority            = "example"
+    is_on_my_day                 = false
+    active_checklist_item_count  = -2147483648
+    business_scenario_properties = { "externalBucketId" = null }
   }
 
   assert {
@@ -42,6 +43,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["activeChecklistItemCount"]) == jsonencode(-2147483648)
     error_message = "activeChecklistItemCount must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["businessScenarioProperties"]) == jsonencode({ "@odata.type" = "#microsoft.graph.businessScenarioProperties" })
+    error_message = "businessScenarioProperties must preserve typed values and omit nested nulls."
   }
 }
 

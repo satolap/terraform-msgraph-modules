@@ -164,8 +164,8 @@ variable "managed_browser" {
   default     = null
 
   validation {
-    condition     = var.managed_browser == null ? true : contains(["notConfigured", "microsoftEdge"], var.managed_browser)
-    error_message = "managed_browser must be one of the documented enum values."
+    condition     = var.managed_browser == null ? true : try(alltrue([for value in split(",", var.managed_browser) : contains(["notconfigured", "microsoftedge"], lower(trimspace(value)))]), false)
+    error_message = "managed_browser must be one or more of the documented enum values, separated by commas."
   }
 }
 

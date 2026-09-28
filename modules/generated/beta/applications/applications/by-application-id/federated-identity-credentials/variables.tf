@@ -17,8 +17,12 @@ variable "audiences" {
 
 variable "claims_matching_expression" {
   description = "Nullable.  Defaults to null if not set. Enables the use of claims matching expressions against specified claims. If claimsMatchingExpression is defined, subject must be null. For the list of supported expression syntax and claims, visit the Flexible FIC reference."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.federatedIdentityExpression")
+    languageVersion = optional(number)
+    value           = optional(string)
+  })
+  default = null
 }
 
 variable "description" {

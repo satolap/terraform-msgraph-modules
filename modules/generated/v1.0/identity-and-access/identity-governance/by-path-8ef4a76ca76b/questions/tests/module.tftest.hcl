@@ -6,6 +6,7 @@ run "minimal_request" {
 
   variables {
     access_package_assignment_policy_id = "test-parent-id"
+    odata_type                          = "#microsoft.graph.accessPackageMultipleChoiceQuestion"
   }
 
   assert {
@@ -24,10 +25,16 @@ run "typed_request" {
 
   variables {
     access_package_assignment_policy_id = "test-parent-id"
+    odata_type                          = "#microsoft.graph.accessPackageMultipleChoiceQuestion"
     text                                = "example"
     is_answer_editable                  = false
     sequence                            = -2147483648
     localizations                       = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.accessPackageMultipleChoiceQuestion")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -49,4 +56,15 @@ run "typed_request" {
     condition     = jsonencode(msgraph_resource.this.body["localizations"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.accessPackageLocalizedText" }])
     error_message = "localizations must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    access_package_assignment_policy_id = "test-parent-id"
+    odata_type                          = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

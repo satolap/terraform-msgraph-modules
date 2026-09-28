@@ -6,7 +6,7 @@ variable "activity" {
 
 variable "activity_state" {
   description = "The activity state of the device. The possible values are: unknown, busy, idle, unavailable, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -41,8 +41,14 @@ variable "created_date_time" {
 
 variable "current_user" {
   description = "The signed-in user on the device."
-  type        = any
-  default     = null
+  type = object({
+    odata_type        = optional(string, "#microsoft.graph.teamworkUserIdentity")
+    displayName       = optional(string)
+    id                = optional(string)
+    userIdentityType  = optional(string)
+    userPrincipalName = optional(string)
+  })
+  default = null
 }
 
 variable "device_type" {
@@ -77,7 +83,7 @@ variable "health" {
 
 variable "health_status" {
   description = "The health status of the device. The possible values are: unknown, offline, critical, nonUrgent, healthy, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -114,11 +120,15 @@ variable "odata_type" {
 variable "operations" {
   description = "The async operations on the device."
   type = list(object({
-    odata_type         = optional(string, "#microsoft.graph.teamworkDeviceOperation")
-    completedDateTime  = optional(string)
-    createdBy          = optional(any)
-    createdDateTime    = optional(string)
-    error              = optional(any)
+    odata_type        = optional(string, "#microsoft.graph.teamworkDeviceOperation")
+    completedDateTime = optional(string)
+    createdBy         = optional(any)
+    createdDateTime   = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.operationError")
+      code       = optional(string)
+      message    = optional(string)
+    }))
     lastActionBy       = optional(any)
     lastActionDateTime = optional(string)
     operationType      = optional(string)

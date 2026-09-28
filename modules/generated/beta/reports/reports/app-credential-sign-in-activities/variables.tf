@@ -42,7 +42,7 @@ variable "key_id" {
 
 variable "key_type" {
   description = "Specifies the key type. The possible values are: clientSecret, certificate, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -53,7 +53,7 @@ variable "key_type" {
 
 variable "key_usage" {
   description = "Specifies what the key was used for. The possible values are: sign, verify, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

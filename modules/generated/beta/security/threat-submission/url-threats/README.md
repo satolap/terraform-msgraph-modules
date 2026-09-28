@@ -22,16 +22,16 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `admin_review` | `adminReview` | `any` | no | no |
+| `admin_review` | `adminReview` | `object({       odata_type = optional(string, "#microsoft.graph.security.submissionAdminReview")       reviewBy = optional(string)       reviewDateTime = optional(string)       reviewResult = optional(string)     })` | no | no |
 | `category` | `category` | `string` | no | no |
-| `client_source` | `clientSource` | `any` | no | no |
-| `content_type` | `contentType` | `any` | no | no |
-| `created_by` | `createdBy` | `any` | no | no |
+| `client_source` | `clientSource` | `string` | no | no |
+| `content_type` | `contentType` | `string` | no | no |
+| `created_by` | `createdBy` | `object({       odata_type = optional(string, "#microsoft.graph.security.submissionUserIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     })` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `graph_source` | `source` | `any` | no | no |
+| `graph_source` | `source` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `result` | `result` | `any` | no | no |
-| `status` | `status` | `any` | no | no |
+| `result` | `result` | `object({       odata_type = optional(string, "#microsoft.graph.security.submissionResult")       category = optional(string)       detail = optional(string)       detectedFiles = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.submissionDetectedFile")       fileHash = optional(string)       fileName = optional(string)     })))       detectedUrls = optional(list(string))       userMailboxSetting = optional(string)     })` | no | no |
+| `status` | `status` | `string` | no | no |
 | `tenant_id` | `tenantId` | `string` | no | no |
 | `web_url` | `webUrl` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -51,13 +51,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- adminReview: polymorphic schema; accepts an untyped value
-- clientSource: polymorphic schema; accepts an untyped value
-- contentType: polymorphic schema; accepts an untyped value
-- createdBy: polymorphic schema; accepts an untyped value
-- result: polymorphic schema; accepts an untyped value
-- source: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

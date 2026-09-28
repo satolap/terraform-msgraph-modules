@@ -14,7 +14,7 @@ run "minimal_request" {
   }
 
   assert {
-    condition     = alltrue([for key in ["source", "intent", "target"] : !contains(keys(msgraph_resource.this.body), key)])
+    condition     = alltrue([for key in ["intent", "target"] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
@@ -24,12 +24,12 @@ run "typed_request" {
 
   variables {
     device_configuration_id = "test-parent-id"
-    graph_source            = "direct"
+    intent                  = "apply"
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["source"]) == jsonencode("direct")
-    error_message = "source must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["intent"]) == jsonencode("apply")
+    error_message = "intent must preserve typed values and omit nested nulls."
   }
 }
 
@@ -38,8 +38,8 @@ run "invalid_enum" {
 
   variables {
     device_configuration_id = "test-parent-id"
-    graph_source            = "__graphmodules_invalid_enum__"
+    intent                  = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.graph_source]
+  expect_failures = [var.intent]
 }

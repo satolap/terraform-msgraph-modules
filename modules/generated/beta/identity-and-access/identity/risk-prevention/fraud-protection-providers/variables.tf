@@ -1,14 +1,18 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.arkoseFraudProtectionProvider", "#microsoft.graph.humanSecurityFraudProtectionProvider"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "display_name" {
   description = "The display name of the fraud protection provider configuration."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.fraudProtectionProvider"
-  nullable    = false
 }
 
 variable "additional_properties" {

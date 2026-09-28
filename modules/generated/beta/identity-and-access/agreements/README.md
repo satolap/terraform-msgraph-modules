@@ -28,7 +28,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `is_per_device_acceptance_required` | `isPerDeviceAcceptanceRequired` | `bool` | no | no |
 | `is_viewing_before_acceptance_required` | `isViewingBeforeAcceptanceRequired` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `terms_expiration` | `termsExpiration` | `any` | no | no |
+| `terms_expiration` | `termsExpiration` | `object({       odata_type = optional(string, "#microsoft.graph.termsExpiration")       frequency = optional(string)       startDateTime = optional(string)     })` | no | no |
 | `user_reaccept_required_frequency` | `userReacceptRequiredFrequency` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -47,8 +47,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- file: polymorphic schema; accepts an untyped value
-- termsExpiration: polymorphic schema; accepts an untyped value
+- file: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

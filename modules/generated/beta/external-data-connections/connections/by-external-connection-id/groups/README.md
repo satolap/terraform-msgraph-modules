@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `external_connection_id` | URL parameter `externalConnection-id` | `string` | yes | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `members` | `members` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.identity")       type = optional(any)     }))` | no | no |
+| `members` | `members` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.identity")       type = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -45,7 +45,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- members[].type: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

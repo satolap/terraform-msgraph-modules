@@ -11,7 +11,7 @@ variable "booking_business_id" {
 
 variable "answer_input_type" {
   description = "The expected answer type. The possible values are: text, radioButton, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

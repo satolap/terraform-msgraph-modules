@@ -19,12 +19,12 @@ run "typed_request" {
   command = plan
 
   variables {
-    modification_date_time = "2026-01-01T00:00:00Z"
+    active_occurrence_status = "grantingFailed"
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["modificationDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
-    error_message = "modificationDateTime must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["activeOccurrenceStatus"]) == jsonencode("grantingFailed")
+    error_message = "activeOccurrenceStatus must preserve typed values and omit nested nulls."
   }
 }
 

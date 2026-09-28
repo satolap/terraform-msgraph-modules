@@ -23,7 +23,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["exclusions"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.windowsUpdates.updatableAsset" }])
+    condition     = jsonencode(msgraph_resource.this.body["exclusions"]) == jsonencode([{}])
     error_message = "exclusions must preserve typed values and omit nested nulls."
   }
 }

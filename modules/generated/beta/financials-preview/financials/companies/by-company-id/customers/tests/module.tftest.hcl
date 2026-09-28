@@ -26,6 +26,7 @@ run "typed_request" {
     company_id = "test-parent-id"
     blocked    = "example"
     tax_liable = false
+    address    = { "city" = null }
     picture    = [{}]
   }
 
@@ -37,6 +38,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["taxLiable"]) == jsonencode(false)
     error_message = "taxLiable must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["address"]) == jsonencode({ "@odata.type" = "#microsoft.graph.postalAddressType" })
+    error_message = "address must preserve typed values and omit nested nulls."
   }
 
   assert {

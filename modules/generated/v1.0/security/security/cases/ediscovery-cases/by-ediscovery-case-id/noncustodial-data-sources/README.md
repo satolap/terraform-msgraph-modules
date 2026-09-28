@@ -27,12 +27,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `data_source` | `dataSource` | `any` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `hold_status` | `holdStatus` | `any` | no | no |
+| `hold_status` | `holdStatus` | `string` | no | no |
 | `last_index_operation` | `lastIndexOperation` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `released_date_time` | `releasedDateTime` | `string` | no | no |
-| `status` | `status` | `any` | no | no |
+| `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -50,9 +50,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - dataSource: polymorphic schema; accepts an untyped value
-- holdStatus: polymorphic schema; accepts an untyped value
-- lastIndexOperation: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
+- lastIndexOperation: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

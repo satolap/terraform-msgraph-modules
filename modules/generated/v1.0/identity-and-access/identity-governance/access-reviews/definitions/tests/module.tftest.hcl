@@ -20,12 +20,18 @@ run "typed_request" {
 
   variables {
     description_for_admins             = "example"
+    settings                           = { "applyActions" = null }
     additional_notification_recipients = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["descriptionForAdmins"]) == jsonencode("example")
     error_message = "descriptionForAdmins must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["settings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.accessReviewScheduleSettings" })
+    error_message = "settings must preserve typed values and omit nested nulls."
   }
 
   assert {

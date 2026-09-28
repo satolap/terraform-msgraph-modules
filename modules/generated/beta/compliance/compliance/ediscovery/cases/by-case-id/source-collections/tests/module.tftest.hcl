@@ -34,7 +34,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["additionalSources"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.ediscovery.dataSource" }])
+    condition     = jsonencode(msgraph_resource.this.body["additionalSources"]) == jsonencode([{}])
     error_message = "additionalSources must preserve typed values and omit nested nulls."
   }
 }
@@ -45,6 +45,31 @@ run "invalid_enum" {
   variables {
     case_id            = "test-parent-id"
     data_source_scopes = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.data_source_scopes]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    case_id            = "test-parent-id"
+    data_source_scopes = "none, AllTenantMailboxes"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["dataSourceScopes"] == "none, AllTenantMailboxes"
+    error_message = "dataSourceScopes must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    case_id            = "test-parent-id"
+    data_source_scopes = "none,__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.data_source_scopes]

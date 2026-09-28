@@ -23,12 +23,18 @@ run "typed_request" {
   command = plan
 
   variables {
-    team_id       = "test-parent-id"
-    day_note_date = "2026-01-01"
+    team_id        = "test-parent-id"
+    day_note_date  = "2026-01-01"
+    draft_day_note = { "content" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["dayNoteDate"]) == jsonencode("2026-01-01")
     error_message = "dayNoteDate must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["draftDayNote"]) == jsonencode({ "@odata.type" = "#microsoft.graph.itemBody" })
+    error_message = "draftDayNote must preserve typed values and omit nested nulls."
   }
 }

@@ -23,14 +23,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `approval_type` | `approvalType` | `string` | no | no |
-| `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsDriverUpdateProfileAssignment")       target = optional(object({       odata_type = optional(string, "#microsoft.graph.deviceAndAppManagementAssignmentTarget")       deviceAndAppManagementAssignmentFilterId = optional(string)       deviceAndAppManagementAssignmentFilterType = optional(string)     }))     }))` | no | no |
+| `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsDriverUpdateProfileAssignment")       target = optional(any)     }))` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `deployment_deferral_in_days` | `deploymentDeferralInDays` | `number` | no | no |
 | `description` | `description` | `string` | no | no |
 | `device_reporting` | `deviceReporting` | `number` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `driver_inventories` | `driverInventories` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsDriverUpdateInventory")       applicableDeviceCount = optional(number)       approvalStatus = optional(string)       category = optional(string)       deployDateTime = optional(string)       driverClass = optional(string)       manufacturer = optional(string)       name = optional(string)       releaseDateTime = optional(string)       version = optional(string)     }))` | no | no |
-| `inventory_sync_status` | `inventorySyncStatus` | `any` | no | no |
+| `inventory_sync_status` | `inventorySyncStatus` | `object({       odata_type = optional(string, "#microsoft.graph.windowsDriverUpdateProfileInventorySyncStatus")       driverInventorySyncState = optional(string)       lastSuccessfulSyncDateTime = optional(string)     })` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `new_updates` | `newUpdates` | `number` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -52,7 +52,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- inventorySyncStatus: polymorphic schema; accepts an untyped value
+- assignments[].target: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

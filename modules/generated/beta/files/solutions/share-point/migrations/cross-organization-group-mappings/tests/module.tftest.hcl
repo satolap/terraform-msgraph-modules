@@ -20,11 +20,17 @@ run "typed_request" {
 
   variables {
     group_type = "none"
+    deleted    = { "state" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["groupType"]) == jsonencode("none")
     error_message = "groupType must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["deleted"]) == jsonencode({ "@odata.type" = "#microsoft.graph.deleted" })
+    error_message = "deleted must preserve typed values and omit nested nulls."
   }
 }
 

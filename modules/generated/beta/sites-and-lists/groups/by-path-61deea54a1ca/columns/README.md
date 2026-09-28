@@ -31,7 +31,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `page_template_id` | URL parameter `pageTemplate-id` | `string` | yes | no |
 | `horizontal_section_id` | URL parameter `horizontalSection-id` | `string` | yes | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `webparts` | `webparts` | `list(object({       odata_type = optional(string, "#microsoft.graph.webPart")     }))` | no | no |
+| `webparts` | `webparts` | `any` | no | no |
 | `width` | `width` | `number` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -50,6 +50,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- webparts[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

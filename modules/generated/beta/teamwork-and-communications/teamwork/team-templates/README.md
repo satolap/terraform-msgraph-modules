@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `definitions` | `definitions` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamTemplateDefinition")       audience = optional(any)       categories = optional(list(string))       description = optional(string)       displayName = optional(string)       iconUrl = optional(string)       languageTag = optional(string)       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       parentTemplateId = optional(string)       publisherName = optional(string)       shortDescription = optional(string)       teamDefinition = optional(any)     }))` | no | no |
+| `definitions` | `definitions` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamTemplateDefinition")       audience = optional(string)       categories = optional(list(string))       description = optional(string)       displayName = optional(string)       iconUrl = optional(string)       languageTag = optional(string)       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       parentTemplateId = optional(string)       publisherName = optional(string)       shortDescription = optional(string)       teamDefinition = optional(any)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -41,9 +41,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- definitions[].audience: polymorphic schema; accepts an untyped value
 - definitions[].lastModifiedBy: polymorphic schema; accepts an untyped value
-- definitions[].teamDefinition: polymorphic schema; accepts an untyped value
+- definitions[].teamDefinition: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

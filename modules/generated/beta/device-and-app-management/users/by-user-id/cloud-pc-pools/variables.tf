@@ -9,20 +9,27 @@ variable "user_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.cloudPcAgentPool"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "assignments" {
   description = "The collection of assignments that grant user or service principal identities access to this pool."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.cloudPcPoolAssignment")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "capabilities" {
   description = "Microsoft Graph capabilities property."
-  type = object({
-    odata_type = optional(string, "#microsoft.graph.cloudPcPoolCapabilityConfiguration")
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "cloud_pc_configuration" {
@@ -50,17 +57,8 @@ variable "display_name" {
 
 variable "network_configuration" {
   description = "Microsoft Graph networkConfiguration property."
-  type = object({
-    odata_type = optional(string, "#microsoft.graph.cloudPcNetworkConfiguration")
-  })
-  default = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.cloudPcPool"
-  nullable    = false
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

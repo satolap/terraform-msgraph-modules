@@ -22,8 +22,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `access_id` | `accessId` | `any` | no | no |
-| `action` | `action` | `any` | no | no |
+| `access_id` | `accessId` | `string` | no | no |
+| `action` | `action` | `string` | no | no |
 | `activated_using` | `activatedUsing` | `any` | no | no |
 | `approval_id` | `approvalId` | `string` | no | no |
 | `completed_date_time` | `completedDateTime` | `string` | no | no |
@@ -37,11 +37,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `principal` | `principal` | `any` | no | no |
 | `principal_id` | `principalId` | `string` | no | no |
-| `schedule_info` | `scheduleInfo` | `any` | no | no |
+| `schedule_info` | `scheduleInfo` | `object({       odata_type = optional(string, "#microsoft.graph.requestSchedule")       expiration = optional(object({       odata_type = optional(string, "#microsoft.graph.expirationPattern")       duration = optional(string)       endDateTime = optional(string)       type = optional(string)     }))       recurrence = optional(object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     }))       startDateTime = optional(string)     })` | no | no |
 | `status` | `status` | `string` | no | no |
 | `target_schedule` | `targetSchedule` | `any` | no | no |
 | `target_schedule_id` | `targetScheduleId` | `string` | no | no |
-| `ticket_info` | `ticketInfo` | `any` | no | no |
+| `ticket_info` | `ticketInfo` | `object({       odata_type = optional(string, "#microsoft.graph.ticketInfo")       ticketApproverIdentityId = optional(string)       ticketNumber = optional(string)       ticketSubmitterIdentityId = optional(string)       ticketSystem = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -59,15 +59,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- accessId: polymorphic schema; accepts an untyped value
-- action: polymorphic schema; accepts an untyped value
-- activatedUsing: polymorphic schema; accepts an untyped value
+- activatedUsing: navigation property; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- group: polymorphic schema; accepts an untyped value
+- group: navigation property; accepts an untyped value
 - principal: polymorphic schema; accepts an untyped value
-- scheduleInfo: polymorphic schema; accepts an untyped value
-- targetSchedule: polymorphic schema; accepts an untyped value
-- ticketInfo: polymorphic schema; accepts an untyped value
+- targetSchedule: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

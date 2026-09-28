@@ -1,6 +1,6 @@
 variable "action_after_retention_period" {
   description = "Specifies the action to take on the labeled document after the period specified by the retentionDuration property expires. The possible values are: none, delete, startDispositionReview, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -11,7 +11,7 @@ variable "action_after_retention_period" {
 
 variable "behavior_during_retention_period" {
   description = "Specifies how the behavior of a document with this label should be during the retention period. The possible values are: doNotRetain, retain, retainAsRecord, retainAsRegulatoryRecord, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -34,7 +34,7 @@ variable "created_date_time" {
 
 variable "default_record_behavior" {
   description = "Specifies the locked or unlocked state of a record label when it is created.The possible values are: startLocked, startUnlocked, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -123,7 +123,7 @@ variable "retention_event_type" {
 
 variable "retention_trigger" {
   description = "Specifies whether the retention duration is calculated from the content creation date, labeled date, or last modification date. The possible values are: dateLabeled, dateCreated, dateModified, dateOfEvent, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

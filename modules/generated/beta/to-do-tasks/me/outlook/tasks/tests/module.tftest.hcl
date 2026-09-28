@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     created_date_time = "2026-01-01T00:00:00Z"
     has_attachments   = false
+    body              = { "content" = null }
     categories        = ["example"]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["hasAttachments"]) == jsonencode(false)
     error_message = "hasAttachments must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["body"]) == jsonencode({ "@odata.type" = "#microsoft.graph.itemBody" })
+    error_message = "body must preserve typed values and omit nested nulls."
   }
 
   assert {

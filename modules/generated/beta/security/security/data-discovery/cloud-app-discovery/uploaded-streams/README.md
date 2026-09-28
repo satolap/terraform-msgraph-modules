@@ -30,10 +30,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `is_snapshot_report` | `isSnapshotReport` | `bool` | no | no |
 | `last_data_received_date_time` | `lastDataReceivedDateTime` | `string` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `log_data_provider` | `logDataProvider` | `any` | no | no |
+| `log_data_provider` | `logDataProvider` | `string` | no | no |
 | `log_file_count` | `logFileCount` | `number` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `receiver_protocol` | `receiverProtocol` | `any` | no | no |
+| `receiver_protocol` | `receiverProtocol` | `string` | no | no |
 | `supported_entity_types` | `supportedEntityTypes` | `list(string)` | no | no |
 | `supported_traffic_types` | `supportedTrafficTypes` | `list(string)` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -53,8 +53,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- logDataProvider: polymorphic schema; accepts an untyped value
-- receiverProtocol: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

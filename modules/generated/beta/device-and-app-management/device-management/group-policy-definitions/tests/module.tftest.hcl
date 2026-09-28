@@ -35,7 +35,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["presentations"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.groupPolicyPresentation" }])
+    condition     = jsonencode(msgraph_resource.this.body["presentations"]) == jsonencode([{}])
     error_message = "presentations must preserve typed values and omit nested nulls."
   }
 }

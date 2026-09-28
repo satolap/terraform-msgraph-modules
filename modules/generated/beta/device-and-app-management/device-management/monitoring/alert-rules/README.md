@@ -22,16 +22,16 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `alert_rule_template` | `alertRuleTemplate` | `any` | no | no |
-| `conditions` | `conditions` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagement.ruleCondition")       aggregation = optional(any)       conditionCategory = optional(any)       operator = optional(any)       relationshipType = optional(any)       thresholdValue = optional(string)     }))` | no | no |
+| `alert_rule_template` | `alertRuleTemplate` | `string` | no | no |
+| `conditions` | `conditions` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagement.ruleCondition")       aggregation = optional(string)       conditionCategory = optional(string)       operator = optional(string)       relationshipType = optional(string)       thresholdValue = optional(string)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `enabled` | `enabled` | `bool` | no | no |
 | `is_system_rule` | `isSystemRule` | `bool` | no | no |
-| `notification_channels` | `notificationChannels` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagement.notificationChannel")       notificationChannelType = optional(any)       notificationReceivers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagement.notificationReceiver")       contactInformation = optional(string)       locale = optional(string)     })))     }))` | no | no |
+| `notification_channels` | `notificationChannels` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagement.notificationChannel")       notificationChannelType = optional(string)       notificationReceivers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagement.notificationReceiver")       contactInformation = optional(string)       locale = optional(string)     })))     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `severity` | `severity` | `any` | no | no |
-| `threshold` | `threshold` | `any` | no | no |
+| `severity` | `severity` | `string` | no | no |
+| `threshold` | `threshold` | `object({       odata_type = optional(string, "#microsoft.graph.deviceManagement.ruleThreshold")       aggregation = optional(string)       operator = optional(string)       target = optional(number)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -49,14 +49,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- alertRuleTemplate: polymorphic schema; accepts an untyped value
-- conditions[].aggregation: polymorphic schema; accepts an untyped value
-- conditions[].conditionCategory: polymorphic schema; accepts an untyped value
-- conditions[].operator: polymorphic schema; accepts an untyped value
-- conditions[].relationshipType: polymorphic schema; accepts an untyped value
-- notificationChannels[].notificationChannelType: polymorphic schema; accepts an untyped value
-- severity: polymorphic schema; accepts an untyped value
-- threshold: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

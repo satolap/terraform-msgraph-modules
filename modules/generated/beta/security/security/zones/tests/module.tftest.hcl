@@ -20,12 +20,18 @@ run "typed_request" {
 
   variables {
     description  = "example"
+    created      = { "by" = null }
     environments = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
     error_message = "description must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["created"]) == jsonencode({ "@odata.type" = "#microsoft.graph.security.auditInfo" })
+    error_message = "created must preserve typed values and omit nested nulls."
   }
 
   assert {

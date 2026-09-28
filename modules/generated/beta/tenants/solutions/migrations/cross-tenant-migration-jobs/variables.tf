@@ -12,8 +12,12 @@ variable "display_name" {
 
 variable "exchange_settings" {
   description = "Settings to use for migration of Exchange workload. Nullable."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.exchangeOnlineCrossTenantMigrationSettings")
+    sourceEndpoint       = optional(string)
+    targetDeliveryDomain = optional(string)
+  })
+  default = null
 }
 
 variable "job_type" {

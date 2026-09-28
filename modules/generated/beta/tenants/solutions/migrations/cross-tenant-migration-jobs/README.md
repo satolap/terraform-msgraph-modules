@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `complete_after_date_time` | `completeAfterDateTime` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `exchange_settings` | `exchangeSettings` | `any` | no | no |
+| `exchange_settings` | `exchangeSettings` | `object({       odata_type = optional(string, "#microsoft.graph.exchangeOnlineCrossTenantMigrationSettings")       sourceEndpoint = optional(string)       targetDeliveryDomain = optional(string)     })` | no | no |
 | `job_type` | `jobType` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `resource_type` | `resourceType` | `string` | no | no |
@@ -50,7 +50,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- exchangeSettings: polymorphic schema; accepts an untyped value
 - users[].currentStatus[].errors[]: nested schema exceeds depth limit; accepts an untyped value
 
 ## Licensing and prerequisites

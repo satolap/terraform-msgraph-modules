@@ -27,18 +27,18 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `calendar_group_id` | URL parameter `calendarGroup-id` | `string` | yes | no |
 | `calendar_id` | URL parameter `calendar-id` | `string` | yes | no |
 | `allow_new_time_proposals` | `allowNewTimeProposals` | `bool` | no | no |
-| `attendees` | `attendees` | `list(object({       odata_type = optional(string, "#microsoft.graph.attendee")       emailAddress = optional(any)       proposedNewTime = optional(any)       status = optional(any)       type = optional(any)     }))` | no | no |
-| `body` | `body` | `any` | no | no |
+| `attendees` | `attendees` | `list(object({       odata_type = optional(string, "#microsoft.graph.attendee")       emailAddress = optional(object({       odata_type = optional(string, "#microsoft.graph.emailAddress")       address = optional(string)       name = optional(string)     }))       proposedNewTime = optional(object({       odata_type = optional(string, "#microsoft.graph.timeSlot")       end = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       start = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))     }))       status = optional(object({       odata_type = optional(string, "#microsoft.graph.responseStatus")       response = optional(string)       time = optional(string)     }))       type = optional(string)     }))` | no | no |
+| `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no |
 | `body_preview` | `bodyPreview` | `string` | no | no |
 | `cancelled_occurrences` | `cancelledOccurrences` | `list(string)` | no | no |
 | `categories` | `categories` | `list(string)` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `end` | `end` | `any` | no | no |
-| `exception_occurrences` | `exceptionOccurrences` | `list(object({       odata_type = optional(string, "#microsoft.graph.event")       allowNewTimeProposals = optional(bool)       attendees = optional(list(object({       odata_type = optional(string, "#microsoft.graph.attendee")       emailAddress = optional(any)       proposedNewTime = optional(any)       status = optional(any)       type = optional(any)     })))       body = optional(any)       bodyPreview = optional(string)       cancelledOccurrences = optional(list(string))       categories = optional(list(string))       createdDateTime = optional(string)       end = optional(any)       exceptionOccurrences = optional(any)       extensions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.extension")     })))       hasAttachments = optional(bool)       hideAttendees = optional(bool)       importance = optional(any)       isAllDay = optional(bool)       isCancelled = optional(bool)       isDraft = optional(bool)       isOnlineMeeting = optional(bool)       isOrganizer = optional(bool)       isReminderOn = optional(bool)       lastModifiedDateTime = optional(string)       location = optional(any)       locations = optional(list(object({       odata_type = optional(string, "#microsoft.graph.location")       address = optional(any)       coordinates = optional(any)       displayName = optional(string)       locationEmailAddress = optional(string)       locationUri = optional(string)       uniqueId = optional(string)       uniqueIdType = optional(any)     })))       onlineMeetingProvider = optional(any)       organizer = optional(any)       originalEndTimeZone = optional(string)       originalStart = optional(string)       originalStartTimeZone = optional(string)       recurrence = optional(any)       reminderMinutesBeforeStart = optional(number)       responseRequested = optional(bool)       responseStatus = optional(any)       sensitivity = optional(any)       seriesMasterId = optional(string)       showAs = optional(any)       start = optional(any)       subject = optional(string)       transactionId = optional(string)       webLink = optional(string)     }))` | no | no |
-| `extensions` | `extensions` | `list(object({       odata_type = optional(string, "#microsoft.graph.extension")     }))` | no | no |
+| `end` | `end` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
+| `exception_occurrences` | `exceptionOccurrences` | `list(object({       odata_type = optional(string, "#microsoft.graph.event")       allowNewTimeProposals = optional(bool)       attendees = optional(list(object({       odata_type = optional(string, "#microsoft.graph.attendee")       emailAddress = optional(object({       odata_type = optional(string, "#microsoft.graph.emailAddress")       address = optional(string)       name = optional(string)     }))       proposedNewTime = optional(object({       odata_type = optional(string, "#microsoft.graph.timeSlot")       end = optional(any)       start = optional(any)     }))       status = optional(object({       odata_type = optional(string, "#microsoft.graph.responseStatus")       response = optional(string)       time = optional(string)     }))       type = optional(string)     })))       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))       bodyPreview = optional(string)       cancelledOccurrences = optional(list(string))       categories = optional(list(string))       createdDateTime = optional(string)       end = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       exceptionOccurrences = optional(any)       extensions = optional(any)       hasAttachments = optional(bool)       hideAttendees = optional(bool)       importance = optional(string)       isAllDay = optional(bool)       isCancelled = optional(bool)       isDraft = optional(bool)       isOnlineMeeting = optional(bool)       isOrganizer = optional(bool)       isReminderOn = optional(bool)       lastModifiedDateTime = optional(string)       location = optional(any)       locations = optional(any)       onlineMeetingProvider = optional(string)       organizer = optional(any)       originalEndTimeZone = optional(string)       originalStart = optional(string)       originalStartTimeZone = optional(string)       recurrence = optional(object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     }))       reminderMinutesBeforeStart = optional(number)       responseRequested = optional(bool)       responseStatus = optional(object({       odata_type = optional(string, "#microsoft.graph.responseStatus")       response = optional(string)       time = optional(string)     }))       sensitivity = optional(string)       seriesMasterId = optional(string)       showAs = optional(string)       start = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       subject = optional(string)       transactionId = optional(string)       webLink = optional(string)     }))` | no | no |
+| `extensions` | `extensions` | `any` | no | no |
 | `has_attachments` | `hasAttachments` | `bool` | no | no |
 | `hide_attendees` | `hideAttendees` | `bool` | no | no |
-| `importance` | `importance` | `any` | no | no |
+| `importance` | `importance` | `string` | no | no |
 | `is_all_day` | `isAllDay` | `bool` | no | no |
 | `is_cancelled` | `isCancelled` | `bool` | no | no |
 | `is_draft` | `isDraft` | `bool` | no | no |
@@ -47,21 +47,21 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `is_reminder_on` | `isReminderOn` | `bool` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `location` | `location` | `any` | no | no |
-| `locations` | `locations` | `list(object({       odata_type = optional(string, "#microsoft.graph.location")       address = optional(any)       coordinates = optional(any)       displayName = optional(string)       locationEmailAddress = optional(string)       locationUri = optional(string)       uniqueId = optional(string)       uniqueIdType = optional(any)     }))` | no | no |
+| `locations` | `locations` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `online_meeting_provider` | `onlineMeetingProvider` | `any` | no | no |
+| `online_meeting_provider` | `onlineMeetingProvider` | `string` | no | no |
 | `organizer` | `organizer` | `any` | no | no |
 | `original_end_time_zone` | `originalEndTimeZone` | `string` | no | no |
 | `original_start` | `originalStart` | `string` | no | no |
 | `original_start_time_zone` | `originalStartTimeZone` | `string` | no | no |
-| `recurrence` | `recurrence` | `any` | no | no |
+| `recurrence` | `recurrence` | `object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     })` | no | no |
 | `reminder_minutes_before_start` | `reminderMinutesBeforeStart` | `number` | no | no |
 | `response_requested` | `responseRequested` | `bool` | no | no |
-| `response_status` | `responseStatus` | `any` | no | no |
-| `sensitivity` | `sensitivity` | `any` | no | no |
+| `response_status` | `responseStatus` | `object({       odata_type = optional(string, "#microsoft.graph.responseStatus")       response = optional(string)       time = optional(string)     })` | no | no |
+| `sensitivity` | `sensitivity` | `string` | no | no |
 | `series_master_id` | `seriesMasterId` | `string` | no | no |
-| `show_as` | `showAs` | `any` | no | no |
-| `start` | `start` | `any` | no | no |
+| `show_as` | `showAs` | `string` | no | no |
+| `start` | `start` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
 | `subject` | `subject` | `string` | no | no |
 | `transaction_id` | `transactionId` | `string` | no | no |
 | `web_link` | `webLink` | `string` | no | no |
@@ -81,43 +81,17 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- attendees[].emailAddress: polymorphic schema; accepts an untyped value
-- attendees[].proposedNewTime: polymorphic schema; accepts an untyped value
-- attendees[].status: polymorphic schema; accepts an untyped value
-- attendees[].type: polymorphic schema; accepts an untyped value
-- body: polymorphic schema; accepts an untyped value
-- end: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].attendees[].emailAddress: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].attendees[].proposedNewTime: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].attendees[].status: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].attendees[].type: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].body: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].end: polymorphic schema; accepts an untyped value
+- exceptionOccurrences[].attendees[].proposedNewTime.end: nested schema exceeds depth limit; accepts an untyped value
+- exceptionOccurrences[].attendees[].proposedNewTime.start: nested schema exceeds depth limit; accepts an untyped value
 - exceptionOccurrences[].exceptionOccurrences[]: recursive schema; accepts an untyped value
-- exceptionOccurrences[].importance: polymorphic schema; accepts an untyped value
+- exceptionOccurrences[].extensions[]: polymorphic schema; accepts an untyped value
 - exceptionOccurrences[].location: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].locations[].address: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].locations[].coordinates: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].locations[].uniqueIdType: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].onlineMeetingProvider: polymorphic schema; accepts an untyped value
+- exceptionOccurrences[].locations[]: polymorphic schema; accepts an untyped value
 - exceptionOccurrences[].organizer: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].recurrence: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].responseStatus: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].sensitivity: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].showAs: polymorphic schema; accepts an untyped value
-- exceptionOccurrences[].start: polymorphic schema; accepts an untyped value
-- importance: polymorphic schema; accepts an untyped value
+- extensions[]: polymorphic schema; accepts an untyped value
 - location: polymorphic schema; accepts an untyped value
-- locations[].address: polymorphic schema; accepts an untyped value
-- locations[].coordinates: polymorphic schema; accepts an untyped value
-- locations[].uniqueIdType: polymorphic schema; accepts an untyped value
-- onlineMeetingProvider: polymorphic schema; accepts an untyped value
+- locations[]: polymorphic schema; accepts an untyped value
 - organizer: polymorphic schema; accepts an untyped value
-- recurrence: polymorphic schema; accepts an untyped value
-- responseStatus: polymorphic schema; accepts an untyped value
-- sensitivity: polymorphic schema; accepts an untyped value
-- showAs: polymorphic schema; accepts an untyped value
-- start: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

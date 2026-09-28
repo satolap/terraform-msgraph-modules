@@ -48,15 +48,21 @@ variable "activity" {
       lastActiveDateTime    = optional(string)
       lastModifiedDateTime  = optional(string)
       startedDateTime       = optional(string)
-      status                = optional(any)
+      status                = optional(string)
       userTimezone          = optional(string)
     })))
     lastModifiedDateTime = optional(string)
-    status               = optional(any)
+    status               = optional(string)
     userTimezone         = optional(string)
     visualElements = optional(object({
-      odata_type      = optional(string, "#microsoft.graph.visualInfo")
-      attribution     = optional(any)
+      odata_type = optional(string, "#microsoft.graph.visualInfo")
+      attribution = optional(object({
+        odata_type      = optional(string, "#microsoft.graph.imageInfo")
+        addImageQuery   = optional(bool)
+        alternateText   = optional(string)
+        alternativeText = optional(string)
+        iconUrl         = optional(string)
+      }))
       backgroundColor = optional(string)
       content         = optional(any)
       description     = optional(string)
@@ -105,7 +111,7 @@ variable "started_date_time" {
 
 variable "status" {
   description = "Set by the server. A status code used to identify valid objects. Values: active, updated, deleted, ignored."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -30,8 +30,31 @@ variable "directory_object_id" {
 
 variable "error" {
   description = "Contains error details if an error occurred while creating a protection unit."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.publicError")
+    code       = optional(string)
+    details = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+      code       = optional(string)
+      message    = optional(string)
+      target     = optional(string)
+    })))
+    innerError = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicInnerError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    message = optional(string)
+    target  = optional(string)
+  })
+  default = null
 }
 
 variable "last_modified_by" {
@@ -48,7 +71,7 @@ variable "last_modified_date_time" {
 
 variable "mailbox_type" {
   description = "The type of mailbox which is assigned to the user with id: directoryObjectId.The possible values are: unknown, user, shared, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -82,14 +105,14 @@ variable "protection_sources" {
   default     = null
 
   validation {
-    condition     = var.protection_sources == null ? true : contains(["none", "manual", "dynamicRule", "unknownFutureValue"], var.protection_sources)
-    error_message = "protection_sources must be one of the documented enum values."
+    condition     = var.protection_sources == null ? true : try(alltrue([for value in split(",", var.protection_sources) : contains(["none", "manual", "dynamicrule", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "protection_sources must be one or more of the documented enum values, separated by commas."
   }
 }
 
 variable "status" {
   description = "The status of the protection unit. The possible values are: protectRequested, protected, unprotectRequested, unprotected, removeRequested, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

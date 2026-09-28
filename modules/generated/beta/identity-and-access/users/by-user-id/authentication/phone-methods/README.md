@@ -26,8 +26,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `user_id` | URL parameter `user-id` | `string` | yes | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `phone_number` | `phoneNumber` | `string` | no | no |
-| `phone_type` | `phoneType` | `any` | no | no |
-| `sms_sign_in_state` | `smsSignInState` | `any` | no | no |
+| `phone_type` | `phoneType` | `string` | no | no |
+| `sms_sign_in_state` | `smsSignInState` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -45,8 +45,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- phoneType: polymorphic schema; accepts an untyped value
-- smsSignInState: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

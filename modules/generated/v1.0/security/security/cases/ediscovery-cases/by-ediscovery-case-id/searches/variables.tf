@@ -17,14 +17,8 @@ variable "add_to_review_set_operation" {
 
 variable "additional_sources" {
   description = "Adds an additional source to the eDiscovery search."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.security.dataSource")
-    createdBy       = optional(any)
-    createdDateTime = optional(string)
-    displayName     = optional(string)
-    holdStatus      = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "content_query" {
@@ -47,24 +41,18 @@ variable "created_date_time" {
 
 variable "custodian_sources" {
   description = "Custodian sources that are included in the eDiscovery search."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.security.dataSource")
-    createdBy       = optional(any)
-    createdDateTime = optional(string)
-    displayName     = optional(string)
-    holdStatus      = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "data_source_scopes" {
   description = "When specified, the collection spans across a service for an entire workload. The possible values are: none, allTenantMailboxes, allTenantSites, allCaseCustodians, allCaseNoncustodialDataSources."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.data_source_scopes == null ? true : contains(["none", "allTenantMailboxes", "allTenantSites", "allCaseCustodians", "allCaseNoncustodialDataSources", "unknownFutureValue"], var.data_source_scopes)
-    error_message = "data_source_scopes must be one of the documented enum values."
+    condition     = var.data_source_scopes == null ? true : try(alltrue([for value in split(",", var.data_source_scopes) : contains(["none", "alltenantmailboxes", "alltenantsites", "allcasecustodians", "allcasenoncustodialdatasources", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "data_source_scopes must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -105,11 +93,11 @@ variable "noncustodial_sources" {
     createdDateTime      = optional(string)
     dataSource           = optional(any)
     displayName          = optional(string)
-    holdStatus           = optional(any)
+    holdStatus           = optional(string)
     lastIndexOperation   = optional(any)
     lastModifiedDateTime = optional(string)
     releasedDateTime     = optional(string)
-    status               = optional(any)
+    status               = optional(string)
   }))
   default = null
 }

@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `printer_id` | URL parameter `printer-id` | `string` | yes | no |
 | `print_job_id` | URL parameter `printJob-id` | `string` | yes | no |
-| `configuration` | `configuration` | `object({       odata_type = optional(string, "#microsoft.graph.printerDocumentConfiguration")       collate = optional(bool)       colorMode = optional(any)       copies = optional(number)       dpi = optional(number)       duplexMode = optional(any)       feedDirection = optional(any)       feedOrientation = optional(any)       finishings = optional(any)       fitPdfToPage = optional(bool)       inputBin = optional(string)       margin = optional(any)       mediaSize = optional(string)       mediaType = optional(string)       multipageLayout = optional(any)       orientation = optional(any)       outputBin = optional(string)       pageRanges = optional(list(object({       odata_type = optional(string, "#microsoft.graph.integerRange")       end = optional(number)       maximum = optional(number)       minimum = optional(number)       start = optional(number)     })))       pagesPerSheet = optional(number)       quality = optional(any)       scaling = optional(any)     })` | no | no |
+| `configuration` | `configuration` | `object({       odata_type = optional(string, "#microsoft.graph.printerDocumentConfiguration")       collate = optional(bool)       colorMode = optional(string)       copies = optional(number)       dpi = optional(number)       duplexMode = optional(string)       feedDirection = optional(string)       feedOrientation = optional(string)       finishings = optional(list(string))       fitPdfToPage = optional(bool)       inputBin = optional(string)       margin = optional(object({       odata_type = optional(string, "#microsoft.graph.printMargin")       bottom = optional(number)       left = optional(number)       right = optional(number)       top = optional(number)     }))       mediaSize = optional(string)       mediaType = optional(string)       multipageLayout = optional(string)       orientation = optional(string)       outputBin = optional(string)       pageRanges = optional(list(object({       odata_type = optional(string, "#microsoft.graph.integerRange")       end = optional(number)       maximum = optional(number)       minimum = optional(number)       start = optional(number)     })))       pagesPerSheet = optional(number)       quality = optional(string)       scaling = optional(string)     })` | no | no |
 | `downloaded_date_time` | `downloadedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `uploaded_date_time` | `uploadedDateTime` | `string` | no | no |
@@ -47,16 +47,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- configuration.colorMode: polymorphic schema; accepts an untyped value
-- configuration.duplexMode: polymorphic schema; accepts an untyped value
-- configuration.feedDirection: polymorphic schema; accepts an untyped value
-- configuration.feedOrientation: polymorphic schema; accepts an untyped value
-- configuration.finishings[]: polymorphic schema; accepts an untyped value
-- configuration.margin: polymorphic schema; accepts an untyped value
-- configuration.multipageLayout: polymorphic schema; accepts an untyped value
-- configuration.orientation: polymorphic schema; accepts an untyped value
-- configuration.quality: polymorphic schema; accepts an untyped value
-- configuration.scaling: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

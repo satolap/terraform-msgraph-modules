@@ -19,7 +19,7 @@ variable "description" {
   type = object({
     odata_type = optional(string, "#microsoft.graph.security.formattedContent")
     content    = optional(string)
-    format     = optional(any)
+    format     = optional(string)
   })
   default = null
 }
@@ -33,10 +33,8 @@ variable "first_active_date_time" {
 variable "indicators" {
   description = "Includes an assemblage of high-fidelity network indicators of compromise."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.security.intelligenceProfileIndicator")
-    artifact = optional(object({
-      odata_type = optional(string, "#microsoft.graph.security.artifact")
-    }))
+    odata_type        = optional(string, "#microsoft.graph.security.intelligenceProfileIndicator")
+    artifact          = optional(any)
     firstSeenDateTime = optional(string)
     lastSeenDateTime  = optional(string)
     source            = optional(string)
@@ -67,7 +65,7 @@ variable "summary" {
   type = object({
     odata_type = optional(string, "#microsoft.graph.security.formattedContent")
     content    = optional(string)
-    format     = optional(any)
+    format     = optional(string)
   })
   default = null
 }
@@ -86,8 +84,12 @@ variable "title" {
 
 variable "tradecraft" {
   description = "Formatted information featuring a description of the distinctive tactics, techniques, and procedures (TTP) of the group, followed by a list of all known custom, commodity, and publicly available implants used by the group."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.security.formattedContent")
+    content    = optional(string)
+    format     = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

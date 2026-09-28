@@ -1,7 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "connectionInfo"   = (var.connection_info == null ? null : { for key0, value0 in { "@odata.type" = var.connection_info["odata_type"], "url" = var.connection_info["url"] } : key0 => value0 if value0 != null })
+    "connectionInfo"   = var.connection_info
     "connectorType"    = var.connector_type
     "createdBy"        = var.created_by
     "createdDateTime"  = var.created_date_time

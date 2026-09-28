@@ -23,7 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `allow_email_verified_users_to_join_organization` | `allowEmailVerifiedUsersToJoinOrganization` | `bool` | no | no |
-| `allow_invites_from` | `allowInvitesFrom` | `any` | no | no |
+| `allow_invites_from` | `allowInvitesFrom` | `string` | no | no |
 | `allow_user_consent_for_risky_apps` | `allowUserConsentForRiskyApps` | `bool` | no | no |
 | `allowed_to_sign_up_email_based_subscriptions` | `allowedToSignUpEmailBasedSubscriptions` | `bool` | no | no |
 | `allowed_to_use_sspr` | `allowedToUseSSPR` | `bool` | no | no |
@@ -54,7 +54,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- allowInvitesFrom: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

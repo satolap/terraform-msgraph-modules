@@ -27,7 +27,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `user_id` | URL parameter `user-id` | `string` | yes | no |
 | `section_group_id` | URL parameter `sectionGroup-id` | `string` | yes | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `links` | `links` | `any` | no | no |
+| `links` | `links` | `object({       odata_type = optional(string, "#microsoft.graph.sectionLinks")       oneNoteClientUrl = optional(object({       odata_type = optional(string, "#microsoft.graph.externalLink")       href = optional(string)     }))       oneNoteWebUrl = optional(object({       odata_type = optional(string, "#microsoft.graph.externalLink")       href = optional(string)     }))     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -42,10 +42,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- links: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

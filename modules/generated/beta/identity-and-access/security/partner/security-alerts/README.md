@@ -38,7 +38,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `resolved_by` | `resolvedBy` | `string` | no | no |
 | `resolved_on_date_time` | `resolvedOnDateTime` | `string` | no | no |
-| `resolved_reason` | `resolvedReason` | `any` | no | no |
+| `resolved_reason` | `resolvedReason` | `string` | no | no |
 | `severity` | `severity` | `string` | no | no |
 | `status` | `status` | `string` | no | no |
 | `subscription_id` | `subscriptionId` | `string` | no | no |
@@ -61,7 +61,6 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - additionalDetails: polymorphic schema; accepts an untyped value
-- resolvedReason: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

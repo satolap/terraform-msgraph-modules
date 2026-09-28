@@ -45,7 +45,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - target: polymorphic schema; accepts an untyped value
-- userSettingsPersistenceDetail: polymorphic schema; accepts an untyped value
+- userSettingsPersistenceDetail: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

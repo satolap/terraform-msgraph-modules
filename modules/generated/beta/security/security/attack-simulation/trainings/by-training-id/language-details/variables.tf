@@ -17,8 +17,13 @@ variable "content" {
 
 variable "created_by" {
   description = "Identity of the user who created the language details."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "created_date_time" {
@@ -47,8 +52,13 @@ variable "is_default_langauge" {
 
 variable "last_modified_by" {
   description = "Identity of the user who last modified the details."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "last_modified_date_time" {

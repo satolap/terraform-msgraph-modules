@@ -9,33 +9,24 @@ variable "alerts" {
     assignedTo       = optional(string)
     categories       = optional(list(string))
     category         = optional(string)
-    classification   = optional(any)
+    classification   = optional(string)
     comments = optional(list(object({
       odata_type           = optional(string, "#microsoft.graph.security.alertComment")
       comment              = optional(string)
       createdByDisplayName = optional(string)
       createdDateTime      = optional(string)
     })))
-    createdDateTime = optional(string)
-    customDetails   = optional(any)
-    description     = optional(string)
-    detectionSource = optional(any)
-    detectorId      = optional(string)
-    determination   = optional(any)
-    evidence = optional(list(object({
-      odata_type               = optional(string, "#microsoft.graph.security.alertEvidence")
-      createdDateTime          = optional(string)
-      detailedRoles            = optional(list(string))
-      remediationStatus        = optional(string)
-      remediationStatusDetails = optional(string)
-      roles                    = optional(list(string))
-      tags                     = optional(list(string))
-      verdict                  = optional(string)
-    })))
+    createdDateTime       = optional(string)
+    customDetails         = optional(any)
+    description           = optional(string)
+    detectionSource       = optional(string)
+    detectorId            = optional(string)
+    determination         = optional(string)
+    evidence              = optional(any)
     firstActivityDateTime = optional(string)
     incidentId            = optional(string)
     incidentWebUrl        = optional(string)
-    investigationState    = optional(any)
+    investigationState    = optional(string)
     lastActivityDateTime  = optional(string)
     lastUpdateDateTime    = optional(string)
     mitreTechniques       = optional(list(string))
@@ -63,7 +54,7 @@ variable "assigned_to" {
 
 variable "classification" {
   description = "The specification for the incident. The possible values are: unknown, falsePositive, truePositive, informationalExpectedActivity, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -103,7 +94,7 @@ variable "description" {
 
 variable "determination" {
   description = "Specifies the determination of the incident. The possible values are: unknown, apt, malware, securityPersonnel, securityTesting, unwantedSoftware, other, multiStagedAttack, compromisedUser, phishing, maliciousUserActivity, clean, insufficientData, confirmedActivity, lineOfBusinessApplication, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

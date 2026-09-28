@@ -19,12 +19,18 @@ run "typed_request" {
   command = plan
 
   variables {
-    activity_date_time = "2026-01-01T00:00:00Z"
+    activity = "signin"
+    location = { "city" = null }
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["activityDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
-    error_message = "activityDateTime must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["activity"]) == jsonencode("signin")
+    error_message = "activity must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["location"]) == jsonencode({ "@odata.type" = "#microsoft.graph.signInLocation" })
+    error_message = "location must preserve typed values and omit nested nulls."
   }
 }
 

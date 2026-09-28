@@ -1,9 +1,9 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
+    "@odata.type"     = var.odata_type
     "createdDateTime" = var.created_date_time
     "isRevoked"       = var.is_revoked
-    "@odata.type"     = var.odata_type
     "revokedDateTime" = var.revoked_date_time
     "updatePolicy"    = var.update_policy
   } : key => value if value != null }

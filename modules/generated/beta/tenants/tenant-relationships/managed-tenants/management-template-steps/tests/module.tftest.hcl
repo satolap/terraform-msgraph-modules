@@ -19,19 +19,25 @@ run "typed_request" {
   command = plan
 
   variables {
-    created_by_user_id = "example"
-    priority           = -2147483648
-    information_links  = [{}]
+    category          = "custom"
+    priority          = -2147483648
+    portal_link       = { "displayName" = null }
+    information_links = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["createdByUserId"]) == jsonencode("example")
-    error_message = "createdByUserId must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["category"]) == jsonencode("custom")
+    error_message = "category must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["priority"]) == jsonencode(-2147483648)
     error_message = "priority must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["portalLink"]) == jsonencode({ "@odata.type" = "#microsoft.graph.actionUrl" })
+    error_message = "portalLink must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `alert_display_name` | `alertDisplayName` | `string` | no | no |
 | `alert_ttl` | `alertTTL` | `number` | no | no |
-| `alerts` | `alerts` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantAlert")       alertData = optional(any)       alertDataReferenceStrings = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.alertDataReferenceString")       displayName = optional(string)     })))       alertLogs = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantAlertLog")       alert = optional(any)       content = optional(any)       createdByUserId = optional(string)       createdDateTime = optional(string)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)     })))       alertRule = optional(any)       alertRuleDisplayName = optional(string)       apiNotifications = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantApiNotification")       alert = optional(any)       createdByUserId = optional(string)       createdDateTime = optional(string)       isAcknowledged = optional(bool)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       message = optional(string)       title = optional(string)       userId = optional(string)     })))       assignedToUserId = optional(string)       correlationCount = optional(number)       correlationId = optional(string)       createdByUserId = optional(string)       createdDateTime = optional(string)       emailNotifications = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantEmailNotification")       alert = optional(any)       createdByUserId = optional(string)       createdDateTime = optional(string)       emailAddresses = optional(any)       emailBody = optional(string)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       subject = optional(string)     })))       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       message = optional(string)       severity = optional(any)       status = optional(any)       tenantId = optional(string)       title = optional(string)     }))` | no | no |
+| `alerts` | `alerts` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantAlert")       alertData = optional(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.alertData")       displayName = optional(string)     }))       alertDataReferenceStrings = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.alertDataReferenceString")       displayName = optional(string)     })))       alertLogs = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantAlertLog")       alert = optional(any)       content = optional(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.alertLogContent")       displayName = optional(string)     }))       createdByUserId = optional(string)       createdDateTime = optional(string)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)     })))       alertRule = optional(any)       alertRuleDisplayName = optional(string)       apiNotifications = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantApiNotification")       alert = optional(any)       createdByUserId = optional(string)       createdDateTime = optional(string)       isAcknowledged = optional(bool)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       message = optional(string)       title = optional(string)       userId = optional(string)     })))       assignedToUserId = optional(string)       correlationCount = optional(number)       correlationId = optional(string)       createdByUserId = optional(string)       createdDateTime = optional(string)       emailNotifications = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantEmailNotification")       alert = optional(any)       createdByUserId = optional(string)       createdDateTime = optional(string)       emailAddresses = optional(any)       emailBody = optional(string)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       subject = optional(string)     })))       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       message = optional(string)       severity = optional(string)       status = optional(string)       tenantId = optional(string)       title = optional(string)     }))` | no | no |
 | `created_by_user_id` | `createdByUserId` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
@@ -32,10 +32,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `last_action_by_user_id` | `lastActionByUserId` | `string` | no | no |
 | `last_action_date_time` | `lastActionDateTime` | `string` | no | no |
 | `last_run_date_time` | `lastRunDateTime` | `string` | no | no |
-| `notification_final_destinations` | `notificationFinalDestinations` | `any` | no | no |
+| `notification_final_destinations` | `notificationFinalDestinations` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `rule_definition` | `ruleDefinition` | `any` | no | no |
-| `severity` | `severity` | `any` | no | no |
+| `severity` | `severity` | `string` | no | no |
 | `targets` | `targets` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.notificationTarget")       displayName = optional(string)     }))` | no | no |
 | `tenant_ids` | `tenantIds` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.tenantInfo")       tenantId = optional(string)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -55,18 +55,12 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- alerts[].alertData: polymorphic schema; accepts an untyped value
-- alerts[].alertLogs[].alert: polymorphic schema; accepts an untyped value
-- alerts[].alertLogs[].content: polymorphic schema; accepts an untyped value
-- alerts[].alertRule: polymorphic schema; accepts an untyped value
-- alerts[].apiNotifications[].alert: polymorphic schema; accepts an untyped value
-- alerts[].emailNotifications[].alert: polymorphic schema; accepts an untyped value
+- alerts[].alertLogs[].alert: navigation property; accepts an untyped value
+- alerts[].alertRule: navigation property; accepts an untyped value
+- alerts[].apiNotifications[].alert: navigation property; accepts an untyped value
+- alerts[].emailNotifications[].alert: navigation property; accepts an untyped value
 - alerts[].emailNotifications[].emailAddresses[]: nested schema exceeds depth limit; accepts an untyped value
-- alerts[].severity: polymorphic schema; accepts an untyped value
-- alerts[].status: polymorphic schema; accepts an untyped value
-- notificationFinalDestinations: polymorphic schema; accepts an untyped value
-- ruleDefinition: polymorphic schema; accepts an untyped value
-- severity: polymorphic schema; accepts an untyped value
+- ruleDefinition: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

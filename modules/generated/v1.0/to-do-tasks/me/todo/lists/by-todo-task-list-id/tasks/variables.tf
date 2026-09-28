@@ -22,20 +22,18 @@ variable "attachment_sessions" {
 
 variable "attachments" {
   description = "A collection of file attachments for the task."
-  type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.attachmentBase")
-    contentType          = optional(string)
-    lastModifiedDateTime = optional(string)
-    name                 = optional(string)
-    size                 = optional(number)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "body" {
   description = "The task body that typically contains information about the task."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.itemBody")
+    content     = optional(string)
+    contentType = optional(string)
+  })
+  default = null
 }
 
 variable "body_last_modified_date_time" {
@@ -64,8 +62,12 @@ variable "checklist_items" {
 
 variable "completed_date_time" {
   description = "The date and time in the specified time zone that the task was finished."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+    dateTime   = optional(string)
+    timeZone   = optional(string)
+  })
+  default = null
 }
 
 variable "created_date_time" {
@@ -76,16 +78,18 @@ variable "created_date_time" {
 
 variable "due_date_time" {
   description = "The date and time in the specified time zone that the task is to be finished."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+    dateTime   = optional(string)
+    timeZone   = optional(string)
+  })
+  default = null
 }
 
 variable "extensions" {
   description = "The collection of open extensions defined for the task. Nullable."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.extension")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "has_attachments" {
@@ -138,20 +142,48 @@ variable "odata_type" {
 
 variable "recurrence" {
   description = "The recurrence pattern for the task."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.patternedRecurrence")
+    pattern = optional(object({
+      odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+      dayOfMonth     = optional(number)
+      daysOfWeek     = optional(list(string))
+      firstDayOfWeek = optional(string)
+      index          = optional(string)
+      interval       = optional(number)
+      month          = optional(number)
+      type           = optional(string)
+    }))
+    range = optional(object({
+      odata_type          = optional(string, "#microsoft.graph.recurrenceRange")
+      endDate             = optional(string)
+      numberOfOccurrences = optional(number)
+      recurrenceTimeZone  = optional(string)
+      startDate           = optional(string)
+      type                = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "reminder_date_time" {
   description = "The date and time in the specified time zone for a reminder alert of the task to occur."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+    dateTime   = optional(string)
+    timeZone   = optional(string)
+  })
+  default = null
 }
 
 variable "start_date_time" {
   description = "The date and time in the specified time zone at which the task is scheduled to start."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+    dateTime   = optional(string)
+    timeZone   = optional(string)
+  })
+  default = null
 }
 
 variable "status" {

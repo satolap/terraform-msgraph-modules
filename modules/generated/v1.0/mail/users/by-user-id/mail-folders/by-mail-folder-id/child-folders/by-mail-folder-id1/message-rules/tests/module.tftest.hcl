@@ -31,6 +31,7 @@ run "typed_request" {
     display_name    = "example"
     is_enabled      = false
     sequence        = -2147483648
+    actions         = { "assignCategories" = null }
   }
 
   assert {
@@ -46,5 +47,10 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["sequence"]) == jsonencode(-2147483648)
     error_message = "sequence must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["actions"]) == jsonencode({ "@odata.type" = "#microsoft.graph.messageRuleActions" })
+    error_message = "actions must preserve typed values and omit nested nulls."
   }
 }

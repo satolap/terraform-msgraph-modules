@@ -19,7 +19,13 @@ run "typed_request" {
   command = plan
 
   variables {
+    status        = "unknown"
     is_registered = false
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["status"]) == jsonencode("unknown")
+    error_message = "status must preserve typed values and omit nested nulls."
   }
 
   assert {

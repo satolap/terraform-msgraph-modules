@@ -6,7 +6,7 @@ locals {
     "displayName"          = var.display_name
     "lastModifiedBy"       = var.last_modified_by
     "lastModifiedDateTime" = var.last_modified_date_time
-    "links"                = var.links
+    "links"                = (var.links == null ? null : { for key0, value0 in { "@odata.type" = var.links["odata_type"], "oneNoteClientUrl" = (var.links["oneNoteClientUrl"] == null ? null : { for key1, value1 in { "@odata.type" = var.links["oneNoteClientUrl"]["odata_type"], "href" = var.links["oneNoteClientUrl"]["href"] } : key1 => value1 if value1 != null }), "oneNoteWebUrl" = (var.links["oneNoteWebUrl"] == null ? null : { for key1, value1 in { "@odata.type" = var.links["oneNoteWebUrl"]["odata_type"], "href" = var.links["oneNoteWebUrl"]["href"] } : key1 => value1 if value1 != null }) } : key0 => value0 if value0 != null })
     "@odata.type"          = var.odata_type
     "self"                 = var.self
   } : key => value if value != null }

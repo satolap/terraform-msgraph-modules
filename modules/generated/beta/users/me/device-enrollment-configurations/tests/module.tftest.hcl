@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "#microsoft.graph.deviceComanagementAuthorityConfiguration"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "me/deviceEnrollmentConfigurations"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,9 +23,15 @@ run "typed_request" {
   command = plan
 
   variables {
+    odata_type        = "#microsoft.graph.deviceComanagementAuthorityConfiguration"
     created_date_time = "2026-01-01T00:00:00Z"
     graph_version     = -2147483648
     assignments       = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.deviceComanagementAuthorityConfiguration")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -44,8 +54,8 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    device_enrollment_configuration_type = "__graphmodules_invalid_enum__"
+    odata_type = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.device_enrollment_configuration_type]
+  expect_failures = [var.odata_type]
 }

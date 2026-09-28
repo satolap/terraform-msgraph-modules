@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `certificate_authorities` | `certificateAuthorities` | `list(object({       odata_type = optional(string, "#microsoft.graph.certificateAuthorityDetail")       certificate = optional(string)       certificateAuthorityType = optional(any)       certificateRevocationListUrl = optional(string)       createdDateTime = optional(string)       deletedDateTime = optional(string)       deltaCertificateRevocationListUrl = optional(string)       displayName = optional(string)       expirationDateTime = optional(string)       isIssuerHintEnabled = optional(bool)       issuer = optional(string)       issuerSubjectKeyIdentifier = optional(string)       thumbprint = optional(string)     }))` | no | no |
+| `certificate_authorities` | `certificateAuthorities` | `list(object({       odata_type = optional(string, "#microsoft.graph.certificateAuthorityDetail")       certificate = optional(string)       certificateAuthorityType = optional(string)       certificateRevocationListUrl = optional(string)       createdDateTime = optional(string)       deletedDateTime = optional(string)       deltaCertificateRevocationListUrl = optional(string)       displayName = optional(string)       expirationDateTime = optional(string)       isIssuerHintEnabled = optional(bool)       issuer = optional(string)       issuerSubjectKeyIdentifier = optional(string)       thumbprint = optional(string)     }))` | no | no |
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
@@ -46,7 +46,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- certificateAuthorities[].certificateAuthorityType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

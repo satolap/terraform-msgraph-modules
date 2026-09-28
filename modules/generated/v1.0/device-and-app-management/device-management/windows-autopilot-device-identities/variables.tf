@@ -17,7 +17,7 @@ variable "display_name" {
 }
 
 variable "enrollment_state" {
-  description = "Microsoft Graph enrollmentState property."
+  description = "Intune enrollment state of the Windows autopilot device."
   type        = string
   default     = null
 

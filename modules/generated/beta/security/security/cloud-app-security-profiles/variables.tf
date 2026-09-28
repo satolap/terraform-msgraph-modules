@@ -61,7 +61,7 @@ variable "odata_type" {
 
 variable "permissions_required" {
   description = "Microsoft Graph permissionsRequired property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -108,8 +108,14 @@ variable "type" {
 
 variable "vendor_information" {
   description = "Microsoft Graph vendorInformation property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.securityVendorInformation")
+    provider        = optional(string)
+    providerVersion = optional(string)
+    subProvider     = optional(string)
+    vendor          = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

@@ -22,6 +22,7 @@ run "typed_request" {
     app_display_name                    = "example"
     flagged_for_review                  = false
     autonomous_system_number            = -2147483648
+    agent                               = { "agentSubjectParentId" = null }
     applied_conditional_access_policies = [{}]
   }
 
@@ -41,6 +42,11 @@ run "typed_request" {
   }
 
   assert {
+    condition     = jsonencode(msgraph_resource.this.body["agent"]) == jsonencode({ "@odata.type" = "#microsoft.graph.agentic.agentSignIn" })
+    error_message = "agent must preserve typed values and omit nested nulls."
+  }
+
+  assert {
     condition     = jsonencode(msgraph_resource.this.body["appliedConditionalAccessPolicies"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.appliedConditionalAccessPolicy" }])
     error_message = "appliedConditionalAccessPolicies must preserve typed values and omit nested nulls."
   }
@@ -54,4 +60,39 @@ run "invalid_enum" {
   }
 
   expect_failures = [var.app_token_protection_status]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    authentication_protocol  = "none, OAuth2"
+    cross_tenant_access_type = "none, B2bCollaboration"
+    incoming_token_type      = "none, PrimaryRefreshToken"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["authenticationProtocol"] == "none, OAuth2"
+    error_message = "authenticationProtocol must accept combined flags enum members."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["crossTenantAccessType"] == "none, B2bCollaboration"
+    error_message = "crossTenantAccessType must accept combined flags enum members."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["incomingTokenType"] == "none, PrimaryRefreshToken"
+    error_message = "incomingTokenType must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    authentication_protocol = "none,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.authentication_protocol]
 }

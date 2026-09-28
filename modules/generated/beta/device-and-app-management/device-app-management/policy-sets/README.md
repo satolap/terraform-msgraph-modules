@@ -28,7 +28,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `display_name` | `displayName` | `string` | no | no |
 | `error_code` | `errorCode` | `string` | no | no |
 | `guided_deployment_tags` | `guidedDeploymentTags` | `list(string)` | no | no |
-| `items` | `items` | `list(object({       odata_type = optional(string, "#microsoft.graph.policySetItem")       createdDateTime = optional(string)       displayName = optional(string)       errorCode = optional(string)       guidedDeploymentTags = optional(list(string))       itemType = optional(string)       lastModifiedDateTime = optional(string)       payloadId = optional(string)       status = optional(string)     }))` | no | no |
+| `items` | `items` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `role_scope_tags` | `roleScopeTags` | `list(string)` | no | no |
@@ -51,6 +51,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].target: polymorphic schema; accepts an untyped value
+- items[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

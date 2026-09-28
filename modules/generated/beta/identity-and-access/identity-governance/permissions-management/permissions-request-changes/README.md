@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `active_occurrence_status` | `activeOccurrenceStatus` | `any` | no | no |
+| `active_occurrence_status` | `activeOccurrenceStatus` | `string` | no | no |
 | `modification_date_time` | `modificationDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `permissions_request_id` | `permissionsRequestId` | `string` | no | no |
@@ -45,7 +45,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- activeOccurrenceStatus: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

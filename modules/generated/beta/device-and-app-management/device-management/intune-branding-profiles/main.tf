@@ -18,9 +18,9 @@ locals {
     "isDefaultProfile"               = var.is_default_profile
     "isFactoryResetDisabled"         = var.is_factory_reset_disabled
     "isRemoveDeviceDisabled"         = var.is_remove_device_disabled
-    "landingPageCustomizedImage"     = var.landing_page_customized_image
+    "landingPageCustomizedImage"     = (var.landing_page_customized_image == null ? null : { for key0, value0 in { "@odata.type" = var.landing_page_customized_image["odata_type"], "type" = var.landing_page_customized_image["type"], "value" = var.landing_page_customized_image["value"] } : key0 => value0 if value0 != null })
     "lastModifiedDateTime"           = var.last_modified_date_time
-    "lightBackgroundLogo"            = var.light_background_logo
+    "lightBackgroundLogo"            = (var.light_background_logo == null ? null : { for key0, value0 in { "@odata.type" = var.light_background_logo["odata_type"], "type" = var.light_background_logo["type"], "value" = var.light_background_logo["value"] } : key0 => value0 if value0 != null })
     "@odata.type"                    = var.odata_type
     "onlineSupportSiteName"          = var.online_support_site_name
     "onlineSupportSiteUrl"           = var.online_support_site_url
@@ -33,8 +33,8 @@ locals {
     "showDisplayNameNextToLogo"      = var.show_display_name_next_to_logo
     "showLogo"                       = var.show_logo
     "showOfficeWebApps"              = var.show_office_web_apps
-    "themeColor"                     = var.theme_color
-    "themeColorLogo"                 = var.theme_color_logo
+    "themeColor"                     = (var.theme_color == null ? null : { for key0, value0 in { "@odata.type" = var.theme_color["odata_type"], "b" = var.theme_color["b"], "g" = var.theme_color["g"], "r" = var.theme_color["r"] } : key0 => value0 if value0 != null })
+    "themeColorLogo"                 = (var.theme_color_logo == null ? null : { for key0, value0 in { "@odata.type" = var.theme_color_logo["odata_type"], "type" = var.theme_color_logo["type"], "value" = var.theme_color_logo["value"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

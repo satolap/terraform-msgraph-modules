@@ -1,13 +1,36 @@
 variable "address" {
   description = "The street address of the business. The address property, together with phone and webSiteUrl, appear in the footer of a business scheduling page."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.physicalAddress")
+    city            = optional(string)
+    countryOrRegion = optional(string)
+    postOfficeBox   = optional(string)
+    postalCode      = optional(string)
+    state           = optional(string)
+    street          = optional(string)
+    type            = optional(string)
+  })
+  default = null
 }
 
 variable "booking_page_settings" {
   description = "Settings for the published booking page."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                              = optional(string, "#microsoft.graph.bookingPageSettings")
+    accessControl                           = optional(string)
+    bookingPageColorCode                    = optional(string)
+    businessTimeZone                        = optional(string)
+    customerConsentMessage                  = optional(string)
+    enforceOneTimePassword                  = optional(bool)
+    isBusinessLogoDisplayEnabled            = optional(bool)
+    isCustomerConsentEnabled                = optional(bool)
+    isSearchEngineIndexabilityDisabled      = optional(bool)
+    isTimeSlotTimeZoneSetToBusinessTimeZone = optional(bool)
+    privacyPolicyWebUrl                     = optional(string)
+    termsAndConditionsWebUrl                = optional(string)
+  })
+  default   = null
+  sensitive = true
 }
 
 variable "business_hours" {
@@ -40,7 +63,7 @@ variable "custom_questions" {
   description = "All custom questions of this business."
   type = list(object({
     odata_type          = optional(string, "#microsoft.graph.bookingCustomQuestion")
-    answerInputType     = optional(any)
+    answerInputType     = optional(string)
     answerOptions       = optional(list(string))
     createdDateTime     = optional(string)
     displayName         = optional(string)
@@ -94,8 +117,28 @@ variable "phone" {
 
 variable "scheduling_policy" {
   description = "Specifies how bookings can be created for this business."
-  type        = any
-  default     = null
+  type = object({
+    odata_type          = optional(string, "#microsoft.graph.bookingSchedulingPolicy")
+    allowStaffSelection = optional(bool)
+    customAvailabilities = optional(list(object({
+      odata_type       = optional(string, "#microsoft.graph.bookingsAvailabilityWindow")
+      availabilityType = optional(string)
+      businessHours = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.bookingWorkHours")
+        day        = optional(string)
+        timeSlots  = optional(any)
+      })))
+      endDate   = optional(string)
+      startDate = optional(string)
+    })))
+    generalAvailability               = optional(any)
+    isMeetingInviteToCustomersEnabled = optional(bool)
+    maximumAdvance                    = optional(string)
+    minimumLeadTime                   = optional(string)
+    sendConfirmationsToOwner          = optional(bool)
+    timeSlotInterval                  = optional(string)
+  })
+  default = null
 }
 
 variable "web_site_url" {

@@ -35,12 +35,8 @@ variable "source_id" {
 
 variable "target" {
   description = "Base type for assignment targets."
-  type = object({
-    odata_type                                 = optional(string, "#microsoft.graph.deviceAndAppManagementAssignmentTarget")
-    deviceAndAppManagementAssignmentFilterId   = optional(string)
-    deviceAndAppManagementAssignmentFilterType = optional(string)
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

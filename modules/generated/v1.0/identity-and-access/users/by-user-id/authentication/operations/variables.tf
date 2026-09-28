@@ -36,7 +36,7 @@ variable "resource_location" {
 
 variable "status" {
   description = "The status of the operation. The possible values are: notStarted, running, succeeded, failed, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

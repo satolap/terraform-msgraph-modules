@@ -14,3 +14,16 @@ run "minimal_request" {
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
+
+run "typed_request" {
+  command = plan
+
+  variables {
+    settings = { "contentApplicability" = null }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["settings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.windowsUpdates.deploymentSettings" })
+    error_message = "settings must preserve typed values and omit nested nulls."
+  }
+}

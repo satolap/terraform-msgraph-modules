@@ -1,6 +1,17 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.callActivityStatistics", "#microsoft.graph.chatActivityStatistics", "#microsoft.graph.emailActivityStatistics", "#microsoft.graph.focusActivityStatistics", "#microsoft.graph.meetingActivityStatistics"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "activity" {
   description = "The type of activity for which statistics are returned. The possible values are: call, chat, email, focus, and meeting."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -19,13 +30,6 @@ variable "end_date" {
   description = "Date when the activity ended, expressed in ISO 8601 format for calendar dates. For example, the property value could be '2019-07-03' that follows the YYYY-MM-DD format."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.activityStatistics"
-  nullable    = false
 }
 
 variable "start_date" {

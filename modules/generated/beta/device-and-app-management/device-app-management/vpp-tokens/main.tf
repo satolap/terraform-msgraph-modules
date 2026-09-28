@@ -18,7 +18,7 @@ locals {
     "roleScopeTagIds"                     = (var.role_scope_tag_ids == null ? null : [for item0 in var.role_scope_tag_ids : item0 if item0 != null])
     "state"                               = var.state
     "token"                               = var.token
-    "tokenActionResults"                  = (var.token_action_results == null ? null : [for item0 in var.token_action_results : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "actionName" = item0["actionName"], "actionState" = item0["actionState"], "lastUpdatedDateTime" = item0["lastUpdatedDateTime"], "startDateTime" = item0["startDateTime"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "tokenActionResults"                  = (var.token_action_results == null ? null : [for item0 in var.token_action_results : item0 if item0 != null])
     "vppTokenAccountType"                 = var.vpp_token_account_type
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)

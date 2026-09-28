@@ -3,7 +3,7 @@ variable "case_members" {
   type = list(object({
     odata_type    = optional(string, "#microsoft.graph.security.ediscoveryCaseMember")
     displayName   = optional(string)
-    recipientType = optional(any)
+    recipientType = optional(string)
     smtpAddress   = optional(string)
   }))
   default = null
@@ -35,7 +35,7 @@ variable "custodians" {
     createdDateTime      = optional(string)
     displayName          = optional(string)
     email                = optional(string)
-    holdStatus           = optional(any)
+    holdStatus           = optional(string)
     lastIndexOperation   = optional(any)
     lastModifiedDateTime = optional(string)
     releasedDateTime     = optional(string)
@@ -44,7 +44,7 @@ variable "custodians" {
       createdBy       = optional(any)
       createdDateTime = optional(string)
       displayName     = optional(string)
-      holdStatus      = optional(any)
+      holdStatus      = optional(string)
       site = optional(object({
         odata_type             = optional(string, "#microsoft.graph.site")
         analytics              = optional(any)
@@ -65,7 +65,7 @@ variable "custodians" {
         lastModifiedByUser     = optional(any)
         lists                  = optional(any)
         locale                 = optional(string)
-        lockState              = optional(any)
+        lockState              = optional(string)
         name                   = optional(string)
         onenote                = optional(any)
         operations             = optional(any)
@@ -77,11 +77,11 @@ variable "custodians" {
         recycleBin             = optional(any)
         shareByEmailEnabled    = optional(bool)
         sites                  = optional(any)
-        template               = optional(any)
+        template               = optional(string)
         termStore              = optional(any)
       }))
     })))
-    status = optional(any)
+    status = optional(string)
     unifiedGroupSources = optional(list(object({
       odata_type      = optional(string, "#microsoft.graph.security.unifiedGroupSource")
       createdBy       = optional(any)
@@ -90,7 +90,7 @@ variable "custodians" {
       group = optional(object({
         odata_type                    = optional(string, "#microsoft.graph.group")
         acceptedSenders               = optional(any)
-        accessType                    = optional(any)
+        accessType                    = optional(string)
         allowExternalSenders          = optional(bool)
         appRoleAssignments            = optional(any)
         assignedLabels                = optional(any)
@@ -144,8 +144,8 @@ variable "custodians" {
         welcomeMessageEnabled         = optional(bool)
         writebackConfiguration        = optional(any)
       }))
-      holdStatus      = optional(any)
-      includedSources = optional(any)
+      holdStatus      = optional(string)
+      includedSources = optional(string)
     })))
     userSources = optional(list(object({
       odata_type      = optional(string, "#microsoft.graph.security.userSource")
@@ -153,8 +153,8 @@ variable "custodians" {
       createdDateTime = optional(string)
       displayName     = optional(string)
       email           = optional(string)
-      holdStatus      = optional(any)
-      includedSources = optional(any)
+      holdStatus      = optional(string)
+      includedSources = optional(string)
     })))
   }))
   default = null
@@ -208,7 +208,7 @@ variable "legal_holds" {
       createdBy       = optional(any)
       createdDateTime = optional(string)
       displayName     = optional(string)
-      holdStatus      = optional(any)
+      holdStatus      = optional(string)
       site = optional(object({
         odata_type             = optional(string, "#microsoft.graph.site")
         analytics              = optional(any)
@@ -229,7 +229,7 @@ variable "legal_holds" {
         lastModifiedByUser     = optional(any)
         lists                  = optional(any)
         locale                 = optional(string)
-        lockState              = optional(any)
+        lockState              = optional(string)
         name                   = optional(string)
         onenote                = optional(any)
         operations             = optional(any)
@@ -241,19 +241,19 @@ variable "legal_holds" {
         recycleBin             = optional(any)
         shareByEmailEnabled    = optional(bool)
         sites                  = optional(any)
-        template               = optional(any)
+        template               = optional(string)
         termStore              = optional(any)
       }))
     })))
-    status = optional(any)
+    status = optional(string)
     userSources = optional(list(object({
       odata_type      = optional(string, "#microsoft.graph.security.userSource")
       createdBy       = optional(any)
       createdDateTime = optional(string)
       displayName     = optional(string)
       email           = optional(string)
-      holdStatus      = optional(any)
-      includedSources = optional(any)
+      holdStatus      = optional(string)
+      includedSources = optional(string)
     })))
   }))
   default = null
@@ -266,11 +266,11 @@ variable "noncustodial_data_sources" {
     createdDateTime      = optional(string)
     dataSource           = optional(any)
     displayName          = optional(string)
-    holdStatus           = optional(any)
+    holdStatus           = optional(string)
     lastIndexOperation   = optional(any)
     lastModifiedDateTime = optional(string)
     releasedDateTime     = optional(string)
-    status               = optional(any)
+    status               = optional(string)
   }))
   default = null
 }
@@ -284,17 +284,8 @@ variable "odata_type" {
 
 variable "operations" {
   description = "Returns a list of case caseOperation objects for this case."
-  type = list(object({
-    odata_type        = optional(string, "#microsoft.graph.security.caseOperation")
-    action            = optional(any)
-    completedDateTime = optional(string)
-    createdBy         = optional(any)
-    createdDateTime   = optional(string)
-    percentProgress   = optional(number)
-    resultInfo        = optional(any)
-    status            = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "review_sets" {
@@ -313,10 +304,10 @@ variable "review_sets" {
       mediaType            = optional(string)
       name                 = optional(string)
       otherProperties      = optional(any)
-      processingStatus     = optional(any)
+      processingStatus     = optional(string)
       senderOrAuthors      = optional(list(string))
       size                 = optional(number)
-      sourceType           = optional(any)
+      sourceType           = optional(string)
       subjectTitle         = optional(string)
       tags                 = optional(any)
     })))
@@ -337,26 +328,14 @@ variable "review_sets" {
 variable "searches" {
   description = "Returns a list of eDiscoverySearch objects associated with this case."
   type = list(object({
-    odata_type              = optional(string, "#microsoft.graph.security.ediscoverySearch")
-    addToReviewSetOperation = optional(any)
-    additionalSources = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.security.dataSource")
-      createdBy       = optional(any)
-      createdDateTime = optional(string)
-      displayName     = optional(string)
-      holdStatus      = optional(any)
-    })))
-    contentQuery    = optional(string)
-    createdBy       = optional(any)
-    createdDateTime = optional(string)
-    custodianSources = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.security.dataSource")
-      createdBy       = optional(any)
-      createdDateTime = optional(string)
-      displayName     = optional(string)
-      holdStatus      = optional(any)
-    })))
-    dataSourceScopes                = optional(any)
+    odata_type                      = optional(string, "#microsoft.graph.security.ediscoverySearch")
+    addToReviewSetOperation         = optional(any)
+    additionalSources               = optional(any)
+    contentQuery                    = optional(string)
+    createdBy                       = optional(any)
+    createdDateTime                 = optional(string)
+    custodianSources                = optional(any)
+    dataSourceScopes                = optional(string)
     description                     = optional(string)
     displayName                     = optional(string)
     lastEstimateStatisticsOperation = optional(any)
@@ -367,11 +346,11 @@ variable "searches" {
       createdDateTime      = optional(string)
       dataSource           = optional(any)
       displayName          = optional(string)
-      holdStatus           = optional(any)
+      holdStatus           = optional(string)
       lastIndexOperation   = optional(any)
       lastModifiedDateTime = optional(string)
       releasedDateTime     = optional(string)
-      status               = optional(any)
+      status               = optional(string)
     })))
   }))
   default = null
@@ -385,7 +364,7 @@ variable "settings" {
 
 variable "status" {
   description = "Microsoft Graph status property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -398,7 +377,7 @@ variable "tags" {
   description = "Returns a list of ediscoveryReviewTag objects associated to this case."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.security.ediscoveryReviewTag")
-    childSelectability   = optional(any)
+    childSelectability   = optional(string)
     childTags            = optional(any)
     createdBy            = optional(any)
     description          = optional(string)

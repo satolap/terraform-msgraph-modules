@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `authentication_type` | `authenticationType` | `string` | no | no |
 | `availability_status` | `availabilityStatus` | `string` | no | no |
-| `federation_configuration` | `federationConfiguration` | `list(object({       odata_type = optional(string, "#microsoft.graph.internalDomainFederation")       activeSignInUri = optional(string)       defaultInteractiveAuthenticationMethod = optional(string)       displayName = optional(string)       federatedIdpMfaBehavior = optional(any)       isSignedAuthenticationRequestRequired = optional(bool)       issuerUri = optional(string)       metadataExchangeUri = optional(string)       nextSigningCertificate = optional(string)       openIdConnectDiscoveryEndpoint = optional(string)       passiveSignInUri = optional(string)       passwordChangeUri = optional(string)       passwordResetUri = optional(string)       preferredAuthenticationProtocol = optional(any)       promptLoginBehavior = optional(any)       signOutUri = optional(string)       signingCertificate = optional(string)       signingCertificateUpdateStatus = optional(any)     }))` | no | yes |
+| `federation_configuration` | `federationConfiguration` | `list(object({       odata_type = optional(string, "#microsoft.graph.internalDomainFederation")       activeSignInUri = optional(string)       defaultInteractiveAuthenticationMethod = optional(string)       displayName = optional(string)       federatedIdpMfaBehavior = optional(string)       isSignedAuthenticationRequestRequired = optional(bool)       issuerUri = optional(string)       metadataExchangeUri = optional(string)       nextSigningCertificate = optional(string)       openIdConnectDiscoveryEndpoint = optional(string)       passiveSignInUri = optional(string)       passwordChangeUri = optional(string)       passwordResetUri = optional(string)       preferredAuthenticationProtocol = optional(string)       promptLoginBehavior = optional(string)       signOutUri = optional(string)       signingCertificate = optional(string)       signingCertificateUpdateStatus = optional(object({       odata_type = optional(string, "#microsoft.graph.signingCertificateUpdateStatus")     }))     }))` | no | yes |
 | `is_admin_managed` | `isAdminManaged` | `bool` | no | no |
 | `is_default` | `isDefault` | `bool` | no | no |
 | `is_initial` | `isInitial` | `bool` | no | no |
@@ -34,7 +34,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `password_notification_window_in_days` | `passwordNotificationWindowInDays` | `number` | no | yes |
 | `password_validity_period_in_days` | `passwordValidityPeriodInDays` | `number` | no | yes |
 | `shared_email_domain_invitations` | `sharedEmailDomainInvitations` | `list(object({       odata_type = optional(string, "#microsoft.graph.sharedEmailDomainInvitation")       expiryTime = optional(string)       invitationDomain = optional(string)       invitationStatus = optional(string)     }))` | no | no |
-| `state` | `state` | `any` | no | no |
+| `state` | `state` | `object({       odata_type = optional(string, "#microsoft.graph.domainState")       lastActionDateTime = optional(string)       operation = optional(string)       status = optional(string)     })` | no | no |
 | `supported_services` | `supportedServices` | `list(string)` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -53,11 +53,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- federationConfiguration[].federatedIdpMfaBehavior: polymorphic schema; accepts an untyped value
-- federationConfiguration[].preferredAuthenticationProtocol: polymorphic schema; accepts an untyped value
-- federationConfiguration[].promptLoginBehavior: polymorphic schema; accepts an untyped value
-- federationConfiguration[].signingCertificateUpdateStatus: polymorphic schema; accepts an untyped value
-- state: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

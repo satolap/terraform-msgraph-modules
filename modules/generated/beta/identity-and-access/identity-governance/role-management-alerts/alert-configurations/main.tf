@@ -1,10 +1,10 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
+    "@odata.type"       = var.odata_type
     "alertDefinition"   = var.alert_definition
     "alertDefinitionId" = var.alert_definition_id
     "isEnabled"         = var.is_enabled
-    "@odata.type"       = var.odata_type
     "scopeId"           = var.scope_id
     "scopeType"         = var.scope_type
   } : key => value if value != null }

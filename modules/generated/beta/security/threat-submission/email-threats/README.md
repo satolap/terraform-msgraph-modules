@@ -13,6 +13,7 @@ Lifecycle: `POST /threatSubmission/emailThreats`, `GET/PATCH/DELETE /threatSubmi
 ```hcl
 module "graph_resource" {
   source = "./security/threat-submission/email-threats"
+  odata_type = "#microsoft.graph.security.emailContentThreatSubmission"
 }
 ```
 
@@ -22,29 +23,29 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `admin_review` | `adminReview` | `any` | no | no |
-| `attack_simulation_info` | `attackSimulationInfo` | `any` | no | no |
+| `odata_type` | `@odata.type` | `string` | yes | no |
+| `admin_review` | `adminReview` | `object({       odata_type = optional(string, "#microsoft.graph.security.submissionAdminReview")       reviewBy = optional(string)       reviewDateTime = optional(string)       reviewResult = optional(string)     })` | no | no |
+| `attack_simulation_info` | `attackSimulationInfo` | `object({       odata_type = optional(string, "#microsoft.graph.security.attackSimulationInfo")       attackSimDateTime = optional(string)       attackSimDurationTime = optional(string)       attackSimId = optional(string)       attackSimUserId = optional(string)     })` | no | no |
 | `category` | `category` | `string` | no | no |
-| `client_source` | `clientSource` | `any` | no | no |
-| `content_type` | `contentType` | `any` | no | no |
-| `created_by` | `createdBy` | `any` | no | no |
+| `client_source` | `clientSource` | `string` | no | no |
+| `content_type` | `contentType` | `string` | no | no |
+| `created_by` | `createdBy` | `object({       odata_type = optional(string, "#microsoft.graph.security.submissionUserIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     })` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `graph_source` | `source` | `any` | no | no |
+| `graph_source` | `source` | `string` | no | no |
 | `internet_message_id` | `internetMessageId` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
-| `original_category` | `originalCategory` | `any` | no | no |
+| `original_category` | `originalCategory` | `string` | no | no |
 | `received_date_time` | `receivedDateTime` | `string` | no | no |
 | `recipient_email_address` | `recipientEmailAddress` | `string` | no | no |
-| `result` | `result` | `any` | no | no |
+| `result` | `result` | `object({       odata_type = optional(string, "#microsoft.graph.security.submissionResult")       category = optional(string)       detail = optional(string)       detectedFiles = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.submissionDetectedFile")       fileHash = optional(string)       fileName = optional(string)     })))       detectedUrls = optional(list(string))       userMailboxSetting = optional(string)     })` | no | no |
 | `sender` | `sender` | `string` | no | no |
 | `sender_ip` | `senderIP` | `string` | no | no |
-| `status` | `status` | `any` | no | no |
+| `status` | `status` | `string` | no | no |
 | `subject` | `subject` | `string` | no | no |
-| `tenant_allow_or_block_list_action` | `tenantAllowOrBlockListAction` | `any` | no | no |
+| `tenant_allow_or_block_list_action` | `tenantAllowOrBlockListAction` | `object({       odata_type = optional(string, "#microsoft.graph.security.tenantAllowOrBlockListAction")       action = optional(string)       expirationDateTime = optional(string)       note = optional(string)       results = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.tenantAllowBlockListEntryResult")       entryType = optional(string)       expirationDateTime = optional(string)       identity = optional(string)       status = optional(string)       value = optional(string)     })))     })` | no | no |
 | `tenant_id` | `tenantId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
-Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.
 
 Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
@@ -58,17 +59,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- @odata.type: microsoft.graph.security.emailThreatSubmission is abstract; odata_type has no default and must name a concrete type
 - Microsoft Graph beta contracts can change without notice.
-- adminReview: polymorphic schema; accepts an untyped value
-- attackSimulationInfo: polymorphic schema; accepts an untyped value
-- clientSource: polymorphic schema; accepts an untyped value
-- contentType: polymorphic schema; accepts an untyped value
-- createdBy: polymorphic schema; accepts an untyped value
-- originalCategory: polymorphic schema; accepts an untyped value
-- result: polymorphic schema; accepts an untyped value
-- source: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
-- tenantAllowOrBlockListAction: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

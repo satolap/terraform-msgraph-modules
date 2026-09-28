@@ -25,12 +25,18 @@ run "typed_request" {
   variables {
     application_id               = "test-parent-id"
     template_id                  = "example"
+    status                       = { "code" = null }
     synchronization_job_settings = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["templateId"]) == jsonencode("example")
     error_message = "templateId must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["status"]) == jsonencode({ "@odata.type" = "#microsoft.graph.synchronizationStatus" })
+    error_message = "status must preserve typed values and omit nested nulls."
   }
 
   assert {

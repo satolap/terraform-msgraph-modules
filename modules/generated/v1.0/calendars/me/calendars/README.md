@@ -22,19 +22,19 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `allowed_online_meeting_providers` | `allowedOnlineMeetingProviders` | `any` | no | no |
-| `calendar_permissions` | `calendarPermissions` | `list(object({       odata_type = optional(string, "#microsoft.graph.calendarPermission")       allowedRoles = optional(any)       isInsideOrganization = optional(bool)       isRemovable = optional(bool)       role = optional(any)     }))` | no | no |
+| `allowed_online_meeting_providers` | `allowedOnlineMeetingProviders` | `list(string)` | no | no |
+| `calendar_permissions` | `calendarPermissions` | `list(object({       odata_type = optional(string, "#microsoft.graph.calendarPermission")       allowedRoles = optional(list(string))       isInsideOrganization = optional(bool)       isRemovable = optional(bool)       role = optional(string)     }))` | no | no |
 | `can_edit` | `canEdit` | `bool` | no | no |
 | `can_share` | `canShare` | `bool` | no | no |
 | `can_view_private_items` | `canViewPrivateItems` | `bool` | no | no |
-| `color` | `color` | `any` | no | no |
-| `default_online_meeting_provider` | `defaultOnlineMeetingProvider` | `any` | no | no |
+| `color` | `color` | `string` | no | no |
+| `default_online_meeting_provider` | `defaultOnlineMeetingProvider` | `string` | no | no |
 | `is_default_calendar` | `isDefaultCalendar` | `bool` | no | no |
 | `is_removable` | `isRemovable` | `bool` | no | no |
 | `is_tallying_responses` | `isTallyingResponses` | `bool` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `owner` | `owner` | `any` | no | no |
+| `owner` | `owner` | `object({       odata_type = optional(string, "#microsoft.graph.emailAddress")       address = optional(string)       name = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -48,15 +48,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- allowedOnlineMeetingProviders[]: polymorphic schema; accepts an untyped value
-- calendarPermissions[].allowedRoles[]: polymorphic schema; accepts an untyped value
-- calendarPermissions[].role: polymorphic schema; accepts an untyped value
-- color: polymorphic schema; accepts an untyped value
-- defaultOnlineMeetingProvider: polymorphic schema; accepts an untyped value
-- owner: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "container"                         = var.container
-    "contentSensitivityLabelAssignment" = var.content_sensitivity_label_assignment
+    "contentSensitivityLabelAssignment" = (var.content_sensitivity_label_assignment == null ? null : { for key0, value0 in { "@odata.type" = var.content_sensitivity_label_assignment["odata_type"], "assignmentMethod" = var.content_sensitivity_label_assignment["assignmentMethod"], "justificationText" = var.content_sensitivity_label_assignment["justificationText"], "sensitivityLabelId" = var.content_sensitivity_label_assignment["sensitivityLabelId"], "tenantId" = var.content_sensitivity_label_assignment["tenantId"] } : key0 => value0 if value0 != null })
     "creationSource"                    = var.creation_source
     "@odata.type"                       = var.odata_type
     "owner"                             = var.owner

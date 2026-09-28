@@ -19,8 +19,8 @@ run "typed_request" {
   command = plan
 
   variables {
-    created_date_time    = "2026-01-01T00:00:00Z"
-    authorization_system = { "authorizationSystemId" = null }
+    created_date_time = "2026-01-01T00:00:00Z"
+    high_risk_profile = { "humanCount" = null }
   }
 
   assert {
@@ -29,7 +29,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["authorizationSystem"]) == jsonencode({ "@odata.type" = "#microsoft.graph.authorizationSystem" })
-    error_message = "authorizationSystem must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["highRiskProfile"]) == jsonencode({ "@odata.type" = "#microsoft.graph.riskProfile" })
+    error_message = "highRiskProfile must preserve typed values and omit nested nulls."
   }
 }

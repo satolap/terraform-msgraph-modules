@@ -19,8 +19,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    agent_version    = "example"
-    destination_port = -2147483648
+    agent_version        = "example"
+    destination_port     = -2147483648
+    application_snapshot = { "appId" = null }
   }
 
   assert {
@@ -31,6 +32,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["destinationPort"]) == jsonencode(-2147483648)
     error_message = "destinationPort must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["applicationSnapshot"]) == jsonencode({ "@odata.type" = "#microsoft.graph.networkaccess.applicationSnapshot" })
+    error_message = "applicationSnapshot must preserve typed values and omit nested nulls."
   }
 }
 

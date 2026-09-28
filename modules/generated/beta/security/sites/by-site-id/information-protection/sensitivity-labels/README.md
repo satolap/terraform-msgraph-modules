@@ -24,9 +24,9 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `site_id` | URL parameter `site-id` | `string` | yes | no |
-| `action_source` | `actionSource` | `any` | no | no |
-| `applicable_to` | `applicableTo` | `any` | no | no |
-| `application_mode` | `applicationMode` | `any` | no | no |
+| `action_source` | `actionSource` | `string` | no | no |
+| `applicable_to` | `applicableTo` | `string` | no | no |
+| `application_mode` | `applicationMode` | `string` | no | no |
 | `auto_tooltip` | `autoTooltip` | `string` | no | no |
 | `color` | `color` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
@@ -41,7 +41,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `priority` | `priority` | `number` | no | no |
 | `rights` | `rights` | `any` | no | no |
-| `sublabels` | `sublabels` | `list(object({       odata_type = optional(string, "#microsoft.graph.sensitivityLabel")       actionSource = optional(any)       applicableTo = optional(any)       applicationMode = optional(any)       autoTooltip = optional(string)       color = optional(string)       description = optional(string)       displayName = optional(string)       hasProtection = optional(bool)       isDefault = optional(bool)       isEnabled = optional(bool)       isEndpointProtectionEnabled = optional(bool)       isScopedToUser = optional(bool)       locale = optional(string)       name = optional(string)       priority = optional(number)       rights = optional(any)       sublabels = optional(any)       toolTip = optional(string)     }))` | no | no |
+| `sublabels` | `sublabels` | `list(object({       odata_type = optional(string, "#microsoft.graph.sensitivityLabel")       actionSource = optional(string)       applicableTo = optional(string)       applicationMode = optional(string)       autoTooltip = optional(string)       color = optional(string)       description = optional(string)       displayName = optional(string)       hasProtection = optional(bool)       isDefault = optional(bool)       isEnabled = optional(bool)       isEndpointProtectionEnabled = optional(bool)       isScopedToUser = optional(bool)       locale = optional(string)       name = optional(string)       priority = optional(number)       rights = optional(any)       sublabels = optional(any)       toolTip = optional(string)     }))` | no | no |
 | `tool_tip` | `toolTip` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -60,14 +60,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- actionSource: polymorphic schema; accepts an untyped value
-- applicableTo: polymorphic schema; accepts an untyped value
-- applicationMode: polymorphic schema; accepts an untyped value
-- rights: polymorphic schema; accepts an untyped value
-- sublabels[].actionSource: polymorphic schema; accepts an untyped value
-- sublabels[].applicableTo: polymorphic schema; accepts an untyped value
-- sublabels[].applicationMode: polymorphic schema; accepts an untyped value
-- sublabels[].rights: polymorphic schema; accepts an untyped value
+- rights: navigation property; accepts an untyped value
+- sublabels[].rights: navigation property; accepts an untyped value
 - sublabels[].sublabels[]: recursive schema; accepts an untyped value
 
 ## Licensing and prerequisites

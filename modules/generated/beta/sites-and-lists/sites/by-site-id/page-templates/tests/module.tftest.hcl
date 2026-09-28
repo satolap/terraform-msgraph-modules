@@ -23,9 +23,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    site_id     = "test-parent-id"
-    description = "example"
-    web_parts   = [{}]
+    site_id          = "test-parent-id"
+    description      = "example"
+    parent_reference = { "driveType" = null }
+    web_parts        = [{}]
   }
 
   assert {
@@ -34,7 +35,12 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["webParts"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.webPart" }])
+    condition     = jsonencode(msgraph_resource.this.body["parentReference"]) == jsonencode({ "@odata.type" = "#microsoft.graph.itemReference" })
+    error_message = "parentReference must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["webParts"]) == jsonencode([{}])
     error_message = "webParts must preserve typed values and omit nested nulls."
   }
 }

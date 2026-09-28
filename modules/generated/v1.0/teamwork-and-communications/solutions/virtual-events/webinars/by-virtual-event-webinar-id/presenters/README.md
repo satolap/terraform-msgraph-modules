@@ -27,7 +27,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `email` | `email` | `string` | no | no |
 | `identity` | `identity` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `presenter_details` | `presenterDetails` | `any` | no | no |
+| `presenter_details` | `presenterDetails` | `object({       odata_type = optional(string, "#microsoft.graph.virtualEventPresenterDetails")       bio = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))       company = optional(string)       jobTitle = optional(string)       linkedInProfileWebUrl = optional(string)       personalSiteWebUrl = optional(string)       photo = optional(string)       twitterProfileWebUrl = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -45,7 +45,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - identity: polymorphic schema; accepts an untyped value
-- presenterDetails: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

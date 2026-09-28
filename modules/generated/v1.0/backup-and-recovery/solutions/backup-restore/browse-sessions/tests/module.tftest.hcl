@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "#microsoft.graph.oneDriveForBusinessBrowseSession"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "solutions/backupRestore/browseSessions"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,12 +23,24 @@ run "typed_request" {
   command = plan
 
   variables {
+    odata_type           = "#microsoft.graph.oneDriveForBusinessBrowseSession"
     backup_size_in_bytes = "example"
+    error                = { "code" = null }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.oneDriveForBusinessBrowseSession")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["backupSizeInBytes"]) == jsonencode("example")
     error_message = "backupSizeInBytes must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["error"]) == jsonencode({ "@odata.type" = "#microsoft.graph.publicError" })
+    error_message = "error must preserve typed values and omit nested nulls."
   }
 }
 
@@ -32,8 +48,8 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    status = "__graphmodules_invalid_enum__"
+    odata_type = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.status]
+  expect_failures = [var.odata_type]
 }

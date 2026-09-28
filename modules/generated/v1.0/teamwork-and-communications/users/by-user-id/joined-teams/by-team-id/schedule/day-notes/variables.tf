@@ -34,8 +34,12 @@ variable "day_note_date" {
 
 variable "draft_day_note" {
   description = "The draft version of this day note that is viewable by managers. Only contentType text is supported."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.itemBody")
+    content     = optional(string)
+    contentType = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -47,8 +51,12 @@ variable "odata_type" {
 
 variable "shared_day_note" {
   description = "The shared version of this day note that is viewable by both employees and managers. Only contentType text is supported."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.itemBody")
+    content     = optional(string)
+    contentType = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

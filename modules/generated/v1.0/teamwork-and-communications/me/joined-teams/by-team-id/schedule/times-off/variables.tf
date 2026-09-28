@@ -17,8 +17,14 @@ variable "created_by" {
 
 variable "draft_time_off" {
   description = "The draft version of this timeOff item that is viewable by managers. It must be shared before it's visible to team members. Required."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.timeOffItem")
+    endDateTime     = optional(string)
+    startDateTime   = optional(string)
+    theme           = optional(string)
+    timeOffReasonId = optional(string)
+  })
+  default = null
 }
 
 variable "is_staged_for_deletion" {
@@ -36,8 +42,14 @@ variable "odata_type" {
 
 variable "shared_time_off" {
   description = "The shared version of this timeOff that is viewable by both employees and managers. Updates to the sharedTimeOff property send notifications to users in the Teams client. Required."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.timeOffItem")
+    endDateTime     = optional(string)
+    startDateTime   = optional(string)
+    theme           = optional(string)
+    timeOffReasonId = optional(string)
+  })
+  default = null
 }
 
 variable "user_id" {

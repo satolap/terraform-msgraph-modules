@@ -43,3 +43,26 @@ run "invalid_enum" {
 
   expect_failures = [var.issuer]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    notification_type = "none, CompanyPortal"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["notificationType"] == "none, CompanyPortal"
+    error_message = "notificationType must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    notification_type = "none,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.notification_type]
+}

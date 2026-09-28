@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.entraRecoveryServices.recoveryJob", "#microsoft.graph.entraRecoveryServices.recoveryPreviewJob"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "filtering_criteria" {
   description = "Optional filtering criteria used to scope the job to specific entity types or entity IDs."
   type        = any
@@ -14,13 +25,6 @@ variable "job_start_date_time" {
   description = "The date and time when the job started."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.entraRecoveryServices.recoveryJobBase"
-  nullable    = false
 }
 
 variable "status" {

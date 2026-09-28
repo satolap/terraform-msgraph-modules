@@ -13,10 +13,8 @@ variable "odata_type" {
 
 variable "reasons" {
   description = "A collection of reasons why this access package is being suggested to the user."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.accessPackageSuggestionReason")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

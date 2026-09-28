@@ -1,9 +1,7 @@
 variable "artifact" {
   description = "Microsoft Graph artifact property."
-  type = object({
-    odata_type = optional(string, "#microsoft.graph.security.artifact")
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "graph_source" {

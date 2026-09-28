@@ -25,10 +25,14 @@ variable "created_date_time" {
 variable "deployments" {
   description = "Microsoft Graph deployments property."
   type = list(object({
-    odata_type         = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepDeployment")
-    createdByUserId    = optional(string)
-    createdDateTime    = optional(string)
-    error              = optional(any)
+    odata_type      = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepDeployment")
+    createdByUserId = optional(string)
+    createdDateTime = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.managedTenants.graphAPIErrorDetails")
+      code       = optional(string)
+      message    = optional(string)
+    }))
     lastActionByUserId = optional(string)
     lastActionDateTime = optional(string)
     status             = optional(string)

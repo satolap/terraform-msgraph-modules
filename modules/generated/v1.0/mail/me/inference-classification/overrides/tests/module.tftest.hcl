@@ -15,6 +15,25 @@ run "minimal_request" {
   }
 }
 
+run "typed_request" {
+  command = plan
+
+  variables {
+    classify_as          = "focused"
+    sender_email_address = { "address" = null }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["classifyAs"]) == jsonencode("focused")
+    error_message = "classifyAs must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["senderEmailAddress"]) == jsonencode({ "@odata.type" = "#microsoft.graph.emailAddress" })
+    error_message = "senderEmailAddress must preserve typed values and omit nested nulls."
+  }
+}
+
 run "invalid_enum" {
   command = plan
 

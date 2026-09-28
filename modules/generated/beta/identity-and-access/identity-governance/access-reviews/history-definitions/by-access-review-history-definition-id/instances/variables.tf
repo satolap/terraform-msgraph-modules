@@ -54,7 +54,7 @@ variable "run_date_time" {
 
 variable "status" {
   description = "Represents the status of the review history data collection. The possible values are: done, inProgress, error, requested, unknownFutureValue. Once the status is marked as done, you can generate a link retrieve the instance's data by calling generateDownloadUri method."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `default_mfa_method` | `defaultMfaMethod` | `any` | no | no |
+| `default_mfa_method` | `defaultMfaMethod` | `string` | no | no |
 | `is_admin` | `isAdmin` | `bool` | no | no |
 | `is_mfa_capable` | `isMfaCapable` | `bool` | no | no |
 | `is_mfa_registered` | `isMfaRegistered` | `bool` | no | no |
@@ -36,9 +36,9 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `system_preferred_authentication_methods` | `systemPreferredAuthenticationMethods` | `list(string)` | no | no |
 | `user_display_name` | `userDisplayName` | `string` | no | no |
-| `user_preferred_method_for_secondary_authentication` | `userPreferredMethodForSecondaryAuthentication` | `any` | no | no |
+| `user_preferred_method_for_secondary_authentication` | `userPreferredMethodForSecondaryAuthentication` | `string` | no | no |
 | `user_principal_name` | `userPrincipalName` | `string` | no | no |
-| `user_type` | `userType` | `any` | no | no |
+| `user_type` | `userType` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -56,9 +56,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- defaultMfaMethod: polymorphic schema; accepts an untyped value
-- userPreferredMethodForSecondaryAuthentication: polymorphic schema; accepts an untyped value
-- userType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

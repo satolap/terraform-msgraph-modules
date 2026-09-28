@@ -28,7 +28,7 @@ variable "body" {
   type = object({
     odata_type  = optional(string, "#microsoft.graph.itemBody")
     content     = optional(string)
-    contentType = optional(any)
+    contentType = optional(string)
   })
   default = null
 }
@@ -122,8 +122,13 @@ variable "title" {
 
 variable "view_point" {
   description = "Represents user viewpoints data of the service message. This data includes message status such as whether the user has archived, read, or marked the message as favorite. This property is null when accessed with application permissions."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.serviceUpdateMessageViewpoint")
+    isArchived  = optional(bool)
+    isFavorited = optional(bool)
+    isRead      = optional(bool)
+  })
+  default = null
 }
 
 variable "additional_properties" {

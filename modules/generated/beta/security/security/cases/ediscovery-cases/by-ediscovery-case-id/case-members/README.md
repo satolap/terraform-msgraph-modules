@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `ediscovery_case_id` | URL parameter `ediscoveryCase-id` | `string` | yes | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `recipient_type` | `recipientType` | `any` | no | no |
+| `recipient_type` | `recipientType` | `string` | no | no |
 | `smtp_address` | `smtpAddress` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -45,7 +45,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- recipientType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

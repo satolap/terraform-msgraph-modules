@@ -12,20 +12,14 @@ variable "display_name" {
 
 variable "external_sponsors" {
   description = "Microsoft Graph externalSponsors property."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "internal_sponsors" {
   description = "Microsoft Graph internalSponsors property."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "odata_type" {
@@ -37,7 +31,7 @@ variable "odata_type" {
 
 variable "state" {
   description = "The state of a connected organization defines whether assignment policies with requestor scope type AllConfiguredConnectedOrganizationSubjects are applicable or not. The possible values are: configured, proposed."
-  type        = any
+  type        = string
   default     = null
 
   validation {

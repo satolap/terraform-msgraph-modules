@@ -19,15 +19,15 @@ run "typed_request" {
   command = plan
 
   variables {
-    additional_information = "example"
-    is_active              = false
-    confidence             = -2147483648
-    activity_group_names   = ["example"]
+    action               = "unknown"
+    is_active            = false
+    confidence           = -2147483648
+    activity_group_names = ["example"]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["additionalInformation"]) == jsonencode("example")
-    error_message = "additionalInformation must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["action"]) == jsonencode("unknown")
+    error_message = "action must preserve typed values and omit nested nulls."
   }
 
   assert {

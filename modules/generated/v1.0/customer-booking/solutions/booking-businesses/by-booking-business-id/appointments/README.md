@@ -33,7 +33,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `customer_notes` | `customerNotes` | `string` | no | no |
 | `customer_phone` | `customerPhone` | `string` | no | no |
 | `customer_time_zone` | `customerTimeZone` | `string` | no | no |
-| `customers` | `customers` | `list(object({       odata_type = optional(string, "#microsoft.graph.bookingCustomerInformationBase")     }))` | no | no |
+| `customers` | `customers` | `any` | no | no |
 | `end_date_time` | `endDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
 | `is_customer_allowed_to_manage_booking` | `isCustomerAllowedToManageBooking` | `bool` | no | no |
 | `is_location_online` | `isLocationOnline` | `bool` | no | no |
@@ -71,6 +71,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- customers[]: object without documented properties; accepts an untyped value
 - price: polymorphic schema; accepts an untyped value
 - serviceLocation: polymorphic schema; accepts an untyped value
 

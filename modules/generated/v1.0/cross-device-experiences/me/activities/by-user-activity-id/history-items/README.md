@@ -25,14 +25,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `user_activity_id` | URL parameter `userActivity-id` | `string` | yes | no |
 | `active_duration_seconds` | `activeDurationSeconds` | `number` | no | no |
-| `activity` | `activity` | `object({       odata_type = optional(string, "#microsoft.graph.userActivity")       activationUrl = optional(string)       activitySourceHost = optional(string)       appActivityId = optional(string)       appDisplayName = optional(string)       contentInfo = optional(any)       contentUrl = optional(string)       createdDateTime = optional(string)       expirationDateTime = optional(string)       fallbackUrl = optional(string)       historyItems = optional(list(object({       odata_type = optional(string, "#microsoft.graph.activityHistoryItem")       activeDurationSeconds = optional(number)       activity = optional(any)       createdDateTime = optional(string)       expirationDateTime = optional(string)       lastActiveDateTime = optional(string)       lastModifiedDateTime = optional(string)       startedDateTime = optional(string)       status = optional(any)       userTimezone = optional(string)     })))       lastModifiedDateTime = optional(string)       status = optional(any)       userTimezone = optional(string)       visualElements = optional(object({       odata_type = optional(string, "#microsoft.graph.visualInfo")       attribution = optional(any)       backgroundColor = optional(string)       content = optional(any)       description = optional(string)       displayText = optional(string)     }))     })` | no | no |
+| `activity` | `activity` | `object({       odata_type = optional(string, "#microsoft.graph.userActivity")       activationUrl = optional(string)       activitySourceHost = optional(string)       appActivityId = optional(string)       appDisplayName = optional(string)       contentInfo = optional(any)       contentUrl = optional(string)       createdDateTime = optional(string)       expirationDateTime = optional(string)       fallbackUrl = optional(string)       historyItems = optional(list(object({       odata_type = optional(string, "#microsoft.graph.activityHistoryItem")       activeDurationSeconds = optional(number)       activity = optional(any)       createdDateTime = optional(string)       expirationDateTime = optional(string)       lastActiveDateTime = optional(string)       lastModifiedDateTime = optional(string)       startedDateTime = optional(string)       status = optional(string)       userTimezone = optional(string)     })))       lastModifiedDateTime = optional(string)       status = optional(string)       userTimezone = optional(string)       visualElements = optional(object({       odata_type = optional(string, "#microsoft.graph.visualInfo")       attribution = optional(object({       odata_type = optional(string, "#microsoft.graph.imageInfo")       addImageQuery = optional(bool)       alternateText = optional(string)       alternativeText = optional(string)       iconUrl = optional(string)     }))       backgroundColor = optional(string)       content = optional(any)       description = optional(string)       displayText = optional(string)     }))     })` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `expiration_date_time` | `expirationDateTime` | `string` | no | no |
 | `last_active_date_time` | `lastActiveDateTime` | `string` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `started_date_time` | `startedDateTime` | `string` | no | no |
-| `status` | `status` | `any` | no | no |
+| `status` | `status` | `string` | no | no |
 | `user_timezone` | `userTimezone` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -51,10 +51,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - activity.historyItems[].activity: recursive schema; accepts an untyped value
-- activity.historyItems[].status: polymorphic schema; accepts an untyped value
-- activity.status: polymorphic schema; accepts an untyped value
-- activity.visualElements.attribution: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

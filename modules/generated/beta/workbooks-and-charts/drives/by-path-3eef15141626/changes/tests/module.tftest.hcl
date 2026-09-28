@@ -34,7 +34,7 @@ run "typed_request" {
     workbook_comment_reply_id = "test-parent-id"
     comment_id                = "example"
     percent_complete          = -2147483648
-    changed_by                = { "displayName" = null }
+    assignee                  = { "displayName" = null }
   }
 
   assert {
@@ -48,7 +48,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["changedBy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.workbookEmailIdentity" })
-    error_message = "changedBy must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["assignee"]) == jsonencode({ "@odata.type" = "#microsoft.graph.workbookEmailIdentity" })
+    error_message = "assignee must preserve typed values and omit nested nulls."
   }
 }

@@ -21,7 +21,6 @@ run "typed_request" {
   variables {
     first_seen_date_time = "2026-01-01T00:00:00Z"
     port                 = -2147483648
-    host                 = { "childHostPairs" = null }
     banners              = [{}]
   }
 
@@ -33,11 +32,6 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["port"]) == jsonencode(-2147483648)
     error_message = "port must preserve typed values and omit nested nulls."
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["host"]) == jsonencode({ "@odata.type" = "#microsoft.graph.security.host" })
-    error_message = "host must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -19,11 +19,17 @@ run "typed_request" {
   command = plan
 
   variables {
-    app_version = "example"
+    app_version   = "example"
+    device_health = { "lastConnectionTime" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["appVersion"]) == jsonencode("example")
     error_message = "appVersion must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["deviceHealth"]) == jsonencode({ "@odata.type" = "#microsoft.graph.deviceHealth" })
+    error_message = "deviceHealth must preserve typed values and omit nested nulls."
   }
 }

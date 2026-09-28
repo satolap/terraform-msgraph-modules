@@ -49,7 +49,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- members[].agentCardManifest: polymorphic schema; accepts an untyped value
+- members[].agentCardManifest: navigation property; accepts an untyped value
 - members[].collections[].members[]: recursive schema; accepts an untyped value
 - members[].signatures[].header: polymorphic schema; accepts an untyped value
 

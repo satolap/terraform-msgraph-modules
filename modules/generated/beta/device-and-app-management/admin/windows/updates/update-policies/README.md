@@ -23,10 +23,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `audience` | `audience` | `any` | no | no |
-| `compliance_change_rules` | `complianceChangeRules` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.complianceChangeRule")       createdDateTime = optional(string)       lastEvaluatedDateTime = optional(string)       lastModifiedDateTime = optional(string)     }))` | no | no |
-| `compliance_changes` | `complianceChanges` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.complianceChange")       createdDateTime = optional(string)       isRevoked = optional(bool)       revokedDateTime = optional(string)       updatePolicy = optional(any)     }))` | no | no |
+| `compliance_change_rules` | `complianceChangeRules` | `any` | no | no |
+| `compliance_changes` | `complianceChanges` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `deployment_settings` | `deploymentSettings` | `any` | no | no |
+| `deployment_settings` | `deploymentSettings` | `object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.deploymentSettings")       contentApplicability = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.contentApplicabilitySettings")       offerWhileRecommendedBy = optional(list(string))       safeguard = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.safeguardSettings")       disabledSafeguardProfiles = optional(list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.safeguardProfile")       category = optional(string)     })))     }))     }))       expedite = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.expediteSettings")       isExpedited = optional(bool)       isReadinessTest = optional(bool)     }))       monitoring = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.monitoringSettings")       monitoringRules = optional(list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.monitoringRule")       action = optional(string)       signal = optional(string)       threshold = optional(number)     })))     }))       schedule = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.scheduleSettings")       gradualRollout = optional(any)       startDateTime = optional(string)     }))       userExperience = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.userExperienceSettings")       daysUntilForcedReboot = optional(number)       isHotpatchEnabled = optional(bool)       offerAsOptional = optional(bool)     }))     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -45,9 +45,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- audience: polymorphic schema; accepts an untyped value
-- complianceChanges[].updatePolicy: polymorphic schema; accepts an untyped value
-- deploymentSettings: polymorphic schema; accepts an untyped value
+- audience: navigation property; accepts an untyped value
+- complianceChangeRules[]: polymorphic schema; accepts an untyped value
+- complianceChanges[]: polymorphic schema; accepts an untyped value
+- deploymentSettings.schedule.gradualRollout: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -29,7 +29,7 @@ variable "display_name" {
 
 variable "federated_idp_mfa_behavior" {
   description = "Determines whether Microsoft Entra ID accepts the MFA performed by the federated IdP when a federated user accesses an application that is governed by a conditional access policy that requires MFA. The possible values are: acceptIfMfaDoneByFederatedIdp, enforceMfaByFederatedIdp, rejectMfaByFederatedIdp, unknownFutureValue. For more information, see federatedIdpMfaBehavior values."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -97,7 +97,7 @@ variable "password_reset_uri" {
 
 variable "preferred_authentication_protocol" {
   description = "Preferred authentication protocol. Supported values include saml or wsfed."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -108,7 +108,7 @@ variable "preferred_authentication_protocol" {
 
 variable "prompt_login_behavior" {
   description = "Sets the preferred behavior for the sign-in prompt. The possible values are: translateToFreshPasswordAuthentication, nativeSupport, disabled, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -131,8 +131,10 @@ variable "signing_certificate" {
 
 variable "signing_certificate_update_status" {
   description = "Provides status and timestamp of the last update of the signing certificate."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.signingCertificateUpdateStatus")
+  })
+  default = null
 }
 
 variable "additional_properties" {

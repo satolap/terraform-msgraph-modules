@@ -14,40 +14,36 @@ variable "content_metadata" {
   type = object({
     odata_type = optional(string, "#microsoft.graph.processContentRequest")
     activityMetadata = optional(object({
-      odata_type = optional(string, "#microsoft.graph.activityMetadata")
-      activity   = optional(string)
-      participants = optional(list(object({
-        odata_type = optional(string, "#microsoft.graph.interactionParticipant")
-        value      = optional(string)
-      })))
+      odata_type   = optional(string, "#microsoft.graph.activityMetadata")
+      activity     = optional(string)
+      participants = optional(any)
     }))
-    contentEntries = optional(list(object({
-      odata_type       = optional(string, "#microsoft.graph.processContentMetadataBase")
-      content          = optional(any)
-      contentCategory  = optional(any)
-      correlationId    = optional(string)
-      createdDateTime  = optional(string)
-      identifier       = optional(string)
-      isTruncated      = optional(bool)
-      length           = optional(number)
-      modifiedDateTime = optional(string)
-      name             = optional(string)
-      sequenceNumber   = optional(number)
-    })))
-    contextMetadata = optional(any)
+    contentEntries = optional(any)
+    contextMetadata = optional(object({
+      odata_type         = optional(string, "#microsoft.graph.contextMetadata")
+      metadataProperties = optional(any)
+    }))
     deviceMetadata = optional(object({
-      odata_type                    = optional(string, "#microsoft.graph.deviceMetadata")
-      deviceType                    = optional(string)
-      ipAddress                     = optional(string)
-      operatingSystemSpecifications = optional(any)
+      odata_type = optional(string, "#microsoft.graph.deviceMetadata")
+      deviceType = optional(string)
+      ipAddress  = optional(string)
+      operatingSystemSpecifications = optional(object({
+        odata_type              = optional(string, "#microsoft.graph.operatingSystemSpecifications")
+        operatingSystemPlatform = optional(string)
+        operatingSystemVersion  = optional(string)
+      }))
     }))
-    evaluationScope = optional(any)
-    integratedAppMetadata = optional(object({
-      odata_type = optional(string, "#microsoft.graph.integratedApplicationMetadata")
-      name       = optional(string)
-      version    = optional(string)
+    evaluationScope = optional(object({
+      odata_type = optional(string, "#microsoft.graph.evaluationScope")
+      type       = optional(string)
     }))
-    protectedAppMetadata = optional(any)
+    integratedAppMetadata = optional(any)
+    protectedAppMetadata = optional(object({
+      odata_type          = optional(string, "#microsoft.graph.protectedApplicationMetadata")
+      applicationLocation = optional(any)
+      name                = optional(string)
+      version             = optional(string)
+    }))
   })
   default = null
 }

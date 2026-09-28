@@ -24,16 +24,16 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `device_management_template_id` | URL parameter `deviceManagementTemplate-id` | `string` | yes | no |
-| `categories` | `categories` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementTemplateSettingCategory")       displayName = optional(string)       hasRequiredSetting = optional(bool)       recommendedSettings = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementSettingInstance")       definitionId = optional(string)       valueJson = optional(string)     })))       settingDefinitions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementSettingDefinition")       constraints = optional(any)       dependencies = optional(any)       description = optional(string)       displayName = optional(string)       documentationUrl = optional(string)       headerSubtitle = optional(string)       headerTitle = optional(string)       isTopLevel = optional(bool)       keywords = optional(list(string))       placeholderText = optional(string)       valueType = optional(string)     })))     }))` | no | no |
+| `categories` | `categories` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementTemplateSettingCategory")       displayName = optional(string)       hasRequiredSetting = optional(bool)       recommendedSettings = optional(any)       settingDefinitions = optional(any)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `intent_count` | `intentCount` | `number` | no | no |
 | `is_deprecated` | `isDeprecated` | `bool` | no | no |
-| `migratable_to` | `migratableTo` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementTemplate")       categories = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementTemplateSettingCategory")       displayName = optional(string)       hasRequiredSetting = optional(bool)       recommendedSettings = optional(any)       settingDefinitions = optional(any)     })))       description = optional(string)       displayName = optional(string)       intentCount = optional(number)       isDeprecated = optional(bool)       migratableTo = optional(any)       platformType = optional(string)       publishedDateTime = optional(string)       settings = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementSettingInstance")       definitionId = optional(string)       valueJson = optional(string)     })))       templateSubtype = optional(string)       templateType = optional(string)       versionInfo = optional(string)     }))` | no | no |
+| `migratable_to` | `migratableTo` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `platform_type` | `platformType` | `string` | no | no |
 | `published_date_time` | `publishedDateTime` | `string` | no | no |
-| `settings` | `settings` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementSettingInstance")       definitionId = optional(string)       valueJson = optional(string)     }))` | no | no |
+| `settings` | `settings` | `any` | no | no |
 | `template_subtype` | `templateSubtype` | `string` | no | no |
 | `template_type` | `templateType` | `string` | no | no |
 | `version_info` | `versionInfo` | `string` | no | no |
@@ -54,11 +54,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- categories[].settingDefinitions[].constraints[]: nested schema exceeds depth limit; accepts an untyped value
-- categories[].settingDefinitions[].dependencies[]: nested schema exceeds depth limit; accepts an untyped value
-- migratableTo[].categories[].recommendedSettings[]: nested schema exceeds depth limit; accepts an untyped value
-- migratableTo[].categories[].settingDefinitions[]: nested schema exceeds depth limit; accepts an untyped value
-- migratableTo[].migratableTo[]: recursive schema; accepts an untyped value
+- categories[].recommendedSettings[]: polymorphic schema; accepts an untyped value
+- categories[].settingDefinitions[]: polymorphic schema; accepts an untyped value
+- migratableTo[]: polymorphic schema; accepts an untyped value
+- settings[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

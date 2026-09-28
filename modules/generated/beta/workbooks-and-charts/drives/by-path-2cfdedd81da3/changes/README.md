@@ -30,7 +30,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `drive_item_id` | URL parameter `driveItem-id` | `string` | yes | no |
 | `workbook_comment_id` | URL parameter `workbookComment-id` | `string` | yes | no |
 | `workbook_comment_reply_id` | URL parameter `workbookCommentReply-id` | `string` | yes | no |
-| `assignee` | `assignee` | `any` | no | no |
+| `assignee` | `assignee` | `object({       odata_type = optional(string, "#microsoft.graph.workbookEmailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     })` | no | no |
 | `changed_by` | `changedBy` | `object({       odata_type = optional(string, "#microsoft.graph.workbookEmailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     })` | no | no |
 | `comment_id` | `commentId` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
@@ -59,7 +59,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- assignee: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

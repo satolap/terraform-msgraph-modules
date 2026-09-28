@@ -3,9 +3,9 @@ locals {
   typed_body = { for key, value in {
     "createdBy"     = var.created_by
     "dayNoteDate"   = var.day_note_date
-    "draftDayNote"  = var.draft_day_note
+    "draftDayNote"  = (var.draft_day_note == null ? null : { for key0, value0 in { "@odata.type" = var.draft_day_note["odata_type"], "content" = var.draft_day_note["content"], "contentType" = var.draft_day_note["contentType"] } : key0 => value0 if value0 != null })
     "@odata.type"   = var.odata_type
-    "sharedDayNote" = var.shared_day_note
+    "sharedDayNote" = (var.shared_day_note == null ? null : { for key0, value0 in { "@odata.type" = var.shared_day_note["odata_type"], "content" = var.shared_day_note["content"], "contentType" = var.shared_day_note["contentType"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

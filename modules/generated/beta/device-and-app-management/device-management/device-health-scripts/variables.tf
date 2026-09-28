@@ -23,14 +23,8 @@ variable "detection_script_content" {
 
 variable "detection_script_parameters" {
   description = "List of ComplexType DetectionScriptParameters objects."
-  type = list(object({
-    odata_type                       = optional(string, "#microsoft.graph.deviceHealthScriptParameter")
-    applyDefaultValueWhenNotAssigned = optional(bool)
-    description                      = optional(string)
-    isRequired                       = optional(bool)
-    name                             = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "device_health_script_type" {
@@ -109,14 +103,8 @@ variable "remediation_script_content" {
 
 variable "remediation_script_parameters" {
   description = "List of ComplexType RemediationScriptParameters objects."
-  type = list(object({
-    odata_type                       = optional(string, "#microsoft.graph.deviceHealthScriptParameter")
-    applyDefaultValueWhenNotAssigned = optional(bool)
-    description                      = optional(string)
-    isRequired                       = optional(bool)
-    name                             = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "role_scope_tag_ids" {

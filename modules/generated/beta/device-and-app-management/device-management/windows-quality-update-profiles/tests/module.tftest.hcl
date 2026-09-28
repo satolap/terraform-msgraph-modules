@@ -19,13 +19,19 @@ run "typed_request" {
   command = plan
 
   variables {
-    created_date_time = "2026-01-01T00:00:00Z"
-    assignments       = [{}]
+    created_date_time         = "2026-01-01T00:00:00Z"
+    expedited_update_settings = { "daysUntilForcedReboot" = null }
+    assignments               = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["createdDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
     error_message = "createdDateTime must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["expeditedUpdateSettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.expeditedWindowsQualityUpdateSettings" })
+    error_message = "expeditedUpdateSettings must preserve typed values and omit nested nulls."
   }
 
   assert {

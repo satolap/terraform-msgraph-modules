@@ -5,8 +5,11 @@ variable "alert_rules" {
     alertDisplayName = optional(string)
     alertTTL         = optional(number)
     alerts = optional(list(object({
-      odata_type                = optional(string, "#microsoft.graph.managedTenants.managedTenantAlert")
-      alertData                 = optional(any)
+      odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantAlert")
+      alertData = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.managedTenants.alertData")
+        displayName = optional(string)
+      }))
       alertDataReferenceStrings = optional(any)
       alertLogs                 = optional(any)
       alertRule                 = optional(any)
@@ -21,8 +24,8 @@ variable "alert_rules" {
       lastActionByUserId        = optional(string)
       lastActionDateTime        = optional(string)
       message                   = optional(string)
-      severity                  = optional(any)
-      status                    = optional(any)
+      severity                  = optional(string)
+      status                    = optional(string)
       tenantId                  = optional(string)
       title                     = optional(string)
     })))
@@ -33,9 +36,9 @@ variable "alert_rules" {
     lastActionByUserId            = optional(string)
     lastActionDateTime            = optional(string)
     lastRunDateTime               = optional(string)
-    notificationFinalDestinations = optional(any)
+    notificationFinalDestinations = optional(string)
     ruleDefinition                = optional(any)
-    severity                      = optional(any)
+    severity                      = optional(string)
     targets = optional(list(object({
       odata_type  = optional(string, "#microsoft.graph.managedTenants.notificationTarget")
       displayName = optional(string)
@@ -62,8 +65,11 @@ variable "created_date_time" {
 
 variable "definition_template" {
   description = "Microsoft Graph definitionTemplate property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.managedTenants.alertRuleDefinitionTemplate")
+    defaultSeverity = optional(string)
+  })
+  default = null
 }
 
 variable "display_name" {

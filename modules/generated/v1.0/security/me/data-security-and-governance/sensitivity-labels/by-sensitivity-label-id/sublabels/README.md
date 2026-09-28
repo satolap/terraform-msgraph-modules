@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `sensitivity_label_id` | URL parameter `sensitivityLabel-id` | `string` | yes | no |
-| `action_source` | `actionSource` | `any` | no | no |
+| `action_source` | `actionSource` | `string` | no | no |
 | `auto_tooltip` | `autoTooltip` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
@@ -37,7 +37,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `priority` | `priority` | `number` | no | no |
 | `rights` | `rights` | `any` | no | no |
-| `sublabels` | `sublabels` | `list(object({       odata_type = optional(string, "#microsoft.graph.sensitivityLabel")       actionSource = optional(any)       autoTooltip = optional(string)       description = optional(string)       displayName = optional(string)       hasProtection = optional(bool)       isDefault = optional(bool)       isEndpointProtectionEnabled = optional(bool)       isScopedToUser = optional(bool)       locale = optional(string)       name = optional(string)       priority = optional(number)       rights = optional(any)       sublabels = optional(any)       toolTip = optional(string)     }))` | no | no |
+| `sublabels` | `sublabels` | `list(object({       odata_type = optional(string, "#microsoft.graph.sensitivityLabel")       actionSource = optional(string)       autoTooltip = optional(string)       description = optional(string)       displayName = optional(string)       hasProtection = optional(bool)       isDefault = optional(bool)       isEndpointProtectionEnabled = optional(bool)       isScopedToUser = optional(bool)       locale = optional(string)       name = optional(string)       priority = optional(number)       rights = optional(any)       sublabels = optional(any)       toolTip = optional(string)     }))` | no | no |
 | `tool_tip` | `toolTip` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -55,10 +55,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- actionSource: polymorphic schema; accepts an untyped value
-- rights: polymorphic schema; accepts an untyped value
-- sublabels[].actionSource: polymorphic schema; accepts an untyped value
-- sublabels[].rights: polymorphic schema; accepts an untyped value
+- rights: navigation property; accepts an untyped value
+- sublabels[].rights: navigation property; accepts an untyped value
 - sublabels[].sublabels[]: recursive schema; accepts an untyped value
 
 ## Licensing and prerequisites

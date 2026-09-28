@@ -27,10 +27,16 @@ run "typed_request" {
     team_template_id            = "test-parent-id"
     team_template_definition_id = "test-parent-id"
     display_name                = "example"
+    configuration               = { "contentUrl" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["displayName"]) == jsonencode("example")
     error_message = "displayName must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["configuration"]) == jsonencode({ "@odata.type" = "#microsoft.graph.teamsTabConfiguration" })
+    error_message = "configuration must preserve typed values and omit nested nulls."
   }
 }

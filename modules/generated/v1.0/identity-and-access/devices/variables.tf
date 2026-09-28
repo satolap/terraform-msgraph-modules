@@ -126,11 +126,8 @@ variable "system_labels" {
 
 variable "transitive_member_of" {
   description = "Groups and administrative units that the device is a member of. This operation is transitive. Supports $expand."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

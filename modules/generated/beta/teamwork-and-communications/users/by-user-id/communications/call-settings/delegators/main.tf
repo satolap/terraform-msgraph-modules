@@ -1,7 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "allowedActions"  = var.allowed_actions
+    "allowedActions"  = (var.allowed_actions == null ? null : { for key0, value0 in { "@odata.type" = var.allowed_actions["odata_type"], "joinActiveCalls" = var.allowed_actions["joinActiveCalls"], "makeCalls" = var.allowed_actions["makeCalls"], "manageCallAndDelegateSettings" = var.allowed_actions["manageCallAndDelegateSettings"], "pickUpHeldCalls" = var.allowed_actions["pickUpHeldCalls"], "receiveCalls" = var.allowed_actions["receiveCalls"] } : key0 => value0 if value0 != null })
     "createdDateTime" = var.created_date_time
     "isActive"        = var.is_active
     "@odata.type"     = var.odata_type

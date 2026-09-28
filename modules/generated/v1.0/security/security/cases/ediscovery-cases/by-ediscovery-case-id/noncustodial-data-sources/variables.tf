@@ -29,7 +29,7 @@ variable "display_name" {
 
 variable "hold_status" {
   description = "The hold status of the dataSourceContainer. The possible values are: notApplied, applied, applying, removing, partial"
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -65,7 +65,7 @@ variable "released_date_time" {
 
 variable "status" {
   description = "Latest status of the dataSourceContainer. The possible values are: Active, Released."
-  type        = any
+  type        = string
   default     = null
 
   validation {

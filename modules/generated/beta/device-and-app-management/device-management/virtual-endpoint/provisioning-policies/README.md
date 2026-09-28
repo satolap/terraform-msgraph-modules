@@ -23,26 +23,26 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.cloudPcProvisioningPolicyAssignment")       target = optional(any)       userSettingsPersistenceDetail = optional(any)     }))` | no | no |
-| `autopatch` | `autopatch` | `any` | no | no |
-| `autopilot_configuration` | `autopilotConfiguration` | `any` | no | no |
+| `autopatch` | `autopatch` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcProvisioningPolicyAutopatch")       autopatchGroupId = optional(string)     })` | no | no |
+| `autopilot_configuration` | `autopilotConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcAutopilotConfiguration")       applicationTimeoutInMinutes = optional(number)       devicePreparationProfileId = optional(string)       onFailureDeviceAccessDenied = optional(bool)     })` | no | no |
 | `cloud_pc_naming_template` | `cloudPcNamingTemplate` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `domain_join_configurations` | `domainJoinConfigurations` | `list(object({       odata_type = optional(string, "#microsoft.graph.cloudPcDomainJoinConfiguration")       domainJoinType = optional(any)       onPremisesConnectionId = optional(string)       regionName = optional(string)       type = optional(any)     }))` | no | no |
+| `domain_join_configurations` | `domainJoinConfigurations` | `list(object({       odata_type = optional(string, "#microsoft.graph.cloudPcDomainJoinConfiguration")       domainJoinType = optional(string)       onPremisesConnectionId = optional(string)       regionName = optional(string)       type = optional(string)     }))` | no | no |
 | `enable_single_sign_on` | `enableSingleSignOn` | `bool` | no | no |
 | `image_display_name` | `imageDisplayName` | `string` | no | no |
 | `image_id` | `imageId` | `string` | no | no |
 | `image_type` | `imageType` | `string` | no | no |
 | `local_admin_enabled` | `localAdminEnabled` | `bool` | no | no |
 | `managed_by` | `managedBy` | `string` | no | no |
-| `microsoft_managed_desktop` | `microsoftManagedDesktop` | `any` | no | no |
+| `microsoft_managed_desktop` | `microsoftManagedDesktop` | `object({       odata_type = optional(string, "#microsoft.graph.microsoftManagedDesktop")       managedType = optional(string)       profile = optional(string)       type = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `provisioning_type` | `provisioningType` | `any` | no | no |
+| `provisioning_type` | `provisioningType` | `string` | no | no |
 | `snapshot_reset_mode` | `snapshotResetMode` | `string` | no | no |
-| `user_experience_type` | `userExperienceType` | `any` | no | no |
-| `user_settings_persistence_configuration` | `userSettingsPersistenceConfiguration` | `any` | no | no |
-| `windows_setting` | `windowsSetting` | `any` | no | no |
-| `windows_settings` | `windowsSettings` | `any` | no | no |
+| `user_experience_type` | `userExperienceType` | `string` | no | no |
+| `user_settings_persistence_configuration` | `userSettingsPersistenceConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcUserSettingsPersistenceConfiguration")       userSettingsPersistenceEnabled = optional(bool)       userSettingsPersistenceStorageSizeCategory = optional(string)     })` | no | no |
+| `windows_setting` | `windowsSetting` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcWindowsSetting")       locale = optional(string)     })` | no | no |
+| `windows_settings` | `windowsSettings` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcWindowsSettings")       language = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -61,17 +61,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].target: polymorphic schema; accepts an untyped value
-- assignments[].userSettingsPersistenceDetail: polymorphic schema; accepts an untyped value
-- autopatch: polymorphic schema; accepts an untyped value
-- autopilotConfiguration: polymorphic schema; accepts an untyped value
-- domainJoinConfigurations[].domainJoinType: polymorphic schema; accepts an untyped value
-- domainJoinConfigurations[].type: polymorphic schema; accepts an untyped value
-- microsoftManagedDesktop: polymorphic schema; accepts an untyped value
-- provisioningType: polymorphic schema; accepts an untyped value
-- userExperienceType: polymorphic schema; accepts an untyped value
-- userSettingsPersistenceConfiguration: polymorphic schema; accepts an untyped value
-- windowsSetting: polymorphic schema; accepts an untyped value
-- windowsSettings: polymorphic schema; accepts an untyped value
+- assignments[].userSettingsPersistenceDetail: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

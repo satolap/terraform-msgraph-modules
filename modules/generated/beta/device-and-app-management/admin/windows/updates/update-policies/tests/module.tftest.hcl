@@ -20,6 +20,7 @@ run "typed_request" {
 
   variables {
     created_date_time       = "2026-01-01T00:00:00Z"
+    deployment_settings     = { "contentApplicability" = null }
     compliance_change_rules = [{}]
   }
 
@@ -29,7 +30,12 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["complianceChangeRules"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.windowsUpdates.complianceChangeRule" }])
+    condition     = jsonencode(msgraph_resource.this.body["deploymentSettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.windowsUpdates.deploymentSettings" })
+    error_message = "deploymentSettings must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["complianceChangeRules"]) == jsonencode([{}])
     error_message = "complianceChangeRules must preserve typed values and omit nested nulls."
   }
 }

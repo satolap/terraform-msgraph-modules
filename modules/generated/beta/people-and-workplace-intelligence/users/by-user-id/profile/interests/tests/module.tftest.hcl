@@ -24,19 +24,25 @@ run "typed_request" {
 
   variables {
     user_id           = "test-parent-id"
-    created_date_time = "2026-01-01T00:00:00Z"
+    allowed_audiences = "me"
     is_searchable     = false
+    graph_source      = { "type" = null }
     categories        = ["example"]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["createdDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
-    error_message = "createdDateTime must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["allowedAudiences"]) == jsonencode("me")
+    error_message = "allowedAudiences must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isSearchable"]) == jsonencode(false)
     error_message = "isSearchable must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["source"]) == jsonencode({ "@odata.type" = "#microsoft.graph.personDataSources" })
+    error_message = "source must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -51,6 +57,31 @@ run "invalid_enum" {
   variables {
     user_id           = "test-parent-id"
     allowed_audiences = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.allowed_audiences]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    user_id           = "test-parent-id"
+    allowed_audiences = "me, Family"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["allowedAudiences"] == "me, Family"
+    error_message = "allowedAudiences must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    user_id           = "test-parent-id"
+    allowed_audiences = "me,__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.allowed_audiences]

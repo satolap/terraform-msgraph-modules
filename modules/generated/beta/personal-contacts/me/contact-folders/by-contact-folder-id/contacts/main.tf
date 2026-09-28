@@ -10,9 +10,9 @@ locals {
     "department"            = var.department
     "displayName"           = var.display_name
     "emailAddresses"        = (var.email_addresses == null ? null : [for item0 in var.email_addresses : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "address" = item0["address"], "name" = item0["name"], "otherLabel" = item0["otherLabel"], "type" = item0["type"] } : key1 => value1 if value1 != null }) if item0 != null])
-    "extensions"            = (var.extensions == null ? null : [for item0 in var.extensions : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "extensions"            = (var.extensions == null ? null : [for item0 in var.extensions : item0 if item0 != null])
     "fileAs"                = var.file_as
-    "flag"                  = var.flag
+    "flag"                  = (var.flag == null ? null : { for key0, value0 in { "@odata.type" = var.flag["odata_type"], "completedDateTime" = (var.flag["completedDateTime"] == null ? null : { for key1, value1 in { "@odata.type" = var.flag["completedDateTime"]["odata_type"], "dateTime" = var.flag["completedDateTime"]["dateTime"], "timeZone" = var.flag["completedDateTime"]["timeZone"] } : key1 => value1 if value1 != null }), "dueDateTime" = (var.flag["dueDateTime"] == null ? null : { for key1, value1 in { "@odata.type" = var.flag["dueDateTime"]["odata_type"], "dateTime" = var.flag["dueDateTime"]["dateTime"], "timeZone" = var.flag["dueDateTime"]["timeZone"] } : key1 => value1 if value1 != null }), "flagStatus" = var.flag["flagStatus"], "startDateTime" = (var.flag["startDateTime"] == null ? null : { for key1, value1 in { "@odata.type" = var.flag["startDateTime"]["odata_type"], "dateTime" = var.flag["startDateTime"]["dateTime"], "timeZone" = var.flag["startDateTime"]["timeZone"] } : key1 => value1 if value1 != null }) } : key0 => value0 if value0 != null })
     "gender"                = var.gender
     "generation"            = var.generation
     "givenName"             = var.given_name

@@ -31,6 +31,17 @@ variable "education_submission_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.educationFeedbackOutcome", "#microsoft.graph.educationFeedbackResourceOutcome", "#microsoft.graph.educationPointsOutcome", "#microsoft.graph.educationRubricOutcome"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "last_modified_by" {
   description = "The individual who updated the resource."
   type        = any
@@ -41,13 +52,6 @@ variable "last_modified_date_time" {
   description = "The moment in time when the resource was last modified. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2021 is 2021-01-01T00:00:00Z."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.educationOutcome"
-  nullable    = false
 }
 
 variable "additional_properties" {

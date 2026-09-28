@@ -23,7 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `alert` | `alert` | `any` | no | no |
-| `content` | `content` | `any` | no | no |
+| `content` | `content` | `object({       odata_type = optional(string, "#microsoft.graph.managedTenants.alertLogContent")       displayName = optional(string)     })` | no | no |
 | `created_by_user_id` | `createdByUserId` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `last_action_by_user_id` | `lastActionByUserId` | `string` | no | no |
@@ -46,8 +46,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- alert: polymorphic schema; accepts an untyped value
-- content: polymorphic schema; accepts an untyped value
+- alert: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

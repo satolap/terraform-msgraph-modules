@@ -29,8 +29,12 @@ variable "end_date_time" {
 
 variable "failure_info" {
   description = "Failure information associated with the session if the session failed."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.callRecords.failureInfo")
+    reason     = optional(string)
+    stage      = optional(string)
+  })
+  default = null
 }
 
 variable "is_test" {

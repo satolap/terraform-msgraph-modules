@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `end` | `end` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `place_id` | `placeId` | `string` | no | no |
-| `recurrence` | `recurrence` | `object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(any)       range = optional(any)     })` | no | no |
+| `recurrence` | `recurrence` | `object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     })` | no | no |
 | `start` | `start` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
 | `work_location_type` | `workLocationType` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -41,11 +41,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- recurrence.pattern: polymorphic schema; accepts an untyped value
-- recurrence.range: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -1,7 +1,6 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "source"      = var.graph_source
     "intent"      = var.intent
     "@odata.type" = var.odata_type
     "target"      = var.target

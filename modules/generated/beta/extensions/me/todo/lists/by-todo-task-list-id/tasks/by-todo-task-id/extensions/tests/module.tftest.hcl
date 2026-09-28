@@ -7,6 +7,7 @@ run "minimal_request" {
   variables {
     todo_task_list_id = "test-parent-id"
     todo_task_id      = "test-parent-id"
+    odata_type        = "#microsoft.graph.openTypeExtension"
   }
 
   assert {
@@ -18,4 +19,31 @@ run "minimal_request" {
     condition     = alltrue([for key in [] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
+}
+
+run "typed_request" {
+  command = plan
+
+  variables {
+    todo_task_list_id = "test-parent-id"
+    todo_task_id      = "test-parent-id"
+    odata_type        = "#microsoft.graph.openTypeExtension"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.openTypeExtension")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
+  }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    todo_task_list_id = "test-parent-id"
+    todo_task_id      = "test-parent-id"
+    odata_type        = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

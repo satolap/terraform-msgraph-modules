@@ -2,11 +2,11 @@
 locals {
   typed_body = { for key, value in {
     "addToReviewSetOperation"         = var.add_to_review_set_operation
-    "additionalSources"               = (var.additional_sources == null ? null : [for item0 in var.additional_sources : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "createdBy" = item0["createdBy"], "createdDateTime" = item0["createdDateTime"], "displayName" = item0["displayName"], "holdStatus" = item0["holdStatus"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "additionalSources"               = (var.additional_sources == null ? null : [for item0 in var.additional_sources : item0 if item0 != null])
     "contentQuery"                    = var.content_query
     "createdBy"                       = var.created_by
     "createdDateTime"                 = var.created_date_time
-    "custodianSources"                = (var.custodian_sources == null ? null : [for item0 in var.custodian_sources : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "createdBy" = item0["createdBy"], "createdDateTime" = item0["createdDateTime"], "displayName" = item0["displayName"], "holdStatus" = item0["holdStatus"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "custodianSources"                = (var.custodian_sources == null ? null : [for item0 in var.custodian_sources : item0 if item0 != null])
     "dataSourceScopes"                = var.data_source_scopes
     "description"                     = var.description
     "displayName"                     = var.display_name

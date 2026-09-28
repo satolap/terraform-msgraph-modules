@@ -29,8 +29,12 @@ variable "created_date_time" {
 
 variable "error" {
   description = "Error details are available only in case of a failed status."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.operationError")
+    code       = optional(string)
+    message    = optional(string)
+  })
+  default = null
 }
 
 variable "last_action_by" {

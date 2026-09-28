@@ -79,8 +79,16 @@ variable "odata_type" {
 
 variable "viewpoint" {
   description = "Microsoft Graph viewpoint property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.callAiInsightViewPoint")
+    mentionEvents = optional(list(object({
+      odata_type          = optional(string, "#microsoft.graph.mentionEvent")
+      eventDateTime       = optional(string)
+      speaker             = optional(any)
+      transcriptUtterance = optional(string)
+    })))
+  })
+  default = null
 }
 
 variable "additional_properties" {

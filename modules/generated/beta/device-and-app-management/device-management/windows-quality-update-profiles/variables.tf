@@ -33,8 +33,13 @@ variable "display_name" {
 
 variable "expedited_update_settings" {
   description = "Expedited update settings."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                 = optional(string, "#microsoft.graph.expeditedWindowsQualityUpdateSettings")
+    daysUntilForcedReboot      = optional(number)
+    qualityUpdateCatalogItemId = optional(string)
+    qualityUpdateRelease       = optional(string)
+  })
+  default = null
 }
 
 variable "last_modified_date_time" {

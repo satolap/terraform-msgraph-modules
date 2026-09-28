@@ -55,7 +55,7 @@ Generation notes:
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].target: polymorphic schema; accepts an untyped value
 - deviceRunStates[].managedDevice: polymorphic schema; accepts an untyped value
-- runSummary: polymorphic schema; accepts an untyped value
+- runSummary: navigation property; accepts an untyped value
 - userRunStates[].deviceRunStates[].managedDevice: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

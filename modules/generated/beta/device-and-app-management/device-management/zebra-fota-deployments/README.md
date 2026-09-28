@@ -23,7 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `deployment_settings` | `deploymentSettings` | `object({       odata_type = optional(string, "#microsoft.graph.zebraFotaDeploymentSettings")       batteryRuleMinimumBatteryLevelPercentage = optional(number)       batteryRuleRequireCharger = optional(bool)       deviceModel = optional(string)       downloadRuleNetworkType = optional(string)       downloadRuleStartDateTime = optional(string)       firmwareTargetArtifactDescription = optional(string)       firmwareTargetBoardSupportPackageVersion = optional(string)       firmwareTargetOsVersion = optional(string)       firmwareTargetPatch = optional(string)       installRuleStartDateTime = optional(string)       installRuleWindowEndTime = optional(string)       installRuleWindowStartTime = optional(string)       scheduleDurationInDays = optional(number)       scheduleMode = optional(string)       timeZoneOffsetInMinutes = optional(number)       updateType = optional(string)     })` | no | no |
-| `deployment_status` | `deploymentStatus` | `any` | no | no |
+| `deployment_status` | `deploymentStatus` | `object({       odata_type = optional(string, "#microsoft.graph.zebraFotaDeploymentStatus")       cancelRequested = optional(bool)       completeOrCanceledDateTime = optional(string)       errorCode = optional(string)       lastUpdatedDateTime = optional(string)       state = optional(string)       totalAwaitingInstall = optional(number)       totalCanceled = optional(number)       totalCreated = optional(number)       totalDevices = optional(number)       totalDownloading = optional(number)       totalFailedDownload = optional(number)       totalFailedInstall = optional(number)       totalScheduled = optional(number)       totalSucceededInstall = optional(number)       totalUnknown = optional(number)     })` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -45,7 +45,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- deploymentStatus: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

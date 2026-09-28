@@ -44,7 +44,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["allowedMembers"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.conversationMember" }])
+    condition     = jsonencode(msgraph_resource.this.body["allowedMembers"]) == jsonencode([{}])
     error_message = "allowedMembers must preserve typed values and omit nested nulls."
   }
 }

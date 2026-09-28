@@ -18,8 +18,31 @@ variable "directory_object_id" {
 
 variable "error" {
   description = "Contains the error details if the browse session creation fails."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.publicError")
+    code       = optional(string)
+    details = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+      code       = optional(string)
+      message    = optional(string)
+      target     = optional(string)
+    })))
+    innerError = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicInnerError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    message = optional(string)
+    target  = optional(string)
+  })
+  default = null
 }
 
 variable "expiration_date_time" {

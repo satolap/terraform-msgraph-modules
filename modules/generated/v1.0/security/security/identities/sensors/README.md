@@ -27,7 +27,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `display_name` | `displayName` | `string` | no | no |
 | `domain_name` | `domainName` | `string` | no | no |
 | `graph_version` | `version` | `string` | no | no |
-| `health_issues` | `healthIssues` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.healthIssue")       additionalInformation = optional(list(string))       createdDateTime = optional(string)       description = optional(string)       displayName = optional(string)       domainNames = optional(list(string))       healthIssueType = optional(any)       issueTypeId = optional(string)       lastModifiedDateTime = optional(string)       recommendations = optional(list(string))       recommendedActionCommands = optional(list(string))       sensorDNSNames = optional(list(string))       severity = optional(any)       status = optional(any)     }))` | no | no |
+| `health_issues` | `healthIssues` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.healthIssue")       additionalInformation = optional(list(string))       createdDateTime = optional(string)       description = optional(string)       displayName = optional(string)       domainNames = optional(list(string))       healthIssueType = optional(string)       issueTypeId = optional(string)       lastModifiedDateTime = optional(string)       recommendations = optional(list(string))       recommendedActionCommands = optional(list(string))       sensorDNSNames = optional(list(string))       severity = optional(string)       status = optional(string)     }))` | no | no |
 | `health_status` | `healthStatus` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `open_health_issues_count` | `openHealthIssuesCount` | `number` | no | no |
@@ -47,12 +47,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- healthIssues[].healthIssueType: polymorphic schema; accepts an untyped value
-- healthIssues[].severity: polymorphic schema; accepts an untyped value
-- healthIssues[].status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

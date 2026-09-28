@@ -19,15 +19,33 @@ variable "display_name" {
 variable "drive_inclusion_rules" {
   description = "Contains the details of the Onedrive for Business protection rule."
   type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.driveProtectionRule")
-    createdBy            = optional(any)
-    createdDateTime      = optional(string)
-    driveExpression      = optional(string)
-    error                = optional(any)
+    odata_type      = optional(string, "#microsoft.graph.driveProtectionRule")
+    createdBy       = optional(any)
+    createdDateTime = optional(string)
+    driveExpression = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
     isAutoApplyEnabled   = optional(bool)
     lastModifiedBy       = optional(any)
     lastModifiedDateTime = optional(string)
-    status               = optional(any)
+    status               = optional(string)
   }))
   default = null
 }
@@ -35,17 +53,35 @@ variable "drive_inclusion_rules" {
 variable "drive_protection_units" {
   description = "Contains the protection units associated with a  OneDrive for Business protection policy."
   type = list(object({
-    odata_type                = optional(string, "#microsoft.graph.driveProtectionUnit")
-    createdBy                 = optional(any)
-    createdDateTime           = optional(string)
-    directoryObjectId         = optional(string)
-    error                     = optional(any)
+    odata_type        = optional(string, "#microsoft.graph.driveProtectionUnit")
+    createdBy         = optional(any)
+    createdDateTime   = optional(string)
+    directoryObjectId = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
     lastModifiedBy            = optional(any)
     lastModifiedDateTime      = optional(string)
     offboardRequestedDateTime = optional(string)
     policyId                  = optional(string)
     protectionSources         = optional(string)
-    status                    = optional(any)
+    status                    = optional(string)
   }))
   default = null
 }
@@ -53,13 +89,31 @@ variable "drive_protection_units" {
 variable "drive_protection_units_bulk_addition_jobs" {
   description = "Microsoft Graph driveProtectionUnitsBulkAdditionJobs property."
   type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.driveProtectionUnitsBulkAdditionJob")
-    createdBy            = optional(any)
-    createdDateTime      = optional(string)
-    directoryObjectIds   = optional(list(string))
-    displayName          = optional(string)
-    drives               = optional(list(string))
-    error                = optional(any)
+    odata_type         = optional(string, "#microsoft.graph.driveProtectionUnitsBulkAdditionJob")
+    createdBy          = optional(any)
+    createdDateTime    = optional(string)
+    directoryObjectIds = optional(list(string))
+    displayName        = optional(string)
+    drives             = optional(list(string))
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
     lastModifiedBy       = optional(any)
     lastModifiedDateTime = optional(string)
     status               = optional(string)
@@ -94,8 +148,14 @@ variable "odata_type" {
 
 variable "protection_policy_artifact_count" {
   description = "Microsoft Graph protectionPolicyArtifactCount property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.protectionPolicyArtifactCount")
+    completed  = optional(number)
+    failed     = optional(number)
+    inProgress = optional(number)
+    total      = optional(number)
+  })
+  default = null
 }
 
 variable "retention_settings" {
@@ -110,7 +170,7 @@ variable "retention_settings" {
 
 variable "status" {
   description = "The aggregated status of the protection units associated with the policy. The possible values are: inactive, activeWithErrors, updating, active, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

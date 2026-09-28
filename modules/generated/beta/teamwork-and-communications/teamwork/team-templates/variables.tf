@@ -2,7 +2,7 @@ variable "definitions" {
   description = "A generic representation of a team template definition for a team with a specific structure and configuration."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.teamTemplateDefinition")
-    audience             = optional(any)
+    audience             = optional(string)
     categories           = optional(list(string))
     description          = optional(string)
     displayName          = optional(string)

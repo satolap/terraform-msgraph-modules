@@ -49,7 +49,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- approval: polymorphic schema; accepts an untyped value
+- approval: navigation property; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

@@ -9,6 +9,17 @@ variable "virtual_event_townhall_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.virtualEventRegistrationCustomQuestion", "#microsoft.graph.virtualEventRegistrationPredefinedQuestion"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "display_name" {
   description = "Display name of the registration question."
   type        = string
@@ -19,13 +30,6 @@ variable "is_required" {
   description = "Indicates whether an answer to the question is required. The default value is false."
   type        = bool
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.virtualEventRegistrationQuestionBase"
-  nullable    = false
 }
 
 variable "additional_properties" {

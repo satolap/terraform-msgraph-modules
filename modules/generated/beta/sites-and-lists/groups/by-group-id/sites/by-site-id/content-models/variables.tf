@@ -22,7 +22,7 @@ variable "site_id" {
 
 variable "model_type" {
   description = "The type of the contentModel. The possible values are: teachingMethod, layoutMethod, freeformSelectionMethod, prebuiltContractModel, prebuiltInvoiceModel, prebuiltReceiptModel, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

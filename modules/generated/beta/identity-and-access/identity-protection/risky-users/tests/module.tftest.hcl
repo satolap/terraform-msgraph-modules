@@ -19,14 +19,14 @@ run "typed_request" {
   command = plan
 
   variables {
-    risk_last_updated_date_time = "2026-01-01T00:00:00Z"
-    is_deleted                  = false
-    history                     = [{}]
+    risk_detail = "none"
+    is_deleted  = false
+    history     = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["riskLastUpdatedDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
-    error_message = "riskLastUpdatedDateTime must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["riskDetail"]) == jsonencode("none")
+    error_message = "riskDetail must preserve typed values and omit nested nulls."
   }
 
   assert {

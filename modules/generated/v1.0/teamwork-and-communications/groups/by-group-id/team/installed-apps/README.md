@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `group_id` | URL parameter `group-id` | `string` | yes | no |
-| `consented_permission_set` | `consentedPermissionSet` | `any` | no | no |
+| `consented_permission_set` | `consentedPermissionSet` | `object({       odata_type = optional(string, "#microsoft.graph.teamsAppPermissionSet")       resourceSpecificPermissions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsAppResourceSpecificPermission")       permissionType = optional(string)       permissionValue = optional(string)     })))     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `teams_app` | `teamsApp` | `any` | no | no |
 | `teams_app_definition` | `teamsAppDefinition` | `any` | no | no |
@@ -44,9 +44,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- consentedPermissionSet: polymorphic schema; accepts an untyped value
-- teamsApp: polymorphic schema; accepts an untyped value
-- teamsAppDefinition: polymorphic schema; accepts an untyped value
+- teamsApp: navigation property; accepts an untyped value
+- teamsAppDefinition: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

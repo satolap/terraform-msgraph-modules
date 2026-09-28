@@ -1,6 +1,6 @@
 variable "classify_as" {
   description = "Specifies how incoming messages from a specific sender should always be classified as. The possible values are: focused, other."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -18,8 +18,12 @@ variable "odata_type" {
 
 variable "sender_email_address" {
   description = "The email address information of the sender for whom the override is created."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.emailAddress")
+    address    = optional(string)
+    name       = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

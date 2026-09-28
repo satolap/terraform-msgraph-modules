@@ -31,10 +31,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `device_id` | `deviceId` | `string` | no | no |
 | `event_date_time` | `eventDateTime` | `string` | no | no |
 | `event_name` | `eventName` | `string` | no | no |
-| `history` | `history` | `list(object({       odata_type = optional(string, "#microsoft.graph.mobileAppTroubleshootingHistoryItem")       occurrenceDateTime = optional(string)       troubleshootingErrorDetails = optional(any)     }))` | no | no |
+| `history` | `history` | `any` | no | no |
 | `managed_device_identifier` | `managedDeviceIdentifier` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `troubleshooting_error_details` | `troubleshootingErrorDetails` | `any` | no | no |
+| `troubleshooting_error_details` | `troubleshootingErrorDetails` | `object({       odata_type = optional(string, "#microsoft.graph.deviceManagementTroubleshootingErrorDetails")       context = optional(string)       failure = optional(string)       failureDetails = optional(string)       remediation = optional(string)       resources = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementTroubleshootingErrorResource")       link = optional(string)       text = optional(string)     })))     })` | no | no |
 | `user_id_2` | `userId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -53,8 +53,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- history[].troubleshootingErrorDetails: polymorphic schema; accepts an untyped value
-- troubleshootingErrorDetails: polymorphic schema; accepts an untyped value
+- history[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

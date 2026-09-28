@@ -24,15 +24,21 @@ run "typed_request" {
   command = plan
 
   variables {
-    team_template_definition_id = "test-parent-id"
-    channel_id                  = "test-parent-id"
-    owner                       = "example"
-    shared_with_containers      = [{}]
+    team_template_definition_id          = "test-parent-id"
+    channel_id                           = "test-parent-id"
+    owner                                = "example"
+    content_sensitivity_label_assignment = { "assignmentMethod" = null }
+    shared_with_containers               = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["owner"]) == jsonencode("example")
     error_message = "owner must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["contentSensitivityLabelAssignment"]) == jsonencode({ "@odata.type" = "#microsoft.graph.contentSensitivityLabelAssignment" })
+    error_message = "contentSensitivityLabelAssignment must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -26,21 +26,21 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `call_chain_id` | `callChainId` | `string` | no | no |
 | `call_options` | `callOptions` | `any` | no | no |
 | `callback_uri` | `callbackUri` | `string` | no | no |
-| `chat_info` | `chatInfo` | `any` | no | no |
+| `chat_info` | `chatInfo` | `object({       odata_type = optional(string, "#microsoft.graph.chatInfo")       messageId = optional(string)       replyChainMessageId = optional(string)       threadId = optional(string)     })` | no | no |
 | `content_sharing_sessions` | `contentSharingSessions` | `list(object({       odata_type = optional(string, "#microsoft.graph.contentSharingSession")     }))` | no | no |
-| `graph_source` | `source` | `any` | no | no |
-| `incoming_context` | `incomingContext` | `any` | no | no |
+| `graph_source` | `source` | `object({       odata_type = optional(string, "#microsoft.graph.participantInfo")       identity = optional(any)     })` | no | no |
+| `incoming_context` | `incomingContext` | `object({       odata_type = optional(string, "#microsoft.graph.incomingContext")       onBehalfOf = optional(any)       transferor = optional(any)     })` | no | no |
 | `media_config` | `mediaConfig` | `any` | no | no |
 | `meeting_info` | `meetingInfo` | `any` | no | no |
 | `my_participant_id` | `myParticipantId` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `operations` | `operations` | `list(object({       odata_type = optional(string, "#microsoft.graph.commsOperation")       clientContext = optional(string)       status = optional(string)     }))` | no | no |
-| `participants` | `participants` | `list(object({       odata_type = optional(string, "#microsoft.graph.participant")       info = optional(object({       odata_type = optional(string, "#microsoft.graph.participantInfo")       identity = optional(object({       odata_type = optional(string, "#microsoft.graph.identitySet")       application = optional(any)       device = optional(any)       user = optional(any)     }))     }))       isInLobby = optional(bool)       isMuted = optional(bool)       mediaStreams = optional(list(object({       odata_type = optional(string, "#microsoft.graph.mediaStream")       direction = optional(string)       label = optional(string)       mediaType = optional(string)       serverMuted = optional(bool)       sourceId = optional(string)     })))       metadata = optional(string)       recordingInfo = optional(any)       removedState = optional(any)       restrictedExperience = optional(any)       rosterSequenceNumber = optional(number)     }))` | no | no |
-| `requested_modalities` | `requestedModalities` | `any` | no | no |
+| `operations` | `operations` | `any` | no | no |
+| `participants` | `participants` | `list(object({       odata_type = optional(string, "#microsoft.graph.participant")       info = optional(object({       odata_type = optional(string, "#microsoft.graph.participantInfo")       identity = optional(any)     }))       isInLobby = optional(bool)       isMuted = optional(bool)       mediaStreams = optional(list(object({       odata_type = optional(string, "#microsoft.graph.mediaStream")       direction = optional(string)       label = optional(string)       mediaType = optional(string)       serverMuted = optional(bool)       sourceId = optional(string)     })))       metadata = optional(string)       recordingInfo = optional(object({       odata_type = optional(string, "#microsoft.graph.recordingInfo")       initiator = optional(any)       recordingStatus = optional(string)     }))       removedState = optional(object({       odata_type = optional(string, "#microsoft.graph.removedState")       reason = optional(string)     }))       restrictedExperience = optional(object({       odata_type = optional(string, "#microsoft.graph.onlineMeetingRestricted")       contentSharingDisabled = optional(string)       videoDisabled = optional(string)     }))       rosterSequenceNumber = optional(number)     }))` | no | no |
+| `requested_modalities` | `requestedModalities` | `list(string)` | no | no |
 | `subject` | `subject` | `string` | no | no |
-| `targets` | `targets` | `list(object({       odata_type = optional(string, "#microsoft.graph.invitationParticipantInfo")       hidden = optional(bool)       identity = optional(object({       odata_type = optional(string, "#microsoft.graph.identitySet")       application = optional(any)       device = optional(any)       user = optional(any)     }))       participantId = optional(string)       removeFromDefaultAudioRoutingGroup = optional(bool)       replacesCallId = optional(string)     }))` | no | no |
+| `targets` | `targets` | `list(object({       odata_type = optional(string, "#microsoft.graph.invitationParticipantInfo")       hidden = optional(bool)       identity = optional(any)       participantId = optional(string)       removeFromDefaultAudioRoutingGroup = optional(bool)       replacesCallId = optional(string)     }))` | no | no |
 | `tenant_id` | `tenantId` | `string` | no | no |
-| `tone_info` | `toneInfo` | `any` | no | no |
+| `tone_info` | `toneInfo` | `object({       odata_type = optional(string, "#microsoft.graph.toneInfo")       sequenceId = optional(number)       tone = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -58,22 +58,15 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - callOptions: polymorphic schema; accepts an untyped value
-- chatInfo: polymorphic schema; accepts an untyped value
-- incomingContext: polymorphic schema; accepts an untyped value
+- incomingContext.onBehalfOf: polymorphic schema; accepts an untyped value
+- incomingContext.transferor: polymorphic schema; accepts an untyped value
 - mediaConfig: polymorphic schema; accepts an untyped value
 - meetingInfo: polymorphic schema; accepts an untyped value
-- participants[].info.identity.application: polymorphic schema; accepts an untyped value
-- participants[].info.identity.device: polymorphic schema; accepts an untyped value
-- participants[].info.identity.user: polymorphic schema; accepts an untyped value
-- participants[].recordingInfo: polymorphic schema; accepts an untyped value
-- participants[].removedState: polymorphic schema; accepts an untyped value
-- participants[].restrictedExperience: polymorphic schema; accepts an untyped value
-- requestedModalities[]: polymorphic schema; accepts an untyped value
-- source: polymorphic schema; accepts an untyped value
-- targets[].identity.application: polymorphic schema; accepts an untyped value
-- targets[].identity.device: polymorphic schema; accepts an untyped value
-- targets[].identity.user: polymorphic schema; accepts an untyped value
-- toneInfo: polymorphic schema; accepts an untyped value
+- operations[]: polymorphic schema; accepts an untyped value
+- participants[].info.identity: polymorphic schema; accepts an untyped value
+- participants[].recordingInfo.initiator: polymorphic schema; accepts an untyped value
+- source.identity: polymorphic schema; accepts an untyped value
+- targets[].identity: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

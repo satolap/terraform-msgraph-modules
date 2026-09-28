@@ -52,12 +52,8 @@ variable "event_name" {
 
 variable "history" {
   description = "Intune Mobile Application Troubleshooting History Item"
-  type = list(object({
-    odata_type                  = optional(string, "#microsoft.graph.mobileAppTroubleshootingHistoryItem")
-    occurrenceDateTime          = optional(string)
-    troubleshootingErrorDetails = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "managed_device_identifier" {
@@ -75,8 +71,19 @@ variable "odata_type" {
 
 variable "troubleshooting_error_details" {
   description = "Object containing detailed information about the error and its remediation."
-  type        = any
-  default     = null
+  type = object({
+    odata_type     = optional(string, "#microsoft.graph.deviceManagementTroubleshootingErrorDetails")
+    context        = optional(string)
+    failure        = optional(string)
+    failureDetails = optional(string)
+    remediation    = optional(string)
+    resources = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.deviceManagementTroubleshootingErrorResource")
+      link       = optional(string)
+      text       = optional(string)
+    })))
+  })
+  default = null
 }
 
 variable "user_id" {

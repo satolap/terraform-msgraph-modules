@@ -23,11 +23,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `app_id` | `appId` | `string` | no | no |
-| `application_authentication_client_sign_in_activity` | `applicationAuthenticationClientSignInActivity` | `any` | no | no |
-| `application_authentication_resource_sign_in_activity` | `applicationAuthenticationResourceSignInActivity` | `any` | no | no |
-| `delegated_client_sign_in_activity` | `delegatedClientSignInActivity` | `any` | no | no |
-| `delegated_resource_sign_in_activity` | `delegatedResourceSignInActivity` | `any` | no | no |
-| `last_sign_in_activity` | `lastSignInActivity` | `any` | no | no |
+| `application_authentication_client_sign_in_activity` | `applicationAuthenticationClientSignInActivity` | `object({       odata_type = optional(string, "#microsoft.graph.signInActivity")       lastNonInteractiveSignInDateTime = optional(string)       lastNonInteractiveSignInRequestId = optional(string)       lastSignInDateTime = optional(string)       lastSignInRequestId = optional(string)       lastSuccessfulSignInDateTime = optional(string)       lastSuccessfulSignInRequestId = optional(string)     })` | no | no |
+| `application_authentication_resource_sign_in_activity` | `applicationAuthenticationResourceSignInActivity` | `object({       odata_type = optional(string, "#microsoft.graph.signInActivity")       lastNonInteractiveSignInDateTime = optional(string)       lastNonInteractiveSignInRequestId = optional(string)       lastSignInDateTime = optional(string)       lastSignInRequestId = optional(string)       lastSuccessfulSignInDateTime = optional(string)       lastSuccessfulSignInRequestId = optional(string)     })` | no | no |
+| `delegated_client_sign_in_activity` | `delegatedClientSignInActivity` | `object({       odata_type = optional(string, "#microsoft.graph.signInActivity")       lastNonInteractiveSignInDateTime = optional(string)       lastNonInteractiveSignInRequestId = optional(string)       lastSignInDateTime = optional(string)       lastSignInRequestId = optional(string)       lastSuccessfulSignInDateTime = optional(string)       lastSuccessfulSignInRequestId = optional(string)     })` | no | no |
+| `delegated_resource_sign_in_activity` | `delegatedResourceSignInActivity` | `object({       odata_type = optional(string, "#microsoft.graph.signInActivity")       lastNonInteractiveSignInDateTime = optional(string)       lastNonInteractiveSignInRequestId = optional(string)       lastSignInDateTime = optional(string)       lastSignInRequestId = optional(string)       lastSuccessfulSignInDateTime = optional(string)       lastSuccessfulSignInRequestId = optional(string)     })` | no | no |
+| `last_sign_in_activity` | `lastSignInActivity` | `object({       odata_type = optional(string, "#microsoft.graph.signInActivity")       lastNonInteractiveSignInDateTime = optional(string)       lastNonInteractiveSignInRequestId = optional(string)       lastSignInDateTime = optional(string)       lastSignInRequestId = optional(string)       lastSuccessfulSignInDateTime = optional(string)       lastSuccessfulSignInRequestId = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -46,11 +46,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- applicationAuthenticationClientSignInActivity: polymorphic schema; accepts an untyped value
-- applicationAuthenticationResourceSignInActivity: polymorphic schema; accepts an untyped value
-- delegatedClientSignInActivity: polymorphic schema; accepts an untyped value
-- delegatedResourceSignInActivity: polymorphic schema; accepts an untyped value
-- lastSignInActivity: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

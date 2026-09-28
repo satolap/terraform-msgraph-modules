@@ -5,7 +5,8 @@ run "minimal_request" {
   command = plan
 
   variables {
-    user_id = "test-parent-id"
+    user_id    = "test-parent-id"
+    odata_type = "#microsoft.graph.emailFileAssessmentRequest"
   }
 
   assert {
@@ -23,8 +24,14 @@ run "typed_request" {
   command = plan
 
   variables {
-    user_id  = "test-parent-id"
-    category = "undefined"
+    user_id    = "test-parent-id"
+    odata_type = "#microsoft.graph.emailFileAssessmentRequest"
+    category   = "undefined"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.emailFileAssessmentRequest")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -37,9 +44,9 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    user_id  = "test-parent-id"
-    category = "__graphmodules_invalid_enum__"
+    user_id    = "test-parent-id"
+    odata_type = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.category]
+  expect_failures = [var.odata_type]
 }

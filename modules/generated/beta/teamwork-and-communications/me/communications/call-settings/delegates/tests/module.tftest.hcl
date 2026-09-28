@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     created_date_time = "2026-01-01T00:00:00Z"
     is_active         = false
+    allowed_actions   = { "joinActiveCalls" = null }
   }
 
   assert {
@@ -31,5 +32,10 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isActive"]) == jsonencode(false)
     error_message = "isActive must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["allowedActions"]) == jsonencode({ "@odata.type" = "#microsoft.graph.delegateAllowedActions" })
+    error_message = "allowedActions must preserve typed values and omit nested nulls."
   }
 }

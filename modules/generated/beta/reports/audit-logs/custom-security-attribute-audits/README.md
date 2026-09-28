@@ -27,13 +27,13 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `additional_details` | `additionalDetails` | `list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     }))` | no | no |
 | `category` | `category` | `string` | no | no |
 | `correlation_id` | `correlationId` | `string` | no | no |
-| `initiated_by` | `initiatedBy` | `object({       odata_type = optional(string, "#microsoft.graph.auditActivityInitiator")       app = optional(any)       linkableIdentifiers = optional(any)       user = optional(any)     })` | no | no |
+| `initiated_by` | `initiatedBy` | `object({       odata_type = optional(string, "#microsoft.graph.auditActivityInitiator")       app = optional(object({       odata_type = optional(string, "#microsoft.graph.appIdentity")       appId = optional(string)       displayName = optional(string)       servicePrincipalId = optional(string)       servicePrincipalName = optional(string)     }))       linkableIdentifiers = optional(object({       odata_type = optional(string, "#microsoft.graph.linkableIdentifiers")       deviceId = optional(string)       sessionId = optional(string)       tokenDetails = optional(object({       odata_type = optional(string, "#microsoft.graph.tokenDetails")       issuedAtDateTime = optional(string)       uniqueTokenIdentifier = optional(string)     }))     }))       user = optional(object({       odata_type = optional(string, "#microsoft.graph.auditUserIdentity")       displayName = optional(string)       homeTenantId = optional(string)       homeTenantName = optional(string)       id = optional(string)       ipAddress = optional(string)       userPrincipalName = optional(string)     }))     })` | no | no |
 | `logged_by_service` | `loggedByService` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `operation_type` | `operationType` | `string` | no | no |
-| `result` | `result` | `any` | no | no |
+| `result` | `result` | `string` | no | no |
 | `result_reason` | `resultReason` | `string` | no | no |
-| `target_resources` | `targetResources` | `list(object({       odata_type = optional(string, "#microsoft.graph.targetResource")       displayName = optional(string)       groupType = optional(any)       id = optional(string)       modifiedProperties = optional(list(object({       odata_type = optional(string, "#microsoft.graph.modifiedProperty")       displayName = optional(string)       newValue = optional(string)       oldValue = optional(string)     })))       type = optional(string)       userPrincipalName = optional(string)     }))` | no | no |
+| `target_resources` | `targetResources` | `list(object({       odata_type = optional(string, "#microsoft.graph.targetResource")       displayName = optional(string)       groupType = optional(string)       id = optional(string)       modifiedProperties = optional(list(object({       odata_type = optional(string, "#microsoft.graph.modifiedProperty")       displayName = optional(string)       newValue = optional(string)       oldValue = optional(string)     })))       type = optional(string)       userPrincipalName = optional(string)     }))` | no | no |
 | `user_agent` | `userAgent` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -52,11 +52,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- initiatedBy.app: polymorphic schema; accepts an untyped value
-- initiatedBy.linkableIdentifiers: polymorphic schema; accepts an untyped value
-- initiatedBy.user: polymorphic schema; accepts an untyped value
-- result: polymorphic schema; accepts an untyped value
-- targetResources[].groupType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

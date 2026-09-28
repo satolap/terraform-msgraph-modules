@@ -1,14 +1,3 @@
-variable "compliance_state" {
-  description = "Compliance state."
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.compliance_state == null ? true : contains(["unknown", "compliant", "noncompliant", "conflict", "error", "inGracePeriod", "configManager"], var.compliance_state)
-    error_message = "compliance_state must be one of the documented enum values."
-  }
-}
-
 variable "device_category" {
   description = "Device category"
   type        = any
@@ -71,50 +60,6 @@ variable "device_configuration_states" {
   default = null
 }
 
-variable "device_enrollment_type" {
-  description = "Possible ways of adding a mobile device to management."
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.device_enrollment_type == null ? true : contains(["unknown", "userEnrollment", "deviceEnrollmentManager", "appleBulkWithUser", "appleBulkWithoutUser", "windowsAzureADJoin", "windowsBulkUserless", "windowsAutoEnrollment", "windowsBulkAzureDomainJoin", "windowsCoManagement", "windowsAzureADJoinUsingDeviceAuth", "appleUserEnrollment", "appleUserEnrollmentWithServiceAccount", "unknownFutureValue"], var.device_enrollment_type)
-    error_message = "device_enrollment_type must be one of the documented enum values."
-  }
-}
-
-variable "device_registration_state" {
-  description = "Device registration status."
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.device_registration_state == null ? true : contains(["notRegistered", "registered", "revoked", "keyConflict", "approvalPending", "certificateReset", "notRegisteredPendingEnrollment", "unknown"], var.device_registration_state)
-    error_message = "device_registration_state must be one of the documented enum values."
-  }
-}
-
-variable "exchange_access_state" {
-  description = "Device Exchange Access State."
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.exchange_access_state == null ? true : contains(["none", "unknown", "allowed", "blocked", "quarantined"], var.exchange_access_state)
-    error_message = "exchange_access_state must be one of the documented enum values."
-  }
-}
-
-variable "exchange_access_state_reason" {
-  description = "Device Exchange Access State Reason."
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.exchange_access_state_reason == null ? true : contains(["none", "unknown", "exchangeGlobalRule", "exchangeIndividualRule", "exchangeDeviceRule", "exchangeUpgrade", "exchangeMailboxPolicy", "other", "compliant", "notCompliant", "notEnrolled", "unknownLocation", "mfaRequired", "azureADBlockDueToAccessPolicy", "compromisedPassword", "deviceNotKnownWithManagedApp"], var.exchange_access_state_reason)
-    error_message = "exchange_access_state_reason must be one of the documented enum values."
-  }
-}
-
 variable "log_collection_requests" {
   description = "List of log collection requests"
   type = list(object({
@@ -148,28 +93,6 @@ variable "managed_device_owner_type" {
   }
 }
 
-variable "management_agent" {
-  description = "Microsoft Graph managementAgent property."
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.management_agent == null ? true : contains(["eas", "mdm", "easMdm", "intuneClient", "easIntuneClient", "configurationManagerClient", "configurationManagerClientMdm", "configurationManagerClientMdmEas", "unknown", "jamf", "googleCloudDevicePolicyController", "microsoft365ManagedMdm", "msSense"], var.management_agent)
-    error_message = "management_agent must be one of the documented enum values."
-  }
-}
-
-variable "management_state" {
-  description = "Management state of device in Microsoft Intune."
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.management_state == null ? true : contains(["managed", "retirePending", "retireFailed", "wipePending", "wipeFailed", "unhealthy", "deletePending", "retireIssued", "wipeIssued", "wipeCanceled", "retireCanceled", "discovered", "unknownFutureValue"], var.management_state)
-    error_message = "management_state must be one of the documented enum values."
-  }
-}
-
 variable "notes" {
   description = "Notes on the device created by IT Admin. Default is null. To retrieve actual values GET call needs to be made, with device id and included in select parameter. Supports: $select. $Search is not supported."
   type        = string
@@ -181,17 +104,6 @@ variable "odata_type" {
   type        = string
   default     = "#microsoft.graph.managedDevice"
   nullable    = false
-}
-
-variable "partner_reported_threat_state" {
-  description = "Available health states for the Device Health API"
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.partner_reported_threat_state == null ? true : contains(["unknown", "activated", "deactivated", "secured", "lowSeverity", "mediumSeverity", "highSeverity", "unresponsive", "compromised", "misconfigured"], var.partner_reported_threat_state)
-    error_message = "partner_reported_threat_state must be one of the documented enum values."
-  }
 }
 
 variable "users" {
@@ -214,9 +126,12 @@ variable "users" {
       disabledPlans = optional(list(string))
       skuId         = optional(string)
     })))
-    authentication    = optional(any)
-    authorizationInfo = optional(any)
-    birthday          = optional(string)
+    authentication = optional(any)
+    authorizationInfo = optional(object({
+      odata_type         = optional(string, "#microsoft.graph.authorizationInfo")
+      certificateUserIds = optional(list(string))
+    }))
+    birthday = optional(string)
     chats = optional(list(object({
       odata_type              = optional(string, "#microsoft.graph.chat")
       chatType                = optional(string)
@@ -224,48 +139,59 @@ variable "users" {
       lastMessagePreview      = optional(any)
       members                 = optional(any)
       messages                = optional(any)
-      migrationMode           = optional(any)
+      migrationMode           = optional(string)
       originalCreatedDateTime = optional(string)
       permissionGrants        = optional(any)
       pinnedMessages          = optional(any)
       tabs                    = optional(any)
       targetedMessages        = optional(any)
       topic                   = optional(string)
-      viewpoint               = optional(any)
+      viewpoint = optional(object({
+        odata_type              = optional(string, "#microsoft.graph.chatViewpoint")
+        isHidden                = optional(bool)
+        lastMessageReadDateTime = optional(string)
+      }))
     })))
-    city                     = optional(string)
-    cloudClipboard           = optional(any)
-    companyName              = optional(string)
-    consentProvidedForMinor  = optional(string)
-    country                  = optional(string)
-    customSecurityAttributes = optional(any)
-    deletedDateTime          = optional(string)
-    department               = optional(string)
-    deviceEnrollmentLimit    = optional(number)
-    deviceManagementTroubleshootingEvents = optional(list(object({
-      odata_type    = optional(string, "#microsoft.graph.deviceManagementTroubleshootingEvent")
-      correlationId = optional(string)
-      eventDateTime = optional(string)
-    })))
-    displayName                     = optional(string)
-    employeeExperience              = optional(any)
-    employeeHireDate                = optional(string)
-    employeeId                      = optional(string)
-    employeeLeaveDateTime           = optional(string)
-    employeeOrgData                 = optional(any)
+    city                                  = optional(string)
+    cloudClipboard                        = optional(any)
+    companyName                           = optional(string)
+    consentProvidedForMinor               = optional(string)
+    country                               = optional(string)
+    customSecurityAttributes              = optional(any)
+    deletedDateTime                       = optional(string)
+    department                            = optional(string)
+    deviceEnrollmentLimit                 = optional(number)
+    deviceManagementTroubleshootingEvents = optional(any)
+    displayName                           = optional(string)
+    employeeExperience                    = optional(any)
+    employeeHireDate                      = optional(string)
+    employeeId                            = optional(string)
+    employeeLeaveDateTime                 = optional(string)
+    employeeOrgData = optional(object({
+      odata_type = optional(string, "#microsoft.graph.employeeOrgData")
+      costCenter = optional(string)
+      division   = optional(string)
+    }))
     employeeType                    = optional(string)
     externalUserState               = optional(string)
     externalUserStateChangeDateTime = optional(string)
     faxNumber                       = optional(string)
     followedSites = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.site")
-      analytics       = optional(any)
-      columns         = optional(any)
-      contentTypes    = optional(any)
-      description     = optional(string)
-      drive           = optional(any)
-      drives          = optional(any)
-      error           = optional(any)
+      odata_type   = optional(string, "#microsoft.graph.site")
+      analytics    = optional(any)
+      columns      = optional(any)
+      contentTypes = optional(any)
+      description  = optional(string)
+      drive        = optional(any)
+      drives       = optional(any)
+      error = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicError")
+        code       = optional(string)
+        details    = optional(any)
+        innerError = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
       externalColumns = optional(any)
       items           = optional(any)
       lists           = optional(any)
@@ -273,11 +199,16 @@ variable "users" {
       onenote         = optional(any)
       operations      = optional(any)
       pages           = optional(any)
-      parentReference = optional(any)
-      permissions     = optional(any)
-      sites           = optional(any)
-      termStore       = optional(any)
-      termStores      = optional(any)
+      parentReference = optional(object({
+        odata_type = optional(string, "#microsoft.graph.itemReference")
+        driveType  = optional(string)
+        shareId    = optional(string)
+        siteId     = optional(string)
+      }))
+      permissions = optional(any)
+      sites       = optional(any)
+      termStore   = optional(any)
+      termStores  = optional(any)
     })))
     givenName = optional(string)
     hireDate  = optional(string)
@@ -293,42 +224,108 @@ variable "users" {
     isResourceAccount       = optional(bool)
     jobTitle                = optional(string)
     joinedTeams = optional(list(object({
-      odata_type        = optional(string, "#microsoft.graph.team")
-      allChannels       = optional(any)
-      channels          = optional(any)
-      classification    = optional(string)
-      createdDateTime   = optional(string)
-      description       = optional(string)
-      displayName       = optional(string)
-      firstChannelName  = optional(string)
-      funSettings       = optional(any)
-      group             = optional(any)
-      guestSettings     = optional(any)
-      incomingChannels  = optional(any)
-      installedApps     = optional(any)
-      internalId        = optional(string)
-      memberSettings    = optional(any)
-      members           = optional(any)
-      messagingSettings = optional(any)
-      operations        = optional(any)
-      permissionGrants  = optional(any)
-      photo             = optional(any)
-      primaryChannel    = optional(any)
-      schedule          = optional(any)
-      specialization    = optional(any)
-      summary           = optional(any)
-      tags              = optional(any)
-      template          = optional(any)
-      tenantId          = optional(string)
-      visibility        = optional(any)
-      webUrl            = optional(string)
+      odata_type       = optional(string, "#microsoft.graph.team")
+      allChannels      = optional(any)
+      channels         = optional(any)
+      classification   = optional(string)
+      createdDateTime  = optional(string)
+      description      = optional(string)
+      displayName      = optional(string)
+      firstChannelName = optional(string)
+      funSettings = optional(object({
+        odata_type            = optional(string, "#microsoft.graph.teamFunSettings")
+        allowCustomMemes      = optional(bool)
+        allowGiphy            = optional(bool)
+        allowStickersAndMemes = optional(bool)
+        giphyContentRating    = optional(string)
+      }))
+      group = optional(any)
+      guestSettings = optional(object({
+        odata_type                = optional(string, "#microsoft.graph.teamGuestSettings")
+        allowCreateUpdateChannels = optional(bool)
+        allowDeleteChannels       = optional(bool)
+      }))
+      incomingChannels = optional(any)
+      installedApps    = optional(any)
+      internalId       = optional(string)
+      memberSettings = optional(object({
+        odata_type                        = optional(string, "#microsoft.graph.teamMemberSettings")
+        allowAddRemoveApps                = optional(bool)
+        allowCreatePrivateChannels        = optional(bool)
+        allowCreateUpdateChannels         = optional(bool)
+        allowCreateUpdateRemoveConnectors = optional(bool)
+        allowCreateUpdateRemoveTabs       = optional(bool)
+        allowDeleteChannels               = optional(bool)
+      }))
+      members = optional(any)
+      messagingSettings = optional(object({
+        odata_type               = optional(string, "#microsoft.graph.teamMessagingSettings")
+        allowChannelMentions     = optional(bool)
+        allowOwnerDeleteMessages = optional(bool)
+        allowTeamMentions        = optional(bool)
+        allowUserDeleteMessages  = optional(bool)
+        allowUserEditMessages    = optional(bool)
+      }))
+      operations       = optional(any)
+      permissionGrants = optional(any)
+      photo            = optional(any)
+      primaryChannel   = optional(any)
+      schedule         = optional(any)
+      specialization   = optional(string)
+      summary = optional(object({
+        odata_type   = optional(string, "#microsoft.graph.teamSummary")
+        guestsCount  = optional(number)
+        membersCount = optional(number)
+        ownersCount  = optional(number)
+      }))
+      tags       = optional(any)
+      template   = optional(any)
+      tenantId   = optional(string)
+      visibility = optional(string)
+      webUrl     = optional(string)
     })))
     lastPasswordChangeDateTime = optional(string)
     mail                       = optional(string)
     mailNickname               = optional(string)
-    mailboxSettings            = optional(any)
+    mailboxSettings = optional(object({
+      odata_type    = optional(string, "#microsoft.graph.mailboxSettings")
+      archiveFolder = optional(string)
+      automaticRepliesSetting = optional(object({
+        odata_type           = optional(string, "#microsoft.graph.automaticRepliesSetting")
+        externalAudience     = optional(string)
+        externalReplyMessage = optional(string)
+        internalReplyMessage = optional(string)
+        scheduledEndDateTime = optional(object({
+          odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+          dateTime   = optional(string)
+          timeZone   = optional(string)
+        }))
+        scheduledStartDateTime = optional(object({
+          odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+          dateTime   = optional(string)
+          timeZone   = optional(string)
+        }))
+        status = optional(string)
+      }))
+      dateFormat                            = optional(string)
+      delegateMeetingMessageDeliveryOptions = optional(string)
+      language = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.localeInfo")
+        displayName = optional(string)
+        locale      = optional(string)
+      }))
+      timeFormat = optional(string)
+      timeZone   = optional(string)
+      workingHours = optional(object({
+        odata_type = optional(string, "#microsoft.graph.workingHours")
+        daysOfWeek = optional(list(string))
+        endTime    = optional(string)
+        startTime  = optional(string)
+        timeZone   = optional(any)
+      }))
+    }))
     managedAppRegistrations = optional(list(object({
-      odata_type           = optional(string, "#microsoft.graph.managedAppRegistration")
+      odata_type           = string
       appIdentifier        = optional(any)
       applicationVersion   = optional(string)
       appliedPolicies      = optional(any)
@@ -347,21 +344,13 @@ variable "users" {
     })))
     managedDevices = optional(list(object({
       odata_type                   = optional(string, "#microsoft.graph.managedDevice")
-      complianceState              = optional(string)
       deviceCategory               = optional(any)
       deviceCompliancePolicyStates = optional(any)
       deviceConfigurationStates    = optional(any)
-      deviceEnrollmentType         = optional(string)
-      deviceRegistrationState      = optional(string)
-      exchangeAccessState          = optional(string)
-      exchangeAccessStateReason    = optional(string)
       logCollectionRequests        = optional(any)
       managedDeviceName            = optional(string)
       managedDeviceOwnerType       = optional(string)
-      managementAgent              = optional(string)
-      managementState              = optional(string)
       notes                        = optional(string)
-      partnerReportedThreatState   = optional(string)
       users                        = optional(any)
     })))
     mySite = optional(string)
@@ -390,43 +379,82 @@ variable "users" {
       allowAttendeeToEnableMic             = optional(bool)
       allowBreakoutRooms                   = optional(bool)
       allowCopyingAndSharingMeetingContent = optional(bool)
-      allowLiveShare                       = optional(any)
-      allowMeetingChat                     = optional(any)
+      allowLiveShare                       = optional(string)
+      allowMeetingChat                     = optional(string)
       allowParticipantsToChangeName        = optional(bool)
       allowPowerPointSharing               = optional(bool)
       allowRecording                       = optional(bool)
       allowTeamworkReactions               = optional(bool)
       allowTranscription                   = optional(bool)
       allowWhiteboard                      = optional(bool)
-      allowedLobbyAdmitters                = optional(any)
-      allowedPresenters                    = optional(any)
-      broadcastSettings                    = optional(any)
-      chatInfo                             = optional(any)
-      chatRestrictions                     = optional(any)
-      endDateTime                          = optional(string)
-      expiryDateTime                       = optional(string)
-      externalId                           = optional(string)
-      isBroadcast                          = optional(bool)
-      isEndToEndEncryptionEnabled          = optional(bool)
-      isEntryExitAnnounced                 = optional(bool)
-      joinMeetingIdSettings                = optional(any)
-      lobbyBypassSettings                  = optional(any)
-      meetingOptionsWebUrl                 = optional(string)
-      meetingSpokenLanguageTag             = optional(string)
-      meetingTemplateId                    = optional(string)
-      participants                         = optional(any)
-      recordAutomatically                  = optional(bool)
-      sensitivityLabelAssignment           = optional(any)
-      shareMeetingChatHistoryDefault       = optional(any)
-      startDateTime                        = optional(string)
-      subject                              = optional(string)
-      watermarkProtection                  = optional(any)
+      allowedLobbyAdmitters                = optional(string)
+      allowedPresenters                    = optional(string)
+      broadcastSettings = optional(object({
+        odata_type                 = optional(string, "#microsoft.graph.broadcastMeetingSettings")
+        allowedAudience            = optional(string)
+        captions                   = optional(any)
+        isAttendeeReportEnabled    = optional(bool)
+        isQuestionAndAnswerEnabled = optional(bool)
+        isRecordingEnabled         = optional(bool)
+        isVideoOnDemandEnabled     = optional(bool)
+      }))
+      chatInfo = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.chatInfo")
+        messageId           = optional(string)
+        replyChainMessageId = optional(string)
+        threadId            = optional(string)
+      }))
+      chatRestrictions = optional(object({
+        odata_type    = optional(string, "#microsoft.graph.chatRestrictions")
+        allowTextOnly = optional(bool)
+      }))
+      endDateTime                 = optional(string)
+      expiryDateTime              = optional(string)
+      externalId                  = optional(string)
+      isBroadcast                 = optional(bool)
+      isEndToEndEncryptionEnabled = optional(bool)
+      isEntryExitAnnounced        = optional(bool)
+      joinMeetingIdSettings = optional(object({
+        odata_type         = optional(string, "#microsoft.graph.joinMeetingIdSettings")
+        isPasscodeRequired = optional(bool)
+      }))
+      lobbyBypassSettings = optional(object({
+        odata_type            = optional(string, "#microsoft.graph.lobbyBypassSettings")
+        isDialInBypassEnabled = optional(bool)
+        scope                 = optional(string)
+      }))
+      meetingOptionsWebUrl     = optional(string)
+      meetingSpokenLanguageTag = optional(string)
+      meetingTemplateId        = optional(string)
+      participants = optional(object({
+        odata_type = optional(string, "#microsoft.graph.meetingParticipants")
+        attendees  = optional(any)
+        organizer  = optional(any)
+      }))
+      recordAutomatically = optional(bool)
+      sensitivityLabelAssignment = optional(object({
+        odata_type         = optional(string, "#microsoft.graph.onlineMeetingSensitivityLabelAssignment")
+        sensitivityLabelId = optional(string)
+      }))
+      shareMeetingChatHistoryDefault = optional(string)
+      startDateTime                  = optional(string)
+      subject                        = optional(string)
+      watermarkProtection = optional(object({
+        odata_type                 = optional(string, "#microsoft.graph.watermarkProtectionValues")
+        isEnabledForContentSharing = optional(bool)
+        isEnabledForVideo          = optional(bool)
+      }))
     })))
     otherMails       = optional(list(string))
     outlook          = optional(any)
     passwordPolicies = optional(string)
-    passwordProfile  = optional(any)
-    pastProjects     = optional(list(string))
+    passwordProfile = optional(object({
+      odata_type                           = optional(string, "#microsoft.graph.passwordProfile")
+      forceChangePasswordNextSignIn        = optional(bool)
+      forceChangePasswordNextSignInWithMfa = optional(bool)
+      password                             = optional(string)
+    }))
+    pastProjects = optional(list(string))
     permissionGrants = optional(list(object({
       odata_type      = optional(string, "#microsoft.graph.resourceSpecificPermissionGrant")
       deletedDateTime = optional(string)
@@ -436,46 +464,55 @@ variable "users" {
     preferredLanguage     = optional(string)
     preferredName         = optional(string)
     presence              = optional(any)
-    print                 = optional(any)
-    responsibilities      = optional(list(string))
-    schools               = optional(list(string))
+    print = optional(object({
+      odata_type = optional(string, "#microsoft.graph.userPrint")
+      recentPrinterShares = optional(list(object({
+        odata_type      = optional(string, "#microsoft.graph.printerShare")
+        allowAllUsers   = optional(bool)
+        allowedGroups   = optional(any)
+        allowedUsers    = optional(any)
+        capabilities    = optional(any)
+        defaults        = optional(any)
+        displayName     = optional(string)
+        isAcceptingJobs = optional(bool)
+        jobs            = optional(any)
+        location        = optional(any)
+        manufacturer    = optional(string)
+        model           = optional(string)
+        printer         = optional(any)
+        status          = optional(any)
+        viewPoint       = optional(any)
+      })))
+    }))
+    responsibilities = optional(list(string))
+    schools          = optional(list(string))
     scopedRoleMemberOf = optional(list(object({
       odata_type           = optional(string, "#microsoft.graph.scopedRoleMembership")
       administrativeUnitId = optional(string)
       roleId               = optional(string)
-      roleMemberInfo = optional(object({
-        odata_type  = optional(string, "#microsoft.graph.identity")
-        displayName = optional(string)
-        id          = optional(string)
-      }))
+      roleMemberInfo       = optional(any)
     })))
-    serviceProvisioningErrors = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.serviceProvisioningError")
-      createdDateTime = optional(string)
-      isResolved      = optional(bool)
-      serviceInstance = optional(string)
-    })))
-    settings          = optional(any)
-    showInAddressList = optional(bool)
-    skills            = optional(list(string))
-    sponsors = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.directoryObject")
-      deletedDateTime = optional(string)
-    })))
-    state         = optional(string)
-    streetAddress = optional(string)
-    surname       = optional(string)
-    todo          = optional(any)
-    transitiveMemberOf = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.directoryObject")
-      deletedDateTime = optional(string)
-    })))
-    usageLocation     = optional(string)
-    userPrincipalName = optional(string)
-    userType          = optional(string)
+    serviceProvisioningErrors = optional(any)
+    settings                  = optional(any)
+    showInAddressList         = optional(bool)
+    skills                    = optional(list(string))
+    sponsors                  = optional(any)
+    state                     = optional(string)
+    streetAddress             = optional(string)
+    surname                   = optional(string)
+    todo                      = optional(any)
+    transitiveMemberOf        = optional(any)
+    usageLocation             = optional(string)
+    userPrincipalName         = optional(string)
+    userType                  = optional(string)
   }))
   default   = null
   sensitive = true
+
+  validation {
+    condition     = (var.users == null ? true : alltrue([for item0 in var.users : (item0 == null ? true : alltrue([(item0["managedAppRegistrations"] == null ? true : alltrue([for item2 in item0["managedAppRegistrations"] : (item2 == null ? true : alltrue([(item2["odata_type"] == null ? false : contains(["#microsoft.graph.androidManagedAppRegistration", "#microsoft.graph.iosManagedAppRegistration"], item2["odata_type"]))]))]))]))]))
+    error_message = "users: every nested odata_type of an abstract Graph type must name a concrete type."
+  }
 }
 
 variable "additional_properties" {
@@ -486,7 +523,7 @@ variable "additional_properties" {
   sensitive   = true
 
   validation {
-    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["activationLockBypassCode", "androidSecurityPatchLevel", "azureADDeviceId", "azureADRegistered", "complianceGracePeriodExpirationDateTime", "configurationManagerClientEnabledFeatures", "deviceActionResults", "deviceCategoryDisplayName", "deviceHealthAttestationState", "deviceName", "easActivated", "easActivationDateTime", "easDeviceId", "emailAddress", "enrolledDateTime", "enrollmentProfileName", "ethernetMacAddress", "exchangeLastSuccessfulSyncDateTime", "freeStorageSpaceInBytes", "iccid", "id", "imei", "isEncrypted", "isSupervised", "jailBroken", "lastSyncDateTime", "managementCertificateExpirationDate", "manufacturer", "meid", "model", "operatingSystem", "osVersion", "phoneNumber", "physicalMemoryInBytes", "remoteAssistanceSessionErrorDetails", "remoteAssistanceSessionUrl", "requireUserEnrollmentApproval", "serialNumber", "subscriberCarrier", "totalStorageSpaceInBytes", "udid", "userDisplayName", "userId", "userPrincipalName", "wiFiMacAddress", "windowsProtectionState"], key)]) : false
+    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["activationLockBypassCode", "androidSecurityPatchLevel", "azureADDeviceId", "azureADRegistered", "complianceGracePeriodExpirationDateTime", "complianceState", "configurationManagerClientEnabledFeatures", "deviceActionResults", "deviceCategoryDisplayName", "deviceEnrollmentType", "deviceHealthAttestationState", "deviceName", "deviceRegistrationState", "easActivated", "easActivationDateTime", "easDeviceId", "emailAddress", "enrolledDateTime", "enrollmentProfileName", "ethernetMacAddress", "exchangeAccessState", "exchangeAccessStateReason", "exchangeLastSuccessfulSyncDateTime", "freeStorageSpaceInBytes", "iccid", "id", "imei", "isEncrypted", "isSupervised", "jailBroken", "lastSyncDateTime", "managementAgent", "managementCertificateExpirationDate", "managementState", "manufacturer", "meid", "model", "operatingSystem", "osVersion", "partnerReportedThreatState", "phoneNumber", "physicalMemoryInBytes", "remoteAssistanceSessionErrorDetails", "remoteAssistanceSessionUrl", "requireUserEnrollmentApproval", "serialNumber", "subscriberCarrier", "totalStorageSpaceInBytes", "udid", "userDisplayName", "userId", "userPrincipalName", "wiFiMacAddress", "windowsProtectionState"], key)]) : false
     error_message = "additional_properties must be an object without documented read-only properties."
   }
 }

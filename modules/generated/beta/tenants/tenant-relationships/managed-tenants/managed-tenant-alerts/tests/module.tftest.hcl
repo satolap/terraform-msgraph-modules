@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     alert_rule_display_name      = "example"
     correlation_count            = -2147483648
+    alert_data                   = { "displayName" = null }
     alert_data_reference_strings = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["correlationCount"]) == jsonencode(-2147483648)
     error_message = "correlationCount must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["alertData"]) == jsonencode({ "@odata.type" = "#microsoft.graph.managedTenants.alertData" })
+    error_message = "alertData must preserve typed values and omit nested nulls."
   }
 
   assert {

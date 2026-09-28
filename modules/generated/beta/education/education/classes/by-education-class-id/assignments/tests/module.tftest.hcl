@@ -24,19 +24,25 @@ run "typed_request" {
 
   variables {
     education_class_id     = "test-parent-id"
-    class_id               = "example"
+    add_to_calendar_action = "none"
     allow_late_submissions = false
+    instructions           = { "content" = null }
     resources              = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["classId"]) == jsonencode("example")
-    error_message = "classId must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["addToCalendarAction"]) == jsonencode("none")
+    error_message = "addToCalendarAction must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["allowLateSubmissions"]) == jsonencode(false)
     error_message = "allowLateSubmissions must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["instructions"]) == jsonencode({ "@odata.type" = "#microsoft.graph.educationItemBody" })
+    error_message = "instructions must preserve typed values and omit nested nulls."
   }
 
   assert {

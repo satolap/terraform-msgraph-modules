@@ -22,8 +22,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `access_package_assignment_requests` | `accessPackageAssignmentRequests` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageAssignmentRequest")       accessPackageAssignment = optional(any)       answers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageAnswer")       displayValue = optional(string)     })))       customExtensionCalloutInstances = optional(list(object({       odata_type = optional(string, "#microsoft.graph.customExtensionCalloutInstance")       customExtensionId = optional(string)       detail = optional(string)       externalCorrelationId = optional(string)       status = optional(any)     })))       expirationDateTime = optional(string)       history = optional(list(object({       odata_type = optional(string, "#microsoft.graph.requestActivity")       action = optional(string)       actionDateTime = optional(string)       detail = optional(string)       scheduledDateTime = optional(string)       userDisplayName = optional(string)       userPrincipalName = optional(string)     })))       isValidationOnly = optional(bool)       justification = optional(string)       parameters = optional(any)     }))` | no | no |
-| `custom_extension_callout_instances` | `customExtensionCalloutInstances` | `list(object({       odata_type = optional(string, "#microsoft.graph.customExtensionCalloutInstance")       customExtensionId = optional(string)       detail = optional(string)       externalCorrelationId = optional(string)       status = optional(any)     }))` | no | no |
+| `access_package_assignment_requests` | `accessPackageAssignmentRequests` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageAssignmentRequest")       accessPackageAssignment = optional(any)       answers = optional(any)       customExtensionCalloutInstances = optional(list(object({       odata_type = optional(string, "#microsoft.graph.customExtensionCalloutInstance")       customExtensionId = optional(string)       detail = optional(string)       externalCorrelationId = optional(string)       status = optional(string)     })))       expirationDateTime = optional(string)       history = optional(list(object({       odata_type = optional(string, "#microsoft.graph.requestActivity")       action = optional(string)       actionDateTime = optional(string)       detail = optional(string)       scheduledDateTime = optional(string)       userDisplayName = optional(string)       userPrincipalName = optional(string)     })))       isValidationOnly = optional(bool)       justification = optional(string)       parameters = optional(object({       odata_type = optional(string, "#microsoft.graph.accessPackageAssignmentRequestParameters")       bypassApproval = optional(bool)     }))     }))` | no | no |
+| `custom_extension_callout_instances` | `customExtensionCalloutInstances` | `list(object({       odata_type = optional(string, "#microsoft.graph.customExtensionCalloutInstance")       customExtensionId = optional(string)       detail = optional(string)       externalCorrelationId = optional(string)       status = optional(string)     }))` | no | no |
 | `expired_date_time` | `expiredDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -43,10 +43,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- accessPackageAssignmentRequests[].accessPackageAssignment: polymorphic schema; accepts an untyped value
-- accessPackageAssignmentRequests[].customExtensionCalloutInstances[].status: polymorphic schema; accepts an untyped value
-- accessPackageAssignmentRequests[].parameters: polymorphic schema; accepts an untyped value
-- customExtensionCalloutInstances[].status: polymorphic schema; accepts an untyped value
+- accessPackageAssignmentRequests[].accessPackageAssignment: navigation property; accepts an untyped value
+- accessPackageAssignmentRequests[].answers[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

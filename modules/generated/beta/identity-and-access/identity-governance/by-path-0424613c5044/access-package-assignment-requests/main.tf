@@ -2,14 +2,14 @@
 locals {
   typed_body = { for key, value in {
     "accessPackageAssignment"         = var.access_package_assignment
-    "answers"                         = (var.answers == null ? null : [for item0 in var.answers : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "displayValue" = item0["displayValue"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "answers"                         = (var.answers == null ? null : [for item0 in var.answers : item0 if item0 != null])
     "customExtensionCalloutInstances" = (var.custom_extension_callout_instances == null ? null : [for item0 in var.custom_extension_callout_instances : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "customExtensionId" = item0["customExtensionId"], "detail" = item0["detail"], "externalCorrelationId" = item0["externalCorrelationId"], "status" = item0["status"] } : key1 => value1 if value1 != null }) if item0 != null])
     "expirationDateTime"              = var.expiration_date_time
     "history"                         = (var.history == null ? null : [for item0 in var.history : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "action" = item0["action"], "actionDateTime" = item0["actionDateTime"], "detail" = item0["detail"], "scheduledDateTime" = item0["scheduledDateTime"], "userDisplayName" = item0["userDisplayName"], "userPrincipalName" = item0["userPrincipalName"] } : key1 => value1 if value1 != null }) if item0 != null])
     "isValidationOnly"                = var.is_validation_only
     "justification"                   = var.justification
     "@odata.type"                     = var.odata_type
-    "parameters"                      = var.parameters
+    "parameters"                      = (var.parameters == null ? null : { for key0, value0 in { "@odata.type" = var.parameters["odata_type"], "bypassApproval" = var.parameters["bypassApproval"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

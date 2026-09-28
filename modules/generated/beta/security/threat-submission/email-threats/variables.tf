@@ -1,13 +1,35 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.security.emailContentThreatSubmission", "#microsoft.graph.security.emailUrlThreatSubmission"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "admin_review" {
   description = "Specifies the admin review property that constitutes of who reviewed the user submission, when and what was it identified as."
-  type        = any
-  default     = null
+  type = object({
+    odata_type     = optional(string, "#microsoft.graph.security.submissionAdminReview")
+    reviewBy       = optional(string)
+    reviewDateTime = optional(string)
+    reviewResult   = optional(string)
+  })
+  default = null
 }
 
 variable "attack_simulation_info" {
   description = "If the email is phishing simulation, this field won't be null."
-  type        = any
-  default     = null
+  type = object({
+    odata_type            = optional(string, "#microsoft.graph.security.attackSimulationInfo")
+    attackSimDateTime     = optional(string)
+    attackSimDurationTime = optional(string)
+    attackSimId           = optional(string)
+    attackSimUserId       = optional(string)
+  })
+  default = null
 }
 
 variable "category" {
@@ -23,7 +45,7 @@ variable "category" {
 
 variable "client_source" {
   description = "Specifies the source of the submission. The possible values are: microsoft, other, and unkownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -34,7 +56,7 @@ variable "client_source" {
 
 variable "content_type" {
   description = "Specifies the type of content being submitted. The possible values are: email, url, file, app, and unkownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -45,8 +67,13 @@ variable "content_type" {
 
 variable "created_by" {
   description = "Specifies who submitted the email as a threat. Supports $filter = createdBy/email eq 'value'."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.security.submissionUserIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "created_date_time" {
@@ -57,7 +84,7 @@ variable "created_date_time" {
 
 variable "graph_source" {
   description = "Specifies the role of the submitter. Supports $filter = source eq 'value'. The possible values are: administrator,  user, and unkownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -72,16 +99,9 @@ variable "internet_message_id" {
   default     = null
 }
 
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.security.emailThreatSubmission"
-  nullable    = false
-}
-
 variable "original_category" {
   description = "The original category of the submission. The possible values are: notJunk, spam, phishing, malware and unkownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -104,8 +124,19 @@ variable "recipient_email_address" {
 
 variable "result" {
   description = "Specifies the result of the analysis performed by Microsoft."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.security.submissionResult")
+    category   = optional(string)
+    detail     = optional(string)
+    detectedFiles = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.security.submissionDetectedFile")
+      fileHash   = optional(string)
+      fileName   = optional(string)
+    })))
+    detectedUrls       = optional(list(string))
+    userMailboxSetting = optional(string)
+  })
+  default = null
 }
 
 variable "sender" {
@@ -122,7 +153,7 @@ variable "sender_ip" {
 
 variable "status" {
   description = "Indicates whether the threat submission has been analyzed by Microsoft. Supports $filter = status eq 'value'. The possible values are: notStarted, running, succeeded, failed, skipped, and unkownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -139,8 +170,21 @@ variable "subject" {
 
 variable "tenant_allow_or_block_list_action" {
   description = "It's used to automatically add allows for the components such as URL, file, sender; which are deemed bad by Microsoft so that similar messages in the future can be allowed."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.security.tenantAllowOrBlockListAction")
+    action             = optional(string)
+    expirationDateTime = optional(string)
+    note               = optional(string)
+    results = optional(list(object({
+      odata_type         = optional(string, "#microsoft.graph.security.tenantAllowBlockListEntryResult")
+      entryType          = optional(string)
+      expirationDateTime = optional(string)
+      identity           = optional(string)
+      status             = optional(string)
+      value              = optional(string)
+    })))
+  })
+  default = null
 }
 
 variable "tenant_id" {

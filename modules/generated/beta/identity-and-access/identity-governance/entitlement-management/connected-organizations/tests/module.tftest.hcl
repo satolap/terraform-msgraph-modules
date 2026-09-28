@@ -29,7 +29,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["externalSponsors"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.directoryObject" }])
+    condition     = jsonencode(msgraph_resource.this.body["externalSponsors"]) == jsonencode([{}])
     error_message = "externalSponsors must preserve typed values and omit nested nulls."
   }
 }

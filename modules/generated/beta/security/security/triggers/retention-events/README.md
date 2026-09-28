@@ -26,9 +26,9 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `event_propagation_results` | `eventPropagationResults` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.eventPropagationResult")       location = optional(string)       serviceName = optional(string)       status = optional(any)       statusInformation = optional(string)     }))` | no | no |
-| `event_queries` | `eventQueries` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.eventQuery")       query = optional(string)       queryType = optional(any)     }))` | no | no |
-| `event_status` | `eventStatus` | `any` | no | no |
+| `event_propagation_results` | `eventPropagationResults` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.eventPropagationResult")       location = optional(string)       serviceName = optional(string)       status = optional(string)       statusInformation = optional(string)     }))` | no | no |
+| `event_queries` | `eventQueries` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.eventQuery")       query = optional(string)       queryType = optional(string)     }))` | no | no |
+| `event_status` | `eventStatus` | `object({       odata_type = optional(string, "#microsoft.graph.security.retentionEventStatus")       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       status = optional(string)     })` | no | no |
 | `event_trigger_date_time` | `eventTriggerDateTime` | `string` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
@@ -53,11 +53,8 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - createdBy: polymorphic schema; accepts an untyped value
-- eventPropagationResults[].status: polymorphic schema; accepts an untyped value
-- eventQueries[].queryType: polymorphic schema; accepts an untyped value
-- eventStatus: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- retentionEventType: polymorphic schema; accepts an untyped value
+- retentionEventType: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

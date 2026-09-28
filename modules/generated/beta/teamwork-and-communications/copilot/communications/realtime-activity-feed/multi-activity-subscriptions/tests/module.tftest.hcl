@@ -20,10 +20,16 @@ run "typed_request" {
 
   variables {
     callback_url = "example"
+    activities   = { "transcript" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["callbackUrl"]) == jsonencode("example")
     error_message = "callbackUrl must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["activities"]) == jsonencode({ "@odata.type" = "#microsoft.graph.subscriptionActivities" })
+    error_message = "activities must preserve typed values and omit nested nulls."
   }
 }

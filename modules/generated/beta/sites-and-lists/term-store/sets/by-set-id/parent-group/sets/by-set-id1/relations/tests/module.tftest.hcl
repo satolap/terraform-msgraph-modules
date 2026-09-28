@@ -20,6 +20,21 @@ run "minimal_request" {
   }
 }
 
+run "typed_request" {
+  command = plan
+
+  variables {
+    set_id       = "test-parent-id"
+    set_id1      = "test-parent-id"
+    relationship = "pin"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["relationship"]) == jsonencode("pin")
+    error_message = "relationship must preserve typed values and omit nested nulls."
+  }
+}
+
 run "invalid_enum" {
   command = plan
 

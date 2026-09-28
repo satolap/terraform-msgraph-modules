@@ -27,15 +27,15 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `site_id` | URL parameter `site-id` | `string` | yes | no |
 | `list_id` | URL parameter `list-id` | `string` | yes | no |
 | `analytics` | `analytics` | `any` | no | no |
-| `content_type` | `contentType` | `any` | no | no |
+| `content_type` | `contentType` | `object({       odata_type = optional(string, "#microsoft.graph.contentTypeInfo")       id = optional(string)       name = optional(string)     })` | no | no |
 | `description` | `description` | `string` | no | no |
 | `document_set_versions` | `documentSetVersions` | `list(object({       odata_type = optional(string, "#microsoft.graph.documentSetVersion")       comment = optional(string)       createdBy = optional(any)       createdDateTime = optional(string)       fields = optional(any)       items = optional(list(object({       odata_type = optional(string, "#microsoft.graph.documentSetVersionItem")       itemId = optional(string)       title = optional(string)       versionId = optional(string)     })))       shouldCaptureMinorVersion = optional(bool)     }))` | no | no |
 | `drive_item` | `driveItem` | `any` | no | no |
 | `fields` | `fields` | `any` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `parent_reference` | `parentReference` | `any` | no | no |
-| `versions` | `versions` | `list(object({       odata_type = optional(string, "#microsoft.graph.listItemVersion")       fields = optional(any)     }))` | no | no |
+| `parent_reference` | `parentReference` | `object({       odata_type = optional(string, "#microsoft.graph.itemReference")       driveType = optional(string)       shareId = optional(string)       siteId = optional(string)     })` | no | no |
+| `versions` | `versions` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -52,14 +52,12 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- analytics: polymorphic schema; accepts an untyped value
-- contentType: polymorphic schema; accepts an untyped value
+- analytics: navigation property; accepts an untyped value
 - documentSetVersions[].createdBy: polymorphic schema; accepts an untyped value
-- documentSetVersions[].fields: polymorphic schema; accepts an untyped value
-- driveItem: polymorphic schema; accepts an untyped value
-- fields: polymorphic schema; accepts an untyped value
-- parentReference: polymorphic schema; accepts an untyped value
-- versions[].fields: polymorphic schema; accepts an untyped value
+- documentSetVersions[].fields: navigation property; accepts an untyped value
+- driveItem: navigation property; accepts an untyped value
+- fields: navigation property; accepts an untyped value
+- versions[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

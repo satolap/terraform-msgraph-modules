@@ -19,15 +19,16 @@ run "typed_request" {
   command = plan
 
   variables {
-    created_date_time   = "2026-01-01T00:00:00Z"
+    availability_status = "unknown"
     has_evaluation      = false
     duration_in_minutes = -2147483648
+    created_by          = { "displayName" = null }
     language_details    = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["createdDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
-    error_message = "createdDateTime must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["availabilityStatus"]) == jsonencode("unknown")
+    error_message = "availabilityStatus must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -38,6 +39,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["durationInMinutes"]) == jsonencode(-2147483648)
     error_message = "durationInMinutes must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["createdBy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.emailIdentity" })
+    error_message = "createdBy must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -25,10 +25,16 @@ run "typed_request" {
   variables {
     approval_workflow_provider_id = "test-parent-id"
     custom_data                   = "example"
+    policy                        = { "decisionMakerCriteria" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["customData"]) == jsonencode("example")
     error_message = "customData must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["policy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.governancePolicy" })
+    error_message = "policy must preserve typed values and omit nested nulls."
   }
 }

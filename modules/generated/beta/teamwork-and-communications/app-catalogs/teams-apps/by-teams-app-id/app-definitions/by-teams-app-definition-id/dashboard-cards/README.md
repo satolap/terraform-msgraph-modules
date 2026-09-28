@@ -26,11 +26,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `teams_app_id` | URL parameter `teamsApp-id` | `string` | yes | no |
 | `teams_app_definition_id` | URL parameter `teamsAppDefinition-id` | `string` | yes | no |
-| `content_source` | `contentSource` | `any` | no | no |
-| `default_size` | `defaultSize` | `any` | no | no |
+| `content_source` | `contentSource` | `object({       odata_type = optional(string, "#microsoft.graph.teamsAppDashboardCardContentSource")       botConfiguration = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsAppDashboardCardBotConfiguration")       botId = optional(string)     }))       sourceType = optional(string)     })` | no | no |
+| `default_size` | `defaultSize` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `icon` | `icon` | `any` | no | no |
+| `icon` | `icon` | `object({       odata_type = optional(string, "#microsoft.graph.teamsAppDashboardCardIcon")       iconUrl = optional(string)       officeUIFabricIconName = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `picker_group_id` | `pickerGroupId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -50,9 +50,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- contentSource: polymorphic schema; accepts an untyped value
-- defaultSize: polymorphic schema; accepts an untyped value
-- icon: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -6,6 +6,7 @@ run "minimal_request" {
 
   variables {
     access_package_catalog_id = "test-parent-id"
+    odata_type                = "#microsoft.graph.accessPackageAssignmentRequestWorkflowExtension"
   }
 
   assert {
@@ -24,11 +25,34 @@ run "typed_request" {
 
   variables {
     access_package_catalog_id = "test-parent-id"
+    odata_type                = "#microsoft.graph.accessPackageAssignmentRequestWorkflowExtension"
     description               = "example"
+    client_configuration      = { "maximumRetries" = null }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.accessPackageAssignmentRequestWorkflowExtension")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
     error_message = "description must preserve typed values and omit nested nulls."
   }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["clientConfiguration"]) == jsonencode({ "@odata.type" = "#microsoft.graph.customExtensionClientConfiguration" })
+    error_message = "clientConfiguration must preserve typed values and omit nested nulls."
+  }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    access_package_catalog_id = "test-parent-id"
+    odata_type                = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

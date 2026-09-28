@@ -3,7 +3,7 @@ locals {
   typed_body = { for key, value in {
     "displayName" = var.display_name
     "finishDate"  = var.finish_date
-    "notes"       = var.notes
+    "notes"       = (var.notes == null ? null : { for key0, value0 in { "@odata.type" = var.notes["odata_type"], "content" = var.notes["content"], "contentType" = var.notes["contentType"] } : key0 => value0 if value0 != null })
     "@odata.type" = var.odata_type
     "planId"      = var.plan_id
     "priority"    = var.priority

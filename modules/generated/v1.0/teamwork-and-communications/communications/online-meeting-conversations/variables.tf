@@ -11,39 +11,8 @@ variable "creation_mode" {
 
 variable "messages" {
   description = "The messages in a Viva Engage conversation."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.engagementConversationMessage")
-    body = optional(object({
-      odata_type  = optional(string, "#microsoft.graph.itemBody")
-      content     = optional(string)
-      contentType = optional(any)
-    }))
-    conversation = optional(object({
-      odata_type   = optional(string, "#microsoft.graph.engagementConversation")
-      creationMode = optional(string)
-      messages     = optional(any)
-      starter      = optional(any)
-      starterId    = optional(string)
-    }))
-    creationMode = optional(string)
-    from         = optional(any)
-    reactions = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.engagementConversationMessageReaction")
-      reactionBy = optional(object({
-        odata_type  = optional(string, "#microsoft.graph.engagementIdentitySet")
-        application = optional(any)
-        audience    = optional(any)
-        device      = optional(any)
-        group       = optional(any)
-        user        = optional(any)
-      }))
-      reactionType = optional(string)
-    })))
-    replies   = optional(any)
-    replyTo   = optional(any)
-    replyToId = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "moderation_state" {
@@ -72,37 +41,76 @@ variable "online_meeting" {
     allowAttendeeToEnableMic             = optional(bool)
     allowBreakoutRooms                   = optional(bool)
     allowCopyingAndSharingMeetingContent = optional(bool)
-    allowLiveShare                       = optional(any)
-    allowMeetingChat                     = optional(any)
+    allowLiveShare                       = optional(string)
+    allowMeetingChat                     = optional(string)
     allowParticipantsToChangeName        = optional(bool)
     allowPowerPointSharing               = optional(bool)
     allowRecording                       = optional(bool)
     allowTeamworkReactions               = optional(bool)
     allowTranscription                   = optional(bool)
     allowWhiteboard                      = optional(bool)
-    allowedLobbyAdmitters                = optional(any)
-    allowedPresenters                    = optional(any)
-    broadcastSettings                    = optional(any)
-    chatInfo                             = optional(any)
-    chatRestrictions                     = optional(any)
-    endDateTime                          = optional(string)
-    expiryDateTime                       = optional(string)
-    externalId                           = optional(string)
-    isBroadcast                          = optional(bool)
-    isEndToEndEncryptionEnabled          = optional(bool)
-    isEntryExitAnnounced                 = optional(bool)
-    joinMeetingIdSettings                = optional(any)
-    lobbyBypassSettings                  = optional(any)
-    meetingOptionsWebUrl                 = optional(string)
-    meetingSpokenLanguageTag             = optional(string)
-    meetingTemplateId                    = optional(string)
-    participants                         = optional(any)
-    recordAutomatically                  = optional(bool)
-    sensitivityLabelAssignment           = optional(any)
-    shareMeetingChatHistoryDefault       = optional(any)
-    startDateTime                        = optional(string)
-    subject                              = optional(string)
-    watermarkProtection                  = optional(any)
+    allowedLobbyAdmitters                = optional(string)
+    allowedPresenters                    = optional(string)
+    broadcastSettings = optional(object({
+      odata_type      = optional(string, "#microsoft.graph.broadcastMeetingSettings")
+      allowedAudience = optional(string)
+      captions = optional(object({
+        odata_type           = optional(string, "#microsoft.graph.broadcastMeetingCaptionSettings")
+        isCaptionEnabled     = optional(bool)
+        spokenLanguage       = optional(string)
+        translationLanguages = optional(list(string))
+      }))
+      isAttendeeReportEnabled    = optional(bool)
+      isQuestionAndAnswerEnabled = optional(bool)
+      isRecordingEnabled         = optional(bool)
+      isVideoOnDemandEnabled     = optional(bool)
+    }))
+    chatInfo = optional(object({
+      odata_type          = optional(string, "#microsoft.graph.chatInfo")
+      messageId           = optional(string)
+      replyChainMessageId = optional(string)
+      threadId            = optional(string)
+    }))
+    chatRestrictions = optional(object({
+      odata_type    = optional(string, "#microsoft.graph.chatRestrictions")
+      allowTextOnly = optional(bool)
+    }))
+    endDateTime                 = optional(string)
+    expiryDateTime              = optional(string)
+    externalId                  = optional(string)
+    isBroadcast                 = optional(bool)
+    isEndToEndEncryptionEnabled = optional(bool)
+    isEntryExitAnnounced        = optional(bool)
+    joinMeetingIdSettings = optional(object({
+      odata_type         = optional(string, "#microsoft.graph.joinMeetingIdSettings")
+      isPasscodeRequired = optional(bool)
+    }))
+    lobbyBypassSettings = optional(object({
+      odata_type            = optional(string, "#microsoft.graph.lobbyBypassSettings")
+      isDialInBypassEnabled = optional(bool)
+      scope                 = optional(string)
+    }))
+    meetingOptionsWebUrl     = optional(string)
+    meetingSpokenLanguageTag = optional(string)
+    meetingTemplateId        = optional(string)
+    participants = optional(object({
+      odata_type = optional(string, "#microsoft.graph.meetingParticipants")
+      attendees  = optional(any)
+      organizer  = optional(any)
+    }))
+    recordAutomatically = optional(bool)
+    sensitivityLabelAssignment = optional(object({
+      odata_type         = optional(string, "#microsoft.graph.onlineMeetingSensitivityLabelAssignment")
+      sensitivityLabelId = optional(string)
+    }))
+    shareMeetingChatHistoryDefault = optional(string)
+    startDateTime                  = optional(string)
+    subject                        = optional(string)
+    watermarkProtection = optional(object({
+      odata_type                 = optional(string, "#microsoft.graph.watermarkProtectionValues")
+      isEnabledForContentSharing = optional(bool)
+      isEnabledForVideo          = optional(bool)
+    }))
   })
   default = null
 }
@@ -113,59 +121,9 @@ variable "online_meeting_id" {
   default     = null
 }
 
-variable "organizer" {
-  description = "The Viva Engage identities."
-  type = object({
-    odata_type  = optional(string, "#microsoft.graph.engagementIdentitySet")
-    application = optional(any)
-    audience    = optional(any)
-    device      = optional(any)
-    group       = optional(any)
-    user        = optional(any)
-  })
-  default = null
-}
-
 variable "starter" {
   description = "A Viva Engage conversation message."
-  type = object({
-    odata_type = optional(string, "#microsoft.graph.engagementConversationMessage")
-    body = optional(object({
-      odata_type  = optional(string, "#microsoft.graph.itemBody")
-      content     = optional(string)
-      contentType = optional(any)
-    }))
-    conversation = optional(object({
-      odata_type   = optional(string, "#microsoft.graph.engagementConversation")
-      creationMode = optional(string)
-      messages     = optional(any)
-      starter      = optional(any)
-      starterId    = optional(string)
-    }))
-    creationMode = optional(string)
-    from         = optional(any)
-    reactions = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.engagementConversationMessageReaction")
-      reactionBy = optional(object({
-        odata_type  = optional(string, "#microsoft.graph.engagementIdentitySet")
-        application = optional(any)
-        audience    = optional(any)
-        device      = optional(any)
-        group       = optional(any)
-        user        = optional(any)
-      }))
-      reactionType = optional(string)
-    })))
-    replies   = optional(any)
-    replyTo   = optional(any)
-    replyToId = optional(string)
-  })
-  default = null
-}
-
-variable "starter_id" {
-  description = "The unique ID of the first message in a Viva Engage conversation."
-  type        = string
+  type        = any
   default     = null
 }
 
@@ -177,7 +135,7 @@ variable "additional_properties" {
   sensitive   = true
 
   validation {
-    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["id", "upvoteCount"], key)]) : false
+    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["id", "organizer", "starterId", "upvoteCount"], key)]) : false
     error_message = "additional_properties must be an object without documented read-only properties."
   }
 }

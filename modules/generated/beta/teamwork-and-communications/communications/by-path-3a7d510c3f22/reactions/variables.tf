@@ -27,30 +27,6 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "reaction_by" {
-  description = "The Viva Engage identities."
-  type = object({
-    odata_type  = optional(string, "#microsoft.graph.engagementIdentitySet")
-    application = optional(any)
-    audience    = optional(any)
-    device      = optional(any)
-    group       = optional(any)
-    user        = optional(any)
-  })
-  default = null
-}
-
-variable "reaction_type" {
-  description = "Types of reactions to conversation messages."
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.reaction_type == null ? true : contains(["like", "love", "celebrate", "thank", "laugh", "sad", "happy", "excited", "smile", "silly", "intenseLaugh", "starStruck", "goofy", "thinking", "surprised", "mindBlown", "scared", "crying", "shocked", "angry", "agree", "praise", "takingNotes", "heartBroken", "support", "confirmed", "watching", "brain", "medal", "bullseye", "unknownFutureValue"], var.reaction_type)
-    error_message = "reaction_type must be one of the documented enum values."
-  }
-}
-
 variable "additional_properties" {
   description = "Additional writable Graph properties using API field names. Explicit typed inputs take precedence. Null top-level values are omitted; callers must omit nested nulls in untyped values."
   type        = any
@@ -59,7 +35,7 @@ variable "additional_properties" {
   sensitive   = true
 
   validation {
-    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["createdDateTime", "id"], key)]) : false
+    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["createdDateTime", "id", "reactionBy", "reactionType"], key)]) : false
     error_message = "additional_properties must be an object without documented read-only properties."
   }
 }

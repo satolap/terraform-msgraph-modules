@@ -29,15 +29,17 @@ variable "policy_platform" {
   default     = null
 
   validation {
-    condition     = var.policy_platform == null ? true : contains(["notApplicable", "androidDeviceAdministrator", "androidEnterprise", "iOSiPadOS", "macOS", "windows10AndLater", "windows81AndLater", "windows10X", "unknownFutureValue"], var.policy_platform)
-    error_message = "policy_platform must be one of the documented enum values."
+    condition     = var.policy_platform == null ? true : try(alltrue([for value in split(",", var.policy_platform) : contains(["notapplicable", "androiddeviceadministrator", "androidenterprise", "iosipados", "macos", "windows10andlater", "windows81andlater", "windows10x", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "policy_platform must be one or more of the documented enum values, separated by commas."
   }
 }
 
 variable "policy_set" {
   description = "Indicates areas of the Intune UX that could support MAA UX for the current logged in IT Admin. This property is required, and is defined by the IT Admins in order to correctly show the expected experience."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.operationApprovalPolicySet")
+  })
+  default = null
 }
 
 variable "policy_type" {

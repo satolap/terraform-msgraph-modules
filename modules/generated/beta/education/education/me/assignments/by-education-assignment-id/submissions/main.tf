@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "@odata.type"        = var.odata_type
-    "outcomes"           = (var.outcomes == null ? null : [for item0 in var.outcomes : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "lastModifiedBy" = item0["lastModifiedBy"], "lastModifiedDateTime" = item0["lastModifiedDateTime"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "outcomes"           = (var.outcomes == null ? null : [for item0 in var.outcomes : item0 if item0 != null])
     "recipient"          = var.recipient
     "resources"          = (var.resources == null ? null : [for item0 in var.resources : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "assignmentResourceUrl" = item0["assignmentResourceUrl"], "dependentResources" = (item0["dependentResources"] == null ? null : [for item2 in item0["dependentResources"] : item2 if item2 != null]), "resource" = item0["resource"] } : key1 => value1 if value1 != null }) if item0 != null])
     "submittedResources" = (var.submitted_resources == null ? null : [for item0 in var.submitted_resources : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "assignmentResourceUrl" = item0["assignmentResourceUrl"], "dependentResources" = (item0["dependentResources"] == null ? null : [for item2 in item0["dependentResources"] : item2 if item2 != null]), "resource" = item0["resource"] } : key1 => value1 if value1 != null }) if item0 != null])

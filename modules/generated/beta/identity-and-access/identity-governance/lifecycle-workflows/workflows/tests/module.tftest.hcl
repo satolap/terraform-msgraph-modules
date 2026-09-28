@@ -47,7 +47,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["administrationScopeTargets"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.directoryObject" }])
+    condition     = jsonencode(msgraph_resource.this.body["administrationScopeTargets"]) == jsonencode([{}])
     error_message = "administrationScopeTargets must preserve typed values and omit nested nulls."
   }
 }
@@ -60,4 +60,27 @@ run "invalid_enum" {
   }
 
   expect_failures = [var.category]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    target_subject_type = "user, AgentIdentity"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["targetSubjectType"] == "user, AgentIdentity"
+    error_message = "targetSubjectType must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    target_subject_type = "user,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.target_subject_type]
 }

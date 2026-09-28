@@ -18,8 +18,31 @@ variable "created_date_time" {
 
 variable "error" {
   description = "Contains error details if the restore session fails or completes with an error."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.publicError")
+    code       = optional(string)
+    details = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+      code       = optional(string)
+      message    = optional(string)
+      target     = optional(string)
+    })))
+    innerError = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicInnerError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    message = optional(string)
+    target  = optional(string)
+  })
+  default = null
 }
 
 variable "granular_site_restore_artifacts" {
@@ -61,7 +84,7 @@ variable "odata_type" {
 
 variable "restore_job_type" {
   description = "Indicates whether the restore session was created normally or by a bulk job."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -72,8 +95,14 @@ variable "restore_job_type" {
 
 variable "restore_session_artifact_count" {
   description = "The number of metadata artifacts that belong to this restore session."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.restoreSessionArtifactCount")
+    completed  = optional(number)
+    failed     = optional(number)
+    inProgress = optional(number)
+    total      = optional(number)
+  })
+  default = null
 }
 
 variable "site_restore_artifacts" {
@@ -81,12 +110,30 @@ variable "site_restore_artifacts" {
   type = list(object({
     odata_type         = optional(string, "#microsoft.graph.siteRestoreArtifact")
     completionDateTime = optional(string)
-    destinationType    = optional(any)
-    error              = optional(any)
-    restorePoint       = optional(any)
-    restoredSiteId     = optional(string)
-    startDateTime      = optional(string)
-    status             = optional(any)
+    destinationType    = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    restorePoint   = optional(any)
+    restoredSiteId = optional(string)
+    startDateTime  = optional(string)
+    status         = optional(string)
   }))
   default = null
 }
@@ -94,28 +141,50 @@ variable "site_restore_artifacts" {
 variable "site_restore_artifacts_bulk_addition_requests" {
   description = "A collection of SharePoint site URLs and destination details that can be used to restore SharePoint sites."
   type = list(object({
-    odata_type             = optional(string, "#microsoft.graph.siteRestoreArtifactsBulkAdditionRequest")
-    createdBy              = optional(any)
-    createdDateTime        = optional(string)
-    destinationType        = optional(any)
-    displayName            = optional(string)
-    error                  = optional(any)
-    lastModifiedBy         = optional(any)
-    lastModifiedDateTime   = optional(string)
-    protectionTimePeriod   = optional(any)
+    odata_type      = optional(string, "#microsoft.graph.siteRestoreArtifactsBulkAdditionRequest")
+    createdBy       = optional(any)
+    createdDateTime = optional(string)
+    destinationType = optional(string)
+    displayName     = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    lastModifiedBy       = optional(any)
+    lastModifiedDateTime = optional(string)
+    protectionTimePeriod = optional(object({
+      odata_type    = optional(string, "#microsoft.graph.timePeriod")
+      endDateTime   = optional(string)
+      startDateTime = optional(string)
+    }))
     protectionUnitIds      = optional(list(string))
-    restorePointPreference = optional(any)
+    restorePointPreference = optional(string)
     siteIds                = optional(list(string))
     siteWebUrls            = optional(list(string))
     status                 = optional(string)
-    tags                   = optional(any)
+    tags                   = optional(string)
   }))
   default = null
 }
 
 variable "status" {
   description = "Status of the restore session. The value is an aggregated status of the restored artifacts. The possible values are: draft, activating, active, completedWithError, completed, unknownFutureValue, failed. Use the Prefer: include-unknown-enum-members request header to get the following members in this evolvable enum: failed."
-  type        = any
+  type        = string
   default     = null
 
   validation {

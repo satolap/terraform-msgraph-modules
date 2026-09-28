@@ -46,7 +46,12 @@ variable "changes" {
   description = "A collection of task change histories."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.workbookDocumentTaskChange")
-    assignee   = optional(any)
+    assignee = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.workbookEmailIdentity")
+      displayName = optional(string)
+      email       = optional(string)
+      id          = optional(string)
+    }))
     changedBy = optional(object({
       odata_type  = optional(string, "#microsoft.graph.workbookEmailIdentity")
       displayName = optional(string)
@@ -74,8 +79,13 @@ variable "comment" {
 
 variable "completed_by" {
   description = "The identity of the user who completed the task. Nullable."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.workbookEmailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "completed_date_time" {
@@ -86,8 +96,13 @@ variable "completed_date_time" {
 
 variable "created_by" {
   description = "A user identity that creates the task. Nullable."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.workbookEmailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "created_date_time" {
@@ -117,8 +132,12 @@ variable "priority" {
 
 variable "start_and_due_date_time" {
   description = "Start and due date of the task. Nullable."
-  type        = any
-  default     = null
+  type = object({
+    odata_type    = optional(string, "#microsoft.graph.workbookDocumentTaskSchedule")
+    dueDateTime   = optional(string)
+    startDateTime = optional(string)
+  })
+  default = null
 }
 
 variable "title" {

@@ -31,7 +31,7 @@ variable "odata_type" {
 
 variable "report_name" {
   description = "The report name."
-  type        = any
+  type        = string
   default     = null
 
   validation {

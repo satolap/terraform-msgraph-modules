@@ -24,20 +24,20 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `teams_app_id` | URL parameter `teamsApp-id` | `string` | yes | no |
-| `allowed_installation_scopes` | `allowedInstallationScopes` | `any` | no | no |
-| `authorization` | `authorization` | `any` | no | no |
+| `allowed_installation_scopes` | `allowedInstallationScopes` | `string` | no | no |
+| `authorization` | `authorization` | `object({       odata_type = optional(string, "#microsoft.graph.teamsAppAuthorization")       clientAppId = optional(string)       requiredPermissionSet = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsAppPermissionSet")       resourceSpecificPermissions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsAppResourceSpecificPermission")       permissionType = optional(string)       permissionValue = optional(string)     })))     }))     })` | no | no |
 | `azure_ad_app_id` | `azureADAppId` | `string` | no | no |
 | `bot` | `bot` | `any` | no | no |
 | `color_icon` | `colorIcon` | `any` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
-| `dashboard_cards` | `dashboardCards` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsAppDashboardCardDefinition")       contentSource = optional(any)       defaultSize = optional(any)       description = optional(string)       displayName = optional(string)       icon = optional(any)       pickerGroupId = optional(string)     }))` | no | no |
+| `dashboard_cards` | `dashboardCards` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsAppDashboardCardDefinition")       contentSource = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsAppDashboardCardContentSource")       botConfiguration = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsAppDashboardCardBotConfiguration")       botId = optional(string)     }))       sourceType = optional(string)     }))       defaultSize = optional(string)       description = optional(string)       displayName = optional(string)       icon = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsAppDashboardCardIcon")       iconUrl = optional(string)       officeUIFabricIconName = optional(string)     }))       pickerGroupId = optional(string)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `graph_version` | `version` | `string` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `outline_icon` | `outlineIcon` | `any` | no | no |
-| `publishing_state` | `publishingState` | `any` | no | no |
+| `publishing_state` | `publishingState` | `string` | no | no |
 | `shortdescription` | `shortdescription` | `string` | no | no |
 | `teams_app_id_2` | `teamsAppId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -57,16 +57,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- allowedInstallationScopes: polymorphic schema; accepts an untyped value
-- authorization: polymorphic schema; accepts an untyped value
-- bot: polymorphic schema; accepts an untyped value
-- colorIcon: polymorphic schema; accepts an untyped value
+- bot: navigation property; accepts an untyped value
+- colorIcon: navigation property; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- dashboardCards[].contentSource: polymorphic schema; accepts an untyped value
-- dashboardCards[].defaultSize: polymorphic schema; accepts an untyped value
-- dashboardCards[].icon: polymorphic schema; accepts an untyped value
-- outlineIcon: polymorphic schema; accepts an untyped value
-- publishingState: polymorphic schema; accepts an untyped value
+- outlineIcon: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

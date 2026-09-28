@@ -23,14 +23,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `allow_email_notification` | `allowEmailNotification` | `bool` | no | no |
-| `approval_type` | `approvalType` | `any` | no | no |
+| `approval_type` | `approvalType` | `string` | no | no |
 | `approvers` | `approvers` | `list(object({       odata_type = optional(string, "#microsoft.graph.approvalIdentitySet")       application = optional(any)       device = optional(any)       group = optional(any)       user = optional(any)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `requests` | `requests` | `list(object({       odata_type = optional(string, "#microsoft.graph.approvalItemRequest")     }))` | no | no |
 | `response_prompts` | `responsePrompts` | `list(string)` | no | no |
-| `responses` | `responses` | `list(object({       odata_type = optional(string, "#microsoft.graph.approvalItemResponse")       comments = optional(string)       createdBy = optional(any)       response = optional(string)     }))` | no | no |
+| `responses` | `responses` | `list(object({       odata_type = optional(string, "#microsoft.graph.approvalItemResponse")       comments = optional(string)       createdBy = optional(object({       odata_type = optional(string, "#microsoft.graph.approvalIdentitySet")       application = optional(any)       device = optional(any)       group = optional(any)       user = optional(any)     }))       response = optional(string)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -48,12 +48,14 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- approvalType: polymorphic schema; accepts an untyped value
 - approvers[].application: polymorphic schema; accepts an untyped value
 - approvers[].device: polymorphic schema; accepts an untyped value
 - approvers[].group: polymorphic schema; accepts an untyped value
 - approvers[].user: polymorphic schema; accepts an untyped value
-- responses[].createdBy: polymorphic schema; accepts an untyped value
+- responses[].createdBy.application: polymorphic schema; accepts an untyped value
+- responses[].createdBy.device: polymorphic schema; accepts an untyped value
+- responses[].createdBy.group: polymorphic schema; accepts an untyped value
+- responses[].createdBy.user: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

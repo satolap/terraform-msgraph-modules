@@ -6,6 +6,7 @@ run "minimal_request" {
 
   variables {
     update_policy_id = "test-parent-id"
+    odata_type       = "#microsoft.graph.windowsUpdates.contentApproval"
   }
 
   assert {
@@ -24,8 +25,14 @@ run "typed_request" {
 
   variables {
     update_policy_id  = "test-parent-id"
+    odata_type        = "#microsoft.graph.windowsUpdates.contentApproval"
     created_date_time = "2026-01-01T00:00:00Z"
     is_revoked        = false
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.windowsUpdates.contentApproval")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -37,4 +44,15 @@ run "typed_request" {
     condition     = jsonencode(msgraph_resource.this.body["isRevoked"]) == jsonencode(false)
     error_message = "isRevoked must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    update_policy_id = "test-parent-id"
+    odata_type       = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

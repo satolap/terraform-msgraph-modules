@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.backupPolicyActivityLog", "#microsoft.graph.dynamicRuleActivityLog", "#microsoft.graph.offboardingActivityLog", "#microsoft.graph.restoreTaskActivityLog"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "activity_type" {
   description = "Microsoft Graph activityType property."
   type        = string
@@ -11,21 +22,37 @@ variable "activity_type" {
 
 variable "error" {
   description = "Microsoft Graph error property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.publicError")
+    code       = optional(string)
+    details = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+      code       = optional(string)
+      message    = optional(string)
+      target     = optional(string)
+    })))
+    innerError = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicInnerError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    message = optional(string)
+    target  = optional(string)
+  })
+  default = null
 }
 
 variable "event_date_time" {
   description = "Microsoft Graph eventDateTime property."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.activityLogBase"
-  nullable    = false
 }
 
 variable "performed_by" {

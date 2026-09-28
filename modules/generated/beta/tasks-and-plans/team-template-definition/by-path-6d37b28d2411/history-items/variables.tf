@@ -20,6 +20,17 @@ variable "planner_plan_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.taskHistoryItem"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "actor" {
   description = "The identity of the user or application that performed the change."
   type        = any
@@ -58,13 +69,6 @@ variable "occurred_date_time" {
   description = "The date and time when the change occurred. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2024, is 2024-01-01T00:00:00Z."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.plannerHistoryItem"
-  nullable    = false
 }
 
 variable "plan_id" {

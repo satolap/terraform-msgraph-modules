@@ -20,17 +20,21 @@ variable "chat_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.aadUserConversationMember", "#microsoft.graph.anonymousGuestConversationMember", "#microsoft.graph.azureCommunicationServicesUserConversationMember", "#microsoft.graph.microsoftAccountUserConversationMember", "#microsoft.graph.phoneUserConversationMember", "#microsoft.graph.skypeForBusinessUserConversationMember", "#microsoft.graph.skypeUserConversationMember"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "display_name" {
   description = "The display name of the user."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.conversationMember"
-  nullable    = false
 }
 
 variable "roles" {

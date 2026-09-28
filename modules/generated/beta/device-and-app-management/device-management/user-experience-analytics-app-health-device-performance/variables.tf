@@ -1,5 +1,5 @@
 variable "health_status" {
-  description = "Microsoft Graph healthStatus property."
+  description = "The health state of the user experience analytics device. Possible values are: unknown, insufficientData, needsAttention, meetingGoals. Unknown by default. Supports: $filter, $select, $OrderBy. Read-only."
   type        = string
   default     = null
 

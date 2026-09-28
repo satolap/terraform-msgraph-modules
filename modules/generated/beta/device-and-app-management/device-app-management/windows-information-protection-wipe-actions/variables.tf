@@ -12,7 +12,7 @@ variable "odata_type" {
 }
 
 variable "status" {
-  description = "Microsoft Graph status property."
+  description = "Wipe action status."
   type        = string
   default     = null
 

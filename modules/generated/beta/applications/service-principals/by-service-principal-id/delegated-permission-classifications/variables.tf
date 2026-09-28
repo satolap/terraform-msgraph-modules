@@ -11,7 +11,7 @@ variable "service_principal_id" {
 
 variable "classification" {
   description = "The classification value. Possible values: low, medium (preview), high (preview). Doesn't support $filter."
-  type        = any
+  type        = string
   default     = null
 
   validation {

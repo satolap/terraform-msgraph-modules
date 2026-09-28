@@ -22,13 +22,13 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `bundles` | `bundles` | `list(object({       odata_type = optional(string, "#microsoft.graph.driveItem")       analytics = optional(any)       content = optional(string)       description = optional(string)       fileSystemInfo = optional(any)       name = optional(string)       parentReference = optional(any)       retentionLabel = optional(any)       root = optional(any)       subscriptions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.subscription")       changeType = optional(string)       clientState = optional(string)       encryptionCertificate = optional(string)       encryptionCertificateId = optional(string)       expirationDateTime = optional(string)       includeResourceData = optional(bool)       latestSupportedTlsVersion = optional(string)       lifecycleNotificationUrl = optional(string)       notificationQueryOptions = optional(string)       notificationUrl = optional(string)       notificationUrlAppId = optional(string)       resource = optional(string)     })))       webDavUrl = optional(string)       workbook = optional(any)     }))` | no | no |
+| `bundles` | `bundles` | `list(object({       odata_type = optional(string, "#microsoft.graph.driveItem")       analytics = optional(any)       content = optional(string)       description = optional(string)       fileSystemInfo = optional(object({       odata_type = optional(string, "#microsoft.graph.fileSystemInfo")       createdDateTime = optional(string)       lastAccessedDateTime = optional(string)       lastModifiedDateTime = optional(string)     }))       name = optional(string)       parentReference = optional(object({       odata_type = optional(string, "#microsoft.graph.itemReference")       driveType = optional(string)       shareId = optional(string)       siteId = optional(string)     }))       retentionLabel = optional(any)       root = optional(any)       subscriptions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.subscription")       changeType = optional(string)       clientState = optional(string)       encryptionCertificate = optional(string)       encryptionCertificateId = optional(string)       expirationDateTime = optional(string)       includeResourceData = optional(bool)       latestSupportedTlsVersion = optional(string)       lifecycleNotificationUrl = optional(string)       notificationQueryOptions = optional(string)       notificationUrl = optional(string)       notificationUrlAppId = optional(string)       resource = optional(string)     })))       webDavUrl = optional(string)       workbook = optional(any)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
-| `following` | `following` | `list(object({       odata_type = optional(string, "#microsoft.graph.driveItem")       analytics = optional(any)       content = optional(string)       description = optional(string)       fileSystemInfo = optional(any)       name = optional(string)       parentReference = optional(any)       retentionLabel = optional(any)       root = optional(any)       subscriptions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.subscription")       changeType = optional(string)       clientState = optional(string)       encryptionCertificate = optional(string)       encryptionCertificateId = optional(string)       expirationDateTime = optional(string)       includeResourceData = optional(bool)       latestSupportedTlsVersion = optional(string)       lifecycleNotificationUrl = optional(string)       notificationQueryOptions = optional(string)       notificationUrl = optional(string)       notificationUrlAppId = optional(string)       resource = optional(string)     })))       webDavUrl = optional(string)       workbook = optional(any)     }))` | no | no |
+| `following` | `following` | `list(object({       odata_type = optional(string, "#microsoft.graph.driveItem")       analytics = optional(any)       content = optional(string)       description = optional(string)       fileSystemInfo = optional(object({       odata_type = optional(string, "#microsoft.graph.fileSystemInfo")       createdDateTime = optional(string)       lastAccessedDateTime = optional(string)       lastModifiedDateTime = optional(string)     }))       name = optional(string)       parentReference = optional(object({       odata_type = optional(string, "#microsoft.graph.itemReference")       driveType = optional(string)       shareId = optional(string)       siteId = optional(string)     }))       retentionLabel = optional(any)       root = optional(any)       subscriptions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.subscription")       changeType = optional(string)       clientState = optional(string)       encryptionCertificate = optional(string)       encryptionCertificateId = optional(string)       expirationDateTime = optional(string)       includeResourceData = optional(bool)       latestSupportedTlsVersion = optional(string)       lifecycleNotificationUrl = optional(string)       notificationQueryOptions = optional(string)       notificationUrl = optional(string)       notificationUrlAppId = optional(string)       resource = optional(string)     })))       webDavUrl = optional(string)       workbook = optional(any)     }))` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `parent_reference` | `parentReference` | `any` | no | no |
-| `share_point_ids` | `sharePointIds` | `any` | no | no |
+| `parent_reference` | `parentReference` | `object({       odata_type = optional(string, "#microsoft.graph.itemReference")       driveType = optional(string)       shareId = optional(string)       siteId = optional(string)     })` | no | no |
+| `share_point_ids` | `sharePointIds` | `object({       odata_type = optional(string, "#microsoft.graph.sharepointIds")       listId = optional(string)       listItemId = optional(string)       listItemUniqueId = optional(string)       siteId = optional(string)       siteUrl = optional(string)       tenantId = optional(string)       webId = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -45,20 +45,14 @@ Documented collection GET parameters: `$expand`, `$filter`, `$orderby`, `$search
 
 Generation notes:
 
-- bundles[].analytics: polymorphic schema; accepts an untyped value
-- bundles[].fileSystemInfo: polymorphic schema; accepts an untyped value
-- bundles[].parentReference: polymorphic schema; accepts an untyped value
-- bundles[].retentionLabel: polymorphic schema; accepts an untyped value
+- bundles[].analytics: navigation property; accepts an untyped value
+- bundles[].retentionLabel: navigation property; accepts an untyped value
 - bundles[].root: polymorphic schema; accepts an untyped value
-- bundles[].workbook: polymorphic schema; accepts an untyped value
-- following[].analytics: polymorphic schema; accepts an untyped value
-- following[].fileSystemInfo: polymorphic schema; accepts an untyped value
-- following[].parentReference: polymorphic schema; accepts an untyped value
-- following[].retentionLabel: polymorphic schema; accepts an untyped value
+- bundles[].workbook: navigation property; accepts an untyped value
+- following[].analytics: navigation property; accepts an untyped value
+- following[].retentionLabel: navigation property; accepts an untyped value
 - following[].root: polymorphic schema; accepts an untyped value
-- following[].workbook: polymorphic schema; accepts an untyped value
-- parentReference: polymorphic schema; accepts an untyped value
-- sharePointIds: polymorphic schema; accepts an untyped value
+- following[].workbook: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

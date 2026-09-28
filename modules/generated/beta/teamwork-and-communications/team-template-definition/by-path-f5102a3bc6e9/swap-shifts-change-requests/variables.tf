@@ -11,7 +11,7 @@ variable "team_template_definition_id" {
 
 variable "assigned_to" {
   description = "Indicates who the request is assigned to. The possible values are: sender, recipient, manager, system, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -71,7 +71,7 @@ variable "sender_shift_id" {
 
 variable "state" {
   description = "The state of the scheduleChangeRequest. The possible values are: pending, approved, declined, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

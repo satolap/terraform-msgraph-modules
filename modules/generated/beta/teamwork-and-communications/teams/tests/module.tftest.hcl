@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     classification                  = "example"
     is_membership_limited_to_owners = false
+    discovery_settings              = { "showInTeamsSearchAndSuggestions" = null }
     all_channels                    = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isMembershipLimitedToOwners"]) == jsonencode(false)
     error_message = "isMembershipLimitedToOwners must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["discoverySettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.teamDiscoverySettings" })
+    error_message = "discoverySettings must preserve typed values and omit nested nulls."
   }
 
   assert {

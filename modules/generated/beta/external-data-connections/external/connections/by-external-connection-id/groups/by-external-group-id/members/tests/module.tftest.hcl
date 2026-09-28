@@ -20,6 +20,21 @@ run "minimal_request" {
   }
 }
 
+run "typed_request" {
+  command = plan
+
+  variables {
+    external_connection_id = "test-parent-id"
+    external_group_id      = "test-parent-id"
+    type                   = "user"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["type"]) == jsonencode("user")
+    error_message = "type must preserve typed values and omit nested nulls."
+  }
+}
+
 run "invalid_enum" {
   command = plan
 

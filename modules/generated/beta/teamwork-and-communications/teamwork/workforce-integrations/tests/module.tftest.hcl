@@ -22,6 +22,7 @@ run "typed_request" {
     display_name = "example"
     is_active    = false
     api_version  = -2147483648
+    encryption   = { "protocol" = null }
   }
 
   assert {
@@ -38,6 +39,11 @@ run "typed_request" {
     condition     = jsonencode(msgraph_resource.this.body["apiVersion"]) == jsonencode(-2147483648)
     error_message = "apiVersion must preserve typed values and omit nested nulls."
   }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["encryption"]) == jsonencode({ "@odata.type" = "#microsoft.graph.workforceIntegrationEncryption" })
+    error_message = "encryption must preserve typed values and omit nested nulls."
+  }
 }
 
 run "invalid_enum" {
@@ -45,6 +51,41 @@ run "invalid_enum" {
 
   variables {
     eligibility_filtering_enabled_entities = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.eligibility_filtering_enabled_entities]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    eligibility_filtering_enabled_entities = "none, SwapRequest"
+    supported_entities                     = "none, Shift"
+    supports                               = "none, Shift"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["eligibilityFilteringEnabledEntities"] == "none, SwapRequest"
+    error_message = "eligibilityFilteringEnabledEntities must accept combined flags enum members."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["supportedEntities"] == "none, Shift"
+    error_message = "supportedEntities must accept combined flags enum members."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["supports"] == "none, Shift"
+    error_message = "supports must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    eligibility_filtering_enabled_entities = "none,__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.eligibility_filtering_enabled_entities]

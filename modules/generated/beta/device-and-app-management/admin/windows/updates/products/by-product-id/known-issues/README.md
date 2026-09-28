@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `product_id` | URL parameter `product-id` | `string` | yes | no |
 | `description` | `description` | `string` | no | no |
-| `known_issue_histories` | `knownIssueHistories` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.knownIssueHistoryItem")       body = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.itemBody")       content = optional(string)       contentType = optional(any)     }))     }))` | no | no |
+| `known_issue_histories` | `knownIssueHistories` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.knownIssueHistoryItem")       body = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.itemBody")       content = optional(string)       contentType = optional(string)     }))     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `originating_knowledge_base_article` | `originatingKnowledgeBaseArticle` | `any` | no | no |
 | `resolved_date_time` | `resolvedDateTime` | `string` | no | no |
@@ -52,9 +52,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- knownIssueHistories[].body.contentType: polymorphic schema; accepts an untyped value
-- originatingKnowledgeBaseArticle: polymorphic schema; accepts an untyped value
-- resolvingKnowledgeBaseArticle: polymorphic schema; accepts an untyped value
+- originatingKnowledgeBaseArticle: navigation property; accepts an untyped value
+- resolvingKnowledgeBaseArticle: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

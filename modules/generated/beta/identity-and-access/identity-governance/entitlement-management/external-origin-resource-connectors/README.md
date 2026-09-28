@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `connection_info` | `connectionInfo` | `object({       odata_type = optional(string, "#microsoft.graph.connectionInfo")       url = optional(string)     })` | no | no |
+| `connection_info` | `connectionInfo` | `any` | no | no |
 | `connector_type` | `connectorType` | `string` | no | no |
 | `created_by` | `createdBy` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
@@ -48,6 +48,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- connectionInfo: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

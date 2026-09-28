@@ -12,14 +12,29 @@ variable "access_package_id" {
 
 variable "access_package_notification_settings" {
   description = "Represents the settings for email notifications for requests to an access package."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                       = optional(string, "#microsoft.graph.accessPackageNotificationSettings")
+    isAssignmentNotificationDisabled = optional(bool)
+  })
+  default = null
 }
 
 variable "access_review_settings" {
   description = "Who must review, and how often, the assignments to the access package from this policy. This property is null if reviews aren't required."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                      = optional(string, "#microsoft.graph.assignmentReviewSettings")
+    accessReviewTimeoutBehavior     = optional(string)
+    durationInDays                  = optional(number)
+    isAccessRecommendationEnabled   = optional(bool)
+    isAgenticExperienceEnabled      = optional(bool)
+    isApprovalJustificationRequired = optional(bool)
+    isEnabled                       = optional(bool)
+    recurrenceType                  = optional(string)
+    reviewerType                    = optional(string)
+    reviewers                       = optional(any)
+    startDateTime                   = optional(string)
+  })
+  default = null
 }
 
 variable "can_extend" {
@@ -45,7 +60,7 @@ variable "custom_extension_handlers" {
   type = list(object({
     odata_type      = optional(string, "#microsoft.graph.customExtensionHandler")
     customExtension = optional(any)
-    stage           = optional(any)
+    stage           = optional(string)
   }))
   default = null
 }
@@ -105,34 +120,46 @@ variable "odata_type" {
 
 variable "questions" {
   description = "Questions that are posed to the  requestor."
-  type = list(object({
-    odata_type       = optional(string, "#microsoft.graph.accessPackageQuestion")
-    id               = optional(string)
-    isAnswerEditable = optional(bool)
-    isRequired       = optional(bool)
-    sequence         = optional(number)
-    text             = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "request_approval_settings" {
   description = "Who must approve requests for access package in this policy."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                       = optional(string, "#microsoft.graph.approvalSettings")
+    approvalMode                     = optional(string)
+    approvalStages                   = optional(any)
+    isApprovalRequired               = optional(bool)
+    isApprovalRequiredForExtension   = optional(bool)
+    isRequestorJustificationRequired = optional(bool)
+  })
+  default = null
 }
 
 variable "requestor_settings" {
   description = "Who can request this access package from this policy."
-  type        = any
-  default     = null
+  type = object({
+    odata_type        = optional(string, "#microsoft.graph.requestorSettings")
+    acceptRequests    = optional(bool)
+    allowedRequestors = optional(any)
+    scopeType         = optional(string)
+  })
+  default = null
 }
 
 variable "verifiable_credential_settings" {
   description = "Settings for verifiable credentials set up through the Microsoft Entra Verified I D service. These settings represent the verifiable credentials that a requestor of an access package in this policy can present to be assigned the access package."
-  type        = any
-  default     = null
-  sensitive   = true
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.verifiableCredentialSettings")
+    credentialTypes = optional(list(object({
+      odata_type     = optional(string, "#microsoft.graph.verifiableCredentialType")
+      credentialType = optional(string)
+      issuers        = optional(list(string))
+    })))
+  })
+  default   = null
+  sensitive = true
 }
 
 variable "additional_properties" {

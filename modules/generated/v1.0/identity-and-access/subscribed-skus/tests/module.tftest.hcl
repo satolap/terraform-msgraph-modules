@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     account_id     = "example"
     consumed_units = -2147483648
+    prepaid_units  = { "enabled" = null }
     service_plans  = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["consumedUnits"]) == jsonencode(-2147483648)
     error_message = "consumedUnits must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["prepaidUnits"]) == jsonencode({ "@odata.type" = "#microsoft.graph.licenseUnitsDetail" })
+    error_message = "prepaidUnits must preserve typed values and omit nested nulls."
   }
 
   assert {

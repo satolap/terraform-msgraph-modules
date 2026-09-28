@@ -152,8 +152,28 @@ variable "pre_buffer" {
 
 variable "scheduling_policy" {
   description = "The set of policies that determine how appointments for this type of service should be created and managed."
-  type        = any
-  default     = null
+  type = object({
+    odata_type          = optional(string, "#microsoft.graph.bookingSchedulingPolicy")
+    allowStaffSelection = optional(bool)
+    customAvailabilities = optional(list(object({
+      odata_type       = optional(string, "#microsoft.graph.bookingsAvailabilityWindow")
+      availabilityType = optional(string)
+      businessHours = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.bookingWorkHours")
+        day        = optional(string)
+        timeSlots  = optional(any)
+      })))
+      endDate   = optional(string)
+      startDate = optional(string)
+    })))
+    generalAvailability               = optional(any)
+    isMeetingInviteToCustomersEnabled = optional(bool)
+    maximumAdvance                    = optional(string)
+    minimumLeadTime                   = optional(string)
+    sendConfirmationsToOwner          = optional(bool)
+    timeSlotInterval                  = optional(string)
+  })
+  default = null
 }
 
 variable "sms_notifications_enabled" {

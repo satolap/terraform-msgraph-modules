@@ -22,14 +22,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `api_connector_configuration` | `apiConnectorConfiguration` | `any` | no | no |
+| `api_connector_configuration` | `apiConnectorConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.userFlowApiConnectorConfiguration")       postAttributeCollection = optional(any)       postFederationSignup = optional(any)       preTokenIssuance = optional(any)     })` | no | no |
 | `default_language_tag` | `defaultLanguageTag` | `string` | no | no |
-| `identity_providers` | `identityProviders` | `list(object({       odata_type = optional(string, "#microsoft.graph.identityProvider")       clientId = optional(string)       clientSecret = optional(string)       name = optional(string)       type = optional(string)     }))` | no | yes |
+| `identity_providers` | `identityProviders` | `any` | no | yes |
 | `is_language_customization_enabled` | `isLanguageCustomizationEnabled` | `bool` | no | no |
 | `languages` | `languages` | `list(object({       odata_type = optional(string, "#microsoft.graph.userFlowLanguageConfiguration")       defaultPages = optional(list(object({       odata_type = optional(string, "#microsoft.graph.userFlowLanguagePage")     })))       isEnabled = optional(bool)       overridesPages = optional(list(object({       odata_type = optional(string, "#microsoft.graph.userFlowLanguagePage")     })))     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `user_attribute_assignments` | `userAttributeAssignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.identityUserFlowAttributeAssignment")       displayName = optional(string)       isOptional = optional(bool)       requiresVerification = optional(bool)       userAttribute = optional(any)       userAttributeValues = optional(list(object({       odata_type = optional(string, "#microsoft.graph.userAttributeValuesItem")       isDefault = optional(bool)       name = optional(string)       value = optional(string)     })))       userInputType = optional(string)     }))` | no | no |
-| `user_flow_identity_providers` | `userFlowIdentityProviders` | `list(object({       odata_type = optional(string, "#microsoft.graph.identityProviderBase")       displayName = optional(string)     }))` | no | no |
+| `user_flow_identity_providers` | `userFlowIdentityProviders` | `any` | no | no |
 | `user_flow_type` | `userFlowType` | `string` | no | no |
 | `user_flow_type_version` | `userFlowTypeVersion` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -49,8 +49,12 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- apiConnectorConfiguration: polymorphic schema; accepts an untyped value
+- apiConnectorConfiguration.postAttributeCollection: navigation property; accepts an untyped value
+- apiConnectorConfiguration.postFederationSignup: navigation property; accepts an untyped value
+- apiConnectorConfiguration.preTokenIssuance: navigation property; accepts an untyped value
+- identityProviders[]: polymorphic schema; accepts an untyped value
 - userAttributeAssignments[].userAttribute: polymorphic schema; accepts an untyped value
+- userFlowIdentityProviders[]: polymorphic schema; accepts an untyped value
 - userFlowTypeVersion: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

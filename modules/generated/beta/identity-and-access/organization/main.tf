@@ -5,15 +5,15 @@ locals {
     "branding"                             = var.branding
     "businessPhones"                       = (var.business_phones == null ? null : [for item0 in var.business_phones : item0 if item0 != null])
     "certificateBasedAuthConfiguration"    = (var.certificate_based_auth_configuration == null ? null : [for item0 in var.certificate_based_auth_configuration : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "certificateAuthorities" = (item0["certificateAuthorities"] == null ? null : [for item2 in item0["certificateAuthorities"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"], "certificate" = item2["certificate"], "certificateRevocationListUrl" = item2["certificateRevocationListUrl"], "deltaCertificateRevocationListUrl" = item2["deltaCertificateRevocationListUrl"], "isRootAuthority" = item2["isRootAuthority"] } : key3 => value3 if value3 != null }) if item2 != null]) } : key1 => value1 if value1 != null }) if item0 != null])
-    "certificateConnectorSetting"          = var.certificate_connector_setting
+    "certificateConnectorSetting"          = (var.certificate_connector_setting == null ? null : { for key0, value0 in { "@odata.type" = var.certificate_connector_setting["odata_type"], "certExpiryTime" = var.certificate_connector_setting["certExpiryTime"], "connectorVersion" = var.certificate_connector_setting["connectorVersion"], "enrollmentError" = var.certificate_connector_setting["enrollmentError"], "lastConnectorConnectionTime" = var.certificate_connector_setting["lastConnectorConnectionTime"], "lastUploadVersion" = var.certificate_connector_setting["lastUploadVersion"], "status" = var.certificate_connector_setting["status"] } : key0 => value0 if value0 != null })
     "city"                                 = var.city
     "country"                              = var.country
     "countryLetterCode"                    = var.country_letter_code
     "defaultUsageLocation"                 = var.default_usage_location
     "deletedDateTime"                      = var.deleted_date_time
-    "directorySizeQuota"                   = var.directory_size_quota
+    "directorySizeQuota"                   = (var.directory_size_quota == null ? null : { for key0, value0 in { "@odata.type" = var.directory_size_quota["odata_type"], "total" = var.directory_size_quota["total"], "used" = var.directory_size_quota["used"] } : key0 => value0 if value0 != null })
     "displayName"                          = var.display_name
-    "extensions"                           = (var.extensions == null ? null : [for item0 in var.extensions : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "extensions"                           = (var.extensions == null ? null : [for item0 in var.extensions : item0 if item0 != null])
     "marketingNotificationEmails"          = (var.marketing_notification_emails == null ? null : [for item0 in var.marketing_notification_emails : item0 if item0 != null])
     "mobileDeviceManagementAuthority"      = var.mobile_device_management_authority
     "@odata.type"                          = var.odata_type
@@ -24,7 +24,7 @@ locals {
     "partnerTenantType"                    = var.partner_tenant_type
     "postalCode"                           = var.postal_code
     "preferredLanguage"                    = var.preferred_language
-    "privacyProfile"                       = var.privacy_profile
+    "privacyProfile"                       = (var.privacy_profile == null ? null : { for key0, value0 in { "@odata.type" = var.privacy_profile["odata_type"], "contactEmail" = var.privacy_profile["contactEmail"], "statementUrl" = var.privacy_profile["statementUrl"] } : key0 => value0 if value0 != null })
     "provisionedPlans"                     = (var.provisioned_plans == null ? null : [for item0 in var.provisioned_plans : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "capabilityStatus" = item0["capabilityStatus"], "provisioningStatus" = item0["provisioningStatus"], "service" = item0["service"] } : key1 => value1 if value1 != null }) if item0 != null])
     "resourceQuotas"                       = (var.resource_quotas == null ? null : [for item0 in var.resource_quotas : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "maxPercentage" = item0["maxPercentage"], "resourceType" = item0["resourceType"], "total" = item0["total"] } : key1 => value1 if value1 != null }) if item0 != null])
     "securityComplianceNotificationMails"  = (var.security_compliance_notification_mails == null ? null : [for item0 in var.security_compliance_notification_mails : item0 if item0 != null])

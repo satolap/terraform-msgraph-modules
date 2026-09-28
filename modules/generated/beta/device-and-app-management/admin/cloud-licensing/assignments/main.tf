@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "allotment"              = var.allotment
-    "assignedTo"             = (var.assigned_to == null ? null : { for key0, value0 in { "@odata.type" = var.assigned_to["odata_type"], "deletedDateTime" = var.assigned_to["deletedDateTime"] } : key0 => value0 if value0 != null })
+    "assignedTo"             = var.assigned_to
     "disabledServicePlanIds" = (var.disabled_service_plan_ids == null ? null : [for item0 in var.disabled_service_plan_ids : item0 if item0 != null])
     "@odata.type"            = var.odata_type
   } : key => value if value != null }

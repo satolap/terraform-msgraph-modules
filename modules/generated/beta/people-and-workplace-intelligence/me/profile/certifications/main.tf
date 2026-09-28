@@ -8,8 +8,8 @@ locals {
     "description"          = var.description
     "displayName"          = var.display_name
     "endDate"              = var.end_date
-    "source"               = var.graph_source
-    "inference"            = var.inference
+    "source"               = (var.graph_source == null ? null : { for key0, value0 in { "@odata.type" = var.graph_source["odata_type"], "type" = (var.graph_source["type"] == null ? null : [for item1 in var.graph_source["type"] : item1 if item1 != null]) } : key0 => value0 if value0 != null })
+    "inference"            = (var.inference == null ? null : { for key0, value0 in { "@odata.type" = var.inference["odata_type"], "confidenceScore" = var.inference["confidenceScore"], "userHasVerifiedAccuracy" = var.inference["userHasVerifiedAccuracy"] } : key0 => value0 if value0 != null })
     "isSearchable"         = var.is_searchable
     "issuedDate"           = var.issued_date
     "issuingAuthority"     = var.issuing_authority

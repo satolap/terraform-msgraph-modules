@@ -22,23 +22,23 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `activity` | `activity` | `any` | no | no |
+| `activity` | `activity` | `string` | no | no |
 | `activity_date_time` | `activityDateTime` | `string` | no | no |
 | `additional_info` | `additionalInfo` | `string` | no | no |
 | `correlation_id` | `correlationId` | `string` | no | no |
 | `detected_date_time` | `detectedDateTime` | `string` | no | no |
-| `detection_timing_type` | `detectionTimingType` | `any` | no | no |
+| `detection_timing_type` | `detectionTimingType` | `string` | no | no |
 | `graph_source` | `source` | `string` | no | no |
 | `ip_address` | `ipAddress` | `string` | no | no |
 | `last_updated_date_time` | `lastUpdatedDateTime` | `string` | no | no |
-| `location` | `location` | `any` | no | no |
+| `location` | `location` | `object({       odata_type = optional(string, "#microsoft.graph.signInLocation")       city = optional(string)       countryOrRegion = optional(string)       geoCoordinates = optional(object({       odata_type = optional(string, "#microsoft.graph.geoCoordinates")     }))       state = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `request_id` | `requestId` | `string` | no | no |
-| `risk_detail` | `riskDetail` | `any` | no | no |
+| `risk_detail` | `riskDetail` | `string` | no | no |
 | `risk_event_type` | `riskEventType` | `string` | no | no |
-| `risk_level` | `riskLevel` | `any` | no | no |
-| `risk_state` | `riskState` | `any` | no | no |
-| `token_issuer_type` | `tokenIssuerType` | `any` | no | no |
+| `risk_level` | `riskLevel` | `string` | no | no |
+| `risk_state` | `riskState` | `string` | no | no |
+| `token_issuer_type` | `tokenIssuerType` | `string` | no | no |
 | `user_display_name` | `userDisplayName` | `string` | no | no |
 | `user_id` | `userId` | `string` | no | no |
 | `user_principal_name` | `userPrincipalName` | `string` | no | no |
@@ -55,16 +55,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- activity: polymorphic schema; accepts an untyped value
-- detectionTimingType: polymorphic schema; accepts an untyped value
-- location: polymorphic schema; accepts an untyped value
-- riskDetail: polymorphic schema; accepts an untyped value
-- riskLevel: polymorphic schema; accepts an untyped value
-- riskState: polymorphic schema; accepts an untyped value
-- tokenIssuerType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

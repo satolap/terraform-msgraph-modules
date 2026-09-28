@@ -43,7 +43,7 @@ variable "metadata" {
   description = "Additional extension properties. Unless mentioned explicitly, metadata values shouldn't be changed."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.synchronizationMetadataEntry")
-    key        = optional(any)
+    key        = optional(string)
     value      = optional(string)
   }))
   default = null

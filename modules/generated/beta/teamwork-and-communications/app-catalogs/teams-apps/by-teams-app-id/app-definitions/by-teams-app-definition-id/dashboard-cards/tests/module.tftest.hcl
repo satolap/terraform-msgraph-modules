@@ -26,12 +26,18 @@ run "typed_request" {
   variables {
     teams_app_id            = "test-parent-id"
     teams_app_definition_id = "test-parent-id"
-    description             = "example"
+    default_size            = "medium"
+    content_source          = { "botConfiguration" = null }
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
-    error_message = "description must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["defaultSize"]) == jsonencode("medium")
+    error_message = "defaultSize must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["contentSource"]) == jsonencode({ "@odata.type" = "#microsoft.graph.teamsAppDashboardCardContentSource" })
+    error_message = "contentSource must preserve typed values and omit nested nulls."
   }
 }
 

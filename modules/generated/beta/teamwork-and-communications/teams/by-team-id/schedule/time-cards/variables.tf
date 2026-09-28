@@ -14,14 +14,32 @@ variable "breaks" {
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.timeCardBreak")
     breakId    = optional(string)
-    end        = optional(any)
-    notes      = optional(any)
+    end = optional(object({
+      odata_type           = optional(string, "#microsoft.graph.timeCardEvent")
+      atApprovedLocation   = optional(bool)
+      dateTime             = optional(string)
+      isAtApprovedLocation = optional(bool)
+      notes = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.itemBody")
+        content     = optional(string)
+        contentType = optional(string)
+      }))
+    }))
+    notes = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.itemBody")
+      content     = optional(string)
+      contentType = optional(string)
+    }))
     start = optional(object({
       odata_type           = optional(string, "#microsoft.graph.timeCardEvent")
       atApprovedLocation   = optional(bool)
       dateTime             = optional(string)
       isAtApprovedLocation = optional(bool)
-      notes                = optional(any)
+      notes = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.itemBody")
+        content     = optional(string)
+        contentType = optional(string)
+      }))
     }))
   }))
   default = null
@@ -29,24 +47,44 @@ variable "breaks" {
 
 variable "clock_in_event" {
   description = "The clock-in event of the timeCard."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.timeCardEvent")
+    atApprovedLocation   = optional(bool)
+    dateTime             = optional(string)
+    isAtApprovedLocation = optional(bool)
+    notes = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.itemBody")
+      content     = optional(string)
+      contentType = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "clock_out_event" {
   description = "The clock-out event of the timeCard."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.timeCardEvent")
+    atApprovedLocation   = optional(bool)
+    dateTime             = optional(string)
+    isAtApprovedLocation = optional(bool)
+    notes = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.itemBody")
+      content     = optional(string)
+      contentType = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "confirmed_by" {
   description = "Indicates whether this timeCard entry is confirmed. Possible values are none, user, manager, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.confirmed_by == null ? true : contains(["none", "user", "manager", "unknownFutureValue"], var.confirmed_by)
-    error_message = "confirmed_by must be one of the documented enum values."
+    condition     = var.confirmed_by == null ? true : try(alltrue([for value in split(",", var.confirmed_by) : contains(["none", "user", "manager", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "confirmed_by must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -58,8 +96,12 @@ variable "created_by" {
 
 variable "notes" {
   description = "Notes about the timeCard."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.itemBody")
+    content     = optional(string)
+    contentType = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -71,13 +113,68 @@ variable "odata_type" {
 
 variable "original_entry" {
   description = "The original timeCardEntry of the timeCard, before user edits."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.timeCardEntry")
+    breaks = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.timeCardBreak")
+      breakId    = optional(string)
+      end = optional(object({
+        odata_type           = optional(string, "#microsoft.graph.timeCardEvent")
+        atApprovedLocation   = optional(bool)
+        dateTime             = optional(string)
+        isAtApprovedLocation = optional(bool)
+        notes = optional(object({
+          odata_type  = optional(string, "#microsoft.graph.itemBody")
+          content     = optional(string)
+          contentType = optional(string)
+        }))
+      }))
+      notes = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.itemBody")
+        content     = optional(string)
+        contentType = optional(string)
+      }))
+      start = optional(object({
+        odata_type           = optional(string, "#microsoft.graph.timeCardEvent")
+        atApprovedLocation   = optional(bool)
+        dateTime             = optional(string)
+        isAtApprovedLocation = optional(bool)
+        notes = optional(object({
+          odata_type  = optional(string, "#microsoft.graph.itemBody")
+          content     = optional(string)
+          contentType = optional(string)
+        }))
+      }))
+    })))
+    clockInEvent = optional(object({
+      odata_type           = optional(string, "#microsoft.graph.timeCardEvent")
+      atApprovedLocation   = optional(bool)
+      dateTime             = optional(string)
+      isAtApprovedLocation = optional(bool)
+      notes = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.itemBody")
+        content     = optional(string)
+        contentType = optional(string)
+      }))
+    }))
+    clockOutEvent = optional(object({
+      odata_type           = optional(string, "#microsoft.graph.timeCardEvent")
+      atApprovedLocation   = optional(bool)
+      dateTime             = optional(string)
+      isAtApprovedLocation = optional(bool)
+      notes = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.itemBody")
+        content     = optional(string)
+        contentType = optional(string)
+      }))
+    }))
+  })
+  default = null
 }
 
 variable "state" {
   description = "The current state of the timeCard during its life cycle. The possible values are: clockedIn, onBreak, clockedOut, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

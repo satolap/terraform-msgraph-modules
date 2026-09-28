@@ -1,10 +1,20 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.androidAospReferencedApp", "#microsoft.graph.androidForWorkApp", "#microsoft.graph.androidLobApp", "#microsoft.graph.androidManagedStoreApp", "#microsoft.graph.androidManagedStoreWebApp", "#microsoft.graph.androidStoreApp", "#microsoft.graph.iosLobApp", "#microsoft.graph.iosStoreApp", "#microsoft.graph.iosVppApp", "#microsoft.graph.iosiPadOSWebClip", "#microsoft.graph.macOSDmgApp", "#microsoft.graph.macOSLobApp", "#microsoft.graph.macOSMicrosoftDefenderApp", "#microsoft.graph.macOSMicrosoftEdgeApp", "#microsoft.graph.macOSOfficeSuiteApp", "#microsoft.graph.macOSPkgApp", "#microsoft.graph.macOSWebClip", "#microsoft.graph.macOsVppApp", "#microsoft.graph.managedAndroidLobApp", "#microsoft.graph.managedAndroidStoreApp", "#microsoft.graph.managedIOSLobApp", "#microsoft.graph.managedIOSStoreApp", "#microsoft.graph.microsoftStoreForBusinessApp", "#microsoft.graph.officeSuiteApp", "#microsoft.graph.webApp", "#microsoft.graph.win32CatalogApp", "#microsoft.graph.win32LobApp", "#microsoft.graph.winGetApp", "#microsoft.graph.windowsAppX", "#microsoft.graph.windowsAutoUpdateCatalogApp", "#microsoft.graph.windowsMicrosoftEdgeApp", "#microsoft.graph.windowsMobileMSI", "#microsoft.graph.windowsPhone81AppX", "#microsoft.graph.windowsPhone81AppXBundle", "#microsoft.graph.windowsPhone81StoreApp", "#microsoft.graph.windowsPhoneXAP", "#microsoft.graph.windowsStoreApp", "#microsoft.graph.windowsUniversalAppX", "#microsoft.graph.windowsWebApp"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "assignments" {
   description = "The list of group assignments for this mobile app."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.mobileAppAssignment")
     intent     = optional(string)
     settings   = optional(any)
-    source     = optional(string)
     target     = optional(any)
   }))
   default = null
@@ -51,21 +61,18 @@ variable "is_featured" {
 
 variable "large_icon" {
   description = "The large icon, to be displayed in the app details and used for upload of the icon."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.mimeContent")
+    type       = optional(string)
+    value      = optional(string)
+  })
+  default = null
 }
 
 variable "notes" {
   description = "Notes for the app."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.mobileApp"
-  nullable    = false
 }
 
 variable "owner" {
@@ -86,24 +93,10 @@ variable "publisher" {
   default     = null
 }
 
-variable "publishing_state" {
-  description = "Indicates the publishing state of an app."
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.publishing_state == null ? true : contains(["notPublished", "processing", "published"], var.publishing_state)
-    error_message = "publishing_state must be one of the documented enum values."
-  }
-}
-
 variable "relationships" {
   description = "The set of direct relationships for this app."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.mobileAppRelationship")
-    targetType = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "role_scope_tag_ids" {
@@ -120,7 +113,7 @@ variable "additional_properties" {
   sensitive   = true
 
   validation {
-    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["createdDateTime", "dependentAppCount", "id", "isAssigned", "lastModifiedDateTime", "supersededAppCount", "supersedingAppCount", "uploadState"], key)]) : false
+    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["createdDateTime", "dependentAppCount", "id", "isAssigned", "lastModifiedDateTime", "publishingState", "supersededAppCount", "supersedingAppCount", "uploadState"], key)]) : false
     error_message = "additional_properties must be an object without documented read-only properties."
   }
 }

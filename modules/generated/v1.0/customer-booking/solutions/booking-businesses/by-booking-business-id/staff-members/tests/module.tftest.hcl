@@ -6,6 +6,7 @@ run "minimal_request" {
 
   variables {
     booking_business_id = "test-parent-id"
+    odata_type          = "#microsoft.graph.bookingStaffMember"
   }
 
   assert {
@@ -17,4 +18,29 @@ run "minimal_request" {
     condition     = alltrue([for key in [] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
+}
+
+run "typed_request" {
+  command = plan
+
+  variables {
+    booking_business_id = "test-parent-id"
+    odata_type          = "#microsoft.graph.bookingStaffMember"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.bookingStaffMember")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
+  }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    booking_business_id = "test-parent-id"
+    odata_type          = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

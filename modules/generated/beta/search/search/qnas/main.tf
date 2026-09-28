@@ -6,7 +6,7 @@ locals {
     "description"               = var.description
     "displayName"               = var.display_name
     "groupIds"                  = (var.group_ids == null ? null : [for item0 in var.group_ids : item0 if item0 != null])
-    "keywords"                  = var.keywords
+    "keywords"                  = (var.keywords == null ? null : { for key0, value0 in { "@odata.type" = var.keywords["odata_type"], "keywords" = (var.keywords["keywords"] == null ? null : [for item1 in var.keywords["keywords"] : item1 if item1 != null]), "matchSimilarKeywords" = var.keywords["matchSimilarKeywords"], "reservedKeywords" = (var.keywords["reservedKeywords"] == null ? null : [for item1 in var.keywords["reservedKeywords"] : item1 if item1 != null]) } : key0 => value0 if value0 != null })
     "languageTags"              = (var.language_tags == null ? null : [for item0 in var.language_tags : item0 if item0 != null])
     "@odata.type"               = var.odata_type
     "platforms"                 = (var.platforms == null ? null : [for item0 in var.platforms : item0 if item0 != null])

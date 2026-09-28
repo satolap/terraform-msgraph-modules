@@ -37,7 +37,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `is_searchable` | `isSearchable` | `bool` | no | no |
 | `language_tag` | `languageTag` | `string` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `level` | `level` | `any` | no | no |
+| `level` | `level` | `string` | no | no |
 | `number_of_pages` | `numberOfPages` | `number` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `skill_tags` | `skillTags` | `list(string)` | no | no |
@@ -61,7 +61,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- level: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

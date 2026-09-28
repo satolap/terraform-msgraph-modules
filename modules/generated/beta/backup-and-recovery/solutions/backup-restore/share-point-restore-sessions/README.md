@@ -25,17 +25,17 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `completed_date_time` | `completedDateTime` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `error` | `error` | `any` | no | no |
-| `granular_site_restore_artifacts` | `granularSiteRestoreArtifacts` | `list(object({       odata_type = optional(string, "#microsoft.graph.granularSiteRestoreArtifact")       browseSessionId = optional(string)       completionDateTime = optional(string)       destinationType = optional(any)       error = optional(any)       restorePointDateTime = optional(string)       restoredItemKey = optional(string)       restoredItemPath = optional(string)       restoredItemWebUrl = optional(string)       siteId = optional(string)       startDateTime = optional(string)       status = optional(string)       webUrl = optional(string)     }))` | no | no |
+| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     })` | no | no |
+| `granular_site_restore_artifacts` | `granularSiteRestoreArtifacts` | `list(object({       odata_type = optional(string, "#microsoft.graph.granularSiteRestoreArtifact")       browseSessionId = optional(string)       completionDateTime = optional(string)       destinationType = optional(string)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(any)       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       restorePointDateTime = optional(string)       restoredItemKey = optional(string)       restoredItemPath = optional(string)       restoredItemWebUrl = optional(string)       siteId = optional(string)       startDateTime = optional(string)       status = optional(string)       webUrl = optional(string)     }))` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `policy_id` | `policyId` | `string` | no | no |
-| `restore_job_type` | `restoreJobType` | `any` | no | no |
-| `restore_session_artifact_count` | `restoreSessionArtifactCount` | `any` | no | no |
-| `site_restore_artifacts` | `siteRestoreArtifacts` | `list(object({       odata_type = optional(string, "#microsoft.graph.siteRestoreArtifact")       completionDateTime = optional(string)       destinationType = optional(any)       error = optional(any)       restorePoint = optional(any)       restoredSiteId = optional(string)       startDateTime = optional(string)       status = optional(any)     }))` | no | no |
-| `site_restore_artifacts_bulk_addition_requests` | `siteRestoreArtifactsBulkAdditionRequests` | `list(object({       odata_type = optional(string, "#microsoft.graph.siteRestoreArtifactsBulkAdditionRequest")       createdBy = optional(any)       createdDateTime = optional(string)       destinationType = optional(any)       displayName = optional(string)       error = optional(any)       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       protectionTimePeriod = optional(any)       protectionUnitIds = optional(list(string))       restorePointPreference = optional(any)       siteIds = optional(list(string))       siteWebUrls = optional(list(string))       status = optional(string)       tags = optional(any)     }))` | no | no |
-| `status` | `status` | `any` | no | no |
+| `restore_job_type` | `restoreJobType` | `string` | no | no |
+| `restore_session_artifact_count` | `restoreSessionArtifactCount` | `object({       odata_type = optional(string, "#microsoft.graph.restoreSessionArtifactCount")       completed = optional(number)       failed = optional(number)       inProgress = optional(number)       total = optional(number)     })` | no | no |
+| `site_restore_artifacts` | `siteRestoreArtifacts` | `list(object({       odata_type = optional(string, "#microsoft.graph.siteRestoreArtifact")       completionDateTime = optional(string)       destinationType = optional(string)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(any)       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       restorePoint = optional(any)       restoredSiteId = optional(string)       startDateTime = optional(string)       status = optional(string)     }))` | no | no |
+| `site_restore_artifacts_bulk_addition_requests` | `siteRestoreArtifactsBulkAdditionRequests` | `list(object({       odata_type = optional(string, "#microsoft.graph.siteRestoreArtifactsBulkAdditionRequest")       createdBy = optional(any)       createdDateTime = optional(string)       destinationType = optional(string)       displayName = optional(string)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(any)       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       protectionTimePeriod = optional(object({       odata_type = optional(string, "#microsoft.graph.timePeriod")       endDateTime = optional(string)       startDateTime = optional(string)     }))       protectionUnitIds = optional(list(string))       restorePointPreference = optional(string)       siteIds = optional(list(string))       siteWebUrls = optional(list(string))       status = optional(string)       tags = optional(string)     }))` | no | no |
+| `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -54,24 +54,13 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - createdBy: polymorphic schema; accepts an untyped value
-- error: polymorphic schema; accepts an untyped value
-- granularSiteRestoreArtifacts[].destinationType: polymorphic schema; accepts an untyped value
-- granularSiteRestoreArtifacts[].error: polymorphic schema; accepts an untyped value
+- granularSiteRestoreArtifacts[].error.innerError.details[]: nested schema exceeds depth limit; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- restoreJobType: polymorphic schema; accepts an untyped value
-- restoreSessionArtifactCount: polymorphic schema; accepts an untyped value
 - siteRestoreArtifactsBulkAdditionRequests[].createdBy: polymorphic schema; accepts an untyped value
-- siteRestoreArtifactsBulkAdditionRequests[].destinationType: polymorphic schema; accepts an untyped value
-- siteRestoreArtifactsBulkAdditionRequests[].error: polymorphic schema; accepts an untyped value
+- siteRestoreArtifactsBulkAdditionRequests[].error.innerError.details[]: nested schema exceeds depth limit; accepts an untyped value
 - siteRestoreArtifactsBulkAdditionRequests[].lastModifiedBy: polymorphic schema; accepts an untyped value
-- siteRestoreArtifactsBulkAdditionRequests[].protectionTimePeriod: polymorphic schema; accepts an untyped value
-- siteRestoreArtifactsBulkAdditionRequests[].restorePointPreference: polymorphic schema; accepts an untyped value
-- siteRestoreArtifactsBulkAdditionRequests[].tags: polymorphic schema; accepts an untyped value
-- siteRestoreArtifacts[].destinationType: polymorphic schema; accepts an untyped value
-- siteRestoreArtifacts[].error: polymorphic schema; accepts an untyped value
-- siteRestoreArtifacts[].restorePoint: polymorphic schema; accepts an untyped value
-- siteRestoreArtifacts[].status: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
+- siteRestoreArtifacts[].error.innerError.details[]: nested schema exceeds depth limit; accepts an untyped value
+- siteRestoreArtifacts[].restorePoint: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

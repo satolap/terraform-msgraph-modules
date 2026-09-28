@@ -20,12 +20,18 @@ run "typed_request" {
 
   variables {
     activity  = "example"
+    actor     = { "applicationDisplayName" = null }
     resources = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["activity"]) == jsonencode("example")
     error_message = "activity must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["actor"]) == jsonencode({ "@odata.type" = "#microsoft.graph.auditActor" })
+    error_message = "actor must preserve typed values and omit nested nulls."
   }
 
   assert {

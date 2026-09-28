@@ -7,7 +7,7 @@ locals {
     "isPerDeviceAcceptanceRequired"     = var.is_per_device_acceptance_required
     "isViewingBeforeAcceptanceRequired" = var.is_viewing_before_acceptance_required
     "@odata.type"                       = var.odata_type
-    "termsExpiration"                   = var.terms_expiration
+    "termsExpiration"                   = (var.terms_expiration == null ? null : { for key0, value0 in { "@odata.type" = var.terms_expiration["odata_type"], "frequency" = var.terms_expiration["frequency"], "startDateTime" = var.terms_expiration["startDateTime"] } : key0 => value0 if value0 != null })
     "userReacceptRequiredFrequency"     = var.user_reaccept_required_frequency
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)

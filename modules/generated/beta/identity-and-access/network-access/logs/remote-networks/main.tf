@@ -1,11 +1,11 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
+    "@odata.type"              = var.odata_type
     "bgpRoutesAdvertisedCount" = var.bgp_routes_advertised_count
     "createdDateTime"          = var.created_date_time
     "description"              = var.description
     "destinationIp"            = var.destination_ip
-    "@odata.type"              = var.odata_type
     "receivedBytes"            = var.received_bytes
     "remoteNetworkId"          = var.remote_network_id
     "sentBytes"                = var.sent_bytes

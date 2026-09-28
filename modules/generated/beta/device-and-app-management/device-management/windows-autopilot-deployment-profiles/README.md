@@ -13,6 +13,7 @@ Lifecycle: `POST /deviceManagement/windowsAutopilotDeploymentProfiles`, `GET/PAT
 ```hcl
 module "graph_resource" {
   source = "./device-and-app-management/device-management/windows-autopilot-deployment-profiles"
+  odata_type = "#microsoft.graph.activeDirectoryWindowsAutopilotDeploymentProfile"
 }
 ```
 
@@ -22,23 +23,23 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
+| `odata_type` | `@odata.type` | `string` | yes | no |
 | `assigned_devices` | `assignedDevices` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsAutopilotDeviceIdentity")       addressableUserName = optional(string)       azureActiveDirectoryDeviceId = optional(string)       azureAdDeviceId = optional(string)       deploymentProfile = optional(any)       deploymentProfileAssignedDateTime = optional(string)       deploymentProfileAssignmentDetailedStatus = optional(string)       deploymentProfileAssignmentStatus = optional(string)       deviceAccountPassword = optional(string)       deviceAccountUpn = optional(string)       deviceFriendlyName = optional(string)       displayName = optional(string)       enrollmentState = optional(string)       groupTag = optional(string)       intendedDeploymentProfile = optional(any)       lastContactedDateTime = optional(string)       managedDeviceId = optional(string)       manufacturer = optional(string)       model = optional(string)       productKey = optional(string)       purchaseOrderIdentifier = optional(string)       remediationState = optional(string)       remediationStateLastModifiedDateTime = optional(string)       resourceName = optional(string)       serialNumber = optional(string)       skuNumber = optional(string)       systemFamily = optional(string)       userPrincipalName = optional(string)       userlessEnrollmentStatus = optional(string)     }))` | no | yes |
 | `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsAutopilotDeploymentProfileAssignment")       source = optional(string)       sourceId = optional(string)       target = optional(any)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `device_name_template` | `deviceNameTemplate` | `string` | no | no |
 | `device_type` | `deviceType` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `enrollment_status_screen_settings` | `enrollmentStatusScreenSettings` | `any` | no | no |
+| `enrollment_status_screen_settings` | `enrollmentStatusScreenSettings` | `object({       odata_type = optional(string, "#microsoft.graph.windowsEnrollmentStatusScreenSettings")       allowDeviceUseBeforeProfileAndAppInstallComplete = optional(bool)       allowDeviceUseOnInstallFailure = optional(bool)       allowLogCollectionOnInstallFailure = optional(bool)       blockDeviceSetupRetryByUser = optional(bool)       customErrorMessage = optional(string)       hideInstallationProgress = optional(bool)       installProgressTimeoutInMinutes = optional(number)     })` | no | no |
 | `hardware_hash_extraction_enabled` | `hardwareHashExtractionEnabled` | `bool` | no | no |
 | `locale` | `locale` | `string` | no | no |
 | `management_service_app_id` | `managementServiceAppId` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
-| `out_of_box_experience_setting` | `outOfBoxExperienceSetting` | `any` | no | no |
+| `out_of_box_experience_setting` | `outOfBoxExperienceSetting` | `object({       odata_type = optional(string, "#microsoft.graph.outOfBoxExperienceSetting")       deviceUsageType = optional(string)       escapeLinkHidden = optional(bool)       eulaHidden = optional(bool)       keyboardSelectionPageSkipped = optional(bool)       privacySettingsHidden = optional(bool)       userType = optional(string)     })` | no | no |
 | `preprovisioning_allowed` | `preprovisioningAllowed` | `bool` | no | no |
 | `role_scope_tag_ids` | `roleScopeTagIds` | `list(string)` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
-Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.
 
 Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
@@ -52,12 +53,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- @odata.type: microsoft.graph.windowsAutopilotDeploymentProfile is abstract; odata_type has no default and must name a concrete type
 - Microsoft Graph beta contracts can change without notice.
 - assignedDevices[].deploymentProfile: polymorphic schema; accepts an untyped value
 - assignedDevices[].intendedDeploymentProfile: polymorphic schema; accepts an untyped value
 - assignments[].target: polymorphic schema; accepts an untyped value
-- enrollmentStatusScreenSettings: polymorphic schema; accepts an untyped value
-- outOfBoxExperienceSetting: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

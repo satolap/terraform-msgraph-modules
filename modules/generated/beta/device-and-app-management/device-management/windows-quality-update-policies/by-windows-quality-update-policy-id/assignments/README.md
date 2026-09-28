@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `windows_quality_update_policy_id` | URL parameter `windowsQualityUpdatePolicy-id` | `string` | yes | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `target` | `target` | `object({       odata_type = optional(string, "#microsoft.graph.deviceAndAppManagementAssignmentTarget")       deviceAndAppManagementAssignmentFilterId = optional(string)       deviceAndAppManagementAssignmentFilterType = optional(string)     })` | no | no |
+| `target` | `target` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -43,6 +43,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- target: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

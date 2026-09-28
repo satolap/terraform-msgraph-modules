@@ -6,6 +6,7 @@ run "minimal_request" {
 
   variables {
     virtual_event_webinar_id = "test-parent-id"
+    odata_type               = "#microsoft.graph.virtualEventRegistrationCustomQuestion"
   }
 
   assert {
@@ -24,8 +25,14 @@ run "typed_request" {
 
   variables {
     virtual_event_webinar_id = "test-parent-id"
+    odata_type               = "#microsoft.graph.virtualEventRegistrationCustomQuestion"
     display_name             = "example"
     is_required              = false
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.virtualEventRegistrationCustomQuestion")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -37,4 +44,15 @@ run "typed_request" {
     condition     = jsonencode(msgraph_resource.this.body["isRequired"]) == jsonencode(false)
     error_message = "isRequired must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    virtual_event_webinar_id = "test-parent-id"
+    odata_type               = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

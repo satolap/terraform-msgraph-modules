@@ -104,12 +104,8 @@ variable "role_scope_tag_ids" {
 variable "settings" {
   description = "List of settings contained in this App Configuration policy"
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSetting")
-    settingInstance = optional(object({
-      odata_type                       = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingInstance")
-      settingDefinitionId              = optional(string)
-      settingInstanceTemplateReference = optional(any)
-    }))
+    odata_type      = optional(string, "#microsoft.graph.deviceManagementConfigurationSetting")
+    settingInstance = optional(any)
   }))
   default = null
 }
@@ -120,8 +116,8 @@ variable "targeted_app_management_levels" {
   default     = null
 
   validation {
-    condition     = var.targeted_app_management_levels == null ? true : contains(["unspecified", "unmanaged", "mdm", "androidEnterprise", "androidEnterpriseDedicatedDevicesWithAzureAdSharedMode", "androidOpenSourceProjectUserAssociated", "androidOpenSourceProjectUserless", "unknownFutureValue"], var.targeted_app_management_levels)
-    error_message = "targeted_app_management_levels must be one of the documented enum values."
+    condition     = var.targeted_app_management_levels == null ? true : try(alltrue([for value in split(",", var.targeted_app_management_levels) : contains(["unspecified", "unmanaged", "mdm", "androidenterprise", "androidenterprisededicateddeviceswithazureadsharedmode", "androidopensourceprojectuserassociated", "androidopensourceprojectuserless", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "targeted_app_management_levels must be one or more of the documented enum values, separated by commas."
   }
 }
 

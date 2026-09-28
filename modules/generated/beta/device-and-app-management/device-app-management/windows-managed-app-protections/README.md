@@ -27,7 +27,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `allowed_outbound_clipboard_sharing_level` | `allowedOutboundClipboardSharingLevel` | `string` | no | no |
 | `allowed_outbound_data_transfer_destination_apps` | `allowedOutboundDataTransferDestinationApps` | `string` | no | no |
 | `allowed_outbound_data_transfer_destinations` | `allowedOutboundDataTransferDestinations` | `string` | no | no |
-| `app_action_if_unable_to_authenticate_user` | `appActionIfUnableToAuthenticateUser` | `any` | no | no |
+| `app_action_if_unable_to_authenticate_user` | `appActionIfUnableToAuthenticateUser` | `string` | no | no |
 | `apps` | `apps` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedMobileApp")       mobileAppIdentifier = optional(any)       version = optional(string)     }))` | no | no |
 | `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.targetedManagedAppPolicyAssignment")       source = optional(string)       sourceId = optional(string)       target = optional(any)     }))` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
@@ -73,10 +73,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- appActionIfUnableToAuthenticateUser: polymorphic schema; accepts an untyped value
 - apps[].mobileAppIdentifier: polymorphic schema; accepts an untyped value
 - assignments[].target: polymorphic schema; accepts an untyped value
-- deploymentSummary: polymorphic schema; accepts an untyped value
+- deploymentSummary: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

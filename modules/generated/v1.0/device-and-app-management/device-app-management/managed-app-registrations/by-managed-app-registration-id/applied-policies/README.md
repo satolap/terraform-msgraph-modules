@@ -14,6 +14,7 @@ Lifecycle: `POST /deviceAppManagement/managedAppRegistrations/{managedAppRegistr
 module "graph_resource" {
   source = "./device-and-app-management/device-app-management/managed-app-registrations/by-managed-app-registration-id/applied-policies"
   managed_app_registration_id = "parent-object-id"
+  odata_type = "#microsoft.graph.androidManagedAppProtection"
 }
 ```
 
@@ -24,15 +25,15 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `managed_app_registration_id` | URL parameter `managedAppRegistration-id` | `string` | yes | no |
+| `odata_type` | `@odata.type` | `string` | yes | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `graph_version` | `version` | `string` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
-Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.
 
 Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
@@ -43,6 +44,10 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
+
+Generation notes:
+
+- @odata.type: microsoft.graph.managedAppPolicy is abstract; odata_type has no default and must name a concrete type
 
 ## Licensing and prerequisites
 

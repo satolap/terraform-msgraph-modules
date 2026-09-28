@@ -8,6 +8,7 @@ run "minimal_request" {
     team_id         = "test-parent-id"
     channel_id      = "test-parent-id"
     planner_plan_id = "test-parent-id"
+    odata_type      = "#microsoft.graph.taskHistoryItem"
   }
 
   assert {
@@ -28,7 +29,13 @@ run "typed_request" {
     team_id         = "test-parent-id"
     channel_id      = "test-parent-id"
     planner_plan_id = "test-parent-id"
+    odata_type      = "#microsoft.graph.taskHistoryItem"
     entity_id       = "example"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.taskHistoryItem")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -44,8 +51,8 @@ run "invalid_enum" {
     team_id         = "test-parent-id"
     channel_id      = "test-parent-id"
     planner_plan_id = "test-parent-id"
-    entity_type     = "__graphmodules_invalid_enum__"
+    odata_type      = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.entity_type]
+  expect_failures = [var.odata_type]
 }

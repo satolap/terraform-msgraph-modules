@@ -23,14 +23,20 @@ run "typed_request" {
   command = plan
 
   variables {
-    virtual_event_id = "test-parent-id"
-    email            = "example"
-    sessions         = [{}]
+    virtual_event_id  = "test-parent-id"
+    email             = "example"
+    presenter_details = { "bio" = null }
+    sessions          = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["email"]) == jsonencode("example")
     error_message = "email must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["presenterDetails"]) == jsonencode({ "@odata.type" = "#microsoft.graph.virtualEventPresenterDetails" })
+    error_message = "presenterDetails must preserve typed values and omit nested nulls."
   }
 
   assert {

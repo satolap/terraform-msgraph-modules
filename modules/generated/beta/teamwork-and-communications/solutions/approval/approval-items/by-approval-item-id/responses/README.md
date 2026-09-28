@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `approval_item_id` | URL parameter `approvalItem-id` | `string` | yes | no |
 | `comments` | `comments` | `string` | no | no |
-| `created_by` | `createdBy` | `any` | no | no |
+| `created_by` | `createdBy` | `object({       odata_type = optional(string, "#microsoft.graph.approvalIdentitySet")       application = optional(any)       device = optional(any)       group = optional(any)       user = optional(any)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `response` | `response` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -45,7 +45,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- createdBy: polymorphic schema; accepts an untyped value
+- createdBy.application: polymorphic schema; accepts an untyped value
+- createdBy.device: polymorphic schema; accepts an untyped value
+- createdBy.group: polymorphic schema; accepts an untyped value
+- createdBy.user: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

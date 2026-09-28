@@ -20,6 +20,7 @@ run "typed_request" {
 
   variables {
     expiration_date_time = "2026-01-01T00:00:00Z"
+    issuer               = { "address" = null }
     related_hosts        = [{}]
   }
 
@@ -29,7 +30,12 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["relatedHosts"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.security.host" }])
+    condition     = jsonencode(msgraph_resource.this.body["issuer"]) == jsonencode({ "@odata.type" = "#microsoft.graph.security.sslCertificateEntity" })
+    error_message = "issuer must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["relatedHosts"]) == jsonencode([{}])
     error_message = "relatedHosts must preserve typed values and omit nested nulls."
   }
 }

@@ -54,7 +54,7 @@ variable "permission_classification" {
 
 variable "permission_type" {
   description = "The permission type of the permission being granted. Possible values: application for application permissions (e.g. app roles), or delegated for delegated permissions. The value delegatedUserConsentable indicates delegated permissions which have not been configured by the API publisher to require admin consent—this value may be used in built-in permission grant policies, but cannot be used in custom permission grant policies. Required."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -77,11 +77,8 @@ variable "resource_application" {
 
 variable "scope_sensitivity_labels" {
   description = "Microsoft Graph scopeSensitivityLabels property."
-  type = object({
-    odata_type = optional(string, "#microsoft.graph.scopeSensitivityLabels")
-    labelKind  = optional(any)
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

@@ -55,7 +55,7 @@ variable "offboard_requested_date_time" {
 
 variable "protection_mode" {
   description = "The backup mode for the protection policy. The possible values are: standard, fullServiceBackup, unknownFutureValue. When set to fullServiceBackup, the entire workload is backed up and specific items can be excluded using exclusion units. When set to standard, only the items explicitly added as protection units are backed up."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -66,8 +66,14 @@ variable "protection_mode" {
 
 variable "protection_policy_artifact_count" {
   description = "The count of artifacts in the protection policy by status. Returned only on $select."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.protectionPolicyArtifactCount")
+    completed  = optional(number)
+    failed     = optional(number)
+    inProgress = optional(number)
+    total      = optional(number)
+  })
+  default = null
 }
 
 variable "retention_settings" {
@@ -83,10 +89,28 @@ variable "retention_settings" {
 variable "site_exclusion_units" {
   description = "The site exclusion units associated with the SharePoint protection policy."
   type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.siteExclusionUnit")
-    createdBy            = optional(any)
-    createdDateTime      = optional(string)
-    error                = optional(any)
+    odata_type      = optional(string, "#microsoft.graph.siteExclusionUnit")
+    createdBy       = optional(any)
+    createdDateTime = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
     lastModifiedBy       = optional(any)
     lastModifiedDateTime = optional(string)
     policyId             = optional(string)
@@ -98,11 +122,29 @@ variable "site_exclusion_units" {
 variable "site_exclusion_units_bulk_addition_jobs" {
   description = "The list of bulk addition jobs for site exclusion units associated with the SharePoint protection policy."
   type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.siteExclusionUnitsBulkAdditionJob")
-    createdBy            = optional(any)
-    createdDateTime      = optional(string)
-    displayName          = optional(string)
-    error                = optional(any)
+    odata_type      = optional(string, "#microsoft.graph.siteExclusionUnitsBulkAdditionJob")
+    createdBy       = optional(any)
+    createdDateTime = optional(string)
+    displayName     = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
     lastModifiedBy       = optional(any)
     lastModifiedDateTime = optional(string)
     siteWebUrls          = optional(list(string))
@@ -114,15 +156,33 @@ variable "site_exclusion_units_bulk_addition_jobs" {
 variable "site_inclusion_rules" {
   description = "The rules associated with the SharePoint Protection policy."
   type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.siteProtectionRule")
-    createdBy            = optional(any)
-    createdDateTime      = optional(string)
-    error                = optional(any)
+    odata_type      = optional(string, "#microsoft.graph.siteProtectionRule")
+    createdBy       = optional(any)
+    createdDateTime = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
     isAutoApplyEnabled   = optional(bool)
     lastModifiedBy       = optional(any)
     lastModifiedDateTime = optional(string)
     siteExpression       = optional(string)
-    status               = optional(any)
+    status               = optional(string)
   }))
   default = null
 }
@@ -135,14 +195,32 @@ variable "site_protection_units" {
     billingPolicyId             = optional(string)
     createdBy                   = optional(any)
     createdDateTime             = optional(string)
-    error                       = optional(any)
-    lastModifiedBy              = optional(any)
-    lastModifiedDateTime        = optional(string)
-    offboardRequestedDateTime   = optional(string)
-    policyId                    = optional(string)
-    protectionSources           = optional(string)
-    siteId                      = optional(string)
-    status                      = optional(any)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    lastModifiedBy            = optional(any)
+    lastModifiedDateTime      = optional(string)
+    offboardRequestedDateTime = optional(string)
+    policyId                  = optional(string)
+    protectionSources         = optional(string)
+    siteId                    = optional(string)
+    status                    = optional(string)
   }))
   default = null
 }
@@ -150,11 +228,29 @@ variable "site_protection_units" {
 variable "site_protection_units_bulk_addition_jobs" {
   description = "Microsoft Graph siteProtectionUnitsBulkAdditionJobs property."
   type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.siteProtectionUnitsBulkAdditionJob")
-    createdBy            = optional(any)
-    createdDateTime      = optional(string)
-    displayName          = optional(string)
-    error                = optional(any)
+    odata_type      = optional(string, "#microsoft.graph.siteProtectionUnitsBulkAdditionJob")
+    createdBy       = optional(any)
+    createdDateTime = optional(string)
+    displayName     = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
     lastModifiedBy       = optional(any)
     lastModifiedDateTime = optional(string)
     siteIds              = optional(list(string))
@@ -166,7 +262,7 @@ variable "site_protection_units_bulk_addition_jobs" {
 
 variable "status" {
   description = "The aggregated status of the protection units associated with the policy. The possible values are: inactive, activeWithErrors, updating, active, unknownFutureValue, offboardRequested, offboarded. You must use the Prefer: include-unknown-enum-members request header to get the following values in this evolvable enum: offboardRequested, offboarded."
-  type        = any
+  type        = string
   default     = null
 
   validation {

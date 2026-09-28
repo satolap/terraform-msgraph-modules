@@ -23,7 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `approval_settings` | `approvalSettings` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsQualityUpdateApprovalSetting")       approvalMethodType = optional(string)       deferredDeploymentInDay = optional(number)       windowsQualityUpdateCadence = optional(string)       windowsQualityUpdateCategory = optional(string)     }))` | no | no |
-| `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsQualityUpdatePolicyAssignment")       target = optional(object({       odata_type = optional(string, "#microsoft.graph.deviceAndAppManagementAssignmentTarget")       deviceAndAppManagementAssignmentFilterId = optional(string)       deviceAndAppManagementAssignmentFilterType = optional(string)     }))     }))` | no | no |
+| `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsQualityUpdatePolicyAssignment")       target = optional(any)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `hotpatch_enabled` | `hotpatchEnabled` | `bool` | no | no |
@@ -46,6 +46,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- assignments[].target: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

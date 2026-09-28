@@ -23,7 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `allowed_combinations` | `allowedCombinations` | `list(string)` | no | no |
-| `combination_configurations` | `combinationConfigurations` | `list(object({       odata_type = optional(string, "#microsoft.graph.authenticationCombinationConfiguration")       appliesToCombinations = optional(list(string))     }))` | no | no |
+| `combination_configurations` | `combinationConfigurations` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
@@ -50,6 +50,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- combinationConfigurations[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

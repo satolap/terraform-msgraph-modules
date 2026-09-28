@@ -25,11 +25,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `description` | `description` | `string` | no | no |
 | `face_check_configuration` | `faceCheckConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.faceCheckConfiguration")       isEnabled = optional(bool)       sourcePhotoClaimName = optional(string)     })` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `mobile_drivers_license_configuration` | `mobileDriversLicenseConfiguration` | `any` | no | no |
+| `mobile_drivers_license_configuration` | `mobileDriversLicenseConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.mobileDriversLicenseConfiguration")       acceptedRegions = optional(list(string))       documentStandard = optional(string)     })` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `priority` | `priority` | `number` | no | no |
-| `self_service_issuance` | `selfServiceIssuance` | `any` | no | no |
+| `self_service_issuance` | `selfServiceIssuance` | `object({       odata_type = optional(string, "#microsoft.graph.verifiedIdSelfServiceIssuance")       isEnabled = optional(bool)       issuanceUrl = optional(string)     })` | no | no |
 | `state` | `state` | `string` | no | no |
 | `verified_id_profile_configuration` | `verifiedIdProfileConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.verifiedIdProfileConfiguration")       acceptedIssuer = optional(string)       claimBindingSource = optional(string)       claimBindings = optional(list(object({       odata_type = optional(string, "#microsoft.graph.claimBinding")       matchConfidenceLevel = optional(string)       sourceAttribute = optional(string)       verifiedIdClaim = optional(string)     })))       claimValidation = optional(object({       odata_type = optional(string, "#microsoft.graph.claimValidation")       customExtensionId = optional(string)       isEnabled = optional(bool)     }))       manifestUrl = optional(string)       methodType = optional(string)       type = optional(string)     })` | no | no |
 | `verified_id_usage_configurations` | `verifiedIdUsageConfigurations` | `list(object({       odata_type = optional(string, "#microsoft.graph.verifiedIdUsageConfiguration")       isEnabledForTestOnly = optional(bool)       purpose = optional(string)     }))` | no | no |
@@ -51,8 +51,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- mobileDriversLicenseConfiguration: polymorphic schema; accepts an untyped value
-- selfServiceIssuance: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

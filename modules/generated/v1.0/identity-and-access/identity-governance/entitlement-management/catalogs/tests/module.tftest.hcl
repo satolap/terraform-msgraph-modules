@@ -19,14 +19,14 @@ run "typed_request" {
   command = plan
 
   variables {
-    description                = "example"
+    catalog_type               = "userManaged"
     is_externally_visible      = false
     custom_workflow_extensions = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
-    error_message = "description must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["catalogType"]) == jsonencode("userManaged")
+    error_message = "catalogType must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -35,7 +35,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["customWorkflowExtensions"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.customCalloutExtension" }])
+    condition     = jsonencode(msgraph_resource.this.body["customWorkflowExtensions"]) == jsonencode([{}])
     error_message = "customWorkflowExtensions must preserve typed values and omit nested nulls."
   }
 }

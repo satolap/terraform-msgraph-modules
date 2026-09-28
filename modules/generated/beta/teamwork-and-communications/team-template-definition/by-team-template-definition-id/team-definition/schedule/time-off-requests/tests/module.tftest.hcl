@@ -24,12 +24,12 @@ run "typed_request" {
 
   variables {
     team_template_definition_id = "test-parent-id"
-    end_date_time               = "2026-01-01T00:00:00Z"
+    assigned_to                 = "sender"
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["endDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
-    error_message = "endDateTime must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["assignedTo"]) == jsonencode("sender")
+    error_message = "assignedTo must preserve typed values and omit nested nulls."
   }
 }
 

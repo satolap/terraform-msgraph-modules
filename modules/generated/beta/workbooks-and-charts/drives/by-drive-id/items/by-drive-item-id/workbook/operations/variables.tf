@@ -22,8 +22,13 @@ variable "drive_item_id" {
 
 variable "error" {
   description = "The error returned by the operation."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.workbookOperationError")
+    code       = optional(string)
+    innerError = optional(any)
+    message    = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {

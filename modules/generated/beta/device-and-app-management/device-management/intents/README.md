@@ -23,7 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementIntentAssignment")       target = optional(any)     }))` | no | no |
-| `categories` | `categories` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementIntentSettingCategory")       displayName = optional(string)       hasRequiredSetting = optional(bool)       settingDefinitions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementSettingDefinition")       constraints = optional(any)       dependencies = optional(any)       description = optional(string)       displayName = optional(string)       documentationUrl = optional(string)       headerSubtitle = optional(string)       headerTitle = optional(string)       isTopLevel = optional(bool)       keywords = optional(list(string))       placeholderText = optional(string)       valueType = optional(string)     })))       settings = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementSettingInstance")       definitionId = optional(string)       valueJson = optional(string)     })))     }))` | no | no |
+| `categories` | `categories` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementIntentSettingCategory")       displayName = optional(string)       hasRequiredSetting = optional(bool)       settingDefinitions = optional(any)       settings = optional(any)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `device_setting_state_summaries` | `deviceSettingStateSummaries` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementIntentDeviceSettingStateSummary")       compliantCount = optional(number)       conflictCount = optional(number)       errorCount = optional(number)       nonCompliantCount = optional(number)       notApplicableCount = optional(number)       remediatedCount = optional(number)       settingName = optional(string)     }))` | no | no |
 | `device_state_summary` | `deviceStateSummary` | `any` | no | no |
@@ -34,7 +34,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `role_scope_tag_ids` | `roleScopeTagIds` | `list(string)` | no | no |
-| `settings` | `settings` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementSettingInstance")       definitionId = optional(string)       valueJson = optional(string)     }))` | no | no |
+| `settings` | `settings` | `any` | no | no |
 | `template_id` | `templateId` | `string` | no | no |
 | `user_state_summary` | `userStateSummary` | `any` | no | no |
 | `user_states` | `userStates` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementIntentUserState")       deviceCount = optional(number)       lastReportedDateTime = optional(string)       state = optional(string)       userName = optional(string)       userPrincipalName = optional(string)     }))` | no | no |
@@ -56,10 +56,11 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].target: polymorphic schema; accepts an untyped value
-- categories[].settingDefinitions[].constraints[]: nested schema exceeds depth limit; accepts an untyped value
-- categories[].settingDefinitions[].dependencies[]: nested schema exceeds depth limit; accepts an untyped value
-- deviceStateSummary: polymorphic schema; accepts an untyped value
-- userStateSummary: polymorphic schema; accepts an untyped value
+- categories[].settingDefinitions[]: polymorphic schema; accepts an untyped value
+- categories[].settings[]: polymorphic schema; accepts an untyped value
+- deviceStateSummary: navigation property; accepts an untyped value
+- settings[]: polymorphic schema; accepts an untyped value
+- userStateSummary: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

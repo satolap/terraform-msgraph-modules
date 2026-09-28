@@ -28,8 +28,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `meeting_attendance_report_id` | URL parameter `meetingAttendanceReport-id` | `string` | yes | no |
 | `attendance_intervals` | `attendanceIntervals` | `list(object({       odata_type = optional(string, "#microsoft.graph.attendanceInterval")       durationInSeconds = optional(number)       joinDateTime = optional(string)       leaveDateTime = optional(string)     }))` | no | no |
 | `email_address` | `emailAddress` | `string` | no | no |
-| `engagements` | `engagements` | `list(object({       odata_type = optional(string, "#microsoft.graph.meetingEngagement")       dateTime = optional(string)       engagementSubType = optional(string)       engagementType = optional(any)     }))` | no | no |
-| `external_registration_information` | `externalRegistrationInformation` | `any` | no | no |
+| `engagements` | `engagements` | `list(object({       odata_type = optional(string, "#microsoft.graph.meetingEngagement")       dateTime = optional(string)       engagementSubType = optional(string)       engagementType = optional(string)     }))` | no | no |
+| `external_registration_information` | `externalRegistrationInformation` | `object({       odata_type = optional(string, "#microsoft.graph.virtualEventExternalRegistrationInformation")       referrer = optional(string)       registrationId = optional(string)     })` | no | no |
 | `identity` | `identity` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `registrant_id` | `registrantId` | `string` | no | no |
@@ -53,8 +53,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- engagements[].engagementType: polymorphic schema; accepts an untyped value
-- externalRegistrationInformation: polymorphic schema; accepts an untyped value
 - identity: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

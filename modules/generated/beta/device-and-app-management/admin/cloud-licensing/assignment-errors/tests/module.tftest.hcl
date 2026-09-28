@@ -19,17 +19,11 @@ run "typed_request" {
   command = plan
 
   variables {
-    code        = "example"
-    assigned_to = { "deletedDateTime" = null }
+    code = "example"
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["code"]) == jsonencode("example")
     error_message = "code must preserve typed values and omit nested nulls."
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["assignedTo"]) == jsonencode({ "@odata.type" = "#microsoft.graph.directoryObject" })
-    error_message = "assignedTo must preserve typed values and omit nested nulls."
   }
 }

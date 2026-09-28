@@ -29,8 +29,22 @@ variable "banner_logo" {
 
 variable "content_customization" {
   description = "Represents the content options to be customized throughout the authentication flow for a tenant. NOTE: Supported by Microsoft Entra ID for customers' tenants only."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.contentCustomization")
+    attributeCollection = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.keyValue")
+      key        = optional(string)
+      value      = optional(string)
+    })))
+    attributeCollectionRelativeUrl = optional(string)
+    registrationCampaign = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.keyValue")
+      key        = optional(string)
+      value      = optional(string)
+    })))
+    registrationCampaignRelativeUrl = optional(string)
+  })
+  default = null
 }
 
 variable "custom_account_reset_credentials_url" {
@@ -115,14 +129,28 @@ variable "header_logo" {
 
 variable "login_page_layout_configuration" {
   description = "Represents the layout configuration to be displayed on the login page for a tenant."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.loginPageLayoutConfiguration")
+    isFooterShown      = optional(bool)
+    isHeaderShown      = optional(bool)
+    layoutTemplateType = optional(string)
+  })
+  default = null
 }
 
 variable "login_page_text_visibility_settings" {
   description = "Represents the various texts that can be hidden on the login page for a tenant."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                  = optional(string, "#microsoft.graph.loginPageTextVisibilitySettings")
+    hideAccountResetCredentials = optional(bool)
+    hideCannotAccessYourAccount = optional(bool)
+    hideForgotMyPassword        = optional(bool)
+    hidePrivacyAndCookies       = optional(bool)
+    hideResetItNow              = optional(bool)
+    hideTermsOfUse              = optional(bool)
+  })
+  default   = null
+  sensitive = true
 }
 
 variable "odata_type" {

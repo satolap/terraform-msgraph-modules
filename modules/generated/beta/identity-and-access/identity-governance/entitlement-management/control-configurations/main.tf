@@ -1,12 +1,12 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
+    "@odata.type"      = var.odata_type
     "createdBy"        = var.created_by
     "createdDateTime"  = var.created_date_time
     "isEnabled"        = var.is_enabled
     "modifiedBy"       = var.modified_by
     "modifiedDateTime" = var.modified_date_time
-    "@odata.type"      = var.odata_type
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `subject_rights_request_id` | URL parameter `subjectRightsRequest-id` | `string` | yes | no |
 | `author` | `author` | `any` | no | no |
-| `content` | `content` | `any` | no | no |
+| `content` | `content` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -46,7 +46,6 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - author: polymorphic schema; accepts an untyped value
-- content: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -33,8 +33,46 @@ variable "list_item_id" {
 
 variable "action" {
   description = "Microsoft Graph action property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.itemActionSet")
+    comment = optional(object({
+      odata_type   = optional(string, "#microsoft.graph.commentAction")
+      isReply      = optional(bool)
+      parentAuthor = optional(any)
+      participants = optional(any)
+    }))
+    create = optional(any)
+    delete = optional(object({
+      odata_type = optional(string, "#microsoft.graph.deleteAction")
+      name       = optional(string)
+      objectType = optional(string)
+    }))
+    edit = optional(any)
+    mention = optional(object({
+      odata_type = optional(string, "#microsoft.graph.mentionAction")
+      mentionees = optional(any)
+    }))
+    move = optional(object({
+      odata_type = optional(string, "#microsoft.graph.moveAction")
+      from       = optional(string)
+      to         = optional(string)
+    }))
+    rename = optional(object({
+      odata_type = optional(string, "#microsoft.graph.renameAction")
+      newName    = optional(string)
+      oldName    = optional(string)
+    }))
+    restore = optional(any)
+    share = optional(object({
+      odata_type = optional(string, "#microsoft.graph.shareAction")
+      recipients = optional(any)
+    }))
+    version = optional(object({
+      odata_type = optional(string, "#microsoft.graph.versionAction")
+      newVersion = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "actor" {
@@ -64,8 +102,13 @@ variable "odata_type" {
 
 variable "times" {
   description = "Microsoft Graph times property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.itemActivityTimeSet")
+    lastRecordedDateTime = optional(string)
+    observedDateTime     = optional(string)
+    recordedDateTime     = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

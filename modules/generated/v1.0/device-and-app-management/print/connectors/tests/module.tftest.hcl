@@ -20,10 +20,16 @@ run "typed_request" {
 
   variables {
     app_version = "example"
+    location    = { "altitudeInMeters" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["appVersion"]) == jsonencode("example")
     error_message = "appVersion must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["location"]) == jsonencode({ "@odata.type" = "#microsoft.graph.printerLocation" })
+    error_message = "location must preserve typed values and omit nested nulls."
   }
 }

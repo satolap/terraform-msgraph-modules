@@ -19,13 +19,19 @@ run "typed_request" {
   command = plan
 
   variables {
-    is_default_access_enabled = false
-    application_segments      = [{}]
+    is_default_access_enabled          = false
+    hybrid_agent_updater_configuration = { "allowUpdateConfigurationOverride" = null }
+    application_segments               = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isDefaultAccessEnabled"]) == jsonencode(false)
     error_message = "isDefaultAccessEnabled must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["hybridAgentUpdaterConfiguration"]) == jsonencode({ "@odata.type" = "#microsoft.graph.hybridAgentUpdaterConfiguration" })
+    error_message = "hybridAgentUpdaterConfiguration must preserve typed values and omit nested nulls."
   }
 
   assert {

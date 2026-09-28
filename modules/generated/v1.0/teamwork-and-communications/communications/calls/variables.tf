@@ -29,8 +29,13 @@ variable "callback_uri" {
 
 variable "chat_info" {
   description = "The chat information. Required information for joining a meeting."
-  type        = any
-  default     = null
+  type = object({
+    odata_type          = optional(string, "#microsoft.graph.chatInfo")
+    messageId           = optional(string)
+    replyChainMessageId = optional(string)
+    threadId            = optional(string)
+  })
+  default = null
 }
 
 variable "content_sharing_sessions" {
@@ -43,14 +48,21 @@ variable "content_sharing_sessions" {
 
 variable "graph_source" {
   description = "The originator of the call."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.participantInfo")
+    identity   = optional(any)
+  })
+  default = null
 }
 
 variable "incoming_context" {
   description = "Call context associated with an incoming call."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.incomingContext")
+    onBehalfOf = optional(any)
+    transferor = optional(any)
+  })
+  default = null
 }
 
 variable "media_config" {
@@ -80,12 +92,8 @@ variable "odata_type" {
 
 variable "operations" {
   description = "Microsoft Graph operations property."
-  type = list(object({
-    odata_type    = optional(string, "#microsoft.graph.commsOperation")
-    clientContext = optional(string)
-    status        = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "participants" {
@@ -94,12 +102,7 @@ variable "participants" {
     odata_type = optional(string, "#microsoft.graph.participant")
     info = optional(object({
       odata_type = optional(string, "#microsoft.graph.participantInfo")
-      identity = optional(object({
-        odata_type  = optional(string, "#microsoft.graph.identitySet")
-        application = optional(any)
-        device      = optional(any)
-        user        = optional(any)
-      }))
+      identity   = optional(any)
     }))
     isInLobby = optional(bool)
     isMuted   = optional(bool)
@@ -111,10 +114,21 @@ variable "participants" {
       serverMuted = optional(bool)
       sourceId    = optional(string)
     })))
-    metadata             = optional(string)
-    recordingInfo        = optional(any)
-    removedState         = optional(any)
-    restrictedExperience = optional(any)
+    metadata = optional(string)
+    recordingInfo = optional(object({
+      odata_type      = optional(string, "#microsoft.graph.recordingInfo")
+      initiator       = optional(any)
+      recordingStatus = optional(string)
+    }))
+    removedState = optional(object({
+      odata_type = optional(string, "#microsoft.graph.removedState")
+      reason     = optional(string)
+    }))
+    restrictedExperience = optional(object({
+      odata_type             = optional(string, "#microsoft.graph.onlineMeetingRestricted")
+      contentSharingDisabled = optional(string)
+      videoDisabled          = optional(string)
+    }))
     rosterSequenceNumber = optional(number)
   }))
   default = null
@@ -122,7 +136,7 @@ variable "participants" {
 
 variable "requested_modalities" {
   description = "The list of requested modalities. The possible values are: unknown, audio, video, videoBasedScreenSharing, data."
-  type        = any
+  type        = list(string)
   default     = null
 }
 
@@ -135,14 +149,9 @@ variable "subject" {
 variable "targets" {
   description = "The targets of the call. Required information for creating peer to peer call."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.invitationParticipantInfo")
-    hidden     = optional(bool)
-    identity = optional(object({
-      odata_type  = optional(string, "#microsoft.graph.identitySet")
-      application = optional(any)
-      device      = optional(any)
-      user        = optional(any)
-    }))
+    odata_type                         = optional(string, "#microsoft.graph.invitationParticipantInfo")
+    hidden                             = optional(bool)
+    identity                           = optional(any)
     participantId                      = optional(string)
     removeFromDefaultAudioRoutingGroup = optional(bool)
     replacesCallId                     = optional(string)
@@ -158,8 +167,12 @@ variable "tenant_id" {
 
 variable "tone_info" {
   description = "Microsoft Graph toneInfo property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.toneInfo")
+    sequenceId = optional(number)
+    tone       = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

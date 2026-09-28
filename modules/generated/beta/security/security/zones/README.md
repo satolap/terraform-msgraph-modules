@@ -22,11 +22,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `created` | `created` | `any` | no | no |
+| `created` | `created` | `object({       odata_type = optional(string, "#microsoft.graph.security.auditInfo")       by = optional(string)       dateTime = optional(string)     })` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `environments` | `environments` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.environment")       kind = optional(string)     }))` | no | no |
-| `modified` | `modified` | `any` | no | no |
+| `modified` | `modified` | `object({       odata_type = optional(string, "#microsoft.graph.security.auditInfo")       by = optional(string)       dateTime = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -45,8 +45,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- created: polymorphic schema; accepts an untyped value
-- modified: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

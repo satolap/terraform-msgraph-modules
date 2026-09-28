@@ -27,7 +27,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `deployable_content_display_name` | `deployableContentDisplayName` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `expedited_update_settings` | `expeditedUpdateSettings` | `any` | no | no |
+| `expedited_update_settings` | `expeditedUpdateSettings` | `object({       odata_type = optional(string, "#microsoft.graph.expeditedWindowsQualityUpdateSettings")       daysUntilForcedReboot = optional(number)       qualityUpdateCatalogItemId = optional(string)       qualityUpdateRelease = optional(string)     })` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `release_date_display_name` | `releaseDateDisplayName` | `string` | no | no |
@@ -50,7 +50,6 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].target: polymorphic schema; accepts an untyped value
-- expeditedUpdateSettings: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

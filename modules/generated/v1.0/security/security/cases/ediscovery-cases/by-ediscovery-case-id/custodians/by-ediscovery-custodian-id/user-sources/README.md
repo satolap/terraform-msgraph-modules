@@ -30,8 +30,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `email` | `email` | `string` | no | no |
-| `hold_status` | `holdStatus` | `any` | no | no |
-| `included_sources` | `includedSources` | `any` | no | no |
+| `hold_status` | `holdStatus` | `string` | no | no |
+| `included_sources` | `includedSources` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -50,8 +50,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - createdBy: polymorphic schema; accepts an untyped value
-- holdStatus: polymorphic schema; accepts an untyped value
-- includedSources: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

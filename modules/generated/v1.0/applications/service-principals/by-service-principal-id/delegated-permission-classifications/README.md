@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `service_principal_id` | URL parameter `servicePrincipal-id` | `string` | yes | no |
-| `classification` | `classification` | `any` | no | no |
+| `classification` | `classification` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `permission_id` | `permissionId` | `string` | no | no |
 | `permission_name` | `permissionName` | `string` | no | no |
@@ -41,10 +41,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- classification: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

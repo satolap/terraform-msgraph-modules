@@ -45,11 +45,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- appB2BSignInActivityMetrics: polymorphic schema; accepts an untyped value
-- b2BRegistrationMetrics: polymorphic schema; accepts an untyped value
-- b2BSignInActivityMetrics: polymorphic schema; accepts an untyped value
-- billingMetrics: polymorphic schema; accepts an untyped value
-- multiTenantApplicationMetrics: polymorphic schema; accepts an untyped value
+- appB2BSignInActivityMetrics: navigation property; accepts an untyped value
+- b2BRegistrationMetrics: navigation property; accepts an untyped value
+- b2BSignInActivityMetrics: navigation property; accepts an untyped value
+- billingMetrics: navigation property; accepts an untyped value
+- multiTenantApplicationMetrics: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

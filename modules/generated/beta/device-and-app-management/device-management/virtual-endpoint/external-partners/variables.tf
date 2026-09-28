@@ -1,7 +1,13 @@
 variable "agent_setting" {
   description = "The agent settings associated with the external partner."
-  type        = any
-  default     = null
+  type = object({
+    odata_type            = optional(string, "#microsoft.graph.cloudPcExternalPartnerAgentSetting")
+    agentSha256           = optional(string)
+    agentUrl              = optional(string)
+    autoDeploymentEnabled = optional(bool)
+    installParameters     = optional(list(string))
+  })
+  default = null
 }
 
 variable "connection_status" {

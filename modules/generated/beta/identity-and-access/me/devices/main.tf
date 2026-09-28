@@ -15,7 +15,7 @@ locals {
     "domainName"             = var.domain_name
     "enrollmentProfileName"  = var.enrollment_profile_name
     "enrollmentType"         = var.enrollment_type
-    "extensionAttributes"    = var.extension_attributes
+    "extensionAttributes"    = (var.extension_attributes == null ? null : { for key0, value0 in { "@odata.type" = var.extension_attributes["odata_type"], "extensionAttribute1" = var.extension_attributes["extensionAttribute1"], "extensionAttribute10" = var.extension_attributes["extensionAttribute10"], "extensionAttribute11" = var.extension_attributes["extensionAttribute11"], "extensionAttribute12" = var.extension_attributes["extensionAttribute12"], "extensionAttribute13" = var.extension_attributes["extensionAttribute13"], "extensionAttribute14" = var.extension_attributes["extensionAttribute14"], "extensionAttribute15" = var.extension_attributes["extensionAttribute15"], "extensionAttribute2" = var.extension_attributes["extensionAttribute2"], "extensionAttribute3" = var.extension_attributes["extensionAttribute3"], "extensionAttribute4" = var.extension_attributes["extensionAttribute4"], "extensionAttribute5" = var.extension_attributes["extensionAttribute5"], "extensionAttribute6" = var.extension_attributes["extensionAttribute6"], "extensionAttribute7" = var.extension_attributes["extensionAttribute7"], "extensionAttribute8" = var.extension_attributes["extensionAttribute8"], "extensionAttribute9" = var.extension_attributes["extensionAttribute9"] } : key0 => value0 if value0 != null })
     "hostnames"              = (var.hostnames == null ? null : [for item0 in var.hostnames : item0 if item0 != null])
     "isManaged"              = var.is_managed
     "isRooted"               = var.is_rooted
@@ -30,7 +30,7 @@ locals {
     "profileType"            = var.profile_type
     "status"                 = var.status
     "systemLabels"           = (var.system_labels == null ? null : [for item0 in var.system_labels : item0 if item0 != null])
-    "transitiveMemberOf"     = (var.transitive_member_of == null ? null : [for item0 in var.transitive_member_of : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "deletedDateTime" = item0["deletedDateTime"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "transitiveMemberOf"     = (var.transitive_member_of == null ? null : [for item0 in var.transitive_member_of : item0 if item0 != null])
     "usageRights"            = (var.usage_rights == null ? null : [for item0 in var.usage_rights : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "catalogId" = item0["catalogId"], "serviceIdentifier" = item0["serviceIdentifier"], "state" = item0["state"] } : key1 => value1 if value1 != null }) if item0 != null])
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)

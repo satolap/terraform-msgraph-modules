@@ -32,8 +32,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `reason` | `reason` | `string` | no | no |
 | `resource_id` | `resourceId` | `string` | no | no |
 | `role_definition_id` | `roleDefinitionId` | `string` | no | no |
-| `schedule` | `schedule` | `any` | no | no |
-| `status` | `status` | `any` | no | no |
+| `schedule` | `schedule` | `object({       odata_type = optional(string, "#microsoft.graph.governanceSchedule")       duration = optional(string)       endDateTime = optional(string)       startDateTime = optional(string)       type = optional(string)     })` | no | no |
+| `status` | `status` | `object({       odata_type = optional(string, "#microsoft.graph.governanceRoleAssignmentRequestStatus")       status = optional(string)       statusDetails = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       subStatus = optional(string)     })` | no | no |
 | `subject_id` | `subjectId` | `string` | no | no |
 | `type` | `type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -53,8 +53,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- schedule: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

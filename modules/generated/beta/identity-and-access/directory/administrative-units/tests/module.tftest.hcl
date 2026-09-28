@@ -35,7 +35,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["deletedMembers"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.directoryObject" }])
+    condition     = jsonencode(msgraph_resource.this.body["deletedMembers"]) == jsonencode([{}])
     error_message = "deletedMembers must preserve typed values and omit nested nulls."
   }
 }

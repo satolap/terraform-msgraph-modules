@@ -80,7 +80,7 @@ variable "user_display_name" {
 
 variable "user_preferred_method_for_secondary_authentication" {
   description = "The method the user selected as the default second-factor for performing multifactor authentication. The possible values are: push, oath, voiceMobile, voiceAlternateMobile, voiceOffice, sms, none, unknownFutureValue. This property is used as preferred MFA method when isSystemPreferredAuthenticationMethodEnabled is false. Supports $filter (any with eq)."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -97,7 +97,7 @@ variable "user_principal_name" {
 
 variable "user_type" {
   description = "Identifies whether the user is a member or guest in the tenant. The possible values are: member, guest, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -11,13 +11,8 @@ variable "team_template_definition_id" {
 
 variable "allowed_members" {
   description = "A collection of team members who have access to the shared channel."
-  type = list(object({
-    odata_type                  = optional(string, "#microsoft.graph.conversationMember")
-    displayName                 = optional(string)
-    roles                       = optional(list(string))
-    visibleHistoryStartDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "display_name" {

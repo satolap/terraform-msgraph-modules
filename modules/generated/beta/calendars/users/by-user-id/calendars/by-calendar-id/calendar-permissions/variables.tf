@@ -22,7 +22,7 @@ variable "calendar_id" {
 
 variable "allowed_roles" {
   description = "List of allowed sharing or delegating permission levels for the calendar. The possible values are: none, freeBusyRead, limitedRead, read, write, delegateWithoutPrivateEventAccess, delegateWithPrivateEventAccess, custom."
-  type        = any
+  type        = list(string)
   default     = null
 }
 
@@ -47,7 +47,7 @@ variable "odata_type" {
 
 variable "role" {
   description = "Current permission level of the calendar share recipient or delegate."
-  type        = any
+  type        = string
   default     = null
 
   validation {

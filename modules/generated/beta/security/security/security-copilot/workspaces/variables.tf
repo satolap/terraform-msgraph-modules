@@ -14,15 +14,18 @@ variable "odata_type" {
 variable "plugins" {
   description = "Represents plugins in Security Copilot."
   type = list(object({
-    odata_type    = optional(string, "#microsoft.graph.security.securityCopilot.plugin")
-    authorization = optional(any)
-    catalogScope  = optional(string)
-    category      = optional(string)
-    description   = optional(string)
-    displayName   = optional(string)
-    isEnabled     = optional(bool)
-    name          = optional(string)
-    previewState  = optional(string)
+    odata_type = optional(string, "#microsoft.graph.security.securityCopilot.plugin")
+    authorization = optional(object({
+      odata_type = optional(string, "#microsoft.graph.security.securityCopilot.pluginAuth")
+      authType   = optional(string)
+    }))
+    catalogScope = optional(string)
+    category     = optional(string)
+    description  = optional(string)
+    displayName  = optional(string)
+    isEnabled    = optional(bool)
+    name         = optional(string)
+    previewState = optional(string)
     settings = optional(list(object({
       odata_type       = optional(string, "#microsoft.graph.security.securityCopilot.pluginSetting")
       acceptableValues = optional(list(string))

@@ -4,7 +4,7 @@ locals {
     "administrativeUnitId" = var.administrative_unit_id_2
     "@odata.type"          = var.odata_type
     "roleId"               = var.role_id
-    "roleMemberInfo"       = (var.role_member_info == null ? null : { for key0, value0 in { "@odata.type" = var.role_member_info["odata_type"], "displayName" = var.role_member_info["displayName"], "id" = var.role_member_info["id"] } : key0 => value0 if value0 != null })
+    "roleMemberInfo"       = var.role_member_info
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

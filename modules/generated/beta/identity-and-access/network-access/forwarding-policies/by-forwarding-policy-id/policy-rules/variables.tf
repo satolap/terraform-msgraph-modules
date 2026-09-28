@@ -9,17 +9,21 @@ variable "forwarding_policy_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.networkaccess.cloudFirewallRule", "#microsoft.graph.networkaccess.fqdnFilteringRule", "#microsoft.graph.networkaccess.internetAccessForwardingRule", "#microsoft.graph.networkaccess.m365ForwardingRule", "#microsoft.graph.networkaccess.privateAccessForwardingRule", "#microsoft.graph.networkaccess.threatIntelligenceRule", "#microsoft.graph.networkaccess.tlsInspectionRule", "#microsoft.graph.networkaccess.urlDestinationFilteringRule", "#microsoft.graph.networkaccess.webCategoryFilteringRule"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "name" {
   description = "Name."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.networkaccess.policyRule"
-  nullable    = false
 }
 
 variable "additional_properties" {

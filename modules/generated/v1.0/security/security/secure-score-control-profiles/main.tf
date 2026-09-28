@@ -20,7 +20,7 @@ locals {
     "tier"                  = var.tier
     "title"                 = var.title
     "userImpact"            = var.user_impact
-    "vendorInformation"     = var.vendor_information
+    "vendorInformation"     = (var.vendor_information == null ? null : { for key0, value0 in { "@odata.type" = var.vendor_information["odata_type"], "provider" = var.vendor_information["provider"], "providerVersion" = var.vendor_information["providerVersion"], "subProvider" = var.vendor_information["subProvider"], "vendor" = var.vendor_information["vendor"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

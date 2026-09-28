@@ -6,8 +6,11 @@ variable "alert" {
 
 variable "content" {
   description = "Microsoft Graph content property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.managedTenants.alertLogContent")
+    displayName = optional(string)
+  })
+  default = null
 }
 
 variable "created_by_user_id" {

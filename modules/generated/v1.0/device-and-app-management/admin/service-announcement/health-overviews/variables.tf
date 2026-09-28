@@ -18,8 +18,12 @@ variable "issues" {
     posts = optional(list(object({
       odata_type      = optional(string, "#microsoft.graph.serviceHealthIssuePost")
       createdDateTime = optional(string)
-      description     = optional(any)
-      postType        = optional(any)
+      description = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.itemBody")
+        content     = optional(string)
+        contentType = optional(string)
+      }))
+      postType = optional(string)
     })))
     service       = optional(string)
     startDateTime = optional(string)

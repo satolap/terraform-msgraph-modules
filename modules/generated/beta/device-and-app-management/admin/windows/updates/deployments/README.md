@@ -25,8 +25,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `audience` | `audience` | `any` | no | no |
 | `content` | `content` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `settings` | `settings` | `any` | no | no |
-| `state` | `state` | `any` | no | no |
+| `settings` | `settings` | `object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.deploymentSettings")       contentApplicability = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.contentApplicabilitySettings")       offerWhileRecommendedBy = optional(list(string))       safeguard = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.safeguardSettings")       disabledSafeguardProfiles = optional(list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.safeguardProfile")       category = optional(string)     })))     }))     }))       expedite = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.expediteSettings")       isExpedited = optional(bool)       isReadinessTest = optional(bool)     }))       monitoring = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.monitoringSettings")       monitoringRules = optional(list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.monitoringRule")       action = optional(string)       signal = optional(string)       threshold = optional(number)     })))     }))       schedule = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.scheduleSettings")       gradualRollout = optional(any)       startDateTime = optional(string)     }))       userExperience = optional(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.userExperienceSettings")       daysUntilForcedReboot = optional(number)       isHotpatchEnabled = optional(bool)       offerAsOptional = optional(bool)     }))     })` | no | no |
+| `state` | `state` | `object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.deploymentState")       effectiveValue = optional(string)       requestedValue = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -44,10 +44,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- audience: polymorphic schema; accepts an untyped value
+- audience: navigation property; accepts an untyped value
 - content: polymorphic schema; accepts an untyped value
-- settings: polymorphic schema; accepts an untyped value
-- state: polymorphic schema; accepts an untyped value
+- settings.schedule.gradualRollout: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

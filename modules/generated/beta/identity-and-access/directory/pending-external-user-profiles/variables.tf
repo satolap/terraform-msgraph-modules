@@ -1,7 +1,15 @@
 variable "address" {
   description = "The office address of the external user profile."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.physicalOfficeAddress")
+    city            = optional(string)
+    countryOrRegion = optional(string)
+    officeLocation  = optional(string)
+    postalCode      = optional(string)
+    state           = optional(string)
+    street          = optional(string)
+  })
+  default = null
 }
 
 variable "company_name" {

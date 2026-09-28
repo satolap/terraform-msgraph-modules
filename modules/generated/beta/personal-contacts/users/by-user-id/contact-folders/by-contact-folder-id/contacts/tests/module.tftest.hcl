@@ -28,6 +28,7 @@ run "typed_request" {
     contact_folder_id = "test-parent-id"
     assistant_name    = "example"
     is_favorite       = false
+    flag              = { "completedDateTime" = null }
     categories        = ["example"]
   }
 
@@ -39,6 +40,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isFavorite"]) == jsonencode(false)
     error_message = "isFavorite must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["flag"]) == jsonencode({ "@odata.type" = "#microsoft.graph.followupFlag" })
+    error_message = "flag must preserve typed values and omit nested nulls."
   }
 
   assert {

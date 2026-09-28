@@ -23,14 +23,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `access_package_assignment` | `accessPackageAssignment` | `any` | no | no |
-| `answers` | `answers` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageAnswer")       displayValue = optional(string)     }))` | no | no |
-| `custom_extension_callout_instances` | `customExtensionCalloutInstances` | `list(object({       odata_type = optional(string, "#microsoft.graph.customExtensionCalloutInstance")       customExtensionId = optional(string)       detail = optional(string)       externalCorrelationId = optional(string)       status = optional(any)     }))` | no | no |
+| `answers` | `answers` | `any` | no | no |
+| `custom_extension_callout_instances` | `customExtensionCalloutInstances` | `list(object({       odata_type = optional(string, "#microsoft.graph.customExtensionCalloutInstance")       customExtensionId = optional(string)       detail = optional(string)       externalCorrelationId = optional(string)       status = optional(string)     }))` | no | no |
 | `expiration_date_time` | `expirationDateTime` | `string` | no | no |
 | `history` | `history` | `list(object({       odata_type = optional(string, "#microsoft.graph.requestActivity")       action = optional(string)       actionDateTime = optional(string)       detail = optional(string)       scheduledDateTime = optional(string)       userDisplayName = optional(string)       userPrincipalName = optional(string)     }))` | no | no |
 | `is_validation_only` | `isValidationOnly` | `bool` | no | no |
 | `justification` | `justification` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `parameters` | `parameters` | `any` | no | no |
+| `parameters` | `parameters` | `object({       odata_type = optional(string, "#microsoft.graph.accessPackageAssignmentRequestParameters")       bypassApproval = optional(bool)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -48,9 +48,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- accessPackageAssignment: polymorphic schema; accepts an untyped value
-- customExtensionCalloutInstances[].status: polymorphic schema; accepts an untyped value
-- parameters: polymorphic schema; accepts an untyped value
+- accessPackageAssignment: navigation property; accepts an untyped value
+- answers[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

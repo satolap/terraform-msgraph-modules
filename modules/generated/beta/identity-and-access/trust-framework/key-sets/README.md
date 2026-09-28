@@ -22,8 +22,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `keys` | `keys` | `list(object({       odata_type = optional(string, "#microsoft.graph.trustFrameworkKey")       d = optional(string)       dp = optional(string)       dq = optional(string)       e = optional(string)       exp = optional(number)       k = optional(string)       kid = optional(string)       kty = optional(string)       n = optional(string)       nbf = optional(number)       p = optional(string)       q = optional(string)       qi = optional(string)       status = optional(any)       use = optional(string)       x5c = optional(list(string))       x5t = optional(string)     }))` | no | no |
-| `keys_v2` | `keys_v2` | `list(object({       odata_type = optional(string, "#microsoft.graph.trustFrameworkKey_v2")       d = optional(string)       dp = optional(string)       dq = optional(string)       e = optional(string)       exp = optional(number)       k = optional(string)       kid = optional(string)       kty = optional(string)       n = optional(string)       nbf = optional(number)       p = optional(string)       q = optional(string)       qi = optional(string)       status = optional(any)       use = optional(string)       x5c = optional(list(string))       x5t = optional(string)     }))` | no | no |
+| `keys` | `keys` | `list(object({       odata_type = optional(string, "#microsoft.graph.trustFrameworkKey")       d = optional(string)       dp = optional(string)       dq = optional(string)       e = optional(string)       exp = optional(number)       k = optional(string)       kid = optional(string)       kty = optional(string)       n = optional(string)       nbf = optional(number)       p = optional(string)       q = optional(string)       qi = optional(string)       status = optional(string)       use = optional(string)       x5c = optional(list(string))       x5t = optional(string)     }))` | no | no |
+| `keys_v2` | `keys_v2` | `list(object({       odata_type = optional(string, "#microsoft.graph.trustFrameworkKey_v2")       d = optional(string)       dp = optional(string)       dq = optional(string)       e = optional(string)       exp = optional(number)       k = optional(string)       kid = optional(string)       kty = optional(string)       n = optional(string)       nbf = optional(number)       p = optional(string)       q = optional(string)       qi = optional(string)       status = optional(string)       use = optional(string)       x5c = optional(list(string))       x5t = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -42,8 +42,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- keys[].status: polymorphic schema; accepts an untyped value
-- keys_v2[].status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

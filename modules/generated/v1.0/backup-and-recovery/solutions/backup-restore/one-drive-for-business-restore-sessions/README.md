@@ -25,16 +25,16 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `completed_date_time` | `completedDateTime` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `drive_restore_artifacts` | `driveRestoreArtifacts` | `list(object({       odata_type = optional(string, "#microsoft.graph.driveRestoreArtifact")       completionDateTime = optional(string)       destinationType = optional(any)       error = optional(any)       restorePoint = optional(any)       restoredSiteId = optional(string)       startDateTime = optional(string)       status = optional(any)     }))` | no | no |
-| `drive_restore_artifacts_bulk_addition_requests` | `driveRestoreArtifactsBulkAdditionRequests` | `list(object({       odata_type = optional(string, "#microsoft.graph.driveRestoreArtifactsBulkAdditionRequest")       createdBy = optional(any)       createdDateTime = optional(string)       destinationType = optional(any)       directoryObjectIds = optional(list(string))       displayName = optional(string)       drives = optional(list(string))       error = optional(any)       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       protectionTimePeriod = optional(any)       protectionUnitIds = optional(list(string))       restorePointPreference = optional(any)       status = optional(string)       tags = optional(any)     }))` | no | no |
-| `error` | `error` | `any` | no | no |
+| `drive_restore_artifacts` | `driveRestoreArtifacts` | `list(object({       odata_type = optional(string, "#microsoft.graph.driveRestoreArtifact")       completionDateTime = optional(string)       destinationType = optional(string)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(any)       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       restorePoint = optional(any)       restoredSiteId = optional(string)       startDateTime = optional(string)       status = optional(string)     }))` | no | no |
+| `drive_restore_artifacts_bulk_addition_requests` | `driveRestoreArtifactsBulkAdditionRequests` | `list(object({       odata_type = optional(string, "#microsoft.graph.driveRestoreArtifactsBulkAdditionRequest")       createdBy = optional(any)       createdDateTime = optional(string)       destinationType = optional(string)       directoryObjectIds = optional(list(string))       displayName = optional(string)       drives = optional(list(string))       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(any)       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       protectionTimePeriod = optional(object({       odata_type = optional(string, "#microsoft.graph.timePeriod")       endDateTime = optional(string)       startDateTime = optional(string)     }))       protectionUnitIds = optional(list(string))       restorePointPreference = optional(string)       status = optional(string)       tags = optional(string)     }))` | no | no |
+| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     })` | no | no |
 | `granular_drive_restore_artifacts` | `granularDriveRestoreArtifacts` | `list(object({       odata_type = optional(string, "#microsoft.graph.granularDriveRestoreArtifact")       browseSessionId = optional(string)       completionDateTime = optional(string)       directoryObjectId = optional(string)       restorePointDateTime = optional(string)       restoredItemKey = optional(string)       restoredItemPath = optional(string)       restoredItemWebUrl = optional(string)       startDateTime = optional(string)       status = optional(string)       webUrl = optional(string)     }))` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `restore_job_type` | `restoreJobType` | `any` | no | no |
-| `restore_session_artifact_count` | `restoreSessionArtifactCount` | `any` | no | no |
-| `status` | `status` | `any` | no | no |
+| `restore_job_type` | `restoreJobType` | `string` | no | no |
+| `restore_session_artifact_count` | `restoreSessionArtifactCount` | `object({       odata_type = optional(string, "#microsoft.graph.restoreSessionArtifactCount")       completed = optional(number)       failed = optional(number)       inProgress = optional(number)       total = optional(number)     })` | no | no |
+| `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -53,21 +53,11 @@ Generation notes:
 
 - createdBy: polymorphic schema; accepts an untyped value
 - driveRestoreArtifactsBulkAdditionRequests[].createdBy: polymorphic schema; accepts an untyped value
-- driveRestoreArtifactsBulkAdditionRequests[].destinationType: polymorphic schema; accepts an untyped value
-- driveRestoreArtifactsBulkAdditionRequests[].error: polymorphic schema; accepts an untyped value
+- driveRestoreArtifactsBulkAdditionRequests[].error.innerError.details[]: nested schema exceeds depth limit; accepts an untyped value
 - driveRestoreArtifactsBulkAdditionRequests[].lastModifiedBy: polymorphic schema; accepts an untyped value
-- driveRestoreArtifactsBulkAdditionRequests[].protectionTimePeriod: polymorphic schema; accepts an untyped value
-- driveRestoreArtifactsBulkAdditionRequests[].restorePointPreference: polymorphic schema; accepts an untyped value
-- driveRestoreArtifactsBulkAdditionRequests[].tags: polymorphic schema; accepts an untyped value
-- driveRestoreArtifacts[].destinationType: polymorphic schema; accepts an untyped value
-- driveRestoreArtifacts[].error: polymorphic schema; accepts an untyped value
-- driveRestoreArtifacts[].restorePoint: polymorphic schema; accepts an untyped value
-- driveRestoreArtifacts[].status: polymorphic schema; accepts an untyped value
-- error: polymorphic schema; accepts an untyped value
+- driveRestoreArtifacts[].error.innerError.details[]: nested schema exceeds depth limit; accepts an untyped value
+- driveRestoreArtifacts[].restorePoint: navigation property; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- restoreJobType: polymorphic schema; accepts an untyped value
-- restoreSessionArtifactCount: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

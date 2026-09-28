@@ -1,7 +1,12 @@
 variable "admin_review" {
   description = "Specifies the admin review property that constitutes of who reviewed the user submission, when and what was it identified as."
-  type        = any
-  default     = null
+  type = object({
+    odata_type     = optional(string, "#microsoft.graph.security.submissionAdminReview")
+    reviewBy       = optional(string)
+    reviewDateTime = optional(string)
+    reviewResult   = optional(string)
+  })
+  default = null
 }
 
 variable "category" {
@@ -17,7 +22,7 @@ variable "category" {
 
 variable "client_source" {
   description = "Specifies the source of the submission. The possible values are: microsoft, other, and unkownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -28,7 +33,7 @@ variable "client_source" {
 
 variable "content_type" {
   description = "Specifies the type of content being submitted. The possible values are: email, url, file, app, and unkownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -39,8 +44,13 @@ variable "content_type" {
 
 variable "created_by" {
   description = "Specifies who submitted the email as a threat. Supports $filter = createdBy/email eq 'value'."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.security.submissionUserIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "created_date_time" {
@@ -51,7 +61,7 @@ variable "created_date_time" {
 
 variable "graph_source" {
   description = "Specifies the role of the submitter. Supports $filter = source eq 'value'. The possible values are: administrator,  user, and unkownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -69,13 +79,24 @@ variable "odata_type" {
 
 variable "result" {
   description = "Specifies the result of the analysis performed by Microsoft."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.security.submissionResult")
+    category   = optional(string)
+    detail     = optional(string)
+    detectedFiles = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.security.submissionDetectedFile")
+      fileHash   = optional(string)
+      fileName   = optional(string)
+    })))
+    detectedUrls       = optional(list(string))
+    userMailboxSetting = optional(string)
+  })
+  default = null
 }
 
 variable "status" {
   description = "Indicates whether the threat submission has been analyzed by Microsoft. Supports $filter = status eq 'value'. The possible values are: notStarted, running, succeeded, failed, skipped, and unkownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

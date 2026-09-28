@@ -13,6 +13,7 @@ Lifecycle: `POST /external/industryData/dataConnectors`, `GET/PATCH/DELETE /exte
 ```hcl
 module "graph_resource" {
   source = "./industry-data-etl-preview/external/industry-data/data-connectors"
+  odata_type = "#microsoft.graph.industryData.azureDataLakeConnector"
 }
 ```
 
@@ -22,12 +23,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
+| `odata_type` | `@odata.type` | `string` | yes | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
-| `source_system` | `sourceSystem` | `object({       odata_type = optional(string, "#microsoft.graph.industryData.sourceSystemDefinition")       displayName = optional(string)       userMatchingSettings = optional(list(object({       odata_type = optional(string, "#microsoft.graph.industryData.userMatchingSetting")       matchTarget = optional(any)       priorityOrder = optional(number)       roleGroup = optional(object({       odata_type = optional(string, "#microsoft.graph.industryData.roleGroup")       displayName = optional(string)       roles = optional(any)     }))       sourceIdentifier = optional(object({       odata_type = optional(string, "#microsoft.graph.industryData.identifierTypeReferenceValue")       code = optional(string)       value = optional(object({       odata_type = optional(string, "#microsoft.graph.industryData.referenceDefinition")       code = optional(string)       displayName = optional(string)       isDisabled = optional(bool)       referenceType = optional(string)       sortIndex = optional(number)     }))     }))     })))       vendor = optional(string)     })` | no | no |
+| `source_system` | `sourceSystem` | `object({       odata_type = optional(string, "#microsoft.graph.industryData.sourceSystemDefinition")       displayName = optional(string)       userMatchingSettings = optional(list(object({       odata_type = optional(string, "#microsoft.graph.industryData.userMatchingSetting")       matchTarget = optional(object({       odata_type = optional(string, "#microsoft.graph.industryData.userMatchTargetReferenceValue")       code = optional(string)       value = optional(object({       odata_type = optional(string, "#microsoft.graph.industryData.referenceDefinition")       code = optional(string)       displayName = optional(string)       isDisabled = optional(bool)       referenceType = optional(string)       sortIndex = optional(number)     }))     }))       priorityOrder = optional(number)       roleGroup = optional(object({       odata_type = optional(string, "#microsoft.graph.industryData.roleGroup")       displayName = optional(string)       roles = optional(any)     }))       sourceIdentifier = optional(object({       odata_type = optional(string, "#microsoft.graph.industryData.identifierTypeReferenceValue")       code = optional(string)       value = optional(object({       odata_type = optional(string, "#microsoft.graph.industryData.referenceDefinition")       code = optional(string)       displayName = optional(string)       isDisabled = optional(bool)       referenceType = optional(string)       sortIndex = optional(number)     }))     }))     })))       vendor = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
-Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.
 
 Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
@@ -41,8 +42,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- @odata.type: microsoft.graph.industryData.industryDataConnector is abstract; odata_type has no default and must name a concrete type
 - Microsoft Graph beta contracts can change without notice.
-- sourceSystem.userMatchingSettings[].matchTarget: polymorphic schema; accepts an untyped value
 - sourceSystem.userMatchingSettings[].roleGroup.roles[]: nested schema exceeds depth limit; accepts an untyped value
 
 ## Licensing and prerequisites

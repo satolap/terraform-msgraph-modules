@@ -35,7 +35,7 @@ variable "allow_copying_and_sharing_meeting_content" {
 
 variable "allow_live_share" {
   description = "Indicates whether live share is enabled for the meeting. The possible values are: enabled, disabled, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -46,7 +46,7 @@ variable "allow_live_share" {
 
 variable "allow_meeting_chat" {
   description = "Specifies the mode of meeting chat. The possible values are: enabled, disabled, limited, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -93,7 +93,7 @@ variable "allow_whiteboard" {
 
 variable "allowed_lobby_admitters" {
   description = "Specifies the users who can admit from the lobby. The possible values are: organizerAndCoOrganizersAndPresenters, organizerAndCoOrganizers, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -104,7 +104,7 @@ variable "allowed_lobby_admitters" {
 
 variable "allowed_presenters" {
   description = "Specifies who can be a presenter in a meeting. The possible values are: everyone, organization, roleIsPresenter, organizer, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -115,7 +115,7 @@ variable "allowed_presenters" {
 
 variable "anonymize_identity_for_roles" {
   description = "Specifies whose identity is anonymized in the meeting. The possible values are: attendee. The attendee value can't be removed through a PATCH operation once added."
-  type        = any
+  type        = list(string)
   default     = null
 }
 
@@ -127,20 +127,32 @@ variable "capacity" {
 
 variable "chat_info" {
   description = "The chat information associated with this online meeting."
-  type        = any
-  default     = null
+  type = object({
+    odata_type          = optional(string, "#microsoft.graph.chatInfo")
+    messageId           = optional(string)
+    replyChainMessageId = optional(string)
+    threadId            = optional(string)
+  })
+  default = null
 }
 
 variable "chat_restrictions" {
   description = "Specifies the configuration settings for meeting chat restrictions."
-  type        = any
-  default     = null
+  type = object({
+    odata_type    = optional(string, "#microsoft.graph.chatRestrictions")
+    allowTextOnly = optional(bool)
+  })
+  default = null
 }
 
 variable "end_date_time" {
   description = "The virtual event session end time."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+    dateTime   = optional(string)
+    timeZone   = optional(string)
+  })
+  default = null
 }
 
 variable "expiry_date_time" {
@@ -163,14 +175,21 @@ variable "is_entry_exit_announced" {
 
 variable "join_meeting_id_settings" {
   description = "Specifies the joinMeetingId, the meeting passcode, and the requirement for the passcode. Once an onlineMeeting is created, the joinMeetingIdSettings can't be modified. To make any changes to this property, the meeting needs to be canceled and a new one needs to be created."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.joinMeetingIdSettings")
+    isPasscodeRequired = optional(bool)
+  })
+  default = null
 }
 
 variable "lobby_bypass_settings" {
   description = "Specifies which participants can bypass the meeting lobby."
-  type        = any
-  default     = null
+  type = object({
+    odata_type            = optional(string, "#microsoft.graph.lobbyBypassSettings")
+    isDialInBypassEnabled = optional(bool)
+    scope                 = optional(string)
+  })
+  default = null
 }
 
 variable "meeting_options_web_url" {
@@ -195,47 +214,90 @@ variable "odata_type" {
 variable "presenters" {
   description = "Microsoft Graph presenters property."
   type = list(object({
-    odata_type       = optional(string, "#microsoft.graph.virtualEventPresenter")
-    email            = optional(string)
-    identity         = optional(any)
-    presenterDetails = optional(any)
+    odata_type = optional(string, "#microsoft.graph.virtualEventPresenter")
+    email      = optional(string)
+    identity   = optional(any)
+    presenterDetails = optional(object({
+      odata_type = optional(string, "#microsoft.graph.virtualEventPresenterDetails")
+      bio = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.itemBody")
+        content     = optional(string)
+        contentType = optional(string)
+      }))
+      company               = optional(string)
+      jobTitle              = optional(string)
+      linkedInProfileWebUrl = optional(string)
+      personalSiteWebUrl    = optional(string)
+      photo                 = optional(string)
+      twitterProfileWebUrl  = optional(string)
+    }))
     sessions = optional(list(object({
       odata_type                           = optional(string, "#microsoft.graph.virtualEventSession")
       allowAttendeeToEnableCamera          = optional(bool)
       allowAttendeeToEnableMic             = optional(bool)
       allowBreakoutRooms                   = optional(bool)
       allowCopyingAndSharingMeetingContent = optional(bool)
-      allowLiveShare                       = optional(any)
-      allowMeetingChat                     = optional(any)
+      allowLiveShare                       = optional(string)
+      allowMeetingChat                     = optional(string)
       allowParticipantsToChangeName        = optional(bool)
       allowPowerPointSharing               = optional(bool)
       allowRecording                       = optional(bool)
       allowTeamworkReactions               = optional(bool)
       allowTranscription                   = optional(bool)
       allowWhiteboard                      = optional(bool)
-      allowedLobbyAdmitters                = optional(any)
-      allowedPresenters                    = optional(any)
-      anonymizeIdentityForRoles            = optional(any)
+      allowedLobbyAdmitters                = optional(string)
+      allowedPresenters                    = optional(string)
+      anonymizeIdentityForRoles            = optional(list(string))
       capacity                             = optional(number)
-      chatInfo                             = optional(any)
-      chatRestrictions                     = optional(any)
-      endDateTime                          = optional(any)
-      expiryDateTime                       = optional(string)
-      isEndToEndEncryptionEnabled          = optional(bool)
-      isEntryExitAnnounced                 = optional(bool)
-      joinMeetingIdSettings                = optional(any)
-      lobbyBypassSettings                  = optional(any)
-      meetingOptionsWebUrl                 = optional(string)
-      meetingSpokenLanguageTag             = optional(string)
-      presenters                           = optional(any)
-      recordAutomatically                  = optional(bool)
-      registrations                        = optional(any)
-      sensitivityLabelAssignment           = optional(any)
-      shareMeetingChatHistoryDefault       = optional(any)
-      startDateTime                        = optional(any)
-      subject                              = optional(string)
-      videoOnDemandWebUrl                  = optional(string)
-      watermarkProtection                  = optional(any)
+      chatInfo = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.chatInfo")
+        messageId           = optional(string)
+        replyChainMessageId = optional(string)
+        threadId            = optional(string)
+      }))
+      chatRestrictions = optional(object({
+        odata_type    = optional(string, "#microsoft.graph.chatRestrictions")
+        allowTextOnly = optional(bool)
+      }))
+      endDateTime = optional(object({
+        odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+        dateTime   = optional(string)
+        timeZone   = optional(string)
+      }))
+      expiryDateTime              = optional(string)
+      isEndToEndEncryptionEnabled = optional(bool)
+      isEntryExitAnnounced        = optional(bool)
+      joinMeetingIdSettings = optional(object({
+        odata_type         = optional(string, "#microsoft.graph.joinMeetingIdSettings")
+        isPasscodeRequired = optional(bool)
+      }))
+      lobbyBypassSettings = optional(object({
+        odata_type            = optional(string, "#microsoft.graph.lobbyBypassSettings")
+        isDialInBypassEnabled = optional(bool)
+        scope                 = optional(string)
+      }))
+      meetingOptionsWebUrl     = optional(string)
+      meetingSpokenLanguageTag = optional(string)
+      presenters               = optional(any)
+      recordAutomatically      = optional(bool)
+      registrations            = optional(any)
+      sensitivityLabelAssignment = optional(object({
+        odata_type         = optional(string, "#microsoft.graph.onlineMeetingSensitivityLabelAssignment")
+        sensitivityLabelId = optional(string)
+      }))
+      shareMeetingChatHistoryDefault = optional(string)
+      startDateTime = optional(object({
+        odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+        dateTime   = optional(string)
+        timeZone   = optional(string)
+      }))
+      subject             = optional(string)
+      videoOnDemandWebUrl = optional(string)
+      watermarkProtection = optional(object({
+        odata_type                 = optional(string, "#microsoft.graph.watermarkProtectionValues")
+        isEnabledForContentSharing = optional(bool)
+        isEnabledForVideo          = optional(bool)
+      }))
     })))
   }))
   default = null
@@ -250,16 +312,20 @@ variable "record_automatically" {
 variable "registrations" {
   description = "Microsoft Graph registrations property."
   type = list(object({
-    odata_type                      = optional(string, "#microsoft.graph.virtualEventRegistration")
-    cancelationDateTime             = optional(string)
-    email                           = optional(string)
-    externalRegistrationInformation = optional(any)
-    firstName                       = optional(string)
-    lastName                        = optional(string)
-    preferredLanguage               = optional(string)
-    preferredTimezone               = optional(string)
-    registrantVideoOnDemandWebUrl   = optional(string)
-    registrationDateTime            = optional(string)
+    odata_type          = optional(string, "#microsoft.graph.virtualEventRegistration")
+    cancelationDateTime = optional(string)
+    email               = optional(string)
+    externalRegistrationInformation = optional(object({
+      odata_type     = optional(string, "#microsoft.graph.virtualEventExternalRegistrationInformation")
+      referrer       = optional(string)
+      registrationId = optional(string)
+    }))
+    firstName                     = optional(string)
+    lastName                      = optional(string)
+    preferredLanguage             = optional(string)
+    preferredTimezone             = optional(string)
+    registrantVideoOnDemandWebUrl = optional(string)
+    registrationDateTime          = optional(string)
     registrationQuestionAnswers = optional(list(object({
       odata_type        = optional(string, "#microsoft.graph.virtualEventRegistrationQuestionAnswer")
       booleanValue      = optional(bool)
@@ -274,37 +340,67 @@ variable "registrations" {
       allowAttendeeToEnableMic             = optional(bool)
       allowBreakoutRooms                   = optional(bool)
       allowCopyingAndSharingMeetingContent = optional(bool)
-      allowLiveShare                       = optional(any)
-      allowMeetingChat                     = optional(any)
+      allowLiveShare                       = optional(string)
+      allowMeetingChat                     = optional(string)
       allowParticipantsToChangeName        = optional(bool)
       allowPowerPointSharing               = optional(bool)
       allowRecording                       = optional(bool)
       allowTeamworkReactions               = optional(bool)
       allowTranscription                   = optional(bool)
       allowWhiteboard                      = optional(bool)
-      allowedLobbyAdmitters                = optional(any)
-      allowedPresenters                    = optional(any)
-      anonymizeIdentityForRoles            = optional(any)
+      allowedLobbyAdmitters                = optional(string)
+      allowedPresenters                    = optional(string)
+      anonymizeIdentityForRoles            = optional(list(string))
       capacity                             = optional(number)
-      chatInfo                             = optional(any)
-      chatRestrictions                     = optional(any)
-      endDateTime                          = optional(any)
-      expiryDateTime                       = optional(string)
-      isEndToEndEncryptionEnabled          = optional(bool)
-      isEntryExitAnnounced                 = optional(bool)
-      joinMeetingIdSettings                = optional(any)
-      lobbyBypassSettings                  = optional(any)
-      meetingOptionsWebUrl                 = optional(string)
-      meetingSpokenLanguageTag             = optional(string)
-      presenters                           = optional(any)
-      recordAutomatically                  = optional(bool)
-      registrations                        = optional(any)
-      sensitivityLabelAssignment           = optional(any)
-      shareMeetingChatHistoryDefault       = optional(any)
-      startDateTime                        = optional(any)
-      subject                              = optional(string)
-      videoOnDemandWebUrl                  = optional(string)
-      watermarkProtection                  = optional(any)
+      chatInfo = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.chatInfo")
+        messageId           = optional(string)
+        replyChainMessageId = optional(string)
+        threadId            = optional(string)
+      }))
+      chatRestrictions = optional(object({
+        odata_type    = optional(string, "#microsoft.graph.chatRestrictions")
+        allowTextOnly = optional(bool)
+      }))
+      endDateTime = optional(object({
+        odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+        dateTime   = optional(string)
+        timeZone   = optional(string)
+      }))
+      expiryDateTime              = optional(string)
+      isEndToEndEncryptionEnabled = optional(bool)
+      isEntryExitAnnounced        = optional(bool)
+      joinMeetingIdSettings = optional(object({
+        odata_type         = optional(string, "#microsoft.graph.joinMeetingIdSettings")
+        isPasscodeRequired = optional(bool)
+      }))
+      lobbyBypassSettings = optional(object({
+        odata_type            = optional(string, "#microsoft.graph.lobbyBypassSettings")
+        isDialInBypassEnabled = optional(bool)
+        scope                 = optional(string)
+      }))
+      meetingOptionsWebUrl     = optional(string)
+      meetingSpokenLanguageTag = optional(string)
+      presenters               = optional(any)
+      recordAutomatically      = optional(bool)
+      registrations            = optional(any)
+      sensitivityLabelAssignment = optional(object({
+        odata_type         = optional(string, "#microsoft.graph.onlineMeetingSensitivityLabelAssignment")
+        sensitivityLabelId = optional(string)
+      }))
+      shareMeetingChatHistoryDefault = optional(string)
+      startDateTime = optional(object({
+        odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+        dateTime   = optional(string)
+        timeZone   = optional(string)
+      }))
+      subject             = optional(string)
+      videoOnDemandWebUrl = optional(string)
+      watermarkProtection = optional(object({
+        odata_type                 = optional(string, "#microsoft.graph.watermarkProtectionValues")
+        isEnabledForContentSharing = optional(bool)
+        isEnabledForVideo          = optional(bool)
+      }))
     })))
     userId = optional(string)
   }))
@@ -313,13 +409,16 @@ variable "registrations" {
 
 variable "sensitivity_label_assignment" {
   description = "Specifies the sensitivity label applied to the Teams meeting."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.onlineMeetingSensitivityLabelAssignment")
+    sensitivityLabelId = optional(string)
+  })
+  default = null
 }
 
 variable "share_meeting_chat_history_default" {
   description = "Specifies whether meeting chat history is shared with participants.  The possible values are: all, none, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -330,8 +429,12 @@ variable "share_meeting_chat_history_default" {
 
 variable "start_date_time" {
   description = "The virtual event session start time."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+    dateTime   = optional(string)
+    timeZone   = optional(string)
+  })
+  default = null
 }
 
 variable "subject" {
@@ -348,8 +451,12 @@ variable "video_on_demand_web_url" {
 
 variable "watermark_protection" {
   description = "Specifies whether the client application should apply a watermark to a content type."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                 = optional(string, "#microsoft.graph.watermarkProtectionValues")
+    isEnabledForContentSharing = optional(bool)
+    isEnabledForVideo          = optional(bool)
+  })
+  default = null
 }
 
 variable "additional_properties" {

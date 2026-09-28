@@ -35,10 +35,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `customer_notes` | `customerNotes` | `string` | no | no |
 | `customer_phone` | `customerPhone` | `string` | no | no |
 | `customer_time_zone` | `customerTimeZone` | `string` | no | no |
-| `customers` | `customers` | `list(object({       odata_type = optional(string, "#microsoft.graph.bookingCustomerInformationBase")     }))` | no | no |
+| `customers` | `customers` | `any` | no | no |
 | `end` | `end` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
 | `invoice_amount` | `invoiceAmount` | `any` | no | no |
-| `invoice_date` | `invoiceDate` | `any` | no | no |
+| `invoice_date` | `invoiceDate` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
 | `invoice_id` | `invoiceId` | `string` | no | no |
 | `invoice_status` | `invoiceStatus` | `string` | no | no |
 | `invoice_url` | `invoiceUrl` | `string` | no | no |
@@ -81,8 +81,8 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - customerLocation: polymorphic schema; accepts an untyped value
+- customers[]: object without documented properties; accepts an untyped value
 - invoiceAmount: polymorphic schema; accepts an untyped value
-- invoiceDate: polymorphic schema; accepts an untyped value
 - price: polymorphic schema; accepts an untyped value
 - serviceLocation: polymorphic schema; accepts an untyped value
 

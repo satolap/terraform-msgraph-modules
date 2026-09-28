@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.iosVppEBook"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "assignments" {
   description = "The list of assignments for this eBook."
   type = list(object({
@@ -66,21 +77,18 @@ variable "install_summary" {
 
 variable "large_cover" {
   description = "Book cover."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.mimeContent")
+    type       = optional(string)
+    value      = optional(string)
+  })
+  default = null
 }
 
 variable "last_modified_date_time" {
   description = "The date and time when the eBook was last modified."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.managedEBook"
-  nullable    = false
 }
 
 variable "privacy_information_url" {

@@ -24,11 +24,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `external_sponsors` | `externalSponsors` | `list(object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     }))` | no | no |
-| `identity_sources` | `identitySources` | `list(object({       odata_type = optional(string, "#microsoft.graph.identitySource")     }))` | no | no |
-| `internal_sponsors` | `internalSponsors` | `list(object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     }))` | no | no |
+| `external_sponsors` | `externalSponsors` | `any` | no | no |
+| `identity_sources` | `identitySources` | `any` | no | no |
+| `internal_sponsors` | `internalSponsors` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `state` | `state` | `any` | no | no |
+| `state` | `state` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -45,7 +45,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- state: polymorphic schema; accepts an untyped value
+- externalSponsors[]: polymorphic schema; accepts an untyped value
+- identitySources[]: object without documented properties; accepts an untyped value
+- internalSponsors[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

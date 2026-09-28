@@ -19,11 +19,7 @@ variable "assignments" {
   description = "Navigational property to a list of targets to which this pool is assigned."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.embeddedSIMActivationCodePoolAssignment")
-    target = optional(object({
-      odata_type                                 = optional(string, "#microsoft.graph.deviceAndAppManagementAssignmentTarget")
-      deviceAndAppManagementAssignmentFilterId   = optional(string)
-      deviceAndAppManagementAssignmentFilterType = optional(string)
-    }))
+    target     = optional(any)
   }))
   default = null
 }

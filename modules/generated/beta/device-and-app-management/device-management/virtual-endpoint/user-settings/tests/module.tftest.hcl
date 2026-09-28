@@ -19,9 +19,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    created_date_time   = "2026-01-01T00:00:00Z"
-    local_admin_enabled = false
-    assignments         = [{}]
+    created_date_time                      = "2026-01-01T00:00:00Z"
+    local_admin_enabled                    = false
+    cross_region_disaster_recovery_setting = { "crossRegionDisasterRecoveryEnabled" = null }
+    assignments                            = [{}]
   }
 
   assert {
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["localAdminEnabled"]) == jsonencode(false)
     error_message = "localAdminEnabled must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["crossRegionDisasterRecoverySetting"]) == jsonencode({ "@odata.type" = "#microsoft.graph.cloudPcCrossRegionDisasterRecoverySetting" })
+    error_message = "crossRegionDisasterRecoverySetting must preserve typed values and omit nested nulls."
   }
 
   assert {

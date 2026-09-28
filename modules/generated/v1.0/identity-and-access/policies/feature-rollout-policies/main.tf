@@ -1,7 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "appliesTo"               = (var.applies_to == null ? null : [for item0 in var.applies_to : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "deletedDateTime" = item0["deletedDateTime"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "appliesTo"               = (var.applies_to == null ? null : [for item0 in var.applies_to : item0 if item0 != null])
     "description"             = var.description
     "displayName"             = var.display_name
     "feature"                 = var.feature

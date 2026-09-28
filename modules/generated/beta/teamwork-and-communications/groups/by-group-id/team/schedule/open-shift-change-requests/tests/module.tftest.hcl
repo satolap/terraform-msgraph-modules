@@ -23,13 +23,13 @@ run "typed_request" {
   command = plan
 
   variables {
-    group_id               = "test-parent-id"
-    manager_action_message = "example"
+    group_id    = "test-parent-id"
+    assigned_to = "sender"
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["managerActionMessage"]) == jsonencode("example")
-    error_message = "managerActionMessage must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["assignedTo"]) == jsonencode("sender")
+    error_message = "assignedTo must preserve typed values and omit nested nulls."
   }
 }
 

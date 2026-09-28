@@ -25,11 +25,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `team_id` | URL parameter `team-id` | `string` | yes | no |
 | `container` | `container` | `any` | no | no |
-| `content_sensitivity_label_assignment` | `contentSensitivityLabelAssignment` | `any` | no | no |
+| `content_sensitivity_label_assignment` | `contentSensitivityLabelAssignment` | `object({       odata_type = optional(string, "#microsoft.graph.contentSensitivityLabelAssignment")       assignmentMethod = optional(string)       justificationText = optional(string)       sensitivityLabelId = optional(string)       tenantId = optional(string)     })` | no | no |
 | `creation_source` | `creationSource` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `owner` | `owner` | `string` | no | no |
-| `shared_with_containers` | `sharedWithContainers` | `list(object({       odata_type = optional(string, "#microsoft.graph.plannerSharedWithContainer")       accessLevel = optional(string)       containerId = optional(string)       type = optional(any)       url = optional(string)     }))` | no | no |
+| `shared_with_containers` | `sharedWithContainers` | `list(object({       odata_type = optional(string, "#microsoft.graph.plannerSharedWithContainer")       accessLevel = optional(string)       containerId = optional(string)       type = optional(string)       url = optional(string)     }))` | no | no |
 | `title` | `title` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -49,9 +49,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - container: polymorphic schema; accepts an untyped value
-- contentSensitivityLabelAssignment: polymorphic schema; accepts an untyped value
 - creationSource: polymorphic schema; accepts an untyped value
-- sharedWithContainers[].type: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

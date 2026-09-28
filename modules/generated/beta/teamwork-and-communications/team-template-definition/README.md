@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `audience` | `audience` | `any` | no | no |
+| `audience` | `audience` | `string` | no | no |
 | `categories` | `categories` | `list(string)` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
@@ -52,9 +52,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- audience: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- teamDefinition: polymorphic schema; accepts an untyped value
+- teamDefinition: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

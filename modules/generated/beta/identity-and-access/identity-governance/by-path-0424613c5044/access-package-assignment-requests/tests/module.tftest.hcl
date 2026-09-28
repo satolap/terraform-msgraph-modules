@@ -26,6 +26,7 @@ run "typed_request" {
     access_package_assignment_id = "test-parent-id"
     expiration_date_time         = "2026-01-01T00:00:00Z"
     is_validation_only           = false
+    parameters                   = { "bypassApproval" = null }
     answers                      = [{}]
   }
 
@@ -40,7 +41,12 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["answers"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.accessPackageAnswer" }])
+    condition     = jsonencode(msgraph_resource.this.body["parameters"]) == jsonencode({ "@odata.type" = "#microsoft.graph.accessPackageAssignmentRequestParameters" })
+    error_message = "parameters must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["answers"]) == jsonencode([{}])
     error_message = "answers must preserve typed values and omit nested nulls."
   }
 }

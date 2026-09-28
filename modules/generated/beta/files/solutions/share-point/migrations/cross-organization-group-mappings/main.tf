@@ -1,13 +1,13 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "deleted"                  = var.deleted
+    "deleted"                  = (var.deleted == null ? null : { for key0, value0 in { "@odata.type" = var.deleted["odata_type"], "state" = var.deleted["state"] } : key0 => value0 if value0 != null })
     "groupType"                = var.group_type
     "@odata.type"              = var.odata_type
     "sourceGroupIdentity"      = var.source_group_identity
     "sourceOrganizationId"     = var.source_organization_id
     "targetGroupIdentity"      = var.target_group_identity
-    "targetGroupMigrationData" = var.target_group_migration_data
+    "targetGroupMigrationData" = (var.target_group_migration_data == null ? null : { for key0, value0 in { "@odata.type" = var.target_group_migration_data["odata_type"], "mailNickname" = var.target_group_migration_data["mailNickname"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

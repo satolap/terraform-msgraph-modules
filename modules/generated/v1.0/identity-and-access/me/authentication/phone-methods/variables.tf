@@ -13,7 +13,7 @@ variable "phone_number" {
 
 variable "phone_type" {
   description = "The type of this phone. The possible values are: mobile, alternateMobile, or office."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -24,7 +24,7 @@ variable "phone_type" {
 
 variable "sms_sign_in_state" {
   description = "Whether a phone is ready to be used for SMS sign-in or not. The possible values are: notSupported, notAllowedByPolicy, notEnabled, phoneNumberNotUnique, ready, or notConfigured, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -50,7 +50,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - payload: polymorphic schema; accepts an untyped value
-- responsepayload: polymorphic schema; accepts an untyped value
+- responsepayload: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

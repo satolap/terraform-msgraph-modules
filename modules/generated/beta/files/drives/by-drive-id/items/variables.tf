@@ -13,11 +13,54 @@ variable "activities" {
   description = "The list of recent activities that took place on this item."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.itemActivityOLD")
-    action     = optional(any)
-    actor      = optional(any)
-    driveItem  = optional(any)
-    listItem   = optional(any)
-    times      = optional(any)
+    action = optional(object({
+      odata_type = optional(string, "#microsoft.graph.itemActionSet")
+      comment = optional(object({
+        odata_type   = optional(string, "#microsoft.graph.commentAction")
+        isReply      = optional(bool)
+        parentAuthor = optional(any)
+        participants = optional(any)
+      }))
+      create = optional(any)
+      delete = optional(object({
+        odata_type = optional(string, "#microsoft.graph.deleteAction")
+        name       = optional(string)
+        objectType = optional(string)
+      }))
+      edit = optional(any)
+      mention = optional(object({
+        odata_type = optional(string, "#microsoft.graph.mentionAction")
+        mentionees = optional(any)
+      }))
+      move = optional(object({
+        odata_type = optional(string, "#microsoft.graph.moveAction")
+        from       = optional(string)
+        to         = optional(string)
+      }))
+      rename = optional(object({
+        odata_type = optional(string, "#microsoft.graph.renameAction")
+        newName    = optional(string)
+        oldName    = optional(string)
+      }))
+      restore = optional(any)
+      share = optional(object({
+        odata_type = optional(string, "#microsoft.graph.shareAction")
+        recipients = optional(any)
+      }))
+      version = optional(object({
+        odata_type = optional(string, "#microsoft.graph.versionAction")
+        newVersion = optional(string)
+      }))
+    }))
+    actor     = optional(any)
+    driveItem = optional(any)
+    listItem  = optional(any)
+    times = optional(object({
+      odata_type           = optional(string, "#microsoft.graph.itemActivityTimeSet")
+      lastRecordedDateTime = optional(string)
+      observedDateTime     = optional(string)
+      recordedDateTime     = optional(string)
+    }))
   }))
   default = null
 }
@@ -54,16 +97,19 @@ variable "description" {
 
 variable "extensions" {
   description = "The collection of open extensions defined for this item. Nullable."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.extension")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "file_system_info" {
   description = "File system information on client. Read-write."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.fileSystemInfo")
+    createdDateTime      = optional(string)
+    lastAccessedDateTime = optional(string)
+    lastModifiedDateTime = optional(string)
+  })
+  default = null
 }
 
 variable "last_modified_by_user" {
@@ -74,8 +120,11 @@ variable "last_modified_by_user" {
 
 variable "media" {
   description = "Information about the media (audio or video) item. Read-write. Only on OneDrive for Business and SharePoint."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.media")
+    isTranscriptionShown = optional(bool)
+  })
+  default = null
 }
 
 variable "name" {
@@ -93,8 +142,13 @@ variable "odata_type" {
 
 variable "parent_reference" {
   description = "Parent information, if the item has a parent. Read-write."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.itemReference")
+    driveType  = optional(string)
+    shareId    = optional(string)
+    siteId     = optional(string)
+  })
+  default = null
 }
 
 variable "retention_label" {

@@ -48,7 +48,7 @@ variable "subject_lifecycle" {
 
 variable "subject_type" {
   description = "The resource type of the subject. The possible values are: notSpecified, user, servicePrincipal, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -7,7 +7,7 @@ variable "odata_type" {
 
 variable "provisioning_type" {
   description = "Specifies the type of license used when provisioning Cloud PCs. By default, the license type is dedicated. The possible values are: dedicated, shared, unknownFutureValue, sharedByUser, sharedByEntraGroup, reserve. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: sharedByUser, sharedByEntraGroup, reserve. The shared member is deprecated and will stop returning on April 30, 2027; going forward, use the sharedByUser member."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -22,8 +22,8 @@ variable "supported_solution" {
   default     = null
 
   validation {
-    condition     = var.supported_solution == null ? true : contains(["windows365", "devBox", "unknownFutureValue", "rpaBox", "microsoft365Opal", "microsoft365BizChat"], var.supported_solution)
-    error_message = "supported_solution must be one of the documented enum values."
+    condition     = var.supported_solution == null ? true : try(alltrue([for value in split(",", var.supported_solution) : contains(["windows365", "devbox", "unknownfuturevalue", "rpabox", "microsoft365opal", "microsoft365bizchat"], lower(trimspace(value)))]), false)
+    error_message = "supported_solution must be one or more of the documented enum values, separated by commas."
   }
 }
 

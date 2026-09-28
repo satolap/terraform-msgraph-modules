@@ -39,8 +39,12 @@ variable "email_address" {
 
 variable "external_registration_information" {
   description = "The external information for a virtualEventRegistration."
-  type        = any
-  default     = null
+  type = object({
+    odata_type     = optional(string, "#microsoft.graph.virtualEventExternalRegistrationInformation")
+    referrer       = optional(string)
+    registrationId = optional(string)
+  })
+  default = null
 }
 
 variable "identity" {

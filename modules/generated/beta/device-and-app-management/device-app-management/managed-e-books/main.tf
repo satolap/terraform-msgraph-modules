@@ -1,6 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
+    "@odata.type"           = var.odata_type
     "assignments"           = (var.assignments == null ? null : [for item0 in var.assignments : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "installIntent" = item0["installIntent"], "target" = item0["target"] } : key1 => value1 if value1 != null }) if item0 != null])
     "categories"            = (var.categories == null ? null : [for item0 in var.categories : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "displayName" = item0["displayName"], "lastModifiedDateTime" = item0["lastModifiedDateTime"] } : key1 => value1 if value1 != null }) if item0 != null])
     "createdDateTime"       = var.created_date_time
@@ -9,9 +10,8 @@ locals {
     "displayName"           = var.display_name
     "informationUrl"        = var.information_url
     "installSummary"        = var.install_summary
-    "largeCover"            = var.large_cover
+    "largeCover"            = (var.large_cover == null ? null : { for key0, value0 in { "@odata.type" = var.large_cover["odata_type"], "type" = var.large_cover["type"], "value" = var.large_cover["value"] } : key0 => value0 if value0 != null })
     "lastModifiedDateTime"  = var.last_modified_date_time
-    "@odata.type"           = var.odata_type
     "privacyInformationUrl" = var.privacy_information_url
     "publishedDateTime"     = var.published_date_time
     "publisher"             = var.publisher

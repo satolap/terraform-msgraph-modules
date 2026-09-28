@@ -22,7 +22,7 @@ variable "sensitivity_label_id" {
 
 variable "action_source" {
   description = "Microsoft Graph actionSource property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -33,18 +33,18 @@ variable "action_source" {
 
 variable "applicable_to" {
   description = "Microsoft Graph applicableTo property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.applicable_to == null ? true : contains(["email", "site", "unifiedGroup", "teamwork", "unknownFutureValue"], var.applicable_to)
-    error_message = "applicable_to must be one of the documented enum values."
+    condition     = var.applicable_to == null ? true : try(alltrue([for value in split(",", var.applicable_to) : contains(["email", "site", "unifiedgroup", "teamwork", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "applicable_to must be one or more of the documented enum values, separated by commas."
   }
 }
 
 variable "application_mode" {
   description = "Microsoft Graph applicationMode property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -142,9 +142,9 @@ variable "sublabels" {
   description = "Microsoft Graph sublabels property."
   type = list(object({
     odata_type                  = optional(string, "#microsoft.graph.sensitivityLabel")
-    actionSource                = optional(any)
-    applicableTo                = optional(any)
-    applicationMode             = optional(any)
+    actionSource                = optional(string)
+    applicableTo                = optional(string)
+    applicationMode             = optional(string)
     autoTooltip                 = optional(string)
     color                       = optional(string)
     description                 = optional(string)

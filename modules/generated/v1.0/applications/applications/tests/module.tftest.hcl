@@ -26,6 +26,7 @@ run "typed_request" {
     display_name                  = "example"
     default_redirect_uri          = "example"
     is_device_only_auth_supported = false
+    api                           = { "acceptMappedClaims" = null }
     add_ins                       = [{}]
   }
 
@@ -45,6 +46,11 @@ run "typed_request" {
   }
 
   assert {
+    condition     = jsonencode(msgraph_resource.this.body["api"]) == jsonencode({ "@odata.type" = "#microsoft.graph.apiApplication" })
+    error_message = "api must preserve typed values and omit nested nulls."
+  }
+
+  assert {
     condition     = jsonencode(msgraph_resource.this.body["addIns"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.addIn" }])
     error_message = "addIns must preserve typed values and omit nested nulls."
   }
@@ -56,6 +62,31 @@ run "invalid_enum" {
   variables {
     display_name                       = "example"
     native_authentication_apis_enabled = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.native_authentication_apis_enabled]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    display_name                       = "example"
+    native_authentication_apis_enabled = "none, All"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["nativeAuthenticationApisEnabled"] == "none, All"
+    error_message = "nativeAuthenticationApisEnabled must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    display_name                       = "example"
+    native_authentication_apis_enabled = "none,__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.native_authentication_apis_enabled]

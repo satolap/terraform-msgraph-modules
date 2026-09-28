@@ -30,8 +30,21 @@ variable "odata_type" {
 
 variable "presenter_details" {
   description = "Other details about the presenter. This property returns null when the virtual event type is virtualEventTownhall."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.virtualEventPresenterDetails")
+    bio = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.itemBody")
+      content     = optional(string)
+      contentType = optional(string)
+    }))
+    company               = optional(string)
+    jobTitle              = optional(string)
+    linkedInProfileWebUrl = optional(string)
+    personalSiteWebUrl    = optional(string)
+    photo                 = optional(string)
+    twitterProfileWebUrl  = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

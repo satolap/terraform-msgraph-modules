@@ -52,7 +52,7 @@ variable "settings" {
   description = "Microsoft Graph settings property."
   type = object({
     odata_type                    = optional(string, "#microsoft.graph.fileStorageContainerTypeSettings")
-    consumingTenantOverridables   = optional(any)
+    consumingTenantOverridables   = optional(string)
     isDiscoverabilityEnabled      = optional(bool)
     isItemVersioningEnabled       = optional(bool)
     isOfficeRestricted            = optional(bool)
@@ -60,7 +60,7 @@ variable "settings" {
     isSharingRestricted           = optional(bool)
     itemMajorVersionLimit         = optional(number)
     maxStoragePerContainerInBytes = optional(number)
-    sharingCapability             = optional(any)
+    sharingCapability             = optional(string)
     urlTemplate                   = optional(string)
   })
   default = null

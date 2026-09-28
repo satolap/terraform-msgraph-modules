@@ -66,7 +66,7 @@ variable "os_build_number" {
 }
 
 variable "os_health_status" {
-  description = "Microsoft Graph osHealthStatus property."
+  description = "The overall battery health status of a given os version in a tenant."
   type        = string
   default     = null
 

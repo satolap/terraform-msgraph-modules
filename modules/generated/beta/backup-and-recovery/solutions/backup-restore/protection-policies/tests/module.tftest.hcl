@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "#microsoft.graph.exchangeProtectionPolicy"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "solutions/backupRestore/protectionPolicies"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,9 +23,16 @@ run "typed_request" {
   command = plan
 
   variables {
-    billing_policy_id  = "example"
-    is_enabled         = false
-    retention_settings = [{}]
+    odata_type                       = "#microsoft.graph.exchangeProtectionPolicy"
+    billing_policy_id                = "example"
+    is_enabled                       = false
+    protection_policy_artifact_count = { "completed" = null }
+    retention_settings               = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.exchangeProtectionPolicy")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -35,6 +46,11 @@ run "typed_request" {
   }
 
   assert {
+    condition     = jsonencode(msgraph_resource.this.body["protectionPolicyArtifactCount"]) == jsonencode({ "@odata.type" = "#microsoft.graph.protectionPolicyArtifactCount" })
+    error_message = "protectionPolicyArtifactCount must preserve typed values and omit nested nulls."
+  }
+
+  assert {
     condition     = jsonencode(msgraph_resource.this.body["retentionSettings"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.retentionSetting" }])
     error_message = "retentionSettings must preserve typed values and omit nested nulls."
   }
@@ -44,8 +60,8 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    protection_mode = "__graphmodules_invalid_enum__"
+    odata_type = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.protection_mode]
+  expect_failures = [var.odata_type]
 }

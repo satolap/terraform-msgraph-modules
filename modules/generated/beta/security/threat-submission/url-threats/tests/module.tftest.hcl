@@ -19,12 +19,18 @@ run "typed_request" {
   command = plan
 
   variables {
-    category = "notJunk"
+    category     = "notJunk"
+    admin_review = { "reviewBy" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["category"]) == jsonencode("notJunk")
     error_message = "category must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["adminReview"]) == jsonencode({ "@odata.type" = "#microsoft.graph.security.submissionAdminReview" })
+    error_message = "adminReview must preserve typed values and omit nested nulls."
   }
 }
 

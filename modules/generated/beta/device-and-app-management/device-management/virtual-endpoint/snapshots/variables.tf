@@ -31,7 +31,7 @@ variable "odata_type" {
 
 variable "snapshot_type" {
   description = "The type of snapshot that indicates how to create the snapshot. Possible values are automatic, manual, unknownFutureValue, retention. Use the Prefer: include-unknown-enum-members request header to get the following members from this evolvable enum: retention. The default value is automatic."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -42,7 +42,7 @@ variable "snapshot_type" {
 
 variable "status" {
   description = "The status of the Cloud PC snapshot. The possible values are: ready, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

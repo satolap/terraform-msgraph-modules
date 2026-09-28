@@ -13,6 +13,7 @@ Lifecycle: `POST /deviceManagement/deviceCompliancePolicies`, `GET/PATCH/DELETE 
 ```hcl
 module "graph_resource" {
   source = "./device-and-app-management/device-management/device-compliance-policies"
+  odata_type = "#microsoft.graph.androidCompliancePolicy"
 }
 ```
 
@@ -22,6 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
+| `odata_type` | `@odata.type` | `string` | yes | no |
 | `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceCompliancePolicyAssignment")       source = optional(string)       sourceId = optional(string)       target = optional(any)     }))` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
@@ -31,14 +33,13 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `display_name` | `displayName` | `string` | no | no |
 | `graph_version` | `version` | `number` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
 | `role_scope_tag_ids` | `roleScopeTagIds` | `list(string)` | no | no |
 | `scheduled_actions_for_rule` | `scheduledActionsForRule` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceComplianceScheduledActionForRule")       ruleName = optional(string)       scheduledActionConfigurations = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceComplianceActionItem")       actionType = optional(string)       gracePeriodHours = optional(number)       notificationMessageCCList = optional(list(string))       notificationTemplateId = optional(string)     })))     }))` | no | no |
 | `user_status_overview` | `userStatusOverview` | `any` | no | no |
 | `user_statuses` | `userStatuses` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceComplianceUserStatus")       devicesCount = optional(number)       lastReportedDateTime = optional(string)       status = optional(string)       userDisplayName = optional(string)       userPrincipalName = optional(string)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
-Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.
 
 Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
@@ -52,10 +53,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- @odata.type: microsoft.graph.deviceCompliancePolicy is abstract; odata_type has no default and must name a concrete type
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].target: polymorphic schema; accepts an untyped value
-- deviceStatusOverview: polymorphic schema; accepts an untyped value
-- userStatusOverview: polymorphic schema; accepts an untyped value
+- deviceStatusOverview: navigation property; accepts an untyped value
+- userStatusOverview: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

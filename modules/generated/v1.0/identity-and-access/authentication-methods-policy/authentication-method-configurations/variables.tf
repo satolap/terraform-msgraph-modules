@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.emailAuthenticationMethodConfiguration", "#microsoft.graph.externalAuthenticationMethodConfiguration", "#microsoft.graph.fido2AuthenticationMethodConfiguration", "#microsoft.graph.microsoftAuthenticatorAuthenticationMethodConfiguration", "#microsoft.graph.qrCodePinAuthenticationMethodConfiguration", "#microsoft.graph.smsAuthenticationMethodConfiguration", "#microsoft.graph.softwareOathAuthenticationMethodConfiguration", "#microsoft.graph.temporaryAccessPassAuthenticationMethodConfiguration", "#microsoft.graph.verifiableCredentialsAuthenticationMethodConfiguration", "#microsoft.graph.voiceAuthenticationMethodConfiguration", "#microsoft.graph.x509CertificateAuthenticationMethodConfiguration"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "exclude_targets" {
   description = "Groups of users that are excluded from a policy."
   type = list(object({
@@ -8,16 +19,9 @@ variable "exclude_targets" {
   default = null
 }
 
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.authenticationMethodConfiguration"
-  nullable    = false
-}
-
 variable "state" {
   description = "The state of the policy. The possible values are: enabled, disabled."
-  type        = any
+  type        = string
   default     = null
 
   validation {

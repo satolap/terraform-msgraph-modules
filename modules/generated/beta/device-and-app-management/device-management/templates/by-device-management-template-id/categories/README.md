@@ -27,8 +27,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `display_name` | `displayName` | `string` | no | no |
 | `has_required_setting` | `hasRequiredSetting` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `recommended_settings` | `recommendedSettings` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementSettingInstance")       definitionId = optional(string)       valueJson = optional(string)     }))` | no | no |
-| `setting_definitions` | `settingDefinitions` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementSettingDefinition")       constraints = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConstraint")     })))       dependencies = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementSettingDependency")       constraints = optional(any)       definitionId = optional(string)     })))       description = optional(string)       displayName = optional(string)       documentationUrl = optional(string)       headerSubtitle = optional(string)       headerTitle = optional(string)       isTopLevel = optional(bool)       keywords = optional(list(string))       placeholderText = optional(string)       valueType = optional(string)     }))` | no | no |
+| `recommended_settings` | `recommendedSettings` | `any` | no | no |
+| `setting_definitions` | `settingDefinitions` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -46,7 +46,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- settingDefinitions[].dependencies[].constraints[]: nested schema exceeds depth limit; accepts an untyped value
+- recommendedSettings[]: polymorphic schema; accepts an untyped value
+- settingDefinitions[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

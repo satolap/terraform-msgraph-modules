@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `team_template_definition_id` | URL parameter `teamTemplateDefinition-id` | `string` | yes | no |
-| `allowed_members` | `allowedMembers` | `list(object({       odata_type = optional(string, "#microsoft.graph.conversationMember")       displayName = optional(string)       roles = optional(list(string))       visibleHistoryStartDateTime = optional(string)     }))` | no | no |
+| `allowed_members` | `allowedMembers` | `any` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `is_host_team` | `isHostTeam` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -47,7 +47,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- team: polymorphic schema; accepts an untyped value
+- allowedMembers[]: polymorphic schema; accepts an untyped value
+- team: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `authentication_type` | `authenticationType` | `string` | no | no |
 | `availability_status` | `availabilityStatus` | `string` | no | no |
-| `federation_configuration` | `federationConfiguration` | `list(object({       odata_type = optional(string, "#microsoft.graph.internalDomainFederation")       activeSignInUri = optional(string)       displayName = optional(string)       federatedIdpMfaBehavior = optional(any)       isSignedAuthenticationRequestRequired = optional(bool)       issuerUri = optional(string)       metadataExchangeUri = optional(string)       nextSigningCertificate = optional(string)       passiveSignInUri = optional(string)       passwordResetUri = optional(string)       preferredAuthenticationProtocol = optional(any)       promptLoginBehavior = optional(any)       signOutUri = optional(string)       signingCertificate = optional(string)       signingCertificateUpdateStatus = optional(any)       systemBrowserEnabledOn = optional(string)     }))` | no | yes |
+| `federation_configuration` | `federationConfiguration` | `list(object({       odata_type = optional(string, "#microsoft.graph.internalDomainFederation")       activeSignInUri = optional(string)       displayName = optional(string)       federatedIdpMfaBehavior = optional(string)       isSignedAuthenticationRequestRequired = optional(bool)       issuerUri = optional(string)       metadataExchangeUri = optional(string)       nextSigningCertificate = optional(string)       passiveSignInUri = optional(string)       passwordResetUri = optional(string)       preferredAuthenticationProtocol = optional(string)       promptLoginBehavior = optional(string)       signOutUri = optional(string)       signingCertificate = optional(string)       signingCertificateUpdateStatus = optional(object({       odata_type = optional(string, "#microsoft.graph.signingCertificateUpdateStatus")     }))       systemBrowserEnabledOn = optional(string)     }))` | no | yes |
 | `is_admin_managed` | `isAdminManaged` | `bool` | no | no |
 | `is_default` | `isDefault` | `bool` | no | no |
 | `is_initial` | `isInitial` | `bool` | no | no |
@@ -35,7 +35,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `password_notification_window_in_days` | `passwordNotificationWindowInDays` | `number` | no | yes |
 | `password_validity_period_in_days` | `passwordValidityPeriodInDays` | `number` | no | yes |
-| `state` | `state` | `any` | no | no |
+| `state` | `state` | `object({       odata_type = optional(string, "#microsoft.graph.domainState")       lastActionDateTime = optional(string)       operation = optional(string)       status = optional(string)     })` | no | no |
 | `supported_services` | `supportedServices` | `list(string)` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -50,14 +50,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- federationConfiguration[].federatedIdpMfaBehavior: polymorphic schema; accepts an untyped value
-- federationConfiguration[].preferredAuthenticationProtocol: polymorphic schema; accepts an untyped value
-- federationConfiguration[].promptLoginBehavior: polymorphic schema; accepts an untyped value
-- federationConfiguration[].signingCertificateUpdateStatus: polymorphic schema; accepts an untyped value
-- state: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

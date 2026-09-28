@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "createdDateTime"    = var.created_date_time
-    "error"              = var.error
+    "error"              = (var.error == null ? null : { for key0, value0 in { "@odata.type" = var.error["odata_type"], "code" = var.error["code"], "message" = var.error["message"] } : key0 => value0 if value0 != null })
     "lastActionDateTime" = var.last_action_date_time
     "@odata.type"        = var.odata_type
     "percentComplete"    = var.percent_complete

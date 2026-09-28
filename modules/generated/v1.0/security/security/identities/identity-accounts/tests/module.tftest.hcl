@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "#microsoft.graph.security.user"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "security/identities/identityAccounts"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,9 +23,15 @@ run "typed_request" {
   command = plan
 
   variables {
+    odata_type                = "#microsoft.graph.security.user"
     cloud_security_identifier = "example"
     is_enabled                = false
     accounts                  = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.security.user")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -38,4 +48,14 @@ run "typed_request" {
     condition     = jsonencode(msgraph_resource.this.body["accounts"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.security.account" }])
     error_message = "accounts must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    odata_type = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

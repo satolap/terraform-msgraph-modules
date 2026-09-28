@@ -23,34 +23,34 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `aad_device_id` | `aadDeviceId` | `string` | no | no |
-| `connectivity_result` | `connectivityResult` | `any` | no | no |
-| `disk_encryption_state` | `diskEncryptionState` | `any` | no | no |
+| `connectivity_result` | `connectivityResult` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcConnectivityResult")       failedHealthCheckItems = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudPcHealthCheckItem")       additionalDetails = optional(string)       displayName = optional(string)       lastHealthCheckDateTime = optional(string)       result = optional(string)     })))       lastModifiedDateTime = optional(string)       status = optional(string)     })` | no | no |
+| `disk_encryption_state` | `diskEncryptionState` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `grace_period_end_date_time` | `gracePeriodEndDateTime` | `string` | no | no |
 | `image_display_name` | `imageDisplayName` | `string` | no | no |
-| `last_login_result` | `lastLoginResult` | `any` | no | no |
+| `last_login_result` | `lastLoginResult` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcLoginResult")     })` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `last_remote_action_result` | `lastRemoteActionResult` | `any` | no | no |
+| `last_remote_action_result` | `lastRemoteActionResult` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcRemoteActionResult")       actionName = optional(string)       lastUpdatedDateTime = optional(string)       startDateTime = optional(string)       statusDetail = optional(object({       odata_type = optional(string, "#microsoft.graph.cloudPcStatusDetail")       additionalInformation = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValuePair")       name = optional(string)       value = optional(string)     })))       code = optional(string)       message = optional(string)     }))       statusDetails = optional(object({       odata_type = optional(string, "#microsoft.graph.cloudPcStatusDetails")       additionalInformation = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValuePair")       name = optional(string)       value = optional(string)     })))       code = optional(string)       message = optional(string)     }))     })` | no | no |
 | `managed_device_id` | `managedDeviceId` | `string` | no | no |
 | `managed_device_name` | `managedDeviceName` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `on_premises_connection_name` | `onPremisesConnectionName` | `string` | no | no |
-| `os_version` | `osVersion` | `any` | no | no |
+| `os_version` | `osVersion` | `string` | no | no |
 | `partner_agent_install_results` | `partnerAgentInstallResults` | `list(object({       odata_type = optional(string, "#microsoft.graph.cloudPcPartnerAgentInstallResult")       errorMessage = optional(string)       isThirdPartyPartner = optional(bool)       retriable = optional(bool)     }))` | no | no |
-| `power_state` | `powerState` | `any` | no | no |
+| `power_state` | `powerState` | `string` | no | no |
 | `provisioned_date_time` | `provisionedDateTime` | `string` | no | no |
 | `provisioning_policy_id` | `provisioningPolicyId` | `string` | no | no |
 | `provisioning_policy_name` | `provisioningPolicyName` | `string` | no | no |
-| `provisioning_type` | `provisioningType` | `any` | no | no |
+| `provisioning_type` | `provisioningType` | `string` | no | no |
 | `service_plan_id` | `servicePlanId` | `string` | no | no |
 | `service_plan_name` | `servicePlanName` | `string` | no | no |
-| `service_plan_type` | `servicePlanType` | `any` | no | no |
-| `shared_device_detail` | `sharedDeviceDetail` | `any` | no | no |
+| `service_plan_type` | `servicePlanType` | `string` | no | no |
+| `shared_device_detail` | `sharedDeviceDetail` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcFrontlineSharedDeviceDetail")       assignedToUserPrincipalName = optional(string)       sessionStartDateTime = optional(string)     })` | no | no |
 | `status` | `status` | `string` | no | no |
-| `status_detail` | `statusDetail` | `any` | no | no |
-| `status_details` | `statusDetails` | `any` | no | no |
-| `user_account_type` | `userAccountType` | `any` | no | no |
-| `user_experience_type` | `userExperienceType` | `any` | no | no |
+| `status_detail` | `statusDetail` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcStatusDetail")       additionalInformation = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValuePair")       name = optional(string)       value = optional(string)     })))       code = optional(string)       message = optional(string)     })` | no | no |
+| `status_details` | `statusDetails` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcStatusDetails")       additionalInformation = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValuePair")       name = optional(string)       value = optional(string)     })))       code = optional(string)       message = optional(string)     })` | no | no |
+| `user_account_type` | `userAccountType` | `string` | no | no |
+| `user_experience_type` | `userExperienceType` | `string` | no | no |
 | `user_principal_name` | `userPrincipalName` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -69,19 +69,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- connectivityResult: polymorphic schema; accepts an untyped value
-- diskEncryptionState: polymorphic schema; accepts an untyped value
-- lastLoginResult: polymorphic schema; accepts an untyped value
-- lastRemoteActionResult: polymorphic schema; accepts an untyped value
-- osVersion: polymorphic schema; accepts an untyped value
-- powerState: polymorphic schema; accepts an untyped value
-- provisioningType: polymorphic schema; accepts an untyped value
-- servicePlanType: polymorphic schema; accepts an untyped value
-- sharedDeviceDetail: polymorphic schema; accepts an untyped value
-- statusDetail: polymorphic schema; accepts an untyped value
-- statusDetails: polymorphic schema; accepts an untyped value
-- userAccountType: polymorphic schema; accepts an untyped value
-- userExperienceType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

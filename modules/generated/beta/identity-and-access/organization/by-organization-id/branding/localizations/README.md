@@ -27,7 +27,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `background_color` | `backgroundColor` | `string` | no | no |
 | `background_image` | `backgroundImage` | `string` | no | no |
 | `banner_logo` | `bannerLogo` | `string` | no | no |
-| `content_customization` | `contentCustomization` | `any` | no | no |
+| `content_customization` | `contentCustomization` | `object({       odata_type = optional(string, "#microsoft.graph.contentCustomization")       attributeCollection = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       attributeCollectionRelativeUrl = optional(string)       registrationCampaign = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       registrationCampaignRelativeUrl = optional(string)     })` | no | no |
 | `custom_account_reset_credentials_url` | `customAccountResetCredentialsUrl` | `string` | no | yes |
 | `custom_cannot_access_your_account_text` | `customCannotAccessYourAccountText` | `string` | no | no |
 | `custom_cannot_access_your_account_url` | `customCannotAccessYourAccountUrl` | `string` | no | no |
@@ -41,8 +41,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `favicon` | `favicon` | `string` | no | no |
 | `header_background_color` | `headerBackgroundColor` | `string` | no | no |
 | `header_logo` | `headerLogo` | `string` | no | no |
-| `login_page_layout_configuration` | `loginPageLayoutConfiguration` | `any` | no | no |
-| `login_page_text_visibility_settings` | `loginPageTextVisibilitySettings` | `any` | no | no |
+| `login_page_layout_configuration` | `loginPageLayoutConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.loginPageLayoutConfiguration")       isFooterShown = optional(bool)       isHeaderShown = optional(bool)       layoutTemplateType = optional(string)     })` | no | no |
+| `login_page_text_visibility_settings` | `loginPageTextVisibilitySettings` | `object({       odata_type = optional(string, "#microsoft.graph.loginPageTextVisibilitySettings")       hideAccountResetCredentials = optional(bool)       hideCannotAccessYourAccount = optional(bool)       hideForgotMyPassword = optional(bool)       hidePrivacyAndCookies = optional(bool)       hideResetItNow = optional(bool)       hideTermsOfUse = optional(bool)     })` | no | yes |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `sign_in_page_text` | `signInPageText` | `string` | no | no |
 | `square_logo` | `squareLogo` | `string` | no | no |
@@ -65,9 +65,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- contentCustomization: polymorphic schema; accepts an untyped value
-- loginPageLayoutConfiguration: polymorphic schema; accepts an untyped value
-- loginPageTextVisibilitySettings: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

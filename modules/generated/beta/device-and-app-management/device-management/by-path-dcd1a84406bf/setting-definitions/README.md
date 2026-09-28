@@ -26,8 +26,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `device_management_intent_id` | URL parameter `deviceManagementIntent-id` | `string` | yes | no |
 | `device_management_intent_setting_category_id` | URL parameter `deviceManagementIntentSettingCategory-id` | `string` | yes | no |
-| `constraints` | `constraints` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConstraint")     }))` | no | no |
-| `dependencies` | `dependencies` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementSettingDependency")       constraints = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConstraint")     })))       definitionId = optional(string)     }))` | no | no |
+| `constraints` | `constraints` | `any` | no | no |
+| `dependencies` | `dependencies` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementSettingDependency")       constraints = optional(any)       definitionId = optional(string)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `documentation_url` | `documentationUrl` | `string` | no | no |
@@ -55,6 +55,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- constraints[]: object without documented properties; accepts an untyped value
+- dependencies[].constraints[]: object without documented properties; accepts an untyped value
 
 ## Licensing and prerequisites
 

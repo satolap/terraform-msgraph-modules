@@ -30,7 +30,7 @@ variable "odata_type" {
 
 variable "result_type" {
   description = "The threat assessment result type. The possible values are: checkPolicy (only for mail assessment), rescan."
-  type        = any
+  type        = string
   default     = null
 
   validation {

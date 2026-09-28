@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `authentication_configuration` | `authenticationConfiguration` | `any` | no | no |
 | `callback_configuration` | `callbackConfiguration` | `any` | no | no |
-| `client_configuration` | `clientConfiguration` | `any` | no | no |
+| `client_configuration` | `clientConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.customExtensionClientConfiguration")       maximumRetries = optional(number)       timeoutInMilliseconds = optional(number)     })` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
@@ -53,7 +53,6 @@ Generation notes:
 - Microsoft Graph beta contracts can change without notice.
 - authenticationConfiguration: polymorphic schema; accepts an untyped value
 - callbackConfiguration: polymorphic schema; accepts an untyped value
-- clientConfiguration: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
 - endpointConfiguration: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value

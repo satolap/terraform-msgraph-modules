@@ -8,7 +8,7 @@ locals {
     "lastModifiedByUser"  = var.last_modified_by_user
     "name"                = var.name
     "@odata.type"         = var.odata_type
-    "parentReference"     = var.parent_reference
+    "parentReference"     = (var.parent_reference == null ? null : { for key0, value0 in { "@odata.type" = var.parent_reference["odata_type"], "driveType" = var.parent_reference["driveType"], "shareId" = var.parent_reference["shareId"], "siteId" = var.parent_reference["siteId"] } : key0 => value0 if value0 != null })
     "size"                = var.size
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)

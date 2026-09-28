@@ -24,8 +24,25 @@ variable "deployment_settings" {
 
 variable "deployment_status" {
   description = "Represents the deployment status from Zebra. The status is a high level status of the deployment as opposed being a detailed status per device."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                 = optional(string, "#microsoft.graph.zebraFotaDeploymentStatus")
+    cancelRequested            = optional(bool)
+    completeOrCanceledDateTime = optional(string)
+    errorCode                  = optional(string)
+    lastUpdatedDateTime        = optional(string)
+    state                      = optional(string)
+    totalAwaitingInstall       = optional(number)
+    totalCanceled              = optional(number)
+    totalCreated               = optional(number)
+    totalDevices               = optional(number)
+    totalDownloading           = optional(number)
+    totalFailedDownload        = optional(number)
+    totalFailedInstall         = optional(number)
+    totalScheduled             = optional(number)
+    totalSucceededInstall      = optional(number)
+    totalUnknown               = optional(number)
+  })
+  default = null
 }
 
 variable "description" {

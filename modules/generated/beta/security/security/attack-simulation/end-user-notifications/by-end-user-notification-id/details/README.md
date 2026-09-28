@@ -29,7 +29,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `language` | `language` | `string` | no | no |
 | `locale` | `locale` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `sent_from` | `sentFrom` | `any` | no | no |
+| `sent_from` | `sentFrom` | `object({       odata_type = optional(string, "#microsoft.graph.emailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     })` | no | no |
 | `subject` | `subject` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -48,7 +48,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- sentFrom: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

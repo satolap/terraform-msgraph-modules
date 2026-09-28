@@ -15,6 +15,19 @@ run "minimal_request" {
   }
 }
 
+run "typed_request" {
+  command = plan
+
+  variables {
+    request_type = "notSpecified"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["requestType"]) == jsonencode("notSpecified")
+    error_message = "requestType must preserve typed values and omit nested nulls."
+  }
+}
+
 run "invalid_enum" {
   command = plan
 

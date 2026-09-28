@@ -55,7 +55,7 @@ variable "principal_name" {
 
 variable "subject_lifecycle" {
   description = "The lifecycle of the subject user, if a guest. The possible values are: notDefined, notGoverned, governed, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -6,32 +6,72 @@ variable "app_id" {
 
 variable "application_authentication_client_sign_in_activity" {
   description = "The sign-in activity of the application in a app-only authentication flow (app-to-app tokens) where the application acts like a client."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                        = optional(string, "#microsoft.graph.signInActivity")
+    lastNonInteractiveSignInDateTime  = optional(string)
+    lastNonInteractiveSignInRequestId = optional(string)
+    lastSignInDateTime                = optional(string)
+    lastSignInRequestId               = optional(string)
+    lastSuccessfulSignInDateTime      = optional(string)
+    lastSuccessfulSignInRequestId     = optional(string)
+  })
+  default = null
 }
 
 variable "application_authentication_resource_sign_in_activity" {
   description = "The sign-in activity of the application in a app-only authentication flow (app-to-app tokens) where the application acts like a resource."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                        = optional(string, "#microsoft.graph.signInActivity")
+    lastNonInteractiveSignInDateTime  = optional(string)
+    lastNonInteractiveSignInRequestId = optional(string)
+    lastSignInDateTime                = optional(string)
+    lastSignInRequestId               = optional(string)
+    lastSuccessfulSignInDateTime      = optional(string)
+    lastSuccessfulSignInRequestId     = optional(string)
+  })
+  default = null
 }
 
 variable "delegated_client_sign_in_activity" {
   description = "The sign-in activity of the application in a delegated flow (user sign-in) where the application acts like a client."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                        = optional(string, "#microsoft.graph.signInActivity")
+    lastNonInteractiveSignInDateTime  = optional(string)
+    lastNonInteractiveSignInRequestId = optional(string)
+    lastSignInDateTime                = optional(string)
+    lastSignInRequestId               = optional(string)
+    lastSuccessfulSignInDateTime      = optional(string)
+    lastSuccessfulSignInRequestId     = optional(string)
+  })
+  default = null
 }
 
 variable "delegated_resource_sign_in_activity" {
   description = "The sign-in activity of the application in a delegated flow (user sign-in) where the application acts like a resource."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                        = optional(string, "#microsoft.graph.signInActivity")
+    lastNonInteractiveSignInDateTime  = optional(string)
+    lastNonInteractiveSignInRequestId = optional(string)
+    lastSignInDateTime                = optional(string)
+    lastSignInRequestId               = optional(string)
+    lastSuccessfulSignInDateTime      = optional(string)
+    lastSuccessfulSignInRequestId     = optional(string)
+  })
+  default = null
 }
 
 variable "last_sign_in_activity" {
   description = "The most recent sign-in activity of the application across delegated or app-only flows where the application is used either as a client or resource."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                        = optional(string, "#microsoft.graph.signInActivity")
+    lastNonInteractiveSignInDateTime  = optional(string)
+    lastNonInteractiveSignInRequestId = optional(string)
+    lastSignInDateTime                = optional(string)
+    lastSignInRequestId               = optional(string)
+    lastSuccessfulSignInDateTime      = optional(string)
+    lastSuccessfulSignInRequestId     = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {

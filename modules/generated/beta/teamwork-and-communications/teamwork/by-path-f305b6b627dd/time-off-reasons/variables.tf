@@ -40,7 +40,7 @@ variable "display_name" {
 
 variable "icon_type" {
   description = "Supported icon types are: none, car, calendar, running, plane, firstAid, doctor, notWorking, clock, juryDuty, globe, cup, phone, weather, umbrella, piggyBank, dog, cake, trafficCone, pin, sunny. Required."
-  type        = any
+  type        = string
   default     = null
 
   validation {

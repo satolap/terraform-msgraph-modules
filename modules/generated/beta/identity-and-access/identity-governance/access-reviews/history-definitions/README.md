@@ -22,19 +22,19 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `created_by` | `createdBy` | `object({       odata_type = optional(string, "#microsoft.graph.userIdentity")       displayName = optional(string)       id = optional(string)       ipAddress = optional(string)       userPrincipalName = optional(string)     })` | no | no |
+| `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `decisions` | `decisions` | `any` | no | no |
+| `decisions` | `decisions` | `list(string)` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `download_uri` | `downloadUri` | `string` | no | no |
 | `fulfilled_date_time` | `fulfilledDateTime` | `string` | no | no |
-| `instances` | `instances` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewHistoryInstance")       downloadUri = optional(string)       expirationDateTime = optional(string)       fulfilledDateTime = optional(string)       reviewHistoryPeriodEndDateTime = optional(string)       reviewHistoryPeriodStartDateTime = optional(string)       runDateTime = optional(string)       status = optional(any)     }))` | no | no |
+| `instances` | `instances` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewHistoryInstance")       downloadUri = optional(string)       expirationDateTime = optional(string)       fulfilledDateTime = optional(string)       reviewHistoryPeriodEndDateTime = optional(string)       reviewHistoryPeriodStartDateTime = optional(string)       runDateTime = optional(string)       status = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `review_history_period_end_date_time` | `reviewHistoryPeriodEndDateTime` | `string` | no | no |
 | `review_history_period_start_date_time` | `reviewHistoryPeriodStartDateTime` | `string` | no | no |
-| `schedule_settings` | `scheduleSettings` | `any` | no | no |
-| `scopes` | `scopes` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewScope")     }))` | no | no |
-| `status` | `status` | `any` | no | no |
+| `schedule_settings` | `scheduleSettings` | `object({       odata_type = optional(string, "#microsoft.graph.accessReviewHistoryScheduleSettings")       recurrence = optional(object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     }))       reportRange = optional(string)     })` | no | no |
+| `scopes` | `scopes` | `any` | no | no |
+| `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -52,10 +52,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- decisions[]: polymorphic schema; accepts an untyped value
-- instances[].status: polymorphic schema; accepts an untyped value
-- scheduleSettings: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
+- createdBy: polymorphic schema; accepts an untyped value
+- scopes[]: object without documented properties; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -40,10 +40,8 @@ variable "odata_type" {
 
 variable "webparts" {
   description = "The collection of WebParts in this column."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.webPart")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "width" {

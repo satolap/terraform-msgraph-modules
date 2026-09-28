@@ -18,3 +18,17 @@ run "minimal_request" {
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
+
+run "typed_request" {
+  command = plan
+
+  variables {
+    user_id                  = "test-parent-id"
+    consented_permission_set = { "resourceSpecificPermissions" = null }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["consentedPermissionSet"]) == jsonencode({ "@odata.type" = "#microsoft.graph.teamsAppPermissionSet" })
+    error_message = "consentedPermissionSet must preserve typed values and omit nested nulls."
+  }
+}

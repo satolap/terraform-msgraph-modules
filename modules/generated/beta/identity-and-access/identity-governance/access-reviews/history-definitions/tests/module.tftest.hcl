@@ -20,7 +20,7 @@ run "typed_request" {
 
   variables {
     created_date_time = "2026-01-01T00:00:00Z"
-    created_by        = { "displayName" = null }
+    schedule_settings = { "recurrence" = null }
     decisions         = ["approve"]
   }
 
@@ -30,8 +30,8 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["createdBy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.userIdentity" })
-    error_message = "createdBy must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["scheduleSettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.accessReviewHistoryScheduleSettings" })
+    error_message = "scheduleSettings must preserve typed values and omit nested nulls."
   }
 
   assert {

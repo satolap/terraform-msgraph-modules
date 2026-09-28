@@ -40,19 +40,43 @@ variable "allow_new_time_proposals" {
 variable "attendees" {
   description = "The collection of attendees for the event."
   type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.attendee")
-    emailAddress    = optional(any)
-    proposedNewTime = optional(any)
-    status          = optional(any)
-    type            = optional(any)
+    odata_type = optional(string, "#microsoft.graph.attendee")
+    emailAddress = optional(object({
+      odata_type = optional(string, "#microsoft.graph.emailAddress")
+      address    = optional(string)
+      name       = optional(string)
+    }))
+    proposedNewTime = optional(object({
+      odata_type = optional(string, "#microsoft.graph.timeSlot")
+      end = optional(object({
+        odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+        dateTime   = optional(string)
+        timeZone   = optional(string)
+      }))
+      start = optional(object({
+        odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+        dateTime   = optional(string)
+        timeZone   = optional(string)
+      }))
+    }))
+    status = optional(object({
+      odata_type = optional(string, "#microsoft.graph.responseStatus")
+      response   = optional(string)
+      time       = optional(string)
+    }))
+    type = optional(string)
   }))
   default = null
 }
 
 variable "body" {
   description = "The body of the message associated with the event. It can be in HTML or text format."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.itemBody")
+    content     = optional(string)
+    contentType = optional(string)
+  })
+  default = null
 }
 
 variable "body_preview" {
@@ -81,8 +105,12 @@ variable "created_date_time" {
 
 variable "end" {
   description = "The date, time, and time zone that the event ends. By default, the end time is in UTC."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+    dateTime   = optional(string)
+    timeZone   = optional(string)
+  })
+  default = null
 }
 
 variable "exception_occurrences" {
@@ -91,69 +119,104 @@ variable "exception_occurrences" {
     odata_type            = optional(string, "#microsoft.graph.event")
     allowNewTimeProposals = optional(bool)
     attendees = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.attendee")
-      emailAddress    = optional(any)
-      proposedNewTime = optional(any)
-      status          = optional(any)
-      type            = optional(any)
+      odata_type = optional(string, "#microsoft.graph.attendee")
+      emailAddress = optional(object({
+        odata_type = optional(string, "#microsoft.graph.emailAddress")
+        address    = optional(string)
+        name       = optional(string)
+      }))
+      proposedNewTime = optional(object({
+        odata_type = optional(string, "#microsoft.graph.timeSlot")
+        end        = optional(any)
+        start      = optional(any)
+      }))
+      status = optional(object({
+        odata_type = optional(string, "#microsoft.graph.responseStatus")
+        response   = optional(string)
+        time       = optional(string)
+      }))
+      type = optional(string)
     })))
-    body                 = optional(any)
+    body = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.itemBody")
+      content     = optional(string)
+      contentType = optional(string)
+    }))
     bodyPreview          = optional(string)
     cancelledOccurrences = optional(list(string))
     categories           = optional(list(string))
     createdDateTime      = optional(string)
-    end                  = optional(any)
-    exceptionOccurrences = optional(any)
-    extensions = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.extension")
-    })))
-    hasAttachments       = optional(bool)
-    hideAttendees        = optional(bool)
-    importance           = optional(any)
-    isAllDay             = optional(bool)
-    isCancelled          = optional(bool)
-    isDraft              = optional(bool)
-    isOnlineMeeting      = optional(bool)
-    isOrganizer          = optional(bool)
-    isReminderOn         = optional(bool)
-    lastModifiedDateTime = optional(string)
-    location             = optional(any)
-    locations = optional(list(object({
-      odata_type           = optional(string, "#microsoft.graph.location")
-      address              = optional(any)
-      coordinates          = optional(any)
-      displayName          = optional(string)
-      locationEmailAddress = optional(string)
-      locationUri          = optional(string)
-      uniqueId             = optional(string)
-      uniqueIdType         = optional(any)
-    })))
-    onlineMeetingProvider      = optional(any)
-    organizer                  = optional(any)
-    originalEndTimeZone        = optional(string)
-    originalStart              = optional(string)
-    originalStartTimeZone      = optional(string)
-    recurrence                 = optional(any)
+    end = optional(object({
+      odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+      dateTime   = optional(string)
+      timeZone   = optional(string)
+    }))
+    exceptionOccurrences  = optional(any)
+    extensions            = optional(any)
+    hasAttachments        = optional(bool)
+    hideAttendees         = optional(bool)
+    importance            = optional(string)
+    isAllDay              = optional(bool)
+    isCancelled           = optional(bool)
+    isDraft               = optional(bool)
+    isOnlineMeeting       = optional(bool)
+    isOrganizer           = optional(bool)
+    isReminderOn          = optional(bool)
+    lastModifiedDateTime  = optional(string)
+    location              = optional(any)
+    locations             = optional(any)
+    onlineMeetingProvider = optional(string)
+    organizer             = optional(any)
+    originalEndTimeZone   = optional(string)
+    originalStart         = optional(string)
+    originalStartTimeZone = optional(string)
+    recurrence = optional(object({
+      odata_type = optional(string, "#microsoft.graph.patternedRecurrence")
+      pattern = optional(object({
+        odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+        dayOfMonth     = optional(number)
+        daysOfWeek     = optional(list(string))
+        firstDayOfWeek = optional(string)
+        index          = optional(string)
+        interval       = optional(number)
+        month          = optional(number)
+        type           = optional(string)
+      }))
+      range = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.recurrenceRange")
+        endDate             = optional(string)
+        numberOfOccurrences = optional(number)
+        recurrenceTimeZone  = optional(string)
+        startDate           = optional(string)
+        type                = optional(string)
+      }))
+    }))
     reminderMinutesBeforeStart = optional(number)
     responseRequested          = optional(bool)
-    responseStatus             = optional(any)
-    sensitivity                = optional(any)
-    seriesMasterId             = optional(string)
-    showAs                     = optional(any)
-    start                      = optional(any)
-    subject                    = optional(string)
-    transactionId              = optional(string)
-    webLink                    = optional(string)
+    responseStatus = optional(object({
+      odata_type = optional(string, "#microsoft.graph.responseStatus")
+      response   = optional(string)
+      time       = optional(string)
+    }))
+    sensitivity    = optional(string)
+    seriesMasterId = optional(string)
+    showAs         = optional(string)
+    start = optional(object({
+      odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+      dateTime   = optional(string)
+      timeZone   = optional(string)
+    }))
+    subject       = optional(string)
+    transactionId = optional(string)
+    webLink       = optional(string)
   }))
   default = null
 }
 
 variable "extensions" {
   description = "The collection of open extensions defined for the event. Nullable."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.extension")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "has_attachments" {
@@ -170,7 +233,7 @@ variable "hide_attendees" {
 
 variable "importance" {
   description = "The importance of the event. The possible values are: low, normal, high."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -229,17 +292,8 @@ variable "location" {
 
 variable "locations" {
   description = "The locations where the event is held or attended from. The location and locations properties always correspond with each other. If you update the location property, any prior locations in the locations collection are removed and replaced by the new location value."
-  type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.location")
-    address              = optional(any)
-    coordinates          = optional(any)
-    displayName          = optional(string)
-    locationEmailAddress = optional(string)
-    locationUri          = optional(string)
-    uniqueId             = optional(string)
-    uniqueIdType         = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "odata_type" {
@@ -251,7 +305,7 @@ variable "odata_type" {
 
 variable "online_meeting_provider" {
   description = "Represents the online meeting service provider. By default, onlineMeetingProvider is unknown. The possible values are unknown, teamsForBusiness, skypeForBusiness, and skypeForConsumer. Optional.  After you set onlineMeetingProvider, Microsoft Graph initializes onlineMeeting. Subsequently, you can't change onlineMeetingProvider again, and the meeting remains available online."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -286,8 +340,28 @@ variable "original_start_time_zone" {
 
 variable "recurrence" {
   description = "The recurrence pattern for the event."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.patternedRecurrence")
+    pattern = optional(object({
+      odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+      dayOfMonth     = optional(number)
+      daysOfWeek     = optional(list(string))
+      firstDayOfWeek = optional(string)
+      index          = optional(string)
+      interval       = optional(number)
+      month          = optional(number)
+      type           = optional(string)
+    }))
+    range = optional(object({
+      odata_type          = optional(string, "#microsoft.graph.recurrenceRange")
+      endDate             = optional(string)
+      numberOfOccurrences = optional(number)
+      recurrenceTimeZone  = optional(string)
+      startDate           = optional(string)
+      type                = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "reminder_minutes_before_start" {
@@ -304,13 +378,17 @@ variable "response_requested" {
 
 variable "response_status" {
   description = "Indicates the type of response sent in response to an event message."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.responseStatus")
+    response   = optional(string)
+    time       = optional(string)
+  })
+  default = null
 }
 
 variable "sensitivity" {
   description = "The possible values are: normal, personal, private, and confidential."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -327,7 +405,7 @@ variable "series_master_id" {
 
 variable "show_as" {
   description = "The status to show. The possible values are: free, tentative, busy, oof, workingElsewhere, unknown."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -338,8 +416,12 @@ variable "show_as" {
 
 variable "start" {
   description = "The start date, time, and time zone of the event. By default, the start time is in UTC."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+    dateTime   = optional(string)
+    timeZone   = optional(string)
+  })
+  default = null
 }
 
 variable "subject" {

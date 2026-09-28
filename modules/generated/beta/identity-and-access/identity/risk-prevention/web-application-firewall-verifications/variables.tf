@@ -24,8 +24,22 @@ variable "provider_type" {
 
 variable "verification_result" {
   description = "An object describing the outcome of the verification operation, including status, errors or warnings"
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.webApplicationFirewallVerificationResult")
+    errors = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.genericError")
+      code       = optional(string)
+      message    = optional(string)
+    })))
+    status             = optional(string)
+    verifiedOnDateTime = optional(string)
+    warnings = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.genericError")
+      code       = optional(string)
+      message    = optional(string)
+    })))
+  })
+  default = null
 }
 
 variable "verified_details" {

@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     city                     = "example"
     on_premises_sync_enabled = false
+    privacy_profile          = { "contactEmail" = null }
     assigned_plans           = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["onPremisesSyncEnabled"]) == jsonencode(false)
     error_message = "onPremisesSyncEnabled must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["privacyProfile"]) == jsonencode({ "@odata.type" = "#microsoft.graph.privacyProfile" })
+    error_message = "privacyProfile must preserve typed values and omit nested nulls."
   }
 
   assert {

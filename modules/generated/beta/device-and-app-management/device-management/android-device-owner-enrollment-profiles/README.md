@@ -36,7 +36,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `qr_code_content` | `qrCodeContent` | `string` | no | no |
-| `qr_code_image` | `qrCodeImage` | `any` | no | no |
+| `qr_code_image` | `qrCodeImage` | `object({       odata_type = optional(string, "#microsoft.graph.mimeContent")       type = optional(string)       value = optional(string)     })` | no | no |
 | `role_scope_tag_ids` | `roleScopeTagIds` | `list(string)` | no | no |
 | `token_creation_date_time` | `tokenCreationDateTime` | `string` | no | no |
 | `token_expiration_date_time` | `tokenExpirationDateTime` | `string` | no | no |
@@ -62,7 +62,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- qrCodeImage: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

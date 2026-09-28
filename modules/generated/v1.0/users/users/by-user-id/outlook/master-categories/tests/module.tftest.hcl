@@ -19,6 +19,20 @@ run "minimal_request" {
   }
 }
 
+run "typed_request" {
+  command = plan
+
+  variables {
+    user_id = "test-parent-id"
+    color   = "none"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["color"]) == jsonencode("none")
+    error_message = "color must preserve typed values and omit nested nulls."
+  }
+}
+
 run "invalid_enum" {
   command = plan
 

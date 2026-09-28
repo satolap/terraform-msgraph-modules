@@ -9,9 +9,20 @@ variable "error" {
       message    = optional(string)
       target     = optional(string)
     })))
-    innerError = optional(any)
-    message    = optional(string)
-    target     = optional(string)
+    innerError = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicInnerError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    message = optional(string)
+    target  = optional(string)
   })
   default = null
 }
@@ -25,18 +36,8 @@ variable "odata_type" {
 
 variable "parameters" {
   description = "Microsoft Graph parameters property."
-  type = object({
-    odata_type                   = optional(string, "#microsoft.graph.sharePointMigrationTaskParameters")
-    preferredLatestStartDateTime = optional(string)
-    preferredStartDateTime       = optional(string)
-    sourceSiteUrl                = optional(string)
-    targetDataLocationCode       = optional(string)
-    targetOrganizationHost       = optional(string)
-    targetOrganizationId         = optional(string)
-    targetSiteUrl                = optional(string)
-    validateOnly                 = optional(bool)
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "status" {

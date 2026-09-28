@@ -19,12 +19,18 @@ run "typed_request" {
   command = plan
 
   variables {
-    provider_type = "akamai"
+    provider_type       = "akamai"
+    verification_result = { "errors" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["providerType"]) == jsonencode("akamai")
     error_message = "providerType must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["verificationResult"]) == jsonencode({ "@odata.type" = "#microsoft.graph.webApplicationFirewallVerificationResult" })
+    error_message = "verificationResult must preserve typed values and omit nested nulls."
   }
 }
 

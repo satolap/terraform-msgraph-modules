@@ -6,8 +6,12 @@ variable "created_date_time" {
 
 variable "error" {
   description = "The error returned by the operation."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.onenoteOperationError")
+    code       = optional(string)
+    message    = optional(string)
+  })
+  default = null
 }
 
 variable "last_action_date_time" {
@@ -43,7 +47,7 @@ variable "resource_location" {
 
 variable "status" {
   description = "The current status of the operation: notStarted, running, completed, failed"
-  type        = any
+  type        = string
   default     = null
 
   validation {

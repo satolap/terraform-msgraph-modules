@@ -11,23 +11,21 @@ variable "articles" {
     body = optional(object({
       odata_type = optional(string, "#microsoft.graph.security.formattedContent")
       content    = optional(string)
-      format     = optional(any)
+      format     = optional(string)
     }))
     createdDateTime = optional(string)
     imageUrl        = optional(string)
     indicators = optional(list(object({
       odata_type = optional(string, "#microsoft.graph.security.articleIndicator")
-      artifact = optional(object({
-        odata_type = optional(string, "#microsoft.graph.security.artifact")
-      }))
-      source = optional(string)
+      artifact   = optional(any)
+      source     = optional(string)
     })))
     isFeatured          = optional(bool)
     lastUpdatedDateTime = optional(string)
     summary = optional(object({
       odata_type = optional(string, "#microsoft.graph.security.formattedContent")
       content    = optional(string)
-      format     = optional(any)
+      format     = optional(string)
     }))
     tags  = optional(list(string))
     title = optional(string)
@@ -61,7 +59,7 @@ variable "cvss2_summary" {
   type = object({
     odata_type   = optional(string, "#microsoft.graph.security.cvssSummary")
     score        = optional(any)
-    severity     = optional(any)
+    severity     = optional(string)
     vectorString = optional(string)
   })
   default = null
@@ -72,7 +70,7 @@ variable "cvss3_summary" {
   type = object({
     odata_type   = optional(string, "#microsoft.graph.security.cvssSummary")
     score        = optional(any)
-    severity     = optional(any)
+    severity     = optional(string)
     vectorString = optional(string)
   })
   default = null
@@ -83,7 +81,7 @@ variable "description" {
   type = object({
     odata_type = optional(string, "#microsoft.graph.security.formattedContent")
     content    = optional(string)
-    format     = optional(any)
+    format     = optional(string)
   })
   default = null
 }
@@ -147,8 +145,12 @@ variable "references" {
 
 variable "remediation" {
   description = "Any known remediation steps."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.security.formattedContent")
+    content    = optional(string)
+    format     = optional(string)
+  })
+  default = null
 }
 
 variable "severity" {

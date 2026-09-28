@@ -8,6 +8,7 @@ run "minimal_request" {
     education_class_id      = "test-parent-id"
     education_assignment_id = "test-parent-id"
     education_submission_id = "test-parent-id"
+    odata_type              = "#microsoft.graph.educationFeedbackOutcome"
   }
 
   assert {
@@ -28,11 +29,30 @@ run "typed_request" {
     education_class_id      = "test-parent-id"
     education_assignment_id = "test-parent-id"
     education_submission_id = "test-parent-id"
+    odata_type              = "#microsoft.graph.educationFeedbackOutcome"
     last_modified_date_time = "2026-01-01T00:00:00Z"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.educationFeedbackOutcome")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["lastModifiedDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
     error_message = "lastModifiedDateTime must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    education_class_id      = "test-parent-id"
+    education_assignment_id = "test-parent-id"
+    education_submission_id = "test-parent-id"
+    odata_type              = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

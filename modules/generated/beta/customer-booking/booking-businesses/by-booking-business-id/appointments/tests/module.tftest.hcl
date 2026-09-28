@@ -52,7 +52,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["customers"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.bookingCustomerInformationBase" }])
+    condition     = jsonencode(msgraph_resource.this.body["customers"]) == jsonencode([{}])
     error_message = "customers must preserve typed values and omit nested nulls."
   }
 }

@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `accounts` | `accounts` | `list(object({       odata_type = optional(string, "#microsoft.graph.userAccount")       displayName = optional(string)       lastSeenDateTime = optional(string)       riskScore = optional(string)       service = optional(string)       signinName = optional(string)       status = optional(any)     }))` | no | no |
+| `accounts` | `accounts` | `list(object({       odata_type = optional(string, "#microsoft.graph.userAccount")       displayName = optional(string)       lastSeenDateTime = optional(string)       riskScore = optional(string)       service = optional(string)       signinName = optional(string)       status = optional(string)     }))` | no | no |
 | `azure_subscription_id` | `azureSubscriptionId` | `string` | no | no |
 | `azure_tenant_id` | `azureTenantId` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
@@ -32,7 +32,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `risk_score` | `riskScore` | `string` | no | no |
 | `tags` | `tags` | `list(string)` | no | no |
 | `user_principal_name` | `userPrincipalName` | `string` | no | no |
-| `vendor_information` | `vendorInformation` | `any` | no | no |
+| `vendor_information` | `vendorInformation` | `object({       odata_type = optional(string, "#microsoft.graph.securityVendorInformation")       provider = optional(string)       providerVersion = optional(string)       subProvider = optional(string)       vendor = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -50,8 +50,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- accounts[].status: polymorphic schema; accepts an untyped value
-- vendorInformation: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

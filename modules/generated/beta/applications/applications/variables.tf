@@ -6,25 +6,86 @@ variable "display_name" {
 
 variable "api" {
   description = "Specifies settings for an application that implements a web API."
-  type        = any
-  default     = null
+  type = object({
+    odata_type              = optional(string, "#microsoft.graph.apiApplication")
+    acceptMappedClaims      = optional(bool)
+    knownClientApplications = optional(list(string))
+    oauth2PermissionScopes = optional(list(object({
+      odata_type              = optional(string, "#microsoft.graph.permissionScope")
+      adminConsentDescription = optional(string)
+      adminConsentDisplayName = optional(string)
+      id                      = optional(string)
+      isEnabled               = optional(bool)
+      origin                  = optional(string)
+      type                    = optional(string)
+      userConsentDescription  = optional(string)
+      userConsentDisplayName  = optional(string)
+      value                   = optional(string)
+    })))
+    preAuthorizedApplications = optional(list(object({
+      odata_type    = optional(string, "#microsoft.graph.preAuthorizedApplication")
+      appId         = optional(string)
+      permissionIds = optional(list(string))
+    })))
+    requestedAccessTokenVersion = optional(number)
+  })
+  default   = null
+  sensitive = true
 }
 
 variable "app_management_policies" {
   description = "The appManagementPolicy applied to this application."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.appManagementPolicy")
-    appliesTo = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.directoryObject")
-      deletedDateTime = optional(string)
-    })))
+    odata_type      = optional(string, "#microsoft.graph.appManagementPolicy")
+    appliesTo       = optional(any)
     deletedDateTime = optional(string)
     description     = optional(string)
     displayName     = optional(string)
     isEnabled       = optional(bool)
-    restrictions    = optional(any)
+    restrictions = optional(object({
+      odata_type = optional(string, "#microsoft.graph.customAppManagementConfiguration")
+      applicationRestrictions = optional(object({
+        odata_type = optional(string, "#microsoft.graph.customAppManagementApplicationConfiguration")
+        audiences = optional(object({
+          odata_type               = optional(string, "#microsoft.graph.audiencesConfiguration")
+          azureAdMultipleOrgs      = optional(any)
+          personalMicrosoftAccount = optional(any)
+        }))
+        identifierUris = optional(object({
+          odata_type                               = optional(string, "#microsoft.graph.identifierUriConfiguration")
+          nonDefaultUriAddition                    = optional(any)
+          uriAdditionWithoutUniqueTenantIdentifier = optional(any)
+        }))
+        redirectUris = optional(object({
+          odata_type              = optional(string, "#microsoft.graph.redirectUriConfiguration")
+          uriWithBlockedDomain    = optional(any)
+          uriWithBlockedScheme    = optional(any)
+          uriWithWildcard         = optional(any)
+          uriWithoutAllowedDomain = optional(any)
+          uriWithoutAllowedScheme = optional(any)
+        }))
+      }))
+      keyCredentials = optional(list(object({
+        odata_type                                  = optional(string, "#microsoft.graph.keyCredentialConfiguration")
+        certificateBasedApplicationConfigurationIds = optional(any)
+        excludeActors                               = optional(any)
+        maxLifetime                                 = optional(string)
+        restrictForAppsCreatedAfterDateTime         = optional(string)
+        restrictionType                             = optional(string)
+        state                                       = optional(string)
+      })))
+      passwordCredentials = optional(list(object({
+        odata_type                          = optional(string, "#microsoft.graph.passwordCredentialConfiguration")
+        excludeActors                       = optional(any)
+        maxLifetime                         = optional(string)
+        restrictForAppsCreatedAfterDateTime = optional(string)
+        restrictionType                     = optional(string)
+        state                               = optional(string)
+      })))
+    }))
   }))
-  default = null
+  default   = null
+  sensitive = true
 }
 
 variable "app_roles" {
@@ -43,14 +104,25 @@ variable "app_roles" {
 
 variable "authentication_behaviors" {
   description = "The collection of breaking change behaviors related to token issuance that are configured for the application. Authentication behaviors are unset by default (null) and must be explicitly enabled or disabled. Nullable. Requires $select to retrieve.  For more information about authentication behaviors, see Manage application authenticationBehaviors to avoid unverified use of email claims for user identification or authorization."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                    = optional(string, "#microsoft.graph.authenticationBehaviors")
+    blockAzureADGraphAccess       = optional(bool)
+    coopEnforcement               = optional(bool)
+    removeUnverifiedEmailClaim    = optional(bool)
+    requireClientServicePrincipal = optional(bool)
+  })
+  default = null
 }
 
 variable "certification" {
   description = "Specifies the certification status of the application."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                      = optional(string, "#microsoft.graph.certification")
+    certificationExpirationDateTime = optional(string)
+    isPublisherAttested             = optional(bool)
+    lastCertificationDateTime       = optional(string)
+  })
+  default = null
 }
 
 variable "connector_group" {
@@ -86,13 +158,17 @@ variable "disabled_by_microsoft_status" {
 variable "federated_identity_credentials" {
   description = "Federated identities for applications. Supports $expand and $filter (startsWith, /$count eq 0, /$count ne 0)."
   type = list(object({
-    odata_type               = optional(string, "#microsoft.graph.federatedIdentityCredential")
-    audiences                = optional(list(string))
-    claimsMatchingExpression = optional(any)
-    description              = optional(string)
-    issuer                   = optional(string)
-    name                     = optional(string)
-    subject                  = optional(string)
+    odata_type = optional(string, "#microsoft.graph.federatedIdentityCredential")
+    audiences  = optional(list(string))
+    claimsMatchingExpression = optional(object({
+      odata_type      = optional(string, "#microsoft.graph.federatedIdentityExpression")
+      languageVersion = optional(number)
+      value           = optional(string)
+    }))
+    description = optional(string)
+    issuer      = optional(string)
+    name        = optional(string)
+    subject     = optional(string)
   }))
   default   = null
   sensitive = true
@@ -107,11 +183,8 @@ variable "group_membership_claims" {
 variable "home_realm_discovery_policies" {
   description = "Microsoft Graph homeRealmDiscoveryPolicies property."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.homeRealmDiscoveryPolicy")
-    appliesTo = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.directoryObject")
-      deletedDateTime = optional(string)
-    })))
+    odata_type            = optional(string, "#microsoft.graph.homeRealmDiscoveryPolicy")
+    appliesTo             = optional(any)
     definition            = optional(list(string))
     deletedDateTime       = optional(string)
     description           = optional(string)
@@ -129,8 +202,14 @@ variable "identifier_uris" {
 
 variable "info" {
   description = "Basic profile information of the application, such as it's marketing, support, terms of service, and privacy statement URLs. The terms of service and privacy statement are surfaced to users through the user consent experience. For more information, see How to: Add Terms of service and privacy statement for registered Microsoft Entra apps. Supports $filter (eq, ne, not, ge, le, and eq on null values)."
-  type        = any
-  default     = null
+  type = object({
+    odata_type          = optional(string, "#microsoft.graph.informationalUrl")
+    marketingUrl        = optional(string)
+    privacyStatementUrl = optional(string)
+    supportUrl          = optional(string)
+    termsOfServiceUrl   = optional(string)
+  })
+  default = null
 }
 
 variable "is_device_only_auth_supported" {
@@ -176,12 +255,12 @@ variable "logo" {
 
 variable "native_authentication_apis_enabled" {
   description = "Specifies whether the Native Authentication APIs are enabled for the application. The possible values are: noneand all. Default is none. For more information, see Native Authentication."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.native_authentication_apis_enabled == null ? true : contains(["none", "all", "unknownFutureValue"], var.native_authentication_apis_enabled)
-    error_message = "native_authentication_apis_enabled must be one of the documented enum values."
+    condition     = var.native_authentication_apis_enabled == null ? true : try(alltrue([for value in split(",", var.native_authentication_apis_enabled) : contains(["none", "all", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "native_authentication_apis_enabled must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -200,20 +279,115 @@ variable "odata_type" {
 
 variable "on_premises_publishing" {
   description = "Represents the set of properties required for configuring Application Proxy for this application. Configuring these properties allows you to publish your on-premises application for secure remote access."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                            = optional(string, "#microsoft.graph.onPremisesPublishing")
+    alternateUrl                          = optional(string)
+    applicationServerTimeout              = optional(string)
+    externalAuthenticationType            = optional(string)
+    externalUrl                           = optional(string)
+    internalUrl                           = optional(string)
+    isAccessibleViaZTNAClient             = optional(bool)
+    isBackendCertificateValidationEnabled = optional(bool)
+    isContinuousAccessEvaluationEnabled   = optional(bool)
+    isDeviceAccessEnabled                 = optional(bool)
+    isDnsResolutionEnabled                = optional(bool)
+    isHttpOnlyCookieEnabled               = optional(bool)
+    isPersistentCookieEnabled             = optional(bool)
+    isSecureCookieEnabled                 = optional(bool)
+    isStateSessionEnabled                 = optional(bool)
+    isTranslateHostHeaderEnabled          = optional(bool)
+    isTranslateLinksInBodyEnabled         = optional(bool)
+    onPremisesApplicationSegments = optional(list(object({
+      odata_type   = optional(string, "#microsoft.graph.onPremisesApplicationSegment")
+      alternateUrl = optional(string)
+      corsConfigurations = optional(list(object({
+        odata_type      = optional(string, "#microsoft.graph.corsConfiguration")
+        allowedHeaders  = optional(any)
+        allowedMethods  = optional(any)
+        allowedOrigins  = optional(any)
+        maxAgeInSeconds = optional(number)
+        resource        = optional(string)
+      })))
+      externalUrl = optional(string)
+      internalUrl = optional(string)
+    })))
+    segmentsConfiguration = optional(any)
+    singleSignOnSettings = optional(object({
+      odata_type = optional(string, "#microsoft.graph.onPremisesPublishingSingleSignOn")
+      kerberosSignOnSettings = optional(object({
+        odata_type                         = optional(string, "#microsoft.graph.kerberosSignOnSettings")
+        kerberosServicePrincipalName       = optional(string)
+        kerberosSignOnMappingAttributeType = optional(string)
+      }))
+      singleSignOnMode = optional(string)
+    }))
+    trafficRoutingMethod                     = optional(string)
+    useAlternateUrlForTranslationAndRedirect = optional(bool)
+    verifiedCustomDomainKeyCredential = optional(object({
+      odata_type          = optional(string, "#microsoft.graph.keyCredential")
+      customKeyIdentifier = optional(string)
+      displayName         = optional(string)
+      endDateTime         = optional(string)
+      key                 = optional(string)
+      keyId               = optional(string)
+      startDateTime       = optional(string)
+      type                = optional(string)
+      usage               = optional(string)
+    }))
+    verifiedCustomDomainPasswordCredential = optional(object({
+      odata_type          = optional(string, "#microsoft.graph.passwordCredential")
+      customKeyIdentifier = optional(string)
+      displayName         = optional(string)
+      endDateTime         = optional(string)
+      keyId               = optional(string)
+      startDateTime       = optional(string)
+    }))
+    wafAllowedHeaders = optional(any)
+    wafIpRanges       = optional(any)
+    wafProvider       = optional(string)
+  })
+  default   = null
+  sensitive = true
 }
 
 variable "optional_claims" {
   description = "Application developers can configure optional claims in their Microsoft Entra applications to specify the claims that are sent to their application by the Microsoft security token service. For more information, see How to: Provide optional claims to your app."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.optionalClaims")
+    accessToken = optional(list(object({
+      odata_type           = optional(string, "#microsoft.graph.optionalClaim")
+      additionalProperties = optional(list(string))
+      essential            = optional(bool)
+      name                 = optional(string)
+      source               = optional(string)
+    })))
+    idToken = optional(list(object({
+      odata_type           = optional(string, "#microsoft.graph.optionalClaim")
+      additionalProperties = optional(list(string))
+      essential            = optional(bool)
+      name                 = optional(string)
+      source               = optional(string)
+    })))
+    saml2Token = optional(list(object({
+      odata_type           = optional(string, "#microsoft.graph.optionalClaim")
+      additionalProperties = optional(list(string))
+      essential            = optional(bool)
+      name                 = optional(string)
+      source               = optional(string)
+    })))
+  })
+  default   = null
+  sensitive = true
 }
 
 variable "parental_control_settings" {
   description = "Specifies parental control settings for an application."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                = optional(string, "#microsoft.graph.parentalControlSettings")
+    countriesBlockedForMinors = optional(list(string))
+    legalAgeGroupRule         = optional(string)
+  })
+  default = null
 }
 
 variable "password_credentials" {
@@ -232,14 +406,21 @@ variable "password_credentials" {
 
 variable "public_client" {
   description = "Specifies settings for installed clients such as desktop or mobile devices."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.publicClientApplication")
+    redirectUris = optional(list(string))
+  })
+  default = null
 }
 
 variable "request_signature_verification" {
   description = "Specifies whether this application requires Microsoft Entra ID to verify the signed authentication requests."
-  type        = any
-  default     = null
+  type = object({
+    odata_type              = optional(string, "#microsoft.graph.requestSignatureVerification")
+    allowedWeakAlgorithms   = optional(string)
+    isSignedRequestRequired = optional(bool)
+  })
+  default = null
 }
 
 variable "required_resource_access" {
@@ -270,8 +451,16 @@ variable "service_management_reference" {
 
 variable "service_principal_lock_configuration" {
   description = "Specifies whether sensitive properties of a multitenant application should be locked for editing after the application is provisioned in a tenant. Nullable. null by default."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                 = optional(string, "#microsoft.graph.servicePrincipalLockConfiguration")
+    allProperties              = optional(bool)
+    credentialsWithUsageSign   = optional(bool)
+    credentialsWithUsageVerify = optional(bool)
+    isEnabled                  = optional(bool)
+    tokenEncryptionKeyId       = optional(bool)
+  })
+  default   = null
+  sensitive = true
 }
 
 variable "sign_in_audience" {
@@ -282,17 +471,17 @@ variable "sign_in_audience" {
 
 variable "sign_in_audience_restrictions" {
   description = "Microsoft Graph signInAudienceRestrictions property."
-  type = object({
-    odata_type = optional(string, "#microsoft.graph.signInAudienceRestrictionsBase")
-    kind       = optional(string)
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "spa" {
   description = "Specifies settings for a single-page application, including sign out URLs and redirect URIs for authorization codes and access tokens."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.spaApplication")
+    redirectUris = optional(list(string))
+  })
+  default = null
 }
 
 variable "synchronization" {
@@ -316,11 +505,8 @@ variable "token_encryption_key_id" {
 variable "token_issuance_policies" {
   description = "Microsoft Graph tokenIssuancePolicies property."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.tokenIssuancePolicy")
-    appliesTo = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.directoryObject")
-      deletedDateTime = optional(string)
-    })))
+    odata_type            = optional(string, "#microsoft.graph.tokenIssuancePolicy")
+    appliesTo             = optional(any)
     definition            = optional(list(string))
     deletedDateTime       = optional(string)
     description           = optional(string)
@@ -333,11 +519,8 @@ variable "token_issuance_policies" {
 variable "token_lifetime_policies" {
   description = "The tokenLifetimePolicies assigned to this application. Supports $expand."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.tokenLifetimePolicy")
-    appliesTo = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.directoryObject")
-      deletedDateTime = optional(string)
-    })))
+    odata_type            = optional(string, "#microsoft.graph.tokenLifetimePolicy")
+    appliesTo             = optional(any)
     definition            = optional(list(string))
     deletedDateTime       = optional(string)
     description           = optional(string)
@@ -349,20 +532,45 @@ variable "token_lifetime_policies" {
 
 variable "verified_publisher" {
   description = "Specifies the verified publisher of the application. For more information about how publisher verification helps support application security, trustworthiness, and compliance, see Publisher verification."
-  type        = any
-  default     = null
+  type = object({
+    odata_type          = optional(string, "#microsoft.graph.verifiedPublisher")
+    addedDateTime       = optional(string)
+    displayName         = optional(string)
+    verifiedPublisherId = optional(string)
+  })
+  default = null
 }
 
 variable "web" {
   description = "Specifies settings for a web application."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.webApplication")
+    homePageUrl = optional(string)
+    implicitGrantSettings = optional(object({
+      odata_type                = optional(string, "#microsoft.graph.implicitGrantSettings")
+      enableAccessTokenIssuance = optional(bool)
+      enableIdTokenIssuance     = optional(bool)
+    }))
+    logoutUrl               = optional(string)
+    oauth2AllowImplicitFlow = optional(bool)
+    redirectUriSettings = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.redirectUriSettings")
+      index      = optional(number)
+      uri        = optional(string)
+    })))
+    redirectUris = optional(list(string))
+  })
+  default   = null
+  sensitive = true
 }
 
 variable "windows" {
   description = "Specifies settings for apps running Microsoft Windows and published in the Microsoft Store or Xbox games store."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.windowsApplication")
+    redirectUris = optional(list(string))
+  })
+  default = null
 }
 
 variable "additional_properties" {

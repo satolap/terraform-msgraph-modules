@@ -22,7 +22,6 @@ run "typed_request" {
     description       = "example"
     is_custom_profile = false
     priority          = -2147483648
-    service_principal = { "accountEnabled" = null }
     associations      = [{}]
   }
 
@@ -42,12 +41,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["servicePrincipal"]) == jsonencode({ "@odata.type" = "#microsoft.graph.servicePrincipal" })
-    error_message = "servicePrincipal must preserve typed values and omit nested nulls."
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["associations"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.networkaccess.association" }])
+    condition     = jsonencode(msgraph_resource.this.body["associations"]) == jsonencode([{}])
     error_message = "associations must preserve typed values and omit nested nulls."
   }
 }

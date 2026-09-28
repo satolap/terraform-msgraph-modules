@@ -34,17 +34,34 @@ variable "device_instances" {
       status            = optional(string)
       type              = optional(string)
     })))
-    deletedDateTime        = optional(string)
-    deviceCategory         = optional(string)
-    deviceId               = optional(string)
-    deviceMetadata         = optional(string)
-    deviceOwnership        = optional(string)
-    deviceVersion          = optional(number)
-    displayName            = optional(string)
-    domainName             = optional(string)
-    enrollmentProfileName  = optional(string)
-    enrollmentType         = optional(string)
-    extensionAttributes    = optional(any)
+    deletedDateTime       = optional(string)
+    deviceCategory        = optional(string)
+    deviceId              = optional(string)
+    deviceMetadata        = optional(string)
+    deviceOwnership       = optional(string)
+    deviceVersion         = optional(number)
+    displayName           = optional(string)
+    domainName            = optional(string)
+    enrollmentProfileName = optional(string)
+    enrollmentType        = optional(string)
+    extensionAttributes = optional(object({
+      odata_type           = optional(string, "#microsoft.graph.onPremisesExtensionAttributes")
+      extensionAttribute1  = optional(string)
+      extensionAttribute10 = optional(string)
+      extensionAttribute11 = optional(string)
+      extensionAttribute12 = optional(string)
+      extensionAttribute13 = optional(string)
+      extensionAttribute14 = optional(string)
+      extensionAttribute15 = optional(string)
+      extensionAttribute2  = optional(string)
+      extensionAttribute3  = optional(string)
+      extensionAttribute4  = optional(string)
+      extensionAttribute5  = optional(string)
+      extensionAttribute6  = optional(string)
+      extensionAttribute7  = optional(string)
+      extensionAttribute8  = optional(string)
+      extensionAttribute9  = optional(string)
+    }))
     hostnames              = optional(list(string))
     isManaged              = optional(bool)
     isRooted               = optional(bool)
@@ -58,10 +75,7 @@ variable "device_instances" {
     profileType            = optional(string)
     status                 = optional(string)
     systemLabels           = optional(list(string))
-    transitiveMemberOf = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.directoryObject")
-      deletedDateTime = optional(string)
-    })))
+    transitiveMemberOf     = optional(any)
     usageRights = optional(list(object({
       odata_type        = optional(string, "#microsoft.graph.usageRight")
       catalogId         = optional(string)
@@ -111,11 +125,8 @@ variable "operating_system" {
 
 variable "owners" {
   description = "Collection of directory objects that can manage the device template and the related deviceInstances. Owners can be represented as service principals, users, or applications. An owner has full privileges over the device template and doesn't require other administrator roles to create, update, or delete devices from this template, as well as to add or remove template owners. There can be a maximum of 100 owners on a device template.  Supports $expand."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

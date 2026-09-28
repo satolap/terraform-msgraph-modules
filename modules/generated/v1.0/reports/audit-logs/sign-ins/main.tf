@@ -4,16 +4,16 @@ locals {
     "appDisplayName"                   = var.app_display_name
     "appId"                            = var.app_id
     "appliedConditionalAccessPolicies" = (var.applied_conditional_access_policies == null ? null : [for item0 in var.applied_conditional_access_policies : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "displayName" = item0["displayName"], "enforcedGrantControls" = (item0["enforcedGrantControls"] == null ? null : [for item2 in item0["enforcedGrantControls"] : item2 if item2 != null]), "enforcedSessionControls" = (item0["enforcedSessionControls"] == null ? null : [for item2 in item0["enforcedSessionControls"] : item2 if item2 != null]), "id" = item0["id"], "result" = item0["result"] } : key1 => value1 if value1 != null }) if item0 != null])
-    "authenticationAppDeviceDetails"   = var.authentication_app_device_details
+    "authenticationAppDeviceDetails"   = (var.authentication_app_device_details == null ? null : { for key0, value0 in { "@odata.type" = var.authentication_app_device_details["odata_type"], "appVersion" = var.authentication_app_device_details["appVersion"], "clientApp" = var.authentication_app_device_details["clientApp"], "deviceId" = var.authentication_app_device_details["deviceId"], "operatingSystem" = var.authentication_app_device_details["operatingSystem"] } : key0 => value0 if value0 != null })
     "clientAppUsed"                    = var.client_app_used
     "conditionalAccessStatus"          = var.conditional_access_status
     "correlationId"                    = var.correlation_id
     "createdDateTime"                  = var.created_date_time
-    "deviceDetail"                     = var.device_detail
+    "deviceDetail"                     = (var.device_detail == null ? null : { for key0, value0 in { "@odata.type" = var.device_detail["odata_type"], "browser" = var.device_detail["browser"], "deviceId" = var.device_detail["deviceId"], "displayName" = var.device_detail["displayName"], "isCompliant" = var.device_detail["isCompliant"], "isManaged" = var.device_detail["isManaged"], "operatingSystem" = var.device_detail["operatingSystem"], "trustType" = var.device_detail["trustType"] } : key0 => value0 if value0 != null })
     "homeTenantId"                     = var.home_tenant_id
     "ipAddress"                        = var.ip_address
     "isInteractive"                    = var.is_interactive
-    "location"                         = var.location
+    "location"                         = (var.location == null ? null : { for key0, value0 in { "@odata.type" = var.location["odata_type"], "city" = var.location["city"], "countryOrRegion" = var.location["countryOrRegion"], "geoCoordinates" = (var.location["geoCoordinates"] == null ? null : { for key1, value1 in { "@odata.type" = var.location["geoCoordinates"]["odata_type"] } : key1 => value1 if value1 != null }), "state" = var.location["state"] } : key0 => value0 if value0 != null })
     "@odata.type"                      = var.odata_type
     "resourceDisplayName"              = var.resource_display_name
     "resourceId"                       = var.resource_id
@@ -26,7 +26,7 @@ locals {
     "riskState"                        = var.risk_state
     "servicePrincipalId"               = var.service_principal_id
     "servicePrincipalName"             = var.service_principal_name
-    "status"                           = var.status
+    "status"                           = (var.status == null ? null : { for key0, value0 in { "@odata.type" = var.status["odata_type"], "additionalDetails" = var.status["additionalDetails"], "errorCode" = var.status["errorCode"], "failureReason" = var.status["failureReason"] } : key0 => value0 if value0 != null })
     "userAgent"                        = var.user_agent
     "userDisplayName"                  = var.user_display_name
     "userId"                           = var.user_id

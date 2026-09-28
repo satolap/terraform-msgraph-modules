@@ -22,7 +22,7 @@ variable "description" {
 }
 
 variable "discovery_source" {
-  description = "Microsoft Graph discoverySource property."
+  description = "Apple device discovery source."
   type        = string
   default     = null
 
@@ -33,7 +33,7 @@ variable "discovery_source" {
 }
 
 variable "enrollment_state" {
-  description = "Microsoft Graph enrollmentState property."
+  description = "The state of the device in Intune"
   type        = string
   default     = null
 

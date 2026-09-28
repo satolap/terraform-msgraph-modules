@@ -1,11 +1,11 @@
 variable "access_types" {
-  description = "Microsoft Graph accessTypes property."
+  description = "Read/write access mode of the setting"
   type        = string
   default     = null
 
   validation {
-    condition     = var.access_types == null ? true : contains(["none", "add", "copy", "delete", "get", "replace", "execute"], var.access_types)
-    error_message = "access_types must be one of the documented enum values."
+    condition     = var.access_types == null ? true : try(alltrue([for value in split(",", var.access_types) : contains(["none", "add", "copy", "delete", "get", "replace", "execute"], lower(trimspace(value)))]), false)
+    error_message = "access_types must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -71,8 +71,12 @@ variable "name" {
 
 variable "occurrence" {
   description = "Indicates whether the setting is required or not"
-  type        = any
-  default     = null
+  type = object({
+    odata_type          = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingOccurrence")
+    maxDeviceOccurrence = optional(number)
+    minDeviceOccurrence = optional(number)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -103,8 +107,8 @@ variable "risk_level" {
   default     = null
 
   validation {
-    condition     = var.risk_level == null ? true : contains(["low", "medium", "high"], var.risk_level)
-    error_message = "risk_level must be one of the documented enum values."
+    condition     = var.risk_level == null ? true : try(alltrue([for value in split(",", var.risk_level) : contains(["low", "medium", "high"], lower(trimspace(value)))]), false)
+    error_message = "risk_level must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -120,8 +124,8 @@ variable "setting_usage" {
   default     = null
 
   validation {
-    condition     = var.setting_usage == null ? true : contains(["none", "configuration", "compliance", "reusableSetting", "unknownFutureValue"], var.setting_usage)
-    error_message = "setting_usage must be one of the documented enum values."
+    condition     = var.setting_usage == null ? true : try(alltrue([for value in split(",", var.setting_usage) : contains(["none", "configuration", "compliance", "reusablesetting", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "setting_usage must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -142,8 +146,8 @@ variable "visibility" {
   default     = null
 
   validation {
-    condition     = var.visibility == null ? true : contains(["none", "settingsCatalog", "template", "unknownFutureValue"], var.visibility)
-    error_message = "visibility must be one of the documented enum values."
+    condition     = var.visibility == null ? true : try(alltrue([for value in split(",", var.visibility) : contains(["none", "settingscatalog", "template", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "visibility must be one or more of the documented enum values, separated by commas."
   }
 }
 

@@ -23,13 +23,7 @@ variable "definition_values" {
     definition           = optional(any)
     enabled              = optional(bool)
     lastModifiedDateTime = optional(string)
-    presentationValues = optional(list(object({
-      odata_type           = optional(string, "#microsoft.graph.groupPolicyPresentationValue")
-      createdDateTime      = optional(string)
-      definitionValue      = optional(any)
-      lastModifiedDateTime = optional(string)
-      presentation         = optional(any)
-    })))
+    presentationValues   = optional(any)
   }))
   default = null
 }

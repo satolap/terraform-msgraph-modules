@@ -28,6 +28,7 @@ run "typed_request" {
     site_id           = "test-parent-id"
     deleted_date_time = "2026-01-01T00:00:00Z"
     size              = 0
+    parent_reference  = { "driveType" = null }
   }
 
   assert {
@@ -38,5 +39,10 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["size"]) == jsonencode(0)
     error_message = "size must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["parentReference"]) == jsonencode({ "@odata.type" = "#microsoft.graph.itemReference" })
+    error_message = "parentReference must preserve typed values and omit nested nulls."
   }
 }

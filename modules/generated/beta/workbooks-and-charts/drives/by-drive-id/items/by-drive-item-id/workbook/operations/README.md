@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `drive_id` | URL parameter `drive-id` | `string` | yes | no |
 | `drive_item_id` | URL parameter `driveItem-id` | `string` | yes | no |
-| `error` | `error` | `any` | no | no |
+| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.workbookOperationError")       code = optional(string)       innerError = optional(any)       message = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `resource_location` | `resourceLocation` | `string` | no | no |
 | `status` | `status` | `string` | no | no |
@@ -47,7 +47,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- error: polymorphic schema; accepts an untyped value
+- error.innerError: recursive schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

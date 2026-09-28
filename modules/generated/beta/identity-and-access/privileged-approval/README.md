@@ -23,7 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `approval_duration` | `approvalDuration` | `string` | no | no |
-| `approval_state` | `approvalState` | `any` | no | no |
+| `approval_state` | `approvalState` | `string` | no | no |
 | `approval_type` | `approvalType` | `string` | no | no |
 | `approver_reason` | `approverReason` | `string` | no | no |
 | `end_date_time` | `endDateTime` | `string` | no | no |
@@ -51,9 +51,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- approvalState: polymorphic schema; accepts an untyped value
-- request: polymorphic schema; accepts an untyped value
-- roleInfo: polymorphic schema; accepts an untyped value
+- request: navigation property; accepts an untyped value
+- roleInfo: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

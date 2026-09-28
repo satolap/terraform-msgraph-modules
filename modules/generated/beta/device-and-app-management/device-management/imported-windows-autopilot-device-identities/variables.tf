@@ -43,8 +43,14 @@ variable "serial_number" {
 
 variable "state" {
   description = "Current state of the imported device."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.importedWindowsAutopilotDeviceIdentityState")
+    deviceErrorCode      = optional(number)
+    deviceErrorName      = optional(string)
+    deviceImportStatus   = optional(string)
+    deviceRegistrationId = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

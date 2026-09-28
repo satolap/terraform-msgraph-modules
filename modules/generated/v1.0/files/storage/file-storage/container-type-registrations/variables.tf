@@ -3,8 +3,8 @@ variable "application_permission_grants" {
   type = list(object({
     odata_type             = optional(string, "#microsoft.graph.fileStorageContainerTypeAppPermissionGrant")
     appId                  = optional(string)
-    applicationPermissions = optional(any)
-    delegatedPermissions   = optional(any)
+    applicationPermissions = optional(list(string))
+    delegatedPermissions   = optional(list(string))
   }))
   default = null
 }
@@ -48,7 +48,7 @@ variable "settings" {
     isSharingRestricted           = optional(bool)
     itemMajorVersionLimit         = optional(number)
     maxStoragePerContainerInBytes = optional(number)
-    sharingCapability             = optional(any)
+    sharingCapability             = optional(string)
     urlTemplate                   = optional(string)
   })
   default = null

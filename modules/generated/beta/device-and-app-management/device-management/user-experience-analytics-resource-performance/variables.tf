@@ -59,7 +59,7 @@ variable "device_resource_performance_score" {
 }
 
 variable "disk_type" {
-  description = "Microsoft Graph diskType property."
+  description = "The type of disk storage used on the device."
   type        = string
   default     = null
 
@@ -70,7 +70,7 @@ variable "disk_type" {
 }
 
 variable "health_status" {
-  description = "Microsoft Graph healthStatus property."
+  description = "The health state of the user experience analytics model."
   type        = string
   default     = null
 

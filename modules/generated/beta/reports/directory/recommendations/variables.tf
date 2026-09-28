@@ -2,7 +2,11 @@ variable "action_steps" {
   description = "List of actions to take to complete a recommendation."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.actionStep")
-    actionUrl  = optional(any)
+    actionUrl = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.actionUrl")
+      displayName = optional(string)
+      url         = optional(string)
+    }))
     stepNumber = optional(number)
     text       = optional(string)
   }))
@@ -75,7 +79,7 @@ variable "failed_review_date_time" {
 
 variable "feature_areas" {
   description = "The directory feature that the recommendation is related to."
-  type        = any
+  type        = list(string)
   default     = null
 }
 
@@ -195,7 +199,7 @@ variable "priority" {
 
 variable "recommendation_type" {
   description = "Friendly shortname to identify the recommendation. The possible values are: adfsAppsMigration, enableDesktopSSO, enablePHS, enableProvisioning, switchFromPerUserMFA, tenantMFA, thirdPartyApps, turnOffPerUserMFA, useAuthenticatorApp, useMyApps, staleApps, staleAppCreds, applicationCredentialExpiry, servicePrincipalKeyExpiry, adminMFAV2, blockLegacyAuthentication, integratedApps, mfaRegistrationV2, pwagePolicyNew, passwordHashSync, oneAdmin, roleOverlap, selfServicePasswordReset, signinRiskPolicy, userRiskPolicy, verifyAppPublisher, privateLinkForAAD, appRoleAssignmentsGroups, appRoleAssignmentsUsers, managedIdentity, overprivilegedApps, unknownFutureValue, longLivedCredentials, aadConnectDeprecated, adalToMsalMigration, ownerlessApps, inactiveGuests, aadGraphDeprecationApplication, aadGraphDeprecationServicePrincipal, mfaServerDeprecation. Use the Prefer: include-unknown-enum-members request header to get the following members in this evolvable enum: longLivedCredentials , aadConnectDeprecated , adalToMsalMigration , ownerlessApps , inactiveGuests , aadGraphDeprecationApplication , aadGraphDeprecationServicePrincipal , mfaServerDeprecation."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -224,7 +228,7 @@ variable "remediation_impact" {
 
 variable "required_licenses" {
   description = "The required licenses to view the recommendation. The possible values are: notApplicable, microsoftEntraIdFree, microsoftEntraIdP1, microsoftEntraIdP2, microsoftEntraIdGovernance, microsoftEntraWorkloadId, unknownFutureValue, aatp. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: aatp."
-  type        = any
+  type        = string
   default     = null
 
   validation {

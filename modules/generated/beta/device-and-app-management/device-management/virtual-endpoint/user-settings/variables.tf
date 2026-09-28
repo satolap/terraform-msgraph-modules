@@ -16,8 +16,15 @@ variable "created_date_time" {
 
 variable "cross_region_disaster_recovery_setting" {
   description = "Defines whether the user's Cloud PC enables cross-region disaster recovery and specifies the network for the disaster recovery."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                             = optional(string, "#microsoft.graph.cloudPcCrossRegionDisasterRecoverySetting")
+    crossRegionDisasterRecoveryEnabled     = optional(bool)
+    disasterRecoveryNetworkSetting         = optional(any)
+    disasterRecoveryType                   = optional(string)
+    maintainCrossRegionRestorePointEnabled = optional(bool)
+    userInitiatedDisasterRecoveryAllowed   = optional(bool)
+  })
+  default = null
 }
 
 variable "display_name" {
@@ -40,8 +47,11 @@ variable "local_admin_enabled" {
 
 variable "notification_setting" {
   description = "Defines the setting of the Cloud PC notification prompts for the Cloud PC user. The notificationSetting property is deprecated and will stop returning data on July 14, 2026."
-  type        = any
-  default     = null
+  type = object({
+    odata_type             = optional(string, "#microsoft.graph.cloudPcNotificationSetting")
+    restartPromptsDisabled = optional(bool)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -53,7 +63,7 @@ variable "odata_type" {
 
 variable "provisioning_source_type" {
   description = "Indicates the provisioning source of the Cloud PC prepared for an end user. The possible values are: image, snapshot, unknownFutureValue. The default value is image. If this property isn't set or set to null, its functionality is the same as setting it to image."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -70,8 +80,13 @@ variable "reset_enabled" {
 
 variable "restore_point_setting" {
   description = "Defines how frequently a restore point is created that is, a snapshot is taken) for users' provisioned Cloud PCs (default is 12 hours), and whether the user is allowed to restore their own Cloud PCs to a backup made at a specific point in time."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.cloudPcRestorePointSetting")
+    frequencyInHours   = optional(number)
+    frequencyType      = optional(string)
+    userRestoreEnabled = optional(bool)
+  })
+  default = null
 }
 
 variable "self_service_enabled" {

@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `app_definitions` | `appDefinitions` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsAppDefinition")       authorization = optional(any)       bot = optional(any)       createdBy = optional(any)       description = optional(string)       displayName = optional(string)       lastModifiedDateTime = optional(string)       publishingState = optional(any)       shortDescription = optional(string)       teamsAppId = optional(string)       version = optional(string)     }))` | no | no |
+| `app_definitions` | `appDefinitions` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsAppDefinition")       authorization = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsAppAuthorization")       clientAppId = optional(string)       requiredPermissionSet = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsAppPermissionSet")       resourceSpecificPermissions = optional(any)     }))     }))       bot = optional(any)       createdBy = optional(any)       description = optional(string)       displayName = optional(string)       lastModifiedDateTime = optional(string)       publishingState = optional(string)       shortDescription = optional(string)       teamsAppId = optional(string)       version = optional(string)     }))` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `external_id` | `externalId` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -42,10 +42,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- appDefinitions[].authorization: polymorphic schema; accepts an untyped value
-- appDefinitions[].bot: polymorphic schema; accepts an untyped value
+- appDefinitions[].authorization.requiredPermissionSet.resourceSpecificPermissions[]: nested schema exceeds depth limit; accepts an untyped value
+- appDefinitions[].bot: navigation property; accepts an untyped value
 - appDefinitions[].createdBy: polymorphic schema; accepts an untyped value
-- appDefinitions[].publishingState: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

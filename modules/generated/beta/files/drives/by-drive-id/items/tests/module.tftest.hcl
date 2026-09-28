@@ -23,14 +23,20 @@ run "typed_request" {
   command = plan
 
   variables {
-    drive_id   = "test-parent-id"
-    content    = "example"
-    activities = [{}]
+    drive_id         = "test-parent-id"
+    content          = "example"
+    file_system_info = { "createdDateTime" = null }
+    activities       = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["content"]) == jsonencode("example")
     error_message = "content must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["fileSystemInfo"]) == jsonencode({ "@odata.type" = "#microsoft.graph.fileSystemInfo" })
+    error_message = "fileSystemInfo must preserve typed values and omit nested nulls."
   }
 
   assert {

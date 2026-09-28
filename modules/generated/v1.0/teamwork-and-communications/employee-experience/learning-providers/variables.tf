@@ -27,7 +27,7 @@ variable "learning_contents" {
     isSearchable         = optional(bool)
     languageTag          = optional(string)
     lastModifiedDateTime = optional(string)
-    level                = optional(any)
+    level                = optional(string)
     numberOfPages        = optional(number)
     skillTags            = optional(list(string))
     sourceName           = optional(string)
@@ -39,17 +39,8 @@ variable "learning_contents" {
 
 variable "learning_course_activities" {
   description = "Microsoft Graph learningCourseActivities property."
-  type = list(object({
-    odata_type               = optional(string, "#microsoft.graph.learningCourseActivity")
-    completedDateTime        = optional(string)
-    completionPercentage     = optional(number)
-    externalcourseActivityId = optional(string)
-    learnerUserId            = optional(string)
-    learningContentId        = optional(string)
-    learningProviderId       = optional(string)
-    status                   = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "login_web_url" {

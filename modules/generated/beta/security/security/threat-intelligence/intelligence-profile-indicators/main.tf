@@ -1,7 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "artifact"          = (var.artifact == null ? null : { for key0, value0 in { "@odata.type" = var.artifact["odata_type"] } : key0 => value0 if value0 != null })
+    "artifact"          = var.artifact
     "firstSeenDateTime" = var.first_seen_date_time
     "source"            = var.graph_source
     "lastSeenDateTime"  = var.last_seen_date_time

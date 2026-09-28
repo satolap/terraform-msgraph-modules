@@ -26,6 +26,7 @@ run "typed_request" {
     training_id         = "test-parent-id"
     content             = "example"
     is_default_langauge = false
+    created_by          = { "displayName" = null }
   }
 
   assert {
@@ -36,5 +37,10 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isDefaultLangauge"]) == jsonencode(false)
     error_message = "isDefaultLangauge must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["createdBy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.emailIdentity" })
+    error_message = "createdBy must preserve typed values and omit nested nulls."
   }
 }

@@ -26,13 +26,14 @@ run "typed_request" {
   command = plan
 
   variables {
-    display_name                    = "example"
-    mail_enabled                    = false
-    mail_nickname                   = "example"
-    security_enabled                = false
-    classification                  = "example"
-    has_members_with_license_errors = false
-    accepted_senders                = [{}]
+    display_name                     = "example"
+    mail_enabled                     = false
+    mail_nickname                    = "example"
+    security_enabled                 = false
+    classification                   = "example"
+    has_members_with_license_errors  = false
+    on_premises_extension_attributes = { "extensionAttribute1" = null }
+    accepted_senders                 = [{}]
   }
 
   assert {
@@ -66,7 +67,12 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["acceptedSenders"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.directoryObject" }])
+    condition     = jsonencode(msgraph_resource.this.body["onPremisesExtensionAttributes"]) == jsonencode({ "@odata.type" = "#microsoft.graph.onPremisesExtensionAttributes" })
+    error_message = "onPremisesExtensionAttributes must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["acceptedSenders"]) == jsonencode([{}])
     error_message = "acceptedSenders must preserve typed values and omit nested nulls."
   }
 }

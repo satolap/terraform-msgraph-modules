@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `user_id` | URL parameter `user-id` | `string` | yes | no |
-| `content_metadata` | `contentMetadata` | `object({       odata_type = optional(string, "#microsoft.graph.processContentRequest")       activityMetadata = optional(object({       odata_type = optional(string, "#microsoft.graph.activityMetadata")       activity = optional(string)     }))       contentEntries = optional(list(object({       odata_type = optional(string, "#microsoft.graph.processContentMetadataBase")       content = optional(any)       contentCategory = optional(any)       correlationId = optional(string)       createdDateTime = optional(string)       identifier = optional(string)       isTruncated = optional(bool)       length = optional(number)       modifiedDateTime = optional(string)       name = optional(string)       sequenceNumber = optional(number)     })))       deviceMetadata = optional(object({       odata_type = optional(string, "#microsoft.graph.deviceMetadata")       deviceType = optional(string)       ipAddress = optional(string)       operatingSystemSpecifications = optional(any)     }))       integratedAppMetadata = optional(object({       odata_type = optional(string, "#microsoft.graph.integratedApplicationMetadata")       name = optional(string)       version = optional(string)     }))       protectedAppMetadata = optional(any)     })` | no | no |
+| `content_metadata` | `contentMetadata` | `object({       odata_type = optional(string, "#microsoft.graph.processContentRequest")       activityMetadata = optional(object({       odata_type = optional(string, "#microsoft.graph.activityMetadata")       activity = optional(string)     }))       contentEntries = optional(any)       deviceMetadata = optional(object({       odata_type = optional(string, "#microsoft.graph.deviceMetadata")       deviceType = optional(string)       ipAddress = optional(string)       operatingSystemSpecifications = optional(object({       odata_type = optional(string, "#microsoft.graph.operatingSystemSpecifications")       operatingSystemPlatform = optional(string)       operatingSystemVersion = optional(string)     }))     }))       integratedAppMetadata = optional(any)       protectedAppMetadata = optional(object({       odata_type = optional(string, "#microsoft.graph.protectedApplicationMetadata")       applicationLocation = optional(any)       name = optional(string)       version = optional(string)     }))     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `scope_identifier` | `scopeIdentifier` | `string` | no | no |
 | `user_id_2` | `userId` | `string` | no | no |
@@ -44,10 +44,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- contentMetadata.contentEntries[].content: polymorphic schema; accepts an untyped value
-- contentMetadata.contentEntries[].contentCategory: polymorphic schema; accepts an untyped value
-- contentMetadata.deviceMetadata.operatingSystemSpecifications: polymorphic schema; accepts an untyped value
-- contentMetadata.protectedAppMetadata: polymorphic schema; accepts an untyped value
+- contentMetadata.contentEntries[]: polymorphic schema; accepts an untyped value
+- contentMetadata.integratedAppMetadata: polymorphic schema; accepts an untyped value
+- contentMetadata.protectedAppMetadata.applicationLocation: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -3,7 +3,7 @@ locals {
   typed_body = { for key, value in {
     "completeAfterDateTime" = var.complete_after_date_time
     "displayName"           = var.display_name
-    "exchangeSettings"      = var.exchange_settings
+    "exchangeSettings"      = (var.exchange_settings == null ? null : { for key0, value0 in { "@odata.type" = var.exchange_settings["odata_type"], "sourceEndpoint" = var.exchange_settings["sourceEndpoint"], "targetDeliveryDomain" = var.exchange_settings["targetDeliveryDomain"] } : key0 => value0 if value0 != null })
     "jobType"               = var.job_type
     "@odata.type"           = var.odata_type
     "resourceType"          = var.resource_type

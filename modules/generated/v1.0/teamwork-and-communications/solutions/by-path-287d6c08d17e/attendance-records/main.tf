@@ -3,7 +3,7 @@ locals {
   typed_body = { for key, value in {
     "attendanceIntervals"             = (var.attendance_intervals == null ? null : [for item0 in var.attendance_intervals : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "durationInSeconds" = item0["durationInSeconds"], "joinDateTime" = item0["joinDateTime"], "leaveDateTime" = item0["leaveDateTime"] } : key1 => value1 if value1 != null }) if item0 != null])
     "emailAddress"                    = var.email_address
-    "externalRegistrationInformation" = var.external_registration_information
+    "externalRegistrationInformation" = (var.external_registration_information == null ? null : { for key0, value0 in { "@odata.type" = var.external_registration_information["odata_type"], "referrer" = var.external_registration_information["referrer"], "registrationId" = var.external_registration_information["registrationId"] } : key0 => value0 if value0 != null })
     "identity"                        = var.identity
     "@odata.type"                     = var.odata_type
     "registrationId"                  = var.registration_id

@@ -24,8 +24,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `printer_id` | URL parameter `printer-id` | `string` | yes | no |
-| `configuration` | `configuration` | `object({       odata_type = optional(string, "#microsoft.graph.printJobConfiguration")       collate = optional(bool)       finishings = optional(any)       fitPdfToPage = optional(bool)       inputBin = optional(string)       margin = optional(any)       mediaSize = optional(string)       mediaType = optional(string)       multipageLayout = optional(any)       orientation = optional(any)       outputBin = optional(string)       pagesPerSheet = optional(number)       scaling = optional(any)     })` | no | no |
-| `created_by` | `createdBy` | `any` | no | no |
+| `configuration` | `configuration` | `object({       odata_type = optional(string, "#microsoft.graph.printJobConfiguration")       collate = optional(bool)       finishings = optional(list(string))       fitPdfToPage = optional(bool)       inputBin = optional(string)       margin = optional(object({       odata_type = optional(string, "#microsoft.graph.printMargin")       bottom = optional(number)       left = optional(number)       right = optional(number)       top = optional(number)     }))       mediaSize = optional(string)       mediaType = optional(string)       multipageLayout = optional(string)       orientation = optional(string)       outputBin = optional(string)       pagesPerSheet = optional(number)       scaling = optional(string)     })` | no | no |
+| `created_by` | `createdBy` | `object({       odata_type = optional(string, "#microsoft.graph.userIdentity")       displayName = optional(string)       id = optional(string)       ipAddress = optional(string)       userPrincipalName = optional(string)     })` | no | no |
 | `documents` | `documents` | `list(object({       odata_type = optional(string, "#microsoft.graph.printDocument")     }))` | no | no |
 | `is_fetchable` | `isFetchable` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -46,15 +46,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- configuration.finishings[]: polymorphic schema; accepts an untyped value
-- configuration.margin: polymorphic schema; accepts an untyped value
-- configuration.multipageLayout: polymorphic schema; accepts an untyped value
-- configuration.orientation: polymorphic schema; accepts an untyped value
-- configuration.scaling: polymorphic schema; accepts an untyped value
-- createdBy: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

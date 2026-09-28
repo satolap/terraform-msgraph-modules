@@ -55,3 +55,32 @@ run "invalid_enum" {
 
   expect_failures = [var.allowed_inbound_data_transfer_sources]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    managed_browser                = "notConfigured, MicrosoftEdge"
+    targeted_app_management_levels = "unspecified, Unmanaged"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["managedBrowser"] == "notConfigured, MicrosoftEdge"
+    error_message = "managedBrowser must accept combined flags enum members."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["targetedAppManagementLevels"] == "unspecified, Unmanaged"
+    error_message = "targetedAppManagementLevels must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    managed_browser = "notConfigured,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.managed_browser]
+}

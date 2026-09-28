@@ -19,7 +19,30 @@ variable "members" {
   description = "The set of members in the sharePointGroup. Read-write."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.sharePointGroupMember")
-    identity   = optional(any)
+    identity = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.sharePointIdentitySet")
+      application = optional(any)
+      device      = optional(any)
+      group       = optional(any)
+      sharePointGroup = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.sharePointGroupIdentity")
+        displayName = optional(string)
+        id          = optional(string)
+      }))
+      siteGroup = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.sharePointIdentity")
+        displayName = optional(string)
+        id          = optional(string)
+        loginName   = optional(string)
+      }))
+      siteUser = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.sharePointIdentity")
+        displayName = optional(string)
+        id          = optional(string)
+        loginName   = optional(string)
+      }))
+      user = optional(any)
+    }))
   }))
   default = null
 }

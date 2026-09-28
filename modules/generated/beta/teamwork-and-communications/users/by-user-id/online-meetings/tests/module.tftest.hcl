@@ -24,19 +24,25 @@ run "typed_request" {
 
   variables {
     user_id                         = "test-parent-id"
-    broadcast_recording             = "example"
+    allow_live_share                = "enabled"
     allow_attendee_to_enable_camera = false
+    broadcast_settings              = { "allowedAudience" = null }
     anonymize_identity_for_roles    = ["attendee"]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["broadcastRecording"]) == jsonencode("example")
-    error_message = "broadcastRecording must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["allowLiveShare"]) == jsonencode("enabled")
+    error_message = "allowLiveShare must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["allowAttendeeToEnableCamera"]) == jsonencode(false)
     error_message = "allowAttendeeToEnableCamera must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["broadcastSettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.broadcastMeetingSettings" })
+    error_message = "broadcastSettings must preserve typed values and omit nested nulls."
   }
 
   assert {

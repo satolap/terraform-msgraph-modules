@@ -50,8 +50,18 @@ variable "display_name" {
 
 variable "links" {
   description = "Links for opening the section. The oneNoteClientURL link opens the section in the OneNote native client if it's installed. The oneNoteWebURL link opens the section in OneNote on the web."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.sectionLinks")
+    oneNoteClientUrl = optional(object({
+      odata_type = optional(string, "#microsoft.graph.externalLink")
+      href       = optional(string)
+    }))
+    oneNoteWebUrl = optional(object({
+      odata_type = optional(string, "#microsoft.graph.externalLink")
+      href       = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "odata_type" {

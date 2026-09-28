@@ -10,7 +10,7 @@ variable "action" {
 }
 
 variable "action_state" {
-  description = "Microsoft Graph actionState property."
+  description = "Action state."
   type        = string
   default     = null
 

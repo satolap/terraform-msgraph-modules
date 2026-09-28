@@ -26,6 +26,7 @@ run "typed_request" {
     rbac_application_id = "test-parent-id"
     action              = "example"
     is_validation_only  = false
+    schedule_info       = { "expiration" = null }
   }
 
   assert {
@@ -36,5 +37,10 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isValidationOnly"]) == jsonencode(false)
     error_message = "isValidationOnly must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["scheduleInfo"]) == jsonencode({ "@odata.type" = "#microsoft.graph.requestSchedule" })
+    error_message = "scheduleInfo must preserve typed values and omit nested nulls."
   }
 }

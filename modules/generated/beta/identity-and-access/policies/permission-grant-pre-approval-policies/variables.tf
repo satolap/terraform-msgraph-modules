@@ -1,17 +1,10 @@
 variable "conditions" {
   description = "A list of condition sets describing the conditions under which the permission to grant consent for the app has been preapproved."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.preApprovalDetail")
-    permissions = optional(object({
-      odata_type     = optional(string, "#microsoft.graph.preApprovedPermissions")
-      permissionKind = optional(any)
-      permissionType = optional(any)
-    }))
-    scopeType = optional(string)
-    sensitivityLabels = optional(object({
-      odata_type = optional(string, "#microsoft.graph.scopeSensitivityLabels")
-      labelKind  = optional(any)
-    }))
+    odata_type        = optional(string, "#microsoft.graph.preApprovalDetail")
+    permissions       = optional(any)
+    scopeType         = optional(string)
+    sensitivityLabels = optional(any)
   }))
   default = null
 }

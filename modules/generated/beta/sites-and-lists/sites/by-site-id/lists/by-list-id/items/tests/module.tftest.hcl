@@ -24,15 +24,21 @@ run "typed_request" {
   command = plan
 
   variables {
-    site_id     = "test-parent-id"
-    list_id     = "test-parent-id"
-    description = "example"
-    activities  = [{}]
+    site_id      = "test-parent-id"
+    list_id      = "test-parent-id"
+    description  = "example"
+    content_type = { "id" = null }
+    activities   = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
     error_message = "description must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["contentType"]) == jsonencode({ "@odata.type" = "#microsoft.graph.contentTypeInfo" })
+    error_message = "contentType must preserve typed values and omit nested nulls."
   }
 
   assert {

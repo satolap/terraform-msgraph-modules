@@ -115,7 +115,7 @@ variable "serial_number" {
 }
 
 variable "status" {
-  description = "Microsoft Graph status property."
+  description = "ComanagementEligibleStatus"
   type        = string
   default     = null
 

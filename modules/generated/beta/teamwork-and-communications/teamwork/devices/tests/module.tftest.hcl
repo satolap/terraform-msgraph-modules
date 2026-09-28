@@ -19,19 +19,19 @@ run "typed_request" {
   command = plan
 
   variables {
-    company_asset_tag = "example"
-    hardware_detail   = { "macAddresses" = null }
-    operations        = [{}]
+    activity_state = "unknown"
+    current_user   = { "displayName" = null }
+    operations     = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["companyAssetTag"]) == jsonencode("example")
-    error_message = "companyAssetTag must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["activityState"]) == jsonencode("unknown")
+    error_message = "activityState must preserve typed values and omit nested nulls."
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["hardwareDetail"]) == jsonencode({ "@odata.type" = "#microsoft.graph.teamworkHardwareDetail" })
-    error_message = "hardwareDetail must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["currentUser"]) == jsonencode({ "@odata.type" = "#microsoft.graph.teamworkUserIdentity" })
+    error_message = "currentUser must preserve typed values and omit nested nulls."
   }
 
   assert {

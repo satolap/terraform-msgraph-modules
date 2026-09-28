@@ -4,7 +4,7 @@ locals {
     "callee"        = var.callee
     "caller"        = var.caller
     "endDateTime"   = var.end_date_time
-    "failureInfo"   = var.failure_info
+    "failureInfo"   = (var.failure_info == null ? null : { for key0, value0 in { "@odata.type" = var.failure_info["odata_type"], "reason" = var.failure_info["reason"], "stage" = var.failure_info["stage"] } : key0 => value0 if value0 != null })
     "isTest"        = var.is_test
     "modalities"    = (var.modalities == null ? null : [for item0 in var.modalities : item0 if item0 != null])
     "@odata.type"   = var.odata_type

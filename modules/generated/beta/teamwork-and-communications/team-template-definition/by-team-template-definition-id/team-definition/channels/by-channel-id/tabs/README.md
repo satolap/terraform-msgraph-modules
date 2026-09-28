@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `team_template_definition_id` | URL parameter `teamTemplateDefinition-id` | `string` | yes | no |
 | `channel_id` | URL parameter `channel-id` | `string` | yes | no |
-| `configuration` | `configuration` | `any` | no | no |
+| `configuration` | `configuration` | `object({       odata_type = optional(string, "#microsoft.graph.teamsTabConfiguration")       contentUrl = optional(string)       entityId = optional(string)       removeUrl = optional(string)       websiteUrl = optional(string)     })` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `message_id` | `messageId` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -50,8 +50,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- configuration: polymorphic schema; accepts an untyped value
-- teamsApp: polymorphic schema; accepts an untyped value
+- teamsApp: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

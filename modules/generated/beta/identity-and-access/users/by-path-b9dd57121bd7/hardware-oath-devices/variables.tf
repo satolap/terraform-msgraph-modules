@@ -46,12 +46,12 @@ variable "hardware_oath_devices" {
     assignedTo            = optional(any)
     displayName           = optional(string)
     hardwareOathDevices   = optional(any)
-    hashFunction          = optional(any)
+    hashFunction          = optional(string)
     manufacturer          = optional(string)
     model                 = optional(string)
     secretKey             = optional(string)
     serialNumber          = optional(string)
-    status                = optional(any)
+    status                = optional(string)
     timeIntervalInSeconds = optional(number)
   }))
   default   = null
@@ -60,7 +60,7 @@ variable "hardware_oath_devices" {
 
 variable "hash_function" {
   description = "Hash function of the hardrware token. The possible values are: hmacsha1 or hmacsha256. Default value is: hmacsha1. Supports $filter (eq)."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -103,7 +103,7 @@ variable "serial_number" {
 
 variable "status" {
   description = "Status of the hardware OATH token.The possible values are: available, assigned, activated, failedActivation. Supports $filter(eq)."
-  type        = any
+  type        = string
   default     = null
 
   validation {

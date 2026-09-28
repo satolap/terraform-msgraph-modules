@@ -27,11 +27,17 @@ run "typed_request" {
     drive_id          = "test-parent-id"
     drive_item_id     = "test-parent-id"
     resource_location = "example"
+    error             = { "code" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["resourceLocation"]) == jsonencode("example")
     error_message = "resourceLocation must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["error"]) == jsonencode({ "@odata.type" = "#microsoft.graph.workbookOperationError" })
+    error_message = "error must preserve typed values and omit nested nulls."
   }
 }
 

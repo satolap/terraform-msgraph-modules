@@ -2,14 +2,14 @@
 locals {
   typed_body = { for key, value in {
     "approvalType"             = var.approval_type
-    "assignments"              = (var.assignments == null ? null : [for item0 in var.assignments : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "target" = (item0["target"] == null ? null : { for key2, value2 in { "@odata.type" = item0["target"]["odata_type"], "deviceAndAppManagementAssignmentFilterId" = item0["target"]["deviceAndAppManagementAssignmentFilterId"], "deviceAndAppManagementAssignmentFilterType" = item0["target"]["deviceAndAppManagementAssignmentFilterType"] } : key2 => value2 if value2 != null }) } : key1 => value1 if value1 != null }) if item0 != null])
+    "assignments"              = (var.assignments == null ? null : [for item0 in var.assignments : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "target" = item0["target"] } : key1 => value1 if value1 != null }) if item0 != null])
     "createdDateTime"          = var.created_date_time
     "deploymentDeferralInDays" = var.deployment_deferral_in_days
     "description"              = var.description
     "deviceReporting"          = var.device_reporting
     "displayName"              = var.display_name
     "driverInventories"        = (var.driver_inventories == null ? null : [for item0 in var.driver_inventories : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "applicableDeviceCount" = item0["applicableDeviceCount"], "approvalStatus" = item0["approvalStatus"], "category" = item0["category"], "deployDateTime" = item0["deployDateTime"], "driverClass" = item0["driverClass"], "manufacturer" = item0["manufacturer"], "name" = item0["name"], "releaseDateTime" = item0["releaseDateTime"], "version" = item0["version"] } : key1 => value1 if value1 != null }) if item0 != null])
-    "inventorySyncStatus"      = var.inventory_sync_status
+    "inventorySyncStatus"      = (var.inventory_sync_status == null ? null : { for key0, value0 in { "@odata.type" = var.inventory_sync_status["odata_type"], "driverInventorySyncState" = var.inventory_sync_status["driverInventorySyncState"], "lastSuccessfulSyncDateTime" = var.inventory_sync_status["lastSuccessfulSyncDateTime"] } : key0 => value0 if value0 != null })
     "lastModifiedDateTime"     = var.last_modified_date_time
     "newUpdates"               = var.new_updates
     "@odata.type"              = var.odata_type

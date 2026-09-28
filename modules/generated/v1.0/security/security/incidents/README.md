@@ -22,14 +22,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `alerts` | `alerts` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.alert")       actorDisplayName = optional(string)       additionalData = optional(any)       alertPolicyId = optional(string)       alertWebUrl = optional(string)       assignedTo = optional(string)       categories = optional(list(string))       category = optional(string)       classification = optional(any)       comments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.alertComment")       comment = optional(string)       createdByDisplayName = optional(string)       createdDateTime = optional(string)     })))       createdDateTime = optional(string)       customDetails = optional(any)       description = optional(string)       detectionSource = optional(any)       detectorId = optional(string)       determination = optional(any)       evidence = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.alertEvidence")       createdDateTime = optional(string)       detailedRoles = optional(list(string))       remediationStatus = optional(string)       remediationStatusDetails = optional(string)       roles = optional(list(string))       tags = optional(list(string))       verdict = optional(string)     })))       firstActivityDateTime = optional(string)       incidentId = optional(string)       incidentWebUrl = optional(string)       investigationState = optional(any)       lastActivityDateTime = optional(string)       lastUpdateDateTime = optional(string)       mitreTechniques = optional(list(string))       productName = optional(string)       providerAlertId = optional(string)       recommendedActions = optional(string)       resolvedDateTime = optional(string)       serviceSource = optional(string)       severity = optional(string)       status = optional(string)       systemTags = optional(list(string))       tenantId = optional(string)       threatDisplayName = optional(string)       threatFamilyName = optional(string)       title = optional(string)     }))` | no | no |
+| `alerts` | `alerts` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.alert")       actorDisplayName = optional(string)       additionalData = optional(any)       alertPolicyId = optional(string)       alertWebUrl = optional(string)       assignedTo = optional(string)       categories = optional(list(string))       category = optional(string)       classification = optional(string)       comments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.alertComment")       comment = optional(string)       createdByDisplayName = optional(string)       createdDateTime = optional(string)     })))       createdDateTime = optional(string)       customDetails = optional(any)       description = optional(string)       detectionSource = optional(string)       detectorId = optional(string)       determination = optional(string)       evidence = optional(any)       firstActivityDateTime = optional(string)       incidentId = optional(string)       incidentWebUrl = optional(string)       investigationState = optional(string)       lastActivityDateTime = optional(string)       lastUpdateDateTime = optional(string)       mitreTechniques = optional(list(string))       productName = optional(string)       providerAlertId = optional(string)       recommendedActions = optional(string)       resolvedDateTime = optional(string)       serviceSource = optional(string)       severity = optional(string)       status = optional(string)       systemTags = optional(list(string))       tenantId = optional(string)       threatDisplayName = optional(string)       threatFamilyName = optional(string)       title = optional(string)     }))` | no | no |
 | `assigned_to` | `assignedTo` | `string` | no | no |
-| `classification` | `classification` | `any` | no | no |
+| `classification` | `classification` | `string` | no | no |
 | `comments` | `comments` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.alertComment")       comment = optional(string)       createdByDisplayName = optional(string)       createdDateTime = optional(string)     }))` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `custom_tags` | `customTags` | `list(string)` | no | no |
 | `description` | `description` | `string` | no | no |
-| `determination` | `determination` | `any` | no | no |
+| `determination` | `determination` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `incident_web_url` | `incidentWebUrl` | `string` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `string` | no | no |
@@ -60,13 +60,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - alerts[].additionalData: polymorphic schema; accepts an untyped value
-- alerts[].classification: polymorphic schema; accepts an untyped value
 - alerts[].customDetails: polymorphic schema; accepts an untyped value
-- alerts[].detectionSource: polymorphic schema; accepts an untyped value
-- alerts[].determination: polymorphic schema; accepts an untyped value
-- alerts[].investigationState: polymorphic schema; accepts an untyped value
-- classification: polymorphic schema; accepts an untyped value
-- determination: polymorphic schema; accepts an untyped value
+- alerts[].evidence[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -4,9 +4,9 @@ locals {
     "activity"            = var.activity
     "availability"        = var.availability
     "@odata.type"         = var.odata_type
-    "outOfOfficeSettings" = var.out_of_office_settings
-    "statusMessage"       = var.status_message
-    "workLocation"        = var.work_location
+    "outOfOfficeSettings" = (var.out_of_office_settings == null ? null : { for key0, value0 in { "@odata.type" = var.out_of_office_settings["odata_type"], "isOutOfOffice" = var.out_of_office_settings["isOutOfOffice"], "message" = var.out_of_office_settings["message"] } : key0 => value0 if value0 != null })
+    "statusMessage"       = (var.status_message == null ? null : { for key0, value0 in { "@odata.type" = var.status_message["odata_type"], "expiryDateTime" = (var.status_message["expiryDateTime"] == null ? null : { for key1, value1 in { "@odata.type" = var.status_message["expiryDateTime"]["odata_type"], "dateTime" = var.status_message["expiryDateTime"]["dateTime"], "timeZone" = var.status_message["expiryDateTime"]["timeZone"] } : key1 => value1 if value1 != null }), "message" = (var.status_message["message"] == null ? null : { for key1, value1 in { "@odata.type" = var.status_message["message"]["odata_type"], "content" = var.status_message["message"]["content"], "contentType" = var.status_message["message"]["contentType"] } : key1 => value1 if value1 != null }) } : key0 => value0 if value0 != null })
+    "workLocation"        = (var.work_location == null ? null : { for key0, value0 in { "@odata.type" = var.work_location["odata_type"], "placeId" = var.work_location["placeId"], "source" = var.work_location["source"], "workLocationType" = var.work_location["workLocationType"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

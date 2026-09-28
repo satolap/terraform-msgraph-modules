@@ -19,11 +19,11 @@ run "typed_request" {
   command = plan
 
   variables {
-    features = { "allowOnPremUpdateOfOnPremisesObjectIdentifierEnabled" = null }
+    configuration = { "accidentalDeletionPrevention" = null }
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["features"]) == jsonencode({ "@odata.type" = "#microsoft.graph.onPremisesDirectorySynchronizationFeature" })
-    error_message = "features must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["configuration"]) == jsonencode({ "@odata.type" = "#microsoft.graph.onPremisesDirectorySynchronizationConfiguration" })
+    error_message = "configuration must preserve typed values and omit nested nulls."
   }
 }

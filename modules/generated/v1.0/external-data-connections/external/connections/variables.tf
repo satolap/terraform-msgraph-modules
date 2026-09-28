@@ -1,13 +1,19 @@
 variable "activity_settings" {
   description = "Collects configurable settings related to activities involving connector content."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.externalConnectors.activitySettings")
+    urlToItemResolvers = optional(any)
+  })
+  default = null
 }
 
 variable "configuration" {
   description = "Specifies additional application IDs that are allowed to manage the connection and to index content in the connection. Optional."
-  type        = any
-  default     = null
+  type = object({
+    odata_type       = optional(string, "#microsoft.graph.externalConnectors.configuration")
+    authorizedAppIds = optional(list(string))
+  })
+  default = null
 }
 
 variable "connector_id" {
@@ -41,7 +47,7 @@ variable "groups" {
     displayName = optional(string)
     members = optional(list(object({
       odata_type = optional(string, "#microsoft.graph.externalConnectors.identity")
-      type       = optional(any)
+      type       = optional(string)
     })))
   }))
   default = null
@@ -57,15 +63,17 @@ variable "items" {
       type       = optional(string)
       value      = optional(string)
     })))
-    activities = optional(list(object({
-      odata_type    = optional(string, "#microsoft.graph.externalConnectors.externalActivity")
-      performedBy   = optional(any)
-      startDateTime = optional(string)
-      type          = optional(string)
-    })))
-    content                    = optional(any)
-    informationProtectionLabel = optional(any)
-    properties                 = optional(any)
+    activities = optional(any)
+    content = optional(object({
+      odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItemContent")
+      type       = optional(string)
+      value      = optional(string)
+    }))
+    informationProtectionLabel = optional(object({
+      odata_type         = optional(string, "#microsoft.graph.externalConnectors.externalItemInformationProtectionLabel")
+      sensitivityLabelId = optional(string)
+    }))
+    properties = optional(any)
   }))
   default = null
 }
@@ -87,8 +95,26 @@ variable "operations" {
   description = "Microsoft Graph operations property."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.externalConnectors.connectionOperation")
-    error      = optional(any)
-    status     = optional(any)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    status = optional(string)
   }))
   default = null
 }
@@ -101,8 +127,23 @@ variable "schema" {
 
 variable "search_settings" {
   description = "The settings configuring the search experience for content in this connection, such as the display templates for search results."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.externalConnectors.searchSettings")
+    searchResultTemplates = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.externalConnectors.displayTemplate")
+      id         = optional(string)
+      layout     = optional(any)
+      priority   = optional(number)
+      rules = optional(list(object({
+        odata_type     = optional(string, "#microsoft.graph.externalConnectors.propertyRule")
+        operation      = optional(string)
+        property       = optional(string)
+        values         = optional(any)
+        valuesJoinedBy = optional(string)
+      })))
+    })))
+  })
+  default = null
 }
 
 variable "additional_properties" {

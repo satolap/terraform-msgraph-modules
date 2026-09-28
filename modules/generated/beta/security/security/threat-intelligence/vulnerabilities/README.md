@@ -23,13 +23,13 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `active_exploits_observed` | `activeExploitsObserved` | `bool` | no | no |
-| `articles` | `articles` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.article")       body = optional(object({       odata_type = optional(string, "#microsoft.graph.security.formattedContent")       content = optional(string)       format = optional(any)     }))       createdDateTime = optional(string)       imageUrl = optional(string)       indicators = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.articleIndicator")       artifact = optional(object({       odata_type = optional(string, "#microsoft.graph.security.artifact")     }))       source = optional(string)     })))       isFeatured = optional(bool)       lastUpdatedDateTime = optional(string)       summary = optional(object({       odata_type = optional(string, "#microsoft.graph.security.formattedContent")       content = optional(string)       format = optional(any)     }))       tags = optional(list(string))       title = optional(string)     }))` | no | no |
+| `articles` | `articles` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.article")       body = optional(object({       odata_type = optional(string, "#microsoft.graph.security.formattedContent")       content = optional(string)       format = optional(string)     }))       createdDateTime = optional(string)       imageUrl = optional(string)       indicators = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.articleIndicator")       artifact = optional(any)       source = optional(string)     })))       isFeatured = optional(bool)       lastUpdatedDateTime = optional(string)       summary = optional(object({       odata_type = optional(string, "#microsoft.graph.security.formattedContent")       content = optional(string)       format = optional(string)     }))       tags = optional(list(string))       title = optional(string)     }))` | no | no |
 | `common_weakness_enumeration_ids` | `commonWeaknessEnumerationIds` | `list(string)` | no | no |
 | `components` | `components` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.vulnerabilityComponent")       name = optional(string)     }))` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `cvss2_summary` | `cvss2Summary` | `object({       odata_type = optional(string, "#microsoft.graph.security.cvssSummary")       score = optional(any)       severity = optional(any)       vectorString = optional(string)     })` | no | no |
-| `cvss3_summary` | `cvss3Summary` | `object({       odata_type = optional(string, "#microsoft.graph.security.cvssSummary")       score = optional(any)       severity = optional(any)       vectorString = optional(string)     })` | no | no |
-| `description` | `description` | `object({       odata_type = optional(string, "#microsoft.graph.security.formattedContent")       content = optional(string)       format = optional(any)     })` | no | no |
+| `cvss2_summary` | `cvss2Summary` | `object({       odata_type = optional(string, "#microsoft.graph.security.cvssSummary")       score = optional(any)       severity = optional(string)       vectorString = optional(string)     })` | no | no |
+| `cvss3_summary` | `cvss3Summary` | `object({       odata_type = optional(string, "#microsoft.graph.security.cvssSummary")       score = optional(any)       severity = optional(string)       vectorString = optional(string)     })` | no | no |
+| `description` | `description` | `object({       odata_type = optional(string, "#microsoft.graph.security.formattedContent")       content = optional(string)       format = optional(string)     })` | no | no |
 | `exploits` | `exploits` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.hyperlink")       name = optional(string)       url = optional(string)     }))` | no | no |
 | `exploits_available` | `exploitsAvailable` | `bool` | no | no |
 | `has_chatter` | `hasChatter` | `bool` | no | no |
@@ -38,7 +38,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `priority_score` | `priorityScore` | `number` | no | no |
 | `published_date_time` | `publishedDateTime` | `string` | no | no |
 | `references` | `references` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.hyperlink")       name = optional(string)       url = optional(string)     }))` | no | no |
-| `remediation` | `remediation` | `any` | no | no |
+| `remediation` | `remediation` | `object({       odata_type = optional(string, "#microsoft.graph.security.formattedContent")       content = optional(string)       format = optional(string)     })` | no | no |
 | `severity` | `severity` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -57,14 +57,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- articles[].body.format: polymorphic schema; accepts an untyped value
-- articles[].summary.format: polymorphic schema; accepts an untyped value
+- articles[].indicators[].artifact: polymorphic schema; accepts an untyped value
 - cvss2Summary.score: polymorphic schema; accepts an untyped value
-- cvss2Summary.severity: polymorphic schema; accepts an untyped value
 - cvss3Summary.score: polymorphic schema; accepts an untyped value
-- cvss3Summary.severity: polymorphic schema; accepts an untyped value
-- description.format: polymorphic schema; accepts an untyped value
-- remediation: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

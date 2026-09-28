@@ -24,12 +24,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `effective_rules` | `effectiveRules` | `list(object({       odata_type = optional(string, "#microsoft.graph.unifiedRoleManagementPolicyRule")       target = optional(any)     }))` | no | no |
+| `effective_rules` | `effectiveRules` | `any` | no | no |
 | `is_organization_default` | `isOrganizationDefault` | `bool` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `rules` | `rules` | `list(object({       odata_type = optional(string, "#microsoft.graph.unifiedRoleManagementPolicyRule")       target = optional(any)     }))` | no | no |
+| `rules` | `rules` | `any` | no | no |
 | `scope_id` | `scopeId` | `string` | no | no |
 | `scope_type` | `scopeType` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -49,9 +49,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- effectiveRules[].target: polymorphic schema; accepts an untyped value
+- effectiveRules[]: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- rules[].target: polymorphic schema; accepts an untyped value
+- rules[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

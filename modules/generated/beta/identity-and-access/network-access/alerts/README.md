@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `actions` | `actions` | `list(object({       odata_type = optional(string, "#microsoft.graph.networkaccess.alertAction")       actionLink = optional(string)       actionText = optional(string)     }))` | no | no |
 | `alert_type` | `alertType` | `string` | no | no |
-| `categories` | `categories` | `any` | no | no |
+| `categories` | `categories` | `list(string)` | no | no |
 | `component_name` | `componentName` | `string` | no | no |
 | `creation_date_time` | `creationDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
@@ -37,7 +37,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `policy` | `policy` | `any` | no | no |
 | `product_name` | `productName` | `string` | no | no |
-| `related_resources` | `relatedResources` | `list(object({       odata_type = optional(string, "#microsoft.graph.networkaccess.relatedResource")     }))` | no | no |
+| `related_resources` | `relatedResources` | `any` | no | no |
 | `severity` | `severity` | `string` | no | no |
 | `sub_techniques` | `subTechniques` | `list(string)` | no | no |
 | `techniques` | `techniques` | `list(string)` | no | no |
@@ -59,9 +59,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- categories[]: polymorphic schema; accepts an untyped value
 - extendedProperties: polymorphic schema; accepts an untyped value
-- policy: polymorphic schema; accepts an untyped value
+- policy: navigation property; accepts an untyped value
+- relatedResources[]: object without documented properties; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     azure_subscription_id = "example"
     count_hits            = -2147483648
+    registrant            = { "countryOrRegionCode" = null }
     activity_group_names  = ["example"]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["countHits"]) == jsonencode(-2147483648)
     error_message = "countHits must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["registrant"]) == jsonencode({ "@odata.type" = "#microsoft.graph.domainRegistrant" })
+    error_message = "registrant must preserve typed values and omit nested nulls."
   }
 
   assert {

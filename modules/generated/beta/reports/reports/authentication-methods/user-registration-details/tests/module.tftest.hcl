@@ -19,14 +19,14 @@ run "typed_request" {
   command = plan
 
   variables {
-    last_updated_date_time = "2026-01-01T00:00:00Z"
-    is_admin               = false
-    methods_registered     = ["example"]
+    default_mfa_method = "none"
+    is_admin           = false
+    methods_registered = ["example"]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["lastUpdatedDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
-    error_message = "lastUpdatedDateTime must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["defaultMfaMethod"]) == jsonencode("none")
+    error_message = "defaultMfaMethod must preserve typed values and omit nested nulls."
   }
 
   assert {

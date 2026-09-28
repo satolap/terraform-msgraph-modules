@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `action_steps` | `actionSteps` | `list(object({       odata_type = optional(string, "#microsoft.graph.actionStep")       actionUrl = optional(any)       stepNumber = optional(number)       text = optional(string)     }))` | no | no |
+| `action_steps` | `actionSteps` | `list(object({       odata_type = optional(string, "#microsoft.graph.actionStep")       actionUrl = optional(object({       odata_type = optional(string, "#microsoft.graph.actionUrl")       displayName = optional(string)       url = optional(string)     }))       stepNumber = optional(number)       text = optional(string)     }))` | no | no |
 | `benefits` | `benefits` | `string` | no | no |
 | `category` | `category` | `string` | no | no |
 | `category_group` | `categoryGroup` | `string` | no | no |
@@ -32,7 +32,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `current_score` | `currentScore` | `any` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `failed_review_date_time` | `failedReviewDateTime` | `string` | no | no |
-| `feature_areas` | `featureAreas` | `any` | no | no |
+| `feature_areas` | `featureAreas` | `list(string)` | no | no |
 | `impact_start_date_time` | `impactStartDateTime` | `string` | no | no |
 | `impact_type` | `impactType` | `string` | no | no |
 | `impacted_resources` | `impactedResources` | `list(object({       odata_type = optional(string, "#microsoft.graph.impactedResource")       addedDateTime = optional(string)       additionalDetails = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       apiUrl = optional(string)       displayName = optional(string)       lastModifiedBy = optional(string)       lastModifiedDateTime = optional(string)       owner = optional(string)       portalUrl = optional(string)       postponeUntilDateTime = optional(string)       rank = optional(number)       recommendationId = optional(string)       resourceType = optional(string)       status = optional(string)       subjectId = optional(string)       tags = optional(list(object({       odata_type = optional(string, "#microsoft.graph.recommendationTag")       displayName = optional(string)     })))     }))` | no | no |
@@ -46,11 +46,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `postpone_until_date_time` | `postponeUntilDateTime` | `string` | no | no |
 | `priority` | `priority` | `string` | no | no |
-| `recommendation_type` | `recommendationType` | `any` | no | no |
+| `recommendation_type` | `recommendationType` | `string` | no | no |
 | `release_type` | `releaseType` | `string` | no | no |
 | `remediated_date_time` | `remediatedDateTime` | `string` | no | no |
 | `remediation_impact` | `remediationImpact` | `string` | no | no |
-| `required_licenses` | `requiredLicenses` | `any` | no | no |
+| `required_licenses` | `requiredLicenses` | `string` | no | no |
 | `status` | `status` | `string` | no | no |
 | `status_modified_date_time` | `statusModifiedDateTime` | `string` | no | no |
 | `tags` | `tags` | `list(object({       odata_type = optional(string, "#microsoft.graph.recommendationTag")       displayName = optional(string)     }))` | no | no |
@@ -71,12 +71,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- actionSteps[].actionUrl: polymorphic schema; accepts an untyped value
 - currentScore: polymorphic schema; accepts an untyped value
-- featureAreas[]: polymorphic schema; accepts an untyped value
 - maxScore: polymorphic schema; accepts an untyped value
-- recommendationType: polymorphic schema; accepts an untyped value
-- requiredLicenses: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -20,17 +20,11 @@ run "typed_request" {
 
   variables {
     graph_source = "microsoft"
-    artifact     = {}
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["source"]) == jsonencode("microsoft")
     error_message = "source must preserve typed values and omit nested nulls."
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["artifact"]) == jsonencode({ "@odata.type" = "#microsoft.graph.security.artifact" })
-    error_message = "artifact must preserve typed values and omit nested nulls."
   }
 }
 

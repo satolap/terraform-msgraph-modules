@@ -22,15 +22,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `baseline` | `baseline` | `object({       odata_type = optional(string, "#microsoft.graph.configurationBaseline")       description = optional(string)       displayName = optional(string)       parameters = optional(list(object({       odata_type = optional(string, "#microsoft.graph.baselineParameter")       description = optional(string)       displayName = optional(string)       parameterType = optional(string)     })))       resources = optional(list(object({       odata_type = optional(string, "#microsoft.graph.baselineResource")       displayName = optional(string)       properties = optional(object({       odata_type = optional(string, "#microsoft.graph.openComplexDictionaryType")     }))       resourceType = optional(string)     })))     })` | no | no |
-| `created_by` | `createdBy` | `object({       odata_type = optional(string, "#microsoft.graph.identitySet")       application = optional(any)       device = optional(any)       user = optional(any)     })` | no | no |
+| `baseline` | `baseline` | `object({       odata_type = optional(string, "#microsoft.graph.configurationBaseline")       description = optional(string)       displayName = optional(string)       parameters = optional(list(object({       odata_type = optional(string, "#microsoft.graph.baselineParameter")       description = optional(string)       displayName = optional(string)       parameterType = optional(string)     })))       resources = optional(list(object({       odata_type = optional(string, "#microsoft.graph.baselineResource")       displayName = optional(string)       properties = optional(any)       resourceType = optional(string)     })))     })` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `last_modified_by` | `lastModifiedBy` | `object({       odata_type = optional(string, "#microsoft.graph.identitySet")       application = optional(any)       device = optional(any)       user = optional(any)     })` | no | no |
 | `mode` | `mode` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `parameters` | `parameters` | `any` | no | no |
-| `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -47,12 +44,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- createdBy.application: polymorphic schema; accepts an untyped value
-- createdBy.device: polymorphic schema; accepts an untyped value
-- createdBy.user: polymorphic schema; accepts an untyped value
-- lastModifiedBy.application: polymorphic schema; accepts an untyped value
-- lastModifiedBy.device: polymorphic schema; accepts an untyped value
-- lastModifiedBy.user: polymorphic schema; accepts an untyped value
+- baseline.resources[].properties: object without documented properties; accepts an untyped value
 - parameters: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

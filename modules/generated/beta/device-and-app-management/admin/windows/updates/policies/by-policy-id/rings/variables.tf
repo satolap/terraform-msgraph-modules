@@ -9,6 +9,17 @@ variable "policy_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.windowsUpdates.qualityUpdateRing"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "deferral_in_days" {
   description = "The quality update deferral period in days. The value must be between 0 and 30. Optional."
   type        = number
@@ -55,13 +66,6 @@ variable "is_paused" {
   description = "The pause action for the quality update ring policy. Required."
   type        = bool
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.windowsUpdates.ring"
-  nullable    = false
 }
 
 variable "additional_properties" {

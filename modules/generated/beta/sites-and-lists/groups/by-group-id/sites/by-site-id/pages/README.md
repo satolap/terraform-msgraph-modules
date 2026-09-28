@@ -31,9 +31,9 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `last_modified_by_user` | `lastModifiedByUser` | `any` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `page_layout` | `pageLayout` | `any` | no | no |
-| `parent_reference` | `parentReference` | `any` | no | no |
-| `publishing_state` | `publishingState` | `any` | no | no |
+| `page_layout` | `pageLayout` | `string` | no | no |
+| `parent_reference` | `parentReference` | `object({       odata_type = optional(string, "#microsoft.graph.itemReference")       driveType = optional(string)       shareId = optional(string)       siteId = optional(string)     })` | no | no |
+| `publishing_state` | `publishingState` | `object({       odata_type = optional(string, "#microsoft.graph.publicationFacet")       checkedOutBy = optional(any)     })` | no | no |
 | `title` | `title` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -54,9 +54,7 @@ Generation notes:
 - Microsoft Graph beta contracts can change without notice.
 - createdByUser: polymorphic schema; accepts an untyped value
 - lastModifiedByUser: polymorphic schema; accepts an untyped value
-- pageLayout: polymorphic schema; accepts an untyped value
-- parentReference: polymorphic schema; accepts an untyped value
-- publishingState: polymorphic schema; accepts an untyped value
+- publishingState.checkedOutBy: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

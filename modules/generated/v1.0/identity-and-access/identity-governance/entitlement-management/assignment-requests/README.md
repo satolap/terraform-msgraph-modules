@@ -22,14 +22,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `answers` | `answers` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageAnswer")       answeredQuestion = optional(any)       displayValue = optional(string)     }))` | no | no |
+| `answers` | `answers` | `any` | no | no |
 | `assignment` | `assignment` | `any` | no | no |
-| `custom_extension_callout_instances` | `customExtensionCalloutInstances` | `list(object({       odata_type = optional(string, "#microsoft.graph.customExtensionCalloutInstance")       customExtensionId = optional(string)       detail = optional(string)       externalCorrelationId = optional(string)       status = optional(any)     }))` | no | no |
+| `custom_extension_callout_instances` | `customExtensionCalloutInstances` | `list(object({       odata_type = optional(string, "#microsoft.graph.customExtensionCalloutInstance")       customExtensionId = optional(string)       detail = optional(string)       externalCorrelationId = optional(string)       status = optional(string)     }))` | no | no |
 | `justification` | `justification` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `parameters` | `parameters` | `any` | no | no |
-| `request_type` | `requestType` | `any` | no | no |
-| `schedule` | `schedule` | `any` | no | no |
+| `parameters` | `parameters` | `object({       odata_type = optional(string, "#microsoft.graph.accessPackageAssignmentRequestParameters")       bypassApproval = optional(bool)     })` | no | no |
+| `request_type` | `requestType` | `string` | no | no |
+| `schedule` | `schedule` | `object({       odata_type = optional(string, "#microsoft.graph.entitlementManagementSchedule")       expiration = optional(object({       odata_type = optional(string, "#microsoft.graph.expirationPattern")       duration = optional(string)       endDateTime = optional(string)       type = optional(string)     }))       recurrence = optional(object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     }))       startDateTime = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -46,12 +46,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- answers[].answeredQuestion: polymorphic schema; accepts an untyped value
-- assignment: polymorphic schema; accepts an untyped value
-- customExtensionCalloutInstances[].status: polymorphic schema; accepts an untyped value
-- parameters: polymorphic schema; accepts an untyped value
-- requestType: polymorphic schema; accepts an untyped value
-- schedule: polymorphic schema; accepts an untyped value
+- answers[]: polymorphic schema; accepts an untyped value
+- assignment: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

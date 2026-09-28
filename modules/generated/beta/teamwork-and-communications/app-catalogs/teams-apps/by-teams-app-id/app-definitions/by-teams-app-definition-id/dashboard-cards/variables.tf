@@ -22,13 +22,20 @@ variable "teams_app_definition_id" {
 
 variable "content_source" {
   description = "The configuration for the source of the card content. Required."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.teamsAppDashboardCardContentSource")
+    botConfiguration = optional(object({
+      odata_type = optional(string, "#microsoft.graph.teamsAppDashboardCardBotConfiguration")
+      botId      = optional(string)
+    }))
+    sourceType = optional(string)
+  })
+  default = null
 }
 
 variable "default_size" {
   description = "The size of the card. The possible values are: medium, large, unknownFutureValue. Required."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -51,8 +58,12 @@ variable "display_name" {
 
 variable "icon" {
   description = "Configuration for the display of the icon in the card picker. If neither this nor any of its properties (iconUrl and officeUIFabricIconName) are specified, the color icon of the app is used. Optional."
-  type        = any
-  default     = null
+  type = object({
+    odata_type             = optional(string, "#microsoft.graph.teamsAppDashboardCardIcon")
+    iconUrl                = optional(string)
+    officeUIFabricIconName = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {

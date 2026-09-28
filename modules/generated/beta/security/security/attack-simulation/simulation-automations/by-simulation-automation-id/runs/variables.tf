@@ -36,7 +36,7 @@ variable "start_date_time" {
 
 variable "status" {
   description = "Status of the attack simulation automation run. The possible values are: unknown, running, succeeded, failed, skipped, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -17,7 +17,7 @@ variable "certificate" {
 
 variable "certificate_authority_type" {
   description = "The type of certificate authority. The possible values are: root, intermediate, unknownFutureValue. Supports $filter (eq)."
-  type        = any
+  type        = string
   default     = null
 
   validation {

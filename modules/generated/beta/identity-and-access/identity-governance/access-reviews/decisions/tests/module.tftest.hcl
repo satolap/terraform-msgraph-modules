@@ -20,6 +20,7 @@ run "typed_request" {
 
   variables {
     apply_description = "example"
+    permission        = { "description" = null }
     insights          = [{}]
   }
 
@@ -29,7 +30,12 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["insights"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.governanceInsight" }])
+    condition     = jsonencode(msgraph_resource.this.body["permission"]) == jsonencode({ "@odata.type" = "#microsoft.graph.accessReviewInstanceDecisionItemPermission" })
+    error_message = "permission must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["insights"]) == jsonencode([{}])
     error_message = "insights must preserve typed values and omit nested nulls."
   }
 }

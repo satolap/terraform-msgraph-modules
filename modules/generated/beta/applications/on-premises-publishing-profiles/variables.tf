@@ -5,18 +5,27 @@ variable "application_segments" {
     action          = optional(string)
     application     = optional(any)
     destinationHost = optional(string)
-    destinationType = optional(any)
+    destinationType = optional(string)
     port            = optional(number)
     ports           = optional(list(string))
-    protocol        = optional(any)
+    protocol        = optional(string)
   }))
   default = null
 }
 
 variable "hybrid_agent_updater_configuration" {
   description = "Represents a hybridAgentUpdaterConfiguration object."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                       = optional(string, "#microsoft.graph.hybridAgentUpdaterConfiguration")
+    allowUpdateConfigurationOverride = optional(bool)
+    deferUpdateDateTime              = optional(string)
+    updateWindow = optional(object({
+      odata_type            = optional(string, "#microsoft.graph.updateWindow")
+      updateWindowEndTime   = optional(string)
+      updateWindowStartTime = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "is_default_access_enabled" {

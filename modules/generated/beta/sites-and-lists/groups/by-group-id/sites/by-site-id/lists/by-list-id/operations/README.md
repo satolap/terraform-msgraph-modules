@@ -29,13 +29,13 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `site_id` | URL parameter `site-id` | `string` | yes | no |
 | `list_id` | URL parameter `list-id` | `string` | yes | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `error` | `error` | `any` | no | no |
+| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     })` | no | no |
 | `last_action_date_time` | `lastActionDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `percentage_complete` | `percentageComplete` | `number` | no | no |
 | `resource_id` | `resourceId` | `string` | no | no |
 | `resource_location` | `resourceLocation` | `string` | no | no |
-| `status` | `status` | `any` | no | no |
+| `status` | `status` | `string` | no | no |
 | `status_detail` | `statusDetail` | `string` | no | no |
 | `type` | `type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -55,8 +55,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- error: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

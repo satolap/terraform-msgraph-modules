@@ -20,12 +20,18 @@ run "typed_request" {
 
   variables {
     created_date_time         = "2026-01-01T00:00:00Z"
+    event_status              = { "error" = null }
     event_propagation_results = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["createdDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
     error_message = "createdDateTime must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["eventStatus"]) == jsonencode({ "@odata.type" = "#microsoft.graph.security.retentionEventStatus" })
+    error_message = "eventStatus must preserve typed values and omit nested nulls."
   }
 
   assert {

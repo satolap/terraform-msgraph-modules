@@ -20,10 +20,16 @@ run "typed_request" {
 
   variables {
     assignment_state = "example"
+    schedule         = { "duration" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["assignmentState"]) == jsonencode("example")
     error_message = "assignmentState must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["schedule"]) == jsonencode({ "@odata.type" = "#microsoft.graph.governanceSchedule" })
+    error_message = "schedule must preserve typed values and omit nested nulls."
   }
 }

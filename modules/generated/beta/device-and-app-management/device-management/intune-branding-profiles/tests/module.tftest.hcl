@@ -19,9 +19,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    contact_it_email_address = "example"
-    disable_client_telemetry = false
-    assignments              = [{}]
+    contact_it_email_address      = "example"
+    disable_client_telemetry      = false
+    landing_page_customized_image = { "type" = null }
+    assignments                   = [{}]
   }
 
   assert {
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["disableClientTelemetry"]) == jsonencode(false)
     error_message = "disableClientTelemetry must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["landingPageCustomizedImage"]) == jsonencode({ "@odata.type" = "#microsoft.graph.mimeContent" })
+    error_message = "landingPageCustomizedImage must preserve typed values and omit nested nulls."
   }
 
   assert {

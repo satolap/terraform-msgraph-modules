@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `authorization_system` | `authorizationSystem` | `object({       odata_type = optional(string, "#microsoft.graph.authorizationSystem")       authorizationSystemId = optional(string)       authorizationSystemName = optional(string)       authorizationSystemType = optional(string)       dataCollectionInfo = optional(any)     })` | no | no |
+| `authorization_system` | `authorizationSystem` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `high_risk_profile` | `highRiskProfile` | `object({       odata_type = optional(string, "#microsoft.graph.riskProfile")       humanCount = optional(number)       nonHumanCount = optional(number)     })` | no | no |
 | `low_risk_profile` | `lowRiskProfile` | `object({       odata_type = optional(string, "#microsoft.graph.riskProfile")       humanCount = optional(number)       nonHumanCount = optional(number)     })` | no | no |
@@ -45,7 +45,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- authorizationSystem.dataCollectionInfo: polymorphic schema; accepts an untyped value
+- authorizationSystem: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

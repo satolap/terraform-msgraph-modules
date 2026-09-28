@@ -130,7 +130,7 @@ variable "plan_id" {
 
 variable "preview_type" {
   description = "The type of preview that shows up on the task. The possible values are: automatic, noPreview, checklist, description, reference."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -147,8 +147,29 @@ variable "priority" {
 
 variable "recurrence" {
   description = "Defines active or inactive recurrence for the task. null when the recurrence has never been defined for the task."
-  type        = any
-  default     = null
+  type = object({
+    odata_type              = optional(string, "#microsoft.graph.plannerTaskRecurrence")
+    nextInSeriesTaskId      = optional(string)
+    occurrenceId            = optional(number)
+    previousInSeriesTaskId  = optional(string)
+    recurrenceStartDateTime = optional(string)
+    schedule = optional(object({
+      odata_type = optional(string, "#microsoft.graph.plannerRecurrenceSchedule")
+      pattern = optional(object({
+        odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+        dayOfMonth     = optional(number)
+        daysOfWeek     = optional(list(string))
+        firstDayOfWeek = optional(string)
+        index          = optional(string)
+        interval       = optional(number)
+        month          = optional(number)
+        type           = optional(string)
+      }))
+      patternStartDateTime = optional(string)
+    }))
+    seriesId = optional(string)
+  })
+  default = null
 }
 
 variable "reference_count" {

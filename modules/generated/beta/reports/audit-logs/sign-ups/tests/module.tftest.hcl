@@ -19,13 +19,19 @@ run "typed_request" {
   command = plan
 
   variables {
-    app_display_name        = "example"
-    applied_event_listeners = [{}]
+    app_display_name         = "example"
+    fraud_protection_details = { "providerErrorMessages" = null }
+    applied_event_listeners  = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["appDisplayName"]) == jsonencode("example")
     error_message = "appDisplayName must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["fraudProtectionDetails"]) == jsonencode({ "@odata.type" = "#microsoft.graph.fraudProtectionDetails" })
+    error_message = "fraudProtectionDetails must preserve typed values and omit nested nulls."
   }
 
   assert {

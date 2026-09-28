@@ -39,8 +39,12 @@ variable "analytics" {
 
 variable "content_type" {
   description = "The content type of this list item"
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.contentTypeInfo")
+    id         = optional(string)
+    name       = optional(string)
+  })
+  default = null
 }
 
 variable "description" {
@@ -95,17 +99,19 @@ variable "odata_type" {
 
 variable "parent_reference" {
   description = "Parent information, if the item has a parent. Read-write."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.itemReference")
+    driveType  = optional(string)
+    shareId    = optional(string)
+    siteId     = optional(string)
+  })
+  default = null
 }
 
 variable "versions" {
   description = "The list of previous versions of the list item."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.listItemVersion")
-    fields     = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

@@ -23,7 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `display_name` | `displayName` | `string` | no | no |
-| `hardware_oath_devices` | `hardwareOathDevices` | `list(object({       odata_type = optional(string, "#microsoft.graph.hardwareOathTokenAuthenticationMethodDevice")       assignTo = optional(any)       assignedTo = optional(any)       displayName = optional(string)       hardwareOathDevices = optional(any)       hashFunction = optional(any)       manufacturer = optional(string)       model = optional(string)       secretKey = optional(string)       serialNumber = optional(string)       status = optional(any)       timeIntervalInSeconds = optional(number)     }))` | no | yes |
+| `hardware_oath_devices` | `hardwareOathDevices` | `list(object({       odata_type = optional(string, "#microsoft.graph.hardwareOathTokenAuthenticationMethodDevice")       assignTo = optional(any)       assignedTo = optional(any)       displayName = optional(string)       hardwareOathDevices = optional(any)       hashFunction = optional(string)       manufacturer = optional(string)       model = optional(string)       secretKey = optional(string)       serialNumber = optional(string)       status = optional(string)       timeIntervalInSeconds = optional(number)     }))` | no | yes |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -45,8 +45,6 @@ Generation notes:
 - hardwareOathDevices[].assignTo: polymorphic schema; accepts an untyped value
 - hardwareOathDevices[].assignedTo: polymorphic schema; accepts an untyped value
 - hardwareOathDevices[].hardwareOathDevices[]: recursive schema; accepts an untyped value
-- hardwareOathDevices[].hashFunction: polymorphic schema; accepts an untyped value
-- hardwareOathDevices[].status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -28,8 +28,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `credential_origin` | `credentialOrigin` | `string` | no | yes |
 | `expiration_date_time` | `expirationDateTime` | `string` | no | no |
 | `key_id` | `keyId` | `string` | no | no |
-| `key_type` | `keyType` | `any` | no | no |
-| `key_usage` | `keyUsage` | `any` | no | no |
+| `key_type` | `keyType` | `string` | no | no |
+| `key_usage` | `keyUsage` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `resource_id` | `resourceId` | `string` | no | no |
 | `service_principal_object_id` | `servicePrincipalObjectId` | `string` | no | no |
@@ -51,8 +51,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- keyType: polymorphic schema; accepts an untyped value
-- keyUsage: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

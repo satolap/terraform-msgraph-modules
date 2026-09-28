@@ -20,11 +20,17 @@ run "typed_request" {
 
   variables {
     alert_rule_id = "example"
+    alert_impact  = { "aggregationType" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["alertRuleId"]) == jsonencode("example")
     error_message = "alertRuleId must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["alertImpact"]) == jsonencode({ "@odata.type" = "#microsoft.graph.deviceManagement.alertImpact" })
+    error_message = "alertImpact must preserve typed values and omit nested nulls."
   }
 }
 

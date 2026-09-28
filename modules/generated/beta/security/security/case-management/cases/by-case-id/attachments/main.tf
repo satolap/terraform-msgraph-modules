@@ -11,7 +11,7 @@ locals {
     "lastModifiedBy"       = var.last_modified_by
     "lastModifiedDateTime" = var.last_modified_date_time
     "@odata.type"          = var.odata_type
-    "origin"               = var.origin
+    "origin"               = (var.origin == null ? null : { for key0, value0 in { "@odata.type" = var.origin["odata_type"], "resourceId" = var.origin["resourceId"], "resourceType" = var.origin["resourceType"] } : key0 => value0 if value0 != null })
     "scanResult"           = var.scan_result
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)

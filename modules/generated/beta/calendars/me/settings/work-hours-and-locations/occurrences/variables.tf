@@ -39,8 +39,12 @@ variable "start" {
 
 variable "time_off_details" {
   description = "The details about the time off. Only applicable when workLocationType is set to timeOff."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.timeOffDetails")
+    isAllDay   = optional(bool)
+    subject    = optional(string)
+  })
+  default = null
 }
 
 variable "work_location_type" {

@@ -48,9 +48,9 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `order_hint` | `orderHint` | `string` | no | no |
 | `percent_complete` | `percentComplete` | `number` | no | no |
 | `plan_id` | `planId` | `string` | no | no |
-| `preview_type` | `previewType` | `any` | no | no |
+| `preview_type` | `previewType` | `string` | no | no |
 | `priority` | `priority` | `number` | no | no |
-| `recurrence` | `recurrence` | `any` | no | no |
+| `recurrence` | `recurrence` | `object({       odata_type = optional(string, "#microsoft.graph.plannerTaskRecurrence")       nextInSeriesTaskId = optional(string)       occurrenceId = optional(number)       previousInSeriesTaskId = optional(string)       recurrenceStartDateTime = optional(string)       schedule = optional(object({       odata_type = optional(string, "#microsoft.graph.plannerRecurrenceSchedule")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       patternStartDateTime = optional(string)     }))       seriesId = optional(string)     })` | no | no |
 | `reference_count` | `referenceCount` | `number` | no | no |
 | `start_date_time` | `startDateTime` | `string` | no | no |
 | `title` | `title` | `string` | no | no |
@@ -76,8 +76,6 @@ Generation notes:
 - completedBy: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
 - creationSource: polymorphic schema; accepts an untyped value
-- previewType: polymorphic schema; accepts an untyped value
-- recurrence: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

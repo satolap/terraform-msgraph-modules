@@ -12,7 +12,7 @@ locals {
     "infoUrls"                       = (var.info_urls == null ? null : [for item0 in var.info_urls : item0 if item0 != null])
     "keywords"                       = (var.keywords == null ? null : [for item0 in var.keywords : item0 if item0 != null])
     "name"                           = var.name
-    "occurrence"                     = var.occurrence
+    "occurrence"                     = (var.occurrence == null ? null : { for key0, value0 in { "@odata.type" = var.occurrence["odata_type"], "maxDeviceOccurrence" = var.occurrence["maxDeviceOccurrence"], "minDeviceOccurrence" = var.occurrence["minDeviceOccurrence"] } : key0 => value0 if value0 != null })
     "@odata.type"                    = var.odata_type
     "offsetUri"                      = var.offset_uri
     "referredSettingInformationList" = (var.referred_setting_information_list == null ? null : [for item0 in var.referred_setting_information_list : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "settingDefinitionId" = item0["settingDefinitionId"] } : key1 => value1 if value1 != null }) if item0 != null])

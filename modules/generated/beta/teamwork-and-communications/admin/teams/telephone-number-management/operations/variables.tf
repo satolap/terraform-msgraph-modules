@@ -9,7 +9,7 @@ variable "numbers" {
   type = list(object({
     odata_type       = optional(string, "#microsoft.graph.teamsAdministration.telephoneNumberLongRunningOperationDetails")
     resourceLocation = optional(string)
-    status           = optional(any)
+    status           = optional(string)
     statusDetail     = optional(string)
   }))
   default = null

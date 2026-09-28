@@ -34,7 +34,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["progressEvents"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.sharePointMigrationEvent" }])
+    condition     = jsonencode(msgraph_resource.this.body["progressEvents"]) == jsonencode([{}])
     error_message = "progressEvents must preserve typed values and omit nested nulls."
   }
 }

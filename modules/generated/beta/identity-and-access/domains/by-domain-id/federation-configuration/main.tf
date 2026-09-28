@@ -18,7 +18,7 @@ locals {
     "promptLoginBehavior"                    = var.prompt_login_behavior
     "signOutUri"                             = var.sign_out_uri
     "signingCertificate"                     = var.signing_certificate
-    "signingCertificateUpdateStatus"         = var.signing_certificate_update_status
+    "signingCertificateUpdateStatus"         = (var.signing_certificate_update_status == null ? null : { for key0, value0 in { "@odata.type" = var.signing_certificate_update_status["odata_type"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

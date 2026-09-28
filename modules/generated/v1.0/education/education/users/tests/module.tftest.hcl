@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     department        = "example"
     account_enabled   = false
+    mailing_address   = { "city" = null }
     assigned_licenses = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["accountEnabled"]) == jsonencode(false)
     error_message = "accountEnabled must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["mailingAddress"]) == jsonencode({ "@odata.type" = "#microsoft.graph.physicalAddress" })
+    error_message = "mailingAddress must preserve typed values and omit nested nulls."
   }
 
   assert {

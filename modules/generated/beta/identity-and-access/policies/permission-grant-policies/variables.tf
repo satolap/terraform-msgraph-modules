@@ -26,13 +26,10 @@ variable "excludes" {
     clientApplicationTenantIds                  = optional(list(string))
     clientApplicationsFromVerifiedPublisherOnly = optional(bool)
     permissionClassification                    = optional(string)
-    permissionType                              = optional(any)
+    permissionType                              = optional(string)
     permissions                                 = optional(list(string))
     resourceApplication                         = optional(string)
-    scopeSensitivityLabels = optional(object({
-      odata_type = optional(string, "#microsoft.graph.scopeSensitivityLabels")
-      labelKind  = optional(any)
-    }))
+    scopeSensitivityLabels                      = optional(any)
   }))
   default = null
 }
@@ -53,13 +50,10 @@ variable "includes" {
     clientApplicationTenantIds                  = optional(list(string))
     clientApplicationsFromVerifiedPublisherOnly = optional(bool)
     permissionClassification                    = optional(string)
-    permissionType                              = optional(any)
+    permissionType                              = optional(string)
     permissions                                 = optional(list(string))
     resourceApplication                         = optional(string)
-    scopeSensitivityLabels = optional(object({
-      odata_type = optional(string, "#microsoft.graph.scopeSensitivityLabels")
-      labelKind  = optional(any)
-    }))
+    scopeSensitivityLabels                      = optional(any)
   }))
   default = null
 }
@@ -73,7 +67,7 @@ variable "odata_type" {
 
 variable "resource_scope_type" {
   description = "The resource type the pre-approval policy applies to. Possible values: team for groups and teams, chat for chats, tenant for all supported resources in the tenant. Required."
-  type        = any
+  type        = string
   default     = null
 
   validation {

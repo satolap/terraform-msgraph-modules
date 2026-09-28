@@ -17,7 +17,7 @@ variable "completion_date_time" {
 
 variable "destination_type" {
   description = "Indicates the restoration destination. The possible values are: new, inPlace, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -28,8 +28,31 @@ variable "destination_type" {
 
 variable "error" {
   description = "Contains error details if the restore session fails or completes with an error."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.publicError")
+    code       = optional(string)
+    details = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+      code       = optional(string)
+      message    = optional(string)
+      target     = optional(string)
+    })))
+    innerError = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicInnerError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    message = optional(string)
+    target  = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -65,7 +88,7 @@ variable "start_date_time" {
 
 variable "status" {
   description = "The individual restoration status of the restore artifact. The possible values are: added, scheduling, scheduled, inProgress, succeeded, failed, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -1,6 +1,6 @@
 variable "add_to_calendar_action" {
   description = "Optional field to control the assignment behavior  for adding assignments to students' and teachers' calendars when the assignment is published. The possible values are: none, studentsAndPublisher, studentsAndTeamOwners, unknownFutureValue, and studentsOnly. Use the Prefer: include-unknown-enum-members request header to get the following values in this evolvable enum: studentsOnly. The default value is none."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -11,7 +11,7 @@ variable "add_to_calendar_action" {
 
 variable "added_student_action" {
   description = "Optional field to control the assignment behavior for students who are added after the assignment is published. If not specified, defaults to none. Supported values are: none, assignIfOpen. For example, a teacher can use assignIfOpen to indicate that an assignment should be assigned to any new student who joins the class while the assignment is still open, and none to indicate that an assignment shouldn't be assigned to new students."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -82,8 +82,12 @@ variable "grading_scheme" {
 
 variable "instructions" {
   description = "Instructions for the assignment. The instructions and the display name tell the student what to do."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.educationItemBody")
+    content     = optional(string)
+    contentType = optional(string)
+  })
+  default = null
 }
 
 variable "language_tag" {

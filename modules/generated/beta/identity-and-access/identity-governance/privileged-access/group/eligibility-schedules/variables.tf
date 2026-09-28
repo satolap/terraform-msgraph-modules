@@ -1,6 +1,6 @@
 variable "access_id" {
   description = "The identifier of the membership or ownership eligibility to the group that is governed by PIM. Required. The possible values are: owner, member. Supports $filter (eq)."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -35,7 +35,7 @@ variable "group_id" {
 
 variable "member_type" {
   description = "Indicates whether the assignment is derived from a group assignment. It can further imply whether the caller can manage the schedule. Required. The possible values are: direct, group, unknownFutureValue. Supports $filter (eq)."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -71,8 +71,38 @@ variable "principal_id" {
 
 variable "schedule_info" {
   description = "Represents the period of the access assignment or eligibility. The scheduleInfo can represent a single occurrence or multiple recurring instances. Required."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.requestSchedule")
+    expiration = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.expirationPattern")
+      duration    = optional(string)
+      endDateTime = optional(string)
+      type        = optional(string)
+    }))
+    recurrence = optional(object({
+      odata_type = optional(string, "#microsoft.graph.patternedRecurrence")
+      pattern = optional(object({
+        odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+        dayOfMonth     = optional(number)
+        daysOfWeek     = optional(list(string))
+        firstDayOfWeek = optional(string)
+        index          = optional(string)
+        interval       = optional(number)
+        month          = optional(number)
+        type           = optional(string)
+      }))
+      range = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.recurrenceRange")
+        endDate             = optional(string)
+        numberOfOccurrences = optional(number)
+        recurrenceTimeZone  = optional(string)
+        startDate           = optional(string)
+        type                = optional(string)
+      }))
+    }))
+    startDateTime = optional(string)
+  })
+  default = null
 }
 
 variable "status" {

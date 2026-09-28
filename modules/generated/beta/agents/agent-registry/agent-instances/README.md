@@ -54,9 +54,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- agentCardManifest: polymorphic schema; accepts an untyped value
+- agentCardManifest: navigation property; accepts an untyped value
 - collections[].members[].additionalInterfaces[]: nested schema exceeds depth limit; accepts an untyped value
-- collections[].members[].agentCardManifest: polymorphic schema; accepts an untyped value
+- collections[].members[].agentCardManifest: navigation property; accepts an untyped value
 - collections[].members[].collections[]: recursive schema; accepts an untyped value
 - collections[].members[].signatures[]: nested schema exceeds depth limit; accepts an untyped value
 - signatures[].header: polymorphic schema; accepts an untyped value

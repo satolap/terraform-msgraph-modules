@@ -38,8 +38,11 @@ variable "auto_extend_duration" {
 
 variable "customer" {
   description = "The display name and unique identifier of the customer of the relationship. This is configured either by the partner at the time the relationship is created or by the system after the customer approves the relationship. Can't be changed by the customer."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.delegatedAdminRelationshipCustomerParticipant")
+    tenantId   = optional(string)
+  })
+  default = null
 }
 
 variable "display_name" {

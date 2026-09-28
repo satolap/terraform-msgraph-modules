@@ -25,12 +25,18 @@ run "typed_request" {
   variables {
     share_point_restore_session_id = "test-parent-id"
     created_date_time              = "2026-01-01T00:00:00Z"
+    error                          = { "code" = null }
     protection_unit_ids            = ["example"]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["createdDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
     error_message = "createdDateTime must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["error"]) == jsonencode({ "@odata.type" = "#microsoft.graph.publicError" })
+    error_message = "error must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -48,4 +54,29 @@ run "invalid_enum" {
   }
 
   expect_failures = [var.destination_type]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    share_point_restore_session_id = "test-parent-id"
+    tags                           = "none, FastRestore"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["tags"] == "none, FastRestore"
+    error_message = "tags must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    share_point_restore_session_id = "test-parent-id"
+    tags                           = "none,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.tags]
 }

@@ -37,16 +37,20 @@ variable "odata_type" {
 variable "payload" {
   description = "Microsoft Graph payload property."
   type = object({
-    odata_type    = optional(string, "#microsoft.graph.payloadTypes")
-    rawContent    = optional(string)
-    visualContent = optional(any)
+    odata_type = optional(string, "#microsoft.graph.payloadTypes")
+    rawContent = optional(string)
+    visualContent = optional(object({
+      odata_type = optional(string, "#microsoft.graph.visualProperties")
+      body       = optional(string)
+      title      = optional(string)
+    }))
   })
   default = null
 }
 
 variable "priority" {
   description = "Indicates the priority of a raw user notification. Visual notifications are sent with high priority by default. Valid values are None, High and Low."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -63,8 +67,11 @@ variable "target_host_name" {
 
 variable "target_policy" {
   description = "Target policy object handles notification delivery policy for endpoint types that should be targeted (Windows, iOS, Android and WebPush) for the given user."
-  type        = any
-  default     = null
+  type = object({
+    odata_type    = optional(string, "#microsoft.graph.targetPolicyEndpoints")
+    platformTypes = optional(list(string))
+  })
+  default = null
 }
 
 variable "additional_properties" {

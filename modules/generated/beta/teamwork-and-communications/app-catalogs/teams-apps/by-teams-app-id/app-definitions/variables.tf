@@ -11,19 +11,30 @@ variable "teams_app_id" {
 
 variable "allowed_installation_scopes" {
   description = "A collection of scopes where the Teams app can be installed. The possible values are:team—Indicates that the Teams app can be installed within a team and is authorized to access that team's data. groupChat—Indicates that the Teams app can be installed within a group chat and is authorized to access that group chat's data. personal—Indicates that the Teams app can be installed in the personal scope of a user and is authorized to access that user's data."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.allowed_installation_scopes == null ? true : contains(["team", "groupChat", "personal", "unknownFutureValue"], var.allowed_installation_scopes)
-    error_message = "allowed_installation_scopes must be one of the documented enum values."
+    condition     = var.allowed_installation_scopes == null ? true : try(alltrue([for value in split(",", var.allowed_installation_scopes) : contains(["team", "groupchat", "personal", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "allowed_installation_scopes must be one or more of the documented enum values, separated by commas."
   }
 }
 
 variable "authorization" {
   description = "Authorization requirements specified in the Teams app manifest."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.teamsAppAuthorization")
+    clientAppId = optional(string)
+    requiredPermissionSet = optional(object({
+      odata_type = optional(string, "#microsoft.graph.teamsAppPermissionSet")
+      resourceSpecificPermissions = optional(list(object({
+        odata_type      = optional(string, "#microsoft.graph.teamsAppResourceSpecificPermission")
+        permissionType  = optional(string)
+        permissionValue = optional(string)
+      })))
+    }))
+  })
+  default = null
 }
 
 variable "azure_ad_app_id" {
@@ -53,12 +64,23 @@ variable "created_by" {
 variable "dashboard_cards" {
   description = "Dashboard cards specified in the Teams app manifest."
   type = list(object({
-    odata_type    = optional(string, "#microsoft.graph.teamsAppDashboardCardDefinition")
-    contentSource = optional(any)
-    defaultSize   = optional(any)
-    description   = optional(string)
-    displayName   = optional(string)
-    icon          = optional(any)
+    odata_type = optional(string, "#microsoft.graph.teamsAppDashboardCardDefinition")
+    contentSource = optional(object({
+      odata_type = optional(string, "#microsoft.graph.teamsAppDashboardCardContentSource")
+      botConfiguration = optional(object({
+        odata_type = optional(string, "#microsoft.graph.teamsAppDashboardCardBotConfiguration")
+        botId      = optional(string)
+      }))
+      sourceType = optional(string)
+    }))
+    defaultSize = optional(string)
+    description = optional(string)
+    displayName = optional(string)
+    icon = optional(object({
+      odata_type             = optional(string, "#microsoft.graph.teamsAppDashboardCardIcon")
+      iconUrl                = optional(string)
+      officeUIFabricIconName = optional(string)
+    }))
     pickerGroupId = optional(string)
   }))
   default = null
@@ -103,7 +125,7 @@ variable "outline_icon" {
 
 variable "publishing_state" {
   description = "The published status of a specific version of a Teams app. The possible values are:submitted—The specific version of the Teams app has been submitted and is under review. published - The request to publish the specific version of the Teams app has been approved by the admin and the app is published. rejected - The request to publish the specific version of the Teams app was rejected by the admin."
-  type        = any
+  type        = string
   default     = null
 
   validation {

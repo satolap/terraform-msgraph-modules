@@ -35,7 +35,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["accessPackageCustomWorkflowExtensions"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.customCalloutExtension" }])
+    condition     = jsonencode(msgraph_resource.this.body["accessPackageCustomWorkflowExtensions"]) == jsonencode([{}])
     error_message = "accessPackageCustomWorkflowExtensions must preserve typed values and omit nested nulls."
   }
 }

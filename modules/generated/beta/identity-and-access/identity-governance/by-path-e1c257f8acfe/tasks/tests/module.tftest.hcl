@@ -64,3 +64,30 @@ run "invalid_enum" {
 
   expect_failures = [var.category]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    workflow_id                     = "test-parent-id"
+    workflow_version_version_number = "test-parent-id"
+    category                        = "joiner, Leaver"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["category"] == "joiner, Leaver"
+    error_message = "category must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    workflow_id                     = "test-parent-id"
+    workflow_version_version_number = "test-parent-id"
+    category                        = "joiner,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.category]
+}

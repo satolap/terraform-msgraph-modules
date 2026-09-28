@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.windowsUpdates.qualityUpdatePolicy"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "applicable_content" {
   description = "Represents content applicable for offering to the related collection of devices."
   type = list(object({
@@ -15,11 +26,8 @@ variable "applicable_content" {
 
 variable "approval_rules" {
   description = "The approved rule of the policy that determines which published content matches the rule on an ongoing basis."
-  type = list(object({
-    odata_type     = optional(string, "#microsoft.graph.windowsUpdates.approvalRule")
-    deferralInDays = optional(number)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "approvals" {
@@ -44,37 +52,10 @@ variable "display_name" {
   default     = null
 }
 
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.windowsUpdates.policy"
-  nullable    = false
-}
-
 variable "rings" {
   description = "Represents a set of deployment rings that contains update deployment settings."
-  type = list(object({
-    odata_type     = optional(string, "#microsoft.graph.windowsUpdates.ring")
-    deferralInDays = optional(number)
-    description    = optional(string)
-    displayName    = optional(string)
-    excludedGroupAssignment = optional(object({
-      odata_type = optional(string, "#microsoft.graph.windowsUpdates.excludedGroupAssignment")
-      assignments = optional(list(object({
-        odata_type = optional(string, "#microsoft.graph.windowsUpdates.assignedGroup")
-        group      = optional(any)
-      })))
-    }))
-    includedGroupAssignment = optional(object({
-      odata_type = optional(string, "#microsoft.graph.windowsUpdates.includedGroupAssignment")
-      assignments = optional(list(object({
-        odata_type = optional(string, "#microsoft.graph.windowsUpdates.assignedGroup")
-        group      = optional(any)
-      })))
-    }))
-    isPaused = optional(bool)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

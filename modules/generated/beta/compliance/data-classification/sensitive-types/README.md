@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `classification_method` | `classificationMethod` | `any` | no | no |
+| `classification_method` | `classificationMethod` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `name` | `name` | `string` | no | no |
@@ -30,8 +30,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `publisher_name` | `publisherName` | `string` | no | no |
 | `rule_package_id` | `rulePackageId` | `string` | no | no |
 | `rule_package_type` | `rulePackageType` | `string` | no | no |
-| `scope` | `scope` | `any` | no | no |
-| `sensitive_type_source` | `sensitiveTypeSource` | `any` | no | no |
+| `scope` | `scope` | `string` | no | no |
+| `sensitive_type_source` | `sensitiveTypeSource` | `string` | no | no |
 | `state` | `state` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -50,9 +50,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- classificationMethod: polymorphic schema; accepts an untyped value
-- scope: polymorphic schema; accepts an untyped value
-- sensitiveTypeSource: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

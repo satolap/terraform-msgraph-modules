@@ -6,11 +6,8 @@ variable "deleted_date_time" {
 
 variable "deleted_members" {
   description = "Microsoft Graph deletedMembers property."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "description" {
@@ -27,10 +24,8 @@ variable "display_name" {
 
 variable "extensions" {
   description = "The collection of open extensions defined for this administrative unit. Nullable."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.extension")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "is_member_management_restricted" {
@@ -41,11 +36,8 @@ variable "is_member_management_restricted" {
 
 variable "members" {
   description = "Users and groups that are members of this administrative unit. Supports $expand."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "membership_rule" {
@@ -79,11 +71,7 @@ variable "scoped_role_members" {
     odata_type           = optional(string, "#microsoft.graph.scopedRoleMembership")
     administrativeUnitId = optional(string)
     roleId               = optional(string)
-    roleMemberInfo = optional(object({
-      odata_type  = optional(string, "#microsoft.graph.identity")
-      displayName = optional(string)
-      id          = optional(string)
-    }))
+    roleMemberInfo       = optional(any)
   }))
   default = null
 }

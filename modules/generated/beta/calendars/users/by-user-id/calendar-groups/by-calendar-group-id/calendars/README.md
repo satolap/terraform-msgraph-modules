@@ -26,11 +26,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `user_id` | URL parameter `user-id` | `string` | yes | no |
 | `calendar_group_id` | URL parameter `calendarGroup-id` | `string` | yes | no |
-| `allowed_online_meeting_providers` | `allowedOnlineMeetingProviders` | `any` | no | no |
+| `allowed_online_meeting_providers` | `allowedOnlineMeetingProviders` | `list(string)` | no | no |
 | `calendar_group_id_2` | `calendarGroupId` | `string` | no | no |
-| `calendar_permissions` | `calendarPermissions` | `list(object({       odata_type = optional(string, "#microsoft.graph.calendarPermission")       allowedRoles = optional(any)       isInsideOrganization = optional(bool)       isRemovable = optional(bool)       role = optional(any)     }))` | no | no |
-| `color` | `color` | `any` | no | no |
-| `default_online_meeting_provider` | `defaultOnlineMeetingProvider` | `any` | no | no |
+| `calendar_permissions` | `calendarPermissions` | `list(object({       odata_type = optional(string, "#microsoft.graph.calendarPermission")       allowedRoles = optional(list(string))       isInsideOrganization = optional(bool)       isRemovable = optional(bool)       role = optional(string)     }))` | no | no |
+| `color` | `color` | `string` | no | no |
+| `default_online_meeting_provider` | `defaultOnlineMeetingProvider` | `string` | no | no |
 | `hex_color` | `hexColor` | `string` | no | no |
 | `is_default_calendar` | `isDefaultCalendar` | `bool` | no | no |
 | `is_removable` | `isRemovable` | `bool` | no | no |
@@ -54,11 +54,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- allowedOnlineMeetingProviders[]: polymorphic schema; accepts an untyped value
-- calendarPermissions[].allowedRoles[]: polymorphic schema; accepts an untyped value
-- calendarPermissions[].role: polymorphic schema; accepts an untyped value
-- color: polymorphic schema; accepts an untyped value
-- defaultOnlineMeetingProvider: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -25,24 +25,24 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `todo_task_list_id` | URL parameter `todoTaskList-id` | `string` | yes | no |
 | `attachment_sessions` | `attachmentSessions` | `list(object({       odata_type = optional(string, "#microsoft.graph.attachmentSession")       content = optional(string)       expirationDateTime = optional(string)       nextExpectedRanges = optional(list(string))     }))` | no | no |
-| `attachments` | `attachments` | `list(object({       odata_type = optional(string, "#microsoft.graph.attachmentBase")       contentType = optional(string)       lastModifiedDateTime = optional(string)       name = optional(string)       size = optional(number)     }))` | no | no |
-| `body` | `body` | `any` | no | no |
+| `attachments` | `attachments` | `any` | no | no |
+| `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no |
 | `body_last_modified_date_time` | `bodyLastModifiedDateTime` | `string` | no | no |
 | `categories` | `categories` | `list(string)` | no | no |
 | `checklist_items` | `checklistItems` | `list(object({       odata_type = optional(string, "#microsoft.graph.checklistItem")       checkedDateTime = optional(string)       createdDateTime = optional(string)       displayName = optional(string)       isChecked = optional(bool)     }))` | no | no |
-| `completed_date_time` | `completedDateTime` | `any` | no | no |
+| `completed_date_time` | `completedDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `due_date_time` | `dueDateTime` | `any` | no | no |
-| `extensions` | `extensions` | `list(object({       odata_type = optional(string, "#microsoft.graph.extension")     }))` | no | no |
+| `due_date_time` | `dueDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
+| `extensions` | `extensions` | `any` | no | no |
 | `has_attachments` | `hasAttachments` | `bool` | no | no |
 | `importance` | `importance` | `string` | no | no |
 | `is_reminder_on` | `isReminderOn` | `bool` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `linked_resources` | `linkedResources` | `list(object({       odata_type = optional(string, "#microsoft.graph.linkedResource")       applicationName = optional(string)       displayName = optional(string)       externalId = optional(string)       webUrl = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `recurrence` | `recurrence` | `any` | no | no |
-| `reminder_date_time` | `reminderDateTime` | `any` | no | no |
-| `start_date_time` | `startDateTime` | `any` | no | no |
+| `recurrence` | `recurrence` | `object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     })` | no | no |
+| `reminder_date_time` | `reminderDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
+| `start_date_time` | `startDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
 | `status` | `status` | `string` | no | no |
 | `title` | `title` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -61,12 +61,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- body: polymorphic schema; accepts an untyped value
-- completedDateTime: polymorphic schema; accepts an untyped value
-- dueDateTime: polymorphic schema; accepts an untyped value
-- recurrence: polymorphic schema; accepts an untyped value
-- reminderDateTime: polymorphic schema; accepts an untyped value
-- startDateTime: polymorphic schema; accepts an untyped value
+- attachments[]: polymorphic schema; accepts an untyped value
+- extensions[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

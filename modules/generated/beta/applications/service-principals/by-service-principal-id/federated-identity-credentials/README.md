@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `service_principal_id` | URL parameter `servicePrincipal-id` | `string` | yes | no |
 | `audiences` | `audiences` | `list(string)` | no | no |
-| `claims_matching_expression` | `claimsMatchingExpression` | `any` | no | no |
+| `claims_matching_expression` | `claimsMatchingExpression` | `object({       odata_type = optional(string, "#microsoft.graph.federatedIdentityExpression")       languageVersion = optional(number)       value = optional(string)     })` | no | no |
 | `description` | `description` | `string` | no | no |
 | `issuer` | `issuer` | `string` | no | no |
 | `name` | `name` | `string` | no | no |
@@ -48,7 +48,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- claimsMatchingExpression: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

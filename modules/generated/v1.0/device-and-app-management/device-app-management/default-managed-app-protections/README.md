@@ -84,7 +84,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - apps[].mobileAppIdentifier: polymorphic schema; accepts an untyped value
-- deploymentSummary: polymorphic schema; accepts an untyped value
+- deploymentSummary: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -1,6 +1,6 @@
 variable "active_occurrence_status" {
   description = "The status of the active occurence of the schedule if one exists. The possible values are: grantingFailed, granted, granting, revoked, revoking, revokingFailed, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

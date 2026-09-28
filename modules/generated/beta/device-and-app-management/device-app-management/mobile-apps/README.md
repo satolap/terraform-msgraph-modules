@@ -13,6 +13,7 @@ Lifecycle: `POST /deviceAppManagement/mobileApps`, `GET/PATCH/DELETE /deviceAppM
 ```hcl
 module "graph_resource" {
   source = "./device-and-app-management/device-app-management/mobile-apps"
+  odata_type = "#microsoft.graph.androidAospReferencedApp"
 }
 ```
 
@@ -22,25 +23,24 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.mobileAppAssignment")       intent = optional(string)       settings = optional(any)       source = optional(string)       target = optional(any)     }))` | no | no |
+| `odata_type` | `@odata.type` | `string` | yes | no |
+| `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.mobileAppAssignment")       intent = optional(string)       settings = optional(any)       target = optional(any)     }))` | no | no |
 | `categories` | `categories` | `list(object({       odata_type = optional(string, "#microsoft.graph.mobileAppCategory")       displayName = optional(string)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `developer` | `developer` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `information_url` | `informationUrl` | `string` | no | no |
 | `is_featured` | `isFeatured` | `bool` | no | no |
-| `large_icon` | `largeIcon` | `any` | no | no |
+| `large_icon` | `largeIcon` | `object({       odata_type = optional(string, "#microsoft.graph.mimeContent")       type = optional(string)       value = optional(string)     })` | no | no |
 | `notes` | `notes` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
 | `owner` | `owner` | `string` | no | no |
 | `privacy_information_url` | `privacyInformationUrl` | `string` | no | no |
 | `publisher` | `publisher` | `string` | no | no |
-| `publishing_state` | `publishingState` | `string` | no | no |
-| `relationships` | `relationships` | `list(object({       odata_type = optional(string, "#microsoft.graph.mobileAppRelationship")       targetType = optional(string)     }))` | no | no |
+| `relationships` | `relationships` | `any` | no | no |
 | `role_scope_tag_ids` | `roleScopeTagIds` | `list(string)` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
-Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.
 
 Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
@@ -54,10 +54,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- @odata.type: microsoft.graph.mobileApp is abstract; odata_type has no default and must name a concrete type
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].settings: polymorphic schema; accepts an untyped value
 - assignments[].target: polymorphic schema; accepts an untyped value
-- largeIcon: polymorphic schema; accepts an untyped value
+- relationships[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

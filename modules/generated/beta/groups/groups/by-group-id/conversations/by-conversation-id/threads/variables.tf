@@ -22,11 +22,8 @@ variable "conversation_id" {
 
 variable "cc_recipients" {
   description = "The Cc: recipients for the thread. Returned only on $select."
-  type = list(object({
-    odata_type   = optional(string, "#microsoft.graph.recipient")
-    emailAddress = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "has_attachments" {
@@ -57,36 +54,30 @@ variable "odata_type" {
 variable "posts" {
   description = "Microsoft Graph posts property."
   type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.post")
-    body            = optional(any)
-    categories      = optional(list(string))
-    createdDateTime = optional(string)
-    from = optional(object({
-      odata_type   = optional(string, "#microsoft.graph.recipient")
-      emailAddress = optional(any)
+    odata_type = optional(string, "#microsoft.graph.post")
+    body = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.itemBody")
+      content     = optional(string)
+      contentType = optional(string)
     }))
+    categories           = optional(list(string))
+    createdDateTime      = optional(string)
+    from                 = optional(any)
     hasAttachments       = optional(bool)
-    importance           = optional(any)
+    importance           = optional(string)
     lastModifiedDateTime = optional(string)
     mentions = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.mention")
-      application     = optional(string)
-      clientReference = optional(string)
-      createdBy       = optional(any)
-      createdDateTime = optional(string)
-      deepLink        = optional(string)
-      mentionText     = optional(string)
-      mentioned = optional(object({
-        odata_type = optional(string, "#microsoft.graph.emailAddress")
-        address    = optional(string)
-        name       = optional(string)
-      }))
+      odata_type            = optional(string, "#microsoft.graph.mention")
+      application           = optional(string)
+      clientReference       = optional(string)
+      createdBy             = optional(any)
+      createdDateTime       = optional(string)
+      deepLink              = optional(string)
+      mentionText           = optional(string)
+      mentioned             = optional(any)
       serverCreatedDateTime = optional(string)
     })))
-    newParticipants = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.recipient")
-      emailAddress = optional(any)
-    })))
+    newParticipants  = optional(any)
     receivedDateTime = optional(string)
     sender           = optional(any)
   }))
@@ -101,11 +92,8 @@ variable "preview" {
 
 variable "to_recipients" {
   description = "The To: recipients for the thread. Returned only on $select."
-  type = list(object({
-    odata_type   = optional(string, "#microsoft.graph.recipient")
-    emailAddress = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "topic" {

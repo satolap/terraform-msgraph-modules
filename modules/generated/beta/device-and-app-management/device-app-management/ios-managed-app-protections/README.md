@@ -30,11 +30,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `allowed_outbound_clipboard_sharing_exception_length` | `allowedOutboundClipboardSharingExceptionLength` | `number` | no | no |
 | `allowed_outbound_clipboard_sharing_level` | `allowedOutboundClipboardSharingLevel` | `string` | no | no |
 | `allowed_outbound_data_transfer_destinations` | `allowedOutboundDataTransferDestinations` | `string` | no | no |
-| `app_action_if_account_is_clocked_out` | `appActionIfAccountIsClockedOut` | `any` | no | no |
+| `app_action_if_account_is_clocked_out` | `appActionIfAccountIsClockedOut` | `string` | no | no |
 | `app_action_if_device_compliance_required` | `appActionIfDeviceComplianceRequired` | `string` | no | no |
 | `app_action_if_ios_device_model_not_allowed` | `appActionIfIosDeviceModelNotAllowed` | `string` | no | no |
 | `app_action_if_maximum_pin_retries_exceeded` | `appActionIfMaximumPinRetriesExceeded` | `string` | no | no |
-| `app_action_if_unable_to_authenticate_user` | `appActionIfUnableToAuthenticateUser` | `any` | no | no |
+| `app_action_if_unable_to_authenticate_user` | `appActionIfUnableToAuthenticateUser` | `string` | no | no |
 | `app_data_encryption_type` | `appDataEncryptionType` | `string` | no | no |
 | `app_group_type` | `appGroupType` | `string` | no | no |
 | `apps` | `apps` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedMobileApp")       mobileAppIdentifier = optional(any)       version = optional(string)     }))` | no | no |
@@ -58,7 +58,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `face_id_blocked` | `faceIdBlocked` | `bool` | no | no |
 | `filter_open_in_to_only_managed_apps` | `filterOpenInToOnlyManagedApps` | `bool` | no | no |
 | `fingerprint_blocked` | `fingerprintBlocked` | `bool` | no | no |
-| `genmoji_configuration_state` | `genmojiConfigurationState` | `any` | no | no |
+| `genmoji_configuration_state` | `genmojiConfigurationState` | `string` | no | no |
 | `grace_period_to_block_apps_during_off_clock_hours` | `gracePeriodToBlockAppsDuringOffClockHours` | `string` | no | no |
 | `graph_version` | `version` | `string` | no | no |
 | `is_assigned` | `isAssigned` | `bool` | no | no |
@@ -82,7 +82,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `minimum_wipe_app_version` | `minimumWipeAppVersion` | `string` | no | no |
 | `minimum_wipe_os_version` | `minimumWipeOsVersion` | `string` | no | no |
 | `minimum_wipe_sdk_version` | `minimumWipeSdkVersion` | `string` | no | no |
-| `mobile_threat_defense_partner_priority` | `mobileThreatDefensePartnerPriority` | `any` | no | no |
+| `mobile_threat_defense_partner_priority` | `mobileThreatDefensePartnerPriority` | `string` | no | no |
 | `mobile_threat_defense_remediation_action` | `mobileThreatDefenseRemediationAction` | `string` | no | no |
 | `notification_restriction` | `notificationRestriction` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -101,11 +101,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `purview_content_evaluation_required` | `purviewContentEvaluationRequired` | `string` | no | no |
 | `role_scope_tag_ids` | `roleScopeTagIds` | `list(string)` | no | no |
 | `save_as_blocked` | `saveAsBlocked` | `bool` | no | no |
-| `screen_capture_configuration_state` | `screenCaptureConfigurationState` | `any` | no | no |
+| `screen_capture_configuration_state` | `screenCaptureConfigurationState` | `string` | no | no |
 | `simple_pin_blocked` | `simplePinBlocked` | `bool` | no | no |
 | `targeted_app_management_levels` | `targetedAppManagementLevels` | `string` | no | no |
 | `third_party_keyboards_blocked` | `thirdPartyKeyboardsBlocked` | `bool` | no | no |
-| `writing_tools_configuration_state` | `writingToolsConfigurationState` | `any` | no | no |
+| `writing_tools_configuration_state` | `writingToolsConfigurationState` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -123,15 +123,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- appActionIfAccountIsClockedOut: polymorphic schema; accepts an untyped value
-- appActionIfUnableToAuthenticateUser: polymorphic schema; accepts an untyped value
 - apps[].mobileAppIdentifier: polymorphic schema; accepts an untyped value
 - assignments[].target: polymorphic schema; accepts an untyped value
-- deploymentSummary: polymorphic schema; accepts an untyped value
-- genmojiConfigurationState: polymorphic schema; accepts an untyped value
-- mobileThreatDefensePartnerPriority: polymorphic schema; accepts an untyped value
-- screenCaptureConfigurationState: polymorphic schema; accepts an untyped value
-- writingToolsConfigurationState: polymorphic schema; accepts an untyped value
+- deploymentSummary: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

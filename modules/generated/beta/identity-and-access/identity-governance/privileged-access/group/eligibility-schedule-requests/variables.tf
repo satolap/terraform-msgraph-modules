@@ -1,6 +1,6 @@
 variable "access_id" {
   description = "The identifier of membership or ownership eligibility relationship to the group. Required. The possible values are: owner, member, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -11,7 +11,7 @@ variable "access_id" {
 
 variable "action" {
   description = "Represents the type of operation on the group membership or ownership assignment request. The possible values are: adminAssign, adminUpdate, adminRemove, selfActivate, selfDeactivate, adminExtend, adminRenew. adminAssign: For administrators to assign group membership or ownership to principals.adminRemove: For administrators to remove principals from group membership or ownership. adminUpdate: For administrators to change existing group membership or ownership assignments.adminExtend: For administrators to extend expiring assignments.adminRenew: For administrators to renew expired assignments.selfActivate: For principals to activate their assignments.selfDeactivate: For principals to deactivate their active assignments."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -95,8 +95,38 @@ variable "principal_id" {
 
 variable "schedule_info" {
   description = "The period of the group membership or ownership assignment. Recurring schedules are currently unsupported."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.requestSchedule")
+    expiration = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.expirationPattern")
+      duration    = optional(string)
+      endDateTime = optional(string)
+      type        = optional(string)
+    }))
+    recurrence = optional(object({
+      odata_type = optional(string, "#microsoft.graph.patternedRecurrence")
+      pattern = optional(object({
+        odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+        dayOfMonth     = optional(number)
+        daysOfWeek     = optional(list(string))
+        firstDayOfWeek = optional(string)
+        index          = optional(string)
+        interval       = optional(number)
+        month          = optional(number)
+        type           = optional(string)
+      }))
+      range = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.recurrenceRange")
+        endDate             = optional(string)
+        numberOfOccurrences = optional(number)
+        recurrenceTimeZone  = optional(string)
+        startDate           = optional(string)
+        type                = optional(string)
+      }))
+    }))
+    startDateTime = optional(string)
+  })
+  default = null
 }
 
 variable "status" {
@@ -119,8 +149,14 @@ variable "target_schedule_id" {
 
 variable "ticket_info" {
   description = "Ticket details linked to the group membership or ownership assignment request including details of the ticket number and ticket system."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                = optional(string, "#microsoft.graph.ticketInfo")
+    ticketApproverIdentityId  = optional(string)
+    ticketNumber              = optional(string)
+    ticketSubmitterIdentityId = optional(string)
+    ticketSystem              = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

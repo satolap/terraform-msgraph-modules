@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `ad_domain_password` | `adDomainPassword` | `string` | no | yes |
 | `ad_domain_username` | `adDomainUsername` | `string` | no | no |
 | `alternate_resource_url` | `alternateResourceUrl` | `string` | no | no |
-| `connection_type` | `connectionType` | `any` | no | no |
+| `connection_type` | `connectionType` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `health_check_status` | `healthCheckStatus` | `string` | no | no |
 | `managed_by` | `managedBy` | `string` | no | no |
@@ -36,7 +36,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `scope_ids` | `scopeIds` | `list(string)` | no | no |
 | `subnet_id` | `subnetId` | `string` | no | no |
 | `subscription_id` | `subscriptionId` | `string` | no | no |
-| `type` | `type` | `any` | no | no |
+| `type` | `type` | `string` | no | no |
 | `virtual_network_id` | `virtualNetworkId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -55,8 +55,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- connectionType: polymorphic schema; accepts an untyped value
-- type: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

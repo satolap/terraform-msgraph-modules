@@ -1,7 +1,10 @@
 variable "alert_data" {
   description = "Microsoft Graph alertData property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.managedTenants.alertData")
+    displayName = optional(string)
+  })
+  default = null
 }
 
 variable "alert_data_reference_strings" {
@@ -16,9 +19,12 @@ variable "alert_data_reference_strings" {
 variable "alert_logs" {
   description = "Microsoft Graph alertLogs property."
   type = list(object({
-    odata_type         = optional(string, "#microsoft.graph.managedTenants.managedTenantAlertLog")
-    alert              = optional(any)
-    content            = optional(any)
+    odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantAlertLog")
+    alert      = optional(any)
+    content = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.managedTenants.alertLogContent")
+      displayName = optional(string)
+    }))
     createdByUserId    = optional(string)
     createdDateTime    = optional(string)
     lastActionByUserId = optional(string)
@@ -132,7 +138,7 @@ variable "odata_type" {
 
 variable "severity" {
   description = "Microsoft Graph severity property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -143,7 +149,7 @@ variable "severity" {
 
 variable "status" {
   description = "Microsoft Graph status property."
-  type        = any
+  type        = string
   default     = null
 
   validation {

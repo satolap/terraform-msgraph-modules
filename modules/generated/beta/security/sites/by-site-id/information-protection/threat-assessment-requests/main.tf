@@ -1,12 +1,12 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
+    "@odata.type"        = var.odata_type
     "category"           = var.category
     "contentType"        = var.content_type
     "createdBy"          = var.created_by
     "createdDateTime"    = var.created_date_time
     "expectedAssessment" = var.expected_assessment
-    "@odata.type"        = var.odata_type
     "requestSource"      = var.request_source
     "status"             = var.status
   } : key => value if value != null }

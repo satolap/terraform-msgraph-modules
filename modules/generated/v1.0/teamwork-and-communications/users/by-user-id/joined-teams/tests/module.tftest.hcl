@@ -25,12 +25,18 @@ run "typed_request" {
   variables {
     user_id        = "test-parent-id"
     classification = "example"
+    fun_settings   = { "allowCustomMemes" = null }
     all_channels   = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["classification"]) == jsonencode("example")
     error_message = "classification must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["funSettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.teamFunSettings" })
+    error_message = "funSettings must preserve typed values and omit nested nulls."
   }
 
   assert {

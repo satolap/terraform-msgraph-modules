@@ -20,11 +20,17 @@ run "typed_request" {
 
   variables {
     alert_type = "unknown"
+    enrichment = { "impacts" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["alertType"]) == jsonencode("unknown")
     error_message = "alertType must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["enrichment"]) == jsonencode({ "@odata.type" = "#microsoft.graph.healthMonitoring.enrichment" })
+    error_message = "enrichment must preserve typed values and omit nested nulls."
   }
 }
 

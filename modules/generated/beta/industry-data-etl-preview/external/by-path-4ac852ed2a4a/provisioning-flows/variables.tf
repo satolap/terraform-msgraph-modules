@@ -12,8 +12,12 @@ variable "outbound_provisioning_flow_set_id" {
 variable "odata_type" {
   description = "Microsoft Graph @odata.type property."
   type        = string
-  default     = "#microsoft.graph.industryData.provisioningFlow"
   nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.industryData.administrativeUnitProvisioningFlow", "#microsoft.graph.industryData.classGroupProvisioningFlow", "#microsoft.graph.industryData.securityGroupProvisioningFlow", "#microsoft.graph.industryData.userProvisioningFlow"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
 }
 
 variable "additional_properties" {

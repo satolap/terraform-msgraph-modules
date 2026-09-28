@@ -25,16 +25,16 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `drive_inclusion_rules` | `driveInclusionRules` | `list(object({       odata_type = optional(string, "#microsoft.graph.driveProtectionRule")       createdBy = optional(any)       createdDateTime = optional(string)       driveExpression = optional(string)       error = optional(any)       isAutoApplyEnabled = optional(bool)       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       status = optional(any)     }))` | no | no |
-| `drive_protection_units` | `driveProtectionUnits` | `list(object({       odata_type = optional(string, "#microsoft.graph.driveProtectionUnit")       createdBy = optional(any)       createdDateTime = optional(string)       directoryObjectId = optional(string)       error = optional(any)       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       offboardRequestedDateTime = optional(string)       policyId = optional(string)       protectionSources = optional(string)       status = optional(any)     }))` | no | no |
-| `drive_protection_units_bulk_addition_jobs` | `driveProtectionUnitsBulkAdditionJobs` | `list(object({       odata_type = optional(string, "#microsoft.graph.driveProtectionUnitsBulkAdditionJob")       createdBy = optional(any)       createdDateTime = optional(string)       directoryObjectIds = optional(list(string))       displayName = optional(string)       drives = optional(list(string))       error = optional(any)       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       status = optional(string)     }))` | no | no |
+| `drive_inclusion_rules` | `driveInclusionRules` | `list(object({       odata_type = optional(string, "#microsoft.graph.driveProtectionRule")       createdBy = optional(any)       createdDateTime = optional(string)       driveExpression = optional(string)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(any)       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       isAutoApplyEnabled = optional(bool)       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       status = optional(string)     }))` | no | no |
+| `drive_protection_units` | `driveProtectionUnits` | `list(object({       odata_type = optional(string, "#microsoft.graph.driveProtectionUnit")       createdBy = optional(any)       createdDateTime = optional(string)       directoryObjectId = optional(string)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(any)       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       offboardRequestedDateTime = optional(string)       policyId = optional(string)       protectionSources = optional(string)       status = optional(string)     }))` | no | no |
+| `drive_protection_units_bulk_addition_jobs` | `driveProtectionUnitsBulkAdditionJobs` | `list(object({       odata_type = optional(string, "#microsoft.graph.driveProtectionUnitsBulkAdditionJob")       createdBy = optional(any)       createdDateTime = optional(string)       directoryObjectIds = optional(list(string))       displayName = optional(string)       drives = optional(list(string))       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(any)       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       status = optional(string)     }))` | no | no |
 | `is_enabled` | `isEnabled` | `bool` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `protection_policy_artifact_count` | `protectionPolicyArtifactCount` | `any` | no | no |
+| `protection_policy_artifact_count` | `protectionPolicyArtifactCount` | `object({       odata_type = optional(string, "#microsoft.graph.protectionPolicyArtifactCount")       completed = optional(number)       failed = optional(number)       inProgress = optional(number)       total = optional(number)     })` | no | no |
 | `retention_settings` | `retentionSettings` | `list(object({       odata_type = optional(string, "#microsoft.graph.retentionSetting")       interval = optional(string)       period = optional(string)     }))` | no | no |
-| `status` | `status` | `any` | no | no |
+| `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -53,19 +53,15 @@ Generation notes:
 
 - createdBy: polymorphic schema; accepts an untyped value
 - driveInclusionRules[].createdBy: polymorphic schema; accepts an untyped value
-- driveInclusionRules[].error: polymorphic schema; accepts an untyped value
+- driveInclusionRules[].error.innerError.details[]: nested schema exceeds depth limit; accepts an untyped value
 - driveInclusionRules[].lastModifiedBy: polymorphic schema; accepts an untyped value
-- driveInclusionRules[].status: polymorphic schema; accepts an untyped value
 - driveProtectionUnitsBulkAdditionJobs[].createdBy: polymorphic schema; accepts an untyped value
-- driveProtectionUnitsBulkAdditionJobs[].error: polymorphic schema; accepts an untyped value
+- driveProtectionUnitsBulkAdditionJobs[].error.innerError.details[]: nested schema exceeds depth limit; accepts an untyped value
 - driveProtectionUnitsBulkAdditionJobs[].lastModifiedBy: polymorphic schema; accepts an untyped value
 - driveProtectionUnits[].createdBy: polymorphic schema; accepts an untyped value
-- driveProtectionUnits[].error: polymorphic schema; accepts an untyped value
+- driveProtectionUnits[].error.innerError.details[]: nested schema exceeds depth limit; accepts an untyped value
 - driveProtectionUnits[].lastModifiedBy: polymorphic schema; accepts an untyped value
-- driveProtectionUnits[].status: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- protectionPolicyArtifactCount: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

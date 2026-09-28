@@ -4,8 +4,8 @@ variable "allowed_inbound_data_transfer_source_apps" {
   default     = null
 
   validation {
-    condition     = var.allowed_inbound_data_transfer_source_apps == null ? true : contains(["none", "oneDriveForBusiness", "unknownFutureValue"], var.allowed_inbound_data_transfer_source_apps)
-    error_message = "allowed_inbound_data_transfer_source_apps must be one of the documented enum values."
+    condition     = var.allowed_inbound_data_transfer_source_apps == null ? true : try(alltrue([for value in split(",", var.allowed_inbound_data_transfer_source_apps) : contains(["none", "onedriveforbusiness", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "allowed_inbound_data_transfer_source_apps must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -37,8 +37,8 @@ variable "allowed_outbound_data_transfer_destination_apps" {
   default     = null
 
   validation {
-    condition     = var.allowed_outbound_data_transfer_destination_apps == null ? true : contains(["none", "oneDriveForBusiness", "unknownFutureValue"], var.allowed_outbound_data_transfer_destination_apps)
-    error_message = "allowed_outbound_data_transfer_destination_apps must be one of the documented enum values."
+    condition     = var.allowed_outbound_data_transfer_destination_apps == null ? true : try(alltrue([for value in split(",", var.allowed_outbound_data_transfer_destination_apps) : contains(["none", "onedriveforbusiness", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "allowed_outbound_data_transfer_destination_apps must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -55,7 +55,7 @@ variable "allowed_outbound_data_transfer_destinations" {
 
 variable "app_action_if_unable_to_authenticate_user" {
   description = "If set, it will specify what action to take in the case where the user is unable to checkin because their authentication token is invalid. This happens when the user is deleted or disabled in AAD. Some possible values are block or wipe. If this property is not set, no action will be taken. Possible values are: block, wipe, warn, blockWhenSettingIsSupported."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -20,6 +20,17 @@ variable "access_package_resource_scope_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.customDataProvidedResourceAccessReviewUploadSession"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "data" {
   description = "An object containing the context for which this data is being uploaded."
   type        = any
@@ -39,13 +50,6 @@ variable "is_upload_done" {
   description = "Indicates if all the necessary files have been uploaded to this session."
   type        = bool
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.customDataProvidedResourceUploadSession"
-  nullable    = false
 }
 
 variable "reference_id" {

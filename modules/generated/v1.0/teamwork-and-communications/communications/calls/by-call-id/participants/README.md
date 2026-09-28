@@ -24,15 +24,15 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `call_id` | URL parameter `call-id` | `string` | yes | no |
-| `info` | `info` | `object({       odata_type = optional(string, "#microsoft.graph.participantInfo")       identity = optional(object({       odata_type = optional(string, "#microsoft.graph.identitySet")       application = optional(any)       device = optional(any)       user = optional(any)     }))     })` | no | no |
+| `info` | `info` | `object({       odata_type = optional(string, "#microsoft.graph.participantInfo")       identity = optional(any)     })` | no | no |
 | `is_in_lobby` | `isInLobby` | `bool` | no | no |
 | `is_muted` | `isMuted` | `bool` | no | no |
 | `media_streams` | `mediaStreams` | `list(object({       odata_type = optional(string, "#microsoft.graph.mediaStream")       direction = optional(string)       label = optional(string)       mediaType = optional(string)       serverMuted = optional(bool)       sourceId = optional(string)     }))` | no | no |
 | `metadata` | `metadata` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `recording_info` | `recordingInfo` | `any` | no | no |
-| `removed_state` | `removedState` | `any` | no | no |
-| `restricted_experience` | `restrictedExperience` | `any` | no | no |
+| `recording_info` | `recordingInfo` | `object({       odata_type = optional(string, "#microsoft.graph.recordingInfo")       initiator = optional(any)       recordingStatus = optional(string)     })` | no | no |
+| `removed_state` | `removedState` | `object({       odata_type = optional(string, "#microsoft.graph.removedState")       reason = optional(string)     })` | no | no |
+| `restricted_experience` | `restrictedExperience` | `object({       odata_type = optional(string, "#microsoft.graph.onlineMeetingRestricted")       contentSharingDisabled = optional(string)       videoDisabled = optional(string)     })` | no | no |
 | `roster_sequence_number` | `rosterSequenceNumber` | `number` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -50,12 +50,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- info.identity.application: polymorphic schema; accepts an untyped value
-- info.identity.device: polymorphic schema; accepts an untyped value
-- info.identity.user: polymorphic schema; accepts an untyped value
-- recordingInfo: polymorphic schema; accepts an untyped value
-- removedState: polymorphic schema; accepts an untyped value
-- restrictedExperience: polymorphic schema; accepts an untyped value
+- info.identity: polymorphic schema; accepts an untyped value
+- recordingInfo.initiator: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -1,6 +1,6 @@
 variable "allowed_online_meeting_providers" {
   description = "Represent the online meeting service providers that can be used to create online meetings in this calendar. The possible values are: unknown, skypeForBusiness, skypeForConsumer, teamsForBusiness."
-  type        = any
+  type        = list(string)
   default     = null
 }
 
@@ -14,17 +14,17 @@ variable "calendar_permissions" {
   description = "The permissions of the users with whom the calendar is shared."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.calendarPermission")
-    allowedRoles         = optional(any)
+    allowedRoles         = optional(list(string))
     isInsideOrganization = optional(bool)
     isRemovable          = optional(bool)
-    role                 = optional(any)
+    role                 = optional(string)
   }))
   default = null
 }
 
 variable "color" {
   description = "Specifies the color theme to distinguish the calendar from other calendars in a UI. The property values are: auto, lightBlue, lightGreen, lightOrange, lightGray, lightYellow, lightTeal, lightPink, lightBrown, lightRed, maxColor."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -35,7 +35,7 @@ variable "color" {
 
 variable "default_online_meeting_provider" {
   description = "The default online meeting provider for meetings sent from this calendar. The possible values are: unknown, skypeForBusiness, skypeForConsumer, teamsForBusiness."
-  type        = any
+  type        = string
   default     = null
 
   validation {

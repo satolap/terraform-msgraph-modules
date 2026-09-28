@@ -11,12 +11,12 @@ variable "user_id" {
 
 variable "allowed_audiences" {
   description = "The audiences that are able to see the values contained within the associated entity. The possible values are: me, family, contacts, groupMembers, organization, federatedOrganizations, everyone, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.allowed_audiences == null ? true : contains(["me", "family", "contacts", "groupMembers", "organization", "federatedOrganizations", "everyone", "unknownFutureValue"], var.allowed_audiences)
-    error_message = "allowed_audiences must be one of the documented enum values."
+    condition     = var.allowed_audiences == null ? true : try(alltrue([for value in split(",", var.allowed_audiences) : contains(["me", "family", "contacts", "groupmembers", "organization", "federatedorganizations", "everyone", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "allowed_audiences must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -46,20 +46,42 @@ variable "end_month_year" {
 
 variable "graph_source" {
   description = "Where the values within an entity originated if synced from another service."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.personDataSources")
+    type       = optional(list(string))
+  })
+  default = null
 }
 
 variable "inference" {
   description = "Contains inference detail if the entity is inferred by the creating or modifying application."
-  type        = any
-  default     = null
+  type = object({
+    odata_type              = optional(string, "#microsoft.graph.inferenceData")
+    confidenceScore         = optional(any)
+    userHasVerifiedAccuracy = optional(bool)
+  })
+  default = null
 }
 
 variable "institution" {
   description = "Contains details of the institution studied at."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.institutionData")
+    description = optional(string)
+    displayName = optional(string)
+    location = optional(object({
+      odata_type      = optional(string, "#microsoft.graph.physicalAddress")
+      city            = optional(string)
+      countryOrRegion = optional(string)
+      postOfficeBox   = optional(string)
+      postalCode      = optional(string)
+      state           = optional(string)
+      street          = optional(string)
+      type            = optional(string)
+    }))
+    webUrl = optional(string)
+  })
+  default = null
 }
 
 variable "is_searchable" {
@@ -89,8 +111,19 @@ variable "odata_type" {
 
 variable "program" {
   description = "Contains extended information about the program or course."
-  type        = any
-  default     = null
+  type = object({
+    odata_type    = optional(string, "#microsoft.graph.educationalActivityDetail")
+    abbreviation  = optional(string)
+    activities    = optional(list(string))
+    awards        = optional(list(string))
+    description   = optional(string)
+    displayName   = optional(string)
+    fieldsOfStudy = optional(list(string))
+    grade         = optional(string)
+    notes         = optional(string)
+    webUrl        = optional(string)
+  })
+  default = null
 }
 
 variable "sources" {

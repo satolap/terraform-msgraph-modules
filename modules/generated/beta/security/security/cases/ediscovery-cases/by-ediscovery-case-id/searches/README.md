@@ -25,18 +25,18 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `ediscovery_case_id` | URL parameter `ediscoveryCase-id` | `string` | yes | no |
 | `add_to_review_set_operation` | `addToReviewSetOperation` | `any` | no | no |
-| `additional_sources` | `additionalSources` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.dataSource")       createdBy = optional(any)       createdDateTime = optional(string)       displayName = optional(string)       holdStatus = optional(any)     }))` | no | no |
+| `additional_sources` | `additionalSources` | `any` | no | no |
 | `content_query` | `contentQuery` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `custodian_sources` | `custodianSources` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.dataSource")       createdBy = optional(any)       createdDateTime = optional(string)       displayName = optional(string)       holdStatus = optional(any)     }))` | no | no |
-| `data_source_scopes` | `dataSourceScopes` | `any` | no | no |
+| `custodian_sources` | `custodianSources` | `any` | no | no |
+| `data_source_scopes` | `dataSourceScopes` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `last_estimate_statistics_operation` | `lastEstimateStatisticsOperation` | `any` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `noncustodial_sources` | `noncustodialSources` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.ediscoveryNoncustodialDataSource")       createdDateTime = optional(string)       dataSource = optional(any)       displayName = optional(string)       holdStatus = optional(any)       lastIndexOperation = optional(any)       lastModifiedDateTime = optional(string)       releasedDateTime = optional(string)       status = optional(any)     }))` | no | no |
+| `noncustodial_sources` | `noncustodialSources` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.ediscoveryNoncustodialDataSource")       createdDateTime = optional(string)       dataSource = optional(any)       displayName = optional(string)       holdStatus = optional(string)       lastIndexOperation = optional(any)       lastModifiedDateTime = optional(string)       releasedDateTime = optional(string)       status = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -55,19 +55,14 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- addToReviewSetOperation: polymorphic schema; accepts an untyped value
-- additionalSources[].createdBy: polymorphic schema; accepts an untyped value
-- additionalSources[].holdStatus: polymorphic schema; accepts an untyped value
+- addToReviewSetOperation: navigation property; accepts an untyped value
+- additionalSources[]: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- custodianSources[].createdBy: polymorphic schema; accepts an untyped value
-- custodianSources[].holdStatus: polymorphic schema; accepts an untyped value
-- dataSourceScopes: polymorphic schema; accepts an untyped value
-- lastEstimateStatisticsOperation: polymorphic schema; accepts an untyped value
+- custodianSources[]: polymorphic schema; accepts an untyped value
+- lastEstimateStatisticsOperation: navigation property; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
 - noncustodialSources[].dataSource: polymorphic schema; accepts an untyped value
-- noncustodialSources[].holdStatus: polymorphic schema; accepts an untyped value
-- noncustodialSources[].lastIndexOperation: polymorphic schema; accepts an untyped value
-- noncustodialSources[].status: polymorphic schema; accepts an untyped value
+- noncustodialSources[].lastIndexOperation: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

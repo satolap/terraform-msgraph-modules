@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.windowsFeatureUpdateCatalogItem", "#microsoft.graph.windowsQualityUpdateCatalogItem"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "display_name" {
   description = "The display name for the catalog item."
   type        = string
@@ -8,13 +19,6 @@ variable "end_of_support_date" {
   description = "The last supported date for a catalog item"
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.windowsUpdateCatalogItem"
-  nullable    = false
 }
 
 variable "release_date_time" {

@@ -47,7 +47,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- delegatedAdministrationRoleAssignments[].group: polymorphic schema; accepts an untyped value
+- delegatedAdministrationRoleAssignments[].group: navigation property; accepts an untyped value
 - multiTenantApplicationsToProvision[].requiredResourceAccesses[].permissions[]: nested schema exceeds depth limit; accepts an untyped value
 
 ## Licensing and prerequisites

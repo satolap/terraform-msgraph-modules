@@ -30,12 +30,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `last_modified_by_user` | `lastModifiedByUser` | `any` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `page_layout` | `pageLayout` | `any` | no | no |
-| `parent_reference` | `parentReference` | `any` | no | no |
-| `publishing_state` | `publishingState` | `any` | no | no |
+| `page_layout` | `pageLayout` | `string` | no | no |
+| `parent_reference` | `parentReference` | `object({       odata_type = optional(string, "#microsoft.graph.itemReference")       driveType = optional(string)       shareId = optional(string)       siteId = optional(string)     })` | no | no |
+| `publishing_state` | `publishingState` | `object({       odata_type = optional(string, "#microsoft.graph.publicationFacet")       checkedOutBy = optional(any)     })` | no | no |
 | `title` | `title` | `string` | no | no |
-| `title_area` | `titleArea` | `any` | no | no |
-| `web_parts` | `webParts` | `list(object({       odata_type = optional(string, "#microsoft.graph.webPart")     }))` | no | no |
+| `title_area` | `titleArea` | `object({       odata_type = optional(string, "#microsoft.graph.titleArea")       alternativeText = optional(string)       enableGradientEffect = optional(bool)       imageWebUrl = optional(string)       layout = optional(string)       serverProcessedContent = optional(object({       odata_type = optional(string, "#microsoft.graph.serverProcessedContent")       componentDependencies = optional(list(object({       odata_type = optional(string, "#microsoft.graph.metaDataKeyStringPair")       key = optional(string)       value = optional(string)     })))       customMetadata = optional(list(object({       odata_type = optional(string, "#microsoft.graph.metaDataKeyValuePair")       key = optional(string)       value = optional(any)     })))       htmlStrings = optional(list(object({       odata_type = optional(string, "#microsoft.graph.metaDataKeyStringPair")       key = optional(string)       value = optional(string)     })))       imageSources = optional(list(object({       odata_type = optional(string, "#microsoft.graph.metaDataKeyStringPair")       key = optional(string)       value = optional(string)     })))       links = optional(list(object({       odata_type = optional(string, "#microsoft.graph.metaDataKeyStringPair")       key = optional(string)       value = optional(string)     })))       searchablePlainTexts = optional(list(object({       odata_type = optional(string, "#microsoft.graph.metaDataKeyStringPair")       key = optional(string)       value = optional(string)     })))     }))       showAuthor = optional(bool)       showPublishedDate = optional(bool)       showTextBlockAboveTitle = optional(bool)       textAboveTitle = optional(string)       textAlignment = optional(string)     })` | no | no |
+| `web_parts` | `webParts` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -53,13 +53,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- canvasLayout: polymorphic schema; accepts an untyped value
+- canvasLayout: navigation property; accepts an untyped value
 - createdByUser: polymorphic schema; accepts an untyped value
 - lastModifiedByUser: polymorphic schema; accepts an untyped value
-- pageLayout: polymorphic schema; accepts an untyped value
-- parentReference: polymorphic schema; accepts an untyped value
-- publishingState: polymorphic schema; accepts an untyped value
-- titleArea: polymorphic schema; accepts an untyped value
+- publishingState.checkedOutBy: polymorphic schema; accepts an untyped value
+- webParts[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

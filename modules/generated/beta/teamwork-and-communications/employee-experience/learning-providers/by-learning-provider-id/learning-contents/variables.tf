@@ -89,7 +89,7 @@ variable "last_modified_date_time" {
 
 variable "level" {
   description = "The difficulty level of the learning content. The possible values are: Beginner, Intermediate, Advanced, unknownFutureValue. Optional."
-  type        = any
+  type        = string
   default     = null
 
   validation {

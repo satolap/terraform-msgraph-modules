@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     deleted_date_time = "2026-01-01T00:00:00Z"
     is_enabled        = false
+    restrictions      = { "applicationRestrictions" = null }
     applies_to        = [{}]
   }
 
@@ -35,7 +36,12 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["appliesTo"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.directoryObject" }])
+    condition     = jsonencode(msgraph_resource.this.body["restrictions"]) == jsonencode({ "@odata.type" = "#microsoft.graph.customAppManagementConfiguration" })
+    error_message = "restrictions must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["appliesTo"]) == jsonencode([{}])
     error_message = "appliesTo must preserve typed values and omit nested nulls."
   }
 }

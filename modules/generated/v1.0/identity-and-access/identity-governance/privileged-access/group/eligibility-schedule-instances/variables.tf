@@ -1,6 +1,6 @@
 variable "access_id" {
   description = "The identifier of the membership or ownership eligibility relationship to the group. Required. The possible values are: owner, member. Supports $filter (eq)."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -35,7 +35,7 @@ variable "group_id" {
 
 variable "member_type" {
   description = "Indicates whether the assignment is derived from a group assignment. It can further imply whether the calling principal can manage the assignment schedule. Required. The possible values are: direct, group, unknownFutureValue. Supports $filter (eq)."
-  type        = any
+  type        = string
   default     = null
 
   validation {

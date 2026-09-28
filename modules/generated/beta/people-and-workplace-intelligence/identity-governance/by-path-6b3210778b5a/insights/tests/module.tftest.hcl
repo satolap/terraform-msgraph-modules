@@ -8,6 +8,7 @@ run "minimal_request" {
     access_review_instance_id               = "test-parent-id"
     access_review_stage_id                  = "test-parent-id"
     access_review_instance_decision_item_id = "test-parent-id"
+    odata_type                              = "#microsoft.graph.membershipOutlierInsight"
   }
 
   assert {
@@ -28,11 +29,30 @@ run "typed_request" {
     access_review_instance_id               = "test-parent-id"
     access_review_stage_id                  = "test-parent-id"
     access_review_instance_decision_item_id = "test-parent-id"
+    odata_type                              = "#microsoft.graph.membershipOutlierInsight"
     insight_created_date_time               = "2026-01-01T00:00:00Z"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.membershipOutlierInsight")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["insightCreatedDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
     error_message = "insightCreatedDateTime must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    access_review_instance_id               = "test-parent-id"
+    access_review_stage_id                  = "test-parent-id"
+    access_review_instance_decision_item_id = "test-parent-id"
+    odata_type                              = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

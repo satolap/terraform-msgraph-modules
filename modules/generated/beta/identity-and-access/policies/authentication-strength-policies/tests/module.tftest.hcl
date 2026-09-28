@@ -43,3 +43,26 @@ run "invalid_enum" {
 
   expect_failures = [var.policy_type]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    requirements_satisfied = "none, Mfa"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["requirementsSatisfied"] == "none, Mfa"
+    error_message = "requirementsSatisfied must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    requirements_satisfied = "none,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.requirements_satisfied]
+}

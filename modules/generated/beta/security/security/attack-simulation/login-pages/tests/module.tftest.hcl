@@ -19,12 +19,18 @@ run "typed_request" {
   command = plan
 
   variables {
-    content = "example"
+    content    = "example"
+    created_by = { "displayName" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["content"]) == jsonencode("example")
     error_message = "content must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["createdBy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.emailIdentity" })
+    error_message = "createdBy must preserve typed values and omit nested nulls."
   }
 }
 

@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "agentVersion"                 = var.agent_version
-    "applicationSnapshot"          = var.application_snapshot
+    "applicationSnapshot"          = (var.application_snapshot == null ? null : { for key0, value0 in { "@odata.type" = var.application_snapshot["odata_type"], "appId" = var.application_snapshot["appId"] } : key0 => value0 if value0 != null })
     "createdDateTime"              = var.created_date_time
     "crossTenantAccessType"        = var.cross_tenant_access_type
     "destinationFqdn"              = var.destination_fqdn
@@ -20,7 +20,7 @@ locals {
     "networkProtocol"              = var.network_protocol
     "@odata.type"                  = var.odata_type
     "popProcessingRegion"          = var.pop_processing_region
-    "privateAccessDetails"         = var.private_access_details
+    "privateAccessDetails"         = (var.private_access_details == null ? null : { for key0, value0 in { "@odata.type" = var.private_access_details["odata_type"], "accessType" = var.private_access_details["accessType"], "appSegmentId" = var.private_access_details["appSegmentId"], "connectionStatus" = var.private_access_details["connectionStatus"], "connectorId" = var.private_access_details["connectorId"], "connectorIp" = var.private_access_details["connectorIp"], "connectorName" = var.private_access_details["connectorName"], "processingRegion" = var.private_access_details["processingRegion"], "thirdPartyTokenDetails" = (var.private_access_details["thirdPartyTokenDetails"] == null ? null : { for key1, value1 in { "@odata.type" = var.private_access_details["thirdPartyTokenDetails"]["odata_type"], "expirationDateTime" = var.private_access_details["thirdPartyTokenDetails"]["expirationDateTime"], "issuedAtDateTime" = var.private_access_details["thirdPartyTokenDetails"]["issuedAtDateTime"], "uniqueTokenIdentifier" = var.private_access_details["thirdPartyTokenDetails"]["uniqueTokenIdentifier"], "validFromDateTime" = var.private_access_details["thirdPartyTokenDetails"]["validFromDateTime"] } : key1 => value1 if value1 != null }) } : key0 => value0 if value0 != null })
     "receivedBytes"                = var.received_bytes
     "sentBytes"                    = var.sent_bytes
     "sourceIp"                     = var.source_ip

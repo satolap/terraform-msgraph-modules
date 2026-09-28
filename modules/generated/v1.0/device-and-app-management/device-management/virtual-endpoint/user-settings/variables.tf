@@ -47,8 +47,12 @@ variable "reset_enabled" {
 
 variable "restore_point_setting" {
   description = "Defines how frequently a restore point is created that is, a snapshot is taken) for users' provisioned Cloud PCs (default is 12 hours), and whether the user is allowed to restore their own Cloud PCs to a backup made at a specific point in time."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.cloudPcRestorePointSetting")
+    frequencyType      = optional(string)
+    userRestoreEnabled = optional(bool)
+  })
+  default = null
 }
 
 variable "additional_properties" {

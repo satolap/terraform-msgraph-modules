@@ -1,6 +1,6 @@
 variable "brand" {
   description = "The branch of a payload. The possible values are: unknown, other, americanExpress, capitalOne, dhl, docuSign, dropbox, facebook, firstAmerican, microsoft, netflix, scotiabank, sendGrid, stewartTitle, tesco, wellsFargo, syrinxCloud, adobe, teams, zoom, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -11,7 +11,7 @@ variable "brand" {
 
 variable "complexity" {
   description = "The complexity of a payload. The possible values are: unknown, low, medium, high, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -22,8 +22,13 @@ variable "complexity" {
 
 variable "created_by" {
   description = "Identity of the user who created the attack simulation and training campaign payload."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "created_date_time" {
@@ -63,7 +68,7 @@ variable "graph_source" {
 
 variable "industry" {
   description = "Industry of a payload. The possible values are: unknown, other, banking, businessServices, consumerServices, education, energy, construction, consulting, financialServices, government, hospitality, insurance, legal, courierServices, IT, healthcare, manufacturing, retail, telecom, realEstate, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -98,8 +103,13 @@ variable "language" {
 
 variable "last_modified_by" {
   description = "Identity of the user who most recently modified the attack simulation and training campaign payload."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "last_modified_date_time" {
@@ -123,7 +133,7 @@ variable "payload_tags" {
 
 variable "platform" {
   description = "The payload delivery platform for a simulation. The possible values are: unknown, sms, email, teams, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -140,7 +150,7 @@ variable "predicted_compromise_rate" {
 
 variable "simulation_attack_type" {
   description = "Attack type of the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, social, cloud, endpoint, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -151,7 +161,7 @@ variable "simulation_attack_type" {
 
 variable "status" {
   description = "Simulation content status. Supports $filter and $orderby. The possible values are: unknown, draft, ready, archive, delete, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -162,7 +172,7 @@ variable "status" {
 
 variable "technique" {
   description = "The social engineering technique used in the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, credentialHarvesting, attachmentMalware, driveByUrl, linkInAttachment, linkToMalwareFile, unknownFutureValue, oAuthConsentGrant. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: oAuthConsentGrant. For more information on the types of social engineering attack techniques, see simulations."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -173,7 +183,7 @@ variable "technique" {
 
 variable "theme" {
   description = "The theme of a payload. The possible values are: unknown, other, accountActivation, accountVerification, billing, cleanUpMail, controversial, documentReceived, expense, fax, financeReport, incomingMessages, invoice, itemReceived, loginAlert, mailReceived, password, payment, payroll, personalizedOffer, quarantine, remoteWork, reviewMessage, securityUpdate, serviceSuspended, signatureRequired, upgradeMailboxStorage, verifyMailbox, voicemail, advertisement, employeeEngagement, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

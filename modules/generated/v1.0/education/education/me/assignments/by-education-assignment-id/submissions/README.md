@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `education_assignment_id` | URL parameter `educationAssignment-id` | `string` | yes | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `outcomes` | `outcomes` | `list(object({       odata_type = optional(string, "#microsoft.graph.educationOutcome")       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)     }))` | no | no |
+| `outcomes` | `outcomes` | `any` | no | no |
 | `recipient` | `recipient` | `any` | no | no |
 | `resources` | `resources` | `list(object({       odata_type = optional(string, "#microsoft.graph.educationSubmissionResource")       assignmentResourceUrl = optional(string)       dependentResources = optional(any)       resource = optional(any)     }))` | no | no |
 | `submitted_resources` | `submittedResources` | `list(object({       odata_type = optional(string, "#microsoft.graph.educationSubmissionResource")       assignmentResourceUrl = optional(string)       dependentResources = optional(any)       resource = optional(any)     }))` | no | no |
@@ -45,7 +45,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- outcomes[].lastModifiedBy: polymorphic schema; accepts an untyped value
+- outcomes[]: polymorphic schema; accepts an untyped value
 - recipient: polymorphic schema; accepts an untyped value
 - resources[].dependentResources[]: recursive schema; accepts an untyped value
 - resources[].resource: polymorphic schema; accepts an untyped value

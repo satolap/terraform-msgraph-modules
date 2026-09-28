@@ -70,8 +70,13 @@ variable "odata_type" {
 
 variable "result" {
   description = "Evaluation results collection."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.security.securityCopilot.evaluationResult")
+    content      = optional(string)
+    previewState = optional(string)
+    type         = optional(string)
+  })
+  default = null
 }
 
 variable "run_start_date_time" {

@@ -33,7 +33,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `info_urls` | `infoUrls` | `list(string)` | no | no |
 | `keywords` | `keywords` | `list(string)` | no | no |
 | `name` | `name` | `string` | no | no |
-| `occurrence` | `occurrence` | `any` | no | no |
+| `occurrence` | `occurrence` | `object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingOccurrence")       maxDeviceOccurrence = optional(number)       minDeviceOccurrence = optional(number)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `offset_uri` | `offsetUri` | `string` | no | no |
 | `referred_setting_information_list` | `referredSettingInformationList` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationReferredSettingInformation")       settingDefinitionId = optional(string)     }))` | no | no |
@@ -60,7 +60,6 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - applicability: polymorphic schema; accepts an untyped value
-- occurrence: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -9,10 +9,37 @@ variable "cross_tenant_access_policy_configuration_partner_tenant_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.crossTenantCalendarAvailabilityBasic", "#microsoft.graph.crossTenantCalendarAvailabilityLimitedDetails", "#microsoft.graph.crossTenantCalendarSharingFreeBusyDetail", "#microsoft.graph.crossTenantCalendarSharingFreeBusyReviewer", "#microsoft.graph.crossTenantCalendarSharingFreeBusySimple", "#microsoft.graph.crossTenantMailTipsAll", "#microsoft.graph.crossTenantMailTipsLimited", "#microsoft.graph.crossTenantMigration", "#microsoft.graph.crossTenantOpenProfileCard", "#microsoft.graph.crossTenantPlacesDeskBooking", "#microsoft.graph.crossTenantPlacesRoomBooking"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "inbound_access" {
   description = "The inbound access settings for the capability."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.m365CapabilityInboundAccess")
+    isAllowed  = optional(bool)
+    resourceScopes = optional(object({
+      odata_type = optional(string, "#microsoft.graph.m365CapabilityResourceScopes")
+      excluded = optional(list(object({
+        odata_type   = optional(string, "#microsoft.graph.m365CapabilityResourceScope")
+        resourceId   = optional(string)
+        resourceType = optional(string)
+      })))
+      included = optional(list(object({
+        odata_type   = optional(string, "#microsoft.graph.m365CapabilityResourceScope")
+        resourceId   = optional(string)
+        resourceType = optional(string)
+      })))
+    }))
+  })
+  default = null
 }
 
 variable "last_modified_date_time" {
@@ -25,13 +52,6 @@ variable "name" {
   description = "The name or identifier of the capability. Key."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.m365CapabilityBase"
-  nullable    = false
 }
 
 variable "additional_properties" {

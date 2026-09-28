@@ -1,7 +1,12 @@
 variable "api_connector_configuration" {
   description = "Configuration for enabling an API connector for use as part of the user flow. You can only obtain the value of this object using Get userFlowApiConnectorConfiguration."
-  type        = any
-  default     = null
+  type = object({
+    odata_type              = optional(string, "#microsoft.graph.userFlowApiConnectorConfiguration")
+    postAttributeCollection = optional(any)
+    postFederationSignup    = optional(any)
+    preTokenIssuance        = optional(any)
+  })
+  default = null
 }
 
 variable "default_language_tag" {
@@ -12,15 +17,9 @@ variable "default_language_tag" {
 
 variable "identity_providers" {
   description = "The identity providers included in the user flow."
-  type = list(object({
-    odata_type   = optional(string, "#microsoft.graph.identityProvider")
-    clientId     = optional(string)
-    clientSecret = optional(string)
-    name         = optional(string)
-    type         = optional(string)
-  }))
-  default   = null
-  sensitive = true
+  type        = any
+  default     = null
+  sensitive   = true
 }
 
 variable "is_language_customization_enabled" {
@@ -72,11 +71,8 @@ variable "user_attribute_assignments" {
 
 variable "user_flow_identity_providers" {
   description = "The identity providers included in the user flow."
-  type = list(object({
-    odata_type  = optional(string, "#microsoft.graph.identityProviderBase")
-    displayName = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "user_flow_type" {

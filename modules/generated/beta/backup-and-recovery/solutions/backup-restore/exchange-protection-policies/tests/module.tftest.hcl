@@ -19,9 +19,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    billing_policy_id       = "example"
-    is_enabled              = false
-    mailbox_exclusion_units = [{}]
+    billing_policy_id                = "example"
+    is_enabled                       = false
+    protection_policy_artifact_count = { "completed" = null }
+    mailbox_exclusion_units          = [{}]
   }
 
   assert {
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isEnabled"]) == jsonencode(false)
     error_message = "isEnabled must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["protectionPolicyArtifactCount"]) == jsonencode({ "@odata.type" = "#microsoft.graph.protectionPolicyArtifactCount" })
+    error_message = "protectionPolicyArtifactCount must preserve typed values and omit nested nulls."
   }
 
   assert {

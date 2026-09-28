@@ -25,8 +25,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `excludes` | `excludes` | `list(object({       odata_type = optional(string, "#microsoft.graph.permissionGrantConditionSet")       clientApplicationIds = optional(list(string))       clientApplicationPublisherIds = optional(list(string))       clientApplicationTenantIds = optional(list(string))       clientApplicationsFromVerifiedPublisherOnly = optional(bool)       permissionClassification = optional(string)       permissionType = optional(any)       permissions = optional(list(string))       resourceApplication = optional(string)     }))` | no | no |
-| `includes` | `includes` | `list(object({       odata_type = optional(string, "#microsoft.graph.permissionGrantConditionSet")       clientApplicationIds = optional(list(string))       clientApplicationPublisherIds = optional(list(string))       clientApplicationTenantIds = optional(list(string))       clientApplicationsFromVerifiedPublisherOnly = optional(bool)       permissionClassification = optional(string)       permissionType = optional(any)       permissions = optional(list(string))       resourceApplication = optional(string)     }))` | no | no |
+| `excludes` | `excludes` | `list(object({       odata_type = optional(string, "#microsoft.graph.permissionGrantConditionSet")       clientApplicationIds = optional(list(string))       clientApplicationPublisherIds = optional(list(string))       clientApplicationTenantIds = optional(list(string))       clientApplicationsFromVerifiedPublisherOnly = optional(bool)       permissionClassification = optional(string)       permissionType = optional(string)       permissions = optional(list(string))       resourceApplication = optional(string)     }))` | no | no |
+| `includes` | `includes` | `list(object({       odata_type = optional(string, "#microsoft.graph.permissionGrantConditionSet")       clientApplicationIds = optional(list(string))       clientApplicationPublisherIds = optional(list(string))       clientApplicationTenantIds = optional(list(string))       clientApplicationsFromVerifiedPublisherOnly = optional(bool)       permissionClassification = optional(string)       permissionType = optional(string)       permissions = optional(list(string))       resourceApplication = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -41,11 +41,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- excludes[].permissionType: polymorphic schema; accepts an untyped value
-- includes[].permissionType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

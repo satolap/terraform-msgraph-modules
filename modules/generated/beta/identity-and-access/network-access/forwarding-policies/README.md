@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `graph_version` | `version` | `string` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `policy_rules` | `policyRules` | `list(object({       odata_type = optional(string, "#microsoft.graph.networkaccess.policyRule")       name = optional(string)     }))` | no | no |
+| `policy_rules` | `policyRules` | `any` | no | no |
 | `private_access_app_id` | `privateAccessAppId` | `string` | no | no |
 | `traffic_forwarding_type` | `trafficForwardingType` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -46,6 +46,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- policyRules[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

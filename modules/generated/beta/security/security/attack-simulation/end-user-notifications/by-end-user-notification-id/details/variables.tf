@@ -42,8 +42,13 @@ variable "odata_type" {
 
 variable "sent_from" {
   description = "Email details of the sender."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "subject" {

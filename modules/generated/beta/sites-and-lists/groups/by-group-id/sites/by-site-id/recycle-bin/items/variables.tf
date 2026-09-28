@@ -65,8 +65,13 @@ variable "odata_type" {
 
 variable "parent_reference" {
   description = "Parent information, if the item has a parent. Read-write."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.itemReference")
+    driveType  = optional(string)
+    shareId    = optional(string)
+    siteId     = optional(string)
+  })
+  default = null
 }
 
 variable "size" {

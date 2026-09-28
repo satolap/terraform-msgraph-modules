@@ -35,7 +35,7 @@ variable "display_name" {
 
 variable "hold_status" {
   description = "Microsoft Graph holdStatus property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -71,7 +71,7 @@ variable "released_date_time" {
 
 variable "status" {
   description = "Latest status of the dataSourceContainer. The possible values are: Active, Released."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -20,12 +20,18 @@ run "typed_request" {
 
   variables {
     availability_end_date_time = "2026-01-01T00:00:00Z"
+    keywords                   = { "keywords" = null }
     group_ids                  = ["example"]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["availabilityEndDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
     error_message = "availabilityEndDateTime must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["keywords"]) == jsonencode({ "@odata.type" = "#microsoft.graph.search.answerKeyword" })
+    error_message = "keywords must preserve typed values and omit nested nulls."
   }
 
   assert {

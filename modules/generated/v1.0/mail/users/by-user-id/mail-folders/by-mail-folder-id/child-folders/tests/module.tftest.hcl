@@ -48,7 +48,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["childFolders"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.mailFolder" }])
+    condition     = jsonencode(msgraph_resource.this.body["childFolders"]) == jsonencode([{}])
     error_message = "childFolders must preserve typed values and omit nested nulls."
   }
 }

@@ -30,7 +30,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `is_azure_ad_registered` | `isAzureAdRegistered` | `bool` | no | no |
 | `is_hybrid_azure_domain_joined` | `isHybridAzureDomainJoined` | `bool` | no | no |
 | `last_seen_date_time` | `lastSeenDateTime` | `string` | no | no |
-| `logon_users` | `logonUsers` | `list(object({       odata_type = optional(string, "#microsoft.graph.logonUser")       accountDomain = optional(string)       accountName = optional(string)       accountType = optional(any)       firstSeenDateTime = optional(string)       lastSeenDateTime = optional(string)       logonId = optional(string)       logonTypes = optional(any)     }))` | no | no |
+| `logon_users` | `logonUsers` | `list(object({       odata_type = optional(string, "#microsoft.graph.logonUser")       accountDomain = optional(string)       accountName = optional(string)       accountType = optional(string)       firstSeenDateTime = optional(string)       lastSeenDateTime = optional(string)       logonId = optional(string)       logonTypes = optional(list(string))     }))` | no | no |
 | `net_bios_name` | `netBiosName` | `string` | no | no |
 | `network_interfaces` | `networkInterfaces` | `list(object({       odata_type = optional(string, "#microsoft.graph.networkInterface")       description = optional(string)       ipV4Address = optional(string)       ipV6Address = optional(string)       localIpV6Address = optional(string)       macAddress = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -40,7 +40,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `related_host_ids` | `relatedHostIds` | `list(string)` | no | no |
 | `risk_score` | `riskScore` | `string` | no | no |
 | `tags` | `tags` | `list(string)` | no | no |
-| `vendor_information` | `vendorInformation` | `any` | no | no |
+| `vendor_information` | `vendorInformation` | `object({       odata_type = optional(string, "#microsoft.graph.securityVendorInformation")       provider = optional(string)       providerVersion = optional(string)       subProvider = optional(string)       vendor = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -58,9 +58,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- logonUsers[].accountType: polymorphic schema; accepts an untyped value
-- logonUsers[].logonTypes[]: polymorphic schema; accepts an untyped value
-- vendorInformation: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -10,7 +10,7 @@ run "minimal_request" {
   }
 
   assert {
-    condition     = alltrue([for key in ["complianceState", "deviceCategory", "deviceCompliancePolicyStates", "deviceConfigurationStates", "deviceEnrollmentType", "deviceRegistrationState", "exchangeAccessState", "exchangeAccessStateReason", "logCollectionRequests", "managedDeviceName", "managedDeviceOwnerType", "managementAgent", "managementState", "notes", "partnerReportedThreatState", "users"] : !contains(keys(msgraph_resource.this.body), key)])
+    condition     = alltrue([for key in ["deviceCategory", "deviceCompliancePolicyStates", "deviceConfigurationStates", "logCollectionRequests", "managedDeviceName", "managedDeviceOwnerType", "notes", "users"] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
@@ -19,13 +19,13 @@ run "typed_request" {
   command = plan
 
   variables {
-    compliance_state                = "unknown"
+    managed_device_name             = "example"
     device_compliance_policy_states = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["complianceState"]) == jsonencode("unknown")
-    error_message = "complianceState must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["managedDeviceName"]) == jsonencode("example")
+    error_message = "managedDeviceName must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -38,8 +38,8 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    compliance_state = "__graphmodules_invalid_enum__"
+    managed_device_owner_type = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.compliance_state]
+  expect_failures = [var.managed_device_owner_type]
 }

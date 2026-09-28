@@ -45,7 +45,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - host: polymorphic schema; accepts an untyped value
-- sslCertificate: polymorphic schema; accepts an untyped value
+- sslCertificate: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

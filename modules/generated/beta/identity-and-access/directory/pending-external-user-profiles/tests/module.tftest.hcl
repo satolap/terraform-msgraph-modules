@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     company_name    = "example"
     is_discoverable = false
+    address         = { "city" = null }
   }
 
   assert {
@@ -31,5 +32,10 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isDiscoverable"]) == jsonencode(false)
     error_message = "isDiscoverable must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["address"]) == jsonencode({ "@odata.type" = "#microsoft.graph.physicalOfficeAddress" })
+    error_message = "address must preserve typed values and omit nested nulls."
   }
 }

@@ -5,7 +5,7 @@ variable "custom_extension_callout_instances" {
     customExtensionId     = optional(string)
     detail                = optional(string)
     externalCorrelationId = optional(string)
-    status                = optional(any)
+    status                = optional(string)
   }))
   default = null
 }

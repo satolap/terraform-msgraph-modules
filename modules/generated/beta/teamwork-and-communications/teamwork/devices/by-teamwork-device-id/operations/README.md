@@ -27,7 +27,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `completed_date_time` | `completedDateTime` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `error` | `error` | `any` | no | no |
+| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.operationError")       code = optional(string)       message = optional(string)     })` | no | no |
 | `last_action_by` | `lastActionBy` | `any` | no | no |
 | `last_action_date_time` | `lastActionDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -52,7 +52,6 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - createdBy: polymorphic schema; accepts an untyped value
-- error: polymorphic schema; accepts an untyped value
 - lastActionBy: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

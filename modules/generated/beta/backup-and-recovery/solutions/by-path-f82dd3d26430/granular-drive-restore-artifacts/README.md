@@ -26,9 +26,9 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `one_drive_for_business_restore_session_id` | URL parameter `oneDriveForBusinessRestoreSession-id` | `string` | yes | no |
 | `browse_session_id` | `browseSessionId` | `string` | no | no |
 | `completion_date_time` | `completionDateTime` | `string` | no | no |
-| `destination_type` | `destinationType` | `any` | no | no |
+| `destination_type` | `destinationType` | `string` | no | no |
 | `directory_object_id` | `directoryObjectId` | `string` | no | no |
-| `error` | `error` | `any` | no | no |
+| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `restore_point_date_time` | `restorePointDateTime` | `string` | no | no |
 | `restored_item_key` | `restoredItemKey` | `string` | no | no |
@@ -54,8 +54,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- destinationType: polymorphic schema; accepts an untyped value
-- error: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `file_storage_container_id` | URL parameter `fileStorageContainer-id` | `string` | yes | no |
 | `description` | `description` | `string` | no | no |
-| `members` | `members` | `list(object({       odata_type = optional(string, "#microsoft.graph.sharePointGroupMember")       identity = optional(any)     }))` | no | no |
+| `members` | `members` | `list(object({       odata_type = optional(string, "#microsoft.graph.sharePointGroupMember")       identity = optional(object({       odata_type = optional(string, "#microsoft.graph.sharePointIdentitySet")       application = optional(any)       device = optional(any)       group = optional(any)       sharePointGroup = optional(object({       odata_type = optional(string, "#microsoft.graph.sharePointGroupIdentity")       displayName = optional(string)       id = optional(string)     }))       siteGroup = optional(object({       odata_type = optional(string, "#microsoft.graph.sharePointIdentity")       displayName = optional(string)       id = optional(string)       loginName = optional(string)     }))       siteUser = optional(object({       odata_type = optional(string, "#microsoft.graph.sharePointIdentity")       displayName = optional(string)       id = optional(string)       loginName = optional(string)     }))       user = optional(any)     }))     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `title` | `title` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -45,7 +45,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- members[].identity: polymorphic schema; accepts an untyped value
+- members[].identity.application: polymorphic schema; accepts an untyped value
+- members[].identity.device: polymorphic schema; accepts an untyped value
+- members[].identity.group: polymorphic schema; accepts an untyped value
+- members[].identity.user: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

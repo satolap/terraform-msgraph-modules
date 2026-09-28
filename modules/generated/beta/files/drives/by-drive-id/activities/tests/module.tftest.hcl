@@ -18,3 +18,17 @@ run "minimal_request" {
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
+
+run "typed_request" {
+  command = plan
+
+  variables {
+    drive_id = "test-parent-id"
+    action   = { "comment" = null }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["action"]) == jsonencode({ "@odata.type" = "#microsoft.graph.itemActionSet" })
+    error_message = "action must preserve typed values and omit nested nulls."
+  }
+}

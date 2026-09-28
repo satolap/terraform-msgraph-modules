@@ -26,6 +26,7 @@ run "typed_request" {
     end_user_notification_id = "test-parent-id"
     email_content            = "example"
     is_default_langauge      = false
+    sent_from                = { "displayName" = null }
   }
 
   assert {
@@ -36,5 +37,10 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isDefaultLangauge"]) == jsonencode(false)
     error_message = "isDefaultLangauge must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["sentFrom"]) == jsonencode({ "@odata.type" = "#microsoft.graph.emailIdentity" })
+    error_message = "sentFrom must preserve typed values and omit nested nulls."
   }
 }

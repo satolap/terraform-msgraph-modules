@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `contact_folder_id` | URL parameter `contactFolder-id` | `string` | yes | no |
 | `assistant_name` | `assistantName` | `string` | no | no |
 | `birthday` | `birthday` | `string` | no | no |
-| `business_address` | `businessAddress` | `any` | no | no |
+| `business_address` | `businessAddress` | `object({       odata_type = optional(string, "#microsoft.graph.physicalAddress")       city = optional(string)       countryOrRegion = optional(string)       postalCode = optional(string)       state = optional(string)       street = optional(string)     })` | no | no |
 | `business_home_page` | `businessHomePage` | `string` | no | no |
 | `business_phones` | `businessPhones` | `list(string)` | no | no |
 | `categories` | `categories` | `list(string)` | no | no |
@@ -39,7 +39,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `file_as` | `fileAs` | `string` | no | no |
 | `generation` | `generation` | `string` | no | no |
 | `given_name` | `givenName` | `string` | no | no |
-| `home_address` | `homeAddress` | `any` | no | no |
+| `home_address` | `homeAddress` | `object({       odata_type = optional(string, "#microsoft.graph.physicalAddress")       city = optional(string)       countryOrRegion = optional(string)       postalCode = optional(string)       state = optional(string)       street = optional(string)     })` | no | no |
 | `home_phones` | `homePhones` | `list(string)` | no | no |
 | `im_addresses` | `imAddresses` | `list(string)` | no | no |
 | `initials` | `initials` | `string` | no | no |
@@ -51,16 +51,16 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `nick_name` | `nickName` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `office_location` | `officeLocation` | `string` | no | no |
-| `other_address` | `otherAddress` | `any` | no | no |
+| `other_address` | `otherAddress` | `object({       odata_type = optional(string, "#microsoft.graph.physicalAddress")       city = optional(string)       countryOrRegion = optional(string)       postalCode = optional(string)       state = optional(string)       street = optional(string)     })` | no | no |
 | `parent_folder_id` | `parentFolderId` | `string` | no | no |
 | `personal_notes` | `personalNotes` | `string` | no | no |
 | `photo` | `photo` | `any` | no | no |
-| `primary_email_address` | `primaryEmailAddress` | `any` | no | no |
+| `primary_email_address` | `primaryEmailAddress` | `object({       odata_type = optional(string, "#microsoft.graph.emailAddress")       address = optional(string)       name = optional(string)     })` | no | no |
 | `profession` | `profession` | `string` | no | no |
-| `secondary_email_address` | `secondaryEmailAddress` | `any` | no | no |
+| `secondary_email_address` | `secondaryEmailAddress` | `object({       odata_type = optional(string, "#microsoft.graph.emailAddress")       address = optional(string)       name = optional(string)     })` | no | no |
 | `spouse_name` | `spouseName` | `string` | no | no |
 | `surname` | `surname` | `string` | no | no |
-| `tertiary_email_address` | `tertiaryEmailAddress` | `any` | no | no |
+| `tertiary_email_address` | `tertiaryEmailAddress` | `object({       odata_type = optional(string, "#microsoft.graph.emailAddress")       address = optional(string)       name = optional(string)     })` | no | no |
 | `title` | `title` | `string` | no | no |
 | `yomi_company_name` | `yomiCompanyName` | `string` | no | no |
 | `yomi_given_name` | `yomiGivenName` | `string` | no | no |
@@ -81,13 +81,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- businessAddress: polymorphic schema; accepts an untyped value
-- homeAddress: polymorphic schema; accepts an untyped value
-- otherAddress: polymorphic schema; accepts an untyped value
-- photo: polymorphic schema; accepts an untyped value
-- primaryEmailAddress: polymorphic schema; accepts an untyped value
-- secondaryEmailAddress: polymorphic schema; accepts an untyped value
-- tertiaryEmailAddress: polymorphic schema; accepts an untyped value
+- photo: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

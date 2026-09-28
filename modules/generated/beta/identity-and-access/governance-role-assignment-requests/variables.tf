@@ -37,14 +37,29 @@ variable "role_definition_id" {
 
 variable "schedule" {
   description = "The schedule object of the role assignment request."
-  type        = any
-  default     = null
+  type = object({
+    odata_type    = optional(string, "#microsoft.graph.governanceSchedule")
+    duration      = optional(string)
+    endDateTime   = optional(string)
+    startDateTime = optional(string)
+    type          = optional(string)
+  })
+  default = null
 }
 
 variable "status" {
   description = "The status of the role assignment request."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.governanceRoleAssignmentRequestStatus")
+    status     = optional(string)
+    statusDetails = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.keyValue")
+      key        = optional(string)
+      value      = optional(string)
+    })))
+    subStatus = optional(string)
+  })
+  default = null
 }
 
 variable "subject_id" {

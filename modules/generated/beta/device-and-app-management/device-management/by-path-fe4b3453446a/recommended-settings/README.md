@@ -16,6 +16,7 @@ module "graph_resource" {
   device_management_template_id = "parent-object-id"
   device_management_template_id1 = "parent-object-id"
   device_management_template_setting_category_id = "parent-object-id"
+  odata_type = "#microsoft.graph.deviceManagementAbstractComplexSettingInstance"
 }
 ```
 
@@ -28,12 +29,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `device_management_template_id` | URL parameter `deviceManagementTemplate-id` | `string` | yes | no |
 | `device_management_template_id1` | URL parameter `deviceManagementTemplate-id1` | `string` | yes | no |
 | `device_management_template_setting_category_id` | URL parameter `deviceManagementTemplateSettingCategory-id` | `string` | yes | no |
+| `odata_type` | `@odata.type` | `string` | yes | no |
 | `definition_id` | `definitionId` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
 | `value_json` | `valueJson` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
-Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.
 
 Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
@@ -47,6 +48,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- @odata.type: microsoft.graph.deviceManagementSettingInstance is abstract; odata_type has no default and must name a concrete type
 - Microsoft Graph beta contracts can change without notice.
 
 ## Licensing and prerequisites

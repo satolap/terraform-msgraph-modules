@@ -1,7 +1,16 @@
 variable "alert_impact" {
   description = "The impact of the alert event. Consists of a list of key-value pair and a number followed by the aggregation type. For example, 6 affectedCloudPcCount means that 6 Cloud PCs are affected. 12 affectedCloudPcPercentage means 12% of Cloud PCs are affected. The list of key-value pair indicates the details of the alert impact."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.deviceManagement.alertImpact")
+    aggregationType = optional(string)
+    alertImpactDetails = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.keyValuePair")
+      name       = optional(string)
+      value      = optional(string)
+    })))
+    value = optional(number)
+  })
+  default = null
 }
 
 variable "alert_rule_id" {
@@ -12,7 +21,7 @@ variable "alert_rule_id" {
 
 variable "alert_rule_template" {
   description = "The rule template of the alert event. The possible values are: cloudPcProvisionScenario, cloudPcImageUploadScenario, cloudPcOnPremiseNetworkConnectionCheckScenario, unknownFutureValue, cloudPcInGracePeriodScenario, cloudPcFrontlineInsufficientLicensesScenario, cloudPcInaccessibleScenario, cloudPcFrontlineConcurrencyScenario, cloudPcUserSettingsPersistenceScenario, cloudPcDeprovisionFailedScenario. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: cloudPcInGracePeriodScenario, cloudPcFrontlineInsufficientLicensesScenario, cloudPcInaccessibleScenario, cloudPcFrontlineConcurrencyScenario, cloudPcUserSettingsPersistenceScenario, cloudPcDeprovisionFailedScenario."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -54,7 +63,7 @@ variable "resolved_date_time" {
 
 variable "severity" {
   description = "The severity of the alert event. The possible values are: unknown, informational, warning, critical, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -65,7 +74,7 @@ variable "severity" {
 
 variable "status" {
   description = "The status of the alert record. The possible values are: active, resolved, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

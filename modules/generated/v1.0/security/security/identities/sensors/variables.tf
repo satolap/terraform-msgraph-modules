@@ -42,14 +42,14 @@ variable "health_issues" {
     description               = optional(string)
     displayName               = optional(string)
     domainNames               = optional(list(string))
-    healthIssueType           = optional(any)
+    healthIssueType           = optional(string)
     issueTypeId               = optional(string)
     lastModifiedDateTime      = optional(string)
     recommendations           = optional(list(string))
     recommendedActionCommands = optional(list(string))
     sensorDNSNames            = optional(list(string))
-    severity                  = optional(any)
-    status                    = optional(any)
+    severity                  = optional(string)
+    status                    = optional(string)
   }))
   default = null
 }

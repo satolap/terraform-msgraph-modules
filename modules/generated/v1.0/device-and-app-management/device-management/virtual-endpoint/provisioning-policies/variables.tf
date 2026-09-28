@@ -9,8 +9,11 @@ variable "assignments" {
 
 variable "autopatch" {
   description = "Indicates the Windows Autopatch settings for Cloud PCs using this provisioning policy. The settings take effect when the tenant enrolls in Autopatch and the managedType of the microsoftManagedDesktop property is set as starterManaged. Supports $select."
-  type        = any
-  default     = null
+  type = object({
+    odata_type       = optional(string, "#microsoft.graph.cloudPcProvisioningPolicyAutopatch")
+    autopatchGroupId = optional(string)
+  })
+  default = null
 }
 
 variable "cloud_pc_naming_template" {
@@ -35,7 +38,7 @@ variable "domain_join_configurations" {
   description = "Specifies a list ordered by priority on how Cloud PCs join Microsoft Entra ID (Azure AD). Supports $select."
   type = list(object({
     odata_type             = optional(string, "#microsoft.graph.cloudPcDomainJoinConfiguration")
-    domainJoinType         = optional(any)
+    domainJoinType         = optional(string)
     onPremisesConnectionId = optional(string)
     regionName             = optional(string)
   }))
@@ -79,8 +82,12 @@ variable "local_admin_enabled" {
 
 variable "microsoft_managed_desktop" {
   description = "The specific settings to microsoftManagedDesktop that enables Microsoft Managed Desktop customers to get device managed experience for Cloud PC. To enable microsoftManagedDesktop to provide more value, an admin needs to specify certain settings in it. Supports $filter, $select, and $orderBy."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.microsoftManagedDesktop")
+    managedType = optional(string)
+    profile     = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -92,7 +99,7 @@ variable "odata_type" {
 
 variable "provisioning_type" {
   description = "Specifies the type of license used when provisioning Cloud PCs using this policy. By default, the license type is dedicated if the provisioningType isn't specified when you create the cloudPcProvisioningPolicy. You can't change this property after the cloudPcProvisioningPolicy was created. The possible values are: dedicated, shared, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -103,8 +110,11 @@ variable "provisioning_type" {
 
 variable "windows_setting" {
   description = "Indicates a specific Windows setting to configure during the creation of Cloud PCs for this provisioning policy. Supports $select."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.cloudPcWindowsSetting")
+    locale     = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

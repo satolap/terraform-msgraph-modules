@@ -22,8 +22,12 @@ variable "last_modified_date_time" {
 
 variable "mobile_drivers_license_configuration" {
   description = "Configuration for accepting mobile driver's licenses. Optional."
-  type        = any
-  default     = null
+  type = object({
+    odata_type       = optional(string, "#microsoft.graph.mobileDriversLicenseConfiguration")
+    acceptedRegions  = optional(list(string))
+    documentStandard = optional(string)
+  })
+  default = null
 }
 
 variable "name" {
@@ -47,8 +51,12 @@ variable "priority" {
 
 variable "self_service_issuance" {
   description = "Configuration for self-service issuance. Optional."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.verifiedIdSelfServiceIssuance")
+    isEnabled   = optional(bool)
+    issuanceUrl = optional(string)
+  })
+  default = null
 }
 
 variable "state" {

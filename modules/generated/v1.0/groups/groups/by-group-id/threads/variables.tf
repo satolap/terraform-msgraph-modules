@@ -11,11 +11,8 @@ variable "group_id" {
 
 variable "cc_recipients" {
   description = "The Cc: recipients for the thread. Requires $select to retrieve."
-  type = list(object({
-    odata_type   = optional(string, "#microsoft.graph.recipient")
-    emailAddress = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "has_attachments" {
@@ -46,22 +43,20 @@ variable "odata_type" {
 variable "posts" {
   description = "Microsoft Graph posts property."
   type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.post")
-    body            = optional(any)
-    categories      = optional(list(string))
-    createdDateTime = optional(string)
-    from = optional(object({
-      odata_type   = optional(string, "#microsoft.graph.recipient")
-      emailAddress = optional(any)
+    odata_type = optional(string, "#microsoft.graph.post")
+    body = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.itemBody")
+      content     = optional(string)
+      contentType = optional(string)
     }))
+    categories           = optional(list(string))
+    createdDateTime      = optional(string)
+    from                 = optional(any)
     hasAttachments       = optional(bool)
     lastModifiedDateTime = optional(string)
-    newParticipants = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.recipient")
-      emailAddress = optional(any)
-    })))
-    receivedDateTime = optional(string)
-    sender           = optional(any)
+    newParticipants      = optional(any)
+    receivedDateTime     = optional(string)
+    sender               = optional(any)
   }))
   default = null
 }
@@ -74,11 +69,8 @@ variable "preview" {
 
 variable "to_recipients" {
   description = "The To: recipients for the thread. Requires $select to retrieve."
-  type = list(object({
-    odata_type   = optional(string, "#microsoft.graph.recipient")
-    emailAddress = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "topic" {

@@ -19,18 +19,24 @@ run "typed_request" {
   command = plan
 
   variables {
-    approval_id        = "example"
+    access_id          = "owner"
     is_validation_only = false
+    schedule_info      = { "expiration" = null }
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["approvalId"]) == jsonencode("example")
-    error_message = "approvalId must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["accessId"]) == jsonencode("owner")
+    error_message = "accessId must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isValidationOnly"]) == jsonencode(false)
     error_message = "isValidationOnly must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["scheduleInfo"]) == jsonencode({ "@odata.type" = "#microsoft.graph.requestSchedule" })
+    error_message = "scheduleInfo must preserve typed values and omit nested nulls."
   }
 }
 

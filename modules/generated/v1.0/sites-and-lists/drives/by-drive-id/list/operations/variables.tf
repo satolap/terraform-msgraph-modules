@@ -17,8 +17,31 @@ variable "created_date_time" {
 
 variable "error" {
   description = "Error that caused the operation to fail."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.publicError")
+    code       = optional(string)
+    details = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+      code       = optional(string)
+      message    = optional(string)
+      target     = optional(string)
+    })))
+    innerError = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicInnerError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    message = optional(string)
+    target  = optional(string)
+  })
+  default = null
 }
 
 variable "last_action_date_time" {
@@ -54,7 +77,7 @@ variable "resource_location" {
 
 variable "status" {
   description = "The status of the operation. The possible values are: notStarted, running, succeeded, failed, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

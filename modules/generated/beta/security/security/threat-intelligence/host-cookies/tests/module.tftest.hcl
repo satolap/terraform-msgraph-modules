@@ -20,16 +20,10 @@ run "typed_request" {
 
   variables {
     domain = "example"
-    host   = { "childHostPairs" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["domain"]) == jsonencode("example")
     error_message = "domain must preserve typed values and omit nested nulls."
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["host"]) == jsonencode({ "@odata.type" = "#microsoft.graph.security.host" })
-    error_message = "host must preserve typed values and omit nested nulls."
   }
 }

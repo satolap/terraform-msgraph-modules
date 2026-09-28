@@ -42,8 +42,23 @@ variable "odata_type" {
 
 variable "policy" {
   description = "Microsoft Graph policy property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type            = optional(string, "#microsoft.graph.governancePolicy")
+    decisionMakerCriteria = optional(any)
+    notificationPolicy = optional(object({
+      odata_type           = optional(string, "#microsoft.graph.governanceNotificationPolicy")
+      enabledTemplateTypes = optional(list(string))
+      notificationTemplates = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.governanceNotificationTemplate")
+        culture    = optional(string)
+        id         = optional(string)
+        source     = optional(string)
+        type       = optional(string)
+        version    = optional(string)
+      })))
+    }))
+  })
+  default = null
 }
 
 variable "policy_template_id" {
@@ -66,8 +81,29 @@ variable "schema_id" {
 
 variable "settings" {
   description = "Microsoft Graph settings property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                    = optional(string, "#microsoft.graph.businessFlowSettings")
+    accessRecommendationsEnabled  = optional(bool)
+    activityDurationInDays        = optional(number)
+    autoApplyReviewResultsEnabled = optional(bool)
+    autoReviewEnabled             = optional(bool)
+    autoReviewSettings = optional(object({
+      odata_type        = optional(string, "#microsoft.graph.autoReviewSettings")
+      notReviewedResult = optional(string)
+    }))
+    durationInDays                  = optional(number)
+    justificationRequiredOnApproval = optional(bool)
+    mailNotificationsEnabled        = optional(bool)
+    recurrenceSettings = optional(object({
+      odata_type        = optional(string, "#microsoft.graph.accessReviewRecurrenceSettings")
+      durationInDays    = optional(number)
+      recurrenceCount   = optional(number)
+      recurrenceEndType = optional(string)
+      recurrenceType    = optional(string)
+    }))
+    remindersEnabled = optional(bool)
+  })
+  default = null
 }
 
 variable "additional_properties" {

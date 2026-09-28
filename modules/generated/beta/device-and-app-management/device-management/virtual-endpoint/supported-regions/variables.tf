@@ -22,8 +22,8 @@ variable "supported_solution" {
   default     = null
 
   validation {
-    condition     = var.supported_solution == null ? true : contains(["windows365", "devBox", "unknownFutureValue", "rpaBox", "microsoft365Opal", "microsoft365BizChat"], var.supported_solution)
-    error_message = "supported_solution must be one of the documented enum values."
+    condition     = var.supported_solution == null ? true : try(alltrue([for value in split(",", var.supported_solution) : contains(["windows365", "devbox", "unknownfuturevalue", "rpabox", "microsoft365opal", "microsoft365bizchat"], lower(trimspace(value)))]), false)
+    error_message = "supported_solution must be one or more of the documented enum values, separated by commas."
   }
 }
 

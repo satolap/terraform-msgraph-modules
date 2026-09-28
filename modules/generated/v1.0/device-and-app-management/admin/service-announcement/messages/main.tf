@@ -17,7 +17,7 @@ locals {
     "startDateTime"            = var.start_date_time
     "tags"                     = (var.tags == null ? null : [for item0 in var.tags : item0 if item0 != null])
     "title"                    = var.title
-    "viewPoint"                = var.view_point
+    "viewPoint"                = (var.view_point == null ? null : { for key0, value0 in { "@odata.type" = var.view_point["odata_type"], "isArchived" = var.view_point["isArchived"], "isFavorited" = var.view_point["isFavorited"], "isRead" = var.view_point["isRead"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

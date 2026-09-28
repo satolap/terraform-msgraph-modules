@@ -46,18 +46,56 @@ variable "app_display_name" {
 variable "app_management_policies" {
   description = "The appManagementPolicy applied to this service principal."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.appManagementPolicy")
-    appliesTo = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.directoryObject")
-      deletedDateTime = optional(string)
-    })))
+    odata_type      = optional(string, "#microsoft.graph.appManagementPolicy")
+    appliesTo       = optional(any)
     deletedDateTime = optional(string)
     description     = optional(string)
     displayName     = optional(string)
     isEnabled       = optional(bool)
-    restrictions    = optional(any)
+    restrictions = optional(object({
+      odata_type = optional(string, "#microsoft.graph.customAppManagementConfiguration")
+      applicationRestrictions = optional(object({
+        odata_type = optional(string, "#microsoft.graph.customAppManagementApplicationConfiguration")
+        audiences = optional(object({
+          odata_type               = optional(string, "#microsoft.graph.audiencesConfiguration")
+          azureAdMultipleOrgs      = optional(any)
+          personalMicrosoftAccount = optional(any)
+        }))
+        identifierUris = optional(object({
+          odata_type                               = optional(string, "#microsoft.graph.identifierUriConfiguration")
+          nonDefaultUriAddition                    = optional(any)
+          uriAdditionWithoutUniqueTenantIdentifier = optional(any)
+        }))
+        redirectUris = optional(object({
+          odata_type              = optional(string, "#microsoft.graph.redirectUriConfiguration")
+          uriWithBlockedDomain    = optional(any)
+          uriWithBlockedScheme    = optional(any)
+          uriWithWildcard         = optional(any)
+          uriWithoutAllowedDomain = optional(any)
+          uriWithoutAllowedScheme = optional(any)
+        }))
+      }))
+      keyCredentials = optional(list(object({
+        odata_type                                  = optional(string, "#microsoft.graph.keyCredentialConfiguration")
+        certificateBasedApplicationConfigurationIds = optional(any)
+        excludeActors                               = optional(any)
+        maxLifetime                                 = optional(string)
+        restrictForAppsCreatedAfterDateTime         = optional(string)
+        restrictionType                             = optional(string)
+        state                                       = optional(string)
+      })))
+      passwordCredentials = optional(list(object({
+        odata_type                          = optional(string, "#microsoft.graph.passwordCredentialConfiguration")
+        excludeActors                       = optional(any)
+        maxLifetime                         = optional(string)
+        restrictForAppsCreatedAfterDateTime = optional(string)
+        restrictionType                     = optional(string)
+        state                               = optional(string)
+      })))
+    }))
   }))
-  default = null
+  default   = null
+  sensitive = true
 }
 
 variable "app_owner_organization_id" {
@@ -115,11 +153,8 @@ variable "app_roles" {
 variable "claims_mapping_policies" {
   description = "The claimsMappingPolicies assigned to this service principal. Supports $expand."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.claimsMappingPolicy")
-    appliesTo = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.directoryObject")
-      deletedDateTime = optional(string)
-    })))
+    odata_type            = optional(string, "#microsoft.graph.claimsMappingPolicy")
+    appliesTo             = optional(any)
     definition            = optional(list(string))
     deletedDateTime       = optional(string)
     description           = optional(string)
@@ -145,7 +180,7 @@ variable "delegated_permission_classifications" {
   description = "The permission classifications for delegated permissions exposed by the app that this service principal represents. Supports $expand."
   type = list(object({
     odata_type     = optional(string, "#microsoft.graph.delegatedPermissionClassification")
-    classification = optional(any)
+    classification = optional(string)
     permissionId   = optional(string)
     permissionName = optional(string)
   }))
@@ -194,13 +229,17 @@ variable "error_url" {
 variable "federated_identity_credentials" {
   description = "Microsoft Graph federatedIdentityCredentials property."
   type = list(object({
-    odata_type               = optional(string, "#microsoft.graph.federatedIdentityCredential")
-    audiences                = optional(list(string))
-    claimsMatchingExpression = optional(any)
-    description              = optional(string)
-    issuer                   = optional(string)
-    name                     = optional(string)
-    subject                  = optional(string)
+    odata_type = optional(string, "#microsoft.graph.federatedIdentityCredential")
+    audiences  = optional(list(string))
+    claimsMatchingExpression = optional(object({
+      odata_type      = optional(string, "#microsoft.graph.federatedIdentityExpression")
+      languageVersion = optional(number)
+      value           = optional(string)
+    }))
+    description = optional(string)
+    issuer      = optional(string)
+    name        = optional(string)
+    subject     = optional(string)
   }))
   default   = null
   sensitive = true
@@ -209,11 +248,8 @@ variable "federated_identity_credentials" {
 variable "home_realm_discovery_policies" {
   description = "The homeRealmDiscoveryPolicies assigned to this service principal. Supports $expand."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.homeRealmDiscoveryPolicy")
-    appliesTo = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.directoryObject")
-      deletedDateTime = optional(string)
-    })))
+    odata_type            = optional(string, "#microsoft.graph.homeRealmDiscoveryPolicy")
+    appliesTo             = optional(any)
     definition            = optional(list(string))
     deletedDateTime       = optional(string)
     description           = optional(string)
@@ -231,8 +267,14 @@ variable "homepage" {
 
 variable "info" {
   description = "Basic profile information of the acquired application such as app's marketing, support, terms of service and privacy statement URLs. The terms of service and privacy statement are surfaced to users through the user consent experience. For more info, see How to: Add Terms of service and privacy statement for registered Microsoft Entra apps. Supports $filter (eq, ne, not, ge, le, and eq on null values)."
-  type        = any
-  default     = null
+  type = object({
+    odata_type          = optional(string, "#microsoft.graph.informationalUrl")
+    marketingUrl        = optional(string)
+    privacyStatementUrl = optional(string)
+    supportUrl          = optional(string)
+    termsOfServiceUrl   = optional(string)
+  })
+  default = null
 }
 
 variable "is_disabled" {
@@ -299,11 +341,8 @@ variable "odata_type" {
 
 variable "owners" {
   description = "Directory objects that are owners of this servicePrincipal. The owners are a set of nonadmin users or servicePrincipals who are allowed to modify this object. Supports $expand and $filter (/$count eq 0, /$count ne 0, /$count eq 1, /$count ne 1)."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "password_credentials" {
@@ -325,17 +364,10 @@ variable "permission_grant_pre_approval_policies" {
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.permissionGrantPreApprovalPolicy")
     conditions = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.preApprovalDetail")
-      permissions = optional(object({
-        odata_type     = optional(string, "#microsoft.graph.preApprovedPermissions")
-        permissionKind = optional(any)
-        permissionType = optional(any)
-      }))
-      scopeType = optional(string)
-      sensitivityLabels = optional(object({
-        odata_type = optional(string, "#microsoft.graph.scopeSensitivityLabels")
-        labelKind  = optional(any)
-      }))
+      odata_type        = optional(string, "#microsoft.graph.preApprovalDetail")
+      permissions       = optional(any)
+      scopeType         = optional(string)
+      sensitivityLabels = optional(any)
     })))
     deletedDateTime = optional(string)
   }))
@@ -403,8 +435,11 @@ variable "saml_metadata_url" {
 
 variable "saml_single_sign_on_settings" {
   description = "The collection for settings related to saml single sign-on."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.samlSingleSignOnSettings")
+    relayState = optional(string)
+  })
+  default = null
 }
 
 variable "service_principal_names" {
@@ -440,11 +475,8 @@ variable "token_encryption_key_id" {
 variable "token_issuance_policies" {
   description = "The tokenIssuancePolicies assigned to this service principal. Supports $expand."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.tokenIssuancePolicy")
-    appliesTo = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.directoryObject")
-      deletedDateTime = optional(string)
-    })))
+    odata_type            = optional(string, "#microsoft.graph.tokenIssuancePolicy")
+    appliesTo             = optional(any)
     definition            = optional(list(string))
     deletedDateTime       = optional(string)
     description           = optional(string)
@@ -457,11 +489,8 @@ variable "token_issuance_policies" {
 variable "token_lifetime_policies" {
   description = "The tokenLifetimePolicies assigned to this service principal. Supports $expand."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.tokenLifetimePolicy")
-    appliesTo = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.directoryObject")
-      deletedDateTime = optional(string)
-    })))
+    odata_type            = optional(string, "#microsoft.graph.tokenLifetimePolicy")
+    appliesTo             = optional(any)
     definition            = optional(list(string))
     deletedDateTime       = optional(string)
     description           = optional(string)
@@ -473,17 +502,19 @@ variable "token_lifetime_policies" {
 
 variable "transitive_member_of" {
   description = "Microsoft Graph transitiveMemberOf property."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "verified_publisher" {
   description = "Specifies the verified publisher of the application that's linked to this service principal."
-  type        = any
-  default     = null
+  type = object({
+    odata_type          = optional(string, "#microsoft.graph.verifiedPublisher")
+    addedDateTime       = optional(string)
+    displayName         = optional(string)
+    verifiedPublisherId = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

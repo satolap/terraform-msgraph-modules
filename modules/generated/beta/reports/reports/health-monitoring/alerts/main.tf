@@ -5,7 +5,7 @@ locals {
     "category"        = var.category
     "createdDateTime" = var.created_date_time
     "documentation"   = var.documentation
-    "enrichment"      = var.enrichment
+    "enrichment"      = (var.enrichment == null ? null : { for key0, value0 in { "@odata.type" = var.enrichment["odata_type"], "impacts" = (var.enrichment["impacts"] == null ? null : [for item1 in var.enrichment["impacts"] : item1 if item1 != null]), "state" = var.enrichment["state"], "supportingData" = var.enrichment["supportingData"] } : key0 => value0 if value0 != null })
     "@odata.type"     = var.odata_type
     "scenario"        = var.scenario
     "signals"         = var.signals

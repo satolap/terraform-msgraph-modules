@@ -31,6 +31,7 @@ run "typed_request" {
     body_preview                  = "example"
     allow_new_time_proposals      = false
     reminder_minutes_before_start = -2147483648
+    body                          = { "content" = null }
     attendees                     = [{}]
   }
 
@@ -47,6 +48,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["reminderMinutesBeforeStart"]) == jsonencode(-2147483648)
     error_message = "reminderMinutesBeforeStart must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["body"]) == jsonencode({ "@odata.type" = "#microsoft.graph.itemBody" })
+    error_message = "body must preserve typed values and omit nested nulls."
   }
 
   assert {

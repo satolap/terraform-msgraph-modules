@@ -112,7 +112,7 @@ variable "resolved_on_date_time" {
 
 variable "resolved_reason" {
   description = "The reason provided by the partner for addressing the alert. The possible values are: legitimate, ignore, fraud, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

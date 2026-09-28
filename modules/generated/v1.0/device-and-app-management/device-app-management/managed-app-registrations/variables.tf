@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.androidManagedAppRegistration", "#microsoft.graph.iosManagedAppRegistration"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "app_identifier" {
   description = "The app package Identifier"
   type        = any
@@ -12,15 +23,8 @@ variable "application_version" {
 
 variable "applied_policies" {
   description = "Zero or more policys already applied on the registered app when it last synchronized with managment service."
-  type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.managedAppPolicy")
-    createdDateTime      = optional(string)
-    description          = optional(string)
-    displayName          = optional(string)
-    lastModifiedDateTime = optional(string)
-    version              = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "created_date_time" {
@@ -61,15 +65,8 @@ variable "graph_version" {
 
 variable "intended_policies" {
   description = "Zero or more policies admin intended for the app as of now."
-  type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.managedAppPolicy")
-    createdDateTime      = optional(string)
-    description          = optional(string)
-    displayName          = optional(string)
-    lastModifiedDateTime = optional(string)
-    version              = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "last_sync_date_time" {
@@ -82,13 +79,6 @@ variable "management_sdk_version" {
   description = "App management SDK version"
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.managedAppRegistration"
-  nullable    = false
 }
 
 variable "operations" {

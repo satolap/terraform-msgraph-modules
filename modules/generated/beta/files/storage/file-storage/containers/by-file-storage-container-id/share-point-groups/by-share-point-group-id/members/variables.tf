@@ -22,8 +22,31 @@ variable "share_point_group_id" {
 
 variable "identity" {
   description = "The identity represented by the sharePointGroupMember object."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.sharePointIdentitySet")
+    application = optional(any)
+    device      = optional(any)
+    group       = optional(any)
+    sharePointGroup = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.sharePointGroupIdentity")
+      displayName = optional(string)
+      id          = optional(string)
+    }))
+    siteGroup = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.sharePointIdentity")
+      displayName = optional(string)
+      id          = optional(string)
+      loginName   = optional(string)
+    }))
+    siteUser = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.sharePointIdentity")
+      displayName = optional(string)
+      id          = optional(string)
+      loginName   = optional(string)
+    }))
+    user = optional(any)
+  })
+  default = null
 }
 
 variable "odata_type" {

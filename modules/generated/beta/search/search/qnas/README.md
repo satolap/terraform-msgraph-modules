@@ -27,12 +27,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `group_ids` | `groupIds` | `list(string)` | no | no |
-| `keywords` | `keywords` | `any` | no | no |
+| `keywords` | `keywords` | `object({       odata_type = optional(string, "#microsoft.graph.search.answerKeyword")       keywords = optional(list(string))       matchSimilarKeywords = optional(bool)       reservedKeywords = optional(list(string))     })` | no | no |
 | `language_tags` | `languageTags` | `list(string)` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `platforms` | `platforms` | `list(string)` | no | no |
 | `state` | `state` | `string` | no | no |
-| `targeted_variations` | `targetedVariations` | `list(object({       odata_type = optional(string, "#microsoft.graph.search.answerVariant")       description = optional(string)       displayName = optional(string)       languageTag = optional(string)       platform = optional(any)       webUrl = optional(string)     }))` | no | no |
+| `targeted_variations` | `targetedVariations` | `list(object({       odata_type = optional(string, "#microsoft.graph.search.answerVariant")       description = optional(string)       displayName = optional(string)       languageTag = optional(string)       platform = optional(string)       webUrl = optional(string)     }))` | no | no |
 | `web_url` | `webUrl` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -51,8 +51,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- keywords: polymorphic schema; accepts an untyped value
-- targetedVariations[].platform: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -8,7 +8,7 @@ locals {
     "lastModifiedDateTime"      = var.last_modified_date_time
     "name"                      = var.name
     "@odata.type"               = var.odata_type
-    "policies"                  = (var.policies == null ? null : [for item0 in var.policies : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "policy" = (item0["policy"] == null ? null : { for key2, value2 in { "@odata.type" = item0["policy"]["odata_type"], "description" = item0["policy"]["description"], "name" = item0["policy"]["name"], "policyRules" = (item0["policy"]["policyRules"] == null ? null : [for item3 in item0["policy"]["policyRules"] : (item3 == null ? null : { for key4, value4 in { "@odata.type" = item3["odata_type"], "name" = item3["name"] } : key4 => value4 if value4 != null }) if item3 != null]), "version" = item0["policy"]["version"] } : key2 => value2 if value2 != null }), "state" = item0["state"], "version" = item0["version"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "policies"                  = (var.policies == null ? null : [for item0 in var.policies : item0 if item0 != null])
     "priority"                  = var.priority
     "state"                     = var.state
   } : key => value if value != null }

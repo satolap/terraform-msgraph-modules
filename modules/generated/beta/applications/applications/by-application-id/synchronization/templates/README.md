@@ -29,7 +29,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `description` | `description` | `string` | no | no |
 | `discoverable` | `discoverable` | `bool` | no | no |
 | `factory_tag` | `factoryTag` | `string` | no | no |
-| `metadata` | `metadata` | `list(object({       odata_type = optional(string, "#microsoft.graph.synchronizationMetadataEntry")       key = optional(any)       value = optional(string)     }))` | no | no |
+| `metadata` | `metadata` | `list(object({       odata_type = optional(string, "#microsoft.graph.synchronizationMetadataEntry")       key = optional(string)       value = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `schema` | `schema` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -49,8 +49,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- metadata[].key: polymorphic schema; accepts an untyped value
-- schema: polymorphic schema; accepts an untyped value
+- schema: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

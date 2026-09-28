@@ -13,7 +13,7 @@ locals {
     "grading"                                 = var.grading
     "gradingCategory"                         = var.grading_category
     "gradingScheme"                           = var.grading_scheme
-    "instructions"                            = var.instructions
+    "instructions"                            = (var.instructions == null ? null : { for key0, value0 in { "@odata.type" = var.instructions["odata_type"], "content" = var.instructions["content"], "contentType" = var.instructions["contentType"] } : key0 => value0 if value0 != null })
     "languageTag"                             = var.language_tag
     "moduleUrl"                               = var.module_url
     "notificationChannelUrl"                  = var.notification_channel_url

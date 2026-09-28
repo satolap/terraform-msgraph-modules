@@ -32,6 +32,7 @@ run "typed_request" {
     security_enabled                = false
     classification                  = "example"
     has_members_with_license_errors = false
+    cloud_licensing                 = { "assignments" = null }
     accepted_senders                = [{}]
   }
 
@@ -66,7 +67,12 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["acceptedSenders"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.directoryObject" }])
+    condition     = jsonencode(msgraph_resource.this.body["cloudLicensing"]) == jsonencode({ "@odata.type" = "#microsoft.graph.cloudLicensing.groupCloudLicensing" })
+    error_message = "cloudLicensing must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["acceptedSenders"]) == jsonencode([{}])
     error_message = "acceptedSenders must preserve typed values and omit nested nulls."
   }
 }

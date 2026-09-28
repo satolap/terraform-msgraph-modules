@@ -8,7 +8,7 @@ locals {
     "requestedDateTime" = var.requested_date_time
     "roleId"            = var.role_id
     "roleInfo"          = var.role_info
-    "schedule"          = var.schedule
+    "schedule"          = (var.schedule == null ? null : { for key0, value0 in { "@odata.type" = var.schedule["odata_type"], "duration" = var.schedule["duration"], "endDateTime" = var.schedule["endDateTime"], "startDateTime" = var.schedule["startDateTime"], "type" = var.schedule["type"] } : key0 => value0 if value0 != null })
     "status"            = var.status
     "ticketNumber"      = var.ticket_number
     "ticketSystem"      = var.ticket_system

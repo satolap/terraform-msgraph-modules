@@ -68,7 +68,7 @@ variable "resource_type" {
 variable "upload_sessions" {
   description = "Microsoft Graph uploadSessions property."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.customDataProvidedResourceUploadSession")
+    odata_type = string
     data       = optional(any)
     files = optional(list(object({
       odata_type = optional(string, "#microsoft.graph.customDataProvidedResourceFile")
@@ -84,6 +84,11 @@ variable "upload_sessions" {
     status = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.upload_sessions == null ? true : alltrue([for item0 in var.upload_sessions : (item0 == null ? true : alltrue([(item0["odata_type"] == null ? false : contains(["#microsoft.graph.customDataProvidedResourceAccessReviewUploadSession"], item0["odata_type"]))]))]))
+    error_message = "upload_sessions: every nested odata_type of an abstract Graph type must name a concrete type."
+  }
 }
 
 variable "url" {

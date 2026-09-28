@@ -42,8 +42,12 @@ variable "odata_type" {
 
 variable "terms_expiration" {
   description = "Expiration schedule and frequency of agreement for all users. Supports $filter (eq)."
-  type        = any
-  default     = null
+  type = object({
+    odata_type    = optional(string, "#microsoft.graph.termsExpiration")
+    frequency     = optional(string)
+    startDateTime = optional(string)
+  })
+  default = null
 }
 
 variable "user_reaccept_required_frequency" {

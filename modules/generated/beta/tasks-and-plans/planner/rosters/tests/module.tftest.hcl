@@ -19,7 +19,13 @@ run "typed_request" {
   command = plan
 
   variables {
-    members = [{}]
+    assigned_sensitivity_label = { "assignmentMethod" = null }
+    members                    = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["assignedSensitivityLabel"]) == jsonencode({ "@odata.type" = "#microsoft.graph.sensitivityLabelAssignment" })
+    error_message = "assignedSensitivityLabel must preserve typed values and omit nested nulls."
   }
 
   assert {

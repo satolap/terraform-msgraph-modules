@@ -27,6 +27,7 @@ run "typed_request" {
     additional_information    = "example"
     is_anonymous_join_enabled = false
     maximum_attendees_count   = -2147483648
+    scheduling_policy         = { "allowStaffSelection" = null }
     custom_questions          = [{}]
   }
 
@@ -43,6 +44,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["maximumAttendeesCount"]) == jsonencode(-2147483648)
     error_message = "maximumAttendeesCount must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["schedulingPolicy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.bookingSchedulingPolicy" })
+    error_message = "schedulingPolicy must preserve typed values and omit nested nulls."
   }
 
   assert {

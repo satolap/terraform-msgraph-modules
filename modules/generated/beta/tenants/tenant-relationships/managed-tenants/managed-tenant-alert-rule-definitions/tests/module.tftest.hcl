@@ -19,13 +19,19 @@ run "typed_request" {
   command = plan
 
   variables {
-    created_by_user_id = "example"
-    alert_rules        = [{}]
+    created_by_user_id  = "example"
+    definition_template = { "defaultSeverity" = null }
+    alert_rules         = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["createdByUserId"]) == jsonencode("example")
     error_message = "createdByUserId must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["definitionTemplate"]) == jsonencode({ "@odata.type" = "#microsoft.graph.managedTenants.alertRuleDefinitionTemplate" })
+    error_message = "definitionTemplate must preserve typed values and omit nested nulls."
   }
 
   assert {

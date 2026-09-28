@@ -10,7 +10,7 @@ locals {
     "notificationChannels" = (var.notification_channels == null ? null : [for item0 in var.notification_channels : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "notificationChannelType" = item0["notificationChannelType"], "notificationReceivers" = (item0["notificationReceivers"] == null ? null : [for item2 in item0["notificationReceivers"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"], "contactInformation" = item2["contactInformation"], "locale" = item2["locale"] } : key3 => value3 if value3 != null }) if item2 != null]) } : key1 => value1 if value1 != null }) if item0 != null])
     "@odata.type"          = var.odata_type
     "severity"             = var.severity
-    "threshold"            = var.threshold
+    "threshold"            = (var.threshold == null ? null : { for key0, value0 in { "@odata.type" = var.threshold["odata_type"], "aggregation" = var.threshold["aggregation"], "operator" = var.threshold["operator"], "target" = var.threshold["target"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

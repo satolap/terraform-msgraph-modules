@@ -44,7 +44,7 @@ variable "hashes" {
   description = "Microsoft Graph hashes property."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.fileHash")
-    hashType   = optional(any)
+    hashType   = optional(string)
     hashValue  = optional(string)
   }))
   default = null
@@ -102,8 +102,14 @@ variable "tags" {
 
 variable "vendor_information" {
   description = "Microsoft Graph vendorInformation property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.securityVendorInformation")
+    provider        = optional(string)
+    providerVersion = optional(string)
+    subProvider     = optional(string)
+    vendor          = optional(string)
+  })
+  default = null
 }
 
 variable "vulnerability_states" {

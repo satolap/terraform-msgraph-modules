@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `access_rules` | `accessRules` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementExchangeAccessRule")       accessLevel = optional(string)       deviceClass = optional(any)     }))` | no | no |
+| `access_rules` | `accessRules` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementExchangeAccessRule")       accessLevel = optional(string)       deviceClass = optional(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementExchangeDeviceClass")       name = optional(string)       type = optional(string)     }))     }))` | no | no |
 | `conditional_access_settings` | `conditionalAccessSettings` | `any` | no | no |
 | `default_access_level` | `defaultAccessLevel` | `string` | no | no |
 | `known_device_classes` | `knownDeviceClasses` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementExchangeDeviceClass")       name = optional(string)       type = optional(string)     }))` | no | no |
@@ -45,8 +45,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- accessRules[].deviceClass: polymorphic schema; accepts an untyped value
-- conditionalAccessSettings: polymorphic schema; accepts an untyped value
+- conditionalAccessSettings: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

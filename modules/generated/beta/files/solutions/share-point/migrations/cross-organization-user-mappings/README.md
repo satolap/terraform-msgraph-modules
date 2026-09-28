@@ -22,12 +22,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `deleted` | `deleted` | `any` | no | no |
+| `deleted` | `deleted` | `object({       odata_type = optional(string, "#microsoft.graph.deleted")       state = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `source_organization_id` | `sourceOrganizationId` | `string` | no | no |
 | `source_user_identity` | `sourceUserIdentity` | `any` | no | no |
 | `target_user_identity` | `targetUserIdentity` | `any` | no | no |
-| `target_user_migration_data` | `targetUserMigrationData` | `any` | no | no |
+| `target_user_migration_data` | `targetUserMigrationData` | `object({       odata_type = optional(string, "#microsoft.graph.sharePointIdentityMappingUserMigrationData")       email = optional(string)     })` | no | no |
 | `user_type` | `userType` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -46,10 +46,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- deleted: polymorphic schema; accepts an untyped value
 - sourceUserIdentity: polymorphic schema; accepts an untyped value
 - targetUserIdentity: polymorphic schema; accepts an untyped value
-- targetUserMigrationData: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -24,15 +24,15 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `remote_network_id` | URL parameter `remoteNetwork-id` | `string` | yes | no |
-| `bandwidth_capacity_in_mbps` | `bandwidthCapacityInMbps` | `any` | no | no |
+| `bandwidth_capacity_in_mbps` | `bandwidthCapacityInMbps` | `string` | no | no |
 | `bgp_configuration` | `bgpConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.networkaccess.bgpConfiguration")       asn = optional(number)       ipAddress = optional(string)       localIpAddress = optional(string)       peerIpAddress = optional(string)     })` | no | no |
 | `device_vendor` | `deviceVendor` | `string` | no | no |
 | `ip_address` | `ipAddress` | `string` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `redundancy_configuration` | `redundancyConfiguration` | `any` | no | no |
-| `tunnel_configuration` | `tunnelConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.networkaccess.tunnelConfiguration")       preSharedKey = optional(string)       zoneRedundancyPreSharedKey = optional(string)     })` | no | no |
+| `redundancy_configuration` | `redundancyConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.networkaccess.redundancyConfiguration")       redundancyTier = optional(string)       zoneLocalIpAddress = optional(string)     })` | no | no |
+| `tunnel_configuration` | `tunnelConfiguration` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -50,8 +50,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- bandwidthCapacityInMbps: polymorphic schema; accepts an untyped value
-- redundancyConfiguration: polymorphic schema; accepts an untyped value
+- tunnelConfiguration: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

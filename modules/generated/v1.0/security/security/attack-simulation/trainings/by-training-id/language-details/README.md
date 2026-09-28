@@ -25,12 +25,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `training_id` | URL parameter `training-id` | `string` | yes | no |
 | `content` | `content` | `string` | no | no |
-| `created_by` | `createdBy` | `any` | no | no |
+| `created_by` | `createdBy` | `object({       odata_type = optional(string, "#microsoft.graph.emailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     })` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `is_default_langauge` | `isDefaultLangauge` | `bool` | no | no |
-| `last_modified_by` | `lastModifiedBy` | `any` | no | no |
+| `last_modified_by` | `lastModifiedBy` | `object({       odata_type = optional(string, "#microsoft.graph.emailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     })` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `locale` | `locale` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -47,11 +47,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- createdBy: polymorphic schema; accepts an untyped value
-- lastModifiedBy: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

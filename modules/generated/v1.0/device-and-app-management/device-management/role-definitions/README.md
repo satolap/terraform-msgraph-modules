@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `display_name` | `displayName` | `string` | no | no |
 | `is_built_in` | `isBuiltIn` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `role_assignments` | `roleAssignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.roleAssignment")       description = optional(string)       displayName = optional(string)       resourceScopes = optional(list(string))       roleDefinition = optional(any)     }))` | no | no |
+| `role_assignments` | `roleAssignments` | `any` | no | no |
 | `role_permissions` | `rolePermissions` | `list(object({       odata_type = optional(string, "#microsoft.graph.rolePermission")       resourceActions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.resourceAction")       allowedResourceActions = optional(list(string))       notAllowedResourceActions = optional(list(string))     })))     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -44,7 +44,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- roleAssignments[].roleDefinition: polymorphic schema; accepts an untyped value
+- roleAssignments[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

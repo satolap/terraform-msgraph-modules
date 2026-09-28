@@ -25,11 +25,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `api_version` | `apiVersion` | `number` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `eligibility_filtering_enabled_entities` | `eligibilityFilteringEnabledEntities` | `any` | no | no |
-| `encryption` | `encryption` | `any` | no | no |
+| `eligibility_filtering_enabled_entities` | `eligibilityFilteringEnabledEntities` | `string` | no | no |
+| `encryption` | `encryption` | `object({       odata_type = optional(string, "#microsoft.graph.workforceIntegrationEncryption")       protocol = optional(string)       secret = optional(string)     })` | no | yes |
 | `is_active` | `isActive` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `supported_entities` | `supportedEntities` | `any` | no | no |
+| `supported_entities` | `supportedEntities` | `string` | no | no |
 | `url` | `url` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -48,9 +48,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - createdBy: polymorphic schema; accepts an untyped value
-- eligibilityFilteringEnabledEntities: polymorphic schema; accepts an untyped value
-- encryption: polymorphic schema; accepts an untyped value
-- supportedEntities: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

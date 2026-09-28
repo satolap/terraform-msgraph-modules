@@ -25,11 +25,17 @@ run "typed_request" {
   variables {
     one_drive_for_business_restore_session_id = "test-parent-id"
     completion_date_time                      = "2026-01-01T00:00:00Z"
+    error                                     = { "code" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["completionDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
     error_message = "completionDateTime must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["error"]) == jsonencode({ "@odata.type" = "#microsoft.graph.publicError" })
+    error_message = "error must preserve typed values and omit nested nulls."
   }
 }
 

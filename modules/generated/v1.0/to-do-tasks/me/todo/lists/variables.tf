@@ -6,10 +6,8 @@ variable "display_name" {
 
 variable "extensions" {
   description = "The collection of open extensions defined for the task list. Nullable."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.extension")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "is_owner" {

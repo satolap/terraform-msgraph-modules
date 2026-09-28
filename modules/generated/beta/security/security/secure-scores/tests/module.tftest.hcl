@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     azure_tenant_id            = "example"
     active_user_count          = -2147483648
+    vendor_information         = { "provider" = null }
     average_comparative_scores = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["activeUserCount"]) == jsonencode(-2147483648)
     error_message = "activeUserCount must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["vendorInformation"]) == jsonencode({ "@odata.type" = "#microsoft.graph.securityVendorInformation" })
+    error_message = "vendorInformation must preserve typed values and omit nested nulls."
   }
 
   assert {

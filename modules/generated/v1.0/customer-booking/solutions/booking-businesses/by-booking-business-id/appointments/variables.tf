@@ -65,10 +65,8 @@ variable "customer_time_zone" {
 
 variable "customers" {
   description = "A collection of customer properties for an appointment. An appointment contains a list of customer information and each unit will indicate the properties of a customer who is part of that appointment. Optional."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.bookingCustomerInformationBase")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "end_date_time" {

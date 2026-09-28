@@ -22,9 +22,9 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(any)       message = optional(string)       target = optional(string)     })` | no | no |
+| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `parameters` | `parameters` | `object({       odata_type = optional(string, "#microsoft.graph.sharePointMigrationTaskParameters")       preferredLatestStartDateTime = optional(string)       preferredStartDateTime = optional(string)       sourceSiteUrl = optional(string)       targetDataLocationCode = optional(string)       targetOrganizationHost = optional(string)       targetOrganizationId = optional(string)       targetSiteUrl = optional(string)       validateOnly = optional(bool)     })` | no | no |
+| `parameters` | `parameters` | `any` | no | no |
 | `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -43,7 +43,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- error.innerError: polymorphic schema; accepts an untyped value
+- parameters: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

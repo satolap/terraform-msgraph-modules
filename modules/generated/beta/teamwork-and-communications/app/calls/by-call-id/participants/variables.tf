@@ -12,13 +12,8 @@ variable "call_id" {
 variable "info" {
   description = "Microsoft Graph info property."
   type = object({
-    odata_type = optional(string, "#microsoft.graph.participantInfo")
-    identity = optional(object({
-      odata_type  = optional(string, "#microsoft.graph.identitySet")
-      application = optional(any)
-      device      = optional(any)
-      user        = optional(any)
-    }))
+    odata_type            = optional(string, "#microsoft.graph.participantInfo")
+    identity              = optional(any)
     nonAnonymizedIdentity = optional(any)
   })
   default = null
@@ -76,20 +71,36 @@ variable "preferred_display_name" {
 
 variable "recording_info" {
   description = "Information on whether the participant has recording capability."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.recordingInfo")
+    initiatedBy = optional(object({
+      odata_type            = optional(string, "#microsoft.graph.participantInfo")
+      identity              = optional(any)
+      nonAnonymizedIdentity = optional(any)
+    }))
+    initiator       = optional(any)
+    recordingStatus = optional(string)
+  })
+  default = null
 }
 
 variable "removed_state" {
   description = "Indicates the reason why the participant was removed from the roster."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.removedState")
+    reason     = optional(string)
+  })
+  default = null
 }
 
 variable "restricted_experience" {
   description = "Indicates the reason or reasons why media content from this participant is restricted."
-  type        = any
-  default     = null
+  type = object({
+    odata_type             = optional(string, "#microsoft.graph.onlineMeetingRestricted")
+    contentSharingDisabled = optional(string)
+    videoDisabled          = optional(string)
+  })
+  default = null
 }
 
 variable "roster_sequence_number" {
@@ -100,8 +111,14 @@ variable "roster_sequence_number" {
 
 variable "synthetic_media_detection" {
   description = "The latest synthetic media detection result reported for this participant by an in-call detection bot. Nullable. Set to null when no detection is reported. Populated asynchronously after a successful call to reportSyntheticMedia."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.syntheticMediaDetectionInfo")
+    detectionId          = optional(string)
+    detectorBot          = optional(string)
+    isParticipantTrusted = optional(bool)
+    syntheticConfidence  = optional(any)
+  })
+  default = null
 }
 
 variable "additional_properties" {

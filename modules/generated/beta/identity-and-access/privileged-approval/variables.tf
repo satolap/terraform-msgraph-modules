@@ -6,7 +6,7 @@ variable "approval_duration" {
 
 variable "approval_state" {
   description = "Microsoft Graph approvalState property."
-  type        = any
+  type        = string
   default     = null
 
   validation {

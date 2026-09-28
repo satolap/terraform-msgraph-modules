@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `configuration` | `configuration` | `any` | no | no |
+| `configuration` | `configuration` | `object({       odata_type = optional(string, "#microsoft.graph.onPremisesDirectorySynchronizationConfiguration")       accidentalDeletionPrevention = optional(object({       odata_type = optional(string, "#microsoft.graph.onPremisesAccidentalDeletionPrevention")       alertThreshold = optional(number)       synchronizationPreventionType = optional(string)     }))       anchorAttribute = optional(string)       applicationId = optional(string)       currentExportData = optional(object({       odata_type = optional(string, "#microsoft.graph.onPremisesCurrentExportData")       clientMachineName = optional(string)       pendingObjectsAddition = optional(number)       pendingObjectsDeletion = optional(number)       pendingObjectsUpdate = optional(number)       serviceAccount = optional(string)       successfulLinksProvisioningCount = optional(number)       successfulObjectsProvisioningCount = optional(number)       totalConnectorSpaceObjects = optional(number)     }))       customerRequestedSynchronizationInterval = optional(string)       synchronizationClientVersion = optional(string)       synchronizationInterval = optional(string)       writebackConfiguration = optional(object({       odata_type = optional(string, "#microsoft.graph.onPremisesWritebackConfiguration")       unifiedGroupContainer = optional(string)       userContainer = optional(string)     }))     })` | no | no |
 | `features` | `features` | `object({       odata_type = optional(string, "#microsoft.graph.onPremisesDirectorySynchronizationFeature")       allowOnPremUpdateOfOnPremisesObjectIdentifierEnabled = optional(bool)       blockCloudObjectTakeoverThroughHardMatchEnabled = optional(bool)       blockSoftMatchEnabled = optional(bool)       bypassDirSyncOverridesEnabled = optional(bool)       cloudPasswordPolicyForPasswordSyncedUsersEnabled = optional(bool)       concurrentCredentialUpdateEnabled = optional(bool)       concurrentOrgIdProvisioningEnabled = optional(bool)       deviceWritebackEnabled = optional(bool)       directoryExtensionsEnabled = optional(bool)       fopeConflictResolutionEnabled = optional(bool)       groupWriteBackEnabled = optional(bool)       passwordSyncEnabled = optional(bool)       passwordWritebackEnabled = optional(bool)       quarantineUponProxyAddressesConflictEnabled = optional(bool)       quarantineUponUpnConflictEnabled = optional(bool)       softMatchOnUpnEnabled = optional(bool)       synchronizeUpnForManagedUsersEnabled = optional(bool)       unifiedGroupWritebackEnabled = optional(bool)       userForcePasswordChangeOnLogonEnabled = optional(bool)       userWritebackEnabled = optional(bool)     })` | no | yes |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -42,7 +42,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- configuration: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

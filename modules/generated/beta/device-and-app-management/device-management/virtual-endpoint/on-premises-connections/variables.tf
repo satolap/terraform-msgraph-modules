@@ -25,7 +25,7 @@ variable "alternate_resource_url" {
 
 variable "connection_type" {
   description = "Specifies the method by which a provisioned Cloud PC is joined to Microsoft Entra. The azureADJoin option indicates the absence of an on-premises Active Directory (AD) in the current tenant which results in the Cloud PC device only joining to Microsoft Entra. The hybridAzureADJoin option indicates the presence of an on-premises AD in the current tenant and that the Cloud PC joins both the on-premises AD and Microsoft Entra. The selected option also determines the types of users who can be assigned and can sign into a Cloud PC. The azureADJoin option allows both cloud-only and hybrid users to be assigned and sign in, whereas hybridAzureADJoin is restricted to hybrid users only. The default value is hybridAzureADJoin. The possible values are: hybridAzureADJoin, azureADJoin, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -57,8 +57,8 @@ variable "managed_by" {
   default     = null
 
   validation {
-    condition     = var.managed_by == null ? true : contains(["windows365", "devBox", "unknownFutureValue", "rpaBox", "microsoft365Opal", "microsoft365BizChat"], var.managed_by)
-    error_message = "managed_by must be one of the documented enum values."
+    condition     = var.managed_by == null ? true : try(alltrue([for value in split(",", var.managed_by) : contains(["windows365", "devbox", "unknownfuturevalue", "rpabox", "microsoft365opal", "microsoft365bizchat"], lower(trimspace(value)))]), false)
+    error_message = "managed_by must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -101,7 +101,7 @@ variable "subscription_id" {
 
 variable "type" {
   description = "Specifies the method by which a provisioned Cloud PC is joined to Microsoft Entra. The azureADJoin option indicates the absence of an on-premises Active Directory (AD) in the current tenant, which results in the Cloud PC device only joining to Microsoft Entra. The hybridAzureADJoin option indicates the presence of an on-premises AD in the current tenant and that the Cloud PC joins both the on-premises AD and Microsoft Entra. The selected option also determines the types of users who can be assigned and can sign into a Cloud PC. The azureADJoin option allows both cloud-only and hybrid users to be assigned and sign in, whereas hybridAzureADJoin is restricted to hybrid users only. The default value is hybridAzureADJoin. The possible values are: hybridAzureADJoin, azureADJoin, unknownFutureValue. The type property is deprecated and stopped returning data on January 31, 2024. Going forward, use the connectionType property."
-  type        = any
+  type        = string
   default     = null
 
   validation {

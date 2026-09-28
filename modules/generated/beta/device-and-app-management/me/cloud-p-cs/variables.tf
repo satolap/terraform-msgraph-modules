@@ -6,13 +6,24 @@ variable "aad_device_id" {
 
 variable "connectivity_result" {
   description = "The connectivity health check result of a Cloud PC, including the updated timestamp and whether the Cloud PC can be connected."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.cloudPcConnectivityResult")
+    failedHealthCheckItems = optional(list(object({
+      odata_type              = optional(string, "#microsoft.graph.cloudPcHealthCheckItem")
+      additionalDetails       = optional(string)
+      displayName             = optional(string)
+      lastHealthCheckDateTime = optional(string)
+      result                  = optional(string)
+    })))
+    lastModifiedDateTime = optional(string)
+    status               = optional(string)
+  })
+  default = null
 }
 
 variable "disk_encryption_state" {
   description = "The disk encryption applied to the Cloud PC. Possible values: notAvailable, notEncrypted, encryptedUsingPlatformManagedKey, encryptedUsingCustomerManagedKey, and unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -41,8 +52,10 @@ variable "image_display_name" {
 
 variable "last_login_result" {
   description = "The last login result of the Cloud PC. For example, { 'time': '2014-01-01T00:00:00Z'}."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.cloudPcLoginResult")
+  })
+  default = null
 }
 
 variable "last_modified_date_time" {
@@ -53,8 +66,33 @@ variable "last_modified_date_time" {
 
 variable "last_remote_action_result" {
   description = "The last remote action result of the enterprise Cloud PCs. The supported remote actions are: Reboot, Rename, Reprovision, Restore, Troubleshoot."
-  type        = any
-  default     = null
+  type = object({
+    odata_type          = optional(string, "#microsoft.graph.cloudPcRemoteActionResult")
+    actionName          = optional(string)
+    lastUpdatedDateTime = optional(string)
+    startDateTime       = optional(string)
+    statusDetail = optional(object({
+      odata_type = optional(string, "#microsoft.graph.cloudPcStatusDetail")
+      additionalInformation = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.keyValuePair")
+        name       = optional(string)
+        value      = optional(string)
+      })))
+      code    = optional(string)
+      message = optional(string)
+    }))
+    statusDetails = optional(object({
+      odata_type = optional(string, "#microsoft.graph.cloudPcStatusDetails")
+      additionalInformation = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.keyValuePair")
+        name       = optional(string)
+        value      = optional(string)
+      })))
+      code    = optional(string)
+      message = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "managed_device_id" {
@@ -84,7 +122,7 @@ variable "on_premises_connection_name" {
 
 variable "os_version" {
   description = "The version of the operating system (OS) to provision on Cloud PCs. The possible values are: windows10, windows11, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -106,7 +144,7 @@ variable "partner_agent_install_results" {
 
 variable "power_state" {
   description = "The power state of a Cloud PC. The possible values are: running, poweredOff, unknown. This property only supports shift work Cloud PCs."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -135,7 +173,7 @@ variable "provisioning_policy_name" {
 
 variable "provisioning_type" {
   description = "The type of licenses to be used when provisioning Cloud PCs using this policy. The possible values are: dedicated, shared, unknownFutureValue, sharedByUser, sharedByEntraGroup, reserve. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: sharedByUser, sharedByEntraGroup, reserve. The default value is dedicated. The shared member is deprecated and will stop returning on April 30, 2027; going forward, use the sharedByUser member."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -158,7 +196,7 @@ variable "service_plan_name" {
 
 variable "service_plan_type" {
   description = "The service plan type of the Cloud PC."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -169,8 +207,12 @@ variable "service_plan_type" {
 
 variable "shared_device_detail" {
   description = "Indicates the Cloud PC device details associated with the frontline shared service plan, including the user's UPN and the session start date and time."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                  = optional(string, "#microsoft.graph.cloudPcFrontlineSharedDeviceDetail")
+    assignedToUserPrincipalName = optional(string)
+    sessionStartDateTime        = optional(string)
+  })
+  default = null
 }
 
 variable "status" {
@@ -186,19 +228,37 @@ variable "status" {
 
 variable "status_detail" {
   description = "Indicates the detailed status associated with Cloud PC, including error/warning code, error/warning message, additionalInformation. For example, { 'code': 'internalServerError', 'message': 'There was an error during the Cloud PC upgrade. Please contact support.', 'additionalInformation': null }."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.cloudPcStatusDetail")
+    additionalInformation = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.keyValuePair")
+      name       = optional(string)
+      value      = optional(string)
+    })))
+    code    = optional(string)
+    message = optional(string)
+  })
+  default = null
 }
 
 variable "status_details" {
   description = "The details of the Cloud PC status. For example, { 'code': 'internalServerError', 'message': 'There was an error during the Cloud PC upgrade. Please contact support.', 'additionalInformation': null }. This property is deprecated and will no longer be supported effective August 31, 2024. Use statusDetail instead."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.cloudPcStatusDetails")
+    additionalInformation = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.keyValuePair")
+      name       = optional(string)
+      value      = optional(string)
+    })))
+    code    = optional(string)
+    message = optional(string)
+  })
+  default = null
 }
 
 variable "user_account_type" {
   description = "The account type of the user on provisioned Cloud PCs. The possible values are: standardUser, administrator, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -209,7 +269,7 @@ variable "user_account_type" {
 
 variable "user_experience_type" {
   description = "Specifies the type of cloud object the end user can access. The possible values are: cloudPc, cloudApp, unknownFutureValue. When set to cloudPc, it indicates that the end user can access the entire desktop. When set to cloudApp, it indicates that the end user can only access cloud apps published under the associated provisioning policy. Since the cloud app experience also creates Cloud PC devices that appear in the Cloud PC device list, this property helps differentiate them. The default value is cloudPc. This property is defined in the provisioning policy."
-  type        = any
+  type        = string
   default     = null
 
   validation {

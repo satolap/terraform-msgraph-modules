@@ -25,14 +25,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `extensions` | `extensions` | `list(object({       odata_type = optional(string, "#microsoft.graph.extension")     }))` | no | no |
+| `extensions` | `extensions` | `any` | no | no |
 | `is_member_management_restricted` | `isMemberManagementRestricted` | `bool` | no | no |
-| `members` | `members` | `list(object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     }))` | no | no |
+| `members` | `members` | `any` | no | no |
 | `membership_rule` | `membershipRule` | `string` | no | no |
 | `membership_rule_processing_state` | `membershipRuleProcessingState` | `string` | no | no |
 | `membership_type` | `membershipType` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `scoped_role_members` | `scopedRoleMembers` | `list(object({       odata_type = optional(string, "#microsoft.graph.scopedRoleMembership")       administrativeUnitId = optional(string)       roleId = optional(string)       roleMemberInfo = optional(object({       odata_type = optional(string, "#microsoft.graph.identity")       displayName = optional(string)       id = optional(string)     }))     }))` | no | no |
+| `scoped_role_members` | `scopedRoleMembers` | `list(object({       odata_type = optional(string, "#microsoft.graph.scopedRoleMembership")       administrativeUnitId = optional(string)       roleId = optional(string)       roleMemberInfo = optional(any)     }))` | no | no |
 | `visibility` | `visibility` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -47,6 +47,12 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
+
+Generation notes:
+
+- extensions[]: polymorphic schema; accepts an untyped value
+- members[]: polymorphic schema; accepts an untyped value
+- scopedRoleMembers[].roleMemberInfo: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

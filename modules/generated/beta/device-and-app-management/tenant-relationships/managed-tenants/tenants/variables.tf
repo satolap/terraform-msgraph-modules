@@ -1,7 +1,9 @@
 variable "contract" {
   description = "The relationship details for the tenant with the managing entity."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.managedTenants.tenantContract")
+  })
+  default = null
 }
 
 variable "odata_type" {

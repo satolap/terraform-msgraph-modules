@@ -30,7 +30,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `enforce_signature_check` | `enforceSignatureCheck` | `bool` | no | no |
 | `graph_version` | `version` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `platform` | `platform` | `any` | no | no |
+| `platform` | `platform` | `string` | no | no |
 | `publisher` | `publisher` | `string` | no | no |
 | `role_scope_tag_ids` | `roleScopeTagIds` | `list(string)` | no | no |
 | `run_as32_bit` | `runAs32Bit` | `bool` | no | no |
@@ -56,8 +56,7 @@ Generation notes:
 - assignments[].runSchedule: polymorphic schema; accepts an untyped value
 - assignments[].target: polymorphic schema; accepts an untyped value
 - deviceRunStates[].managedDevice: polymorphic schema; accepts an untyped value
-- platform: polymorphic schema; accepts an untyped value
-- runSummary: polymorphic schema; accepts an untyped value
+- runSummary: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

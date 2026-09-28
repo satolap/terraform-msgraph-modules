@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `ai_user_id` | URL parameter `aiUser-id` | `string` | yes | no |
-| `ai_insights` | `aiInsights` | `list(object({       odata_type = optional(string, "#microsoft.graph.callAiInsight")       actionItems = optional(list(object({       odata_type = optional(string, "#microsoft.graph.actionItem")       ownerDisplayName = optional(string)       text = optional(string)       title = optional(string)     })))       callId = optional(string)       contentCorrelationId = optional(string)       createdDateTime = optional(string)       endDateTime = optional(string)       meetingNotes = optional(list(object({       odata_type = optional(string, "#microsoft.graph.meetingNote")       subpoints = optional(any)       text = optional(string)       title = optional(string)     })))       viewpoint = optional(any)     }))` | no | no |
+| `ai_insights` | `aiInsights` | `list(object({       odata_type = optional(string, "#microsoft.graph.callAiInsight")       actionItems = optional(list(object({       odata_type = optional(string, "#microsoft.graph.actionItem")       ownerDisplayName = optional(string)       text = optional(string)       title = optional(string)     })))       callId = optional(string)       contentCorrelationId = optional(string)       createdDateTime = optional(string)       endDateTime = optional(string)       meetingNotes = optional(list(object({       odata_type = optional(string, "#microsoft.graph.meetingNote")       subpoints = optional(any)       text = optional(string)       title = optional(string)     })))       viewpoint = optional(object({       odata_type = optional(string, "#microsoft.graph.callAiInsightViewPoint")       mentionEvents = optional(list(object({       odata_type = optional(string, "#microsoft.graph.mentionEvent")       eventDateTime = optional(string)       speaker = optional(any)       transcriptUtterance = optional(string)     })))     }))     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -43,7 +43,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - aiInsights[].meetingNotes[].subpoints[]: nested schema exceeds depth limit; accepts an untyped value
-- aiInsights[].viewpoint: polymorphic schema; accepts an untyped value
+- aiInsights[].viewpoint.mentionEvents[].speaker: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

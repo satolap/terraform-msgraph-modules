@@ -22,8 +22,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `application_segments` | `applicationSegments` | `list(object({       odata_type = optional(string, "#microsoft.graph.ipApplicationSegment")       action = optional(string)       application = optional(any)       destinationHost = optional(string)       destinationType = optional(any)       port = optional(number)       ports = optional(list(string))       protocol = optional(any)     }))` | no | no |
-| `hybrid_agent_updater_configuration` | `hybridAgentUpdaterConfiguration` | `any` | no | no |
+| `application_segments` | `applicationSegments` | `list(object({       odata_type = optional(string, "#microsoft.graph.ipApplicationSegment")       action = optional(string)       application = optional(any)       destinationHost = optional(string)       destinationType = optional(string)       port = optional(number)       ports = optional(list(string))       protocol = optional(string)     }))` | no | no |
+| `hybrid_agent_updater_configuration` | `hybridAgentUpdaterConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.hybridAgentUpdaterConfiguration")       allowUpdateConfigurationOverride = optional(bool)       deferUpdateDateTime = optional(string)       updateWindow = optional(object({       odata_type = optional(string, "#microsoft.graph.updateWindow")       updateWindowEndTime = optional(string)       updateWindowStartTime = optional(string)     }))     })` | no | no |
 | `is_default_access_enabled` | `isDefaultAccessEnabled` | `bool` | no | no |
 | `is_enabled` | `isEnabled` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -46,9 +46,6 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - applicationSegments[].application: polymorphic schema; accepts an untyped value
-- applicationSegments[].destinationType: polymorphic schema; accepts an untyped value
-- applicationSegments[].protocol: polymorphic schema; accepts an untyped value
-- hybridAgentUpdaterConfiguration: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

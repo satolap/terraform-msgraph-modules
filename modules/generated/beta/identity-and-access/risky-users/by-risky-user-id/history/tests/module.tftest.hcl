@@ -26,6 +26,7 @@ run "typed_request" {
     risky_user_id = "test-parent-id"
     initiated_by  = "example"
     is_deleted    = false
+    activity      = { "detail" = null }
     history       = [{}]
   }
 
@@ -37,6 +38,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isDeleted"]) == jsonencode(false)
     error_message = "isDeleted must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["activity"]) == jsonencode({ "@odata.type" = "#microsoft.graph.riskUserActivity" })
+    error_message = "activity must preserve typed values and omit nested nulls."
   }
 
   assert {

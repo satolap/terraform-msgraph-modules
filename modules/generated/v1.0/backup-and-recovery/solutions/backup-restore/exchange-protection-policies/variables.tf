@@ -37,15 +37,33 @@ variable "last_modified_date_time" {
 variable "mailbox_inclusion_rules" {
   description = "The rules associated with the Exchange protection policy."
   type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.mailboxProtectionRule")
-    createdBy            = optional(any)
-    createdDateTime      = optional(string)
-    error                = optional(any)
+    odata_type      = optional(string, "#microsoft.graph.mailboxProtectionRule")
+    createdBy       = optional(any)
+    createdDateTime = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
     isAutoApplyEnabled   = optional(bool)
     lastModifiedBy       = optional(any)
     lastModifiedDateTime = optional(string)
     mailboxExpression    = optional(string)
-    status               = optional(any)
+    status               = optional(string)
   }))
   default = null
 }
@@ -53,17 +71,35 @@ variable "mailbox_inclusion_rules" {
 variable "mailbox_protection_units" {
   description = "The protection units (mailboxes) that are  protected under the Exchange protection policy."
   type = list(object({
-    odata_type                = optional(string, "#microsoft.graph.mailboxProtectionUnit")
-    createdBy                 = optional(any)
-    createdDateTime           = optional(string)
-    directoryObjectId         = optional(string)
-    error                     = optional(any)
+    odata_type        = optional(string, "#microsoft.graph.mailboxProtectionUnit")
+    createdBy         = optional(any)
+    createdDateTime   = optional(string)
+    directoryObjectId = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
     lastModifiedBy            = optional(any)
     lastModifiedDateTime      = optional(string)
     offboardRequestedDateTime = optional(string)
     policyId                  = optional(string)
     protectionSources         = optional(string)
-    status                    = optional(any)
+    status                    = optional(string)
   }))
   default = null
 }
@@ -71,12 +107,30 @@ variable "mailbox_protection_units" {
 variable "mailbox_protection_units_bulk_addition_jobs" {
   description = "Microsoft Graph mailboxProtectionUnitsBulkAdditionJobs property."
   type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.mailboxProtectionUnitsBulkAdditionJob")
-    createdBy            = optional(any)
-    createdDateTime      = optional(string)
-    directoryObjectIds   = optional(list(string))
-    displayName          = optional(string)
-    error                = optional(any)
+    odata_type         = optional(string, "#microsoft.graph.mailboxProtectionUnitsBulkAdditionJob")
+    createdBy          = optional(any)
+    createdDateTime    = optional(string)
+    directoryObjectIds = optional(list(string))
+    displayName        = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
     lastModifiedBy       = optional(any)
     lastModifiedDateTime = optional(string)
     mailboxes            = optional(list(string))
@@ -94,8 +148,14 @@ variable "odata_type" {
 
 variable "protection_policy_artifact_count" {
   description = "Microsoft Graph protectionPolicyArtifactCount property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.protectionPolicyArtifactCount")
+    completed  = optional(number)
+    failed     = optional(number)
+    inProgress = optional(number)
+    total      = optional(number)
+  })
+  default = null
 }
 
 variable "retention_settings" {
@@ -110,7 +170,7 @@ variable "retention_settings" {
 
 variable "status" {
   description = "The aggregated status of the protection units associated with the policy. The possible values are: inactive, activeWithErrors, updating, active, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `classify_as` | `classifyAs` | `any` | no | no |
+| `classify_as` | `classifyAs` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `sender_email_address` | `senderEmailAddress` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -42,7 +42,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- classifyAs: polymorphic schema; accepts an untyped value
 - senderEmailAddress: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

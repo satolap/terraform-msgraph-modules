@@ -22,18 +22,18 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `campaign_schedule` | `campaignSchedule` | `any` | no | no |
-| `created_by` | `createdBy` | `any` | no | no |
+| `campaign_schedule` | `campaignSchedule` | `object({       odata_type = optional(string, "#microsoft.graph.campaignSchedule")       completionDateTime = optional(string)       launchDateTime = optional(string)       status = optional(string)     })` | no | no |
+| `created_by` | `createdBy` | `object({       odata_type = optional(string, "#microsoft.graph.emailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     })` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `end_user_notification_setting` | `endUserNotificationSetting` | `any` | no | no |
 | `excluded_account_target` | `excludedAccountTarget` | `any` | no | no |
 | `included_account_target` | `includedAccountTarget` | `any` | no | no |
-| `last_modified_by` | `lastModifiedBy` | `any` | no | no |
+| `last_modified_by` | `lastModifiedBy` | `object({       odata_type = optional(string, "#microsoft.graph.emailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     })` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `report` | `report` | `any` | no | no |
+| `report` | `report` | `object({       odata_type = optional(string, "#microsoft.graph.trainingCampaignReport")       campaignUsers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.userSimulationDetails")       assignedTrainingsCount = optional(number)       completedTrainingsCount = optional(number)       compromisedDateTime = optional(string)       inProgressTrainingsCount = optional(number)       isCompromised = optional(bool)       latestSimulationActivity = optional(string)       reportedPhishDateTime = optional(string)       simulationEvents = optional(list(object({       odata_type = optional(string, "#microsoft.graph.userSimulationEventInfo")       browser = optional(string)       clickSource = optional(string)       eventDateTime = optional(string)       eventName = optional(string)       ipAddress = optional(string)       osPlatformDeviceDetails = optional(string)     })))       simulationUser = optional(object({       odata_type = optional(string, "#microsoft.graph.attackSimulationUser")       displayName = optional(string)       email = optional(string)       outOfOfficeDays = optional(number)       userId = optional(string)     }))       trainingEvents = optional(list(object({       odata_type = optional(string, "#microsoft.graph.userTrainingEventInfo")       displayName = optional(string)       latestTrainingStatus = optional(string)       trainingAssignedProperties = optional(any)       trainingCompletedProperties = optional(any)       trainingUpdatedProperties = optional(any)     })))     })))       overview = optional(object({       odata_type = optional(string, "#microsoft.graph.trainingCampaignReportOverview")       trainingModuleCompletion = optional(object({       odata_type = optional(string, "#microsoft.graph.trainingEventsContent")       assignedTrainingsInfos = optional(list(object({       odata_type = optional(string, "#microsoft.graph.assignedTrainingInfo")       assignedUserCount = optional(number)       completedUserCount = optional(number)       displayName = optional(string)     })))       trainingsAssignedUserCount = optional(number)     }))       trainingNotificationDeliveryStatus = optional(object({       odata_type = optional(string, "#microsoft.graph.trainingNotificationDelivery")       failedMessageDeliveryCount = optional(number)       resolvedTargetsCount = optional(number)       successfulMessageDeliveryCount = optional(number)     }))       userCompletionStatus = optional(object({       odata_type = optional(string, "#microsoft.graph.userTrainingCompletionSummary")       completedUsersCount = optional(number)       inProgressUsersCount = optional(number)       notCompletedUsersCount = optional(number)       notStartedUsersCount = optional(number)       previouslyAssignedUsersCount = optional(number)     }))     }))     })` | no | no |
 | `training_setting` | `trainingSetting` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -52,13 +52,12 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- campaignSchedule: polymorphic schema; accepts an untyped value
-- createdBy: polymorphic schema; accepts an untyped value
 - endUserNotificationSetting: polymorphic schema; accepts an untyped value
 - excludedAccountTarget: polymorphic schema; accepts an untyped value
 - includedAccountTarget: polymorphic schema; accepts an untyped value
-- lastModifiedBy: polymorphic schema; accepts an untyped value
-- report: polymorphic schema; accepts an untyped value
+- report.campaignUsers[].trainingEvents[].trainingAssignedProperties: nested schema exceeds depth limit; accepts an untyped value
+- report.campaignUsers[].trainingEvents[].trainingCompletedProperties: nested schema exceeds depth limit; accepts an untyped value
+- report.campaignUsers[].trainingEvents[].trainingUpdatedProperties: nested schema exceeds depth limit; accepts an untyped value
 - trainingSetting: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

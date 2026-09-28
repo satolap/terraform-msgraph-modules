@@ -22,21 +22,21 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `availability_status` | `availabilityStatus` | `any` | no | no |
-| `created_by` | `createdBy` | `any` | no | no |
+| `availability_status` | `availabilityStatus` | `string` | no | no |
+| `created_by` | `createdBy` | `object({       odata_type = optional(string, "#microsoft.graph.emailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     })` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `duration_in_minutes` | `durationInMinutes` | `number` | no | no |
-| `graph_source` | `source` | `any` | no | no |
+| `graph_source` | `source` | `string` | no | no |
 | `has_evaluation` | `hasEvaluation` | `bool` | no | no |
-| `language_details` | `languageDetails` | `list(object({       odata_type = optional(string, "#microsoft.graph.trainingLanguageDetail")       content = optional(string)       createdBy = optional(any)       createdDateTime = optional(string)       description = optional(string)       displayName = optional(string)       isDefaultLangauge = optional(bool)       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       locale = optional(string)     }))` | no | no |
-| `last_modified_by` | `lastModifiedBy` | `any` | no | no |
+| `language_details` | `languageDetails` | `list(object({       odata_type = optional(string, "#microsoft.graph.trainingLanguageDetail")       content = optional(string)       createdBy = optional(object({       odata_type = optional(string, "#microsoft.graph.emailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     }))       createdDateTime = optional(string)       description = optional(string)       displayName = optional(string)       isDefaultLangauge = optional(bool)       lastModifiedBy = optional(object({       odata_type = optional(string, "#microsoft.graph.emailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     }))       lastModifiedDateTime = optional(string)       locale = optional(string)     }))` | no | no |
+| `last_modified_by` | `lastModifiedBy` | `object({       odata_type = optional(string, "#microsoft.graph.emailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     })` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `supported_locales` | `supportedLocales` | `list(string)` | no | no |
 | `tags` | `tags` | `list(string)` | no | no |
-| `type` | `type` | `any` | no | no |
+| `type` | `type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -50,16 +50,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- availabilityStatus: polymorphic schema; accepts an untyped value
-- createdBy: polymorphic schema; accepts an untyped value
-- languageDetails[].createdBy: polymorphic schema; accepts an untyped value
-- languageDetails[].lastModifiedBy: polymorphic schema; accepts an untyped value
-- lastModifiedBy: polymorphic schema; accepts an untyped value
-- source: polymorphic schema; accepts an untyped value
-- type: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -50,14 +50,24 @@ variable "boolean" {
 
 variable "calculated" {
   description = "This column's data is calculated based on other columns."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.calculatedColumn")
+    format     = optional(string)
+    formula    = optional(string)
+    outputType = optional(string)
+  })
+  default = null
 }
 
 variable "choice" {
   description = "This column stores data from a list of choices."
-  type        = any
-  default     = null
+  type = object({
+    odata_type     = optional(string, "#microsoft.graph.choiceColumn")
+    allowTextEntry = optional(bool)
+    choices        = optional(list(string))
+    displayAs      = optional(string)
+  })
+  default = null
 }
 
 variable "column_group" {
@@ -74,20 +84,31 @@ variable "content_approval_status" {
 
 variable "currency" {
   description = "This column stores currency values."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.currencyColumn")
+    locale     = optional(string)
+  })
+  default = null
 }
 
 variable "date_time" {
   description = "This column stores DateTime values."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.dateTimeColumn")
+    displayAs  = optional(string)
+    format     = optional(string)
+  })
+  default = null
 }
 
 variable "default_value" {
   description = "The default value for this column."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.defaultColumnValue")
+    formula    = optional(string)
+    value      = optional(string)
+  })
+  default = null
 }
 
 variable "description" {
@@ -122,8 +143,11 @@ variable "hidden" {
 
 variable "hyperlink_or_picture" {
   description = "This column stores hyperlink or picture values."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.hyperlinkOrPictureColumn")
+    isPicture  = optional(bool)
+  })
+  default = null
 }
 
 variable "indexed" {
@@ -152,8 +176,15 @@ variable "is_searchable" {
 
 variable "lookup" {
   description = "This column's data is looked up from another source in the site."
-  type        = any
-  default     = null
+  type = object({
+    odata_type            = optional(string, "#microsoft.graph.lookupColumn")
+    allowMultipleValues   = optional(bool)
+    allowUnlimitedLength  = optional(bool)
+    columnName            = optional(string)
+    listId                = optional(string)
+    primaryLookupColumnId = optional(string)
+  })
+  default = null
 }
 
 variable "name" {
@@ -164,8 +195,14 @@ variable "name" {
 
 variable "number" {
   description = "This column stores number values."
-  type        = any
-  default     = null
+  type = object({
+    odata_type    = optional(string, "#microsoft.graph.numberColumn")
+    decimalPlaces = optional(string)
+    displayAs     = optional(string)
+    maximum       = optional(any)
+    minimum       = optional(any)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -177,8 +214,13 @@ variable "odata_type" {
 
 variable "person_or_group" {
   description = "This column stores Person or Group values."
-  type        = any
-  default     = null
+  type = object({
+    odata_type             = optional(string, "#microsoft.graph.personOrGroupColumn")
+    allowMultipleSelection = optional(bool)
+    chooseFromType         = optional(string)
+    displayAs              = optional(string)
+  })
+  default = null
 }
 
 variable "propagate_changes" {
@@ -207,20 +249,37 @@ variable "source_column" {
 
 variable "source_content_type" {
   description = "ContentType from which this column is inherited from. Used only to fetch contentTypes columns."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.contentTypeInfo")
+    id         = optional(string)
+    name       = optional(string)
+  })
+  default = null
 }
 
 variable "term" {
   description = "This column stores taxonomy terms."
-  type        = any
-  default     = null
+  type = object({
+    odata_type             = optional(string, "#microsoft.graph.termColumn")
+    allowMultipleValues    = optional(bool)
+    parentTerm             = optional(any)
+    showFullyQualifiedName = optional(bool)
+    termSet                = optional(any)
+  })
+  default = null
 }
 
 variable "text" {
   description = "This column stores text values."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                  = optional(string, "#microsoft.graph.textColumn")
+    allowMultipleLines          = optional(bool)
+    appendChangesToExistingText = optional(bool)
+    linesForEditing             = optional(number)
+    maxLength                   = optional(number)
+    textType                    = optional(string)
+  })
+  default = null
 }
 
 variable "thumbnail" {
@@ -231,8 +290,17 @@ variable "thumbnail" {
 
 variable "validation" {
   description = "This column stores validation formula and message for the column."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.columnValidation")
+    defaultLanguage = optional(string)
+    descriptions = optional(list(object({
+      odata_type  = optional(string, "#microsoft.graph.displayNameLocalization")
+      displayName = optional(string)
+      languageTag = optional(string)
+    })))
+    formula = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

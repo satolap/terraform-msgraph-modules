@@ -27,7 +27,7 @@ variable "display_name" {
 }
 
 variable "error_code" {
-  description = "Microsoft Graph errorCode property."
+  description = "Error code if any occured."
   type        = string
   default     = null
 
@@ -45,18 +45,8 @@ variable "guided_deployment_tags" {
 
 variable "items" {
   description = "Items of the PolicySet with maximum count 100."
-  type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.policySetItem")
-    createdDateTime      = optional(string)
-    displayName          = optional(string)
-    errorCode            = optional(string)
-    guidedDeploymentTags = optional(list(string))
-    itemType             = optional(string)
-    lastModifiedDateTime = optional(string)
-    payloadId            = optional(string)
-    status               = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "last_modified_date_time" {

@@ -25,11 +25,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `group_id` | URL parameter `group-id` | `string` | yes | no |
 | `created_by` | `createdBy` | `any` | no | no |
-| `draft_open_shift` | `draftOpenShift` | `any` | no | no |
+| `draft_open_shift` | `draftOpenShift` | `object({       odata_type = optional(string, "#microsoft.graph.openShiftItem")       activities = optional(list(object({       odata_type = optional(string, "#microsoft.graph.shiftActivity")       code = optional(string)       displayName = optional(string)       endDateTime = optional(string)       isPaid = optional(bool)       startDateTime = optional(string)       theme = optional(string)     })))       displayName = optional(string)       endDateTime = optional(string)       notes = optional(string)       openSlotCount = optional(number)       startDateTime = optional(string)       theme = optional(string)     })` | no | no |
 | `is_staged_for_deletion` | `isStagedForDeletion` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `scheduling_group_id` | `schedulingGroupId` | `string` | no | no |
-| `shared_open_shift` | `sharedOpenShift` | `any` | no | no |
+| `shared_open_shift` | `sharedOpenShift` | `object({       odata_type = optional(string, "#microsoft.graph.openShiftItem")       activities = optional(list(object({       odata_type = optional(string, "#microsoft.graph.shiftActivity")       code = optional(string)       displayName = optional(string)       endDateTime = optional(string)       isPaid = optional(bool)       startDateTime = optional(string)       theme = optional(string)     })))       displayName = optional(string)       endDateTime = optional(string)       notes = optional(string)       openSlotCount = optional(number)       startDateTime = optional(string)       theme = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -47,8 +47,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - createdBy: polymorphic schema; accepts an untyped value
-- draftOpenShift: polymorphic schema; accepts an untyped value
-- sharedOpenShift: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

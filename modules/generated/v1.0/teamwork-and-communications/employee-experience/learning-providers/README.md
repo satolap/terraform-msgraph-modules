@@ -24,8 +24,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `display_name` | `displayName` | `string` | no | no |
 | `is_course_activity_sync_enabled` | `isCourseActivitySyncEnabled` | `bool` | no | no |
-| `learning_contents` | `learningContents` | `list(object({       odata_type = optional(string, "#microsoft.graph.learningContent")       additionalTags = optional(list(string))       contentWebUrl = optional(string)       contributors = optional(list(string))       createdDateTime = optional(string)       description = optional(string)       duration = optional(string)       externalId = optional(string)       format = optional(string)       isActive = optional(bool)       isPremium = optional(bool)       isSearchable = optional(bool)       languageTag = optional(string)       lastModifiedDateTime = optional(string)       level = optional(any)       numberOfPages = optional(number)       skillTags = optional(list(string))       sourceName = optional(string)       thumbnailWebUrl = optional(string)       title = optional(string)     }))` | no | no |
-| `learning_course_activities` | `learningCourseActivities` | `list(object({       odata_type = optional(string, "#microsoft.graph.learningCourseActivity")       completedDateTime = optional(string)       completionPercentage = optional(number)       externalcourseActivityId = optional(string)       learnerUserId = optional(string)       learningContentId = optional(string)       learningProviderId = optional(string)       status = optional(any)     }))` | no | no |
+| `learning_contents` | `learningContents` | `list(object({       odata_type = optional(string, "#microsoft.graph.learningContent")       additionalTags = optional(list(string))       contentWebUrl = optional(string)       contributors = optional(list(string))       createdDateTime = optional(string)       description = optional(string)       duration = optional(string)       externalId = optional(string)       format = optional(string)       isActive = optional(bool)       isPremium = optional(bool)       isSearchable = optional(bool)       languageTag = optional(string)       lastModifiedDateTime = optional(string)       level = optional(string)       numberOfPages = optional(number)       skillTags = optional(list(string))       sourceName = optional(string)       thumbnailWebUrl = optional(string)       title = optional(string)     }))` | no | no |
+| `learning_course_activities` | `learningCourseActivities` | `any` | no | no |
 | `login_web_url` | `loginWebUrl` | `string` | no | no |
 | `long_logo_web_url_for_dark_theme` | `longLogoWebUrlForDarkTheme` | `string` | no | no |
 | `long_logo_web_url_for_light_theme` | `longLogoWebUrlForLightTheme` | `string` | no | no |
@@ -48,8 +48,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- learningContents[].level: polymorphic schema; accepts an untyped value
-- learningCourseActivities[].status: polymorphic schema; accepts an untyped value
+- learningCourseActivities[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

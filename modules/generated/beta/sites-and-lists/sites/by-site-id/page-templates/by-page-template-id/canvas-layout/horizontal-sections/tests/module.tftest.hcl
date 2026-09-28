@@ -26,7 +26,13 @@ run "typed_request" {
   variables {
     site_id          = "test-parent-id"
     page_template_id = "test-parent-id"
+    emphasis         = "none"
     columns          = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["emphasis"]) == jsonencode("none")
+    error_message = "emphasis must preserve typed values and omit nested nulls."
   }
 
   assert {

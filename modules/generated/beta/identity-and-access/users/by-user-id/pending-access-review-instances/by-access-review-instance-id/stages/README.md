@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `user_id` | URL parameter `user-id` | `string` | yes | no |
 | `access_review_instance_id` | URL parameter `accessReviewInstance-id` | `string` | yes | no |
-| `decisions` | `decisions` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItem")       applyDescription = optional(string)       decision = optional(string)       insights = optional(list(object({       odata_type = optional(string, "#microsoft.graph.governanceInsight")       insightCreatedDateTime = optional(string)     })))       instance = optional(any)       justification = optional(string)       permission = optional(any)     }))` | no | no |
+| `decisions` | `decisions` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItem")       applyDescription = optional(string)       decision = optional(string)       insights = optional(any)       instance = optional(any)       justification = optional(string)       permission = optional(object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItemPermission")       description = optional(string)       displayName = optional(string)       id = optional(string)       type = optional(string)     }))     }))` | no | no |
 | `fallback_reviewers` | `fallbackReviewers` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")       query = optional(string)       queryRoot = optional(string)       queryType = optional(string)       reviewerId = optional(string)       scopeType = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `reviewers` | `reviewers` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")       query = optional(string)       queryRoot = optional(string)       queryType = optional(string)       reviewerId = optional(string)       scopeType = optional(string)     }))` | no | no |
@@ -47,8 +47,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- decisions[].instance: polymorphic schema; accepts an untyped value
-- decisions[].permission: polymorphic schema; accepts an untyped value
+- decisions[].insights[]: polymorphic schema; accepts an untyped value
+- decisions[].instance: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -30,8 +30,26 @@ variable "activity_type" {
 
 variable "actor" {
   description = "AAD user and application that are associated with the audit event."
-  type        = any
-  default     = null
+  type = object({
+    odata_type             = optional(string, "#microsoft.graph.auditActor")
+    applicationDisplayName = optional(string)
+    applicationId          = optional(string)
+    auditActorType         = optional(string)
+    ipAddress              = optional(string)
+    remoteTenantId         = optional(string)
+    remoteUserId           = optional(string)
+    servicePrincipalName   = optional(string)
+    type                   = optional(string)
+    userId                 = optional(string)
+    userPermissions        = optional(list(string))
+    userPrincipalName      = optional(string)
+    userRoleScopeTags = optional(list(object({
+      odata_type     = optional(string, "#microsoft.graph.roleScopeTagInfo")
+      displayName    = optional(string)
+      roleScopeTagId = optional(string)
+    })))
+  })
+  default = null
 }
 
 variable "category" {

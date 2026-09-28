@@ -19,13 +19,13 @@ run "typed_request" {
   command = plan
 
   variables {
-    device_name    = "example"
-    policy_details = [{}]
+    advanced_bit_locker_states = "success"
+    policy_details             = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["deviceName"]) == jsonencode("example")
-    error_message = "deviceName must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["advancedBitLockerStates"]) == jsonencode("success")
+    error_message = "advancedBitLockerStates must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -39,6 +39,35 @@ run "invalid_enum" {
 
   variables {
     advanced_bit_locker_states = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.advanced_bit_locker_states]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    advanced_bit_locker_states = "success, NoUserConsent"
+    file_vault_states          = "success, DriveEncryptedByUser"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["advancedBitLockerStates"] == "success, NoUserConsent"
+    error_message = "advancedBitLockerStates must accept combined flags enum members."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["fileVaultStates"] == "success, DriveEncryptedByUser"
+    error_message = "fileVaultStates must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    advanced_bit_locker_states = "success,__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.advanced_bit_locker_states]

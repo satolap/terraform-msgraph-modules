@@ -23,14 +23,20 @@ run "typed_request" {
   command = plan
 
   variables {
-    application_id = "test-parent-id"
-    description    = "example"
-    audiences      = ["example"]
+    application_id             = "test-parent-id"
+    description                = "example"
+    claims_matching_expression = { "languageVersion" = null }
+    audiences                  = ["example"]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
     error_message = "description must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["claimsMatchingExpression"]) == jsonencode({ "@odata.type" = "#microsoft.graph.federatedIdentityExpression" })
+    error_message = "claimsMatchingExpression must preserve typed values and omit nested nulls."
   }
 
   assert {

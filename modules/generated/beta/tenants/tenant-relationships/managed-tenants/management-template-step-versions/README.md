@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `content_markdown` | `contentMarkdown` | `string` | no | no |
 | `created_by_user_id` | `createdByUserId` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `deployments` | `deployments` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepDeployment")       createdByUserId = optional(string)       createdDateTime = optional(string)       error = optional(any)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       status = optional(string)       templateStepVersion = optional(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepVersion")       acceptedFor = optional(any)       contentMarkdown = optional(string)       createdByUserId = optional(string)       createdDateTime = optional(string)       deployments = optional(any)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       name = optional(string)       templateStep = optional(any)       version = optional(number)       versionInformation = optional(string)     }))       tenantId = optional(string)     }))` | no | no |
+| `deployments` | `deployments` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepDeployment")       createdByUserId = optional(string)       createdDateTime = optional(string)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.graphAPIErrorDetails")       code = optional(string)       message = optional(string)     }))       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       status = optional(string)       templateStepVersion = optional(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepVersion")       acceptedFor = optional(any)       contentMarkdown = optional(string)       createdByUserId = optional(string)       createdDateTime = optional(string)       deployments = optional(any)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       name = optional(string)       templateStep = optional(any)       version = optional(number)       versionInformation = optional(string)     }))       tenantId = optional(string)     }))` | no | no |
 | `graph_version` | `version` | `number` | no | no |
 | `last_action_by_user_id` | `lastActionByUserId` | `string` | no | no |
 | `last_action_date_time` | `lastActionDateTime` | `string` | no | no |
@@ -51,12 +51,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- acceptedFor: polymorphic schema; accepts an untyped value
-- deployments[].error: polymorphic schema; accepts an untyped value
-- deployments[].templateStepVersion.acceptedFor: polymorphic schema; accepts an untyped value
+- acceptedFor: navigation property; accepts an untyped value
+- deployments[].templateStepVersion.acceptedFor: navigation property; accepts an untyped value
 - deployments[].templateStepVersion.deployments[]: recursive schema; accepts an untyped value
-- deployments[].templateStepVersion.templateStep: polymorphic schema; accepts an untyped value
-- templateStep: polymorphic schema; accepts an untyped value
+- deployments[].templateStepVersion.templateStep: navigation property; accepts an untyped value
+- templateStep: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

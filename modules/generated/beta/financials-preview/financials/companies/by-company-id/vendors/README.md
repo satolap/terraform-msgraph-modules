@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `company_id` | URL parameter `company-id` | `string` | yes | no |
-| `address` | `address` | `any` | no | no |
+| `address` | `address` | `object({       odata_type = optional(string, "#microsoft.graph.postalAddressType")       city = optional(string)       countryLetterCode = optional(string)       postalCode = optional(string)       state = optional(string)       street = optional(string)     })` | no | no |
 | `balance` | `balance` | `number` | no | no |
 | `blocked` | `blocked` | `string` | no | no |
 | `currency` | `currency` | `any` | no | no |
@@ -62,10 +62,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- address: polymorphic schema; accepts an untyped value
-- currency: polymorphic schema; accepts an untyped value
-- paymentMethod: polymorphic schema; accepts an untyped value
-- paymentTerm: polymorphic schema; accepts an untyped value
+- currency: navigation property; accepts an untyped value
+- paymentMethod: navigation property; accepts an untyped value
+- paymentTerm: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -22,9 +22,9 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `alert_data` | `alertData` | `any` | no | no |
+| `alert_data` | `alertData` | `object({       odata_type = optional(string, "#microsoft.graph.managedTenants.alertData")       displayName = optional(string)     })` | no | no |
 | `alert_data_reference_strings` | `alertDataReferenceStrings` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.alertDataReferenceString")       displayName = optional(string)     }))` | no | no |
-| `alert_logs` | `alertLogs` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantAlertLog")       alert = optional(any)       content = optional(any)       createdByUserId = optional(string)       createdDateTime = optional(string)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)     }))` | no | no |
+| `alert_logs` | `alertLogs` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantAlertLog")       alert = optional(any)       content = optional(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.alertLogContent")       displayName = optional(string)     }))       createdByUserId = optional(string)       createdDateTime = optional(string)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)     }))` | no | no |
 | `alert_rule` | `alertRule` | `any` | no | no |
 | `alert_rule_display_name` | `alertRuleDisplayName` | `string` | no | no |
 | `api_notifications` | `apiNotifications` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantApiNotification")       alert = optional(any)       createdByUserId = optional(string)       createdDateTime = optional(string)       isAcknowledged = optional(bool)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       message = optional(string)       title = optional(string)       userId = optional(string)     }))` | no | no |
@@ -38,8 +38,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `last_action_date_time` | `lastActionDateTime` | `string` | no | no |
 | `message` | `message` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `severity` | `severity` | `any` | no | no |
-| `status` | `status` | `any` | no | no |
+| `severity` | `severity` | `string` | no | no |
+| `status` | `status` | `string` | no | no |
 | `tenant_id` | `tenantId` | `string` | no | no |
 | `title` | `title` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -59,14 +59,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- alertData: polymorphic schema; accepts an untyped value
-- alertLogs[].alert: polymorphic schema; accepts an untyped value
-- alertLogs[].content: polymorphic schema; accepts an untyped value
-- alertRule: polymorphic schema; accepts an untyped value
-- apiNotifications[].alert: polymorphic schema; accepts an untyped value
-- emailNotifications[].alert: polymorphic schema; accepts an untyped value
-- severity: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
+- alertLogs[].alert: navigation property; accepts an untyped value
+- alertRule: navigation property; accepts an untyped value
+- apiNotifications[].alert: navigation property; accepts an untyped value
+- emailNotifications[].alert: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

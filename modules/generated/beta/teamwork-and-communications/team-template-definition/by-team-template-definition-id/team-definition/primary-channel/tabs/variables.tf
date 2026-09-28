@@ -11,8 +11,14 @@ variable "team_template_definition_id" {
 
 variable "configuration" {
   description = "Container for custom settings applied to a tab. The tab is considered configured only once this property is set."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.teamsTabConfiguration")
+    contentUrl = optional(string)
+    entityId   = optional(string)
+    removeUrl  = optional(string)
+    websiteUrl = optional(string)
+  })
+  default = null
 }
 
 variable "display_name" {

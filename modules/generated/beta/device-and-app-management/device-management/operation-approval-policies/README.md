@@ -27,7 +27,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `display_name` | `displayName` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `policy_platform` | `policyPlatform` | `string` | no | no |
-| `policy_set` | `policySet` | `any` | no | no |
+| `policy_set` | `policySet` | `object({       odata_type = optional(string, "#microsoft.graph.operationApprovalPolicySet")     })` | no | no |
 | `policy_type` | `policyType` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -46,7 +46,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- policySet: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

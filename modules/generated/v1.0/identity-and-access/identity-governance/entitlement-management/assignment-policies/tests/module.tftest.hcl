@@ -19,13 +19,19 @@ run "typed_request" {
   command = plan
 
   variables {
-    created_date_time               = "2026-01-01T00:00:00Z"
+    allowed_target_scope            = "notSpecified"
+    automatic_request_settings      = { "gracePeriodBeforeAccessRemoval" = null }
     custom_extension_stage_settings = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["createdDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
-    error_message = "createdDateTime must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["allowedTargetScope"]) == jsonencode("notSpecified")
+    error_message = "allowedTargetScope must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["automaticRequestSettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.accessPackageAutomaticRequestSettings" })
+    error_message = "automaticRequestSettings must preserve typed values and omit nested nulls."
   }
 
   assert {

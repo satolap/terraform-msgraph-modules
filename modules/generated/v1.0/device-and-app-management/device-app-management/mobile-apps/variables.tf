@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.androidLobApp", "#microsoft.graph.androidStoreApp", "#microsoft.graph.iosLobApp", "#microsoft.graph.iosStoreApp", "#microsoft.graph.iosVppApp", "#microsoft.graph.iosiPadOSWebClip", "#microsoft.graph.macOSDmgApp", "#microsoft.graph.macOSLobApp", "#microsoft.graph.macOSMicrosoftDefenderApp", "#microsoft.graph.macOSMicrosoftEdgeApp", "#microsoft.graph.macOSOfficeSuiteApp", "#microsoft.graph.managedAndroidLobApp", "#microsoft.graph.managedAndroidStoreApp", "#microsoft.graph.managedIOSLobApp", "#microsoft.graph.managedIOSStoreApp", "#microsoft.graph.microsoftStoreForBusinessApp", "#microsoft.graph.webApp", "#microsoft.graph.win32LobApp", "#microsoft.graph.windowsAppX", "#microsoft.graph.windowsMicrosoftEdgeApp", "#microsoft.graph.windowsMobileMSI", "#microsoft.graph.windowsUniversalAppX", "#microsoft.graph.windowsWebApp"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "assignments" {
   description = "The list of group assignments for this mobile app."
   type = list(object({
@@ -50,21 +61,18 @@ variable "is_featured" {
 
 variable "large_icon" {
   description = "The large icon, to be displayed in the app details and used for upload of the icon."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.mimeContent")
+    type       = optional(string)
+    value      = optional(string)
+  })
+  default = null
 }
 
 variable "notes" {
   description = "Notes for the app."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.mobileApp"
-  nullable    = false
 }
 
 variable "owner" {
@@ -85,17 +93,6 @@ variable "publisher" {
   default     = null
 }
 
-variable "publishing_state" {
-  description = "Indicates the publishing state of an app."
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.publishing_state == null ? true : contains(["notPublished", "processing", "published"], var.publishing_state)
-    error_message = "publishing_state must be one of the documented enum values."
-  }
-}
-
 variable "additional_properties" {
   description = "Additional writable Graph properties using API field names. Explicit typed inputs take precedence. Null top-level values are omitted; callers must omit nested nulls in untyped values."
   type        = any
@@ -104,7 +101,7 @@ variable "additional_properties" {
   sensitive   = true
 
   validation {
-    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["createdDateTime", "id", "lastModifiedDateTime"], key)]) : false
+    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["createdDateTime", "id", "lastModifiedDateTime", "publishingState"], key)]) : false
     error_message = "additional_properties must be an object without documented read-only properties."
   }
 }

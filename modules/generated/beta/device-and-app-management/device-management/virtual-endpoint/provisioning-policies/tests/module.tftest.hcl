@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     cloud_pc_naming_template = "example"
     enable_single_sign_on    = false
+    autopatch                = { "autopatchGroupId" = null }
     assignments              = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["enableSingleSignOn"]) == jsonencode(false)
     error_message = "enableSingleSignOn must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["autopatch"]) == jsonencode({ "@odata.type" = "#microsoft.graph.cloudPcProvisioningPolicyAutopatch" })
+    error_message = "autopatch must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -48,4 +54,27 @@ run "invalid_enum" {
   }
 
   expect_failures = [var.image_type]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    managed_by = "windows365, DevBox"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["managedBy"] == "windows365, DevBox"
+    error_message = "managedBy must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    managed_by = "windows365,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.managed_by]
 }

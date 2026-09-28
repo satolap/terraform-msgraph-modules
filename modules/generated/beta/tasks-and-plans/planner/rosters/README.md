@@ -22,10 +22,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `assigned_sensitivity_label` | `assignedSensitivityLabel` | `any` | no | no |
+| `assigned_sensitivity_label` | `assignedSensitivityLabel` | `object({       odata_type = optional(string, "#microsoft.graph.sensitivityLabelAssignment")       assignmentMethod = optional(string)       sensitivityLabelId = optional(string)       tenantId = optional(string)     })` | no | no |
 | `members` | `members` | `list(object({       odata_type = optional(string, "#microsoft.graph.plannerRosterMember")       roles = optional(list(string))       tenantId = optional(string)       userId = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `plans` | `plans` | `list(object({       odata_type = optional(string, "#microsoft.graph.plannerPlan")       container = optional(any)       contentSensitivityLabelAssignment = optional(any)       creationSource = optional(any)       owner = optional(string)       sharedWithContainers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.plannerSharedWithContainer")       accessLevel = optional(string)       containerId = optional(string)       type = optional(any)       url = optional(string)     })))       title = optional(string)     }))` | no | no |
+| `plans` | `plans` | `list(object({       odata_type = optional(string, "#microsoft.graph.plannerPlan")       container = optional(any)       contentSensitivityLabelAssignment = optional(object({       odata_type = optional(string, "#microsoft.graph.contentSensitivityLabelAssignment")       assignmentMethod = optional(string)       justificationText = optional(string)       sensitivityLabelId = optional(string)       tenantId = optional(string)     }))       creationSource = optional(any)       owner = optional(string)       sharedWithContainers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.plannerSharedWithContainer")       accessLevel = optional(string)       containerId = optional(string)       type = optional(string)       url = optional(string)     })))       title = optional(string)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -43,11 +43,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- assignedSensitivityLabel: polymorphic schema; accepts an untyped value
 - plans[].container: polymorphic schema; accepts an untyped value
-- plans[].contentSensitivityLabelAssignment: polymorphic schema; accepts an untyped value
 - plans[].creationSource: polymorphic schema; accepts an untyped value
-- plans[].sharedWithContainers[].type: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

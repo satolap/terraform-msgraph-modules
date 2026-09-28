@@ -24,23 +24,23 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `outlook_task_folder_id` | URL parameter `outlookTaskFolder-id` | `string` | yes | no |
-| `body` | `body` | `any` | no | no |
+| `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no |
 | `categories` | `categories` | `list(string)` | no | no |
-| `completed_date_time` | `completedDateTime` | `any` | no | no |
+| `completed_date_time` | `completedDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `due_date_time` | `dueDateTime` | `any` | no | no |
+| `due_date_time` | `dueDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
 | `has_attachments` | `hasAttachments` | `bool` | no | no |
-| `importance` | `importance` | `any` | no | no |
+| `importance` | `importance` | `string` | no | no |
 | `is_reminder_on` | `isReminderOn` | `bool` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `owner` | `owner` | `string` | no | no |
 | `parent_folder_id` | `parentFolderId` | `string` | no | no |
-| `recurrence` | `recurrence` | `any` | no | no |
-| `reminder_date_time` | `reminderDateTime` | `any` | no | no |
-| `sensitivity` | `sensitivity` | `any` | no | no |
-| `start_date_time` | `startDateTime` | `any` | no | no |
-| `status` | `status` | `any` | no | no |
+| `recurrence` | `recurrence` | `object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     })` | no | no |
+| `reminder_date_time` | `reminderDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
+| `sensitivity` | `sensitivity` | `string` | no | no |
+| `start_date_time` | `startDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
+| `status` | `status` | `string` | no | no |
 | `subject` | `subject` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -59,15 +59,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- body: polymorphic schema; accepts an untyped value
-- completedDateTime: polymorphic schema; accepts an untyped value
-- dueDateTime: polymorphic schema; accepts an untyped value
-- importance: polymorphic schema; accepts an untyped value
-- recurrence: polymorphic schema; accepts an untyped value
-- reminderDateTime: polymorphic schema; accepts an untyped value
-- sensitivity: polymorphic schema; accepts an untyped value
-- startDateTime: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

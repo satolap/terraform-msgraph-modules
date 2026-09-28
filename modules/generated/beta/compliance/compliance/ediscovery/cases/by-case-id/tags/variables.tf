@@ -11,7 +11,7 @@ variable "case_id" {
 
 variable "child_selectability" {
   description = "Indicates whether a single or multiple child tags can be associated with a document. The possible values are: One, Many.  This value controls whether the UX presents the tags as checkboxes or a radio button group."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -24,7 +24,7 @@ variable "child_tags" {
   description = "Returns the tags that are a child of a tag."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.ediscovery.tag")
-    childSelectability   = optional(any)
+    childSelectability   = optional(string)
     childTags            = optional(any)
     createdBy            = optional(any)
     description          = optional(string)

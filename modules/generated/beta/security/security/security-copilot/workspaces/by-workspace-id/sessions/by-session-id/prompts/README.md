@@ -28,7 +28,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `session_id` | URL parameter `session-id` | `string` | yes | no |
 | `content` | `content` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `evaluations` | `evaluations` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.securityCopilot.evaluation")       completedDateTime = optional(string)       createdDateTime = optional(string)       executionCount = optional(number)       isCancelled = optional(bool)       lastModifiedDateTime = optional(string)       result = optional(any)       runStartDateTime = optional(string)       state = optional(string)     }))` | no | no |
+| `evaluations` | `evaluations` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.securityCopilot.evaluation")       completedDateTime = optional(string)       createdDateTime = optional(string)       executionCount = optional(number)       isCancelled = optional(bool)       lastModifiedDateTime = optional(string)       result = optional(object({       odata_type = optional(string, "#microsoft.graph.security.securityCopilot.evaluationResult")       content = optional(string)       previewState = optional(string)       type = optional(string)     }))       runStartDateTime = optional(string)       state = optional(string)     }))` | no | no |
 | `inputs` | `inputs` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -52,7 +52,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- evaluations[].result: polymorphic schema; accepts an untyped value
 - inputs: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

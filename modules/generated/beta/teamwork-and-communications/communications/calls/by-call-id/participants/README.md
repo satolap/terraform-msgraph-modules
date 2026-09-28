@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `call_id` | URL parameter `call-id` | `string` | yes | no |
-| `info` | `info` | `object({       odata_type = optional(string, "#microsoft.graph.participantInfo")       identity = optional(object({       odata_type = optional(string, "#microsoft.graph.identitySet")       application = optional(any)       device = optional(any)       user = optional(any)     }))       nonAnonymizedIdentity = optional(any)     })` | no | no |
+| `info` | `info` | `object({       odata_type = optional(string, "#microsoft.graph.participantInfo")       identity = optional(any)       nonAnonymizedIdentity = optional(any)     })` | no | no |
 | `is_identity_anonymized` | `isIdentityAnonymized` | `bool` | no | no |
 | `is_in_lobby` | `isInLobby` | `bool` | no | no |
 | `is_muted` | `isMuted` | `bool` | no | no |
@@ -32,11 +32,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `metadata` | `metadata` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `preferred_display_name` | `preferredDisplayName` | `string` | no | no |
-| `recording_info` | `recordingInfo` | `any` | no | no |
-| `removed_state` | `removedState` | `any` | no | no |
-| `restricted_experience` | `restrictedExperience` | `any` | no | no |
+| `recording_info` | `recordingInfo` | `object({       odata_type = optional(string, "#microsoft.graph.recordingInfo")       initiatedBy = optional(object({       odata_type = optional(string, "#microsoft.graph.participantInfo")       identity = optional(any)       nonAnonymizedIdentity = optional(any)     }))       initiator = optional(any)       recordingStatus = optional(string)     })` | no | no |
+| `removed_state` | `removedState` | `object({       odata_type = optional(string, "#microsoft.graph.removedState")       reason = optional(string)     })` | no | no |
+| `restricted_experience` | `restrictedExperience` | `object({       odata_type = optional(string, "#microsoft.graph.onlineMeetingRestricted")       contentSharingDisabled = optional(string)       videoDisabled = optional(string)     })` | no | no |
 | `roster_sequence_number` | `rosterSequenceNumber` | `number` | no | no |
-| `synthetic_media_detection` | `syntheticMediaDetection` | `any` | no | no |
+| `synthetic_media_detection` | `syntheticMediaDetection` | `object({       odata_type = optional(string, "#microsoft.graph.syntheticMediaDetectionInfo")       detectionId = optional(string)       detectorBot = optional(string)       isParticipantTrusted = optional(bool)       syntheticConfidence = optional(any)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -54,14 +54,12 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- info.identity.application: polymorphic schema; accepts an untyped value
-- info.identity.device: polymorphic schema; accepts an untyped value
-- info.identity.user: polymorphic schema; accepts an untyped value
+- info.identity: polymorphic schema; accepts an untyped value
 - info.nonAnonymizedIdentity: polymorphic schema; accepts an untyped value
-- recordingInfo: polymorphic schema; accepts an untyped value
-- removedState: polymorphic schema; accepts an untyped value
-- restrictedExperience: polymorphic schema; accepts an untyped value
-- syntheticMediaDetection: polymorphic schema; accepts an untyped value
+- recordingInfo.initiatedBy.identity: polymorphic schema; accepts an untyped value
+- recordingInfo.initiatedBy.nonAnonymizedIdentity: polymorphic schema; accepts an untyped value
+- recordingInfo.initiator: polymorphic schema; accepts an untyped value
+- syntheticMediaDetection.syntheticConfidence: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

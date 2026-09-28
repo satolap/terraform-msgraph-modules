@@ -1,10 +1,10 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
+    "@odata.type"                   = var.odata_type
     "filteringCriteria"             = var.filtering_criteria
     "jobCompletionDateTime"         = var.job_completion_date_time
     "jobStartDateTime"              = var.job_start_date_time
-    "@odata.type"                   = var.odata_type
     "status"                        = var.status
     "targetStateDateTime"           = var.target_state_date_time
     "totalChangedLinksCalculated"   = var.total_changed_links_calculated

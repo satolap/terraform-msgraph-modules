@@ -19,12 +19,8 @@ variable "role_id" {
 
 variable "role_member_info" {
   description = "Microsoft Graph roleMemberInfo property."
-  type = object({
-    odata_type  = optional(string, "#microsoft.graph.identity")
-    displayName = optional(string)
-    id          = optional(string)
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

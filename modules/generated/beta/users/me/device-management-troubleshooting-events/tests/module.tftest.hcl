@@ -19,13 +19,19 @@ run "typed_request" {
   command = plan
 
   variables {
-    correlation_id         = "example"
-    additional_information = [{}]
+    correlation_id                = "example"
+    troubleshooting_error_details = { "context" = null }
+    additional_information        = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["correlationId"]) == jsonencode("example")
     error_message = "correlationId must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["troubleshootingErrorDetails"]) == jsonencode({ "@odata.type" = "#microsoft.graph.deviceManagementTroubleshootingErrorDetails" })
+    error_message = "troubleshootingErrorDetails must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -29,7 +29,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `compatibility_mode` | `compatibilityMode` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
-| `history` | `history` | `list(object({       odata_type = optional(string, "#microsoft.graph.browserSiteHistory")       allowRedirect = optional(bool)       comment = optional(string)       compatibilityMode = optional(any)       lastModifiedBy = optional(any)       mergeType = optional(any)       publishedDateTime = optional(string)       targetEnvironment = optional(any)     }))` | no | no |
+| `history` | `history` | `list(object({       odata_type = optional(string, "#microsoft.graph.browserSiteHistory")       allowRedirect = optional(bool)       comment = optional(string)       compatibilityMode = optional(string)       lastModifiedBy = optional(any)       mergeType = optional(string)       publishedDateTime = optional(string)       targetEnvironment = optional(string)     }))` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `merge_type` | `mergeType` | `string` | no | no |
@@ -54,10 +54,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- history[].compatibilityMode: polymorphic schema; accepts an untyped value
 - history[].lastModifiedBy: polymorphic schema; accepts an untyped value
-- history[].mergeType: polymorphic schema; accepts an untyped value
-- history[].targetEnvironment: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

@@ -20,10 +20,16 @@ run "typed_request" {
 
   variables {
     created_by_user_id = "example"
+    content            = { "displayName" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["createdByUserId"]) == jsonencode("example")
     error_message = "createdByUserId must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["content"]) == jsonencode({ "@odata.type" = "#microsoft.graph.managedTenants.alertLogContent" })
+    error_message = "content must preserve typed values and omit nested nulls."
   }
 }

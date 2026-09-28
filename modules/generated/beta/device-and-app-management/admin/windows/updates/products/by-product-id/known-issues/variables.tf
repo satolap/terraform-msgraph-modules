@@ -22,7 +22,7 @@ variable "known_issue_histories" {
     body = optional(object({
       odata_type  = optional(string, "#microsoft.graph.windowsUpdates.itemBody")
       content     = optional(string)
-      contentType = optional(any)
+      contentType = optional(string)
     }))
   }))
   default = null

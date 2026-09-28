@@ -56,20 +56,15 @@ variable "shared_cookies" {
     deletedDateTime = optional(string)
     displayName     = optional(string)
     history = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.browserSharedCookieHistory")
-      comment      = optional(string)
-      displayName  = optional(string)
-      hostOnly     = optional(bool)
-      hostOrDomain = optional(string)
-      lastModifiedBy = optional(object({
-        odata_type  = optional(string, "#microsoft.graph.identitySet")
-        application = optional(any)
-        device      = optional(any)
-        user        = optional(any)
-      }))
+      odata_type        = optional(string, "#microsoft.graph.browserSharedCookieHistory")
+      comment           = optional(string)
+      displayName       = optional(string)
+      hostOnly          = optional(bool)
+      hostOrDomain      = optional(string)
+      lastModifiedBy    = optional(any)
       path              = optional(string)
       publishedDateTime = optional(string)
-      sourceEnvironment = optional(any)
+      sourceEnvironment = optional(string)
     })))
     hostOnly             = optional(bool)
     hostOrDomain         = optional(string)
@@ -95,11 +90,11 @@ variable "sites" {
       odata_type        = optional(string, "#microsoft.graph.browserSiteHistory")
       allowRedirect     = optional(bool)
       comment           = optional(string)
-      compatibilityMode = optional(any)
+      compatibilityMode = optional(string)
       lastModifiedBy    = optional(any)
-      mergeType         = optional(any)
+      mergeType         = optional(string)
       publishedDateTime = optional(string)
-      targetEnvironment = optional(any)
+      targetEnvironment = optional(string)
     })))
     lastModifiedBy       = optional(any)
     lastModifiedDateTime = optional(string)
@@ -112,7 +107,7 @@ variable "sites" {
 }
 
 variable "status" {
-  description = "Microsoft Graph status property."
+  description = "Status of the site list. Can be either \"draft\", \"pending\", or \"published\""
   type        = string
   default     = null
 

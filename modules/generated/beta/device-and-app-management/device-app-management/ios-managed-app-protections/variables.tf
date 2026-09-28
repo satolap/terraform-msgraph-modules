@@ -63,7 +63,7 @@ variable "allowed_outbound_data_transfer_destinations" {
 
 variable "app_action_if_account_is_clocked_out" {
   description = "Defines a managed app behavior, either block or warn, if the user is clocked out (non-working time). Possible values are: block, wipe, warn, blockWhenSettingIsSupported."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -107,7 +107,7 @@ variable "app_action_if_maximum_pin_retries_exceeded" {
 
 variable "app_action_if_unable_to_authenticate_user" {
   description = "If set, it will specify what action to take in the case where the user is unable to checkin because their authentication token is invalid. This happens when the user is deleted or disabled in AAD. Possible values are: block, wipe, warn, blockWhenSettingIsSupported."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -284,7 +284,7 @@ variable "fingerprint_blocked" {
 
 variable "genmoji_configuration_state" {
   description = "Configuration state (blocked or not blocked) for Apple Intelligence Genmoji setting. Possible values are: notBlocked, blocked, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -323,8 +323,8 @@ variable "managed_browser" {
   default     = null
 
   validation {
-    condition     = var.managed_browser == null ? true : contains(["notConfigured", "microsoftEdge"], var.managed_browser)
-    error_message = "managed_browser must be one of the documented enum values."
+    condition     = var.managed_browser == null ? true : try(alltrue([for value in split(",", var.managed_browser) : contains(["notconfigured", "microsoftedge"], lower(trimspace(value)))]), false)
+    error_message = "managed_browser must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -443,7 +443,7 @@ variable "minimum_wipe_sdk_version" {
 
 variable "mobile_threat_defense_partner_priority" {
   description = "Indicates how to prioritize which Mobile Threat Defense (MTD) partner is enabled for a given platform, when more than one is enabled. An app can only be actively using a single Mobile Threat Defense partner. When NULL, Microsoft Defender will be given preference. Otherwise setting the value to defenderOverThirdPartyPartner or thirdPartyPartnerOverDefender will make explicit which partner to prioritize. Possible values are: null, defenderOverThirdPartyPartner, thirdPartyPartnerOverDefender and unknownFutureValue. Default value is null. Possible values are: defenderOverThirdPartyPartner, thirdPartyPartnerOverDefender, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -589,7 +589,7 @@ variable "save_as_blocked" {
 
 variable "screen_capture_configuration_state" {
   description = "Configuration state (blocked or not blocked) for Apple Intelligence screen capture setting. Possible values are: notBlocked, blocked, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -610,8 +610,8 @@ variable "targeted_app_management_levels" {
   default     = null
 
   validation {
-    condition     = var.targeted_app_management_levels == null ? true : contains(["unspecified", "unmanaged", "mdm", "androidEnterprise", "androidEnterpriseDedicatedDevicesWithAzureAdSharedMode", "androidOpenSourceProjectUserAssociated", "androidOpenSourceProjectUserless", "unknownFutureValue"], var.targeted_app_management_levels)
-    error_message = "targeted_app_management_levels must be one of the documented enum values."
+    condition     = var.targeted_app_management_levels == null ? true : try(alltrue([for value in split(",", var.targeted_app_management_levels) : contains(["unspecified", "unmanaged", "mdm", "androidenterprise", "androidenterprisededicateddeviceswithazureadsharedmode", "androidopensourceprojectuserassociated", "androidopensourceprojectuserless", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "targeted_app_management_levels must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -623,7 +623,7 @@ variable "third_party_keyboards_blocked" {
 
 variable "writing_tools_configuration_state" {
   description = "Configuration state (blocked or not blocked) for Apple Intelligence writing tools setting. Possible values are: notBlocked, blocked, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

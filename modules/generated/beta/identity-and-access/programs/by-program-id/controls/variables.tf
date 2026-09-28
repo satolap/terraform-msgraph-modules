@@ -60,8 +60,13 @@ variable "program_id_2" {
 
 variable "resource" {
   description = "The resource, a group or an app, targeted by this program control's access review."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.programResource")
+    displayName = optional(string)
+    id          = optional(string)
+    type        = optional(string)
+  })
+  default = null
 }
 
 variable "status" {

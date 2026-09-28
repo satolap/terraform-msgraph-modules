@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "#microsoft.graph.callActivityStatistics"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "activitystatistics"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,12 +23,18 @@ run "typed_request" {
   command = plan
 
   variables {
-    duration = "example"
+    odata_type = "#microsoft.graph.callActivityStatistics"
+    activity   = "Email"
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["duration"]) == jsonencode("example")
-    error_message = "duration must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.callActivityStatistics")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["activity"]) == jsonencode("Email")
+    error_message = "activity must preserve typed values and omit nested nulls."
   }
 }
 
@@ -32,8 +42,8 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    activity = "__graphmodules_invalid_enum__"
+    odata_type = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.activity]
+  expect_failures = [var.odata_type]
 }

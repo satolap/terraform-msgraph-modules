@@ -14,11 +14,7 @@ variable "assignments" {
   description = "List of the groups this profile is assgined to."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.windowsQualityUpdatePolicyAssignment")
-    target = optional(object({
-      odata_type                                 = optional(string, "#microsoft.graph.deviceAndAppManagementAssignmentTarget")
-      deviceAndAppManagementAssignmentFilterId   = optional(string)
-      deviceAndAppManagementAssignmentFilterType = optional(string)
-    }))
+    target     = optional(any)
   }))
   default = null
 }

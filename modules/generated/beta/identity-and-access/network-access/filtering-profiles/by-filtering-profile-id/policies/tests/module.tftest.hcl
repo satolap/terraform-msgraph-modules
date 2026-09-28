@@ -6,6 +6,7 @@ run "minimal_request" {
 
   variables {
     filtering_profile_id = "test-parent-id"
+    odata_type           = "#microsoft.graph.networkaccess.cloudFirewallPolicyLink"
   }
 
   assert {
@@ -24,18 +25,18 @@ run "typed_request" {
 
   variables {
     filtering_profile_id = "test-parent-id"
+    odata_type           = "#microsoft.graph.networkaccess.cloudFirewallPolicyLink"
     graph_version        = "example"
-    policy               = { "description" = null }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.networkaccess.cloudFirewallPolicyLink")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["version"]) == jsonencode("example")
     error_message = "version must preserve typed values and omit nested nulls."
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["policy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.networkaccess.policy" })
-    error_message = "policy must preserve typed values and omit nested nulls."
   }
 }
 
@@ -44,8 +45,8 @@ run "invalid_enum" {
 
   variables {
     filtering_profile_id = "test-parent-id"
-    state                = "__graphmodules_invalid_enum__"
+    odata_type           = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.state]
+  expect_failures = [var.odata_type]
 }

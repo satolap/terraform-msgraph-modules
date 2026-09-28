@@ -30,7 +30,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `meeting_attendance_report_id` | URL parameter `meetingAttendanceReport-id` | `string` | yes | no |
 | `attendance_intervals` | `attendanceIntervals` | `list(object({       odata_type = optional(string, "#microsoft.graph.attendanceInterval")       durationInSeconds = optional(number)       joinDateTime = optional(string)       leaveDateTime = optional(string)     }))` | no | no |
 | `email_address` | `emailAddress` | `string` | no | no |
-| `external_registration_information` | `externalRegistrationInformation` | `any` | no | no |
+| `external_registration_information` | `externalRegistrationInformation` | `object({       odata_type = optional(string, "#microsoft.graph.virtualEventExternalRegistrationInformation")       referrer = optional(string)       registrationId = optional(string)     })` | no | no |
 | `identity` | `identity` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `registration_id` | `registrationId` | `string` | no | no |
@@ -52,7 +52,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- externalRegistrationInformation: polymorphic schema; accepts an untyped value
 - identity: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

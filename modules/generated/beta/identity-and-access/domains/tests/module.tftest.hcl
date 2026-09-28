@@ -22,6 +22,7 @@ run "typed_request" {
     authentication_type                  = "example"
     is_admin_managed                     = false
     password_notification_window_in_days = -2147483648
+    state                                = { "lastActionDateTime" = null }
     federation_configuration             = [{}]
   }
 
@@ -38,6 +39,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["passwordNotificationWindowInDays"]) == jsonencode(-2147483648)
     error_message = "passwordNotificationWindowInDays must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["state"]) == jsonencode({ "@odata.type" = "#microsoft.graph.domainState" })
+    error_message = "state must preserve typed values and omit nested nulls."
   }
 
   assert {

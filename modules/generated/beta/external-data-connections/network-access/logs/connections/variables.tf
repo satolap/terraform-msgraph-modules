@@ -6,8 +6,11 @@ variable "agent_version" {
 
 variable "application_snapshot" {
   description = "appId (or client ID) of the destination Microsoft Entra application."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.networkaccess.applicationSnapshot")
+    appId      = optional(string)
+  })
+  default = null
 }
 
 variable "created_date_time" {
@@ -18,7 +21,7 @@ variable "created_date_time" {
 
 variable "cross_tenant_access_type" {
   description = "Cross tenant access details, for B2B scenarios. The possible values are: none, b2bCollaboration, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -47,7 +50,7 @@ variable "destination_port" {
 
 variable "device_category" {
   description = "The category of the device. The possible values are: client, branch, unknownFutureValue, remoteNetwork. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: remoteNetwork."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -64,7 +67,7 @@ variable "device_id" {
 
 variable "device_join_type" {
   description = "Device registration type, for BYOD scenarios. The possible values are: none, microsoftEntraJoined, microsoftEntraRegistered, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -111,7 +114,7 @@ variable "last_update_date_time" {
 
 variable "network_protocol" {
   description = "The network protocol of the connection. The possible values are: ip, icmp, igmp, ggp, ipv4, tcp, pup, udp, idp, ipv6, ipv6RoutingHeader, ipv6FragmentHeader, ipSecEncapsulatingSecurityPayload, ipSecAuthenticationHeader, icmpV6, ipv6NoNextHeader, ipv6DestinationOptions, nd, raw, ipx, spx, spxII, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -135,8 +138,24 @@ variable "pop_processing_region" {
 
 variable "private_access_details" {
   description = "Private access details."
-  type        = any
-  default     = null
+  type = object({
+    odata_type       = optional(string, "#microsoft.graph.networkaccess.privateAccessDetails")
+    accessType       = optional(string)
+    appSegmentId     = optional(string)
+    connectionStatus = optional(string)
+    connectorId      = optional(string)
+    connectorIp      = optional(string)
+    connectorName    = optional(string)
+    processingRegion = optional(string)
+    thirdPartyTokenDetails = optional(object({
+      odata_type            = optional(string, "#microsoft.graph.networkaccess.thirdPartyTokenDetails")
+      expirationDateTime    = optional(string)
+      issuedAtDateTime      = optional(string)
+      uniqueTokenIdentifier = optional(string)
+      validFromDateTime     = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "received_bytes" {
@@ -165,7 +184,7 @@ variable "source_port" {
 
 variable "status" {
   description = "Status of the connection. The possible values are: open, active, closed, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -205,7 +224,7 @@ variable "transaction_count" {
 
 variable "transport_protocol" {
   description = "The transport protocol of the connection. The possible values are: ip, icmp, igmp, ggp, ipv4, tcp, pup, udp, idp, ipv6, ipv6RoutingHeader, ipv6FragmentHeader, ipSecEncapsulatingSecurityPayload, ipSecAuthenticationHeader, icmpV6, ipv6NoNextHeader, ipv6DestinationOptions, nd, raw, ipx, spx, spxII, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

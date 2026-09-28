@@ -24,15 +24,15 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `app_display_name` | `appDisplayName` | `string` | no | no |
 | `app_id` | `appId` | `string` | no | no |
-| `applied_event_listeners` | `appliedEventListeners` | `list(object({       odata_type = optional(string, "#microsoft.graph.appliedAuthenticationEventListener")       eventType = optional(any)       executedListenerId = optional(string)       handlerResult = optional(any)     }))` | no | no |
+| `applied_event_listeners` | `appliedEventListeners` | `list(object({       odata_type = optional(string, "#microsoft.graph.appliedAuthenticationEventListener")       eventType = optional(string)       executedListenerId = optional(string)       handlerResult = optional(any)     }))` | no | no |
 | `correlation_id` | `correlationId` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `fraud_protection_details` | `fraudProtectionDetails` | `any` | no | no |
+| `fraud_protection_details` | `fraudProtectionDetails` | `object({       odata_type = optional(string, "#microsoft.graph.fraudProtectionDetails")       providerErrorMessages = optional(list(string))       providerHttpStatusCodes = optional(list(number))       providerName = optional(string)       providerResponseTimes = optional(list(number))       providerSessionId = optional(string)       reason = optional(string)       verdict = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `sign_up_identity` | `signUpIdentity` | `any` | no | no |
+| `sign_up_identity` | `signUpIdentity` | `object({       odata_type = optional(string, "#microsoft.graph.signUpIdentity")       signUpIdentifier = optional(string)       signUpIdentifierType = optional(string)     })` | no | no |
 | `sign_up_identity_provider` | `signUpIdentityProvider` | `string` | no | no |
 | `sign_up_stage` | `signUpStage` | `string` | no | no |
-| `status` | `status` | `any` | no | no |
+| `status` | `status` | `object({       odata_type = optional(string, "#microsoft.graph.signUpStatus")       additionalDetails = optional(string)       errorCode = optional(number)       failureReason = optional(string)     })` | no | no |
 | `user_id` | `userId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -51,11 +51,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- appliedEventListeners[].eventType: polymorphic schema; accepts an untyped value
 - appliedEventListeners[].handlerResult: polymorphic schema; accepts an untyped value
-- fraudProtectionDetails: polymorphic schema; accepts an untyped value
-- signUpIdentity: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

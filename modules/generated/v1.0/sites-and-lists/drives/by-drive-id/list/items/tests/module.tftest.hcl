@@ -25,12 +25,18 @@ run "typed_request" {
   variables {
     drive_id              = "test-parent-id"
     description           = "example"
+    content_type          = { "id" = null }
     document_set_versions = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
     error_message = "description must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["contentType"]) == jsonencode({ "@odata.type" = "#microsoft.graph.contentTypeInfo" })
+    error_message = "contentType must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -16,7 +16,7 @@ locals {
     "nextVersionDefinition"     = var.next_version_definition
     "@odata.type"               = var.odata_type
     "policyType"                = var.policy_type
-    "presentations"             = (var.presentations == null ? null : [for item0 in var.presentations : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "definition" = item0["definition"], "label" = item0["label"], "lastModifiedDateTime" = item0["lastModifiedDateTime"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "presentations"             = (var.presentations == null ? null : [for item0 in var.presentations : item0 if item0 != null])
     "previousVersionDefinition" = var.previous_version_definition
     "supportedOn"               = var.supported_on
   } : key => value if value != null }

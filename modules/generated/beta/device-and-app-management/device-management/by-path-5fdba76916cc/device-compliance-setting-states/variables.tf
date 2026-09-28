@@ -64,7 +64,7 @@ variable "setting_name" {
 }
 
 variable "state" {
-  description = "Microsoft Graph state property."
+  description = "The compliance state of the setting"
   type        = string
   default     = null
 

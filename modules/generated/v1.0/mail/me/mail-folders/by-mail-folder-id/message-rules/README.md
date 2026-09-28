@@ -24,10 +24,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `mail_folder_id` | URL parameter `mailFolder-id` | `string` | yes | no |
-| `actions` | `actions` | `any` | no | no |
-| `conditions` | `conditions` | `any` | no | no |
+| `actions` | `actions` | `object({       odata_type = optional(string, "#microsoft.graph.messageRuleActions")       assignCategories = optional(list(string))       copyToFolder = optional(string)       delete = optional(bool)       forwardAsAttachmentTo = optional(any)       forwardTo = optional(any)       markAsRead = optional(bool)       markImportance = optional(string)       moveToFolder = optional(string)       permanentDelete = optional(bool)       redirectTo = optional(any)       stopProcessingRules = optional(bool)     })` | no | no |
+| `conditions` | `conditions` | `object({       odata_type = optional(string, "#microsoft.graph.messageRulePredicates")       bodyContains = optional(list(string))       bodyOrSubjectContains = optional(list(string))       categories = optional(list(string))       fromAddresses = optional(any)       hasAttachments = optional(bool)       headerContains = optional(list(string))       importance = optional(string)       isApprovalRequest = optional(bool)       isAutomaticForward = optional(bool)       isAutomaticReply = optional(bool)       isEncrypted = optional(bool)       isMeetingRequest = optional(bool)       isMeetingResponse = optional(bool)       isNonDeliveryReport = optional(bool)       isPermissionControlled = optional(bool)       isReadReceipt = optional(bool)       isSigned = optional(bool)       isVoicemail = optional(bool)       messageActionFlag = optional(string)       notSentToMe = optional(bool)       recipientContains = optional(list(string))       senderContains = optional(list(string))       sensitivity = optional(string)       sentCcMe = optional(bool)       sentOnlyToMe = optional(bool)       sentToAddresses = optional(any)       sentToMe = optional(bool)       sentToOrCcMe = optional(bool)       subjectContains = optional(list(string))       withinSizeRange = optional(object({       odata_type = optional(string, "#microsoft.graph.sizeRange")       maximumSize = optional(number)       minimumSize = optional(number)     }))     })` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `exceptions` | `exceptions` | `any` | no | no |
+| `exceptions` | `exceptions` | `object({       odata_type = optional(string, "#microsoft.graph.messageRulePredicates")       bodyContains = optional(list(string))       bodyOrSubjectContains = optional(list(string))       categories = optional(list(string))       fromAddresses = optional(any)       hasAttachments = optional(bool)       headerContains = optional(list(string))       importance = optional(string)       isApprovalRequest = optional(bool)       isAutomaticForward = optional(bool)       isAutomaticReply = optional(bool)       isEncrypted = optional(bool)       isMeetingRequest = optional(bool)       isMeetingResponse = optional(bool)       isNonDeliveryReport = optional(bool)       isPermissionControlled = optional(bool)       isReadReceipt = optional(bool)       isSigned = optional(bool)       isVoicemail = optional(bool)       messageActionFlag = optional(string)       notSentToMe = optional(bool)       recipientContains = optional(list(string))       senderContains = optional(list(string))       sensitivity = optional(string)       sentCcMe = optional(bool)       sentOnlyToMe = optional(bool)       sentToAddresses = optional(any)       sentToMe = optional(bool)       sentToOrCcMe = optional(bool)       subjectContains = optional(list(string))       withinSizeRange = optional(object({       odata_type = optional(string, "#microsoft.graph.sizeRange")       maximumSize = optional(number)       minimumSize = optional(number)     }))     })` | no | no |
 | `is_enabled` | `isEnabled` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `sequence` | `sequence` | `number` | no | no |
@@ -47,9 +47,13 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- actions: polymorphic schema; accepts an untyped value
-- conditions: polymorphic schema; accepts an untyped value
-- exceptions: polymorphic schema; accepts an untyped value
+- actions.forwardAsAttachmentTo[]: polymorphic schema; accepts an untyped value
+- actions.forwardTo[]: polymorphic schema; accepts an untyped value
+- actions.redirectTo[]: polymorphic schema; accepts an untyped value
+- conditions.fromAddresses[]: polymorphic schema; accepts an untyped value
+- conditions.sentToAddresses[]: polymorphic schema; accepts an untyped value
+- exceptions.fromAddresses[]: polymorphic schema; accepts an untyped value
+- exceptions.sentToAddresses[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

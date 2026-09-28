@@ -10,14 +10,22 @@ variable "assignments" {
 
 variable "autopatch" {
   description = "Indicates the Windows Autopatch settings for Cloud PCs using this provisioning policy. The settings take effect when the tenant enrolls in Autopatch and the managedType of the microsoftManagedDesktop property is set as starterManaged. When you create or update a provisioning policy with autopatch, you must use a delegated token and the signed-in user must have the Intune Administrator role. Supports $select."
-  type        = any
-  default     = null
+  type = object({
+    odata_type       = optional(string, "#microsoft.graph.cloudPcProvisioningPolicyAutopatch")
+    autopatchGroupId = optional(string)
+  })
+  default = null
 }
 
 variable "autopilot_configuration" {
   description = "The specific settings for Windows Autopilot that enable Windows 365 customers to experience it on Cloud PC. When you create or update a provisioning policy with autopilotConfiguration, use the required Microsoft Graph permissions listed on the corresponding create and update API pages. In delegated scenarios, the signed-in user must also have the Microsoft.Intune/DeviceConfigurations/Assign Intune RBAC permission. Supports $select."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                  = optional(string, "#microsoft.graph.cloudPcAutopilotConfiguration")
+    applicationTimeoutInMinutes = optional(number)
+    devicePreparationProfileId  = optional(string)
+    onFailureDeviceAccessDenied = optional(bool)
+  })
+  default = null
 }
 
 variable "cloud_pc_naming_template" {
@@ -42,10 +50,10 @@ variable "domain_join_configurations" {
   description = "Specifies a list ordered by priority on how Cloud PCs join Microsoft Entra ID (Azure AD). Supports $select."
   type = list(object({
     odata_type             = optional(string, "#microsoft.graph.cloudPcDomainJoinConfiguration")
-    domainJoinType         = optional(any)
+    domainJoinType         = optional(string)
     onPremisesConnectionId = optional(string)
     regionName             = optional(string)
-    type                   = optional(any)
+    type                   = optional(string)
   }))
   default = null
 }
@@ -91,15 +99,20 @@ variable "managed_by" {
   default     = null
 
   validation {
-    condition     = var.managed_by == null ? true : contains(["windows365", "devBox", "unknownFutureValue", "rpaBox", "microsoft365Opal", "microsoft365BizChat"], var.managed_by)
-    error_message = "managed_by must be one of the documented enum values."
+    condition     = var.managed_by == null ? true : try(alltrue([for value in split(",", var.managed_by) : contains(["windows365", "devbox", "unknownfuturevalue", "rpabox", "microsoft365opal", "microsoft365bizchat"], lower(trimspace(value)))]), false)
+    error_message = "managed_by must be one or more of the documented enum values, separated by commas."
   }
 }
 
 variable "microsoft_managed_desktop" {
   description = "The specific settings to microsoftManagedDesktop that enables Microsoft Managed Desktop customers to get device managed experience for Cloud PC. To enable microsoftManagedDesktop to provide more value, an admin needs to specify certain settings in it. Supports $filter, $select, and $orderBy."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.microsoftManagedDesktop")
+    managedType = optional(string)
+    profile     = optional(string)
+    type        = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -111,7 +124,7 @@ variable "odata_type" {
 
 variable "provisioning_type" {
   description = "Specifies the type of licenses to be used when provisioning Cloud PCs using this policy. The possible values are dedicated, shared, unknownFutureValue, sharedByUser, sharedByEntraGroup, reserve. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: sharedByUser, sharedByEntraGroup, reserve. The shared member is deprecated and will stop returning on April 30, 2027; going forward, use the sharedByUser member. For example, a dedicated service plan can be assigned to only one user and provision only one Cloud PC. The shared and sharedByUser plans require customers to purchase a shared service plan. Each shared license purchased can enable up to three Cloud PCs, with only one user signed in at a time. The sharedByEntraGroup plan also requires the purchase of a shared service plan. Each shared license under this plan can enable one Cloud PC, which is shared for the group according to the assignments of this policy. By default, the license type is dedicated if the provisioningType isn't specified when you create the cloudPcProvisioningPolicy. You can't change this property after the cloudPcProvisioningPolicy is created."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -133,7 +146,7 @@ variable "snapshot_reset_mode" {
 
 variable "user_experience_type" {
   description = "Specifies the type of cloud object the end user can access. The possible values are: cloudPc, cloudApp, unknownFutureValue. cloudPc indicates that the end user can access the entire desktop. cloudApp indicates that the end user can only access apps published under this provisioning policy. The type can't be changed once the provisioning policy is created. If not specified during creation, the default value is cloudPc. When cloudApp is selected, the provisioningType must be sharedByEntraGroup. Supports $filter, $select, $orderBy."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -144,20 +157,30 @@ variable "user_experience_type" {
 
 variable "user_settings_persistence_configuration" {
   description = "Indicates specific settings that enable the persistence of user application settings between Cloud PC sessions. The default value is null. This feature is only available for Cloud PC provisioning policies of type sharedByEntraGroup. Supports $select."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                                 = optional(string, "#microsoft.graph.cloudPcUserSettingsPersistenceConfiguration")
+    userSettingsPersistenceEnabled             = optional(bool)
+    userSettingsPersistenceStorageSizeCategory = optional(string)
+  })
+  default = null
 }
 
 variable "windows_setting" {
   description = "Indicates a specific Windows setting to configure during the creation of Cloud PCs for this provisioning policy. Supports $select."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.cloudPcWindowsSetting")
+    locale     = optional(string)
+  })
+  default = null
 }
 
 variable "windows_settings" {
   description = "Specific Windows settings to configure during the creation of Cloud PCs for this provisioning policy. Supports $select. The windowsSettings property is deprecated and will stop returning data on January 31, 2024. Going forward, use the windowsSetting property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.cloudPcWindowsSettings")
+    language   = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

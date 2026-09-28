@@ -28,7 +28,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `is_built_in_role_definition` | `isBuiltInRoleDefinition` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `permissions` | `permissions` | `list(object({       odata_type = optional(string, "#microsoft.graph.rolePermission")       actions = optional(list(string))       resourceActions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.resourceAction")       allowedResourceActions = optional(list(string))       notAllowedResourceActions = optional(list(string))     })))     }))` | no | no |
-| `role_assignments` | `roleAssignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.roleAssignment")       description = optional(string)       displayName = optional(string)       resourceScopes = optional(list(string))       roleDefinition = optional(any)       scopeMembers = optional(list(string))       scopeType = optional(string)     }))` | no | no |
+| `role_assignments` | `roleAssignments` | `any` | no | no |
 | `role_permissions` | `rolePermissions` | `list(object({       odata_type = optional(string, "#microsoft.graph.rolePermission")       actions = optional(list(string))       resourceActions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.resourceAction")       allowedResourceActions = optional(list(string))       notAllowedResourceActions = optional(list(string))     })))     }))` | no | no |
 | `role_scope_tag_ids` | `roleScopeTagIds` | `list(string)` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -48,7 +48,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- roleAssignments[].roleDefinition: polymorphic schema; accepts an untyped value
+- roleAssignments[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

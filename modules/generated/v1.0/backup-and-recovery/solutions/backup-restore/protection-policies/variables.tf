@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.exchangeProtectionPolicy", "#microsoft.graph.oneDriveForBusinessProtectionPolicy", "#microsoft.graph.sharePointProtectionPolicy"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "created_by" {
   description = "The identity of person who created the policy."
   type        = any
@@ -34,17 +45,16 @@ variable "last_modified_date_time" {
   default     = null
 }
 
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.protectionPolicyBase"
-  nullable    = false
-}
-
 variable "protection_policy_artifact_count" {
   description = "Microsoft Graph protectionPolicyArtifactCount property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.protectionPolicyArtifactCount")
+    completed  = optional(number)
+    failed     = optional(number)
+    inProgress = optional(number)
+    total      = optional(number)
+  })
+  default = null
 }
 
 variable "retention_settings" {
@@ -59,7 +69,7 @@ variable "retention_settings" {
 
 variable "status" {
   description = "The aggregated status of the protection units associated with the policy. The possible values are: inactive, activeWithErrors, updating, active, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

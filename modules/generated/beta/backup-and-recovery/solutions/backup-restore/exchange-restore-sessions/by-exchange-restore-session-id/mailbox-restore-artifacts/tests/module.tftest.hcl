@@ -26,6 +26,7 @@ run "typed_request" {
     exchange_restore_session_id = "test-parent-id"
     completion_date_time        = "2026-01-01T00:00:00Z"
     restored_item_count         = -2147483648
+    error                       = { "code" = null }
   }
 
   assert {
@@ -36,6 +37,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["restoredItemCount"]) == jsonencode(-2147483648)
     error_message = "restoredItemCount must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["error"]) == jsonencode({ "@odata.type" = "#microsoft.graph.publicError" })
+    error_message = "error must preserve typed values and omit nested nulls."
   }
 }
 

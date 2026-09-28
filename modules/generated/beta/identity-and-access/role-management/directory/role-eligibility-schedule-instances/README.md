@@ -51,7 +51,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - principal: polymorphic schema; accepts an untyped value
-- roleDefinition: polymorphic schema; accepts an untyped value
+- roleDefinition: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

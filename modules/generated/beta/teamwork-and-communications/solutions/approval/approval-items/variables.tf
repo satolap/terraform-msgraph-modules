@@ -6,7 +6,7 @@ variable "allow_email_notification" {
 
 variable "approval_type" {
   description = "The workflow type of the approval item. The possible values are: basic, basicAwaitAll, custom, customAwaitAll. Required."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -65,8 +65,14 @@ variable "responses" {
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.approvalItemResponse")
     comments   = optional(string)
-    createdBy  = optional(any)
-    response   = optional(string)
+    createdBy = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.approvalIdentitySet")
+      application = optional(any)
+      device      = optional(any)
+      group       = optional(any)
+      user        = optional(any)
+    }))
+    response = optional(string)
   }))
   default = null
 }

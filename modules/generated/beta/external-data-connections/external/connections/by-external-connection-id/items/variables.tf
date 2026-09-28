@@ -14,7 +14,7 @@ variable "acl" {
   type = list(object({
     odata_type     = optional(string, "#microsoft.graph.externalConnectors.acl")
     accessType     = optional(string)
-    identitySource = optional(any)
+    identitySource = optional(string)
     type           = optional(string)
     value          = optional(string)
   }))
@@ -23,25 +23,27 @@ variable "acl" {
 
 variable "activities" {
   description = "Returns a list of activities performed on the item. Write-only."
-  type = list(object({
-    odata_type    = optional(string, "#microsoft.graph.externalConnectors.externalActivity")
-    performedBy   = optional(any)
-    startDateTime = optional(string)
-    type          = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "content" {
   description = "A plain-text representation of the contents of the item. The text in this property is full-text indexed. Optional."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItemContent")
+    type       = optional(string)
+    value      = optional(string)
+  })
+  default = null
 }
 
 variable "information_protection_label" {
   description = "Specifies the Microsoft Purview sensitivity label for the item. Set the sensitivityLabelId property to the GUID of a Purview sensitivity label. The service then applies the label rules to the item. To get the label GUID, use the Get sensitivityLabel API or the Get-Label PowerShell command. Optional."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.externalConnectors.externalItemInformationProtectionLabel")
+    sensitivityLabelId = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {
