@@ -75,7 +75,7 @@ management workflows, and Conditional Access:
 | Identity governance | Assignment policies | [`modules/curated/identity-governance/entitlement-management/assignment-policies`](modules/curated/identity-governance/entitlement-management/assignment-policies) |
 | Conditional Access | Policies, report-only by default, with mandatory break-glass exclusions | [`modules/curated/identity/conditional-access/policies`](modules/curated/identity/conditional-access/policies) |
 | Conditional Access | IP named locations (IPv4 and IPv6) | [`modules/curated/identity/conditional-access/named-locations/ip-ranges`](modules/curated/identity/conditional-access/named-locations/ip-ranges) |
-| Conditional Access | Country named locations | [`modules/curated/identity/conditional-access/named-locations/countries`](modules/curated/identity/conditional-access/named-locations/countries) |
+| Conditional Access | Country and region named locations | [`modules/curated/identity/conditional-access/named-locations/countries`](modules/curated/identity/conditional-access/named-locations/countries) |
 
 Curated modules expose higher-level Terraform inputs and outputs while preserving
 Microsoft Graph identifiers for composition. Their READMEs document required
