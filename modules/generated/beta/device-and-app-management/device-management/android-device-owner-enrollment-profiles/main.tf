@@ -15,7 +15,7 @@ locals {
     "lastModifiedDateTime"      = var.last_modified_date_time
     "@odata.type"               = var.odata_type
     "qrCodeContent"             = var.qr_code_content
-    "qrCodeImage"               = var.qr_code_image
+    "qrCodeImage"               = (var.qr_code_image == null ? null : { for key0, value0 in { "@odata.type" = var.qr_code_image["odata_type"], "type" = var.qr_code_image["type"], "value" = var.qr_code_image["value"] } : key0 => value0 if value0 != null })
     "roleScopeTagIds"           = (var.role_scope_tag_ids == null ? null : [for item0 in var.role_scope_tag_ids : item0 if item0 != null])
     "tokenCreationDateTime"     = var.token_creation_date_time
     "tokenExpirationDateTime"   = var.token_expiration_date_time

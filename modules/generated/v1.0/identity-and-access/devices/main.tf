@@ -21,7 +21,7 @@ locals {
     "physicalIds"            = (var.physical_ids == null ? null : [for item0 in var.physical_ids : item0 if item0 != null])
     "profileType"            = var.profile_type
     "systemLabels"           = (var.system_labels == null ? null : [for item0 in var.system_labels : item0 if item0 != null])
-    "transitiveMemberOf"     = (var.transitive_member_of == null ? null : [for item0 in var.transitive_member_of : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "deletedDateTime" = item0["deletedDateTime"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "transitiveMemberOf"     = (var.transitive_member_of == null ? null : [for item0 in var.transitive_member_of : item0 if item0 != null])
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

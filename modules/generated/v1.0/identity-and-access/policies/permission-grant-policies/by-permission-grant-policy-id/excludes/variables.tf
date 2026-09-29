@@ -48,7 +48,7 @@ variable "permission_classification" {
 
 variable "permission_type" {
   description = "The permission type of the permission being granted. Possible values: application for application permissions (for example app roles), or delegated for delegated permissions. The value delegatedUserConsentable indicates delegated permissions that haven't been configured by the API publisher to require admin consent—this value may be used in built-in permission grant policies, but can't be used in custom permission grant policies. Required."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -3,12 +3,12 @@ locals {
   typed_body = { for key, value in {
     "description"           = var.description
     "displayName"           = var.display_name
-    "effectiveRules"        = (var.effective_rules == null ? null : [for item0 in var.effective_rules : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "target" = item0["target"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "effectiveRules"        = (var.effective_rules == null ? null : [for item0 in var.effective_rules : item0 if item0 != null])
     "isOrganizationDefault" = var.is_organization_default
     "lastModifiedBy"        = var.last_modified_by
     "lastModifiedDateTime"  = var.last_modified_date_time
     "@odata.type"           = var.odata_type
-    "rules"                 = (var.rules == null ? null : [for item0 in var.rules : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "target" = item0["target"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "rules"                 = (var.rules == null ? null : [for item0 in var.rules : item0 if item0 != null])
     "scopeId"               = var.scope_id
     "scopeType"             = var.scope_type
   } : key => value if value != null }

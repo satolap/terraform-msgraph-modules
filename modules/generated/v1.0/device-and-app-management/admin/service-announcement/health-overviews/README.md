@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `issues` | `issues` | `list(object({       odata_type = optional(string, "#microsoft.graph.serviceHealthIssue")       classification = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValuePair")       name = optional(string)       value = optional(string)     })))       endDateTime = optional(string)       feature = optional(string)       featureGroup = optional(string)       impactDescription = optional(string)       isResolved = optional(bool)       lastModifiedDateTime = optional(string)       origin = optional(string)       posts = optional(list(object({       odata_type = optional(string, "#microsoft.graph.serviceHealthIssuePost")       createdDateTime = optional(string)       description = optional(any)       postType = optional(any)     })))       service = optional(string)       startDateTime = optional(string)       status = optional(string)       title = optional(string)     }))` | no | no |
+| `issues` | `issues` | `list(object({       odata_type = optional(string, "#microsoft.graph.serviceHealthIssue")       classification = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValuePair")       name = optional(string)       value = optional(string)     })))       endDateTime = optional(string)       feature = optional(string)       featureGroup = optional(string)       impactDescription = optional(string)       isResolved = optional(bool)       lastModifiedDateTime = optional(string)       origin = optional(string)       posts = optional(list(object({       odata_type = optional(string, "#microsoft.graph.serviceHealthIssuePost")       createdDateTime = optional(string)       description = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))       postType = optional(string)     })))       service = optional(string)       startDateTime = optional(string)       status = optional(string)       title = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `service` | `service` | `string` | no | no |
 | `status` | `status` | `string` | no | no |
@@ -39,11 +39,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- issues[].posts[].description: polymorphic schema; accepts an untyped value
-- issues[].posts[].postType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

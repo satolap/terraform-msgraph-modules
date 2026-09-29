@@ -36,8 +36,24 @@ variable "recurrence" {
   description = "Microsoft Graph recurrence property."
   type = object({
     odata_type = optional(string, "#microsoft.graph.patternedRecurrence")
-    pattern    = optional(any)
-    range      = optional(any)
+    pattern = optional(object({
+      odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+      dayOfMonth     = optional(number)
+      daysOfWeek     = optional(list(string))
+      firstDayOfWeek = optional(string)
+      index          = optional(string)
+      interval       = optional(number)
+      month          = optional(number)
+      type           = optional(string)
+    }))
+    range = optional(object({
+      odata_type          = optional(string, "#microsoft.graph.recurrenceRange")
+      endDate             = optional(string)
+      numberOfOccurrences = optional(number)
+      recurrenceTimeZone  = optional(string)
+      startDate           = optional(string)
+      type                = optional(string)
+    }))
   })
   default = null
 }

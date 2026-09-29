@@ -24,7 +24,7 @@ variable "created_date_time" {
 }
 
 variable "default_enrollment_type" {
-  description = "Microsoft Graph defaultEnrollmentType property."
+  description = "The default profile enrollment type."
   type        = string
   default     = null
 

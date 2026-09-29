@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "approvalSettings" = (var.approval_settings == null ? null : [for item0 in var.approval_settings : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "approvalMethodType" = item0["approvalMethodType"], "deferredDeploymentInDay" = item0["deferredDeploymentInDay"], "windowsQualityUpdateCadence" = item0["windowsQualityUpdateCadence"], "windowsQualityUpdateCategory" = item0["windowsQualityUpdateCategory"] } : key1 => value1 if value1 != null }) if item0 != null])
-    "assignments"      = (var.assignments == null ? null : [for item0 in var.assignments : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "target" = (item0["target"] == null ? null : { for key2, value2 in { "@odata.type" = item0["target"]["odata_type"], "deviceAndAppManagementAssignmentFilterId" = item0["target"]["deviceAndAppManagementAssignmentFilterId"], "deviceAndAppManagementAssignmentFilterType" = item0["target"]["deviceAndAppManagementAssignmentFilterType"] } : key2 => value2 if value2 != null }) } : key1 => value1 if value1 != null }) if item0 != null])
+    "assignments"      = (var.assignments == null ? null : [for item0 in var.assignments : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "target" = item0["target"] } : key1 => value1 if value1 != null }) if item0 != null])
     "description"      = var.description
     "displayName"      = var.display_name
     "hotpatchEnabled"  = var.hotpatch_enabled

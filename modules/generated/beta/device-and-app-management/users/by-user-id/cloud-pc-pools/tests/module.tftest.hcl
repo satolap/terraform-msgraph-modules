@@ -5,7 +5,8 @@ run "minimal_request" {
   command = plan
 
   variables {
-    user_id = "test-parent-id"
+    user_id    = "test-parent-id"
+    odata_type = "#microsoft.graph.cloudPcAgentPool"
   }
 
   assert {
@@ -23,10 +24,16 @@ run "typed_request" {
   command = plan
 
   variables {
-    user_id      = "test-parent-id"
-    description  = "example"
-    capabilities = {}
-    assignments  = [{}]
+    user_id                = "test-parent-id"
+    odata_type             = "#microsoft.graph.cloudPcAgentPool"
+    description            = "example"
+    cloud_pc_configuration = { "imageId" = null }
+    assignments            = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.cloudPcAgentPool")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -35,12 +42,23 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["capabilities"]) == jsonencode({ "@odata.type" = "#microsoft.graph.cloudPcPoolCapabilityConfiguration" })
-    error_message = "capabilities must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["cloudPcConfiguration"]) == jsonencode({ "@odata.type" = "#microsoft.graph.cloudPcConfiguration" })
+    error_message = "cloudPcConfiguration must preserve typed values and omit nested nulls."
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["assignments"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.cloudPcPoolAssignment" }])
+    condition     = jsonencode(msgraph_resource.this.body["assignments"]) == jsonencode([{}])
     error_message = "assignments must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    user_id    = "test-parent-id"
+    odata_type = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

@@ -1,8 +1,8 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "displayName"                 = var.display_name
     "@odata.type"                 = var.odata_type
+    "displayName"                 = var.display_name
     "roles"                       = (var.roles == null ? null : [for item0 in var.roles : item0 if item0 != null])
     "visibleHistoryStartDateTime" = var.visible_history_start_date_time
   } : key => value if value != null }

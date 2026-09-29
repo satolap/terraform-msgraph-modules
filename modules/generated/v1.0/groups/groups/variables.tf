@@ -24,11 +24,8 @@ variable "security_enabled" {
 
 variable "accepted_senders" {
   description = "The list of users or groups allowed to create posts or calendar events in this group. If this list is nonempty, then only users or groups listed here are allowed to post."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "app_role_assignments" {
@@ -90,59 +87,96 @@ variable "events" {
     odata_type            = optional(string, "#microsoft.graph.event")
     allowNewTimeProposals = optional(bool)
     attendees = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.attendee")
-      emailAddress    = optional(any)
-      proposedNewTime = optional(any)
-      status          = optional(any)
-      type            = optional(any)
+      odata_type = optional(string, "#microsoft.graph.attendee")
+      emailAddress = optional(object({
+        odata_type = optional(string, "#microsoft.graph.emailAddress")
+        address    = optional(string)
+        name       = optional(string)
+      }))
+      proposedNewTime = optional(object({
+        odata_type = optional(string, "#microsoft.graph.timeSlot")
+        end        = optional(any)
+        start      = optional(any)
+      }))
+      status = optional(object({
+        odata_type = optional(string, "#microsoft.graph.responseStatus")
+        response   = optional(string)
+        time       = optional(string)
+      }))
+      type = optional(string)
     })))
-    body                 = optional(any)
+    body = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.itemBody")
+      content     = optional(string)
+      contentType = optional(string)
+    }))
     bodyPreview          = optional(string)
     cancelledOccurrences = optional(list(string))
     categories           = optional(list(string))
     createdDateTime      = optional(string)
-    end                  = optional(any)
-    exceptionOccurrences = optional(any)
-    extensions = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.extension")
-    })))
-    hasAttachments       = optional(bool)
-    hideAttendees        = optional(bool)
-    importance           = optional(any)
-    isAllDay             = optional(bool)
-    isCancelled          = optional(bool)
-    isDraft              = optional(bool)
-    isOnlineMeeting      = optional(bool)
-    isOrganizer          = optional(bool)
-    isReminderOn         = optional(bool)
-    lastModifiedDateTime = optional(string)
-    location             = optional(any)
-    locations = optional(list(object({
-      odata_type           = optional(string, "#microsoft.graph.location")
-      address              = optional(any)
-      coordinates          = optional(any)
-      displayName          = optional(string)
-      locationEmailAddress = optional(string)
-      locationUri          = optional(string)
-      uniqueId             = optional(string)
-      uniqueIdType         = optional(any)
-    })))
-    onlineMeetingProvider      = optional(any)
-    organizer                  = optional(any)
-    originalEndTimeZone        = optional(string)
-    originalStart              = optional(string)
-    originalStartTimeZone      = optional(string)
-    recurrence                 = optional(any)
+    end = optional(object({
+      odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+      dateTime   = optional(string)
+      timeZone   = optional(string)
+    }))
+    exceptionOccurrences  = optional(any)
+    extensions            = optional(any)
+    hasAttachments        = optional(bool)
+    hideAttendees         = optional(bool)
+    importance            = optional(string)
+    isAllDay              = optional(bool)
+    isCancelled           = optional(bool)
+    isDraft               = optional(bool)
+    isOnlineMeeting       = optional(bool)
+    isOrganizer           = optional(bool)
+    isReminderOn          = optional(bool)
+    lastModifiedDateTime  = optional(string)
+    location              = optional(any)
+    locations             = optional(any)
+    onlineMeetingProvider = optional(string)
+    organizer             = optional(any)
+    originalEndTimeZone   = optional(string)
+    originalStart         = optional(string)
+    originalStartTimeZone = optional(string)
+    recurrence = optional(object({
+      odata_type = optional(string, "#microsoft.graph.patternedRecurrence")
+      pattern = optional(object({
+        odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+        dayOfMonth     = optional(number)
+        daysOfWeek     = optional(list(string))
+        firstDayOfWeek = optional(string)
+        index          = optional(string)
+        interval       = optional(number)
+        month          = optional(number)
+        type           = optional(string)
+      }))
+      range = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.recurrenceRange")
+        endDate             = optional(string)
+        numberOfOccurrences = optional(number)
+        recurrenceTimeZone  = optional(string)
+        startDate           = optional(string)
+        type                = optional(string)
+      }))
+    }))
     reminderMinutesBeforeStart = optional(number)
     responseRequested          = optional(bool)
-    responseStatus             = optional(any)
-    sensitivity                = optional(any)
-    seriesMasterId             = optional(string)
-    showAs                     = optional(any)
-    start                      = optional(any)
-    subject                    = optional(string)
-    transactionId              = optional(string)
-    webLink                    = optional(string)
+    responseStatus = optional(object({
+      odata_type = optional(string, "#microsoft.graph.responseStatus")
+      response   = optional(string)
+      time       = optional(string)
+    }))
+    sensitivity    = optional(string)
+    seriesMasterId = optional(string)
+    showAs         = optional(string)
+    start = optional(object({
+      odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+      dateTime   = optional(string)
+      timeZone   = optional(string)
+    }))
+    subject       = optional(string)
+    transactionId = optional(string)
+    webLink       = optional(string)
   }))
   default = null
 }
@@ -173,11 +207,8 @@ variable "is_assignable_to_role" {
 
 variable "members" {
   description = "The members of this group, who can be users, devices, other groups, or service principals. Supports the List members, Add member, and Remove member operations. Nullable. Supports $expand including nested $select. For example, /groups?$filter=startsWith(displayName,'Role')&$select=id,displayName&$expand=members($select=id,userPrincipalName,displayName)."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "membership_rule" {
@@ -201,8 +232,25 @@ variable "odata_type" {
 
 variable "on_premises_extension_attributes" {
   description = "Complex type containing extension attributes 1-15 for the group, synchronized from on-premises Active Directory. Returned only on $select. Supports $filter (eq, ne, not, in)."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.onPremisesExtensionAttributes")
+    extensionAttribute1  = optional(string)
+    extensionAttribute10 = optional(string)
+    extensionAttribute11 = optional(string)
+    extensionAttribute12 = optional(string)
+    extensionAttribute13 = optional(string)
+    extensionAttribute14 = optional(string)
+    extensionAttribute15 = optional(string)
+    extensionAttribute2  = optional(string)
+    extensionAttribute3  = optional(string)
+    extensionAttribute4  = optional(string)
+    extensionAttribute5  = optional(string)
+    extensionAttribute6  = optional(string)
+    extensionAttribute7  = optional(string)
+    extensionAttribute8  = optional(string)
+    extensionAttribute9  = optional(string)
+  })
+  default = null
 }
 
 variable "on_premises_provisioning_errors" {
@@ -237,11 +285,8 @@ variable "organization_id" {
 
 variable "owners" {
   description = "The owners of the group who can be users or service principals. Limited to 100 owners. Nullable. If this property isn't specified when creating a Microsoft 365 group the calling user (admin or non-admin) is automatically assigned as the group owner. A non-admin user can't explicitly add themselves to this collection when they're creating the group. For more information, see the related known issue. For security groups, the admin user isn't automatically added to this collection. For more information, see the related known issue. Supports $filter (/$count eq 0, /$count ne 0, /$count eq 1, /$count ne 1); Supports $expand including nested $select. For example, /groups?$filter=startsWith(displayName,'Role')&$select=id,displayName&$expand=owners($select=id,userPrincipalName,displayName)."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "permission_grants" {
@@ -279,11 +324,8 @@ variable "preferred_language" {
 
 variable "rejected_senders" {
   description = "The list of users or groups not allowed to create posts or calendar events in this group. Nullable"
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "resource_behavior_options" {
@@ -300,13 +342,8 @@ variable "resource_provisioning_options" {
 
 variable "service_provisioning_errors" {
   description = "Errors published by a federated service describing a nontransient, service-specific error regarding the properties or link from a group object.  Supports $filter (eq, not, for isResolved and serviceInstance)."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.serviceProvisioningError")
-    createdDateTime = optional(string)
-    isResolved      = optional(bool)
-    serviceInstance = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "settings" {
@@ -329,36 +366,96 @@ variable "sites" {
     odata_type = optional(string, "#microsoft.graph.site")
     analytics  = optional(any)
     columns = optional(list(object({
-      odata_type            = optional(string, "#microsoft.graph.columnDefinition")
-      boolean               = optional(any)
-      calculated            = optional(any)
-      choice                = optional(any)
+      odata_type = optional(string, "#microsoft.graph.columnDefinition")
+      boolean    = optional(any)
+      calculated = optional(object({
+        odata_type = optional(string, "#microsoft.graph.calculatedColumn")
+        format     = optional(string)
+        formula    = optional(string)
+        outputType = optional(string)
+      }))
+      choice = optional(object({
+        odata_type     = optional(string, "#microsoft.graph.choiceColumn")
+        allowTextEntry = optional(bool)
+        choices        = optional(any)
+        displayAs      = optional(string)
+      }))
       columnGroup           = optional(string)
       contentApprovalStatus = optional(any)
-      currency              = optional(any)
-      dateTime              = optional(any)
-      defaultValue          = optional(any)
-      description           = optional(string)
-      displayName           = optional(string)
-      enforceUniqueValues   = optional(bool)
-      geolocation           = optional(any)
-      hidden                = optional(bool)
-      hyperlinkOrPicture    = optional(any)
-      indexed               = optional(bool)
-      isDeletable           = optional(bool)
-      isSealed              = optional(bool)
-      lookup                = optional(any)
-      name                  = optional(string)
-      number                = optional(any)
-      personOrGroup         = optional(any)
-      propagateChanges      = optional(bool)
-      readOnly              = optional(bool)
-      required              = optional(bool)
-      sourceColumn          = optional(any)
-      term                  = optional(any)
-      text                  = optional(any)
-      thumbnail             = optional(any)
-      validation            = optional(any)
+      currency = optional(object({
+        odata_type = optional(string, "#microsoft.graph.currencyColumn")
+        locale     = optional(string)
+      }))
+      dateTime = optional(object({
+        odata_type = optional(string, "#microsoft.graph.dateTimeColumn")
+        displayAs  = optional(string)
+        format     = optional(string)
+      }))
+      defaultValue = optional(object({
+        odata_type = optional(string, "#microsoft.graph.defaultColumnValue")
+        formula    = optional(string)
+        value      = optional(string)
+      }))
+      description         = optional(string)
+      displayName         = optional(string)
+      enforceUniqueValues = optional(bool)
+      geolocation         = optional(any)
+      hidden              = optional(bool)
+      hyperlinkOrPicture = optional(object({
+        odata_type = optional(string, "#microsoft.graph.hyperlinkOrPictureColumn")
+        isPicture  = optional(bool)
+      }))
+      indexed     = optional(bool)
+      isDeletable = optional(bool)
+      isSealed    = optional(bool)
+      lookup = optional(object({
+        odata_type            = optional(string, "#microsoft.graph.lookupColumn")
+        allowMultipleValues   = optional(bool)
+        allowUnlimitedLength  = optional(bool)
+        columnName            = optional(string)
+        listId                = optional(string)
+        primaryLookupColumnId = optional(string)
+      }))
+      name = optional(string)
+      number = optional(object({
+        odata_type    = optional(string, "#microsoft.graph.numberColumn")
+        decimalPlaces = optional(string)
+        displayAs     = optional(string)
+        maximum       = optional(any)
+        minimum       = optional(any)
+      }))
+      personOrGroup = optional(object({
+        odata_type             = optional(string, "#microsoft.graph.personOrGroupColumn")
+        allowMultipleSelection = optional(bool)
+        chooseFromType         = optional(string)
+        displayAs              = optional(string)
+      }))
+      propagateChanges = optional(bool)
+      readOnly         = optional(bool)
+      required         = optional(bool)
+      sourceColumn     = optional(any)
+      term = optional(object({
+        odata_type             = optional(string, "#microsoft.graph.termColumn")
+        allowMultipleValues    = optional(bool)
+        parentTerm             = optional(any)
+        showFullyQualifiedName = optional(bool)
+        termSet                = optional(any)
+      }))
+      text = optional(object({
+        odata_type                  = optional(string, "#microsoft.graph.textColumn")
+        allowMultipleLines          = optional(bool)
+        appendChangesToExistingText = optional(bool)
+        linesForEditing             = optional(number)
+        maxLength                   = optional(number)
+        textType                    = optional(string)
+      }))
+      thumbnail = optional(any)
+      validation = optional(object({
+        odata_type      = optional(string, "#microsoft.graph.columnValidation")
+        defaultLanguage = optional(string)
+        descriptions    = optional(any)
+        formula         = optional(string)
+      }))
     })))
     contentTypes = optional(list(object({
       odata_type         = optional(string, "#microsoft.graph.contentType")
@@ -369,107 +466,231 @@ variable "sites" {
       columnPositions    = optional(any)
       columns            = optional(any)
       description        = optional(string)
-      documentSet        = optional(any)
-      documentTemplate   = optional(any)
-      group              = optional(string)
-      hidden             = optional(bool)
-      inheritedFrom      = optional(any)
-      isBuiltIn          = optional(bool)
-      name               = optional(string)
-      order              = optional(any)
-      parentId           = optional(string)
-      propagateChanges   = optional(bool)
-      readOnly           = optional(bool)
-      sealed             = optional(bool)
+      documentSet = optional(object({
+        odata_type                  = optional(string, "#microsoft.graph.documentSet")
+        allowedContentTypes         = optional(any)
+        defaultContents             = optional(any)
+        propagateWelcomePageChanges = optional(bool)
+        sharedColumns               = optional(any)
+        shouldPrefixNameToFile      = optional(bool)
+        welcomePageColumns          = optional(any)
+        welcomePageUrl              = optional(string)
+      }))
+      documentTemplate = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.documentSetContent")
+        contentType = optional(any)
+        fileName    = optional(string)
+        folderName  = optional(string)
+      }))
+      group  = optional(string)
+      hidden = optional(bool)
+      inheritedFrom = optional(object({
+        odata_type = optional(string, "#microsoft.graph.itemReference")
+        driveType  = optional(string)
+        shareId    = optional(string)
+        siteId     = optional(string)
+      }))
+      isBuiltIn = optional(bool)
+      name      = optional(string)
+      order = optional(object({
+        odata_type = optional(string, "#microsoft.graph.contentTypeOrder")
+        default    = optional(bool)
+        position   = optional(number)
+      }))
+      parentId         = optional(string)
+      propagateChanges = optional(bool)
+      readOnly         = optional(bool)
+      sealed           = optional(bool)
     })))
     description = optional(string)
     drive       = optional(any)
     drives = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.drive")
-      bundles         = optional(any)
-      description     = optional(string)
-      following       = optional(any)
-      name            = optional(string)
-      parentReference = optional(any)
-      sharePointIds   = optional(any)
+      odata_type  = optional(string, "#microsoft.graph.drive")
+      bundles     = optional(any)
+      description = optional(string)
+      following   = optional(any)
+      name        = optional(string)
+      parentReference = optional(object({
+        odata_type = optional(string, "#microsoft.graph.itemReference")
+        driveType  = optional(string)
+        shareId    = optional(string)
+        siteId     = optional(string)
+      }))
+      sharePointIds = optional(object({
+        odata_type       = optional(string, "#microsoft.graph.sharepointIds")
+        listId           = optional(string)
+        listItemId       = optional(string)
+        listItemUniqueId = optional(string)
+        siteId           = optional(string)
+        siteUrl          = optional(string)
+        tenantId         = optional(string)
+        webId            = optional(string)
+      }))
     })))
-    error = optional(any)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
     externalColumns = optional(list(object({
-      odata_type            = optional(string, "#microsoft.graph.columnDefinition")
-      boolean               = optional(any)
-      calculated            = optional(any)
-      choice                = optional(any)
+      odata_type = optional(string, "#microsoft.graph.columnDefinition")
+      boolean    = optional(any)
+      calculated = optional(object({
+        odata_type = optional(string, "#microsoft.graph.calculatedColumn")
+        format     = optional(string)
+        formula    = optional(string)
+        outputType = optional(string)
+      }))
+      choice = optional(object({
+        odata_type     = optional(string, "#microsoft.graph.choiceColumn")
+        allowTextEntry = optional(bool)
+        choices        = optional(any)
+        displayAs      = optional(string)
+      }))
       columnGroup           = optional(string)
       contentApprovalStatus = optional(any)
-      currency              = optional(any)
-      dateTime              = optional(any)
-      defaultValue          = optional(any)
-      description           = optional(string)
-      displayName           = optional(string)
-      enforceUniqueValues   = optional(bool)
-      geolocation           = optional(any)
-      hidden                = optional(bool)
-      hyperlinkOrPicture    = optional(any)
-      indexed               = optional(bool)
-      isDeletable           = optional(bool)
-      isSealed              = optional(bool)
-      lookup                = optional(any)
-      name                  = optional(string)
-      number                = optional(any)
-      personOrGroup         = optional(any)
-      propagateChanges      = optional(bool)
-      readOnly              = optional(bool)
-      required              = optional(bool)
-      sourceColumn          = optional(any)
-      term                  = optional(any)
-      text                  = optional(any)
-      thumbnail             = optional(any)
-      validation            = optional(any)
+      currency = optional(object({
+        odata_type = optional(string, "#microsoft.graph.currencyColumn")
+        locale     = optional(string)
+      }))
+      dateTime = optional(object({
+        odata_type = optional(string, "#microsoft.graph.dateTimeColumn")
+        displayAs  = optional(string)
+        format     = optional(string)
+      }))
+      defaultValue = optional(object({
+        odata_type = optional(string, "#microsoft.graph.defaultColumnValue")
+        formula    = optional(string)
+        value      = optional(string)
+      }))
+      description         = optional(string)
+      displayName         = optional(string)
+      enforceUniqueValues = optional(bool)
+      geolocation         = optional(any)
+      hidden              = optional(bool)
+      hyperlinkOrPicture = optional(object({
+        odata_type = optional(string, "#microsoft.graph.hyperlinkOrPictureColumn")
+        isPicture  = optional(bool)
+      }))
+      indexed     = optional(bool)
+      isDeletable = optional(bool)
+      isSealed    = optional(bool)
+      lookup = optional(object({
+        odata_type            = optional(string, "#microsoft.graph.lookupColumn")
+        allowMultipleValues   = optional(bool)
+        allowUnlimitedLength  = optional(bool)
+        columnName            = optional(string)
+        listId                = optional(string)
+        primaryLookupColumnId = optional(string)
+      }))
+      name = optional(string)
+      number = optional(object({
+        odata_type    = optional(string, "#microsoft.graph.numberColumn")
+        decimalPlaces = optional(string)
+        displayAs     = optional(string)
+        maximum       = optional(any)
+        minimum       = optional(any)
+      }))
+      personOrGroup = optional(object({
+        odata_type             = optional(string, "#microsoft.graph.personOrGroupColumn")
+        allowMultipleSelection = optional(bool)
+        chooseFromType         = optional(string)
+        displayAs              = optional(string)
+      }))
+      propagateChanges = optional(bool)
+      readOnly         = optional(bool)
+      required         = optional(bool)
+      sourceColumn     = optional(any)
+      term = optional(object({
+        odata_type             = optional(string, "#microsoft.graph.termColumn")
+        allowMultipleValues    = optional(bool)
+        parentTerm             = optional(any)
+        showFullyQualifiedName = optional(bool)
+        termSet                = optional(any)
+      }))
+      text = optional(object({
+        odata_type                  = optional(string, "#microsoft.graph.textColumn")
+        allowMultipleLines          = optional(bool)
+        appendChangesToExistingText = optional(bool)
+        linesForEditing             = optional(number)
+        maxLength                   = optional(number)
+        textType                    = optional(string)
+      }))
+      thumbnail = optional(any)
+      validation = optional(object({
+        odata_type      = optional(string, "#microsoft.graph.columnValidation")
+        defaultLanguage = optional(string)
+        descriptions    = optional(any)
+        formula         = optional(string)
+      }))
     })))
-    items = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.baseItem")
-      description     = optional(string)
-      name            = optional(string)
-      parentReference = optional(any)
-    })))
+    items = optional(any)
     lists = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.list")
-      columns         = optional(any)
-      contentTypes    = optional(any)
-      description     = optional(string)
-      displayName     = optional(string)
-      drive           = optional(any)
-      items           = optional(any)
-      list            = optional(any)
-      name            = optional(string)
-      operations      = optional(any)
-      parentReference = optional(any)
-      subscriptions   = optional(any)
+      odata_type   = optional(string, "#microsoft.graph.list")
+      columns      = optional(any)
+      contentTypes = optional(any)
+      description  = optional(string)
+      displayName  = optional(string)
+      drive        = optional(any)
+      items        = optional(any)
+      list = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.listInfo")
+        contentTypesEnabled = optional(bool)
+        hidden              = optional(bool)
+        template            = optional(string)
+      }))
+      name       = optional(string)
+      operations = optional(any)
+      parentReference = optional(object({
+        odata_type = optional(string, "#microsoft.graph.itemReference")
+        driveType  = optional(string)
+        shareId    = optional(string)
+        siteId     = optional(string)
+      }))
+      subscriptions = optional(any)
     })))
     name    = optional(string)
     onenote = optional(any)
     operations = optional(list(object({
-      odata_type         = optional(string, "#microsoft.graph.richLongRunningOperation")
-      createdDateTime    = optional(string)
-      error              = optional(any)
+      odata_type      = optional(string, "#microsoft.graph.richLongRunningOperation")
+      createdDateTime = optional(string)
+      error = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicError")
+        code       = optional(string)
+        details    = optional(any)
+        innerError = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
       lastActionDateTime = optional(string)
       percentageComplete = optional(number)
       resourceId         = optional(string)
       resourceLocation   = optional(string)
-      status             = optional(any)
+      status             = optional(string)
       statusDetail       = optional(string)
       type               = optional(string)
     })))
-    pages = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.baseSitePage")
-      description     = optional(string)
-      name            = optional(string)
-      pageLayout      = optional(any)
-      parentReference = optional(any)
-      publishingState = optional(any)
-      title           = optional(string)
-    })))
-    parentReference = optional(any)
+    pages = optional(any)
+    parentReference = optional(object({
+      odata_type = optional(string, "#microsoft.graph.itemReference")
+      driveType  = optional(string)
+      shareId    = optional(string)
+      siteId     = optional(string)
+    }))
     permissions = optional(list(object({
       odata_type         = optional(string, "#microsoft.graph.permission")
       expirationDateTime = optional(string)
@@ -502,34 +723,29 @@ variable "theme" {
 variable "threads" {
   description = "The group's conversation threads. Nullable."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.conversationThread")
-    ccRecipients = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.recipient")
-      emailAddress = optional(any)
-    })))
+    odata_type            = optional(string, "#microsoft.graph.conversationThread")
+    ccRecipients          = optional(any)
     hasAttachments        = optional(bool)
     isLocked              = optional(bool)
     lastDeliveredDateTime = optional(string)
     posts = optional(list(object({
-      odata_type      = optional(string, "#microsoft.graph.post")
-      body            = optional(any)
-      categories      = optional(list(string))
-      createdDateTime = optional(string)
-      from = optional(object({
-        odata_type   = optional(string, "#microsoft.graph.recipient")
-        emailAddress = optional(any)
+      odata_type = optional(string, "#microsoft.graph.post")
+      body = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.itemBody")
+        content     = optional(string)
+        contentType = optional(string)
       }))
+      categories           = optional(list(string))
+      createdDateTime      = optional(string)
+      from                 = optional(any)
       hasAttachments       = optional(bool)
       lastModifiedDateTime = optional(string)
       newParticipants      = optional(any)
       receivedDateTime     = optional(string)
       sender               = optional(any)
     })))
-    preview = optional(string)
-    toRecipients = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.recipient")
-      emailAddress = optional(any)
-    })))
+    preview       = optional(string)
+    toRecipients  = optional(any)
     topic         = optional(string)
     uniqueSenders = optional(list(string))
   }))
@@ -538,20 +754,14 @@ variable "threads" {
 
 variable "transitive_member_of" {
   description = "The groups that a group is a member of, either directly or through nested membership. Nullable."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "transitive_members" {
   description = "The direct and transitive members of a group. Nullable."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "visibility" {

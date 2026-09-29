@@ -19,9 +19,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    description = "example"
-    settings    = { "isItemVersioningEnabled" = null }
-    columns     = [{}]
+    description      = "example"
+    archival_details = { "archiveStatus" = null }
+    columns          = [{}]
   }
 
   assert {
@@ -30,8 +30,8 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["settings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.fileStorageContainerSettings" })
-    error_message = "settings must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["archivalDetails"]) == jsonencode({ "@odata.type" = "#microsoft.graph.siteArchivalDetails" })
+    error_message = "archivalDetails must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -10,7 +10,7 @@ variable "user_experience_analytics_work_from_anywhere_metric_id" {
 }
 
 variable "health_status" {
-  description = "Microsoft Graph healthStatus property."
+  description = "The health state of the user experience analytics work from anywhere device. Possible values are: unknown, insufficientData, needsAttention, meetingGoals. Unknown by default. Supports: $select, $OrderBy. Read-only."
   type        = string
   default     = null
 

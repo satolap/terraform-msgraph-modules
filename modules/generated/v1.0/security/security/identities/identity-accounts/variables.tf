@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.security.user"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "accounts" {
   description = "Collection of accounts of the identity in different identity providers."
   type = list(object({
@@ -31,13 +42,6 @@ variable "is_enabled" {
   description = "Boolean indicating if the identityAccounts is enabled."
   type        = bool
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.security.identityAccounts"
-  nullable    = false
 }
 
 variable "on_premises_security_identifier" {

@@ -9,6 +9,17 @@ variable "access_package_catalog_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.accessPackageAssignmentRequestWorkflowExtension", "#microsoft.graph.accessPackageAssignmentWorkflowExtension", "#microsoft.graph.customAccessPackageWorkflowExtension", "#microsoft.graph.identityGovernance.customTaskExtension", "#microsoft.graph.onAttributeCollectionStartCustomExtension", "#microsoft.graph.onAttributeCollectionSubmitCustomExtension", "#microsoft.graph.onOtpSendCustomExtension", "#microsoft.graph.onPasswordSubmitCustomExtension", "#microsoft.graph.onTokenIssuanceStartCustomExtension", "#microsoft.graph.onVerifiedIdClaimValidationCustomExtension"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "authentication_configuration" {
   description = "Configuration for securing the API call to the logic app. For example, using OAuth client credentials flow."
   type        = any
@@ -17,8 +28,12 @@ variable "authentication_configuration" {
 
 variable "client_configuration" {
   description = "HTTP connection settings that define how long Microsoft Entra ID can wait for a connection to a logic app, how many times you can retry a timed-out connection and the exception scenarios when retries are allowed."
-  type        = any
-  default     = null
+  type = object({
+    odata_type            = optional(string, "#microsoft.graph.customExtensionClientConfiguration")
+    maximumRetries        = optional(number)
+    timeoutInMilliseconds = optional(number)
+  })
+  default = null
 }
 
 variable "description" {
@@ -37,13 +52,6 @@ variable "endpoint_configuration" {
   description = "The type and details for configuring the endpoint to call the logic app's workflow."
   type        = any
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.customCalloutExtension"
-  nullable    = false
 }
 
 variable "additional_properties" {

@@ -50,13 +50,13 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- appHealthMetrics: polymorphic schema; accepts an untyped value
-- batteryHealthMetrics: polymorphic schema; accepts an untyped value
-- bestPracticesMetrics: polymorphic schema; accepts an untyped value
-- deviceBootPerformanceMetrics: polymorphic schema; accepts an untyped value
-- rebootAnalyticsMetrics: polymorphic schema; accepts an untyped value
-- resourcePerformanceMetrics: polymorphic schema; accepts an untyped value
-- workFromAnywhereMetrics: polymorphic schema; accepts an untyped value
+- appHealthMetrics: navigation property; accepts an untyped value
+- batteryHealthMetrics: navigation property; accepts an untyped value
+- bestPracticesMetrics: navigation property; accepts an untyped value
+- deviceBootPerformanceMetrics: navigation property; accepts an untyped value
+- rebootAnalyticsMetrics: navigation property; accepts an untyped value
+- resourcePerformanceMetrics: navigation property; accepts an untyped value
+- workFromAnywhereMetrics: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

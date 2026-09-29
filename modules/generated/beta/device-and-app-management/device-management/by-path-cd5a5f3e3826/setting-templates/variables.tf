@@ -18,43 +18,14 @@ variable "odata_type" {
 
 variable "setting_definitions" {
   description = "List of related Setting Definitions"
-  type = list(object({
-    odata_type    = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingDefinition")
-    accessTypes   = optional(string)
-    applicability = optional(any)
-    baseUri       = optional(string)
-    categoryId    = optional(string)
-    description   = optional(string)
-    displayName   = optional(string)
-    helpText      = optional(string)
-    infoUrls      = optional(list(string))
-    keywords      = optional(list(string))
-    name          = optional(string)
-    occurrence    = optional(any)
-    offsetUri     = optional(string)
-    referredSettingInformationList = optional(list(object({
-      odata_type          = optional(string, "#microsoft.graph.deviceManagementConfigurationReferredSettingInformation")
-      settingDefinitionId = optional(string)
-    })))
-    riskLevel        = optional(string)
-    rootDefinitionId = optional(string)
-    settingUsage     = optional(string)
-    uxBehavior       = optional(string)
-    version          = optional(string)
-    visibility       = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "setting_instance_template" {
   description = "Setting Instance Template"
-  type = object({
-    odata_type                = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingInstanceTemplate")
-    isRequired                = optional(bool)
-    settingDefinitionId       = optional(string)
-    settingInstanceTemplateId = optional(string)
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

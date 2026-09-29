@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `domain_id` | URL parameter `domain-id` | `string` | yes | no |
 | `active_sign_in_uri` | `activeSignInUri` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `federated_idp_mfa_behavior` | `federatedIdpMfaBehavior` | `any` | no | no |
+| `federated_idp_mfa_behavior` | `federatedIdpMfaBehavior` | `string` | no | no |
 | `is_signed_authentication_request_required` | `isSignedAuthenticationRequestRequired` | `bool` | no | no |
 | `issuer_uri` | `issuerUri` | `string` | no | no |
 | `metadata_exchange_uri` | `metadataExchangeUri` | `string` | no | no |
@@ -34,11 +34,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `passive_sign_in_uri` | `passiveSignInUri` | `string` | no | no |
 | `password_reset_uri` | `passwordResetUri` | `string` | no | yes |
-| `preferred_authentication_protocol` | `preferredAuthenticationProtocol` | `any` | no | no |
-| `prompt_login_behavior` | `promptLoginBehavior` | `any` | no | no |
+| `preferred_authentication_protocol` | `preferredAuthenticationProtocol` | `string` | no | no |
+| `prompt_login_behavior` | `promptLoginBehavior` | `string` | no | no |
 | `sign_out_uri` | `signOutUri` | `string` | no | no |
 | `signing_certificate` | `signingCertificate` | `string` | no | no |
-| `signing_certificate_update_status` | `signingCertificateUpdateStatus` | `any` | no | no |
+| `signing_certificate_update_status` | `signingCertificateUpdateStatus` | `object({       odata_type = optional(string, "#microsoft.graph.signingCertificateUpdateStatus")     })` | no | no |
 | `system_browser_enabled_on` | `systemBrowserEnabledOn` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -53,13 +53,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- federatedIdpMfaBehavior: polymorphic schema; accepts an untyped value
-- preferredAuthenticationProtocol: polymorphic schema; accepts an untyped value
-- promptLoginBehavior: polymorphic schema; accepts an untyped value
-- signingCertificateUpdateStatus: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

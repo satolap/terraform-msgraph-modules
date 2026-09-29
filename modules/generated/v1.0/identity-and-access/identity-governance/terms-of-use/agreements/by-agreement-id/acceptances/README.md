@@ -33,7 +33,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `expiration_date_time` | `expirationDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `recorded_date_time` | `recordedDateTime` | `string` | no | no |
-| `state` | `state` | `any` | no | no |
+| `state` | `state` | `string` | no | no |
 | `user_display_name` | `userDisplayName` | `string` | no | no |
 | `user_email` | `userEmail` | `string` | no | no |
 | `user_id` | `userId` | `string` | no | no |
@@ -51,10 +51,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- state: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

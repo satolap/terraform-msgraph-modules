@@ -13,6 +13,7 @@ Lifecycle: `POST /deviceAppManagement/managedEBooks`, `GET/PATCH/DELETE /deviceA
 ```hcl
 module "graph_resource" {
   source = "./device-and-app-management/device-app-management/managed-e-books"
+  odata_type = "#microsoft.graph.iosVppEBook"
 }
 ```
 
@@ -22,6 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
+| `odata_type` | `@odata.type` | `string` | yes | no |
 | `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedEBookAssignment")       installIntent = optional(string)       target = optional(any)     }))` | no | no |
 | `categories` | `categories` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedEBookCategory")       displayName = optional(string)       lastModifiedDateTime = optional(string)     }))` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
@@ -30,16 +32,15 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `display_name` | `displayName` | `string` | no | no |
 | `information_url` | `informationUrl` | `string` | no | no |
 | `install_summary` | `installSummary` | `any` | no | no |
-| `large_cover` | `largeCover` | `any` | no | no |
+| `large_cover` | `largeCover` | `object({       odata_type = optional(string, "#microsoft.graph.mimeContent")       type = optional(string)       value = optional(string)     })` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
 | `privacy_information_url` | `privacyInformationUrl` | `string` | no | no |
 | `published_date_time` | `publishedDateTime` | `string` | no | no |
 | `publisher` | `publisher` | `string` | no | no |
 | `user_state_summary` | `userStateSummary` | `list(object({       odata_type = optional(string, "#microsoft.graph.userInstallStateSummary")       deviceStates = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceInstallState")       deviceId = optional(string)       deviceName = optional(string)       errorCode = optional(string)       installState = optional(string)       lastSyncDateTime = optional(string)       osDescription = optional(string)       osVersion = optional(string)       userName = optional(string)     })))       failedDeviceCount = optional(number)       installedDeviceCount = optional(number)       notInstalledDeviceCount = optional(number)       userName = optional(string)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
-Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.
 
 Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
@@ -53,10 +54,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- @odata.type: microsoft.graph.managedEBook is abstract; odata_type has no default and must name a concrete type
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].target: polymorphic schema; accepts an untyped value
-- installSummary: polymorphic schema; accepts an untyped value
-- largeCover: polymorphic schema; accepts an untyped value
+- installSummary: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

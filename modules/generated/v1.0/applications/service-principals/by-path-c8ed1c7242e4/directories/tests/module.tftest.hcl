@@ -52,3 +52,30 @@ run "invalid_enum" {
 
   expect_failures = [var.discoverabilities]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    service_principal_id        = "test-parent-id"
+    synchronization_template_id = "test-parent-id"
+    discoverabilities           = "None, AttributeNames"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["discoverabilities"] == "None, AttributeNames"
+    error_message = "discoverabilities must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    service_principal_id        = "test-parent-id"
+    synchronization_template_id = "test-parent-id"
+    discoverabilities           = "None,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.discoverabilities]
+}

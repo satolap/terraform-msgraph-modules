@@ -24,12 +24,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `access_package_catalog` | `accessPackageCatalog` | `any` | no | no |
 | `access_package_id` | `accessPackageId` | `string` | no | no |
-| `access_package_notification_settings` | `accessPackageNotificationSettings` | `any` | no | no |
-| `access_review_settings` | `accessReviewSettings` | `any` | no | no |
+| `access_package_notification_settings` | `accessPackageNotificationSettings` | `object({       odata_type = optional(string, "#microsoft.graph.accessPackageNotificationSettings")       isAssignmentNotificationDisabled = optional(bool)     })` | no | no |
+| `access_review_settings` | `accessReviewSettings` | `object({       odata_type = optional(string, "#microsoft.graph.assignmentReviewSettings")       accessReviewTimeoutBehavior = optional(string)       durationInDays = optional(number)       isAccessRecommendationEnabled = optional(bool)       isAgenticExperienceEnabled = optional(bool)       isApprovalJustificationRequired = optional(bool)       isEnabled = optional(bool)       recurrenceType = optional(string)       reviewerType = optional(string)       reviewers = optional(any)       startDateTime = optional(string)     })` | no | no |
 | `can_extend` | `canExtend` | `bool` | no | no |
 | `created_by` | `createdBy` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `custom_extension_handlers` | `customExtensionHandlers` | `list(object({       odata_type = optional(string, "#microsoft.graph.customExtensionHandler")       customExtension = optional(any)       stage = optional(any)     }))` | no | no |
+| `custom_extension_handlers` | `customExtensionHandlers` | `list(object({       odata_type = optional(string, "#microsoft.graph.customExtensionHandler")       customExtension = optional(any)       stage = optional(string)     }))` | no | no |
 | `custom_extension_stage_settings` | `customExtensionStageSettings` | `list(object({       odata_type = optional(string, "#microsoft.graph.customExtensionStageSetting")       customExtension = optional(any)       stage = optional(string)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
@@ -38,10 +38,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `modified_by` | `modifiedBy` | `string` | no | no |
 | `modified_date_time` | `modifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `questions` | `questions` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageQuestion")       id = optional(string)       isAnswerEditable = optional(bool)       isRequired = optional(bool)       sequence = optional(number)       text = optional(any)     }))` | no | no |
-| `request_approval_settings` | `requestApprovalSettings` | `any` | no | no |
-| `requestor_settings` | `requestorSettings` | `any` | no | no |
-| `verifiable_credential_settings` | `verifiableCredentialSettings` | `any` | no | yes |
+| `questions` | `questions` | `any` | no | no |
+| `request_approval_settings` | `requestApprovalSettings` | `object({       odata_type = optional(string, "#microsoft.graph.approvalSettings")       approvalMode = optional(string)       approvalStages = optional(any)       isApprovalRequired = optional(bool)       isApprovalRequiredForExtension = optional(bool)       isRequestorJustificationRequired = optional(bool)     })` | no | no |
+| `requestor_settings` | `requestorSettings` | `object({       odata_type = optional(string, "#microsoft.graph.requestorSettings")       acceptRequests = optional(bool)       allowedRequestors = optional(any)       scopeType = optional(string)     })` | no | no |
+| `verifiable_credential_settings` | `verifiableCredentialSettings` | `object({       odata_type = optional(string, "#microsoft.graph.verifiableCredentialSettings")       credentialTypes = optional(list(object({       odata_type = optional(string, "#microsoft.graph.verifiableCredentialType")       credentialType = optional(string)       issuers = optional(list(string))     })))     })` | no | yes |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -59,16 +59,13 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- accessPackageCatalog: polymorphic schema; accepts an untyped value
-- accessPackageNotificationSettings: polymorphic schema; accepts an untyped value
-- accessReviewSettings: polymorphic schema; accepts an untyped value
-- customExtensionHandlers[].customExtension: polymorphic schema; accepts an untyped value
-- customExtensionHandlers[].stage: polymorphic schema; accepts an untyped value
+- accessPackageCatalog: navigation property; accepts an untyped value
+- accessReviewSettings.reviewers[]: polymorphic schema; accepts an untyped value
+- customExtensionHandlers[].customExtension: navigation property; accepts an untyped value
 - customExtensionStageSettings[].customExtension: polymorphic schema; accepts an untyped value
-- questions[].text: polymorphic schema; accepts an untyped value
-- requestApprovalSettings: polymorphic schema; accepts an untyped value
-- requestorSettings: polymorphic schema; accepts an untyped value
-- verifiableCredentialSettings: polymorphic schema; accepts an untyped value
+- questions[]: polymorphic schema; accepts an untyped value
+- requestApprovalSettings.approvalStages[]: polymorphic schema; accepts an untyped value
+- requestorSettings.allowedRequestors[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

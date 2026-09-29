@@ -24,12 +24,12 @@ variable "odata_type" {
 
 variable "recipient_type" {
   description = "Specifies the recipient type of the eDiscovery case member. The possible values are: user, roleGroup, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.recipient_type == null ? true : contains(["user", "roleGroup", "unknownFutureValue"], var.recipient_type)
-    error_message = "recipient_type must be one of the documented enum values."
+    condition     = var.recipient_type == null ? true : try(alltrue([for value in split(",", var.recipient_type) : contains(["user", "rolegroup", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "recipient_type must be one or more of the documented enum values, separated by commas."
   }
 }
 

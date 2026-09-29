@@ -1,7 +1,14 @@
 variable "allowed_actions" {
   description = "The allowed actions for the delegator or delegate."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                    = optional(string, "#microsoft.graph.delegateAllowedActions")
+    joinActiveCalls               = optional(bool)
+    makeCalls                     = optional(bool)
+    manageCallAndDelegateSettings = optional(bool)
+    pickUpHeldCalls               = optional(bool)
+    receiveCalls                  = optional(bool)
+  })
+  default = null
 }
 
 variable "created_date_time" {

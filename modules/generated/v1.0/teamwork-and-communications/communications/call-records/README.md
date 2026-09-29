@@ -30,8 +30,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `organizer` | `organizer` | `any` | no | no |
 | `organizer_v2` | `organizer_v2` | `any` | no | no |
-| `participants` | `participants` | `list(object({       odata_type = optional(string, "#microsoft.graph.identitySet")       application = optional(any)       device = optional(any)       user = optional(any)     }))` | no | no |
-| `participants_v2` | `participants_v2` | `list(object({       odata_type = optional(string, "#microsoft.graph.callRecords.participant")       administrativeUnitInfos = optional(list(object({       odata_type = optional(string, "#microsoft.graph.callRecords.administrativeUnitInfo")       id = optional(string)     })))       identity = optional(any)     }))` | no | no |
+| `participants` | `participants` | `any` | no | no |
+| `participants_v2` | `participants_v2` | `list(object({       odata_type = optional(string, "#microsoft.graph.callRecords.participant")       administrativeUnitInfos = optional(list(object({       odata_type = optional(string, "#microsoft.graph.callRecords.administrativeUnitInfo")       id = optional(string)     })))       identity = optional(object({       odata_type = optional(string, "#microsoft.graph.communicationsIdentitySet")       application = optional(any)       applicationInstance = optional(any)       assertedIdentity = optional(any)       azureCommunicationServicesUser = optional(any)       device = optional(any)       encrypted = optional(any)       endpointType = optional(string)       guest = optional(any)       onPremises = optional(any)       phone = optional(any)       user = optional(any)     }))     }))` | no | no |
 | `start_date_time` | `startDateTime` | `string` | no | no |
 | `type` | `type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -51,11 +51,18 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - organizer: polymorphic schema; accepts an untyped value
-- organizer_v2: polymorphic schema; accepts an untyped value
-- participants[].application: polymorphic schema; accepts an untyped value
-- participants[].device: polymorphic schema; accepts an untyped value
-- participants[].user: polymorphic schema; accepts an untyped value
-- participants_v2[].identity: polymorphic schema; accepts an untyped value
+- organizer_v2: navigation property; accepts an untyped value
+- participants[]: polymorphic schema; accepts an untyped value
+- participants_v2[].identity.application: polymorphic schema; accepts an untyped value
+- participants_v2[].identity.applicationInstance: polymorphic schema; accepts an untyped value
+- participants_v2[].identity.assertedIdentity: polymorphic schema; accepts an untyped value
+- participants_v2[].identity.azureCommunicationServicesUser: polymorphic schema; accepts an untyped value
+- participants_v2[].identity.device: polymorphic schema; accepts an untyped value
+- participants_v2[].identity.encrypted: polymorphic schema; accepts an untyped value
+- participants_v2[].identity.guest: polymorphic schema; accepts an untyped value
+- participants_v2[].identity.onPremises: polymorphic schema; accepts an untyped value
+- participants_v2[].identity.phone: polymorphic schema; accepts an untyped value
+- participants_v2[].identity.user: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

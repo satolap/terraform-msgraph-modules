@@ -3,8 +3,8 @@
     "requirements-dev.txt": "e040ff76639b92706b05e14daaf5980d9760766e27347fdc4bdcdbdaa8a96ee1",
     "requirements.txt": "ad488d53a098f26ddcb1303c16b81fb8d444c232d7ac067718650f04d6dfe29b"
   },
-  "fingerprint": "e7a8ce8ca695596df2c6e28823194d463b707b971761dc4e50de92cdc3386876",
-  "generator_commit": "45c7fe8dd8bc12b1b5cb2f61da2533041eb61f78",
+  "fingerprint": "eb2d5f1aa0c898e21711087479c9e1cfb96cba1403e05dc2de2eb5d17754dac1",
+  "generator_commit": "9c2d60e3dd7774d65ff834ca986450eb9f4ff09d",
   "providers": {
     "hashicorp/null": "3.3.2",
     "hashicorp/random": "3.9.1",
@@ -13,7 +13,7 @@
   },
   "schema_version": 1,
   "sources": {
-    "commit": "b8cbef92f6959dca8150bf3edcc650863765e529",
+    "commit": "7b2914c8ad1340129f52aa785f13c074cb46fd7c",
     "documentation": {
       "commit": "4ad99fd37a9e2e8538275a0a9cdff7907052f3ec",
       "files": {
@@ -301,22 +301,22 @@
     "files": {
       "beta": {
         "edmx": {
-          "sha256": "8d7eeb2c665570119d7ee23686b849a03fae56add17b879815b083213d0bd728",
-          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/b8cbef92f6959dca8150bf3edcc650863765e529/schemas/beta-Prod.csdl"
+          "sha256": "3cda32db3be8ad674d29b05d4b8c79bd043c9ac3415a53faeeb93f426ee0a956",
+          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/7b2914c8ad1340129f52aa785f13c074cb46fd7c/schemas/beta-Prod.csdl"
         },
         "openapi": {
           "sha256": "46bead9a6459cbe5f66d31094b23a614eb8da8f46690ee61404d97523e23daec",
-          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/b8cbef92f6959dca8150bf3edcc650863765e529/openapi/beta/openapi.yaml"
+          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/7b2914c8ad1340129f52aa785f13c074cb46fd7c/openapi/beta/openapi.yaml"
         }
       },
       "v1.0": {
         "edmx": {
-          "sha256": "3a2f2e2a9dfe39193ba0f0bce5a9eff4ac34549a9d710d587268ed944c12ea5f",
-          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/b8cbef92f6959dca8150bf3edcc650863765e529/schemas/v1.0-Prod.csdl"
+          "sha256": "3ace5b4a52b618cc5db871a22604abd1fff17d91415f0890f7454474f5339208",
+          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/7b2914c8ad1340129f52aa785f13c074cb46fd7c/schemas/v1.0-Prod.csdl"
         },
         "openapi": {
           "sha256": "77c1a39c94ab0a72c0a2e07ff74f221903141e8913e748fddcc189b98da42feb",
-          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/b8cbef92f6959dca8150bf3edcc650863765e529/openapi/v1.0/openapi.yaml"
+          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/7b2914c8ad1340129f52aa785f13c074cb46fd7c/openapi/v1.0/openapi.yaml"
         }
       }
     },
@@ -327,5 +327,5 @@
     "repository": "microsoftgraph/msgraph-metadata",
     "schema_version": 1
   },
-  "tag": "graphmodules-e7a8ce8ca695596df2c6"
+  "tag": "graphmodules-eb2d5f1aa0c898e21711"
 }

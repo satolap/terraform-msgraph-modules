@@ -29,8 +29,13 @@ variable "description" {
 
 variable "file_system_info" {
   description = "File system information on client. Read-write."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.fileSystemInfo")
+    createdDateTime      = optional(string)
+    lastAccessedDateTime = optional(string)
+    lastModifiedDateTime = optional(string)
+  })
+  default = null
 }
 
 variable "name" {
@@ -48,8 +53,13 @@ variable "odata_type" {
 
 variable "parent_reference" {
   description = "Parent information, if the item has a parent. Read-write."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.itemReference")
+    driveType  = optional(string)
+    shareId    = optional(string)
+    siteId     = optional(string)
+  })
+  default = null
 }
 
 variable "retention_label" {

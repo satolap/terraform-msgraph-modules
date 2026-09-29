@@ -25,10 +25,16 @@ run "typed_request" {
   variables {
     subject_rights_request_id = "test-parent-id"
     created_date_time         = "2026-01-01T00:00:00Z"
+    content                   = { "content" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["createdDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
     error_message = "createdDateTime must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["content"]) == jsonencode({ "@odata.type" = "#microsoft.graph.itemBody" })
+    error_message = "content must preserve typed values and omit nested nulls."
   }
 }

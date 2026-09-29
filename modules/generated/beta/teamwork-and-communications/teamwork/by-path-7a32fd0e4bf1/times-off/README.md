@@ -27,10 +27,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `team_template_id` | URL parameter `teamTemplate-id` | `string` | yes | no |
 | `team_template_definition_id` | URL parameter `teamTemplateDefinition-id` | `string` | yes | no |
 | `created_by` | `createdBy` | `any` | no | no |
-| `draft_time_off` | `draftTimeOff` | `any` | no | no |
+| `draft_time_off` | `draftTimeOff` | `object({       odata_type = optional(string, "#microsoft.graph.timeOffItem")       endDateTime = optional(string)       startDateTime = optional(string)       theme = optional(string)       timeOffReasonId = optional(string)     })` | no | no |
 | `is_staged_for_deletion` | `isStagedForDeletion` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `shared_time_off` | `sharedTimeOff` | `any` | no | no |
+| `shared_time_off` | `sharedTimeOff` | `object({       odata_type = optional(string, "#microsoft.graph.timeOffItem")       endDateTime = optional(string)       startDateTime = optional(string)       theme = optional(string)       timeOffReasonId = optional(string)     })` | no | no |
 | `user_id` | `userId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -50,8 +50,6 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - createdBy: polymorphic schema; accepts an untyped value
-- draftTimeOff: polymorphic schema; accepts an untyped value
-- sharedTimeOff: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

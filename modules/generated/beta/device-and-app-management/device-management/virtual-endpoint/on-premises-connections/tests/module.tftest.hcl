@@ -43,3 +43,26 @@ run "invalid_enum" {
 
   expect_failures = [var.connection_type]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    managed_by = "windows365, DevBox"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["managedBy"] == "windows365, DevBox"
+    error_message = "managedBy must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    managed_by = "windows365,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.managed_by]
+}

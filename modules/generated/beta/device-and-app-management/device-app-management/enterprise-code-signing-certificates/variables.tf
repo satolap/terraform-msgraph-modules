@@ -30,7 +30,7 @@ variable "odata_type" {
 }
 
 variable "status" {
-  description = "Microsoft Graph status property."
+  description = "Whether the Certificate Status Provisioned or not Provisioned. Possible values are: notProvisioned, provisioned. Default is notProvisioned. Uploading a valid cert file through the Intune admin console will automatically populate this value in the HTTP response. Supports: $filter, $select, $top, $OrderBy, $skip. $Search is not supported."
   type        = string
   default     = null
 

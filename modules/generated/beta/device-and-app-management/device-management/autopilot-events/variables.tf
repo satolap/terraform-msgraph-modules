@@ -98,7 +98,7 @@ variable "enrollment_start_date_time" {
 }
 
 variable "enrollment_state" {
-  description = "Microsoft Graph enrollmentState property."
+  description = "Enrollment state like Enrolled, Failed."
   type        = string
   default     = null
 
@@ -109,7 +109,7 @@ variable "enrollment_state" {
 }
 
 variable "enrollment_type" {
-  description = "Microsoft Graph enrollmentType property."
+  description = "Enrollment type."
   type        = string
   default     = null
 

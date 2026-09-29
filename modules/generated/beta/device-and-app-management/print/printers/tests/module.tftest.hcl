@@ -21,7 +21,7 @@ run "typed_request" {
   variables {
     display_name   = "example"
     accepting_jobs = false
-    status         = { "processingState" = null }
+    capabilities   = { "bottomMargins" = null }
     connectors     = [{}]
   }
 
@@ -36,8 +36,8 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["status"]) == jsonencode({ "@odata.type" = "#microsoft.graph.printerStatus" })
-    error_message = "status must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["capabilities"]) == jsonencode({ "@odata.type" = "#microsoft.graph.printerCapabilities" })
+    error_message = "capabilities must preserve typed values and omit nested nulls."
   }
 
   assert {

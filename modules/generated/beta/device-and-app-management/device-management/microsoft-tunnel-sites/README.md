@@ -52,7 +52,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- microsoftTunnelConfiguration: polymorphic schema; accepts an untyped value
+- microsoftTunnelConfiguration: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

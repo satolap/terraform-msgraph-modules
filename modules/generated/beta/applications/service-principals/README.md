@@ -29,26 +29,26 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `alternative_names` | `alternativeNames` | `list(string)` | no | no |
 | `app_description` | `appDescription` | `string` | no | no |
 | `app_display_name` | `appDisplayName` | `string` | no | no |
-| `app_management_policies` | `appManagementPolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.appManagementPolicy")       appliesTo = optional(list(object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     })))       deletedDateTime = optional(string)       description = optional(string)       displayName = optional(string)       isEnabled = optional(bool)       restrictions = optional(any)     }))` | no | no |
+| `app_management_policies` | `appManagementPolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.appManagementPolicy")       appliesTo = optional(any)       deletedDateTime = optional(string)       description = optional(string)       displayName = optional(string)       isEnabled = optional(bool)       restrictions = optional(object({       odata_type = optional(string, "#microsoft.graph.customAppManagementConfiguration")       applicationRestrictions = optional(object({       odata_type = optional(string, "#microsoft.graph.customAppManagementApplicationConfiguration")       audiences = optional(object({       odata_type = optional(string, "#microsoft.graph.audiencesConfiguration")       azureAdMultipleOrgs = optional(any)       personalMicrosoftAccount = optional(any)     }))       identifierUris = optional(object({       odata_type = optional(string, "#microsoft.graph.identifierUriConfiguration")       nonDefaultUriAddition = optional(any)       uriAdditionWithoutUniqueTenantIdentifier = optional(any)     }))       redirectUris = optional(object({       odata_type = optional(string, "#microsoft.graph.redirectUriConfiguration")       uriWithBlockedDomain = optional(any)       uriWithBlockedScheme = optional(any)       uriWithWildcard = optional(any)       uriWithoutAllowedDomain = optional(any)       uriWithoutAllowedScheme = optional(any)     }))     }))       keyCredentials = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyCredentialConfiguration")       certificateBasedApplicationConfigurationIds = optional(any)       excludeActors = optional(any)       maxLifetime = optional(string)       restrictForAppsCreatedAfterDateTime = optional(string)       restrictionType = optional(string)       state = optional(string)     })))       passwordCredentials = optional(list(object({       odata_type = optional(string, "#microsoft.graph.passwordCredentialConfiguration")       excludeActors = optional(any)       maxLifetime = optional(string)       restrictForAppsCreatedAfterDateTime = optional(string)       restrictionType = optional(string)       state = optional(string)     })))     }))     }))` | no | yes |
 | `app_owner_organization_id` | `appOwnerOrganizationId` | `string` | no | no |
 | `app_role_assigned_to` | `appRoleAssignedTo` | `list(object({       odata_type = optional(string, "#microsoft.graph.appRoleAssignment")       appRoleId = optional(string)       deletedDateTime = optional(string)       principalId = optional(string)       resourceDisplayName = optional(string)       resourceId = optional(string)     }))` | no | no |
 | `app_role_assignment_required` | `appRoleAssignmentRequired` | `bool` | no | no |
 | `app_role_assignments` | `appRoleAssignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.appRoleAssignment")       appRoleId = optional(string)       deletedDateTime = optional(string)       principalId = optional(string)       resourceDisplayName = optional(string)       resourceId = optional(string)     }))` | no | no |
 | `app_roles` | `appRoles` | `list(object({       odata_type = optional(string, "#microsoft.graph.appRole")       allowedMemberTypes = optional(list(string))       description = optional(string)       displayName = optional(string)       id = optional(string)       isEnabled = optional(bool)       value = optional(string)     }))` | no | no |
-| `claims_mapping_policies` | `claimsMappingPolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.claimsMappingPolicy")       appliesTo = optional(list(object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     })))       definition = optional(list(string))       deletedDateTime = optional(string)       description = optional(string)       displayName = optional(string)       isOrganizationDefault = optional(bool)     }))` | no | no |
+| `claims_mapping_policies` | `claimsMappingPolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.claimsMappingPolicy")       appliesTo = optional(any)       definition = optional(list(string))       deletedDateTime = optional(string)       description = optional(string)       displayName = optional(string)       isOrganizationDefault = optional(bool)     }))` | no | no |
 | `claims_policy` | `claimsPolicy` | `any` | no | no |
 | `custom_security_attributes` | `customSecurityAttributes` | `any` | no | no |
-| `delegated_permission_classifications` | `delegatedPermissionClassifications` | `list(object({       odata_type = optional(string, "#microsoft.graph.delegatedPermissionClassification")       classification = optional(any)       permissionId = optional(string)       permissionName = optional(string)     }))` | no | no |
+| `delegated_permission_classifications` | `delegatedPermissionClassifications` | `list(object({       odata_type = optional(string, "#microsoft.graph.delegatedPermissionClassification")       classification = optional(string)       permissionId = optional(string)       permissionName = optional(string)     }))` | no | no |
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `disabled_by_microsoft_status` | `disabledByMicrosoftStatus` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `endpoints` | `endpoints` | `list(object({       odata_type = optional(string, "#microsoft.graph.endpoint")       deletedDateTime = optional(string)     }))` | no | no |
 | `error_url` | `errorUrl` | `string` | no | no |
-| `federated_identity_credentials` | `federatedIdentityCredentials` | `list(object({       odata_type = optional(string, "#microsoft.graph.federatedIdentityCredential")       audiences = optional(list(string))       claimsMatchingExpression = optional(any)       description = optional(string)       issuer = optional(string)       name = optional(string)       subject = optional(string)     }))` | no | yes |
-| `home_realm_discovery_policies` | `homeRealmDiscoveryPolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.homeRealmDiscoveryPolicy")       appliesTo = optional(list(object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     })))       definition = optional(list(string))       deletedDateTime = optional(string)       description = optional(string)       displayName = optional(string)       isOrganizationDefault = optional(bool)     }))` | no | no |
+| `federated_identity_credentials` | `federatedIdentityCredentials` | `list(object({       odata_type = optional(string, "#microsoft.graph.federatedIdentityCredential")       audiences = optional(list(string))       claimsMatchingExpression = optional(object({       odata_type = optional(string, "#microsoft.graph.federatedIdentityExpression")       languageVersion = optional(number)       value = optional(string)     }))       description = optional(string)       issuer = optional(string)       name = optional(string)       subject = optional(string)     }))` | no | yes |
+| `home_realm_discovery_policies` | `homeRealmDiscoveryPolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.homeRealmDiscoveryPolicy")       appliesTo = optional(any)       definition = optional(list(string))       deletedDateTime = optional(string)       description = optional(string)       displayName = optional(string)       isOrganizationDefault = optional(bool)     }))` | no | no |
 | `homepage` | `homepage` | `string` | no | no |
-| `info` | `info` | `any` | no | no |
+| `info` | `info` | `object({       odata_type = optional(string, "#microsoft.graph.informationalUrl")       marketingUrl = optional(string)       privacyStatementUrl = optional(string)       supportUrl = optional(string)       termsOfServiceUrl = optional(string)     })` | no | no |
 | `is_disabled` | `isDisabled` | `bool` | no | no |
 | `key_credentials` | `keyCredentials` | `list(object({       odata_type = optional(string, "#microsoft.graph.keyCredential")       customKeyIdentifier = optional(string)       displayName = optional(string)       endDateTime = optional(string)       key = optional(string)       keyId = optional(string)       startDateTime = optional(string)       type = optional(string)       usage = optional(string)     }))` | no | yes |
 | `license_details` | `licenseDetails` | `list(object({       odata_type = optional(string, "#microsoft.graph.licenseDetails")     }))` | no | no |
@@ -57,9 +57,9 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `notes` | `notes` | `string` | no | no |
 | `notification_email_addresses` | `notificationEmailAddresses` | `list(string)` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `owners` | `owners` | `list(object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     }))` | no | no |
+| `owners` | `owners` | `any` | no | no |
 | `password_credentials` | `passwordCredentials` | `list(object({       odata_type = optional(string, "#microsoft.graph.passwordCredential")       customKeyIdentifier = optional(string)       displayName = optional(string)       endDateTime = optional(string)       keyId = optional(string)       startDateTime = optional(string)     }))` | no | yes |
-| `permission_grant_pre_approval_policies` | `permissionGrantPreApprovalPolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.permissionGrantPreApprovalPolicy")       conditions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.preApprovalDetail")       permissions = optional(object({       odata_type = optional(string, "#microsoft.graph.preApprovedPermissions")       permissionKind = optional(any)       permissionType = optional(any)     }))       scopeType = optional(string)       sensitivityLabels = optional(object({       odata_type = optional(string, "#microsoft.graph.scopeSensitivityLabels")       labelKind = optional(any)     }))     })))       deletedDateTime = optional(string)     }))` | no | no |
+| `permission_grant_pre_approval_policies` | `permissionGrantPreApprovalPolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.permissionGrantPreApprovalPolicy")       conditions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.preApprovalDetail")       permissions = optional(any)       scopeType = optional(string)       sensitivityLabels = optional(any)     })))       deletedDateTime = optional(string)     }))` | no | no |
 | `preferred_single_sign_on_mode` | `preferredSingleSignOnMode` | `string` | no | no |
 | `preferred_token_signing_key_end_date_time` | `preferredTokenSigningKeyEndDateTime` | `string` | no | no |
 | `preferred_token_signing_key_thumbprint` | `preferredTokenSigningKeyThumbprint` | `string` | no | no |
@@ -68,16 +68,16 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `remote_desktop_security_configuration` | `remoteDesktopSecurityConfiguration` | `any` | no | no |
 | `reply_urls` | `replyUrls` | `list(string)` | no | no |
 | `saml_metadata_url` | `samlMetadataUrl` | `string` | no | no |
-| `saml_single_sign_on_settings` | `samlSingleSignOnSettings` | `any` | no | no |
+| `saml_single_sign_on_settings` | `samlSingleSignOnSettings` | `object({       odata_type = optional(string, "#microsoft.graph.samlSingleSignOnSettings")       relayState = optional(string)     })` | no | no |
 | `service_principal_names` | `servicePrincipalNames` | `list(string)` | no | no |
 | `service_principal_type` | `servicePrincipalType` | `string` | no | no |
 | `synchronization` | `synchronization` | `any` | no | no |
 | `tags` | `tags` | `list(string)` | no | no |
 | `token_encryption_key_id` | `tokenEncryptionKeyId` | `string` | no | no |
-| `token_issuance_policies` | `tokenIssuancePolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.tokenIssuancePolicy")       appliesTo = optional(list(object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     })))       definition = optional(list(string))       deletedDateTime = optional(string)       description = optional(string)       displayName = optional(string)       isOrganizationDefault = optional(bool)     }))` | no | no |
-| `token_lifetime_policies` | `tokenLifetimePolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.tokenLifetimePolicy")       appliesTo = optional(list(object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     })))       definition = optional(list(string))       deletedDateTime = optional(string)       description = optional(string)       displayName = optional(string)       isOrganizationDefault = optional(bool)     }))` | no | no |
-| `transitive_member_of` | `transitiveMemberOf` | `list(object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     }))` | no | no |
-| `verified_publisher` | `verifiedPublisher` | `any` | no | no |
+| `token_issuance_policies` | `tokenIssuancePolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.tokenIssuancePolicy")       appliesTo = optional(any)       definition = optional(list(string))       deletedDateTime = optional(string)       description = optional(string)       displayName = optional(string)       isOrganizationDefault = optional(bool)     }))` | no | no |
+| `token_lifetime_policies` | `tokenLifetimePolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.tokenLifetimePolicy")       appliesTo = optional(any)       definition = optional(list(string))       deletedDateTime = optional(string)       description = optional(string)       displayName = optional(string)       isOrganizationDefault = optional(bool)     }))` | no | no |
+| `transitive_member_of` | `transitiveMemberOf` | `any` | no | no |
+| `verified_publisher` | `verifiedPublisher` | `object({       odata_type = optional(string, "#microsoft.graph.verifiedPublisher")       addedDateTime = optional(string)       displayName = optional(string)       verifiedPublisherId = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -97,19 +97,31 @@ Generation notes:
 - Excluded by conditional read-only prose: passwordSingleSignOnSettings. Add a reviewed contract if the property is writable for your account type.
 - Microsoft Graph beta contracts can change without notice.
 - Reviewed create-required correction: appId.
-- appManagementPolicies[].restrictions: polymorphic schema; accepts an untyped value
-- claimsPolicy: polymorphic schema; accepts an untyped value
+- appManagementPolicies[].appliesTo[]: polymorphic schema; accepts an untyped value
+- appManagementPolicies[].restrictions.applicationRestrictions.audiences.azureAdMultipleOrgs: nested schema exceeds depth limit; accepts an untyped value
+- appManagementPolicies[].restrictions.applicationRestrictions.audiences.personalMicrosoftAccount: polymorphic schema; accepts an untyped value
+- appManagementPolicies[].restrictions.applicationRestrictions.identifierUris.nonDefaultUriAddition: nested schema exceeds depth limit; accepts an untyped value
+- appManagementPolicies[].restrictions.applicationRestrictions.identifierUris.uriAdditionWithoutUniqueTenantIdentifier: nested schema exceeds depth limit; accepts an untyped value
+- appManagementPolicies[].restrictions.applicationRestrictions.redirectUris.uriWithBlockedDomain: nested schema exceeds depth limit; accepts an untyped value
+- appManagementPolicies[].restrictions.applicationRestrictions.redirectUris.uriWithBlockedScheme: nested schema exceeds depth limit; accepts an untyped value
+- appManagementPolicies[].restrictions.applicationRestrictions.redirectUris.uriWithWildcard: nested schema exceeds depth limit; accepts an untyped value
+- appManagementPolicies[].restrictions.applicationRestrictions.redirectUris.uriWithoutAllowedDomain: nested schema exceeds depth limit; accepts an untyped value
+- appManagementPolicies[].restrictions.applicationRestrictions.redirectUris.uriWithoutAllowedScheme: nested schema exceeds depth limit; accepts an untyped value
+- appManagementPolicies[].restrictions.keyCredentials[].certificateBasedApplicationConfigurationIds: nested schema exceeds depth limit; accepts an untyped value
+- appManagementPolicies[].restrictions.keyCredentials[].excludeActors: nested schema exceeds depth limit; accepts an untyped value
+- appManagementPolicies[].restrictions.passwordCredentials[].excludeActors: nested schema exceeds depth limit; accepts an untyped value
+- claimsMappingPolicies[].appliesTo[]: polymorphic schema; accepts an untyped value
+- claimsPolicy: navigation property; accepts an untyped value
 - customSecurityAttributes: polymorphic schema; accepts an untyped value
-- delegatedPermissionClassifications[].classification: polymorphic schema; accepts an untyped value
-- federatedIdentityCredentials[].claimsMatchingExpression: polymorphic schema; accepts an untyped value
-- info: polymorphic schema; accepts an untyped value
-- permissionGrantPreApprovalPolicies[].conditions[].permissions.permissionKind: polymorphic schema; accepts an untyped value
-- permissionGrantPreApprovalPolicies[].conditions[].permissions.permissionType: polymorphic schema; accepts an untyped value
-- permissionGrantPreApprovalPolicies[].conditions[].sensitivityLabels.labelKind: polymorphic schema; accepts an untyped value
-- remoteDesktopSecurityConfiguration: polymorphic schema; accepts an untyped value
-- samlSingleSignOnSettings: polymorphic schema; accepts an untyped value
-- synchronization: polymorphic schema; accepts an untyped value
-- verifiedPublisher: polymorphic schema; accepts an untyped value
+- homeRealmDiscoveryPolicies[].appliesTo[]: polymorphic schema; accepts an untyped value
+- owners[]: polymorphic schema; accepts an untyped value
+- permissionGrantPreApprovalPolicies[].conditions[].permissions: polymorphic schema; accepts an untyped value
+- permissionGrantPreApprovalPolicies[].conditions[].sensitivityLabels: polymorphic schema; accepts an untyped value
+- remoteDesktopSecurityConfiguration: navigation property; accepts an untyped value
+- synchronization: navigation property; accepts an untyped value
+- tokenIssuancePolicies[].appliesTo[]: polymorphic schema; accepts an untyped value
+- tokenLifetimePolicies[].appliesTo[]: polymorphic schema; accepts an untyped value
+- transitiveMemberOf[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

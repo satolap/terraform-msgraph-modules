@@ -43,3 +43,28 @@ run "invalid_enum" {
 
   expect_failures = [var.recipient_type]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    ediscovery_case_id = "test-parent-id"
+    recipient_type     = "user, RoleGroup"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["recipientType"] == "user, RoleGroup"
+    error_message = "recipientType must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    ediscovery_case_id = "test-parent-id"
+    recipient_type     = "user,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.recipient_type]
+}

@@ -1,14 +1,18 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.industryData.azureDataLakeConnector", "#microsoft.graph.industryData.oneRosterApiDataConnector"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "display_name" {
   description = "The name of the data connector. Maximum supported length is 100 characters."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.industryData.industryDataConnector"
-  nullable    = false
 }
 
 variable "source_system" {
@@ -17,8 +21,19 @@ variable "source_system" {
     odata_type  = optional(string, "#microsoft.graph.industryData.sourceSystemDefinition")
     displayName = optional(string)
     userMatchingSettings = optional(list(object({
-      odata_type    = optional(string, "#microsoft.graph.industryData.userMatchingSetting")
-      matchTarget   = optional(any)
+      odata_type = optional(string, "#microsoft.graph.industryData.userMatchingSetting")
+      matchTarget = optional(object({
+        odata_type = optional(string, "#microsoft.graph.industryData.userMatchTargetReferenceValue")
+        code       = optional(string)
+        value = optional(object({
+          odata_type    = optional(string, "#microsoft.graph.industryData.referenceDefinition")
+          code          = optional(string)
+          displayName   = optional(string)
+          isDisabled    = optional(bool)
+          referenceType = optional(string)
+          sortIndex     = optional(number)
+        }))
+      }))
       priorityOrder = optional(number)
       roleGroup = optional(object({
         odata_type  = optional(string, "#microsoft.graph.industryData.roleGroup")

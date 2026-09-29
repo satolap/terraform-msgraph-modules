@@ -22,12 +22,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `address` | `address` | `any` | no | no |
-| `booking_page_settings` | `bookingPageSettings` | `any` | no | no |
+| `address` | `address` | `object({       odata_type = optional(string, "#microsoft.graph.physicalAddress")       city = optional(string)       countryOrRegion = optional(string)       postOfficeBox = optional(string)       postalCode = optional(string)       state = optional(string)       street = optional(string)       type = optional(string)     })` | no | no |
+| `booking_page_settings` | `bookingPageSettings` | `object({       odata_type = optional(string, "#microsoft.graph.bookingPageSettings")       accessControl = optional(string)       bookingPageColorCode = optional(string)       businessTimeZone = optional(string)       customerConsentMessage = optional(string)       enforceOneTimePassword = optional(bool)       isBusinessLogoDisplayEnabled = optional(bool)       isCustomerConsentEnabled = optional(bool)       isSearchEngineIndexabilityDisabled = optional(bool)       isTimeSlotTimeZoneSetToBusinessTimeZone = optional(bool)       privacyPolicyWebUrl = optional(string)       termsAndConditionsWebUrl = optional(string)     })` | no | yes |
 | `business_hours` | `businessHours` | `list(object({       odata_type = optional(string, "#microsoft.graph.bookingWorkHours")       day = optional(string)       timeSlots = optional(list(object({       odata_type = optional(string, "#microsoft.graph.bookingWorkTimeSlot")       end = optional(string)       start = optional(string)     })))     }))` | no | no |
 | `business_type` | `businessType` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `custom_questions` | `customQuestions` | `list(object({       odata_type = optional(string, "#microsoft.graph.bookingCustomQuestion")       answerInputType = optional(any)       answerOptions = optional(list(string))       createdDateTime = optional(string)       displayName = optional(string)       lastUpdatedDateTime = optional(string)     }))` | no | no |
+| `custom_questions` | `customQuestions` | `list(object({       odata_type = optional(string, "#microsoft.graph.bookingCustomQuestion")       answerInputType = optional(string)       answerOptions = optional(list(string))       createdDateTime = optional(string)       displayName = optional(string)       lastUpdatedDateTime = optional(string)     }))` | no | no |
 | `default_currency_iso` | `defaultCurrencyIso` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `email` | `email` | `string` | no | no |
@@ -35,7 +35,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `last_updated_date_time` | `lastUpdatedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `phone` | `phone` | `string` | no | no |
-| `scheduling_policy` | `schedulingPolicy` | `any` | no | no |
+| `scheduling_policy` | `schedulingPolicy` | `object({       odata_type = optional(string, "#microsoft.graph.bookingSchedulingPolicy")       allowStaffSelection = optional(bool)       customAvailabilities = optional(list(object({       odata_type = optional(string, "#microsoft.graph.bookingsAvailabilityWindow")       availabilityType = optional(string)       businessHours = optional(list(object({       odata_type = optional(string, "#microsoft.graph.bookingWorkHours")       day = optional(string)       timeSlots = optional(any)     })))       endDate = optional(string)       startDate = optional(string)     })))       generalAvailability = optional(any)       isMeetingInviteToCustomersEnabled = optional(bool)       maximumAdvance = optional(string)       minimumLeadTime = optional(string)       sendConfirmationsToOwner = optional(bool)       timeSlotInterval = optional(string)     })` | no | no |
 | `web_site_url` | `webSiteUrl` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -54,10 +54,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- address: polymorphic schema; accepts an untyped value
-- bookingPageSettings: polymorphic schema; accepts an untyped value
-- customQuestions[].answerInputType: polymorphic schema; accepts an untyped value
-- schedulingPolicy: polymorphic schema; accepts an untyped value
+- schedulingPolicy.customAvailabilities[].businessHours[].timeSlots: nested schema exceeds depth limit; accepts an untyped value
+- schedulingPolicy.generalAvailability: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

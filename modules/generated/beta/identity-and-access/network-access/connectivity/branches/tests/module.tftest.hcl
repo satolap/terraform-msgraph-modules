@@ -19,14 +19,14 @@ run "typed_request" {
   command = plan
 
   variables {
-    country            = "example"
+    connectivity_state = "pending"
     bandwidth_capacity = 0
     device_links       = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["country"]) == jsonencode("example")
-    error_message = "country must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["connectivityState"]) == jsonencode("pending")
+    error_message = "connectivityState must preserve typed values and omit nested nulls."
   }
 
   assert {

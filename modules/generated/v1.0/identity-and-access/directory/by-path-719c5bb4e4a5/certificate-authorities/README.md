@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `certificate_based_auth_pki_id` | URL parameter `certificateBasedAuthPki-id` | `string` | yes | no |
 | `certificate` | `certificate` | `string` | no | no |
-| `certificate_authority_type` | `certificateAuthorityType` | `any` | no | no |
+| `certificate_authority_type` | `certificateAuthorityType` | `string` | no | no |
 | `certificate_revocation_list_url` | `certificateRevocationListUrl` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
@@ -50,10 +50,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- certificateAuthorityType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

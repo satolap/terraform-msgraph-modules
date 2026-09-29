@@ -20,6 +20,7 @@ run "typed_request" {
 
   variables {
     justification = "example"
+    parameters    = { "bypassApproval" = null }
     answers       = [{}]
   }
 
@@ -29,7 +30,12 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["answers"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.accessPackageAnswer" }])
+    condition     = jsonencode(msgraph_resource.this.body["parameters"]) == jsonencode({ "@odata.type" = "#microsoft.graph.accessPackageAssignmentRequestParameters" })
+    error_message = "parameters must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["answers"]) == jsonencode([{}])
     error_message = "answers must preserve typed values and omit nested nulls."
   }
 }

@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `access_assignments` | `accessAssignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.delegatedAdminAccessAssignment")       accessContainer = optional(object({       odata_type = optional(string, "#microsoft.graph.delegatedAdminAccessContainer")       accessContainerId = optional(string)       accessContainerType = optional(string)     }))       accessDetails = optional(object({       odata_type = optional(string, "#microsoft.graph.delegatedAdminAccessDetails")       unifiedRoles = optional(list(object({       odata_type = optional(string, "#microsoft.graph.unifiedRole")       roleDefinitionId = optional(string)     })))     }))     }))` | no | no |
 | `access_details` | `accessDetails` | `object({       odata_type = optional(string, "#microsoft.graph.delegatedAdminAccessDetails")       unifiedRoles = optional(list(object({       odata_type = optional(string, "#microsoft.graph.unifiedRole")       roleDefinitionId = optional(string)     })))     })` | no | no |
 | `auto_extend_duration` | `autoExtendDuration` | `string` | no | no |
-| `customer` | `customer` | `any` | no | no |
+| `customer` | `customer` | `object({       odata_type = optional(string, "#microsoft.graph.delegatedAdminRelationshipCustomerParticipant")       tenantId = optional(string)     })` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `duration` | `duration` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -44,10 +44,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- customer: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

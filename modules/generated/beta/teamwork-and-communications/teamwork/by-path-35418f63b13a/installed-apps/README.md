@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `team_template_id` | URL parameter `teamTemplate-id` | `string` | yes | no |
 | `team_template_definition_id` | URL parameter `teamTemplateDefinition-id` | `string` | yes | no |
-| `consented_permission_set` | `consentedPermissionSet` | `any` | no | no |
+| `consented_permission_set` | `consentedPermissionSet` | `object({       odata_type = optional(string, "#microsoft.graph.teamsAppPermissionSet")       resourceSpecificPermissions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsAppResourceSpecificPermission")       permissionType = optional(string)       permissionValue = optional(string)     })))     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `scope_info` | `scopeInfo` | `any` | no | no |
 | `teams_app` | `teamsApp` | `any` | no | no |
@@ -48,10 +48,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- consentedPermissionSet: polymorphic schema; accepts an untyped value
 - scopeInfo: polymorphic schema; accepts an untyped value
-- teamsApp: polymorphic schema; accepts an untyped value
-- teamsAppDefinition: polymorphic schema; accepts an untyped value
+- teamsApp: navigation property; accepts an untyped value
+- teamsAppDefinition: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

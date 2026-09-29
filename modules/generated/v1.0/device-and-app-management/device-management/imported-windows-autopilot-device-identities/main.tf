@@ -8,7 +8,7 @@ locals {
     "@odata.type"               = var.odata_type
     "productKey"                = var.product_key
     "serialNumber"              = var.serial_number
-    "state"                     = var.state
+    "state"                     = (var.state == null ? null : { for key0, value0 in { "@odata.type" = var.state["odata_type"], "deviceErrorCode" = var.state["deviceErrorCode"], "deviceErrorName" = var.state["deviceErrorName"], "deviceImportStatus" = var.state["deviceImportStatus"], "deviceRegistrationId" = var.state["deviceRegistrationId"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

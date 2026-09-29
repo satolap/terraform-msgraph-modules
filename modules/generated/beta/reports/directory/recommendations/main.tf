@@ -1,7 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "actionSteps"                  = (var.action_steps == null ? null : [for item0 in var.action_steps : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "actionUrl" = item0["actionUrl"], "stepNumber" = item0["stepNumber"], "text" = item0["text"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "actionSteps"                  = (var.action_steps == null ? null : [for item0 in var.action_steps : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "actionUrl" = (item0["actionUrl"] == null ? null : { for key2, value2 in { "@odata.type" = item0["actionUrl"]["odata_type"], "displayName" = item0["actionUrl"]["displayName"], "url" = item0["actionUrl"]["url"] } : key2 => value2 if value2 != null }), "stepNumber" = item0["stepNumber"], "text" = item0["text"] } : key1 => value1 if value1 != null }) if item0 != null])
     "benefits"                     = var.benefits
     "category"                     = var.category
     "categoryGroup"                = var.category_group

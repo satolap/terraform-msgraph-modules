@@ -12,27 +12,39 @@ variable "printer_id" {
 variable "configuration" {
   description = "Microsoft Graph configuration property."
   type = object({
-    odata_type      = optional(string, "#microsoft.graph.printJobConfiguration")
-    collate         = optional(bool)
-    finishings      = optional(any)
-    fitPdfToPage    = optional(bool)
-    inputBin        = optional(string)
-    margin          = optional(any)
+    odata_type   = optional(string, "#microsoft.graph.printJobConfiguration")
+    collate      = optional(bool)
+    finishings   = optional(list(string))
+    fitPdfToPage = optional(bool)
+    inputBin     = optional(string)
+    margin = optional(object({
+      odata_type = optional(string, "#microsoft.graph.printMargin")
+      bottom     = optional(number)
+      left       = optional(number)
+      right      = optional(number)
+      top        = optional(number)
+    }))
     mediaSize       = optional(string)
     mediaType       = optional(string)
-    multipageLayout = optional(any)
-    orientation     = optional(any)
+    multipageLayout = optional(string)
+    orientation     = optional(string)
     outputBin       = optional(string)
     pagesPerSheet   = optional(number)
-    scaling         = optional(any)
+    scaling         = optional(string)
   })
   default = null
 }
 
 variable "created_by" {
   description = "Microsoft Graph createdBy property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type        = optional(string, "#microsoft.graph.userIdentity")
+    displayName       = optional(string)
+    id                = optional(string)
+    ipAddress         = optional(string)
+    userPrincipalName = optional(string)
+  })
+  default = null
 }
 
 variable "documents" {

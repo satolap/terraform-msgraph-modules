@@ -36,35 +36,14 @@ variable "default_vision_os_enrollment_profile" {
 
 variable "enrollment_profiles" {
   description = "The enrollment profiles."
-  type = list(object({
-    odata_type                                          = optional(string, "#microsoft.graph.enrollmentProfile")
-    configurationEndpointUrl                            = optional(string)
-    description                                         = optional(string)
-    displayName                                         = optional(string)
-    enableAuthenticationViaCompanyPortal                = optional(bool)
-    requireCompanyPortalOnSetupAssistantEnrolledDevices = optional(bool)
-    requiresUserAuthentication                          = optional(bool)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "imported_apple_device_identities" {
   description = "The imported Apple device identities."
-  type = list(object({
-    odata_type                                   = optional(string, "#microsoft.graph.importedAppleDeviceIdentity")
-    createdDateTime                              = optional(string)
-    description                                  = optional(string)
-    discoverySource                              = optional(string)
-    enrollmentState                              = optional(string)
-    isDeleted                                    = optional(bool)
-    isSupervised                                 = optional(bool)
-    lastContactedDateTime                        = optional(string)
-    platform                                     = optional(string)
-    requestedEnrollmentProfileAssignmentDateTime = optional(string)
-    requestedEnrollmentProfileId                 = optional(string)
-    serialNumber                                 = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "last_modified_date_time" {
@@ -129,7 +108,7 @@ variable "token_name" {
 }
 
 variable "token_type" {
-  description = "Microsoft Graph tokenType property."
+  description = "Gets or sets the Dep Token Type."
   type        = string
   default     = null
 

@@ -1,10 +1,7 @@
 variable "applies_to" {
   description = "Microsoft Graph appliesTo property."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "definition" {

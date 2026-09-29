@@ -22,14 +22,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `allowed_audiences` | `allowedAudiences` | `any` | no | no |
+| `allowed_audiences` | `allowedAudiences` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `detail` | `detail` | `any` | no | no |
+| `detail` | `detail` | `object({       odata_type = optional(string, "#microsoft.graph.physicalAddress")       city = optional(string)       countryOrRegion = optional(string)       postOfficeBox = optional(string)       postalCode = optional(string)       state = optional(string)       street = optional(string)       type = optional(string)     })` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `geo_coordinates` | `geoCoordinates` | `any` | no | no |
-| `graph_source` | `source` | `any` | no | no |
-| `inference` | `inference` | `any` | no | no |
+| `geo_coordinates` | `geoCoordinates` | `object({       odata_type = optional(string, "#microsoft.graph.geoCoordinates")       latitude = optional(any)       longitude = optional(any)     })` | no | no |
+| `graph_source` | `source` | `object({       odata_type = optional(string, "#microsoft.graph.personDataSources")       type = optional(list(string))     })` | no | no |
+| `inference` | `inference` | `object({       odata_type = optional(string, "#microsoft.graph.inferenceData")       confidenceScore = optional(any)       userHasVerifiedAccuracy = optional(bool)     })` | no | no |
 | `is_searchable` | `isSearchable` | `bool` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
@@ -52,13 +52,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- allowedAudiences: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- detail: polymorphic schema; accepts an untyped value
-- geoCoordinates: polymorphic schema; accepts an untyped value
-- inference: polymorphic schema; accepts an untyped value
+- geoCoordinates.latitude: polymorphic schema; accepts an untyped value
+- geoCoordinates.longitude: polymorphic schema; accepts an untyped value
+- inference.confidenceScore: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- source: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

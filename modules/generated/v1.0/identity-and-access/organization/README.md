@@ -36,10 +36,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `mobile_device_management_authority` | `mobileDeviceManagementAuthority` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `on_premises_sync_enabled` | `onPremisesSyncEnabled` | `bool` | no | no |
-| `partner_tenant_type` | `partnerTenantType` | `any` | no | no |
+| `partner_tenant_type` | `partnerTenantType` | `string` | no | no |
 | `postal_code` | `postalCode` | `string` | no | no |
 | `preferred_language` | `preferredLanguage` | `string` | no | no |
-| `privacy_profile` | `privacyProfile` | `any` | no | no |
+| `privacy_profile` | `privacyProfile` | `object({       odata_type = optional(string, "#microsoft.graph.privacyProfile")       contactEmail = optional(string)       statementUrl = optional(string)     })` | no | no |
 | `provisioned_plans` | `provisionedPlans` | `list(object({       odata_type = optional(string, "#microsoft.graph.provisionedPlan")       capabilityStatus = optional(string)       provisioningStatus = optional(string)       service = optional(string)     }))` | no | no |
 | `security_compliance_notification_mails` | `securityComplianceNotificationMails` | `list(string)` | no | no |
 | `security_compliance_notification_phones` | `securityComplianceNotificationPhones` | `list(string)` | no | no |
@@ -64,9 +64,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- branding: polymorphic schema; accepts an untyped value
-- partnerTenantType: polymorphic schema; accepts an untyped value
-- privacyProfile: polymorphic schema; accepts an untyped value
+- branding: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

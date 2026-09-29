@@ -5,7 +5,7 @@ locals {
     "createdBy"                           = var.created_by
     "displayName"                         = var.display_name
     "eligibilityFilteringEnabledEntities" = var.eligibility_filtering_enabled_entities
-    "encryption"                          = var.encryption
+    "encryption"                          = (var.encryption == null ? null : { for key0, value0 in { "@odata.type" = var.encryption["odata_type"], "protocol" = var.encryption["protocol"], "secret" = var.encryption["secret"] } : key0 => value0 if value0 != null })
     "isActive"                            = var.is_active
     "@odata.type"                         = var.odata_type
     "supportedEntities"                   = var.supported_entities

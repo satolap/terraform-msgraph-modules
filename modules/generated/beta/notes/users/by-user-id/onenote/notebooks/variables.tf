@@ -41,8 +41,18 @@ variable "last_modified_date_time" {
 
 variable "links" {
   description = "Links for opening the notebook. The oneNoteClientURL link opens the notebook in the OneNote native client if it's installed. The oneNoteWebURL link opens the notebook in OneNote on the web."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.notebookLinks")
+    oneNoteClientUrl = optional(object({
+      odata_type = optional(string, "#microsoft.graph.externalLink")
+      href       = optional(string)
+    }))
+    oneNoteWebUrl = optional(object({
+      odata_type = optional(string, "#microsoft.graph.externalLink")
+      href       = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "odata_type" {

@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "#microsoft.graph.externalUsersSelfServiceSignUpEventsFlow"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "identity/authenticationEventsFlows"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,8 +23,15 @@ run "typed_request" {
   command = plan
 
   variables {
+    odata_type  = "#microsoft.graph.externalUsersSelfServiceSignUpEventsFlow"
     description = "example"
     priority    = -2147483648
+    conditions  = { "applications" = null }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.externalUsersSelfServiceSignUpEventsFlow")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -32,4 +43,19 @@ run "typed_request" {
     condition     = jsonencode(msgraph_resource.this.body["priority"]) == jsonencode(-2147483648)
     error_message = "priority must preserve typed values and omit nested nulls."
   }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["conditions"]) == jsonencode({ "@odata.type" = "#microsoft.graph.authenticationConditions" })
+    error_message = "conditions must preserve typed values and omit nested nulls."
+  }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    odata_type = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

@@ -27,12 +27,18 @@ run "typed_request" {
     user_id           = "test-parent-id"
     online_meeting_id = "test-parent-id"
     call_id           = "example"
+    viewpoint         = { "mentionEvents" = null }
     action_items      = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["callId"]) == jsonencode("example")
     error_message = "callId must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["viewpoint"]) == jsonencode({ "@odata.type" = "#microsoft.graph.callAiInsightViewPoint" })
+    error_message = "viewpoint must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "audiences"                = (var.audiences == null ? null : [for item0 in var.audiences : item0 if item0 != null])
-    "claimsMatchingExpression" = var.claims_matching_expression
+    "claimsMatchingExpression" = (var.claims_matching_expression == null ? null : { for key0, value0 in { "@odata.type" = var.claims_matching_expression["odata_type"], "languageVersion" = var.claims_matching_expression["languageVersion"], "value" = var.claims_matching_expression["value"] } : key0 => value0 if value0 != null })
     "description"              = var.description
     "issuer"                   = var.issuer
     "name"                     = var.name

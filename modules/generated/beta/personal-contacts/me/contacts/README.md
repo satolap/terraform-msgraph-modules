@@ -30,10 +30,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `department` | `department` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `email_addresses` | `emailAddresses` | `list(object({       odata_type = optional(string, "#microsoft.graph.typedEmailAddress")       address = optional(string)       name = optional(string)       otherLabel = optional(string)       type = optional(any)     }))` | no | no |
-| `extensions` | `extensions` | `list(object({       odata_type = optional(string, "#microsoft.graph.extension")     }))` | no | no |
+| `email_addresses` | `emailAddresses` | `list(object({       odata_type = optional(string, "#microsoft.graph.typedEmailAddress")       address = optional(string)       name = optional(string)       otherLabel = optional(string)       type = optional(string)     }))` | no | no |
+| `extensions` | `extensions` | `any` | no | no |
 | `file_as` | `fileAs` | `string` | no | no |
-| `flag` | `flag` | `any` | no | no |
+| `flag` | `flag` | `object({       odata_type = optional(string, "#microsoft.graph.followupFlag")       completedDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       dueDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       flagStatus = optional(string)       startDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))     })` | no | no |
 | `gender` | `gender` | `string` | no | no |
 | `generation` | `generation` | `string` | no | no |
 | `given_name` | `givenName` | `string` | no | no |
@@ -49,9 +49,9 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `office_location` | `officeLocation` | `string` | no | no |
 | `parent_folder_id` | `parentFolderId` | `string` | no | no |
 | `personal_notes` | `personalNotes` | `string` | no | no |
-| `phones` | `phones` | `list(object({       odata_type = optional(string, "#microsoft.graph.phone")       number = optional(string)       type = optional(any)     }))` | no | no |
+| `phones` | `phones` | `list(object({       odata_type = optional(string, "#microsoft.graph.phone")       number = optional(string)       type = optional(string)     }))` | no | no |
 | `photo` | `photo` | `any` | no | no |
-| `postal_addresses` | `postalAddresses` | `list(object({       odata_type = optional(string, "#microsoft.graph.physicalAddress")       city = optional(string)       countryOrRegion = optional(string)       postOfficeBox = optional(string)       postalCode = optional(string)       state = optional(string)       street = optional(string)       type = optional(any)     }))` | no | no |
+| `postal_addresses` | `postalAddresses` | `list(object({       odata_type = optional(string, "#microsoft.graph.physicalAddress")       city = optional(string)       countryOrRegion = optional(string)       postOfficeBox = optional(string)       postalCode = optional(string)       state = optional(string)       street = optional(string)       type = optional(string)     }))` | no | no |
 | `primary_email_address` | `primaryEmailAddress` | `any` | no | no |
 | `profession` | `profession` | `string` | no | no |
 | `secondary_email_address` | `secondaryEmailAddress` | `any` | no | no |
@@ -59,7 +59,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `surname` | `surname` | `string` | no | no |
 | `tertiary_email_address` | `tertiaryEmailAddress` | `any` | no | no |
 | `title` | `title` | `string` | no | no |
-| `websites` | `websites` | `list(object({       odata_type = optional(string, "#microsoft.graph.website")       address = optional(string)       displayName = optional(string)       type = optional(any)     }))` | no | no |
+| `websites` | `websites` | `list(object({       odata_type = optional(string, "#microsoft.graph.website")       address = optional(string)       displayName = optional(string)       type = optional(string)     }))` | no | no |
 | `wedding_anniversary` | `weddingAnniversary` | `string` | no | no |
 | `yomi_company_name` | `yomiCompanyName` | `string` | no | no |
 | `yomi_given_name` | `yomiGivenName` | `string` | no | no |
@@ -81,15 +81,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- emailAddresses[].type: polymorphic schema; accepts an untyped value
-- flag: polymorphic schema; accepts an untyped value
-- phones[].type: polymorphic schema; accepts an untyped value
-- photo: polymorphic schema; accepts an untyped value
-- postalAddresses[].type: polymorphic schema; accepts an untyped value
+- extensions[]: polymorphic schema; accepts an untyped value
+- photo: navigation property; accepts an untyped value
 - primaryEmailAddress: polymorphic schema; accepts an untyped value
 - secondaryEmailAddress: polymorphic schema; accepts an untyped value
 - tertiaryEmailAddress: polymorphic schema; accepts an untyped value
-- websites[].type: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

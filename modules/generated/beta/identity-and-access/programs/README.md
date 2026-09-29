@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `controls` | `controls` | `list(object({       odata_type = optional(string, "#microsoft.graph.programControl")       controlId = optional(string)       controlTypeId = optional(string)       createdDateTime = optional(string)       displayName = optional(string)       owner = optional(any)       program = optional(any)       programId = optional(string)       resource = optional(any)       status = optional(string)     }))` | no | no |
+| `controls` | `controls` | `list(object({       odata_type = optional(string, "#microsoft.graph.programControl")       controlId = optional(string)       controlTypeId = optional(string)       createdDateTime = optional(string)       displayName = optional(string)       owner = optional(any)       program = optional(any)       programId = optional(string)       resource = optional(object({       odata_type = optional(string, "#microsoft.graph.programResource")       displayName = optional(string)       id = optional(string)       type = optional(string)     }))       status = optional(string)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -44,8 +44,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - controls[].owner: polymorphic schema; accepts an untyped value
-- controls[].program: polymorphic schema; accepts an untyped value
-- controls[].resource: polymorphic schema; accepts an untyped value
+- controls[].program: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

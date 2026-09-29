@@ -6,7 +6,7 @@ variable "accepted_version" {
 
 variable "category" {
   description = "Microsoft Graph category property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -76,8 +76,12 @@ variable "odata_type" {
 
 variable "portal_link" {
   description = "Microsoft Graph portalLink property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.actionUrl")
+    displayName = optional(string)
+    url         = optional(string)
+  })
+  default = null
 }
 
 variable "priority" {
@@ -101,10 +105,14 @@ variable "versions" {
     createdByUserId = optional(string)
     createdDateTime = optional(string)
     deployments = optional(list(object({
-      odata_type          = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepDeployment")
-      createdByUserId     = optional(string)
-      createdDateTime     = optional(string)
-      error               = optional(any)
+      odata_type      = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepDeployment")
+      createdByUserId = optional(string)
+      createdDateTime = optional(string)
+      error = optional(object({
+        odata_type = optional(string, "#microsoft.graph.managedTenants.graphAPIErrorDetails")
+        code       = optional(string)
+        message    = optional(string)
+      }))
       lastActionByUserId  = optional(string)
       lastActionDateTime  = optional(string)
       status              = optional(string)

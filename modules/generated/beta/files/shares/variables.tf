@@ -22,27 +22,55 @@ variable "items" {
     odata_type = optional(string, "#microsoft.graph.driveItem")
     activities = optional(list(object({
       odata_type = optional(string, "#microsoft.graph.itemActivityOLD")
-      action     = optional(any)
-      actor      = optional(any)
-      driveItem  = optional(any)
-      listItem   = optional(any)
-      times      = optional(any)
+      action = optional(object({
+        odata_type = optional(string, "#microsoft.graph.itemActionSet")
+        comment    = optional(any)
+        create     = optional(any)
+        delete     = optional(any)
+        edit       = optional(any)
+        mention    = optional(any)
+        move       = optional(any)
+        rename     = optional(any)
+        restore    = optional(any)
+        share      = optional(any)
+        version    = optional(any)
+      }))
+      actor     = optional(any)
+      driveItem = optional(any)
+      listItem  = optional(any)
+      times = optional(object({
+        odata_type           = optional(string, "#microsoft.graph.itemActivityTimeSet")
+        lastRecordedDateTime = optional(string)
+        observedDateTime     = optional(string)
+        recordedDateTime     = optional(string)
+      }))
     })))
     analytics     = optional(any)
     content       = optional(string)
     contentStream = optional(string)
     createdByUser = optional(any)
     description   = optional(string)
-    extensions = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.extension")
-    })))
-    fileSystemInfo     = optional(any)
+    extensions    = optional(any)
+    fileSystemInfo = optional(object({
+      odata_type           = optional(string, "#microsoft.graph.fileSystemInfo")
+      createdDateTime      = optional(string)
+      lastAccessedDateTime = optional(string)
+      lastModifiedDateTime = optional(string)
+    }))
     lastModifiedByUser = optional(any)
-    media              = optional(any)
-    name               = optional(string)
-    parentReference    = optional(any)
-    retentionLabel     = optional(any)
-    root               = optional(any)
+    media = optional(object({
+      odata_type           = optional(string, "#microsoft.graph.media")
+      isTranscriptionShown = optional(bool)
+    }))
+    name = optional(string)
+    parentReference = optional(object({
+      odata_type = optional(string, "#microsoft.graph.itemReference")
+      driveType  = optional(string)
+      shareId    = optional(string)
+      siteId     = optional(string)
+    }))
+    retentionLabel = optional(any)
+    root           = optional(any)
     subscriptions = optional(list(object({
       odata_type                       = optional(string, "#microsoft.graph.subscription")
       changeType                       = optional(string)
@@ -108,8 +136,13 @@ variable "owner" {
 
 variable "parent_reference" {
   description = "Parent information, if the item has a parent. Read-write."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.itemReference")
+    driveType  = optional(string)
+    shareId    = optional(string)
+    siteId     = optional(string)
+  })
+  default = null
 }
 
 variable "permission" {

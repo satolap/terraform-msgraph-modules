@@ -37,3 +37,26 @@ run "invalid_enum" {
 
   expect_failures = [var.tags]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    tags = "none, FastRestore"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["tags"] == "none, FastRestore"
+    error_message = "tags must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    tags = "none,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.tags]
+}

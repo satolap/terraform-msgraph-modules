@@ -50,8 +50,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- authenticationContext: polymorphic schema; accepts an untyped value
-- resourceScope: polymorphic schema; accepts an untyped value
+- authenticationContext: navigation property; accepts an untyped value
+- resourceScope: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

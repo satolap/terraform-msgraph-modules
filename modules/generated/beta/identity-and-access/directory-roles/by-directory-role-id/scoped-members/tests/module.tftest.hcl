@@ -25,16 +25,10 @@ run "typed_request" {
   variables {
     directory_role_id      = "test-parent-id"
     administrative_unit_id = "example"
-    role_member_info       = { "displayName" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["administrativeUnitId"]) == jsonencode("example")
     error_message = "administrativeUnitId must preserve typed values and omit nested nulls."
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["roleMemberInfo"]) == jsonencode({ "@odata.type" = "#microsoft.graph.identity" })
-    error_message = "roleMemberInfo must preserve typed values and omit nested nulls."
   }
 }

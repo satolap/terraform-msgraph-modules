@@ -30,20 +30,20 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `allowed_outbound_clipboard_sharing_exception_length` | `allowedOutboundClipboardSharingExceptionLength` | `number` | no | no |
 | `allowed_outbound_clipboard_sharing_level` | `allowedOutboundClipboardSharingLevel` | `string` | no | no |
 | `allowed_outbound_data_transfer_destinations` | `allowedOutboundDataTransferDestinations` | `string` | no | no |
-| `app_action_if_account_is_clocked_out` | `appActionIfAccountIsClockedOut` | `any` | no | no |
+| `app_action_if_account_is_clocked_out` | `appActionIfAccountIsClockedOut` | `string` | no | no |
 | `app_action_if_android_device_manufacturer_not_allowed` | `appActionIfAndroidDeviceManufacturerNotAllowed` | `string` | no | no |
 | `app_action_if_android_device_model_not_allowed` | `appActionIfAndroidDeviceModelNotAllowed` | `string` | no | no |
 | `app_action_if_android_safety_net_apps_verification_failed` | `appActionIfAndroidSafetyNetAppsVerificationFailed` | `string` | no | no |
 | `app_action_if_android_safety_net_device_attestation_failed` | `appActionIfAndroidSafetyNetDeviceAttestationFailed` | `string` | no | no |
-| `app_action_if_developer_options_enabled` | `appActionIfDeveloperOptionsEnabled` | `any` | no | no |
+| `app_action_if_developer_options_enabled` | `appActionIfDeveloperOptionsEnabled` | `string` | no | no |
 | `app_action_if_device_compliance_required` | `appActionIfDeviceComplianceRequired` | `string` | no | no |
 | `app_action_if_device_lock_not_set` | `appActionIfDeviceLockNotSet` | `string` | no | no |
-| `app_action_if_device_passcode_complexity_less_than_high` | `appActionIfDevicePasscodeComplexityLessThanHigh` | `any` | no | no |
-| `app_action_if_device_passcode_complexity_less_than_low` | `appActionIfDevicePasscodeComplexityLessThanLow` | `any` | no | no |
-| `app_action_if_device_passcode_complexity_less_than_medium` | `appActionIfDevicePasscodeComplexityLessThanMedium` | `any` | no | no |
+| `app_action_if_device_passcode_complexity_less_than_high` | `appActionIfDevicePasscodeComplexityLessThanHigh` | `string` | no | no |
+| `app_action_if_device_passcode_complexity_less_than_low` | `appActionIfDevicePasscodeComplexityLessThanLow` | `string` | no | no |
+| `app_action_if_device_passcode_complexity_less_than_medium` | `appActionIfDevicePasscodeComplexityLessThanMedium` | `string` | no | no |
 | `app_action_if_maximum_pin_retries_exceeded` | `appActionIfMaximumPinRetriesExceeded` | `string` | no | no |
-| `app_action_if_samsung_knox_attestation_required` | `appActionIfSamsungKnoxAttestationRequired` | `any` | no | no |
-| `app_action_if_unable_to_authenticate_user` | `appActionIfUnableToAuthenticateUser` | `any` | no | no |
+| `app_action_if_samsung_knox_attestation_required` | `appActionIfSamsungKnoxAttestationRequired` | `string` | no | no |
+| `app_action_if_unable_to_authenticate_user` | `appActionIfUnableToAuthenticateUser` | `string` | no | no |
 | `app_group_type` | `appGroupType` | `string` | no | no |
 | `approved_keyboards` | `approvedKeyboards` | `list(object({       odata_type = optional(string, "#microsoft.graph.keyValuePair")       name = optional(string)       value = optional(string)     }))` | no | no |
 | `apps` | `apps` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedMobileApp")       mobileAppIdentifier = optional(any)       version = optional(string)     }))` | no | no |
@@ -99,7 +99,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `minimum_wipe_company_portal_version` | `minimumWipeCompanyPortalVersion` | `string` | no | no |
 | `minimum_wipe_os_version` | `minimumWipeOsVersion` | `string` | no | no |
 | `minimum_wipe_patch_version` | `minimumWipePatchVersion` | `string` | no | no |
-| `mobile_threat_defense_partner_priority` | `mobileThreatDefensePartnerPriority` | `any` | no | no |
+| `mobile_threat_defense_partner_priority` | `mobileThreatDefensePartnerPriority` | `string` | no | no |
 | `mobile_threat_defense_remediation_action` | `mobileThreatDefenseRemediationAction` | `string` | no | no |
 | `notification_restriction` | `notificationRestriction` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -144,17 +144,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- appActionIfAccountIsClockedOut: polymorphic schema; accepts an untyped value
-- appActionIfDeveloperOptionsEnabled: polymorphic schema; accepts an untyped value
-- appActionIfDevicePasscodeComplexityLessThanHigh: polymorphic schema; accepts an untyped value
-- appActionIfDevicePasscodeComplexityLessThanLow: polymorphic schema; accepts an untyped value
-- appActionIfDevicePasscodeComplexityLessThanMedium: polymorphic schema; accepts an untyped value
-- appActionIfSamsungKnoxAttestationRequired: polymorphic schema; accepts an untyped value
-- appActionIfUnableToAuthenticateUser: polymorphic schema; accepts an untyped value
 - apps[].mobileAppIdentifier: polymorphic schema; accepts an untyped value
 - assignments[].target: polymorphic schema; accepts an untyped value
-- deploymentSummary: polymorphic schema; accepts an untyped value
-- mobileThreatDefensePartnerPriority: polymorphic schema; accepts an untyped value
+- deploymentSummary: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -9,17 +9,21 @@ variable "authentication_strength_policy_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.fido2CombinationConfiguration", "#microsoft.graph.x509CertificateCombinationConfiguration"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "applies_to_combinations" {
   description = "Which authentication method combinations this configuration applies to. Must be an allowedCombinations object, part of the authenticationStrengthPolicy. The only possible value for fido2combinationConfigurations is 'fido2'."
   type        = list(string)
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.authenticationCombinationConfiguration"
-  nullable    = false
 }
 
 variable "additional_properties" {

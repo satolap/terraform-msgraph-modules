@@ -1,7 +1,11 @@
 variable "created" {
   description = "Creation metadata, including user and timestamp. Supports $orderby (dateTime property only). Supports $filter (ge, le, gt, lt) on the dateTime property. For example, $filter=created/dateTime ge 2023-01-01T00:00:00Z."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.security.auditInfo")
+    by         = optional(string)
+    dateTime   = optional(string)
+  })
+  default = null
 }
 
 variable "description" {
@@ -27,8 +31,12 @@ variable "environments" {
 
 variable "modified" {
   description = "Last modification metadata, including user and timestamp. Supports $orderby (dateTime property only). Supports $filter (ge, le, gt, lt) on the dateTime property. For example, $orderby=modified/dateTime desc."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.security.auditInfo")
+    by         = optional(string)
+    dateTime   = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {

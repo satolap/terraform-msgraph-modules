@@ -29,11 +29,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `policy` | `policy` | `any` | no | no |
+| `policy` | `policy` | `object({       odata_type = optional(string, "#microsoft.graph.governancePolicy")       decisionMakerCriteria = optional(any)       notificationPolicy = optional(object({       odata_type = optional(string, "#microsoft.graph.governanceNotificationPolicy")       enabledTemplateTypes = optional(list(string))       notificationTemplates = optional(list(object({       odata_type = optional(string, "#microsoft.graph.governanceNotificationTemplate")       culture = optional(string)       id = optional(string)       source = optional(string)       type = optional(string)       version = optional(string)     })))     }))     })` | no | no |
 | `policy_template_id` | `policyTemplateId` | `string` | no | no |
 | `record_version` | `recordVersion` | `string` | no | no |
 | `schema_id` | `schemaId` | `string` | no | no |
-| `settings` | `settings` | `any` | no | no |
+| `settings` | `settings` | `object({       odata_type = optional(string, "#microsoft.graph.businessFlowSettings")       accessRecommendationsEnabled = optional(bool)       activityDurationInDays = optional(number)       autoApplyReviewResultsEnabled = optional(bool)       autoReviewEnabled = optional(bool)       autoReviewSettings = optional(object({       odata_type = optional(string, "#microsoft.graph.autoReviewSettings")       notReviewedResult = optional(string)     }))       durationInDays = optional(number)       justificationRequiredOnApproval = optional(bool)       mailNotificationsEnabled = optional(bool)       recurrenceSettings = optional(object({       odata_type = optional(string, "#microsoft.graph.accessReviewRecurrenceSettings")       durationInDays = optional(number)       recurrenceCount = optional(number)       recurrenceEndType = optional(string)       recurrenceType = optional(string)     }))       remindersEnabled = optional(bool)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -51,8 +51,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- policy: polymorphic schema; accepts an untyped value
-- settings: polymorphic schema; accepts an untyped value
+- policy.decisionMakerCriteria[]: object without documented properties; accepts an untyped value
 
 ## Licensing and prerequisites
 

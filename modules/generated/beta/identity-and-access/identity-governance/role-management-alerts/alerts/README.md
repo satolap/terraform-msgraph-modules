@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `alert_configuration` | `alertConfiguration` | `any` | no | no |
 | `alert_definition` | `alertDefinition` | `any` | no | no |
 | `alert_definition_id` | `alertDefinitionId` | `string` | no | no |
-| `alert_incidents` | `alertIncidents` | `list(object({       odata_type = optional(string, "#microsoft.graph.unifiedRoleManagementAlertIncident")     }))` | no | no |
+| `alert_incidents` | `alertIncidents` | `any` | no | no |
 | `incident_count` | `incidentCount` | `number` | no | no |
 | `is_active` | `isActive` | `bool` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
@@ -51,7 +51,8 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - alertConfiguration: polymorphic schema; accepts an untyped value
-- alertDefinition: polymorphic schema; accepts an untyped value
+- alertDefinition: navigation property; accepts an untyped value
+- alertIncidents[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

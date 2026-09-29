@@ -24,14 +24,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `team_id` | URL parameter `team-id` | `string` | yes | no |
-| `assigned_to` | `assignedTo` | `any` | no | no |
+| `assigned_to` | `assignedTo` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `end_date_time` | `endDateTime` | `string` | no | no |
 | `manager_action_message` | `managerActionMessage` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `sender_message` | `senderMessage` | `string` | no | no |
 | `start_date_time` | `startDateTime` | `string` | no | no |
-| `state` | `state` | `any` | no | no |
+| `state` | `state` | `string` | no | no |
 | `time_off_reason_id` | `timeOffReasonId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -49,9 +49,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- assignedTo: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- state: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

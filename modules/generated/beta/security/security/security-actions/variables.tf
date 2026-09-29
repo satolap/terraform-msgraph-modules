@@ -36,8 +36,13 @@ variable "created_date_time" {
 
 variable "error_info" {
   description = "Error info when the action fails."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.resultInfo")
+    code       = optional(number)
+    message    = optional(string)
+    subcode    = optional(number)
+  })
+  default = null
 }
 
 variable "last_action_date_time" {
@@ -74,7 +79,7 @@ variable "states" {
   type = list(object({
     odata_type      = optional(string, "#microsoft.graph.securityActionState")
     appId           = optional(string)
-    status          = optional(any)
+    status          = optional(string)
     updatedDateTime = optional(string)
     user            = optional(string)
   }))
@@ -83,7 +88,7 @@ variable "states" {
 
 variable "status" {
   description = "Status of the action. The possible values are: NotStarted, Running, Completed, Failed."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -100,8 +105,14 @@ variable "user" {
 
 variable "vendor_information" {
   description = "Complex Type containing details about the Security product/service vendor, provider, and sub-provider (for example, vendor=Microsoft; provider=Windows Defender ATP; sub-provider=AppLocker)."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.securityVendorInformation")
+    provider        = optional(string)
+    providerVersion = optional(string)
+    subProvider     = optional(string)
+    vendor          = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

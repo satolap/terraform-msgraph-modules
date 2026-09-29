@@ -8,8 +8,8 @@ locals {
     "lastModifiedDateTime"    = var.last_modified_date_time
     "name"                    = var.name
     "@odata.type"             = var.odata_type
-    "redundancyConfiguration" = var.redundancy_configuration
-    "tunnelConfiguration"     = (var.tunnel_configuration == null ? null : { for key0, value0 in { "@odata.type" = var.tunnel_configuration["odata_type"], "preSharedKey" = var.tunnel_configuration["preSharedKey"], "zoneRedundancyPreSharedKey" = var.tunnel_configuration["zoneRedundancyPreSharedKey"] } : key0 => value0 if value0 != null })
+    "redundancyConfiguration" = (var.redundancy_configuration == null ? null : { for key0, value0 in { "@odata.type" = var.redundancy_configuration["odata_type"], "redundancyTier" = var.redundancy_configuration["redundancyTier"], "zoneLocalIpAddress" = var.redundancy_configuration["zoneLocalIpAddress"] } : key0 => value0 if value0 != null })
+    "tunnelConfiguration"     = var.tunnel_configuration
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

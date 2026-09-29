@@ -4,20 +4,17 @@ variable "assignable_to" {
   default     = null
 
   validation {
-    condition     = var.assignable_to == null ? true : contains(["none", "user", "group", "device", "unknownFutureValue"], var.assignable_to)
-    error_message = "assignable_to must be one of the documented enum values."
+    condition     = var.assignable_to == null ? true : try(alltrue([for value in split(",", var.assignable_to) : contains(["none", "user", "group", "device", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "assignable_to must be one or more of the documented enum values, separated by commas."
   }
 }
 
 variable "assignments" {
   description = "The list of license assignments that consume licenses from this allotment. Not nullable."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.cloudLicensing.assignment")
-    allotment  = optional(any)
-    assignedTo = optional(object({
-      odata_type      = optional(string, "#microsoft.graph.directoryObject")
-      deletedDateTime = optional(string)
-    }))
+    odata_type             = optional(string, "#microsoft.graph.cloudLicensing.assignment")
+    allotment              = optional(any)
+    assignedTo             = optional(any)
     disabledServicePlanIds = optional(list(string))
   }))
   default = null
@@ -73,10 +70,7 @@ variable "waiting_members" {
       })))
       waitingMembers = optional(any)
     }))
-    assignedTo = optional(object({
-      odata_type      = optional(string, "#microsoft.graph.directoryObject")
-      deletedDateTime = optional(string)
-    }))
+    assignedTo           = optional(any)
     waitingSinceDateTime = optional(string)
   }))
   default = null

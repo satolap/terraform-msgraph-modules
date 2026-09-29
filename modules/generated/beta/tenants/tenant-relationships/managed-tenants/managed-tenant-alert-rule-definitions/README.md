@@ -22,10 +22,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `alert_rules` | `alertRules` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantAlertRule")       alertDisplayName = optional(string)       alertTTL = optional(number)       alerts = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantAlert")       alertData = optional(any)       alertDataReferenceStrings = optional(any)       alertLogs = optional(any)       alertRule = optional(any)       alertRuleDisplayName = optional(string)       apiNotifications = optional(any)       assignedToUserId = optional(string)       correlationCount = optional(number)       correlationId = optional(string)       createdByUserId = optional(string)       createdDateTime = optional(string)       emailNotifications = optional(any)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       message = optional(string)       severity = optional(any)       status = optional(any)       tenantId = optional(string)       title = optional(string)     })))       createdByUserId = optional(string)       createdDateTime = optional(string)       description = optional(string)       displayName = optional(string)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       lastRunDateTime = optional(string)       notificationFinalDestinations = optional(any)       ruleDefinition = optional(any)       severity = optional(any)       targets = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.notificationTarget")       displayName = optional(string)     })))       tenantIds = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.tenantInfo")       tenantId = optional(string)     })))     }))` | no | no |
+| `alert_rules` | `alertRules` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantAlertRule")       alertDisplayName = optional(string)       alertTTL = optional(number)       alerts = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantAlert")       alertData = optional(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.alertData")       displayName = optional(string)     }))       alertDataReferenceStrings = optional(any)       alertLogs = optional(any)       alertRule = optional(any)       alertRuleDisplayName = optional(string)       apiNotifications = optional(any)       assignedToUserId = optional(string)       correlationCount = optional(number)       correlationId = optional(string)       createdByUserId = optional(string)       createdDateTime = optional(string)       emailNotifications = optional(any)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       message = optional(string)       severity = optional(string)       status = optional(string)       tenantId = optional(string)       title = optional(string)     })))       createdByUserId = optional(string)       createdDateTime = optional(string)       description = optional(string)       displayName = optional(string)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       lastRunDateTime = optional(string)       notificationFinalDestinations = optional(string)       ruleDefinition = optional(any)       severity = optional(string)       targets = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.notificationTarget")       displayName = optional(string)     })))       tenantIds = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.tenantInfo")       tenantId = optional(string)     })))     }))` | no | no |
 | `created_by_user_id` | `createdByUserId` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `definition_template` | `definitionTemplate` | `any` | no | no |
+| `definition_template` | `definitionTemplate` | `object({       odata_type = optional(string, "#microsoft.graph.managedTenants.alertRuleDefinitionTemplate")       defaultSeverity = optional(string)     })` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `last_action_by_user_id` | `lastActionByUserId` | `string` | no | no |
 | `last_action_date_time` | `lastActionDateTime` | `string` | no | no |
@@ -47,18 +47,12 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- alertRules[].alerts[].alertData: polymorphic schema; accepts an untyped value
 - alertRules[].alerts[].alertDataReferenceStrings[]: nested schema exceeds depth limit; accepts an untyped value
 - alertRules[].alerts[].alertLogs[]: nested schema exceeds depth limit; accepts an untyped value
-- alertRules[].alerts[].alertRule: polymorphic schema; accepts an untyped value
+- alertRules[].alerts[].alertRule: navigation property; accepts an untyped value
 - alertRules[].alerts[].apiNotifications[]: nested schema exceeds depth limit; accepts an untyped value
 - alertRules[].alerts[].emailNotifications[]: nested schema exceeds depth limit; accepts an untyped value
-- alertRules[].alerts[].severity: polymorphic schema; accepts an untyped value
-- alertRules[].alerts[].status: polymorphic schema; accepts an untyped value
-- alertRules[].notificationFinalDestinations: polymorphic schema; accepts an untyped value
-- alertRules[].ruleDefinition: polymorphic schema; accepts an untyped value
-- alertRules[].severity: polymorphic schema; accepts an untyped value
-- definitionTemplate: polymorphic schema; accepts an untyped value
+- alertRules[].ruleDefinition: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

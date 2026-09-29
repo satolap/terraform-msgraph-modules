@@ -24,15 +24,15 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.cloudPcUserSettingAssignment")       createdDateTime = optional(string)       target = optional(any)     }))` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `cross_region_disaster_recovery_setting` | `crossRegionDisasterRecoverySetting` | `any` | no | no |
+| `cross_region_disaster_recovery_setting` | `crossRegionDisasterRecoverySetting` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcCrossRegionDisasterRecoverySetting")       crossRegionDisasterRecoveryEnabled = optional(bool)       disasterRecoveryNetworkSetting = optional(any)       disasterRecoveryType = optional(string)       maintainCrossRegionRestorePointEnabled = optional(bool)       userInitiatedDisasterRecoveryAllowed = optional(bool)     })` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `local_admin_enabled` | `localAdminEnabled` | `bool` | no | no |
-| `notification_setting` | `notificationSetting` | `any` | no | no |
+| `notification_setting` | `notificationSetting` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcNotificationSetting")       restartPromptsDisabled = optional(bool)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `provisioning_source_type` | `provisioningSourceType` | `any` | no | no |
+| `provisioning_source_type` | `provisioningSourceType` | `string` | no | no |
 | `reset_enabled` | `resetEnabled` | `bool` | no | no |
-| `restore_point_setting` | `restorePointSetting` | `any` | no | no |
+| `restore_point_setting` | `restorePointSetting` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcRestorePointSetting")       frequencyInHours = optional(number)       frequencyType = optional(string)       userRestoreEnabled = optional(bool)     })` | no | no |
 | `self_service_enabled` | `selfServiceEnabled` | `bool` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -52,10 +52,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].target: polymorphic schema; accepts an untyped value
-- crossRegionDisasterRecoverySetting: polymorphic schema; accepts an untyped value
-- notificationSetting: polymorphic schema; accepts an untyped value
-- provisioningSourceType: polymorphic schema; accepts an untyped value
-- restorePointSetting: polymorphic schema; accepts an untyped value
+- crossRegionDisasterRecoverySetting.disasterRecoveryNetworkSetting: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

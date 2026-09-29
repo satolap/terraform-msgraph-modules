@@ -64,7 +64,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - error: polymorphic schema; accepts an untyped value
-- uploadAgent: polymorphic schema; accepts an untyped value
+- uploadAgent: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

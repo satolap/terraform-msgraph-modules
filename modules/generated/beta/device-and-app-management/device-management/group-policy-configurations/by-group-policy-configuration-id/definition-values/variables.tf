@@ -53,14 +53,8 @@ variable "odata_type" {
 
 variable "presentation_values" {
   description = "The associated group policy presentation values with the definition value."
-  type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.groupPolicyPresentationValue")
-    createdDateTime      = optional(string)
-    definitionValue      = optional(any)
-    lastModifiedDateTime = optional(string)
-    presentation         = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

@@ -28,8 +28,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `default_mac_os_enrollment_profile` | `defaultMacOsEnrollmentProfile` | `any` | no | no |
 | `default_tv_os_enrollment_profile` | `defaultTvOSEnrollmentProfile` | `any` | no | no |
 | `default_vision_os_enrollment_profile` | `defaultVisionOSEnrollmentProfile` | `any` | no | no |
-| `enrollment_profiles` | `enrollmentProfiles` | `list(object({       odata_type = optional(string, "#microsoft.graph.enrollmentProfile")       configurationEndpointUrl = optional(string)       description = optional(string)       displayName = optional(string)       enableAuthenticationViaCompanyPortal = optional(bool)       requireCompanyPortalOnSetupAssistantEnrolledDevices = optional(bool)       requiresUserAuthentication = optional(bool)     }))` | no | no |
-| `imported_apple_device_identities` | `importedAppleDeviceIdentities` | `list(object({       odata_type = optional(string, "#microsoft.graph.importedAppleDeviceIdentity")       createdDateTime = optional(string)       description = optional(string)       discoverySource = optional(string)       enrollmentState = optional(string)       isDeleted = optional(bool)       isSupervised = optional(bool)       lastContactedDateTime = optional(string)       platform = optional(string)       requestedEnrollmentProfileAssignmentDateTime = optional(string)       requestedEnrollmentProfileId = optional(string)       serialNumber = optional(string)     }))` | no | no |
+| `enrollment_profiles` | `enrollmentProfiles` | `any` | no | no |
+| `imported_apple_device_identities` | `importedAppleDeviceIdentities` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `last_successful_sync_date_time` | `lastSuccessfulSyncDateTime` | `string` | no | no |
 | `last_sync_error_code` | `lastSyncErrorCode` | `number` | no | no |
@@ -58,10 +58,12 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- defaultIosEnrollmentProfile: polymorphic schema; accepts an untyped value
-- defaultMacOsEnrollmentProfile: polymorphic schema; accepts an untyped value
-- defaultTvOSEnrollmentProfile: polymorphic schema; accepts an untyped value
-- defaultVisionOSEnrollmentProfile: polymorphic schema; accepts an untyped value
+- defaultIosEnrollmentProfile: navigation property; accepts an untyped value
+- defaultMacOsEnrollmentProfile: navigation property; accepts an untyped value
+- defaultTvOSEnrollmentProfile: navigation property; accepts an untyped value
+- defaultVisionOSEnrollmentProfile: navigation property; accepts an untyped value
+- enrollmentProfiles[]: polymorphic schema; accepts an untyped value
+- importedAppleDeviceIdentities[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

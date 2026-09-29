@@ -26,10 +26,8 @@ variable "odata_type" {
 
 variable "progress_events" {
   description = "A collection of migration events that reflects the job status changes."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.sharePointMigrationEvent")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

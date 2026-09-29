@@ -29,11 +29,41 @@ appear). To handle this within a generic `msgraph`-provider-based module, this m
    `local-exec` provisioner, using the internal resource `id` captured in step 3 (the
    provider's own resource lifecycle has no concept of "run a different request on destroy").
 
-**Because of step 5, this module requires Bash, the Azure CLI (`az`), and `curl` 7.76+ to be available and
-already logged in (`az login`) on the machine running `terraform destroy`** — it reuses that
-session in the same public-cloud tenant as the `msgraph` provider. Missing IDs, credentials,
-and HTTP failures cause destroy to fail so state can be retained for retry. Request delivery
-is asynchronous; verify removal in the Microsoft Entra admin center afterward.
+**Because of step 5, the machine running `terraform destroy` needs Bash, the Azure CLI (`az`)
+logged in with `az login`, `curl` 7.76 or later, and `ARM_TENANT_ID` set to the tenant ID the
+`msgraph` provider uses.** The hook targets the public cloud (`graph.microsoft.com`). Before it
+requests a token, it compares `ARM_TENANT_ID` with `az account show --query tenantId` and stops
+if the variable is unset or the tenants differ, so the request cannot reach another tenant.
+The token reaches `curl` through a config on stdin, never on the command line, so it does not
+appear in the process list. Missing IDs, credentials, a tenant mismatch and HTTP failures
+cause destroy to fail so state can be retained for retry. Request delivery is asynchronous;
+verify removal in the Microsoft Entra admin center afterward. Destroy cleanup is unsupported
+on Windows.
+
+## Upgrade note: destroy cleanup requires `ARM_TENANT_ID`
+
+`terraform destroy` now stops before removing the catalog resource unless `ARM_TENANT_ID` is
+set on the machine running Terraform and equals the Azure CLI tenant
+(`az account show --query tenantId -o tsv`; letter case is ignored). Earlier versions sent the
+`adminRemove` request to whichever tenant the Azure CLI was logged in to and passed the bearer
+token to `curl` as a command-line argument.
+
+- **Why:** the hook authenticates with the Azure CLI, not with the provider's credentials, so
+  the two can point at different tenants. A destroy-time hook can read only its own stored
+  values, and a new module input would change them and replace the hook, which runs the
+  cleanup. The hook therefore reads the expected tenant from `ARM_TENANT_ID`, the environment
+  variable the `msgraph` provider reads for `tenant_id`
+  ([provider source, v0.5.0](https://github.com/microsoft/terraform-provider-msgraph/blob/v0.5.0/internal/provider/provider.go#L303-L306),
+  [provider documentation](https://registry.terraform.io/providers/microsoft/msgraph/0.5.0/docs)).
+- **What to do:** export `ARM_TENANT_ID=<tenant GUID>` wherever `terraform destroy` runs,
+  including CI, and log the Azure CLI in to that tenant (`az login --tenant <tenant GUID>`). If
+  the `provider "msgraph"` block sets `tenant_id`, use the same value.
+- **Still required:** Bash, the Azure CLI and `curl` on the machine running destroy. Destroy
+  cleanup is unsupported on Windows.
+- **Existing deployments:** only the hook's command changed, not its `triggers`, so upgrading
+  plans no change to `null_resource.remove_on_destroy` and removes nothing. If destroy stops on
+  the tenant check, the resource stays in the catalog and in state; fix the variable or the
+  login and run destroy again.
 
 ## Usage
 
@@ -65,7 +95,7 @@ module "engineering_sharepoint_resource" {
 | msgraph | >= 0.3.0 |
 | time | >= 0.9.0 |
 | null | >= 3.2.0 |
-| Azure CLI (`az`) + `curl` | Required on the machine running `terraform destroy` |
+| Bash, Azure CLI (`az`), `curl` 7.76+ and `ARM_TENANT_ID` | Required on the machine running `terraform destroy`; Windows is unsupported for destroy cleanup |
 
 Permissions needed (application or delegated, in addition to
 `EntitlementManagement.ReadWrite.All`), depending on `resource_origin_system`:

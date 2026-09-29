@@ -19,12 +19,12 @@ run "typed_request" {
   command = plan
 
   variables {
-    supported_solution = "windows365"
+    provisioning_type = "dedicated"
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["supportedSolution"]) == jsonencode("windows365")
-    error_message = "supportedSolution must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["provisioningType"]) == jsonencode("dedicated")
+    error_message = "provisioningType must preserve typed values and omit nested nulls."
   }
 }
 
@@ -36,4 +36,27 @@ run "invalid_enum" {
   }
 
   expect_failures = [var.provisioning_type]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    supported_solution = "windows365, DevBox"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["supportedSolution"] == "windows365, DevBox"
+    error_message = "supportedSolution must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    supported_solution = "windows365,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.supported_solution]
 }

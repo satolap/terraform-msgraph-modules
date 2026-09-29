@@ -26,6 +26,7 @@ run "typed_request" {
     user_id      = "test-parent-id"
     display_name = "example"
     is_expanded  = false
+    display_icon = { "contentUrl" = null }
     items        = [{}]
   }
 
@@ -37,6 +38,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isExpanded"]) == jsonencode(false)
     error_message = "isExpanded must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["displayIcon"]) == jsonencode({ "@odata.type" = "#microsoft.graph.sectionDisplayIcon" })
+    error_message = "displayIcon must preserve typed values and omit nested nulls."
   }
 
   assert {

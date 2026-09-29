@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `access_package_catalog_id` | URL parameter `accessPackageCatalog-id` | `string` | yes | no |
 | `authentication_configuration` | `authenticationConfiguration` | `any` | no | no |
-| `client_configuration` | `clientConfiguration` | `any` | no | no |
+| `client_configuration` | `clientConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.customExtensionClientConfiguration")       maximumRetries = optional(number)       timeoutInMilliseconds = optional(number)     })` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `endpoint_configuration` | `endpointConfiguration` | `any` | no | no |
@@ -48,7 +48,6 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - authenticationConfiguration: polymorphic schema; accepts an untyped value
-- clientConfiguration: polymorphic schema; accepts an untyped value
 - endpointConfiguration: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

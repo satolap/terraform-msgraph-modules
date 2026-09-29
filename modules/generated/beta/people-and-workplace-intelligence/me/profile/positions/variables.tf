@@ -1,11 +1,11 @@
 variable "allowed_audiences" {
   description = "The audiences that are able to see the values contained within the associated entity. The possible values are: me, family, contacts, groupMembers, organization, federatedOrganizations, everyone, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.allowed_audiences == null ? true : contains(["me", "family", "contacts", "groupMembers", "organization", "federatedOrganizations", "everyone", "unknownFutureValue"], var.allowed_audiences)
-    error_message = "allowed_audiences must be one of the documented enum values."
+    condition     = var.allowed_audiences == null ? true : try(alltrue([for value in split(",", var.allowed_audiences) : contains(["me", "family", "contacts", "groupmembers", "organization", "federatedorganizations", "everyone", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "allowed_audiences must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -20,7 +20,7 @@ variable "colleagues" {
   type = list(object({
     odata_type        = optional(string, "#microsoft.graph.relatedPerson")
     displayName       = optional(string)
-    relationship      = optional(any)
+    relationship      = optional(string)
     userId            = optional(string)
     userPrincipalName = optional(string)
   }))
@@ -41,20 +41,63 @@ variable "created_date_time" {
 
 variable "detail" {
   description = "Contains detailed information about the position."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.positionDetail")
+    company = optional(object({
+      odata_type = optional(string, "#microsoft.graph.companyDetail")
+      address = optional(object({
+        odata_type      = optional(string, "#microsoft.graph.physicalAddress")
+        city            = optional(string)
+        countryOrRegion = optional(string)
+        postOfficeBox   = optional(string)
+        postalCode      = optional(string)
+        state           = optional(string)
+        street          = optional(string)
+        type            = optional(string)
+      }))
+      companyCode         = optional(string)
+      costCenter          = optional(string)
+      department          = optional(string)
+      displayName         = optional(string)
+      division            = optional(string)
+      officeLocation      = optional(string)
+      pronunciation       = optional(string)
+      secondaryDepartment = optional(string)
+      webUrl              = optional(string)
+    }))
+    description       = optional(string)
+    employeeId        = optional(string)
+    employeeType      = optional(string)
+    endMonthYear      = optional(string)
+    jobTitle          = optional(string)
+    layer             = optional(number)
+    level             = optional(string)
+    role              = optional(string)
+    secondaryJobTitle = optional(string)
+    secondaryRole     = optional(string)
+    startMonthYear    = optional(string)
+    summary           = optional(string)
+  })
+  default = null
 }
 
 variable "graph_source" {
   description = "Where the values within an entity originated if synced from another service."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.personDataSources")
+    type       = optional(list(string))
+  })
+  default = null
 }
 
 variable "inference" {
   description = "Contains inference detail if the entity is inferred by the creating or modifying application."
-  type        = any
-  default     = null
+  type = object({
+    odata_type              = optional(string, "#microsoft.graph.inferenceData")
+    confidenceScore         = optional(any)
+    userHasVerifiedAccuracy = optional(bool)
+  })
+  default = null
 }
 
 variable "is_current" {
@@ -83,8 +126,14 @@ variable "last_modified_date_time" {
 
 variable "manager" {
   description = "Contains detail of the user's manager in this position."
-  type        = any
-  default     = null
+  type = object({
+    odata_type        = optional(string, "#microsoft.graph.relatedPerson")
+    displayName       = optional(string)
+    relationship      = optional(string)
+    userId            = optional(string)
+    userPrincipalName = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {

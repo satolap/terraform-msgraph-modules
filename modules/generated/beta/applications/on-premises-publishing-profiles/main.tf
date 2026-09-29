@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "applicationSegments"             = (var.application_segments == null ? null : [for item0 in var.application_segments : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "action" = item0["action"], "application" = item0["application"], "destinationHost" = item0["destinationHost"], "destinationType" = item0["destinationType"], "port" = item0["port"], "ports" = (item0["ports"] == null ? null : [for item2 in item0["ports"] : item2 if item2 != null]), "protocol" = item0["protocol"] } : key1 => value1 if value1 != null }) if item0 != null])
-    "hybridAgentUpdaterConfiguration" = var.hybrid_agent_updater_configuration
+    "hybridAgentUpdaterConfiguration" = (var.hybrid_agent_updater_configuration == null ? null : { for key0, value0 in { "@odata.type" = var.hybrid_agent_updater_configuration["odata_type"], "allowUpdateConfigurationOverride" = var.hybrid_agent_updater_configuration["allowUpdateConfigurationOverride"], "deferUpdateDateTime" = var.hybrid_agent_updater_configuration["deferUpdateDateTime"], "updateWindow" = (var.hybrid_agent_updater_configuration["updateWindow"] == null ? null : { for key1, value1 in { "@odata.type" = var.hybrid_agent_updater_configuration["updateWindow"]["odata_type"], "updateWindowEndTime" = var.hybrid_agent_updater_configuration["updateWindow"]["updateWindowEndTime"], "updateWindowStartTime" = var.hybrid_agent_updater_configuration["updateWindow"]["updateWindowStartTime"] } : key1 => value1 if value1 != null }) } : key0 => value0 if value0 != null })
     "isDefaultAccessEnabled"          = var.is_default_access_enabled
     "isEnabled"                       = var.is_enabled
     "@odata.type"                     = var.odata_type

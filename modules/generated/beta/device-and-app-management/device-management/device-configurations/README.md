@@ -13,6 +13,7 @@ Lifecycle: `POST /deviceManagement/deviceConfigurations`, `GET/PATCH/DELETE /dev
 ```hcl
 module "graph_resource" {
   source = "./device-and-app-management/device-management/device-configurations"
+  odata_type = "#microsoft.graph.androidCustomConfiguration"
 }
 ```
 
@@ -22,12 +23,13 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceConfigurationAssignment")       intent = optional(any)       source = optional(string)       target = optional(any)     }))` | no | no |
+| `odata_type` | `@odata.type` | `string` | yes | no |
+| `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceConfigurationAssignment")       intent = optional(string)       target = optional(any)     }))` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
-| `device_management_applicability_rule_device_mode` | `deviceManagementApplicabilityRuleDeviceMode` | `any` | no | no |
-| `device_management_applicability_rule_os_edition` | `deviceManagementApplicabilityRuleOsEdition` | `any` | no | no |
-| `device_management_applicability_rule_os_version` | `deviceManagementApplicabilityRuleOsVersion` | `any` | no | no |
+| `device_management_applicability_rule_device_mode` | `deviceManagementApplicabilityRuleDeviceMode` | `object({       odata_type = optional(string, "#microsoft.graph.deviceManagementApplicabilityRuleDeviceMode")       deviceMode = optional(string)       name = optional(string)       ruleType = optional(string)     })` | no | no |
+| `device_management_applicability_rule_os_edition` | `deviceManagementApplicabilityRuleOsEdition` | `object({       odata_type = optional(string, "#microsoft.graph.deviceManagementApplicabilityRuleOsEdition")       name = optional(string)       osEditionTypes = optional(list(string))       ruleType = optional(string)     })` | no | no |
+| `device_management_applicability_rule_os_version` | `deviceManagementApplicabilityRuleOsVersion` | `object({       odata_type = optional(string, "#microsoft.graph.deviceManagementApplicabilityRuleOsVersion")       maxOSVersion = optional(string)       minOSVersion = optional(string)       name = optional(string)       ruleType = optional(string)     })` | no | no |
 | `device_setting_state_summaries` | `deviceSettingStateSummaries` | `list(object({       odata_type = optional(string, "#microsoft.graph.settingStateDeviceSummary")       compliantDeviceCount = optional(number)       conflictDeviceCount = optional(number)       errorDeviceCount = optional(number)       instancePath = optional(string)       nonCompliantDeviceCount = optional(number)       notApplicableDeviceCount = optional(number)       remediatedDeviceCount = optional(number)       settingName = optional(string)       unknownDeviceCount = optional(number)     }))` | no | no |
 | `device_status_overview` | `deviceStatusOverview` | `any` | no | no |
 | `device_statuses` | `deviceStatuses` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceConfigurationDeviceStatus")       complianceGracePeriodExpirationDateTime = optional(string)       deviceDisplayName = optional(string)       deviceModel = optional(string)       lastReportedDateTime = optional(string)       platform = optional(number)       status = optional(string)       userName = optional(string)       userPrincipalName = optional(string)     }))` | no | no |
@@ -35,13 +37,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `graph_version` | `version` | `number` | no | no |
 | `group_assignments` | `groupAssignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceConfigurationGroupAssignment")       deviceConfiguration = optional(any)       excludeGroup = optional(bool)       targetGroupId = optional(string)     }))` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
 | `role_scope_tag_ids` | `roleScopeTagIds` | `list(string)` | no | no |
 | `user_status_overview` | `userStatusOverview` | `any` | no | no |
 | `user_statuses` | `userStatuses` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceConfigurationUserStatus")       devicesCount = optional(number)       lastReportedDateTime = optional(string)       status = optional(string)       userDisplayName = optional(string)       userPrincipalName = optional(string)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
-Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.
 
 Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
@@ -55,15 +56,12 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- @odata.type: microsoft.graph.deviceConfiguration is abstract; odata_type has no default and must name a concrete type
 - Microsoft Graph beta contracts can change without notice.
-- assignments[].intent: polymorphic schema; accepts an untyped value
 - assignments[].target: polymorphic schema; accepts an untyped value
-- deviceManagementApplicabilityRuleDeviceMode: polymorphic schema; accepts an untyped value
-- deviceManagementApplicabilityRuleOsEdition: polymorphic schema; accepts an untyped value
-- deviceManagementApplicabilityRuleOsVersion: polymorphic schema; accepts an untyped value
-- deviceStatusOverview: polymorphic schema; accepts an untyped value
+- deviceStatusOverview: navigation property; accepts an untyped value
 - groupAssignments[].deviceConfiguration: polymorphic schema; accepts an untyped value
-- userStatusOverview: polymorphic schema; accepts an untyped value
+- userStatusOverview: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

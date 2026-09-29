@@ -35,17 +35,15 @@ variable "columns" {
   description = "The set of vertical columns in this section."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.horizontalSectionColumn")
-    webparts = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.webPart")
-    })))
-    width = optional(number)
+    webparts   = optional(any)
+    width      = optional(number)
   }))
   default = null
 }
 
 variable "emphasis" {
   description = "Enumeration value that indicates the emphasis of the section background. The possible values are: none, netural, soft, strong, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -56,7 +54,7 @@ variable "emphasis" {
 
 variable "layout" {
   description = "Layout type of the section. The possible values are: none, oneColumn, twoColumns, threeColumns, oneThirdLeftColumn, oneThirdRightColumn, fullWidth, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

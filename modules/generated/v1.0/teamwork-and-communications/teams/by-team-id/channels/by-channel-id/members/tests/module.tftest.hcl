@@ -7,6 +7,7 @@ run "minimal_request" {
   variables {
     team_id    = "test-parent-id"
     channel_id = "test-parent-id"
+    odata_type = "#microsoft.graph.aadUserConversationMember"
   }
 
   assert {
@@ -26,8 +27,14 @@ run "typed_request" {
   variables {
     team_id      = "test-parent-id"
     channel_id   = "test-parent-id"
+    odata_type   = "#microsoft.graph.aadUserConversationMember"
     display_name = "example"
     roles        = ["example"]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.aadUserConversationMember")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -39,4 +46,16 @@ run "typed_request" {
     condition     = jsonencode(msgraph_resource.this.body["roles"]) == jsonencode(["example"])
     error_message = "roles must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    team_id    = "test-parent-id"
+    channel_id = "test-parent-id"
+    odata_type = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

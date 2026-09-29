@@ -29,7 +29,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `discoverabilities` | `discoverabilities` | `string` | no | no |
 | `discovery_date_time` | `discoveryDateTime` | `string` | no | no |
 | `name` | `name` | `string` | no | no |
-| `objects` | `objects` | `list(object({       odata_type = optional(string, "#microsoft.graph.objectDefinition")       attributes = optional(list(object({       odata_type = optional(string, "#microsoft.graph.attributeDefinition")       anchor = optional(bool)       apiExpressions = optional(any)       caseExact = optional(bool)       defaultValue = optional(string)       flowNullValues = optional(bool)       metadata = optional(any)       multivalued = optional(bool)       mutability = optional(string)       name = optional(string)       referencedObjects = optional(any)       required = optional(bool)       type = optional(string)     })))       metadata = optional(list(object({       odata_type = optional(string, "#microsoft.graph.objectDefinitionMetadataEntry")       key = optional(any)       value = optional(string)     })))       name = optional(string)       supportedApis = optional(list(string))     }))` | no | no |
+| `objects` | `objects` | `list(object({       odata_type = optional(string, "#microsoft.graph.objectDefinition")       attributes = optional(list(object({       odata_type = optional(string, "#microsoft.graph.attributeDefinition")       anchor = optional(bool)       apiExpressions = optional(any)       caseExact = optional(bool)       defaultValue = optional(string)       flowNullValues = optional(bool)       metadata = optional(any)       multivalued = optional(bool)       mutability = optional(string)       name = optional(string)       referencedObjects = optional(any)       required = optional(bool)       type = optional(string)     })))       metadata = optional(list(object({       odata_type = optional(string, "#microsoft.graph.objectDefinitionMetadataEntry")       key = optional(string)       value = optional(string)     })))       name = optional(string)       supportedApis = optional(list(string))     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -51,7 +51,6 @@ Generation notes:
 - objects[].attributes[].apiExpressions[]: nested schema exceeds depth limit; accepts an untyped value
 - objects[].attributes[].metadata[]: nested schema exceeds depth limit; accepts an untyped value
 - objects[].attributes[].referencedObjects[]: nested schema exceeds depth limit; accepts an untyped value
-- objects[].metadata[].key: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

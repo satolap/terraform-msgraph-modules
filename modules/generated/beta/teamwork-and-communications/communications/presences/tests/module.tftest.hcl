@@ -19,11 +19,17 @@ run "typed_request" {
   command = plan
 
   variables {
-    activity = "example"
+    activity               = "example"
+    out_of_office_settings = { "isOutOfOffice" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["activity"]) == jsonencode("example")
     error_message = "activity must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["outOfOfficeSettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.outOfOfficeSettings" })
+    error_message = "outOfOfficeSettings must preserve typed values and omit nested nulls."
   }
 }

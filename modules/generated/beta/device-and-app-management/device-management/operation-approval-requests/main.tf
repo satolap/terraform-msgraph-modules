@@ -2,7 +2,6 @@
 locals {
   typed_body = { for key, value in {
     "@odata.type" = var.odata_type
-    "status"      = var.status
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

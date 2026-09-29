@@ -49,22 +49,8 @@ variable "odata_type" {
 
 variable "policies" {
   description = "The traffic forwarding policies associated with this profile."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.networkaccess.policyLink")
-    policy = optional(object({
-      odata_type  = optional(string, "#microsoft.graph.networkaccess.policy")
-      description = optional(string)
-      name        = optional(string)
-      policyRules = optional(list(object({
-        odata_type = optional(string, "#microsoft.graph.networkaccess.policyRule")
-        name       = optional(string)
-      })))
-      version = optional(string)
-    }))
-    state   = optional(string)
-    version = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "priority" {

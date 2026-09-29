@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "#microsoft.graph.androidManagedAppRegistration"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "deviceAppManagement/managedAppRegistrations"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,8 +23,14 @@ run "typed_request" {
   command = plan
 
   variables {
+    odata_type          = "#microsoft.graph.androidManagedAppRegistration"
     application_version = "example"
     applied_policies    = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.androidManagedAppRegistration")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -29,7 +39,17 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["appliedPolicies"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.managedAppPolicy" }])
+    condition     = jsonencode(msgraph_resource.this.body["appliedPolicies"]) == jsonencode([{}])
     error_message = "appliedPolicies must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    odata_type = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

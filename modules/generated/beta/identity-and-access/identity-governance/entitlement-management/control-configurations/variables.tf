@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.endUserSettings", "#microsoft.graph.entraIdProtectionRiskyUserApproval", "#microsoft.graph.insiderRiskyUserApproval"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "created_by" {
   description = "The userPrincipalName of the user or identity that created the control configuration."
   type        = string
@@ -26,13 +37,6 @@ variable "modified_date_time" {
   description = "The date and time the control configuration was modified."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.controlConfiguration"
-  nullable    = false
 }
 
 variable "additional_properties" {

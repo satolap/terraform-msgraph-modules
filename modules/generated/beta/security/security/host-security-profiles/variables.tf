@@ -52,11 +52,11 @@ variable "logon_users" {
     odata_type        = optional(string, "#microsoft.graph.logonUser")
     accountDomain     = optional(string)
     accountName       = optional(string)
-    accountType       = optional(any)
+    accountType       = optional(string)
     firstSeenDateTime = optional(string)
     lastSeenDateTime  = optional(string)
     logonId           = optional(string)
-    logonTypes        = optional(any)
+    logonTypes        = optional(list(string))
   }))
   default = null
 }
@@ -125,8 +125,14 @@ variable "tags" {
 
 variable "vendor_information" {
   description = "Microsoft Graph vendorInformation property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.securityVendorInformation")
+    provider        = optional(string)
+    providerVersion = optional(string)
+    subProvider     = optional(string)
+    vendor          = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

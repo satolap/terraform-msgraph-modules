@@ -22,8 +22,12 @@ variable "outlook_task_folder_id" {
 
 variable "body" {
   description = "The task body that typically contains information about the task. Only the HTML type is supported."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.itemBody")
+    content     = optional(string)
+    contentType = optional(string)
+  })
+  default = null
 }
 
 variable "categories" {
@@ -34,8 +38,12 @@ variable "categories" {
 
 variable "completed_date_time" {
   description = "The date in the specified time zone that the task was finished."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+    dateTime   = optional(string)
+    timeZone   = optional(string)
+  })
+  default = null
 }
 
 variable "created_date_time" {
@@ -46,8 +54,12 @@ variable "created_date_time" {
 
 variable "due_date_time" {
   description = "The date in the specified time zone that the task is to be finished."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+    dateTime   = optional(string)
+    timeZone   = optional(string)
+  })
+  default = null
 }
 
 variable "has_attachments" {
@@ -58,7 +70,7 @@ variable "has_attachments" {
 
 variable "importance" {
   description = "The importance of the event. The possible values are: low, normal, high."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -100,19 +112,43 @@ variable "parent_folder_id" {
 
 variable "recurrence" {
   description = "The recurrence pattern for the task."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.patternedRecurrence")
+    pattern = optional(object({
+      odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+      dayOfMonth     = optional(number)
+      daysOfWeek     = optional(list(string))
+      firstDayOfWeek = optional(string)
+      index          = optional(string)
+      interval       = optional(number)
+      month          = optional(number)
+      type           = optional(string)
+    }))
+    range = optional(object({
+      odata_type          = optional(string, "#microsoft.graph.recurrenceRange")
+      endDate             = optional(string)
+      numberOfOccurrences = optional(number)
+      recurrenceTimeZone  = optional(string)
+      startDate           = optional(string)
+      type                = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "reminder_date_time" {
   description = "The date and time for a reminder alert of the task to occur."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+    dateTime   = optional(string)
+    timeZone   = optional(string)
+  })
+  default = null
 }
 
 variable "sensitivity" {
   description = "Indicates the level of privacy for the task. The possible values are: normal, personal, private, confidential."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -123,13 +159,17 @@ variable "sensitivity" {
 
 variable "start_date_time" {
   description = "The date in the specified time zone when the task is to begin."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+    dateTime   = optional(string)
+    timeZone   = optional(string)
+  })
+  default = null
 }
 
 variable "status" {
   description = "Indicates the state or progress of the task. The possible values are: notStarted, inProgress, completed, waitingOnOthers, deferred."
-  type        = any
+  type        = string
   default     = null
 
   validation {

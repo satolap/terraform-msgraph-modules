@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     azure_subscription_id = "example"
     is_azure_ad_joined    = false
+    vendor_information    = { "provider" = null }
     logon_users           = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isAzureAdJoined"]) == jsonencode(false)
     error_message = "isAzureAdJoined must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["vendorInformation"]) == jsonencode({ "@odata.type" = "#microsoft.graph.securityVendorInformation" })
+    error_message = "vendorInformation must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -26,6 +26,7 @@ run "typed_request" {
     risky_service_principal_id = "test-parent-id"
     app_id                     = "example"
     is_enabled                 = false
+    activity                   = { "detail" = null }
     history                    = [{}]
   }
 
@@ -37,6 +38,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isEnabled"]) == jsonencode(false)
     error_message = "isEnabled must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["activity"]) == jsonencode({ "@odata.type" = "#microsoft.graph.riskServicePrincipalActivity" })
+    error_message = "activity must preserve typed values and omit nested nulls."
   }
 
   assert {

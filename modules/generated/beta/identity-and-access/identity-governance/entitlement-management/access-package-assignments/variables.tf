@@ -3,16 +3,13 @@ variable "access_package_assignment_requests" {
   type = list(object({
     odata_type              = optional(string, "#microsoft.graph.accessPackageAssignmentRequest")
     accessPackageAssignment = optional(any)
-    answers = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.accessPackageAnswer")
-      displayValue = optional(string)
-    })))
+    answers                 = optional(any)
     customExtensionCalloutInstances = optional(list(object({
       odata_type            = optional(string, "#microsoft.graph.customExtensionCalloutInstance")
       customExtensionId     = optional(string)
       detail                = optional(string)
       externalCorrelationId = optional(string)
-      status                = optional(any)
+      status                = optional(string)
     })))
     expirationDateTime = optional(string)
     history = optional(list(object({
@@ -26,7 +23,10 @@ variable "access_package_assignment_requests" {
     })))
     isValidationOnly = optional(bool)
     justification    = optional(string)
-    parameters       = optional(any)
+    parameters = optional(object({
+      odata_type     = optional(string, "#microsoft.graph.accessPackageAssignmentRequestParameters")
+      bypassApproval = optional(bool)
+    }))
   }))
   default = null
 }
@@ -38,7 +38,7 @@ variable "custom_extension_callout_instances" {
     customExtensionId     = optional(string)
     detail                = optional(string)
     externalCorrelationId = optional(string)
-    status                = optional(any)
+    status                = optional(string)
   }))
   default = null
 }

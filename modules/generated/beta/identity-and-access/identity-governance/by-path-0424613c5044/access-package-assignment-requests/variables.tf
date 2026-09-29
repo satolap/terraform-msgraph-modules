@@ -17,11 +17,8 @@ variable "access_package_assignment" {
 
 variable "answers" {
   description = "Answers provided by the requestor to accessPackageQuestions asked of them at the time of request."
-  type = list(object({
-    odata_type   = optional(string, "#microsoft.graph.accessPackageAnswer")
-    displayValue = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "custom_extension_callout_instances" {
@@ -31,7 +28,7 @@ variable "custom_extension_callout_instances" {
     customExtensionId     = optional(string)
     detail                = optional(string)
     externalCorrelationId = optional(string)
-    status                = optional(any)
+    status                = optional(string)
   }))
   default = null
 }
@@ -77,8 +74,11 @@ variable "odata_type" {
 
 variable "parameters" {
   description = "Additional parameters that control how the request is processed, such as bypassing the approval requirement configured on the access package policy."
-  type        = any
-  default     = null
+  type = object({
+    odata_type     = optional(string, "#microsoft.graph.accessPackageAssignmentRequestParameters")
+    bypassApproval = optional(bool)
+  })
+  default = null
 }
 
 variable "additional_properties" {

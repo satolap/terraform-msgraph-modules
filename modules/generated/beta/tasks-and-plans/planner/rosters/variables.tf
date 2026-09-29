@@ -1,7 +1,12 @@
 variable "assigned_sensitivity_label" {
   description = "The sensitivity label applied to the roster. If mandatory labeling is enabled for the user and no label is specified, the user can't create the roster. Also, if labels are mandatory for the user, the user can't change the label of the roster to null. The possible values are: standard, privileged, auto, unknownFutureValue."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.sensitivityLabelAssignment")
+    assignmentMethod   = optional(string)
+    sensitivityLabelId = optional(string)
+    tenantId           = optional(string)
+  })
+  default = null
 }
 
 variable "members" {
@@ -25,16 +30,22 @@ variable "odata_type" {
 variable "plans" {
   description = "Retrieves the plans contained by the plannerRoster."
   type = list(object({
-    odata_type                        = optional(string, "#microsoft.graph.plannerPlan")
-    container                         = optional(any)
-    contentSensitivityLabelAssignment = optional(any)
-    creationSource                    = optional(any)
-    owner                             = optional(string)
+    odata_type = optional(string, "#microsoft.graph.plannerPlan")
+    container  = optional(any)
+    contentSensitivityLabelAssignment = optional(object({
+      odata_type         = optional(string, "#microsoft.graph.contentSensitivityLabelAssignment")
+      assignmentMethod   = optional(string)
+      justificationText  = optional(string)
+      sensitivityLabelId = optional(string)
+      tenantId           = optional(string)
+    }))
+    creationSource = optional(any)
+    owner          = optional(string)
     sharedWithContainers = optional(list(object({
       odata_type  = optional(string, "#microsoft.graph.plannerSharedWithContainer")
       accessLevel = optional(string)
       containerId = optional(string)
-      type        = optional(any)
+      type        = optional(string)
       url         = optional(string)
     })))
     title = optional(string)

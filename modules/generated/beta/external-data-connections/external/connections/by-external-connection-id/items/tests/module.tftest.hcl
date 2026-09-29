@@ -24,7 +24,13 @@ run "typed_request" {
 
   variables {
     external_connection_id = "test-parent-id"
+    content                = { "type" = null }
     acl                    = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["content"]) == jsonencode({ "@odata.type" = "#microsoft.graph.externalConnectors.externalItemContent" })
+    error_message = "content must preserve typed values and omit nested nulls."
   }
 
   assert {

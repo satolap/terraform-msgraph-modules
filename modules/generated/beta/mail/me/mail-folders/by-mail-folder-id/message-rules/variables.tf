@@ -11,14 +11,63 @@ variable "mail_folder_id" {
 
 variable "actions" {
   description = "Actions to be taken on a message when the corresponding conditions are fulfilled."
-  type        = any
-  default     = null
+  type = object({
+    odata_type            = optional(string, "#microsoft.graph.messageRuleActions")
+    assignCategories      = optional(list(string))
+    copyToFolder          = optional(string)
+    delete                = optional(bool)
+    forwardAsAttachmentTo = optional(any)
+    forwardTo             = optional(any)
+    markAsRead            = optional(bool)
+    markImportance        = optional(string)
+    moveToFolder          = optional(string)
+    permanentDelete       = optional(bool)
+    redirectTo            = optional(any)
+    stopProcessingRules   = optional(bool)
+  })
+  default = null
 }
 
 variable "conditions" {
   description = "Conditions that when fulfilled trigger the corresponding actions for that rule."
-  type        = any
-  default     = null
+  type = object({
+    odata_type             = optional(string, "#microsoft.graph.messageRulePredicates")
+    bodyContains           = optional(list(string))
+    bodyOrSubjectContains  = optional(list(string))
+    categories             = optional(list(string))
+    fromAddresses          = optional(any)
+    hasAttachments         = optional(bool)
+    headerContains         = optional(list(string))
+    importance             = optional(string)
+    isApprovalRequest      = optional(bool)
+    isAutomaticForward     = optional(bool)
+    isAutomaticReply       = optional(bool)
+    isEncrypted            = optional(bool)
+    isMeetingRequest       = optional(bool)
+    isMeetingResponse      = optional(bool)
+    isNonDeliveryReport    = optional(bool)
+    isPermissionControlled = optional(bool)
+    isReadReceipt          = optional(bool)
+    isSigned               = optional(bool)
+    isVoicemail            = optional(bool)
+    messageActionFlag      = optional(string)
+    notSentToMe            = optional(bool)
+    recipientContains      = optional(list(string))
+    senderContains         = optional(list(string))
+    sensitivity            = optional(string)
+    sentCcMe               = optional(bool)
+    sentOnlyToMe           = optional(bool)
+    sentToAddresses        = optional(any)
+    sentToMe               = optional(bool)
+    sentToOrCcMe           = optional(bool)
+    subjectContains        = optional(list(string))
+    withinSizeRange = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.sizeRange")
+      maximumSize = optional(number)
+      minimumSize = optional(number)
+    }))
+  })
+  default = null
 }
 
 variable "display_name" {
@@ -29,8 +78,44 @@ variable "display_name" {
 
 variable "exceptions" {
   description = "Exception conditions for the rule."
-  type        = any
-  default     = null
+  type = object({
+    odata_type             = optional(string, "#microsoft.graph.messageRulePredicates")
+    bodyContains           = optional(list(string))
+    bodyOrSubjectContains  = optional(list(string))
+    categories             = optional(list(string))
+    fromAddresses          = optional(any)
+    hasAttachments         = optional(bool)
+    headerContains         = optional(list(string))
+    importance             = optional(string)
+    isApprovalRequest      = optional(bool)
+    isAutomaticForward     = optional(bool)
+    isAutomaticReply       = optional(bool)
+    isEncrypted            = optional(bool)
+    isMeetingRequest       = optional(bool)
+    isMeetingResponse      = optional(bool)
+    isNonDeliveryReport    = optional(bool)
+    isPermissionControlled = optional(bool)
+    isReadReceipt          = optional(bool)
+    isSigned               = optional(bool)
+    isVoicemail            = optional(bool)
+    messageActionFlag      = optional(string)
+    notSentToMe            = optional(bool)
+    recipientContains      = optional(list(string))
+    senderContains         = optional(list(string))
+    sensitivity            = optional(string)
+    sentCcMe               = optional(bool)
+    sentOnlyToMe           = optional(bool)
+    sentToAddresses        = optional(any)
+    sentToMe               = optional(bool)
+    sentToOrCcMe           = optional(bool)
+    subjectContains        = optional(list(string))
+    withinSizeRange = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.sizeRange")
+      maximumSize = optional(number)
+      minimumSize = optional(number)
+    }))
+  })
+  default = null
 }
 
 variable "is_enabled" {

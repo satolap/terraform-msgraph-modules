@@ -13,12 +13,7 @@ variable "info" {
   description = "Microsoft Graph info property."
   type = object({
     odata_type = optional(string, "#microsoft.graph.participantInfo")
-    identity = optional(object({
-      odata_type  = optional(string, "#microsoft.graph.identitySet")
-      application = optional(any)
-      device      = optional(any)
-      user        = optional(any)
-    }))
+    identity   = optional(any)
   })
   default = null
 }
@@ -63,20 +58,31 @@ variable "odata_type" {
 
 variable "recording_info" {
   description = "Information about whether the participant has recording capability."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.recordingInfo")
+    initiator       = optional(any)
+    recordingStatus = optional(string)
+  })
+  default = null
 }
 
 variable "removed_state" {
   description = "Indicates the reason why the participant was removed from the roster."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.removedState")
+    reason     = optional(string)
+  })
+  default = null
 }
 
 variable "restricted_experience" {
   description = "Indicates the reason or reasons media content from this participant is restricted."
-  type        = any
-  default     = null
+  type = object({
+    odata_type             = optional(string, "#microsoft.graph.onlineMeetingRestricted")
+    contentSharingDisabled = optional(string)
+    videoDisabled          = optional(string)
+  })
+  default = null
 }
 
 variable "roster_sequence_number" {

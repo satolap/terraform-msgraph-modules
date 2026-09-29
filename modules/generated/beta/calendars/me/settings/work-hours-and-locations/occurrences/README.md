@@ -27,7 +27,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `place_id` | `placeId` | `string` | no | no |
 | `recurrence_id` | `recurrenceId` | `string` | no | no |
 | `start` | `start` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
-| `time_off_details` | `timeOffDetails` | `any` | no | no |
+| `time_off_details` | `timeOffDetails` | `object({       odata_type = optional(string, "#microsoft.graph.timeOffDetails")       isAllDay = optional(bool)       subject = optional(string)     })` | no | no |
 | `work_location_type` | `workLocationType` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -46,7 +46,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- timeOffDetails: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

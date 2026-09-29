@@ -21,7 +21,7 @@ variable "alert_type" {
 
 variable "categories" {
   description = "Categories associated with the alert."
-  type        = any
+  type        = list(string)
   default     = null
 }
 
@@ -100,10 +100,8 @@ variable "product_name" {
 
 variable "related_resources" {
   description = "List of related resources to the alert (if applicable)."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.networkaccess.relatedResource")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "severity" {

@@ -1,7 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "alertImpact"         = var.alert_impact
+    "alertImpact"         = (var.alert_impact == null ? null : { for key0, value0 in { "@odata.type" = var.alert_impact["odata_type"], "aggregationType" = var.alert_impact["aggregationType"], "alertImpactDetails" = (var.alert_impact["alertImpactDetails"] == null ? null : [for item1 in var.alert_impact["alertImpactDetails"] : (item1 == null ? null : { for key2, value2 in { "@odata.type" = item1["odata_type"], "name" = item1["name"], "value" = item1["value"] } : key2 => value2 if value2 != null }) if item1 != null]), "value" = var.alert_impact["value"] } : key0 => value0 if value0 != null })
     "alertRuleId"         = var.alert_rule_id
     "alertRuleTemplate"   = var.alert_rule_template
     "detectedDateTime"    = var.detected_date_time

@@ -19,14 +19,14 @@ run "typed_request" {
   command = plan
 
   variables {
-    description              = "example"
+    approval_type            = "basic"
     allow_email_notification = false
     approvers                = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
-    error_message = "description must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["approvalType"]) == jsonencode("basic")
+    error_message = "approvalType must preserve typed values and omit nested nulls."
   }
 
   assert {

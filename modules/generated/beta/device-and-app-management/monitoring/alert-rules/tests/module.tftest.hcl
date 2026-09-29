@@ -19,19 +19,25 @@ run "typed_request" {
   command = plan
 
   variables {
-    description = "example"
-    enabled     = false
-    conditions  = [{}]
+    alert_rule_template = "cloudPcProvisionScenario"
+    enabled             = false
+    threshold           = { "aggregation" = null }
+    conditions          = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
-    error_message = "description must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["alertRuleTemplate"]) == jsonencode("cloudPcProvisionScenario")
+    error_message = "alertRuleTemplate must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["enabled"]) == jsonencode(false)
     error_message = "enabled must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["threshold"]) == jsonencode({ "@odata.type" = "#microsoft.graph.deviceManagement.ruleThreshold" })
+    error_message = "threshold must preserve typed values and omit nested nulls."
   }
 
   assert {

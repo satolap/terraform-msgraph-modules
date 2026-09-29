@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "@odata.type" = var.odata_type
-    "target"      = (var.target == null ? null : { for key0, value0 in { "@odata.type" = var.target["odata_type"], "deviceAndAppManagementAssignmentFilterId" = var.target["deviceAndAppManagementAssignmentFilterId"], "deviceAndAppManagementAssignmentFilterType" = var.target["deviceAndAppManagementAssignmentFilterType"] } : key0 => value0 if value0 != null })
+    "target"      = var.target
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

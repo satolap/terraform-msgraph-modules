@@ -12,11 +12,8 @@ variable "display_name" {
 
 variable "effective_rules" {
   description = "The list of effective rules like approval rules and expiration rules evaluated based on inherited referenced rules. For example, if there is a tenant-wide policy to enforce enabling an approval rule, the effective rule will be to enable approval even if the policy has a rule to disable approval. Supports $expand."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.unifiedRoleManagementPolicyRule")
-    target     = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "is_organization_default" {
@@ -46,11 +43,8 @@ variable "odata_type" {
 
 variable "rules" {
   description = "The collection of rules like approval rules and expiration rules. Supports $expand."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.unifiedRoleManagementPolicyRule")
-    target     = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "scope_id" {

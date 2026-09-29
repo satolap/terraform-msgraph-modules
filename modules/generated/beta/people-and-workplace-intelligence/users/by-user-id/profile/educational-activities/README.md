@@ -24,19 +24,19 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `user_id` | URL parameter `user-id` | `string` | yes | no |
-| `allowed_audiences` | `allowedAudiences` | `any` | no | no |
+| `allowed_audiences` | `allowedAudiences` | `string` | no | no |
 | `completion_month_year` | `completionMonthYear` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `end_month_year` | `endMonthYear` | `string` | no | no |
-| `graph_source` | `source` | `any` | no | no |
-| `inference` | `inference` | `any` | no | no |
-| `institution` | `institution` | `any` | no | no |
+| `graph_source` | `source` | `object({       odata_type = optional(string, "#microsoft.graph.personDataSources")       type = optional(list(string))     })` | no | no |
+| `inference` | `inference` | `object({       odata_type = optional(string, "#microsoft.graph.inferenceData")       confidenceScore = optional(any)       userHasVerifiedAccuracy = optional(bool)     })` | no | no |
+| `institution` | `institution` | `object({       odata_type = optional(string, "#microsoft.graph.institutionData")       description = optional(string)       displayName = optional(string)       location = optional(object({       odata_type = optional(string, "#microsoft.graph.physicalAddress")       city = optional(string)       countryOrRegion = optional(string)       postOfficeBox = optional(string)       postalCode = optional(string)       state = optional(string)       street = optional(string)       type = optional(string)     }))       webUrl = optional(string)     })` | no | no |
 | `is_searchable` | `isSearchable` | `bool` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `program` | `program` | `any` | no | no |
+| `program` | `program` | `object({       odata_type = optional(string, "#microsoft.graph.educationalActivityDetail")       abbreviation = optional(string)       activities = optional(list(string))       awards = optional(list(string))       description = optional(string)       displayName = optional(string)       fieldsOfStudy = optional(list(string))       grade = optional(string)       notes = optional(string)       webUrl = optional(string)     })` | no | no |
 | `sources` | `sources` | `list(object({       odata_type = optional(string, "#microsoft.graph.profileSourceAnnotation")       isDefaultSource = optional(bool)       properties = optional(list(string))       sourceId = optional(string)     }))` | no | no |
 | `start_month_year` | `startMonthYear` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -56,13 +56,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- allowedAudiences: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- inference: polymorphic schema; accepts an untyped value
-- institution: polymorphic schema; accepts an untyped value
+- inference.confidenceScore: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- program: polymorphic schema; accepts an untyped value
-- source: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

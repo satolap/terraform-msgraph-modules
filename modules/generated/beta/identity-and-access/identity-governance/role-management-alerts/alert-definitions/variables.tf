@@ -61,7 +61,7 @@ variable "security_impact" {
 
 variable "severity_level" {
   description = "Severity level of the alert. The possible values are: unknown, informational, low, medium, high, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

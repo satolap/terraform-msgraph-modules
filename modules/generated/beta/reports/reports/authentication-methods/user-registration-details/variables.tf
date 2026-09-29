@@ -1,6 +1,6 @@
 variable "default_mfa_method" {
   description = "The method the user or admin selected as default for performing multifactor authentication for the user. The possible values are: none, mobilePhone, alternateMobilePhone, officePhone, microsoftAuthenticatorPush, softwareOneTimePasscode, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -91,7 +91,7 @@ variable "user_display_name" {
 
 variable "user_preferred_method_for_secondary_authentication" {
   description = "The method the user selected as the default second-factor for performing multifactor authentication. The possible values are: push, oath, voiceMobile, voiceAlternateMobile, voiceOffice, sms, none, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -108,7 +108,7 @@ variable "user_principal_name" {
 
 variable "user_type" {
   description = "Identifies whether the user is a member or guest in the tenant. The possible values are: member, guest, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

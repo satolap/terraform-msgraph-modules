@@ -18,17 +18,3 @@ run "minimal_request" {
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
-
-run "typed_request" {
-  command = plan
-
-  variables {
-    windows_driver_update_profile_id = "test-parent-id"
-    target                           = { "deviceAndAppManagementAssignmentFilterId" = null }
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["target"]) == jsonencode({ "@odata.type" = "#microsoft.graph.deviceAndAppManagementAssignmentTarget" })
-    error_message = "target must preserve typed values and omit nested nulls."
-  }
-}

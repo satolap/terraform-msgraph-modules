@@ -23,7 +23,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["reasons"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.accessPackageSuggestionReason" }])
+    condition     = jsonencode(msgraph_resource.this.body["reasons"]) == jsonencode([{}])
     error_message = "reasons must preserve typed values and omit nested nulls."
   }
 }

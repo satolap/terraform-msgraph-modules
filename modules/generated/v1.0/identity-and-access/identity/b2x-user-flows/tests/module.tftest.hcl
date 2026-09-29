@@ -19,13 +19,19 @@ run "typed_request" {
   command = plan
 
   variables {
-    user_flow_type     = "signUp"
-    identity_providers = [{}]
+    user_flow_type              = "signUp"
+    api_connector_configuration = { "postAttributeCollection" = null }
+    identity_providers          = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["userFlowType"]) == jsonencode("signUp")
     error_message = "userFlowType must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["apiConnectorConfiguration"]) == jsonencode({ "@odata.type" = "#microsoft.graph.userFlowApiConnectorConfiguration" })
+    error_message = "apiConnectorConfiguration must preserve typed values and omit nested nulls."
   }
 
   assert {

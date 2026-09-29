@@ -46,7 +46,7 @@ variable "email" {
 
 variable "hold_status" {
   description = "The hold status of the dataSource. The possible values are: notApplied, applied, applying, removing, partial."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -57,12 +57,12 @@ variable "hold_status" {
 
 variable "included_sources" {
   description = "Specifies which sources are included in this group. The possible values are: mailbox, site."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.included_sources == null ? true : contains(["mailbox", "site", "unknownFutureValue"], var.included_sources)
-    error_message = "included_sources must be one of the documented enum values."
+    condition     = var.included_sources == null ? true : try(alltrue([for value in split(",", var.included_sources) : contains(["mailbox", "site", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "included_sources must be one or more of the documented enum values, separated by commas."
   }
 }
 

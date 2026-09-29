@@ -14,6 +14,7 @@ Lifecycle: `POST /sites/{site-id}/informationProtection/threatAssessmentRequests
 module "graph_resource" {
   source = "./security/sites/by-site-id/information-protection/threat-assessment-requests"
   site_id = "parent-object-id"
+  odata_type = "#microsoft.graph.emailFileAssessmentRequest"
 }
 ```
 
@@ -24,17 +25,17 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `site_id` | URL parameter `site-id` | `string` | yes | no |
+| `odata_type` | `@odata.type` | `string` | yes | no |
 | `category` | `category` | `string` | no | no |
-| `content_type` | `contentType` | `any` | no | no |
+| `content_type` | `contentType` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `expected_assessment` | `expectedAssessment` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
-| `request_source` | `requestSource` | `any` | no | no |
-| `status` | `status` | `any` | no | no |
+| `request_source` | `requestSource` | `string` | no | no |
+| `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
-Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.
 
 Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
@@ -48,11 +49,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- @odata.type: microsoft.graph.threatAssessmentRequest is abstract; odata_type has no default and must name a concrete type
 - Microsoft Graph beta contracts can change without notice.
-- contentType: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- requestSource: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

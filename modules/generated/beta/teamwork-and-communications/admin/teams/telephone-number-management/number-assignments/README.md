@@ -23,8 +23,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `activation_state` | `activationState` | `string` | no | no |
-| `assignment_category` | `assignmentCategory` | `any` | no | no |
-| `assignment_status` | `assignmentStatus` | `any` | no | no |
+| `assignment_category` | `assignmentCategory` | `string` | no | no |
+| `assignment_status` | `assignmentStatus` | `string` | no | no |
 | `assignment_target_id` | `assignmentTargetId` | `string` | no | no |
 | `capabilities` | `capabilities` | `list(string)` | no | no |
 | `city` | `city` | `string` | no | no |
@@ -32,11 +32,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `iso_country_code` | `isoCountryCode` | `string` | no | no |
 | `location_id` | `locationId` | `string` | no | no |
 | `network_site_id` | `networkSiteId` | `string` | no | no |
-| `number_source` | `numberSource` | `any` | no | no |
+| `number_source` | `numberSource` | `string` | no | no |
 | `number_type` | `numberType` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `operator_id` | `operatorId` | `string` | no | no |
-| `port_in_status` | `portInStatus` | `any` | no | no |
+| `port_in_status` | `portInStatus` | `string` | no | no |
 | `reverse_number_lookup_options` | `reverseNumberLookupOptions` | `list(string)` | no | no |
 | `supported_customer_actions` | `supportedCustomerActions` | `list(string)` | no | no |
 | `telephone_number` | `telephoneNumber` | `string` | no | no |
@@ -57,10 +57,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- assignmentCategory: polymorphic schema; accepts an untyped value
-- assignmentStatus: polymorphic schema; accepts an untyped value
-- numberSource: polymorphic schema; accepts an untyped value
-- portInStatus: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

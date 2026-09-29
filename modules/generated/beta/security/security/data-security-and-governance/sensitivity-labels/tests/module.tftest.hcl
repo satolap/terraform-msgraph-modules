@@ -19,15 +19,15 @@ run "typed_request" {
   command = plan
 
   variables {
-    auto_tooltip   = "example"
+    action_source  = "manual"
     has_protection = false
     priority       = -2147483648
     sublabels      = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["autoTooltip"]) == jsonencode("example")
-    error_message = "autoTooltip must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["actionSource"]) == jsonencode("manual")
+    error_message = "actionSource must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -54,4 +54,27 @@ run "invalid_enum" {
   }
 
   expect_failures = [var.action_source]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    applicable_to = "email, Site"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["applicableTo"] == "email, Site"
+    error_message = "applicableTo must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    applicable_to = "email,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.applicable_to]
 }

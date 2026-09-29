@@ -26,11 +26,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `drive_id` | URL parameter `drive-id` | `string` | yes | no |
 | `drive_item_id` | URL parameter `driveItem-id` | `string` | yes | no |
-| `graph_source` | `source` | `any` | no | no |
-| `large` | `large` | `any` | no | no |
-| `medium` | `medium` | `any` | no | no |
+| `graph_source` | `source` | `object({       odata_type = optional(string, "#microsoft.graph.thumbnail")       content = optional(string)       height = optional(number)       sourceItemId = optional(string)       url = optional(string)       width = optional(number)     })` | no | no |
+| `large` | `large` | `object({       odata_type = optional(string, "#microsoft.graph.thumbnail")       content = optional(string)       height = optional(number)       sourceItemId = optional(string)       url = optional(string)       width = optional(number)     })` | no | no |
+| `medium` | `medium` | `object({       odata_type = optional(string, "#microsoft.graph.thumbnail")       content = optional(string)       height = optional(number)       sourceItemId = optional(string)       url = optional(string)       width = optional(number)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `small` | `small` | `any` | no | no |
+| `small` | `small` | `object({       odata_type = optional(string, "#microsoft.graph.thumbnail")       content = optional(string)       height = optional(number)       sourceItemId = optional(string)       url = optional(string)       width = optional(number)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -44,13 +44,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- large: polymorphic schema; accepts an untyped value
-- medium: polymorphic schema; accepts an untyped value
-- small: polymorphic schema; accepts an untyped value
-- source: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

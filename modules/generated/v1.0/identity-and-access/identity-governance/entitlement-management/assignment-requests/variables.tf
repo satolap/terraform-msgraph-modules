@@ -1,11 +1,7 @@
 variable "answers" {
   description = "Answers provided by the requestor to accessPackageQuestions asked of them at the time of request."
-  type = list(object({
-    odata_type       = optional(string, "#microsoft.graph.accessPackageAnswer")
-    answeredQuestion = optional(any)
-    displayValue     = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "assignment" {
@@ -21,7 +17,7 @@ variable "custom_extension_callout_instances" {
     customExtensionId     = optional(string)
     detail                = optional(string)
     externalCorrelationId = optional(string)
-    status                = optional(any)
+    status                = optional(string)
   }))
   default = null
 }
@@ -41,13 +37,16 @@ variable "odata_type" {
 
 variable "parameters" {
   description = "Microsoft Graph parameters property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type     = optional(string, "#microsoft.graph.accessPackageAssignmentRequestParameters")
+    bypassApproval = optional(bool)
+  })
+  default = null
 }
 
 variable "request_type" {
   description = "The type of the request. The possible values are: notSpecified, userAdd, userUpdate, userRemove, adminAdd, adminUpdate, adminRemove, systemAdd, systemUpdate, systemRemove, onBehalfAdd (not supported), unknownFutureValue. Use the Prefer: include-unknown-enum-members request header to get the following values in this evolvable enum: approverRemove. Requests from the user have a requestType of userAdd, userUpdate, or userRemove. This property can't be changed once set."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -58,8 +57,38 @@ variable "request_type" {
 
 variable "schedule" {
   description = "The range of dates that access is to be assigned to the requestor. This property can't be changed once set, but a new schedule for an assignment can be included in another userUpdate or adminUpdate assignment request."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.entitlementManagementSchedule")
+    expiration = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.expirationPattern")
+      duration    = optional(string)
+      endDateTime = optional(string)
+      type        = optional(string)
+    }))
+    recurrence = optional(object({
+      odata_type = optional(string, "#microsoft.graph.patternedRecurrence")
+      pattern = optional(object({
+        odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+        dayOfMonth     = optional(number)
+        daysOfWeek     = optional(list(string))
+        firstDayOfWeek = optional(string)
+        index          = optional(string)
+        interval       = optional(number)
+        month          = optional(number)
+        type           = optional(string)
+      }))
+      range = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.recurrenceRange")
+        endDate             = optional(string)
+        numberOfOccurrences = optional(number)
+        recurrenceTimeZone  = optional(string)
+        startDate           = optional(string)
+        type                = optional(string)
+      }))
+    }))
+    startDateTime = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     created_date_time     = "2026-01-01T00:00:00Z"
     is_auto_apply_enabled = false
+    error                 = { "code" = null }
   }
 
   assert {
@@ -31,6 +32,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isAutoApplyEnabled"]) == jsonencode(false)
     error_message = "isAutoApplyEnabled must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["error"]) == jsonencode({ "@odata.type" = "#microsoft.graph.publicError" })
+    error_message = "error must preserve typed values and omit nested nulls."
   }
 }
 

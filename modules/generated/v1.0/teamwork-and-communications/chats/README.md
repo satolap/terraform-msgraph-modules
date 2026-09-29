@@ -23,19 +23,19 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `chat_type` | `chatType` | `string` | no | no |
-| `installed_apps` | `installedApps` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsAppInstallation")       consentedPermissionSet = optional(any)       teamsApp = optional(any)       teamsAppDefinition = optional(any)     }))` | no | no |
+| `installed_apps` | `installedApps` | `any` | no | no |
 | `last_message_preview` | `lastMessagePreview` | `any` | no | no |
-| `members` | `members` | `list(object({       odata_type = optional(string, "#microsoft.graph.conversationMember")       displayName = optional(string)       roles = optional(list(string))       visibleHistoryStartDateTime = optional(string)     }))` | no | no |
-| `messages` | `messages` | `list(object({       odata_type = optional(string, "#microsoft.graph.chatMessage")       attachments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageAttachment")       content = optional(string)       contentType = optional(string)       contentUrl = optional(string)       name = optional(string)       teamsAppId = optional(string)       thumbnailUrl = optional(string)     })))       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(any)     }))       channelIdentity = optional(any)       chatId = optional(string)       createdDateTime = optional(string)       from = optional(any)       hostedContents = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageHostedContent")       contentBytes = optional(string)       contentType = optional(string)     })))       importance = optional(string)       locale = optional(string)       mentions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageMention")       id = optional(number)       mentionText = optional(string)       mentioned = optional(any)     })))       messageHistory = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageHistoryItem")       actions = optional(string)       modifiedDateTime = optional(string)       reaction = optional(any)     })))       messageType = optional(string)       policyViolation = optional(any)       reactions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageReaction")       createdDateTime = optional(string)       displayName = optional(string)       reactionContentUrl = optional(string)       reactionType = optional(string)       user = optional(object({       odata_type = optional(string, "#microsoft.graph.chatMessageReactionIdentitySet")       application = optional(any)       device = optional(any)       user = optional(any)     }))     })))       replies = optional(any)       subject = optional(string)       summary = optional(string)     }))` | no | no |
-| `migration_mode` | `migrationMode` | `any` | no | no |
+| `members` | `members` | `any` | no | no |
+| `messages` | `messages` | `any` | no | no |
+| `migration_mode` | `migrationMode` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `original_created_date_time` | `originalCreatedDateTime` | `string` | no | no |
 | `permission_grants` | `permissionGrants` | `list(object({       odata_type = optional(string, "#microsoft.graph.resourceSpecificPermissionGrant")       deletedDateTime = optional(string)     }))` | no | no |
 | `pinned_messages` | `pinnedMessages` | `list(object({       odata_type = optional(string, "#microsoft.graph.pinnedChatMessageInfo")       message = optional(any)     }))` | no | no |
-| `tabs` | `tabs` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsTab")       configuration = optional(any)       displayName = optional(string)       teamsApp = optional(any)     }))` | no | no |
-| `targeted_messages` | `targetedMessages` | `list(object({       odata_type = optional(string, "#microsoft.graph.targetedChatMessage")       attachments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageAttachment")       content = optional(string)       contentType = optional(string)       contentUrl = optional(string)       name = optional(string)       teamsAppId = optional(string)       thumbnailUrl = optional(string)     })))       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(any)     }))       channelIdentity = optional(any)       chatId = optional(string)       createdDateTime = optional(string)       from = optional(any)       hostedContents = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageHostedContent")       contentBytes = optional(string)       contentType = optional(string)     })))       importance = optional(string)       locale = optional(string)       mentions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageMention")       id = optional(number)       mentionText = optional(string)       mentioned = optional(any)     })))       messageHistory = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageHistoryItem")       actions = optional(string)       modifiedDateTime = optional(string)       reaction = optional(any)     })))       messageType = optional(string)       policyViolation = optional(any)       reactions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageReaction")       createdDateTime = optional(string)       displayName = optional(string)       reactionContentUrl = optional(string)       reactionType = optional(string)       user = optional(object({       odata_type = optional(string, "#microsoft.graph.chatMessageReactionIdentitySet")       application = optional(any)       device = optional(any)       user = optional(any)     }))     })))       recipient = optional(any)       replies = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessage")       attachments = optional(any)       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(any)     }))       channelIdentity = optional(any)       chatId = optional(string)       createdDateTime = optional(string)       from = optional(any)       hostedContents = optional(any)       importance = optional(string)       locale = optional(string)       mentions = optional(any)       messageHistory = optional(any)       messageType = optional(string)       policyViolation = optional(any)       reactions = optional(any)       replies = optional(any)       subject = optional(string)       summary = optional(string)     })))       subject = optional(string)       summary = optional(string)     }))` | no | no |
+| `tabs` | `tabs` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsTab")       configuration = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsTabConfiguration")       contentUrl = optional(string)       entityId = optional(string)       removeUrl = optional(string)       websiteUrl = optional(string)     }))       displayName = optional(string)       teamsApp = optional(any)     }))` | no | no |
+| `targeted_messages` | `targetedMessages` | `list(object({       odata_type = optional(string, "#microsoft.graph.targetedChatMessage")       attachments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageAttachment")       content = optional(string)       contentType = optional(string)       contentUrl = optional(string)       name = optional(string)       teamsAppId = optional(string)       thumbnailUrl = optional(string)     })))       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))       channelIdentity = optional(object({       odata_type = optional(string, "#microsoft.graph.channelIdentity")       channelId = optional(string)       teamId = optional(string)     }))       chatId = optional(string)       createdDateTime = optional(string)       from = optional(object({       odata_type = optional(string, "#microsoft.graph.chatMessageFromIdentitySet")       application = optional(any)       device = optional(any)       user = optional(any)     }))       hostedContents = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageHostedContent")       contentBytes = optional(string)       contentType = optional(string)     })))       importance = optional(string)       locale = optional(string)       mentions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageMention")       id = optional(number)       mentionText = optional(string)       mentioned = optional(object({       odata_type = optional(string, "#microsoft.graph.chatMessageMentionedIdentitySet")       application = optional(any)       conversation = optional(any)       device = optional(any)       user = optional(any)     }))     })))       messageHistory = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageHistoryItem")       actions = optional(string)       modifiedDateTime = optional(string)       reaction = optional(object({       odata_type = optional(string, "#microsoft.graph.chatMessageReaction")       createdDateTime = optional(string)       displayName = optional(string)       reactionContentUrl = optional(string)       reactionType = optional(string)       user = optional(any)     }))     })))       messageType = optional(string)       policyViolation = optional(object({       odata_type = optional(string, "#microsoft.graph.chatMessagePolicyViolation")       dlpAction = optional(string)       justificationText = optional(string)       policyTip = optional(object({       odata_type = optional(string, "#microsoft.graph.chatMessagePolicyViolationPolicyTip")       complianceUrl = optional(string)       generalText = optional(string)       matchedConditionDescriptions = optional(list(string))     }))       userAction = optional(string)       verdictDetails = optional(string)     }))       reactions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessageReaction")       createdDateTime = optional(string)       displayName = optional(string)       reactionContentUrl = optional(string)       reactionType = optional(string)       user = optional(object({       odata_type = optional(string, "#microsoft.graph.chatMessageReactionIdentitySet")       application = optional(any)       device = optional(any)       user = optional(any)     }))     })))       recipient = optional(any)       replies = optional(any)       subject = optional(string)       summary = optional(string)     }))` | no | no |
 | `topic` | `topic` | `string` | no | no |
-| `viewpoint` | `viewpoint` | `any` | no | no |
+| `viewpoint` | `viewpoint` | `object({       odata_type = optional(string, "#microsoft.graph.chatViewpoint")       isHidden = optional(bool)       lastMessageReadDateTime = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -52,45 +52,25 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- installedApps[].consentedPermissionSet: polymorphic schema; accepts an untyped value
-- installedApps[].teamsApp: polymorphic schema; accepts an untyped value
-- installedApps[].teamsAppDefinition: polymorphic schema; accepts an untyped value
-- lastMessagePreview: polymorphic schema; accepts an untyped value
-- messages[].body.contentType: polymorphic schema; accepts an untyped value
-- messages[].channelIdentity: polymorphic schema; accepts an untyped value
-- messages[].from: polymorphic schema; accepts an untyped value
-- messages[].mentions[].mentioned: polymorphic schema; accepts an untyped value
-- messages[].messageHistory[].reaction: polymorphic schema; accepts an untyped value
-- messages[].policyViolation: polymorphic schema; accepts an untyped value
-- messages[].reactions[].user.application: polymorphic schema; accepts an untyped value
-- messages[].reactions[].user.device: polymorphic schema; accepts an untyped value
-- messages[].reactions[].user.user: polymorphic schema; accepts an untyped value
-- messages[].replies[]: recursive schema; accepts an untyped value
-- migrationMode: polymorphic schema; accepts an untyped value
+- installedApps[]: polymorphic schema; accepts an untyped value
+- lastMessagePreview: navigation property; accepts an untyped value
+- members[]: polymorphic schema; accepts an untyped value
+- messages[]: polymorphic schema; accepts an untyped value
 - pinnedMessages[].message: polymorphic schema; accepts an untyped value
-- tabs[].configuration: polymorphic schema; accepts an untyped value
-- tabs[].teamsApp: polymorphic schema; accepts an untyped value
-- targetedMessages[].body.contentType: polymorphic schema; accepts an untyped value
-- targetedMessages[].channelIdentity: polymorphic schema; accepts an untyped value
-- targetedMessages[].from: polymorphic schema; accepts an untyped value
-- targetedMessages[].mentions[].mentioned: polymorphic schema; accepts an untyped value
-- targetedMessages[].messageHistory[].reaction: polymorphic schema; accepts an untyped value
-- targetedMessages[].policyViolation: polymorphic schema; accepts an untyped value
+- tabs[].teamsApp: navigation property; accepts an untyped value
+- targetedMessages[].from.application: polymorphic schema; accepts an untyped value
+- targetedMessages[].from.device: polymorphic schema; accepts an untyped value
+- targetedMessages[].from.user: polymorphic schema; accepts an untyped value
+- targetedMessages[].mentions[].mentioned.application: polymorphic schema; accepts an untyped value
+- targetedMessages[].mentions[].mentioned.conversation: nested schema exceeds depth limit; accepts an untyped value
+- targetedMessages[].mentions[].mentioned.device: polymorphic schema; accepts an untyped value
+- targetedMessages[].mentions[].mentioned.user: polymorphic schema; accepts an untyped value
+- targetedMessages[].messageHistory[].reaction.user: nested schema exceeds depth limit; accepts an untyped value
 - targetedMessages[].reactions[].user.application: polymorphic schema; accepts an untyped value
 - targetedMessages[].reactions[].user.device: polymorphic schema; accepts an untyped value
 - targetedMessages[].reactions[].user.user: polymorphic schema; accepts an untyped value
 - targetedMessages[].recipient: polymorphic schema; accepts an untyped value
-- targetedMessages[].replies[].attachments[]: nested schema exceeds depth limit; accepts an untyped value
-- targetedMessages[].replies[].body.contentType: polymorphic schema; accepts an untyped value
-- targetedMessages[].replies[].channelIdentity: polymorphic schema; accepts an untyped value
-- targetedMessages[].replies[].from: polymorphic schema; accepts an untyped value
-- targetedMessages[].replies[].hostedContents[]: nested schema exceeds depth limit; accepts an untyped value
-- targetedMessages[].replies[].mentions[]: nested schema exceeds depth limit; accepts an untyped value
-- targetedMessages[].replies[].messageHistory[]: nested schema exceeds depth limit; accepts an untyped value
-- targetedMessages[].replies[].policyViolation: polymorphic schema; accepts an untyped value
-- targetedMessages[].replies[].reactions[]: nested schema exceeds depth limit; accepts an untyped value
-- targetedMessages[].replies[].replies[]: recursive schema; accepts an untyped value
-- viewpoint: polymorphic schema; accepts an untyped value
+- targetedMessages[].replies[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

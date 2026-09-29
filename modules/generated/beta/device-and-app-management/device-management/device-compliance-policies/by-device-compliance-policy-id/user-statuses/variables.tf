@@ -29,7 +29,7 @@ variable "odata_type" {
 }
 
 variable "status" {
-  description = "Microsoft Graph status property."
+  description = "Compliance status of the policy report."
   type        = string
   default     = null
 

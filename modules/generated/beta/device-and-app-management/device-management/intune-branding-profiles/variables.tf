@@ -115,8 +115,12 @@ variable "is_remove_device_disabled" {
 
 variable "landing_page_customized_image" {
   description = "Customized image displayed in Company Portal apps landing page"
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.mimeContent")
+    type       = optional(string)
+    value      = optional(string)
+  })
+  default = null
 }
 
 variable "last_modified_date_time" {
@@ -127,8 +131,12 @@ variable "last_modified_date_time" {
 
 variable "light_background_logo" {
   description = "Logo image displayed in Company Portal apps which have a light background behind the logo"
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.mimeContent")
+    type       = optional(string)
+    value      = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -206,14 +214,23 @@ variable "show_office_web_apps" {
 
 variable "theme_color" {
   description = "Primary theme color used in the Company Portal applications and web portal"
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.rgbColor")
+    b          = optional(number)
+    g          = optional(number)
+    r          = optional(number)
+  })
+  default = null
 }
 
 variable "theme_color_logo" {
   description = "Logo image displayed in Company Portal apps which have a theme color background behind the logo"
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.mimeContent")
+    type       = optional(string)
+    value      = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

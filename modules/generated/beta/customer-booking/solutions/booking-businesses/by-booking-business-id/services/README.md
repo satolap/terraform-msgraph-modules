@@ -45,7 +45,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `post_buffer` | `postBuffer` | `string` | no | no |
 | `pre_buffer` | `preBuffer` | `string` | no | no |
-| `scheduling_policy` | `schedulingPolicy` | `any` | no | no |
+| `scheduling_policy` | `schedulingPolicy` | `object({       odata_type = optional(string, "#microsoft.graph.bookingSchedulingPolicy")       allowStaffSelection = optional(bool)       customAvailabilities = optional(list(object({       odata_type = optional(string, "#microsoft.graph.bookingsAvailabilityWindow")       availabilityType = optional(string)       businessHours = optional(list(object({       odata_type = optional(string, "#microsoft.graph.bookingWorkHours")       day = optional(string)       timeSlots = optional(any)     })))       endDate = optional(string)       startDate = optional(string)     })))       generalAvailability = optional(any)       isMeetingInviteToCustomersEnabled = optional(bool)       maximumAdvance = optional(string)       minimumLeadTime = optional(string)       sendConfirmationsToOwner = optional(bool)       timeSlotInterval = optional(string)     })` | no | no |
 | `sms_notifications_enabled` | `smsNotificationsEnabled` | `bool` | no | no |
 | `staff_member_ids` | `staffMemberIds` | `list(string)` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -67,7 +67,8 @@ Generation notes:
 - Microsoft Graph beta contracts can change without notice.
 - defaultLocation: polymorphic schema; accepts an untyped value
 - defaultPrice: polymorphic schema; accepts an untyped value
-- schedulingPolicy: polymorphic schema; accepts an untyped value
+- schedulingPolicy.customAvailabilities[].businessHours[].timeSlots: nested schema exceeds depth limit; accepts an untyped value
+- schedulingPolicy.generalAvailability: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

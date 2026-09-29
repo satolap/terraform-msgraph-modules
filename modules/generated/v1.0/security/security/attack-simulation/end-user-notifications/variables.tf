@@ -1,7 +1,12 @@
 variable "created_by" {
   description = "Identity of the user who created the notification."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "created_date_time" {
@@ -43,7 +48,7 @@ variable "display_name" {
 
 variable "graph_source" {
   description = "The source of the content. The possible values are: unknown, global, tenant, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -54,8 +59,13 @@ variable "graph_source" {
 
 variable "last_modified_by" {
   description = "Identity of the user who last modified the notification."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "last_modified_date_time" {
@@ -66,7 +76,7 @@ variable "last_modified_date_time" {
 
 variable "notification_type" {
   description = "Type of notification. The possible values are: unknown, positiveReinforcement, noTraining, trainingAssignment, trainingReminder, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -84,7 +94,7 @@ variable "odata_type" {
 
 variable "status" {
   description = "The status of the notification. The possible values are: unknown, draft, ready, archive, delete, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

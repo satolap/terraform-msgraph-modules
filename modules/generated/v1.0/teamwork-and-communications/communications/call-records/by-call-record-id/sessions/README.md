@@ -27,7 +27,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `callee` | `callee` | `any` | no | no |
 | `caller` | `caller` | `any` | no | no |
 | `end_date_time` | `endDateTime` | `string` | no | no |
-| `failure_info` | `failureInfo` | `any` | no | no |
+| `failure_info` | `failureInfo` | `object({       odata_type = optional(string, "#microsoft.graph.callRecords.failureInfo")       reason = optional(string)       stage = optional(string)     })` | no | no |
 | `is_test` | `isTest` | `bool` | no | no |
 | `modalities` | `modalities` | `list(string)` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -50,7 +50,6 @@ Generation notes:
 
 - callee: polymorphic schema; accepts an untyped value
 - caller: polymorphic schema; accepts an untyped value
-- failureInfo: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

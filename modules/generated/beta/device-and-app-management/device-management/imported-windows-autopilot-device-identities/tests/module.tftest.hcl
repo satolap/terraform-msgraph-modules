@@ -20,10 +20,16 @@ run "typed_request" {
 
   variables {
     assigned_user_principal_name = "example"
+    state                        = { "deviceErrorCode" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["assignedUserPrincipalName"]) == jsonencode("example")
     error_message = "assignedUserPrincipalName must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["state"]) == jsonencode({ "@odata.type" = "#microsoft.graph.importedWindowsAutopilotDeviceIdentityState" })
+    error_message = "state must preserve typed values and omit nested nulls."
   }
 }

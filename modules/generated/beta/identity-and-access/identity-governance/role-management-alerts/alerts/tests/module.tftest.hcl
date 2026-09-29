@@ -41,7 +41,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["alertIncidents"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.unifiedRoleManagementAlertIncident" }])
+    condition     = jsonencode(msgraph_resource.this.body["alertIncidents"]) == jsonencode([{}])
     error_message = "alertIncidents must preserve typed values and omit nested nulls."
   }
 }

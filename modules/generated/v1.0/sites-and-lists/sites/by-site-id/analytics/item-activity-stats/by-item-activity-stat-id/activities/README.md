@@ -46,7 +46,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - access: polymorphic schema; accepts an untyped value
-- driveItem: polymorphic schema; accepts an untyped value
+- driveItem: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

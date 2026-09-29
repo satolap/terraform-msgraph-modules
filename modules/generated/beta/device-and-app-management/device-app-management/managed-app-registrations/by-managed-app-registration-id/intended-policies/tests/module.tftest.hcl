@@ -6,6 +6,7 @@ run "minimal_request" {
 
   variables {
     managed_app_registration_id = "test-parent-id"
+    odata_type                  = "#microsoft.graph.androidManagedAppProtection"
   }
 
   assert {
@@ -24,8 +25,14 @@ run "typed_request" {
 
   variables {
     managed_app_registration_id = "test-parent-id"
+    odata_type                  = "#microsoft.graph.androidManagedAppProtection"
     created_date_time           = "2026-01-01T00:00:00Z"
     role_scope_tag_ids          = ["example"]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.androidManagedAppProtection")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -37,4 +44,15 @@ run "typed_request" {
     condition     = jsonencode(msgraph_resource.this.body["roleScopeTagIds"]) == jsonencode(["example"])
     error_message = "roleScopeTagIds must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    managed_app_registration_id = "test-parent-id"
+    odata_type                  = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

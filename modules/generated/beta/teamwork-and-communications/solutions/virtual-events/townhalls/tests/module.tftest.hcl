@@ -19,15 +19,16 @@ run "typed_request" {
   command = plan
 
   variables {
-    display_name   = "example"
+    audience       = "everyone"
     is_invite_only = false
     capacity       = -2147483648
+    created_by     = { "application" = null }
     co_organizers  = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["displayName"]) == jsonencode("example")
-    error_message = "displayName must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["audience"]) == jsonencode("everyone")
+    error_message = "audience must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -38,6 +39,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["capacity"]) == jsonencode(-2147483648)
     error_message = "capacity must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["createdBy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.communicationsIdentitySet" })
+    error_message = "createdBy must preserve typed values and omit nested nulls."
   }
 
   assert {

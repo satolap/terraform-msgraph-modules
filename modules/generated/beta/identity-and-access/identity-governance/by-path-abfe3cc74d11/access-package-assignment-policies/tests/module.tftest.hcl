@@ -23,11 +23,12 @@ run "typed_request" {
   command = plan
 
   variables {
-    access_package_assignment_id = "test-parent-id"
-    access_package_id            = "example"
-    can_extend                   = false
-    duration_in_days             = -2147483648
-    custom_extension_handlers    = [{}]
+    access_package_assignment_id         = "test-parent-id"
+    access_package_id                    = "example"
+    can_extend                           = false
+    duration_in_days                     = -2147483648
+    access_package_notification_settings = { "isAssignmentNotificationDisabled" = null }
+    custom_extension_handlers            = [{}]
   }
 
   assert {
@@ -43,6 +44,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["durationInDays"]) == jsonencode(-2147483648)
     error_message = "durationInDays must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["accessPackageNotificationSettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.accessPackageNotificationSettings" })
+    error_message = "accessPackageNotificationSettings must preserve typed values and omit nested nulls."
   }
 
   assert {

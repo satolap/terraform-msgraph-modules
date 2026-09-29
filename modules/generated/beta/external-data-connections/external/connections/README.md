@@ -22,22 +22,22 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `activity_settings` | `activitySettings` | `any` | no | no |
-| `compliance_settings` | `complianceSettings` | `any` | no | no |
-| `configuration` | `configuration` | `any` | no | no |
+| `activity_settings` | `activitySettings` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.activitySettings")       urlToItemResolvers = optional(any)     })` | no | no |
+| `compliance_settings` | `complianceSettings` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.complianceSettings")       eDiscoveryResultTemplates = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.displayTemplate")       id = optional(string)       layout = optional(any)       priority = optional(number)       rules = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.propertyRule")       operation = optional(string)       property = optional(string)       values = optional(any)       valuesJoinedBy = optional(string)     })))     })))     })` | no | no |
+| `configuration` | `configuration` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.configuration")       authorizedAppIds = optional(list(string))     })` | no | no |
 | `connector_id` | `connectorId` | `string` | no | no |
 | `content_category` | `contentCategory` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
-| `enabled_content_experiences` | `enabledContentExperiences` | `any` | no | no |
-| `groups` | `groups` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalGroup")       description = optional(string)       displayName = optional(string)       members = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.identity")       type = optional(any)     })))     }))` | no | no |
+| `enabled_content_experiences` | `enabledContentExperiences` | `string` | no | no |
+| `groups` | `groups` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalGroup")       description = optional(string)       displayName = optional(string)       members = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.identity")       type = optional(string)     })))     }))` | no | no |
 | `ingested_items_count` | `ingestedItemsCount` | `number` | no | no |
-| `items` | `items` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItem")       acl = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.acl")       accessType = optional(string)       identitySource = optional(any)       type = optional(string)       value = optional(string)     })))       activities = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalActivity")       performedBy = optional(any)       startDateTime = optional(string)       type = optional(string)     })))       content = optional(any)       informationProtectionLabel = optional(any)       properties = optional(any)     }))` | no | no |
+| `items` | `items` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItem")       acl = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.acl")       accessType = optional(string)       identitySource = optional(string)       type = optional(string)       value = optional(string)     })))       activities = optional(any)       content = optional(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItemContent")       type = optional(string)       value = optional(string)     }))       informationProtectionLabel = optional(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItemInformationProtectionLabel")       sensitivityLabelId = optional(string)     }))       properties = optional(any)     }))` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `operations` | `operations` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.connectionOperation")       error = optional(any)       status = optional(any)     }))` | no | no |
+| `operations` | `operations` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.connectionOperation")       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(any)       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       status = optional(string)     }))` | no | no |
 | `quota` | `quota` | `any` | no | no |
 | `schema` | `schema` | `any` | no | no |
-| `search_settings` | `searchSettings` | `any` | no | no |
+| `search_settings` | `searchSettings` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.searchSettings")       searchResultTemplates = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.displayTemplate")       id = optional(string)       layout = optional(any)       priority = optional(number)       rules = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.propertyRule")       operation = optional(string)       property = optional(string)       values = optional(any)       valuesJoinedBy = optional(string)     })))     })))     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -55,21 +55,14 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- activitySettings: polymorphic schema; accepts an untyped value
-- complianceSettings: polymorphic schema; accepts an untyped value
-- configuration: polymorphic schema; accepts an untyped value
-- enabledContentExperiences: polymorphic schema; accepts an untyped value
-- groups[].members[].type: polymorphic schema; accepts an untyped value
-- items[].acl[].identitySource: polymorphic schema; accepts an untyped value
-- items[].activities[].performedBy: polymorphic schema; accepts an untyped value
-- items[].content: polymorphic schema; accepts an untyped value
-- items[].informationProtectionLabel: polymorphic schema; accepts an untyped value
+- activitySettings.urlToItemResolvers[]: polymorphic schema; accepts an untyped value
+- complianceSettings.eDiscoveryResultTemplates[].rules[].values: nested schema exceeds depth limit; accepts an untyped value
+- items[].activities[]: polymorphic schema; accepts an untyped value
 - items[].properties: polymorphic schema; accepts an untyped value
-- operations[].error: polymorphic schema; accepts an untyped value
-- operations[].status: polymorphic schema; accepts an untyped value
-- quota: polymorphic schema; accepts an untyped value
-- schema: polymorphic schema; accepts an untyped value
-- searchSettings: polymorphic schema; accepts an untyped value
+- operations[].error.innerError.details[]: nested schema exceeds depth limit; accepts an untyped value
+- quota: navigation property; accepts an untyped value
+- schema: navigation property; accepts an untyped value
+- searchSettings.searchResultTemplates[].rules[].values: nested schema exceeds depth limit; accepts an untyped value
 
 ## Licensing and prerequisites
 

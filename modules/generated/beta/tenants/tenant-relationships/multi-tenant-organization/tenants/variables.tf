@@ -19,7 +19,7 @@ variable "odata_type" {
 
 variable "role" {
   description = "Role of the tenant in the multitenant organization. The possible values are: owner, member (default), unknownFutureValue. Tenants with the owner role can manage the multitenant organization but tenants with the member role can only participate in a multitenant organization. There can be multiple tenants with the owner role in a multitenant organization."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -26,6 +26,7 @@ run "typed_request" {
     deleted_team_id        = "test-parent-id"
     description            = "example"
     is_favorite_by_default = false
+    moderation_settings    = { "allowNewMessageFromBots" = null }
     all_members            = [{}]
   }
 
@@ -40,7 +41,12 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["allMembers"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.conversationMember" }])
+    condition     = jsonencode(msgraph_resource.this.body["moderationSettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.channelModerationSettings" })
+    error_message = "moderationSettings must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["allMembers"]) == jsonencode([{}])
     error_message = "allMembers must preserve typed values and omit nested nulls."
   }
 }

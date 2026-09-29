@@ -20,11 +20,17 @@ run "typed_request" {
 
   variables {
     created_date_time = "2026-01-01T00:00:00Z"
+    error             = { "code" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["createdDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
     error_message = "createdDateTime must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["error"]) == jsonencode({ "@odata.type" = "#microsoft.graph.publicError" })
+    error_message = "error must preserve typed values and omit nested nulls."
   }
 }
 
@@ -33,6 +39,29 @@ run "invalid_enum" {
 
   variables {
     protection_sources = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.protection_sources]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    protection_sources = "none, Manual"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["protectionSources"] == "none, Manual"
+    error_message = "protectionSources must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    protection_sources = "none,__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.protection_sources]

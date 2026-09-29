@@ -24,14 +24,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `ediscovery_case_id` | URL parameter `ediscoveryCase-id` | `string` | yes | no |
-| `action` | `action` | `any` | no | no |
+| `action` | `action` | `string` | no | no |
 | `completed_date_time` | `completedDateTime` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `percent_progress` | `percentProgress` | `number` | no | no |
-| `result_info` | `resultInfo` | `any` | no | no |
-| `status` | `status` | `any` | no | no |
+| `result_info` | `resultInfo` | `object({       odata_type = optional(string, "#microsoft.graph.resultInfo")       code = optional(number)       message = optional(string)       subcode = optional(number)     })` | no | no |
+| `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -49,10 +49,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- action: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- resultInfo: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -6,11 +6,8 @@ variable "allowed_combinations" {
 
 variable "combination_configurations" {
   description = "Settings that may be used to require specific types or instances of an authentication method to be used when authenticating with a specified combination of authentication methods."
-  type = list(object({
-    odata_type            = optional(string, "#microsoft.graph.authenticationCombinationConfiguration")
-    appliesToCombinations = optional(list(string))
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "created_date_time" {
@@ -73,8 +70,8 @@ variable "requirements_satisfied" {
   default     = null
 
   validation {
-    condition     = var.requirements_satisfied == null ? true : contains(["none", "mfa", "unknownFutureValue"], var.requirements_satisfied)
-    error_message = "requirements_satisfied must be one of the documented enum values."
+    condition     = var.requirements_satisfied == null ? true : try(alltrue([for value in split(",", var.requirements_satisfied) : contains(["none", "mfa", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "requirements_satisfied must be one or more of the documented enum values, separated by commas."
   }
 }
 

@@ -168,7 +168,12 @@ or apply.
 
 GitHub Actions run only on `main`. An update to the publication manifest pushed
 to `main` by the release publisher App starts release verification using the tag
-recorded in that commit. Existing tags can also be verified or released by
+recorded in that commit. Every other push to `main` also starts a release
+workflow run: its jobs are skipped when the release publisher App did not push it,
+and a publisher push that leaves the manifest unchanged runs only the read-only
+manifest check. A skipped job reports success, so the status badge above can show
+a skipped run after a human merge. Filter the workflow's runs by the release
+publisher App to see the last publication. Existing tags can also be verified or released by
 manually dispatching the release workflow on `main`. Tag pushes and pull requests
 do not start workflows.
 
@@ -208,7 +213,13 @@ contains:
 - `graphmodules-beta-modules.tar.gz`
 - `graphmodules-curated-modules.tar.gz`
 - `release-manifest.json`
+- `interface-changes.json`
 - `SHA256SUMS`
+
+`interface-changes.json` lists the exact interface changes that each release
+decision accepted, while the release notes summarize them with counts per kind.
+Verify it with the other downloads using `sha256sum -c SHA256SUMS`; releases
+published before this asset was introduced do not have it.
 
 ## Public documentation
 

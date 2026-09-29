@@ -37,7 +37,7 @@ variable "registration_date_time" {
 
 variable "status" {
   description = "The status of the service app. This value indicates whether or not the application can be used to control the backup service. The possible values are: inactive, active, pendingActive, pendingInactive, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

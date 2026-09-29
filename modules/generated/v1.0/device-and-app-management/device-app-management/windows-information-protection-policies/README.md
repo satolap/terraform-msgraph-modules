@@ -25,14 +25,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.targetedManagedAppPolicyAssignment")       target = optional(any)     }))` | no | no |
 | `azure_rights_management_services_allowed` | `azureRightsManagementServicesAllowed` | `bool` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `data_recovery_certificate` | `dataRecoveryCertificate` | `any` | no | no |
+| `data_recovery_certificate` | `dataRecoveryCertificate` | `object({       odata_type = optional(string, "#microsoft.graph.windowsInformationProtectionDataRecoveryCertificate")       certificate = optional(string)       description = optional(string)       expirationDateTime = optional(string)       subjectName = optional(string)     })` | no | no |
 | `days_without_contact_before_unenroll` | `daysWithoutContactBeforeUnenroll` | `number` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `enforcement_level` | `enforcementLevel` | `string` | no | no |
 | `enterprise_domain` | `enterpriseDomain` | `string` | no | no |
 | `enterprise_internal_proxy_servers` | `enterpriseInternalProxyServers` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsInformationProtectionResourceCollection")       displayName = optional(string)       resources = optional(list(string))     }))` | no | no |
-| `enterprise_ip_ranges` | `enterpriseIPRanges` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsInformationProtectionIPRangeCollection")       displayName = optional(string)       ranges = optional(list(object({       odata_type = optional(string, "#microsoft.graph.ipRange")     })))     }))` | no | no |
+| `enterprise_ip_ranges` | `enterpriseIPRanges` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsInformationProtectionIPRangeCollection")       displayName = optional(string)       ranges = optional(any)     }))` | no | no |
 | `enterprise_ip_ranges_are_authoritative` | `enterpriseIPRangesAreAuthoritative` | `bool` | no | no |
 | `enterprise_network_domain_names` | `enterpriseNetworkDomainNames` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsInformationProtectionResourceCollection")       displayName = optional(string)       resources = optional(list(string))     }))` | no | no |
 | `enterprise_protected_domain_names` | `enterpriseProtectedDomainNames` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsInformationProtectionResourceCollection")       displayName = optional(string)       resources = optional(list(string))     }))` | no | no |
@@ -40,7 +40,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `enterprise_proxy_servers` | `enterpriseProxyServers` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsInformationProtectionResourceCollection")       displayName = optional(string)       resources = optional(list(string))     }))` | no | no |
 | `enterprise_proxy_servers_are_authoritative` | `enterpriseProxyServersAreAuthoritative` | `bool` | no | no |
 | `exempt_app_locker_files` | `exemptAppLockerFiles` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsInformationProtectionAppLockerFile")       displayName = optional(string)       file = optional(string)       fileHash = optional(string)       version = optional(string)     }))` | no | no |
-| `exempt_apps` | `exemptApps` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsInformationProtectionApp")       denied = optional(bool)       description = optional(string)       displayName = optional(string)       productName = optional(string)       publisherName = optional(string)     }))` | no | no |
+| `exempt_apps` | `exemptApps` | `any` | no | no |
 | `graph_version` | `version` | `string` | no | no |
 | `icons_visible` | `iconsVisible` | `bool` | no | no |
 | `indexing_encrypted_stores_or_items_blocked` | `indexingEncryptedStoresOrItemsBlocked` | `bool` | no | no |
@@ -58,7 +58,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `pin_special_characters` | `pinSpecialCharacters` | `string` | no | no |
 | `pin_uppercase_letters` | `pinUppercaseLetters` | `string` | no | no |
 | `protected_app_locker_files` | `protectedAppLockerFiles` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsInformationProtectionAppLockerFile")       displayName = optional(string)       file = optional(string)       fileHash = optional(string)       version = optional(string)     }))` | no | no |
-| `protected_apps` | `protectedApps` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsInformationProtectionApp")       denied = optional(bool)       description = optional(string)       displayName = optional(string)       productName = optional(string)       publisherName = optional(string)     }))` | no | no |
+| `protected_apps` | `protectedApps` | `any` | no | no |
 | `protection_under_lock_config_required` | `protectionUnderLockConfigRequired` | `bool` | no | no |
 | `revoke_on_mdm_handoff_disabled` | `revokeOnMdmHandoffDisabled` | `bool` | no | no |
 | `revoke_on_unenroll_disabled` | `revokeOnUnenrollDisabled` | `bool` | no | no |
@@ -82,7 +82,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - assignments[].target: polymorphic schema; accepts an untyped value
-- dataRecoveryCertificate: polymorphic schema; accepts an untyped value
+- enterpriseIPRanges[].ranges[]: object without documented properties; accepts an untyped value
+- exemptApps[]: polymorphic schema; accepts an untyped value
+- protectedApps[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

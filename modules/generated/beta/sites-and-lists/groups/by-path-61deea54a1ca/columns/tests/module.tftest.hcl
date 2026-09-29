@@ -40,7 +40,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["webparts"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.webPart" }])
+    condition     = jsonencode(msgraph_resource.this.body["webparts"]) == jsonencode([{}])
     error_message = "webparts must preserve typed values and omit nested nulls."
   }
 }

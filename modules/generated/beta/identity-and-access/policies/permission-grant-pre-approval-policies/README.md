@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `conditions` | `conditions` | `list(object({       odata_type = optional(string, "#microsoft.graph.preApprovalDetail")       permissions = optional(object({       odata_type = optional(string, "#microsoft.graph.preApprovedPermissions")       permissionKind = optional(any)       permissionType = optional(any)     }))       scopeType = optional(string)       sensitivityLabels = optional(object({       odata_type = optional(string, "#microsoft.graph.scopeSensitivityLabels")       labelKind = optional(any)     }))     }))` | no | no |
+| `conditions` | `conditions` | `list(object({       odata_type = optional(string, "#microsoft.graph.preApprovalDetail")       permissions = optional(any)       scopeType = optional(string)       sensitivityLabels = optional(any)     }))` | no | no |
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -42,9 +42,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- conditions[].permissions.permissionKind: polymorphic schema; accepts an untyped value
-- conditions[].permissions.permissionType: polymorphic schema; accepts an untyped value
-- conditions[].sensitivityLabels.labelKind: polymorphic schema; accepts an untyped value
+- conditions[].permissions: polymorphic schema; accepts an untyped value
+- conditions[].sensitivityLabels: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

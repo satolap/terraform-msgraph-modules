@@ -24,7 +24,7 @@ variable "allow_copying_and_sharing_meeting_content" {
 
 variable "allow_live_share" {
   description = "Indicates whether live share is enabled for the meeting. The possible values are: enabled, disabled, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -35,7 +35,7 @@ variable "allow_live_share" {
 
 variable "allow_meeting_chat" {
   description = "Specifies the mode of meeting chat. The possible values are: enabled, disabled, limited, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -82,7 +82,7 @@ variable "allow_whiteboard" {
 
 variable "allowed_lobby_admitters" {
   description = "Specifies the users who can admit from the lobby. The possible values are: organizerAndCoOrganizersAndPresenters, organizerAndCoOrganizers, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -93,7 +93,7 @@ variable "allowed_lobby_admitters" {
 
 variable "allowed_presenters" {
   description = "Specifies who can be a presenter in a meeting. The possible values are: everyone, organization, roleIsPresenter, organizer, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -104,7 +104,7 @@ variable "allowed_presenters" {
 
 variable "anonymize_identity_for_roles" {
   description = "Specifies whose identity is anonymized in the meeting. The possible values are: attendee. The attendee value can't be removed through a PATCH operation once added."
-  type        = any
+  type        = list(string)
   default     = null
 }
 
@@ -116,26 +116,47 @@ variable "broadcast_recording" {
 
 variable "broadcast_settings" {
   description = "Settings related to a live event."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.broadcastMeetingSettings")
+    allowedAudience = optional(string)
+    captions = optional(object({
+      odata_type           = optional(string, "#microsoft.graph.broadcastMeetingCaptionSettings")
+      isCaptionEnabled     = optional(bool)
+      spokenLanguage       = optional(string)
+      translationLanguages = optional(list(string))
+    }))
+    isAttendeeReportEnabled    = optional(bool)
+    isQuestionAndAnswerEnabled = optional(bool)
+    isRecordingEnabled         = optional(bool)
+    isVideoOnDemandEnabled     = optional(bool)
+  })
+  default = null
 }
 
 variable "capabilities" {
   description = "The list of meeting capabilities. The possible values are: questionAndAnswer,unknownFutureValue."
-  type        = any
+  type        = list(string)
   default     = null
 }
 
 variable "chat_info" {
   description = "The chat information associated with this online meeting."
-  type        = any
-  default     = null
+  type = object({
+    odata_type          = optional(string, "#microsoft.graph.chatInfo")
+    messageId           = optional(string)
+    replyChainMessageId = optional(string)
+    threadId            = optional(string)
+  })
+  default = null
 }
 
 variable "chat_restrictions" {
   description = "Specifies the configuration settings for meeting chat restrictions."
-  type        = any
-  default     = null
+  type = object({
+    odata_type    = optional(string, "#microsoft.graph.chatRestrictions")
+    allowTextOnly = optional(bool)
+  })
+  default = null
 }
 
 variable "end_date_time" {
@@ -176,8 +197,11 @@ variable "is_entry_exit_announced" {
 
 variable "join_meeting_id_settings" {
   description = "Specifies the joinMeetingId, the meeting passcode, and the requirement for the passcode. Once an onlineMeeting is created, the joinMeetingIdSettings can't be modified. To make any changes to this property, the meeting needs to be canceled and a new one needs to be created."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.joinMeetingIdSettings")
+    isPasscodeRequired = optional(bool)
+  })
+  default = null
 }
 
 variable "join_url" {
@@ -188,8 +212,12 @@ variable "join_url" {
 
 variable "lobby_bypass_settings" {
   description = "Specifies which participants can bypass the meeting lobby."
-  type        = any
-  default     = null
+  type = object({
+    odata_type            = optional(string, "#microsoft.graph.lobbyBypassSettings")
+    isDialInBypassEnabled = optional(bool)
+    scope                 = optional(string)
+  })
+  default = null
 }
 
 variable "meeting_options_web_url" {
@@ -219,8 +247,14 @@ variable "odata_type" {
 
 variable "participants" {
   description = "The participants associated with the online meeting, including the organizer and the attendees."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.meetingParticipants")
+    attendees    = optional(any)
+    contributors = optional(any)
+    organizer    = optional(any)
+    producers    = optional(any)
+  })
+  default = null
 }
 
 variable "record_automatically" {
@@ -237,13 +271,16 @@ variable "registration" {
 
 variable "sensitivity_label_assignment" {
   description = "Specifies the sensitivity label applied to the Teams meeting."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.onlineMeetingSensitivityLabelAssignment")
+    sensitivityLabelId = optional(string)
+  })
+  default = null
 }
 
 variable "share_meeting_chat_history_default" {
   description = "Specifies whether meeting chat history is shared with participants.  The possible values are: all, none, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -266,8 +303,12 @@ variable "subject" {
 
 variable "watermark_protection" {
   description = "Specifies whether the client application should apply a watermark to a content type."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                 = optional(string, "#microsoft.graph.watermarkProtectionValues")
+    isEnabledForContentSharing = optional(bool)
+    isEnabledForVideo          = optional(bool)
+  })
+  default = null
 }
 
 variable "additional_properties" {

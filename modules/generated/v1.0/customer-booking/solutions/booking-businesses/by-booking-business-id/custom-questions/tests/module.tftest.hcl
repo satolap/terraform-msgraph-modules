@@ -24,13 +24,13 @@ run "typed_request" {
 
   variables {
     booking_business_id = "test-parent-id"
-    created_date_time   = "2026-01-01T00:00:00Z"
+    answer_input_type   = "text"
     answer_options      = ["example"]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["createdDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
-    error_message = "createdDateTime must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["answerInputType"]) == jsonencode("text")
+    error_message = "answerInputType must preserve typed values and omit nested nulls."
   }
 
   assert {

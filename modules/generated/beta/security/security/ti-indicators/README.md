@@ -22,13 +22,13 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `action` | `action` | `any` | no | no |
+| `action` | `action` | `string` | no | no |
 | `activity_group_names` | `activityGroupNames` | `list(string)` | no | no |
 | `additional_information` | `additionalInformation` | `string` | no | no |
 | `azure_tenant_id` | `azureTenantId` | `string` | no | no |
 | `confidence` | `confidence` | `number` | no | no |
 | `description` | `description` | `string` | no | no |
-| `diamond_model` | `diamondModel` | `any` | no | no |
+| `diamond_model` | `diamondModel` | `string` | no | no |
 | `domain_name` | `domainName` | `string` | no | no |
 | `email_encoding` | `emailEncoding` | `string` | no | no |
 | `email_language` | `emailLanguage` | `string` | no | no |
@@ -43,7 +43,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `external_id` | `externalId` | `string` | no | no |
 | `file_compile_date_time` | `fileCompileDateTime` | `string` | no | no |
 | `file_created_date_time` | `fileCreatedDateTime` | `string` | no | no |
-| `file_hash_type` | `fileHashType` | `any` | no | no |
+| `file_hash_type` | `fileHashType` | `string` | no | no |
 | `file_hash_value` | `fileHashValue` | `string` | no | no |
 | `file_mutex_name` | `fileMutexName` | `string` | no | no |
 | `file_name` | `fileName` | `string` | no | no |
@@ -78,7 +78,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `tags` | `tags` | `list(string)` | no | no |
 | `target_product` | `targetProduct` | `string` | no | no |
 | `threat_type` | `threatType` | `string` | no | no |
-| `tlp_level` | `tlpLevel` | `any` | no | no |
+| `tlp_level` | `tlpLevel` | `string` | no | no |
 | `url` | `url` | `string` | no | no |
 | `user_agent` | `userAgent` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -98,10 +98,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- action: polymorphic schema; accepts an untyped value
-- diamondModel: polymorphic schema; accepts an untyped value
-- fileHashType: polymorphic schema; accepts an untyped value
-- tlpLevel: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

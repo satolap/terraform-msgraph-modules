@@ -76,8 +76,13 @@ variable "role_scope_tag_ids" {
 
 variable "rollout_settings" {
   description = "The windows update rollout settings, including offer start date time, offer end date time, and days between each set of offers."
-  type        = any
-  default     = null
+  type = object({
+    odata_type              = optional(string, "#microsoft.graph.windowsUpdateRolloutSettings")
+    offerEndDateTimeInUTC   = optional(string)
+    offerIntervalInDays     = optional(number)
+    offerStartDateTimeInUTC = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

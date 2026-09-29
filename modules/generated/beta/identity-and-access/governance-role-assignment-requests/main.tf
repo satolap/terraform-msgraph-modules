@@ -7,8 +7,8 @@ locals {
     "reason"                         = var.reason
     "resourceId"                     = var.resource_id
     "roleDefinitionId"               = var.role_definition_id
-    "schedule"                       = var.schedule
-    "status"                         = var.status
+    "schedule"                       = (var.schedule == null ? null : { for key0, value0 in { "@odata.type" = var.schedule["odata_type"], "duration" = var.schedule["duration"], "endDateTime" = var.schedule["endDateTime"], "startDateTime" = var.schedule["startDateTime"], "type" = var.schedule["type"] } : key0 => value0 if value0 != null })
+    "status"                         = (var.status == null ? null : { for key0, value0 in { "@odata.type" = var.status["odata_type"], "status" = var.status["status"], "statusDetails" = (var.status["statusDetails"] == null ? null : [for item1 in var.status["statusDetails"] : (item1 == null ? null : { for key2, value2 in { "@odata.type" = item1["odata_type"], "key" = item1["key"], "value" = item1["value"] } : key2 => value2 if value2 != null }) if item1 != null]), "subStatus" = var.status["subStatus"] } : key0 => value0 if value0 != null })
     "subjectId"                      = var.subject_id
     "type"                           = var.type
   } : key => value if value != null }

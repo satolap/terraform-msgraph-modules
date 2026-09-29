@@ -8,7 +8,7 @@ locals {
     "localAdminEnabled"    = var.local_admin_enabled
     "@odata.type"          = var.odata_type
     "resetEnabled"         = var.reset_enabled
-    "restorePointSetting"  = var.restore_point_setting
+    "restorePointSetting"  = (var.restore_point_setting == null ? null : { for key0, value0 in { "@odata.type" = var.restore_point_setting["odata_type"], "frequencyType" = var.restore_point_setting["frequencyType"], "userRestoreEnabled" = var.restore_point_setting["userRestoreEnabled"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

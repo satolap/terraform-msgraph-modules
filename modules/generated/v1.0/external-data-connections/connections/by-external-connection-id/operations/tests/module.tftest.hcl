@@ -19,6 +19,26 @@ run "minimal_request" {
   }
 }
 
+run "typed_request" {
+  command = plan
+
+  variables {
+    external_connection_id = "test-parent-id"
+    status                 = "unspecified"
+    error                  = { "code" = null }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["status"]) == jsonencode("unspecified")
+    error_message = "status must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["error"]) == jsonencode({ "@odata.type" = "#microsoft.graph.publicError" })
+    error_message = "error must preserve typed values and omit nested nulls."
+  }
+}
+
 run "invalid_enum" {
   command = plan
 

@@ -26,6 +26,7 @@ run "typed_request" {
     case_id   = "test-parent-id"
     content   = "example"
     file_size = 0
+    origin    = { "resourceId" = null }
   }
 
   assert {
@@ -36,6 +37,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["fileSize"]) == jsonencode(0)
     error_message = "fileSize must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["origin"]) == jsonencode({ "@odata.type" = "#microsoft.graph.security.caseManagement.attachmentOrigin" })
+    error_message = "origin must preserve typed values and omit nested nulls."
   }
 }
 

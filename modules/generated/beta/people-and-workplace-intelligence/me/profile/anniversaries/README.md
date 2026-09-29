@@ -22,19 +22,19 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `allowed_audiences` | `allowedAudiences` | `any` | no | no |
+| `allowed_audiences` | `allowedAudiences` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `date` | `date` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `graph_source` | `source` | `any` | no | no |
-| `inference` | `inference` | `any` | no | no |
+| `graph_source` | `source` | `object({       odata_type = optional(string, "#microsoft.graph.personDataSources")       type = optional(list(string))     })` | no | no |
+| `inference` | `inference` | `object({       odata_type = optional(string, "#microsoft.graph.inferenceData")       confidenceScore = optional(any)       userHasVerifiedAccuracy = optional(bool)     })` | no | no |
 | `is_searchable` | `isSearchable` | `bool` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `sources` | `sources` | `list(object({       odata_type = optional(string, "#microsoft.graph.profileSourceAnnotation")       isDefaultSource = optional(bool)       properties = optional(list(string))       sourceId = optional(string)     }))` | no | no |
-| `type` | `type` | `any` | no | no |
+| `type` | `type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -52,12 +52,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- allowedAudiences: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- inference: polymorphic schema; accepts an untyped value
+- inference.confidenceScore: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- source: polymorphic schema; accepts an untyped value
-- type: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

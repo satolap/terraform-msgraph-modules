@@ -1,6 +1,6 @@
 variable "availability_status" {
   description = "The training availability status. The possible values are: unknown, notAvailable, available, archive, delete, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -11,8 +11,13 @@ variable "availability_status" {
 
 variable "created_by" {
   description = "The identity of the user who created the training."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "created_date_time" {
@@ -47,7 +52,7 @@ variable "duration_in_minutes" {
 
 variable "graph_source" {
   description = "The source of the training content. The possible values are: unknown, global, tenant, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -65,14 +70,24 @@ variable "has_evaluation" {
 variable "language_details" {
   description = "Details about the language used in the training."
   type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.trainingLanguageDetail")
-    content              = optional(string)
-    createdBy            = optional(any)
-    createdDateTime      = optional(string)
-    description          = optional(string)
-    displayName          = optional(string)
-    isDefaultLangauge    = optional(bool)
-    lastModifiedBy       = optional(any)
+    odata_type = optional(string, "#microsoft.graph.trainingLanguageDetail")
+    content    = optional(string)
+    createdBy = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+      displayName = optional(string)
+      email       = optional(string)
+      id          = optional(string)
+    }))
+    createdDateTime   = optional(string)
+    description       = optional(string)
+    displayName       = optional(string)
+    isDefaultLangauge = optional(bool)
+    lastModifiedBy = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+      displayName = optional(string)
+      email       = optional(string)
+      id          = optional(string)
+    }))
     lastModifiedDateTime = optional(string)
     locale               = optional(string)
   }))
@@ -81,8 +96,13 @@ variable "language_details" {
 
 variable "last_modified_by" {
   description = "The identity of the user who last modified the training."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "last_modified_date_time" {
@@ -112,7 +132,7 @@ variable "tags" {
 
 variable "type" {
   description = "The type of training. The possible values are: unknown, phishing, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -28,7 +28,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["outcomes"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.educationOutcome" }])
+    condition     = jsonencode(msgraph_resource.this.body["outcomes"]) == jsonencode([{}])
     error_message = "outcomes must preserve typed values and omit nested nulls."
   }
 }

@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     aggregated_event_date_time = "2026-01-01T00:00:00Z"
     sign_in_count              = 0
+    status                     = { "additionalDetails" = null }
   }
 
   assert {
@@ -31,5 +32,10 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["signInCount"]) == jsonencode(0)
     error_message = "signInCount must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["status"]) == jsonencode({ "@odata.type" = "#microsoft.graph.signInStatus" })
+    error_message = "status must preserve typed values and omit nested nulls."
   }
 }

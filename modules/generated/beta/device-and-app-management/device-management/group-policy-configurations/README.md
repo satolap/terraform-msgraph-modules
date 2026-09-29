@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.groupPolicyConfigurationAssignment")       lastModifiedDateTime = optional(string)       target = optional(any)     }))` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `definition_values` | `definitionValues` | `list(object({       odata_type = optional(string, "#microsoft.graph.groupPolicyDefinitionValue")       configurationType = optional(string)       createdDateTime = optional(string)       definition = optional(any)       enabled = optional(bool)       lastModifiedDateTime = optional(string)       presentationValues = optional(list(object({       odata_type = optional(string, "#microsoft.graph.groupPolicyPresentationValue")       createdDateTime = optional(string)       definitionValue = optional(any)       lastModifiedDateTime = optional(string)       presentation = optional(any)     })))     }))` | no | no |
+| `definition_values` | `definitionValues` | `list(object({       odata_type = optional(string, "#microsoft.graph.groupPolicyDefinitionValue")       configurationType = optional(string)       createdDateTime = optional(string)       definition = optional(any)       enabled = optional(bool)       lastModifiedDateTime = optional(string)       presentationValues = optional(any)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
@@ -49,9 +49,8 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].target: polymorphic schema; accepts an untyped value
-- definitionValues[].definition: polymorphic schema; accepts an untyped value
-- definitionValues[].presentationValues[].definitionValue: polymorphic schema; accepts an untyped value
-- definitionValues[].presentationValues[].presentation: polymorphic schema; accepts an untyped value
+- definitionValues[].definition: navigation property; accepts an untyped value
+- definitionValues[].presentationValues[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

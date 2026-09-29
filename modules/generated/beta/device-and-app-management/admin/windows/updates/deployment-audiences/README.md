@@ -22,8 +22,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `exclusions` | `exclusions` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.updatableAsset")     }))` | no | no |
-| `members` | `members` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.updatableAsset")     }))` | no | no |
+| `exclusions` | `exclusions` | `any` | no | no |
+| `members` | `members` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -42,6 +42,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- exclusions[]: polymorphic schema; accepts an untyped value
+- members[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

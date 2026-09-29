@@ -25,14 +25,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `completed_date_time` | `completedDateTime` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `error` | `error` | `any` | no | no |
+| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     })` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `policy_id` | `policyId` | `string` | no | no |
-| `restore_job_type` | `restoreJobType` | `any` | no | no |
-| `restore_session_artifact_count` | `restoreSessionArtifactCount` | `any` | no | no |
-| `status` | `status` | `any` | no | no |
+| `restore_job_type` | `restoreJobType` | `string` | no | no |
+| `restore_session_artifact_count` | `restoreSessionArtifactCount` | `object({       odata_type = optional(string, "#microsoft.graph.restoreSessionArtifactCount")       completed = optional(number)       failed = optional(number)       inProgress = optional(number)       total = optional(number)     })` | no | no |
+| `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -51,11 +51,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - createdBy: polymorphic schema; accepts an untyped value
-- error: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- restoreJobType: polymorphic schema; accepts an untyped value
-- restoreSessionArtifactCount: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

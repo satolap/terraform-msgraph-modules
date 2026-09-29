@@ -25,12 +25,18 @@ run "typed_request" {
   variables {
     company_id = "test-parent-id"
     birth_date = "2026-01-01"
+    address    = { "city" = null }
     picture    = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["birthDate"]) == jsonencode("2026-01-01")
     error_message = "birthDate must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["address"]) == jsonencode({ "@odata.type" = "#microsoft.graph.postalAddressType" })
+    error_message = "address must preserve typed values and omit nested nulls."
   }
 
   assert {

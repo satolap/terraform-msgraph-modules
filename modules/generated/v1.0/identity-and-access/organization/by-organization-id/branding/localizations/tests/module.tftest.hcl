@@ -23,12 +23,18 @@ run "typed_request" {
   command = plan
 
   variables {
-    organization_id  = "test-parent-id"
-    background_color = "example"
+    organization_id       = "test-parent-id"
+    background_color      = "example"
+    content_customization = { "attributeCollection" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["backgroundColor"]) == jsonencode("example")
     error_message = "backgroundColor must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["contentCustomization"]) == jsonencode({ "@odata.type" = "#microsoft.graph.contentCustomization" })
+    error_message = "contentCustomization must preserve typed values and omit nested nulls."
   }
 }

@@ -27,7 +27,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `active_sign_in_uri` | `activeSignInUri` | `string` | no | no |
 | `default_interactive_authentication_method` | `defaultInteractiveAuthenticationMethod` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `federated_idp_mfa_behavior` | `federatedIdpMfaBehavior` | `any` | no | no |
+| `federated_idp_mfa_behavior` | `federatedIdpMfaBehavior` | `string` | no | no |
 | `is_signed_authentication_request_required` | `isSignedAuthenticationRequestRequired` | `bool` | no | no |
 | `issuer_uri` | `issuerUri` | `string` | no | no |
 | `metadata_exchange_uri` | `metadataExchangeUri` | `string` | no | no |
@@ -37,11 +37,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `passive_sign_in_uri` | `passiveSignInUri` | `string` | no | no |
 | `password_change_uri` | `passwordChangeUri` | `string` | no | yes |
 | `password_reset_uri` | `passwordResetUri` | `string` | no | yes |
-| `preferred_authentication_protocol` | `preferredAuthenticationProtocol` | `any` | no | no |
-| `prompt_login_behavior` | `promptLoginBehavior` | `any` | no | no |
+| `preferred_authentication_protocol` | `preferredAuthenticationProtocol` | `string` | no | no |
+| `prompt_login_behavior` | `promptLoginBehavior` | `string` | no | no |
 | `sign_out_uri` | `signOutUri` | `string` | no | no |
 | `signing_certificate` | `signingCertificate` | `string` | no | no |
-| `signing_certificate_update_status` | `signingCertificateUpdateStatus` | `any` | no | no |
+| `signing_certificate_update_status` | `signingCertificateUpdateStatus` | `object({       odata_type = optional(string, "#microsoft.graph.signingCertificateUpdateStatus")     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -59,10 +59,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- federatedIdpMfaBehavior: polymorphic schema; accepts an untyped value
-- preferredAuthenticationProtocol: polymorphic schema; accepts an untyped value
-- promptLoginBehavior: polymorphic schema; accepts an untyped value
-- signingCertificateUpdateStatus: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

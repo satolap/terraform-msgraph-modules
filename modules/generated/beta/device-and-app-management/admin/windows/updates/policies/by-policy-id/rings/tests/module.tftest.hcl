@@ -5,7 +5,8 @@ run "minimal_request" {
   command = plan
 
   variables {
-    policy_id = "test-parent-id"
+    policy_id  = "test-parent-id"
+    odata_type = "#microsoft.graph.windowsUpdates.qualityUpdateRing"
   }
 
   assert {
@@ -24,10 +25,16 @@ run "typed_request" {
 
   variables {
     policy_id                 = "test-parent-id"
+    odata_type                = "#microsoft.graph.windowsUpdates.qualityUpdateRing"
     description               = "example"
     is_paused                 = false
     deferral_in_days          = -2147483648
     excluded_group_assignment = { "assignments" = null }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.windowsUpdates.qualityUpdateRing")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -49,4 +56,15 @@ run "typed_request" {
     condition     = jsonencode(msgraph_resource.this.body["excludedGroupAssignment"]) == jsonencode({ "@odata.type" = "#microsoft.graph.windowsUpdates.excludedGroupAssignment" })
     error_message = "excludedGroupAssignment must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    policy_id  = "test-parent-id"
+    odata_type = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

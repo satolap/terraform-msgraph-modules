@@ -17,8 +17,14 @@ variable "comments" {
 
 variable "created_by" {
   description = "The identity set of the approver."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.approvalIdentitySet")
+    application = optional(any)
+    device      = optional(any)
+    group       = optional(any)
+    user        = optional(any)
+  })
+  default = null
 }
 
 variable "odata_type" {

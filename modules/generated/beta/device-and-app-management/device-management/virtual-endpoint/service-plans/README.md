@@ -23,7 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `provisioning_type` | `provisioningType` | `any` | no | no |
+| `provisioning_type` | `provisioningType` | `string` | no | no |
 | `supported_solution` | `supportedSolution` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -42,7 +42,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- provisioningType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

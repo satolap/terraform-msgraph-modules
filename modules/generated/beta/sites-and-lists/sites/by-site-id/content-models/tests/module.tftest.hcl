@@ -23,13 +23,13 @@ run "typed_request" {
   command = plan
 
   variables {
-    site_id = "test-parent-id"
-    name    = "example"
+    site_id    = "test-parent-id"
+    model_type = "teachingMethod"
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["name"]) == jsonencode("example")
-    error_message = "name must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["modelType"]) == jsonencode("teachingMethod")
+    error_message = "modelType must preserve typed values and omit nested nulls."
   }
 }
 

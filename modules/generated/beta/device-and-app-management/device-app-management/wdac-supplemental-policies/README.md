@@ -52,8 +52,8 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].target: polymorphic schema; accepts an untyped value
-- deploySummary: polymorphic schema; accepts an untyped value
-- deviceStatuses[].policy: polymorphic schema; accepts an untyped value
+- deploySummary: navigation property; accepts an untyped value
+- deviceStatuses[].policy: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

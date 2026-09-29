@@ -25,7 +25,7 @@ variable "members" {
   description = "A member added to an externalGroup. You can add Microsoft Entra users, Microsoft Entra groups, or other externalGroups as members."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.externalConnectors.identity")
-    type       = optional(any)
+    type       = optional(string)
   }))
   default = null
 }

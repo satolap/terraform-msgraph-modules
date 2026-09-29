@@ -25,10 +25,16 @@ run "typed_request" {
   variables {
     approval_item_id = "test-parent-id"
     comments         = "example"
+    created_by       = { "application" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["comments"]) == jsonencode("example")
     error_message = "comments must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["createdBy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.approvalIdentitySet" })
+    error_message = "createdBy must preserve typed values and omit nested nulls."
   }
 }

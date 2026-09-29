@@ -22,34 +22,34 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `all_channels` | `allChannels` | `list(object({       odata_type = optional(string, "#microsoft.graph.channel")       allMembers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.conversationMember")       displayName = optional(string)       roles = optional(list(string))       visibleHistoryStartDateTime = optional(string)     })))       description = optional(string)       displayName = optional(string)       enabledApps = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsApp")       appDefinitions = optional(any)       displayName = optional(string)       externalId = optional(string)     })))       filesFolder = optional(any)       isFavoriteByDefault = optional(bool)       layoutType = optional(any)       members = optional(list(object({       odata_type = optional(string, "#microsoft.graph.conversationMember")       displayName = optional(string)       roles = optional(list(string))       visibleHistoryStartDateTime = optional(string)     })))       membershipType = optional(any)       messages = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessage")       attachments = optional(any)       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(any)     }))       channelIdentity = optional(any)       chatId = optional(string)       createdDateTime = optional(string)       from = optional(any)       hostedContents = optional(any)       importance = optional(string)       locale = optional(string)       mentions = optional(any)       messageHistory = optional(any)       messageType = optional(string)       policyViolation = optional(any)       reactions = optional(any)       replies = optional(any)       subject = optional(string)       summary = optional(string)     })))       migrationMode = optional(any)       originalCreatedDateTime = optional(string)       sharedWithTeams = optional(list(object({       odata_type = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")       allowedMembers = optional(any)       displayName = optional(string)       isHostTeam = optional(bool)       team = optional(any)       tenantId = optional(string)     })))       summary = optional(any)       tabs = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsTab")       configuration = optional(any)       displayName = optional(string)       teamsApp = optional(any)     })))       tenantId = optional(string)     }))` | no | no |
-| `channels` | `channels` | `list(object({       odata_type = optional(string, "#microsoft.graph.channel")       allMembers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.conversationMember")       displayName = optional(string)       roles = optional(list(string))       visibleHistoryStartDateTime = optional(string)     })))       description = optional(string)       displayName = optional(string)       enabledApps = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsApp")       appDefinitions = optional(any)       displayName = optional(string)       externalId = optional(string)     })))       filesFolder = optional(any)       isFavoriteByDefault = optional(bool)       layoutType = optional(any)       members = optional(list(object({       odata_type = optional(string, "#microsoft.graph.conversationMember")       displayName = optional(string)       roles = optional(list(string))       visibleHistoryStartDateTime = optional(string)     })))       membershipType = optional(any)       messages = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessage")       attachments = optional(any)       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(any)     }))       channelIdentity = optional(any)       chatId = optional(string)       createdDateTime = optional(string)       from = optional(any)       hostedContents = optional(any)       importance = optional(string)       locale = optional(string)       mentions = optional(any)       messageHistory = optional(any)       messageType = optional(string)       policyViolation = optional(any)       reactions = optional(any)       replies = optional(any)       subject = optional(string)       summary = optional(string)     })))       migrationMode = optional(any)       originalCreatedDateTime = optional(string)       sharedWithTeams = optional(list(object({       odata_type = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")       allowedMembers = optional(any)       displayName = optional(string)       isHostTeam = optional(bool)       team = optional(any)       tenantId = optional(string)     })))       summary = optional(any)       tabs = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsTab")       configuration = optional(any)       displayName = optional(string)       teamsApp = optional(any)     })))       tenantId = optional(string)     }))` | no | no |
+| `all_channels` | `allChannels` | `list(object({       odata_type = optional(string, "#microsoft.graph.channel")       allMembers = optional(any)       description = optional(string)       displayName = optional(string)       enabledApps = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsApp")       appDefinitions = optional(any)       displayName = optional(string)       externalId = optional(string)     })))       filesFolder = optional(any)       isFavoriteByDefault = optional(bool)       layoutType = optional(string)       members = optional(any)       membershipType = optional(string)       messages = optional(any)       migrationMode = optional(string)       originalCreatedDateTime = optional(string)       sharedWithTeams = optional(list(object({       odata_type = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")       allowedMembers = optional(any)       displayName = optional(string)       isHostTeam = optional(bool)       team = optional(any)       tenantId = optional(string)     })))       summary = optional(object({       odata_type = optional(string, "#microsoft.graph.channelSummary")       guestsCount = optional(number)       hasMembersFromOtherTenants = optional(bool)       membersCount = optional(number)       ownersCount = optional(number)     }))       tabs = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsTab")       configuration = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsTabConfiguration")       contentUrl = optional(string)       entityId = optional(string)       removeUrl = optional(string)       websiteUrl = optional(string)     }))       displayName = optional(string)       teamsApp = optional(any)     })))       tenantId = optional(string)     }))` | no | no |
+| `channels` | `channels` | `list(object({       odata_type = optional(string, "#microsoft.graph.channel")       allMembers = optional(any)       description = optional(string)       displayName = optional(string)       enabledApps = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsApp")       appDefinitions = optional(any)       displayName = optional(string)       externalId = optional(string)     })))       filesFolder = optional(any)       isFavoriteByDefault = optional(bool)       layoutType = optional(string)       members = optional(any)       membershipType = optional(string)       messages = optional(any)       migrationMode = optional(string)       originalCreatedDateTime = optional(string)       sharedWithTeams = optional(list(object({       odata_type = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")       allowedMembers = optional(any)       displayName = optional(string)       isHostTeam = optional(bool)       team = optional(any)       tenantId = optional(string)     })))       summary = optional(object({       odata_type = optional(string, "#microsoft.graph.channelSummary")       guestsCount = optional(number)       hasMembersFromOtherTenants = optional(bool)       membersCount = optional(number)       ownersCount = optional(number)     }))       tabs = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsTab")       configuration = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsTabConfiguration")       contentUrl = optional(string)       entityId = optional(string)       removeUrl = optional(string)       websiteUrl = optional(string)     }))       displayName = optional(string)       teamsApp = optional(any)     })))       tenantId = optional(string)     }))` | no | no |
 | `classification` | `classification` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `first_channel_name` | `firstChannelName` | `string` | no | no |
-| `fun_settings` | `funSettings` | `any` | no | no |
+| `fun_settings` | `funSettings` | `object({       odata_type = optional(string, "#microsoft.graph.teamFunSettings")       allowCustomMemes = optional(bool)       allowGiphy = optional(bool)       allowStickersAndMemes = optional(bool)       giphyContentRating = optional(string)     })` | no | no |
 | `group` | `group` | `any` | no | no |
-| `guest_settings` | `guestSettings` | `any` | no | no |
-| `incoming_channels` | `incomingChannels` | `list(object({       odata_type = optional(string, "#microsoft.graph.channel")       allMembers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.conversationMember")       displayName = optional(string)       roles = optional(list(string))       visibleHistoryStartDateTime = optional(string)     })))       description = optional(string)       displayName = optional(string)       enabledApps = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsApp")       appDefinitions = optional(any)       displayName = optional(string)       externalId = optional(string)     })))       filesFolder = optional(any)       isFavoriteByDefault = optional(bool)       layoutType = optional(any)       members = optional(list(object({       odata_type = optional(string, "#microsoft.graph.conversationMember")       displayName = optional(string)       roles = optional(list(string))       visibleHistoryStartDateTime = optional(string)     })))       membershipType = optional(any)       messages = optional(list(object({       odata_type = optional(string, "#microsoft.graph.chatMessage")       attachments = optional(any)       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(any)     }))       channelIdentity = optional(any)       chatId = optional(string)       createdDateTime = optional(string)       from = optional(any)       hostedContents = optional(any)       importance = optional(string)       locale = optional(string)       mentions = optional(any)       messageHistory = optional(any)       messageType = optional(string)       policyViolation = optional(any)       reactions = optional(any)       replies = optional(any)       subject = optional(string)       summary = optional(string)     })))       migrationMode = optional(any)       originalCreatedDateTime = optional(string)       sharedWithTeams = optional(list(object({       odata_type = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")       allowedMembers = optional(any)       displayName = optional(string)       isHostTeam = optional(bool)       team = optional(any)       tenantId = optional(string)     })))       summary = optional(any)       tabs = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsTab")       configuration = optional(any)       displayName = optional(string)       teamsApp = optional(any)     })))       tenantId = optional(string)     }))` | no | no |
-| `installed_apps` | `installedApps` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsAppInstallation")       consentedPermissionSet = optional(any)       teamsApp = optional(any)       teamsAppDefinition = optional(any)     }))` | no | no |
+| `guest_settings` | `guestSettings` | `object({       odata_type = optional(string, "#microsoft.graph.teamGuestSettings")       allowCreateUpdateChannels = optional(bool)       allowDeleteChannels = optional(bool)     })` | no | no |
+| `incoming_channels` | `incomingChannels` | `list(object({       odata_type = optional(string, "#microsoft.graph.channel")       allMembers = optional(any)       description = optional(string)       displayName = optional(string)       enabledApps = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsApp")       appDefinitions = optional(any)       displayName = optional(string)       externalId = optional(string)     })))       filesFolder = optional(any)       isFavoriteByDefault = optional(bool)       layoutType = optional(string)       members = optional(any)       membershipType = optional(string)       messages = optional(any)       migrationMode = optional(string)       originalCreatedDateTime = optional(string)       sharedWithTeams = optional(list(object({       odata_type = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")       allowedMembers = optional(any)       displayName = optional(string)       isHostTeam = optional(bool)       team = optional(any)       tenantId = optional(string)     })))       summary = optional(object({       odata_type = optional(string, "#microsoft.graph.channelSummary")       guestsCount = optional(number)       hasMembersFromOtherTenants = optional(bool)       membersCount = optional(number)       ownersCount = optional(number)     }))       tabs = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsTab")       configuration = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsTabConfiguration")       contentUrl = optional(string)       entityId = optional(string)       removeUrl = optional(string)       websiteUrl = optional(string)     }))       displayName = optional(string)       teamsApp = optional(any)     })))       tenantId = optional(string)     }))` | no | no |
+| `installed_apps` | `installedApps` | `any` | no | no |
 | `internal_id` | `internalId` | `string` | no | no |
-| `member_settings` | `memberSettings` | `any` | no | no |
-| `members` | `members` | `list(object({       odata_type = optional(string, "#microsoft.graph.conversationMember")       displayName = optional(string)       roles = optional(list(string))       visibleHistoryStartDateTime = optional(string)     }))` | no | no |
-| `messaging_settings` | `messagingSettings` | `any` | no | no |
+| `member_settings` | `memberSettings` | `object({       odata_type = optional(string, "#microsoft.graph.teamMemberSettings")       allowAddRemoveApps = optional(bool)       allowCreatePrivateChannels = optional(bool)       allowCreateUpdateChannels = optional(bool)       allowCreateUpdateRemoveConnectors = optional(bool)       allowCreateUpdateRemoveTabs = optional(bool)       allowDeleteChannels = optional(bool)     })` | no | no |
+| `members` | `members` | `any` | no | no |
+| `messaging_settings` | `messagingSettings` | `object({       odata_type = optional(string, "#microsoft.graph.teamMessagingSettings")       allowChannelMentions = optional(bool)       allowOwnerDeleteMessages = optional(bool)       allowTeamMentions = optional(bool)       allowUserDeleteMessages = optional(bool)       allowUserEditMessages = optional(bool)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `operations` | `operations` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsAsyncOperation")       attemptsCount = optional(number)       createdDateTime = optional(string)       error = optional(any)       lastActionDateTime = optional(string)       operationType = optional(string)       status = optional(string)       targetResourceId = optional(string)       targetResourceLocation = optional(string)     }))` | no | no |
+| `operations` | `operations` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsAsyncOperation")       attemptsCount = optional(number)       createdDateTime = optional(string)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.operationError")       code = optional(string)       message = optional(string)     }))       lastActionDateTime = optional(string)       operationType = optional(string)       status = optional(string)       targetResourceId = optional(string)       targetResourceLocation = optional(string)     }))` | no | no |
 | `permission_grants` | `permissionGrants` | `list(object({       odata_type = optional(string, "#microsoft.graph.resourceSpecificPermissionGrant")       deletedDateTime = optional(string)     }))` | no | no |
 | `photo` | `photo` | `any` | no | no |
 | `primary_channel` | `primaryChannel` | `any` | no | no |
 | `schedule` | `schedule` | `any` | no | no |
-| `specialization` | `specialization` | `any` | no | no |
-| `summary` | `summary` | `any` | no | no |
-| `tags` | `tags` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamworkTag")       description = optional(string)       displayName = optional(string)       memberCount = optional(number)       members = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamworkTagMember")       displayName = optional(string)       tenantId = optional(string)       userId = optional(string)     })))       tagType = optional(any)       teamId = optional(string)     }))` | no | no |
+| `specialization` | `specialization` | `string` | no | no |
+| `summary` | `summary` | `object({       odata_type = optional(string, "#microsoft.graph.teamSummary")       guestsCount = optional(number)       membersCount = optional(number)       ownersCount = optional(number)     })` | no | no |
+| `tags` | `tags` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamworkTag")       description = optional(string)       displayName = optional(string)       memberCount = optional(number)       members = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamworkTagMember")       displayName = optional(string)       tenantId = optional(string)       userId = optional(string)     })))       tagType = optional(string)       teamId = optional(string)     }))` | no | no |
 | `template` | `template` | `any` | no | no |
 | `tenant_id` | `tenantId` | `string` | no | no |
-| `visibility` | `visibility` | `any` | no | no |
+| `visibility` | `visibility` | `string` | no | no |
 | `web_url` | `webUrl` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -67,83 +67,37 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- allChannels[].allMembers[]: polymorphic schema; accepts an untyped value
 - allChannels[].enabledApps[].appDefinitions[]: nested schema exceeds depth limit; accepts an untyped value
-- allChannels[].filesFolder: polymorphic schema; accepts an untyped value
-- allChannels[].layoutType: polymorphic schema; accepts an untyped value
-- allChannels[].membershipType: polymorphic schema; accepts an untyped value
-- allChannels[].messages[].attachments[]: nested schema exceeds depth limit; accepts an untyped value
-- allChannels[].messages[].body.contentType: polymorphic schema; accepts an untyped value
-- allChannels[].messages[].channelIdentity: polymorphic schema; accepts an untyped value
-- allChannels[].messages[].from: polymorphic schema; accepts an untyped value
-- allChannels[].messages[].hostedContents[]: nested schema exceeds depth limit; accepts an untyped value
-- allChannels[].messages[].mentions[]: nested schema exceeds depth limit; accepts an untyped value
-- allChannels[].messages[].messageHistory[]: nested schema exceeds depth limit; accepts an untyped value
-- allChannels[].messages[].policyViolation: polymorphic schema; accepts an untyped value
-- allChannels[].messages[].reactions[]: nested schema exceeds depth limit; accepts an untyped value
-- allChannels[].messages[].replies[]: recursive schema; accepts an untyped value
-- allChannels[].migrationMode: polymorphic schema; accepts an untyped value
+- allChannels[].filesFolder: navigation property; accepts an untyped value
+- allChannels[].members[]: polymorphic schema; accepts an untyped value
+- allChannels[].messages[]: polymorphic schema; accepts an untyped value
 - allChannels[].sharedWithTeams[].allowedMembers[]: nested schema exceeds depth limit; accepts an untyped value
-- allChannels[].sharedWithTeams[].team: polymorphic schema; accepts an untyped value
-- allChannels[].summary: polymorphic schema; accepts an untyped value
-- allChannels[].tabs[].configuration: polymorphic schema; accepts an untyped value
-- allChannels[].tabs[].teamsApp: polymorphic schema; accepts an untyped value
+- allChannels[].sharedWithTeams[].team: navigation property; accepts an untyped value
+- allChannels[].tabs[].teamsApp: navigation property; accepts an untyped value
+- channels[].allMembers[]: polymorphic schema; accepts an untyped value
 - channels[].enabledApps[].appDefinitions[]: nested schema exceeds depth limit; accepts an untyped value
-- channels[].filesFolder: polymorphic schema; accepts an untyped value
-- channels[].layoutType: polymorphic schema; accepts an untyped value
-- channels[].membershipType: polymorphic schema; accepts an untyped value
-- channels[].messages[].attachments[]: nested schema exceeds depth limit; accepts an untyped value
-- channels[].messages[].body.contentType: polymorphic schema; accepts an untyped value
-- channels[].messages[].channelIdentity: polymorphic schema; accepts an untyped value
-- channels[].messages[].from: polymorphic schema; accepts an untyped value
-- channels[].messages[].hostedContents[]: nested schema exceeds depth limit; accepts an untyped value
-- channels[].messages[].mentions[]: nested schema exceeds depth limit; accepts an untyped value
-- channels[].messages[].messageHistory[]: nested schema exceeds depth limit; accepts an untyped value
-- channels[].messages[].policyViolation: polymorphic schema; accepts an untyped value
-- channels[].messages[].reactions[]: nested schema exceeds depth limit; accepts an untyped value
-- channels[].messages[].replies[]: recursive schema; accepts an untyped value
-- channels[].migrationMode: polymorphic schema; accepts an untyped value
+- channels[].filesFolder: navigation property; accepts an untyped value
+- channels[].members[]: polymorphic schema; accepts an untyped value
+- channels[].messages[]: polymorphic schema; accepts an untyped value
 - channels[].sharedWithTeams[].allowedMembers[]: nested schema exceeds depth limit; accepts an untyped value
-- channels[].sharedWithTeams[].team: polymorphic schema; accepts an untyped value
-- channels[].summary: polymorphic schema; accepts an untyped value
-- channels[].tabs[].configuration: polymorphic schema; accepts an untyped value
-- channels[].tabs[].teamsApp: polymorphic schema; accepts an untyped value
-- funSettings: polymorphic schema; accepts an untyped value
-- group: polymorphic schema; accepts an untyped value
-- guestSettings: polymorphic schema; accepts an untyped value
+- channels[].sharedWithTeams[].team: navigation property; accepts an untyped value
+- channels[].tabs[].teamsApp: navigation property; accepts an untyped value
+- group: navigation property; accepts an untyped value
+- incomingChannels[].allMembers[]: polymorphic schema; accepts an untyped value
 - incomingChannels[].enabledApps[].appDefinitions[]: nested schema exceeds depth limit; accepts an untyped value
-- incomingChannels[].filesFolder: polymorphic schema; accepts an untyped value
-- incomingChannels[].layoutType: polymorphic schema; accepts an untyped value
-- incomingChannels[].membershipType: polymorphic schema; accepts an untyped value
-- incomingChannels[].messages[].attachments[]: nested schema exceeds depth limit; accepts an untyped value
-- incomingChannels[].messages[].body.contentType: polymorphic schema; accepts an untyped value
-- incomingChannels[].messages[].channelIdentity: polymorphic schema; accepts an untyped value
-- incomingChannels[].messages[].from: polymorphic schema; accepts an untyped value
-- incomingChannels[].messages[].hostedContents[]: nested schema exceeds depth limit; accepts an untyped value
-- incomingChannels[].messages[].mentions[]: nested schema exceeds depth limit; accepts an untyped value
-- incomingChannels[].messages[].messageHistory[]: nested schema exceeds depth limit; accepts an untyped value
-- incomingChannels[].messages[].policyViolation: polymorphic schema; accepts an untyped value
-- incomingChannels[].messages[].reactions[]: nested schema exceeds depth limit; accepts an untyped value
-- incomingChannels[].messages[].replies[]: recursive schema; accepts an untyped value
-- incomingChannels[].migrationMode: polymorphic schema; accepts an untyped value
+- incomingChannels[].filesFolder: navigation property; accepts an untyped value
+- incomingChannels[].members[]: polymorphic schema; accepts an untyped value
+- incomingChannels[].messages[]: polymorphic schema; accepts an untyped value
 - incomingChannels[].sharedWithTeams[].allowedMembers[]: nested schema exceeds depth limit; accepts an untyped value
-- incomingChannels[].sharedWithTeams[].team: polymorphic schema; accepts an untyped value
-- incomingChannels[].summary: polymorphic schema; accepts an untyped value
-- incomingChannels[].tabs[].configuration: polymorphic schema; accepts an untyped value
-- incomingChannels[].tabs[].teamsApp: polymorphic schema; accepts an untyped value
-- installedApps[].consentedPermissionSet: polymorphic schema; accepts an untyped value
-- installedApps[].teamsApp: polymorphic schema; accepts an untyped value
-- installedApps[].teamsAppDefinition: polymorphic schema; accepts an untyped value
-- memberSettings: polymorphic schema; accepts an untyped value
-- messagingSettings: polymorphic schema; accepts an untyped value
-- operations[].error: polymorphic schema; accepts an untyped value
-- photo: polymorphic schema; accepts an untyped value
-- primaryChannel: polymorphic schema; accepts an untyped value
-- schedule: polymorphic schema; accepts an untyped value
-- specialization: polymorphic schema; accepts an untyped value
-- summary: polymorphic schema; accepts an untyped value
-- tags[].tagType: polymorphic schema; accepts an untyped value
-- template: polymorphic schema; accepts an untyped value
-- visibility: polymorphic schema; accepts an untyped value
+- incomingChannels[].sharedWithTeams[].team: navigation property; accepts an untyped value
+- incomingChannels[].tabs[].teamsApp: navigation property; accepts an untyped value
+- installedApps[]: polymorphic schema; accepts an untyped value
+- members[]: polymorphic schema; accepts an untyped value
+- photo: navigation property; accepts an untyped value
+- primaryChannel: navigation property; accepts an untyped value
+- schedule: navigation property; accepts an untyped value
+- template: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

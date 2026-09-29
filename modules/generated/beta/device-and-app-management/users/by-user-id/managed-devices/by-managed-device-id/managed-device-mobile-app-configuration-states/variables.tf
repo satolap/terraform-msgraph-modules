@@ -83,7 +83,7 @@ variable "setting_states" {
 }
 
 variable "state" {
-  description = "Microsoft Graph state property."
+  description = "The compliance state of the policy"
   type        = string
   default     = null
 

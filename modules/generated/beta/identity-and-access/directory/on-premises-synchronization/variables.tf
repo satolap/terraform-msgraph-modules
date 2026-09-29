@@ -1,7 +1,35 @@
 variable "configuration" {
   description = "Consists of configurations that can be fine-tuned and impact the on-premises directory synchronization process for a tenant. Nullable."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.onPremisesDirectorySynchronizationConfiguration")
+    accidentalDeletionPrevention = optional(object({
+      odata_type                    = optional(string, "#microsoft.graph.onPremisesAccidentalDeletionPrevention")
+      alertThreshold                = optional(number)
+      synchronizationPreventionType = optional(string)
+    }))
+    anchorAttribute = optional(string)
+    applicationId   = optional(string)
+    currentExportData = optional(object({
+      odata_type                         = optional(string, "#microsoft.graph.onPremisesCurrentExportData")
+      clientMachineName                  = optional(string)
+      pendingObjectsAddition             = optional(number)
+      pendingObjectsDeletion             = optional(number)
+      pendingObjectsUpdate               = optional(number)
+      serviceAccount                     = optional(string)
+      successfulLinksProvisioningCount   = optional(number)
+      successfulObjectsProvisioningCount = optional(number)
+      totalConnectorSpaceObjects         = optional(number)
+    }))
+    customerRequestedSynchronizationInterval = optional(string)
+    synchronizationClientVersion             = optional(string)
+    synchronizationInterval                  = optional(string)
+    writebackConfiguration = optional(object({
+      odata_type            = optional(string, "#microsoft.graph.onPremisesWritebackConfiguration")
+      unifiedGroupContainer = optional(string)
+      userContainer         = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "features" {

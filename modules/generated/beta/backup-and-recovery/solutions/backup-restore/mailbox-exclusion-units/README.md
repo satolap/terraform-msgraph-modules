@@ -25,10 +25,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `directory_object_id` | `directoryObjectId` | `string` | no | no |
-| `error` | `error` | `any` | no | no |
+| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     })` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `mailbox_type` | `mailboxType` | `any` | no | no |
+| `mailbox_type` | `mailboxType` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `policy_id` | `policyId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -49,9 +49,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - createdBy: polymorphic schema; accepts an untyped value
-- error: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- mailboxType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

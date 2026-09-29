@@ -26,8 +26,8 @@ variable "discoverabilities" {
   default     = null
 
   validation {
-    condition     = var.discoverabilities == null ? true : contains(["None", "AttributeNames", "AttributeDataTypes", "AttributeReadOnly", "ReferenceAttributes", "UnknownFutureValue"], var.discoverabilities)
-    error_message = "discoverabilities must be one of the documented enum values."
+    condition     = var.discoverabilities == null ? true : try(alltrue([for value in split(",", var.discoverabilities) : contains(["none", "attributenames", "attributedatatypes", "attributereadonly", "referenceattributes", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "discoverabilities must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -64,7 +64,7 @@ variable "objects" {
     })))
     metadata = optional(list(object({
       odata_type = optional(string, "#microsoft.graph.objectDefinitionMetadataEntry")
-      key        = optional(any)
+      key        = optional(string)
       value      = optional(string)
     })))
     name          = optional(string)

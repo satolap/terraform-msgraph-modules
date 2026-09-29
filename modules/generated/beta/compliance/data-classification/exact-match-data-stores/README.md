@@ -46,7 +46,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - sessions[].error: polymorphic schema; accepts an untyped value
-- sessions[].uploadAgent: polymorphic schema; accepts an untyped value
+- sessions[].uploadAgent: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

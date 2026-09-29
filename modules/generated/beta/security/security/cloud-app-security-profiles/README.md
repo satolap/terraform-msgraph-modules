@@ -32,14 +32,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `manifest` | `manifest` | `string` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `permissions_required` | `permissionsRequired` | `any` | no | no |
+| `permissions_required` | `permissionsRequired` | `string` | no | no |
 | `platform` | `platform` | `string` | no | no |
 | `policy_name` | `policyName` | `string` | no | no |
 | `publisher` | `publisher` | `string` | no | no |
 | `risk_score` | `riskScore` | `string` | no | no |
 | `tags` | `tags` | `list(string)` | no | no |
 | `type` | `type` | `string` | no | no |
-| `vendor_information` | `vendorInformation` | `any` | no | no |
+| `vendor_information` | `vendorInformation` | `object({       odata_type = optional(string, "#microsoft.graph.securityVendorInformation")       provider = optional(string)       providerVersion = optional(string)       subProvider = optional(string)       vendor = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -57,8 +57,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- permissionsRequired: polymorphic schema; accepts an untyped value
-- vendorInformation: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

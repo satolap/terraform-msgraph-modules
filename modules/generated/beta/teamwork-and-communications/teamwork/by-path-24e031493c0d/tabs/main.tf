@@ -1,7 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "configuration"  = var.configuration
+    "configuration"  = (var.configuration == null ? null : { for key0, value0 in { "@odata.type" = var.configuration["odata_type"], "contentUrl" = var.configuration["contentUrl"], "entityId" = var.configuration["entityId"], "removeUrl" = var.configuration["removeUrl"], "websiteUrl" = var.configuration["websiteUrl"] } : key0 => value0 if value0 != null })
     "displayName"    = var.display_name
     "messageId"      = var.message_id
     "@odata.type"    = var.odata_type

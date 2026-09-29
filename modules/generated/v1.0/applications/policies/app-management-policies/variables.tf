@@ -1,10 +1,7 @@
 variable "applies_to" {
   description = "Collection of applications and service principals to which the policy is applied."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "deleted_date_time" {
@@ -40,8 +37,61 @@ variable "odata_type" {
 
 variable "restrictions" {
   description = "Restrictions that apply to an application or service principal object."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.customAppManagementConfiguration")
+    applicationRestrictions = optional(object({
+      odata_type = optional(string, "#microsoft.graph.customAppManagementApplicationConfiguration")
+      identifierUris = optional(object({
+        odata_type = optional(string, "#microsoft.graph.identifierUriConfiguration")
+        nonDefaultUriAddition = optional(object({
+          odata_type = optional(string, "#microsoft.graph.identifierUriRestriction")
+          excludeActors = optional(object({
+            odata_type               = optional(string, "#microsoft.graph.appManagementPolicyActorExemptions")
+            customSecurityAttributes = optional(any)
+          }))
+          excludeAppsReceivingV2Tokens        = optional(bool)
+          excludeSaml                         = optional(bool)
+          restrictForAppsCreatedAfterDateTime = optional(string)
+          state                               = optional(string)
+        }))
+        uriAdditionWithoutUniqueTenantIdentifier = optional(object({
+          odata_type = optional(string, "#microsoft.graph.identifierUriRestriction")
+          excludeActors = optional(object({
+            odata_type               = optional(string, "#microsoft.graph.appManagementPolicyActorExemptions")
+            customSecurityAttributes = optional(any)
+          }))
+          excludeAppsReceivingV2Tokens        = optional(bool)
+          excludeSaml                         = optional(bool)
+          restrictForAppsCreatedAfterDateTime = optional(string)
+          state                               = optional(string)
+        }))
+      }))
+    }))
+    keyCredentials = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.keyCredentialConfiguration")
+      excludeActors = optional(object({
+        odata_type               = optional(string, "#microsoft.graph.appManagementPolicyActorExemptions")
+        customSecurityAttributes = optional(any)
+      }))
+      maxLifetime                         = optional(string)
+      restrictForAppsCreatedAfterDateTime = optional(string)
+      restrictionType                     = optional(string)
+      state                               = optional(string)
+    })))
+    passwordCredentials = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.passwordCredentialConfiguration")
+      excludeActors = optional(object({
+        odata_type               = optional(string, "#microsoft.graph.appManagementPolicyActorExemptions")
+        customSecurityAttributes = optional(any)
+      }))
+      maxLifetime                         = optional(string)
+      restrictForAppsCreatedAfterDateTime = optional(string)
+      restrictionType                     = optional(string)
+      state                               = optional(string)
+    })))
+  })
+  default   = null
+  sensitive = true
 }
 
 variable "additional_properties" {

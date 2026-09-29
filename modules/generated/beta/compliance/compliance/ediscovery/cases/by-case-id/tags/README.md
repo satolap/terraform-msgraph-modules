@@ -24,8 +24,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `case_id` | URL parameter `case-id` | `string` | yes | no |
-| `child_selectability` | `childSelectability` | `any` | no | no |
-| `child_tags` | `childTags` | `list(object({       odata_type = optional(string, "#microsoft.graph.ediscovery.tag")       childSelectability = optional(any)       childTags = optional(any)       createdBy = optional(any)       description = optional(string)       displayName = optional(string)       lastModifiedDateTime = optional(string)       parent = optional(any)     }))` | no | no |
+| `child_selectability` | `childSelectability` | `string` | no | no |
+| `child_tags` | `childTags` | `list(object({       odata_type = optional(string, "#microsoft.graph.ediscovery.tag")       childSelectability = optional(string)       childTags = optional(any)       createdBy = optional(any)       description = optional(string)       displayName = optional(string)       lastModifiedDateTime = optional(string)       parent = optional(any)     }))` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
@@ -49,13 +49,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- childSelectability: polymorphic schema; accepts an untyped value
-- childTags[].childSelectability: polymorphic schema; accepts an untyped value
 - childTags[].childTags[]: recursive schema; accepts an untyped value
 - childTags[].createdBy: polymorphic schema; accepts an untyped value
-- childTags[].parent: polymorphic schema; accepts an untyped value
+- childTags[].parent: navigation property; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- parent: polymorphic schema; accepts an untyped value
+- parent: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

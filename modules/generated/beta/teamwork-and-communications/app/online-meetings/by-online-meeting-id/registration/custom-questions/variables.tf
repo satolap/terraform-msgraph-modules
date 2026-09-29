@@ -11,7 +11,7 @@ variable "online_meeting_id" {
 
 variable "answer_input_type" {
   description = "Answer input type of the custom registration question."
-  type        = any
+  type        = string
   default     = null
 
   validation {

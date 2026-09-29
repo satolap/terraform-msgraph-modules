@@ -48,7 +48,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - access: polymorphic schema; accepts an untyped value
-- driveItem: polymorphic schema; accepts an untyped value
+- driveItem: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

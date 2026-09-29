@@ -34,7 +34,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `term_id1` | URL parameter `term-id1` | `string` | yes | no |
 | `from_term` | `fromTerm` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `relationship` | `relationship` | `any` | no | no |
+| `relationship` | `relationship` | `string` | no | no |
 | `set` | `set` | `any` | no | no |
 | `to_term` | `toTerm` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -54,10 +54,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- fromTerm: polymorphic schema; accepts an untyped value
-- relationship: polymorphic schema; accepts an untyped value
-- set: polymorphic schema; accepts an untyped value
-- toTerm: polymorphic schema; accepts an untyped value
+- fromTerm: navigation property; accepts an untyped value
+- set: navigation property; accepts an untyped value
+- toTerm: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

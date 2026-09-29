@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.exchangeProtectionPolicy", "#microsoft.graph.oneDriveForBusinessProtectionPolicy", "#microsoft.graph.sharePointProtectionPolicy"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "billing_policy_id" {
   description = "Microsoft Graph billingPolicyId property."
   type        = string
@@ -40,13 +51,6 @@ variable "last_modified_date_time" {
   default     = null
 }
 
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.protectionPolicyBase"
-  nullable    = false
-}
-
 variable "offboard_requested_date_time" {
   description = "The date and time when offboarding was requested for the protection policy. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z."
   type        = string
@@ -55,7 +59,7 @@ variable "offboard_requested_date_time" {
 
 variable "protection_mode" {
   description = "The backup mode for the protection policy. The possible values are: standard, fullServiceBackup, unknownFutureValue. When set to fullServiceBackup, the entire workload is backed up and specific items can be excluded using exclusion units. When set to standard, only the items explicitly added as protection units are backed up."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -66,8 +70,14 @@ variable "protection_mode" {
 
 variable "protection_policy_artifact_count" {
   description = "The count of artifacts in the protection policy by status. Returned only on $select."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.protectionPolicyArtifactCount")
+    completed  = optional(number)
+    failed     = optional(number)
+    inProgress = optional(number)
+    total      = optional(number)
+  })
+  default = null
 }
 
 variable "retention_settings" {
@@ -82,7 +92,7 @@ variable "retention_settings" {
 
 variable "status" {
   description = "The aggregated status of the protection units associated with the policy. The possible values are: inactive, activeWithErrors, updating, active, unknownFutureValue, offboardRequested, offboarded. You must use the Prefer: include-unknown-enum-members request header to get the following values in this evolvable enum: offboardRequested, offboarded."
-  type        = any
+  type        = string
   default     = null
 
   validation {

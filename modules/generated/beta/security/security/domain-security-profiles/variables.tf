@@ -72,8 +72,14 @@ variable "odata_type" {
 
 variable "registrant" {
   description = "Microsoft Graph registrant property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type          = optional(string, "#microsoft.graph.domainRegistrant")
+    countryOrRegionCode = optional(string)
+    organization        = optional(string)
+    url                 = optional(string)
+    vendor              = optional(string)
+  })
+  default = null
 }
 
 variable "risk_score" {
@@ -90,8 +96,14 @@ variable "tags" {
 
 variable "vendor_information" {
   description = "Microsoft Graph vendorInformation property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.securityVendorInformation")
+    provider        = optional(string)
+    providerVersion = optional(string)
+    subProvider     = optional(string)
+    vendor          = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

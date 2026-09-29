@@ -8,6 +8,7 @@ run "minimal_request" {
     access_package_catalog_id        = "test-parent-id"
     access_package_resource_scope_id = "test-parent-id"
     access_package_resource_role_id  = "test-parent-id"
+    odata_type                       = "#microsoft.graph.customDataProvidedResourceAccessReviewUploadSession"
   }
 
   assert {
@@ -28,10 +29,16 @@ run "typed_request" {
     access_package_catalog_id        = "test-parent-id"
     access_package_resource_scope_id = "test-parent-id"
     access_package_resource_role_id  = "test-parent-id"
+    odata_type                       = "#microsoft.graph.customDataProvidedResourceAccessReviewUploadSession"
     reference_id                     = "example"
     is_upload_done                   = false
     stats                            = { "filesUploaded" = null }
     files                            = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.customDataProvidedResourceAccessReviewUploadSession")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -62,8 +69,8 @@ run "invalid_enum" {
     access_package_catalog_id        = "test-parent-id"
     access_package_resource_scope_id = "test-parent-id"
     access_package_resource_role_id  = "test-parent-id"
-    status                           = "__graphmodules_invalid_enum__"
+    odata_type                       = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.status]
+  expect_failures = [var.odata_type]
 }

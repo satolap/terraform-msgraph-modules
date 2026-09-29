@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `service_principal_id` | URL parameter `servicePrincipal-id` | `string` | yes | no |
-| `classification` | `classification` | `any` | no | no |
+| `classification` | `classification` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `permission_id` | `permissionId` | `string` | no | no |
 | `permission_name` | `permissionName` | `string` | no | no |
@@ -45,7 +45,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- classification: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

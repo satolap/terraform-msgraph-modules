@@ -15,6 +15,19 @@ run "minimal_request" {
   }
 }
 
+run "typed_request" {
+  command = plan
+
+  variables {
+    classify_as = "focused"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["classifyAs"]) == jsonencode("focused")
+    error_message = "classifyAs must preserve typed values and omit nested nulls."
+  }
+}
+
 run "invalid_enum" {
   command = plan
 

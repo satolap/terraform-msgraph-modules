@@ -19,7 +19,7 @@ variable "progress" {
 
 variable "status" {
   description = "The possible values are: notStarted, running, complete, failed, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

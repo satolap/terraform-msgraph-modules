@@ -31,7 +31,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `expiration_date_time` | `expirationDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `recorded_date_time` | `recordedDateTime` | `string` | no | no |
-| `state` | `state` | `any` | no | no |
+| `state` | `state` | `string` | no | no |
 | `user_display_name` | `userDisplayName` | `string` | no | no |
 | `user_email` | `userEmail` | `string` | no | no |
 | `user_id` | `userId` | `string` | no | no |
@@ -53,7 +53,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- state: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

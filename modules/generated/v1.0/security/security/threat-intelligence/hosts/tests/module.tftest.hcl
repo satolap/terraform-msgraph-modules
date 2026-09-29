@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "#microsoft.graph.security.hostname"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "security/threatIntelligence/hosts"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,8 +23,14 @@ run "typed_request" {
   command = plan
 
   variables {
+    odata_type           = "#microsoft.graph.security.hostname"
     first_seen_date_time = "2026-01-01T00:00:00Z"
     child_host_pairs     = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.security.hostname")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -32,4 +42,14 @@ run "typed_request" {
     condition     = jsonencode(msgraph_resource.this.body["childHostPairs"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.security.hostPair" }])
     error_message = "childHostPairs must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    odata_type = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

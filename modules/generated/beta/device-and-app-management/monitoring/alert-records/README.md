@@ -22,16 +22,16 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `alert_impact` | `alertImpact` | `any` | no | no |
+| `alert_impact` | `alertImpact` | `object({       odata_type = optional(string, "#microsoft.graph.deviceManagement.alertImpact")       aggregationType = optional(string)       alertImpactDetails = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValuePair")       name = optional(string)       value = optional(string)     })))       value = optional(number)     })` | no | no |
 | `alert_rule_id` | `alertRuleId` | `string` | no | no |
-| `alert_rule_template` | `alertRuleTemplate` | `any` | no | no |
+| `alert_rule_template` | `alertRuleTemplate` | `string` | no | no |
 | `detected_date_time` | `detectedDateTime` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `last_updated_date_time` | `lastUpdatedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `resolved_date_time` | `resolvedDateTime` | `string` | no | no |
-| `severity` | `severity` | `any` | no | no |
-| `status` | `status` | `any` | no | no |
+| `severity` | `severity` | `string` | no | no |
+| `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -49,10 +49,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- alertImpact: polymorphic schema; accepts an untyped value
-- alertRuleTemplate: polymorphic schema; accepts an untyped value
-- severity: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

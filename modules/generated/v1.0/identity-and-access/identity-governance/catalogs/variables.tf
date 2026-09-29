@@ -1,6 +1,6 @@
 variable "catalog_type" {
   description = "Whether the catalog is created by a user or entitlement management. The possible values are: userManaged, serviceDefault, serviceManaged, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -11,15 +11,8 @@ variable "catalog_type" {
 
 variable "custom_workflow_extensions" {
   description = "Microsoft Graph customWorkflowExtensions property."
-  type = list(object({
-    odata_type                  = optional(string, "#microsoft.graph.customCalloutExtension")
-    authenticationConfiguration = optional(any)
-    clientConfiguration         = optional(any)
-    description                 = optional(string)
-    displayName                 = optional(string)
-    endpointConfiguration       = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "description" {
@@ -56,7 +49,7 @@ variable "resource_roles" {
     originId     = optional(string)
     originSystem = optional(string)
     resource     = optional(any)
-    type         = optional(any)
+    type         = optional(string)
   }))
   default = null
 }
@@ -77,41 +70,13 @@ variable "resource_scopes" {
 
 variable "resources" {
   description = "Access package resources in this catalog."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.accessPackageResource")
-    attributes = optional(list(object({
-      odata_type                     = optional(string, "#microsoft.graph.accessPackageResourceAttribute")
-      destination                    = optional(any)
-      isEditable                     = optional(bool)
-      isPersistedOnAssignmentRemoval = optional(bool)
-      name                           = optional(string)
-      source                         = optional(any)
-    })))
-    description  = optional(string)
-    displayName  = optional(string)
-    environment  = optional(any)
-    originId     = optional(string)
-    originSystem = optional(string)
-    uploadSessions = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.customDataProvidedResourceUploadSession")
-      data         = optional(any)
-      files        = optional(any)
-      isUploadDone = optional(bool)
-      referenceId  = optional(string)
-      stats = optional(object({
-        odata_type         = optional(string, "#microsoft.graph.customDataProvidedResourceUploadStats")
-        filesUploaded      = optional(number)
-        totalBytesUploaded = optional(number)
-      }))
-      status = optional(string)
-    })))
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "state" {
   description = "Has the value published if the access packages are available for management. The possible values are: unpublished, published, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

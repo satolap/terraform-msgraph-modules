@@ -11,7 +11,7 @@ locals {
     "lastModifiedDateTime" = var.last_modified_date_time
     "@odata.type"          = var.odata_type
     "origin"               = var.origin
-    "posts"                = (var.posts == null ? null : [for item0 in var.posts : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "createdDateTime" = item0["createdDateTime"], "description" = item0["description"], "postType" = item0["postType"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "posts"                = (var.posts == null ? null : [for item0 in var.posts : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "createdDateTime" = item0["createdDateTime"], "description" = (item0["description"] == null ? null : { for key2, value2 in { "@odata.type" = item0["description"]["odata_type"], "content" = item0["description"]["content"], "contentType" = item0["description"]["contentType"] } : key2 => value2 if value2 != null }), "postType" = item0["postType"] } : key1 => value1 if value1 != null }) if item0 != null])
     "service"              = var.service
     "startDateTime"        = var.start_date_time
     "status"               = var.status

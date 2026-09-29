@@ -55,3 +55,32 @@ run "invalid_enum" {
 
   expect_failures = [var.allowed_inbound_data_transfer_source_apps]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    allowed_inbound_data_transfer_source_apps       = "none, OneDriveForBusiness"
+    allowed_outbound_data_transfer_destination_apps = "none, OneDriveForBusiness"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["allowedInboundDataTransferSourceApps"] == "none, OneDriveForBusiness"
+    error_message = "allowedInboundDataTransferSourceApps must accept combined flags enum members."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["allowedOutboundDataTransferDestinationApps"] == "none, OneDriveForBusiness"
+    error_message = "allowedOutboundDataTransferDestinationApps must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    allowed_inbound_data_transfer_source_apps = "none,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.allowed_inbound_data_transfer_source_apps]
+}

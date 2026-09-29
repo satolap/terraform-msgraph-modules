@@ -30,8 +30,13 @@ variable "group_ids" {
 
 variable "keywords" {
   description = "Keywords that trigger this QnA to appear in search results."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.search.answerKeyword")
+    keywords             = optional(list(string))
+    matchSimilarKeywords = optional(bool)
+    reservedKeywords     = optional(list(string))
+  })
+  default = null
 }
 
 variable "language_tags" {
@@ -71,7 +76,7 @@ variable "targeted_variations" {
     description = optional(string)
     displayName = optional(string)
     languageTag = optional(string)
-    platform    = optional(any)
+    platform    = optional(string)
     webUrl      = optional(string)
   }))
   default = null

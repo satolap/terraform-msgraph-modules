@@ -1,6 +1,6 @@
 variable "activity" {
   description = "Indicates the activity type the detected risk is linked to."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -41,7 +41,7 @@ variable "detected_date_time" {
 
 variable "detection_timing_type" {
   description = "Timing of the detected risk, whether real-time or offline). The possible values are: notDefined, realtime, nearRealtime, offline, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -76,8 +76,18 @@ variable "last_updated_date_time" {
 
 variable "location" {
   description = "Location from where the sign-in was initiated."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.signInLocation")
+    city            = optional(string)
+    countryOrRegion = optional(string)
+    geoCoordinates = optional(object({
+      odata_type = optional(string, "#microsoft.graph.geoCoordinates")
+      latitude   = optional(any)
+      longitude  = optional(any)
+    }))
+    state = optional(string)
+  })
+  default = null
 }
 
 variable "mitre_technique_id" {
@@ -101,7 +111,7 @@ variable "request_id" {
 
 variable "risk_detail" {
   description = "Details of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license are returned hidden."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -118,7 +128,7 @@ variable "risk_event_type" {
 
 variable "risk_level" {
   description = "Level of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license are returned hidden. The possible values are: low, medium, high, hidden, none."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -129,7 +139,7 @@ variable "risk_level" {
 
 variable "risk_state" {
   description = "The state of a detected risky service principal or sign-in activity. The possible values are: none, dismissed, atRisk, confirmedCompromised."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -152,7 +162,7 @@ variable "service_principal_id" {
 
 variable "token_issuer_type" {
   description = "Indicates the type of token issuer for the detected sign-in risk. The possible values are: AzureAD."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -20,12 +20,18 @@ run "typed_request" {
 
   variables {
     description        = "example"
+    policy_set         = {}
     approver_group_ids = ["example"]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
     error_message = "description must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["policySet"]) == jsonencode({ "@odata.type" = "#microsoft.graph.operationApprovalPolicySet" })
+    error_message = "policySet must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -39,6 +45,29 @@ run "invalid_enum" {
 
   variables {
     policy_platform = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.policy_platform]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    policy_platform = "notApplicable, AndroidDeviceAdministrator"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["policyPlatform"] == "notApplicable, AndroidDeviceAdministrator"
+    error_message = "policyPlatform must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    policy_platform = "notApplicable,__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.policy_platform]

@@ -37,7 +37,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `is_searchable` | `isSearchable` | `bool` | no | no |
 | `language_tag` | `languageTag` | `string` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `level` | `level` | `any` | no | no |
+| `level` | `level` | `string` | no | no |
 | `number_of_pages` | `numberOfPages` | `number` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `skill_tags` | `skillTags` | `list(string)` | no | no |
@@ -57,10 +57,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- level: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

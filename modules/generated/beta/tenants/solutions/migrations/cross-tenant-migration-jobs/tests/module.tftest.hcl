@@ -20,12 +20,18 @@ run "typed_request" {
 
   variables {
     complete_after_date_time = "2026-01-01T00:00:00Z"
+    exchange_settings        = { "sourceEndpoint" = null }
     resources                = ["example"]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["completeAfterDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
     error_message = "completeAfterDateTime must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["exchangeSettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.exchangeOnlineCrossTenantMigrationSettings" })
+    error_message = "exchangeSettings must preserve typed values and omit nested nulls."
   }
 
   assert {

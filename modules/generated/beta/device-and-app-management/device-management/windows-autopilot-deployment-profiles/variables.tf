@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.activeDirectoryWindowsAutopilotDeploymentProfile", "#microsoft.graph.azureADWindowsAutopilotDeploymentProfile"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "assigned_devices" {
   description = "The list of assigned devices for the profile."
   type = list(object({
@@ -59,7 +70,7 @@ variable "device_name_template" {
 }
 
 variable "device_type" {
-  description = "Microsoft Graph deviceType property."
+  description = "The Windows device type that this profile is applicable to. Possible values include windowsPc, holoLens, and virtualMachine. The default is windowsPc. Supports: $select, $top, $skip. $Search, $orderBy and $filter are not supported."
   type        = string
   default     = null
 
@@ -77,8 +88,17 @@ variable "display_name" {
 
 variable "enrollment_status_screen_settings" {
   description = "Enrollment status screen setting"
-  type        = any
-  default     = null
+  type = object({
+    odata_type                                       = optional(string, "#microsoft.graph.windowsEnrollmentStatusScreenSettings")
+    allowDeviceUseBeforeProfileAndAppInstallComplete = optional(bool)
+    allowDeviceUseOnInstallFailure                   = optional(bool)
+    allowLogCollectionOnInstallFailure               = optional(bool)
+    blockDeviceSetupRetryByUser                      = optional(bool)
+    customErrorMessage                               = optional(string)
+    hideInstallationProgress                         = optional(bool)
+    installProgressTimeoutInMinutes                  = optional(number)
+  })
+  default = null
 }
 
 variable "hardware_hash_extraction_enabled" {
@@ -99,17 +119,18 @@ variable "management_service_app_id" {
   default     = null
 }
 
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.windowsAutopilotDeploymentProfile"
-  nullable    = false
-}
-
 variable "out_of_box_experience_setting" {
   description = "The Windows Autopilot Deployment Profile settings used by the device for the out-of-box experience. Supports: $select, $top, $skip. $Search, $orderBy and $filter are not supported."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                   = optional(string, "#microsoft.graph.outOfBoxExperienceSetting")
+    deviceUsageType              = optional(string)
+    escapeLinkHidden             = optional(bool)
+    eulaHidden                   = optional(bool)
+    keyboardSelectionPageSkipped = optional(bool)
+    privacySettingsHidden        = optional(bool)
+    userType                     = optional(string)
+  })
+  default = null
 }
 
 variable "preprovisioning_allowed" {

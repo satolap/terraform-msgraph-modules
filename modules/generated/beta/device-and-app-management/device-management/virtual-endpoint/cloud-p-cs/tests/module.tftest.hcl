@@ -20,12 +20,18 @@ run "typed_request" {
 
   variables {
     aad_device_id                 = "example"
+    connectivity_result           = { "failedHealthCheckItems" = null }
     partner_agent_install_results = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["aadDeviceId"]) == jsonencode("example")
     error_message = "aadDeviceId must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["connectivityResult"]) == jsonencode({ "@odata.type" = "#microsoft.graph.cloudPcConnectivityResult" })
+    error_message = "connectivityResult must preserve typed values and omit nested nulls."
   }
 
   assert {

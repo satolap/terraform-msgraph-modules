@@ -29,7 +29,7 @@ variable "odata_type" {
 
 variable "type" {
   description = "The type of identity. The possible values are: user or group for Microsoft Entra identities and externalgroup for groups in an external system."
-  type        = any
+  type        = string
   default     = null
 
   validation {

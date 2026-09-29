@@ -22,14 +22,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.security.formattedContent")       content = optional(string)       format = optional(any)     })` | no | no |
+| `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.security.formattedContent")       content = optional(string)       format = optional(string)     })` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `image_url` | `imageUrl` | `string` | no | no |
-| `indicators` | `indicators` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.articleIndicator")       artifact = optional(object({       odata_type = optional(string, "#microsoft.graph.security.artifact")     }))       source = optional(string)     }))` | no | no |
+| `indicators` | `indicators` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.articleIndicator")       artifact = optional(any)       source = optional(string)     }))` | no | no |
 | `is_featured` | `isFeatured` | `bool` | no | no |
 | `last_updated_date_time` | `lastUpdatedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `summary` | `summary` | `object({       odata_type = optional(string, "#microsoft.graph.security.formattedContent")       content = optional(string)       format = optional(any)     })` | no | no |
+| `summary` | `summary` | `object({       odata_type = optional(string, "#microsoft.graph.security.formattedContent")       content = optional(string)       format = optional(string)     })` | no | no |
 | `tags` | `tags` | `list(string)` | no | no |
 | `title` | `title` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -49,8 +49,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- body.format: polymorphic schema; accepts an untyped value
-- summary.format: polymorphic schema; accepts an untyped value
+- indicators[].artifact: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

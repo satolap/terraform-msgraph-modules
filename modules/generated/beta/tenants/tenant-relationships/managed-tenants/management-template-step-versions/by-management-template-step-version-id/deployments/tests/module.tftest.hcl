@@ -25,7 +25,7 @@ run "typed_request" {
   variables {
     management_template_step_version_id = "test-parent-id"
     created_by_user_id                  = "example"
-    template_step_version               = { "acceptedFor" = null }
+    error                               = { "code" = null }
   }
 
   assert {
@@ -34,8 +34,8 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["templateStepVersion"]) == jsonencode({ "@odata.type" = "#microsoft.graph.managedTenants.managementTemplateStepVersion" })
-    error_message = "templateStepVersion must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["error"]) == jsonencode({ "@odata.type" = "#microsoft.graph.managedTenants.graphAPIErrorDetails" })
+    error_message = "error must preserve typed values and omit nested nulls."
   }
 }
 

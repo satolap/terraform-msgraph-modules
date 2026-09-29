@@ -19,10 +19,11 @@ run "typed_request" {
   command = plan
 
   variables {
-    deleted_date_time = "2026-01-01T00:00:00Z"
-    account_enabled   = false
-    device_version    = -2147483648
-    alternative_names = ["example"]
+    deleted_date_time    = "2026-01-01T00:00:00Z"
+    account_enabled      = false
+    device_version       = -2147483648
+    extension_attributes = { "extensionAttribute1" = null }
+    alternative_names    = ["example"]
   }
 
   assert {
@@ -38,6 +39,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["deviceVersion"]) == jsonencode(-2147483648)
     error_message = "deviceVersion must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["extensionAttributes"]) == jsonencode({ "@odata.type" = "#microsoft.graph.onPremisesExtensionAttributes" })
+    error_message = "extensionAttributes must preserve typed values and omit nested nulls."
   }
 
   assert {

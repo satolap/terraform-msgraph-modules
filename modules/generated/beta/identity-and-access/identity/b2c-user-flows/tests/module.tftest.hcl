@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     default_language_tag              = "example"
     is_language_customization_enabled = false
+    api_connector_configuration       = { "postAttributeCollection" = null }
     identity_providers                = [{}]
   }
 
@@ -35,7 +36,12 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["identityProviders"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.identityProvider" }])
+    condition     = jsonencode(msgraph_resource.this.body["apiConnectorConfiguration"]) == jsonencode({ "@odata.type" = "#microsoft.graph.userFlowApiConnectorConfiguration" })
+    error_message = "apiConnectorConfiguration must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["identityProviders"]) == jsonencode([{}])
     error_message = "identityProviders must preserve typed values and omit nested nulls."
   }
 }

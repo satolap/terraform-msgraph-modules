@@ -3,7 +3,7 @@ locals {
   typed_body = { for key, value in {
     "assistantName"         = var.assistant_name
     "birthday"              = var.birthday
-    "businessAddress"       = var.business_address
+    "businessAddress"       = (var.business_address == null ? null : { for key0, value0 in { "@odata.type" = var.business_address["odata_type"], "city" = var.business_address["city"], "countryOrRegion" = var.business_address["countryOrRegion"], "postalCode" = var.business_address["postalCode"], "state" = var.business_address["state"], "street" = var.business_address["street"] } : key0 => value0 if value0 != null })
     "businessHomePage"      = var.business_home_page
     "businessPhones"        = (var.business_phones == null ? null : [for item0 in var.business_phones : item0 if item0 != null])
     "categories"            = (var.categories == null ? null : [for item0 in var.categories : item0 if item0 != null])
@@ -16,7 +16,7 @@ locals {
     "fileAs"                = var.file_as
     "generation"            = var.generation
     "givenName"             = var.given_name
-    "homeAddress"           = var.home_address
+    "homeAddress"           = (var.home_address == null ? null : { for key0, value0 in { "@odata.type" = var.home_address["odata_type"], "city" = var.home_address["city"], "countryOrRegion" = var.home_address["countryOrRegion"], "postalCode" = var.home_address["postalCode"], "state" = var.home_address["state"], "street" = var.home_address["street"] } : key0 => value0 if value0 != null })
     "homePhones"            = (var.home_phones == null ? null : [for item0 in var.home_phones : item0 if item0 != null])
     "imAddresses"           = (var.im_addresses == null ? null : [for item0 in var.im_addresses : item0 if item0 != null])
     "initials"              = var.initials
@@ -28,16 +28,16 @@ locals {
     "nickName"              = var.nick_name
     "@odata.type"           = var.odata_type
     "officeLocation"        = var.office_location
-    "otherAddress"          = var.other_address
+    "otherAddress"          = (var.other_address == null ? null : { for key0, value0 in { "@odata.type" = var.other_address["odata_type"], "city" = var.other_address["city"], "countryOrRegion" = var.other_address["countryOrRegion"], "postalCode" = var.other_address["postalCode"], "state" = var.other_address["state"], "street" = var.other_address["street"] } : key0 => value0 if value0 != null })
     "parentFolderId"        = var.parent_folder_id
     "personalNotes"         = var.personal_notes
     "photo"                 = var.photo
-    "primaryEmailAddress"   = var.primary_email_address
+    "primaryEmailAddress"   = (var.primary_email_address == null ? null : { for key0, value0 in { "@odata.type" = var.primary_email_address["odata_type"], "address" = var.primary_email_address["address"], "name" = var.primary_email_address["name"] } : key0 => value0 if value0 != null })
     "profession"            = var.profession
-    "secondaryEmailAddress" = var.secondary_email_address
+    "secondaryEmailAddress" = (var.secondary_email_address == null ? null : { for key0, value0 in { "@odata.type" = var.secondary_email_address["odata_type"], "address" = var.secondary_email_address["address"], "name" = var.secondary_email_address["name"] } : key0 => value0 if value0 != null })
     "spouseName"            = var.spouse_name
     "surname"               = var.surname
-    "tertiaryEmailAddress"  = var.tertiary_email_address
+    "tertiaryEmailAddress"  = (var.tertiary_email_address == null ? null : { for key0, value0 in { "@odata.type" = var.tertiary_email_address["odata_type"], "address" = var.tertiary_email_address["address"], "name" = var.tertiary_email_address["name"] } : key0 => value0 if value0 != null })
     "title"                 = var.title
     "yomiCompanyName"       = var.yomi_company_name
     "yomiGivenName"         = var.yomi_given_name

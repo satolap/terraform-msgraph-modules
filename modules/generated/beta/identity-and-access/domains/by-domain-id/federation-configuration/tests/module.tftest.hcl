@@ -26,6 +26,7 @@ run "typed_request" {
     domain_id                                 = "test-parent-id"
     active_sign_in_uri                        = "example"
     is_signed_authentication_request_required = false
+    signing_certificate_update_status         = {}
   }
 
   assert {
@@ -36,6 +37,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isSignedAuthenticationRequestRequired"]) == jsonencode(false)
     error_message = "isSignedAuthenticationRequestRequired must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["signingCertificateUpdateStatus"]) == jsonencode({ "@odata.type" = "#microsoft.graph.signingCertificateUpdateStatus" })
+    error_message = "signingCertificateUpdateStatus must preserve typed values and omit nested nulls."
   }
 }
 

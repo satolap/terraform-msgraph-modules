@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     connection_status = "notAvailable"
     enable_connection = false
+    agent_setting     = { "agentSha256" = null }
   }
 
   assert {
@@ -31,6 +32,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["enableConnection"]) == jsonencode(false)
     error_message = "enableConnection must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["agentSetting"]) == jsonencode({ "@odata.type" = "#microsoft.graph.cloudPcExternalPartnerAgentSetting" })
+    error_message = "agentSetting must preserve typed values and omit nested nulls."
   }
 }
 

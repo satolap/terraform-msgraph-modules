@@ -108,9 +108,7 @@ variable "detection_action" {
           addressColumn = optional(string)
         })))
       }))
-      impactedAssets = optional(list(object({
-        odata_type = optional(string, "#microsoft.graph.security.impactedAsset")
-      })))
+      impactedAssets     = optional(any)
       mitreTechniques    = optional(list(string))
       recommendedActions = optional(string)
       severity           = optional(string)
@@ -121,13 +119,82 @@ variable "detection_action" {
       })))
       title = optional(string)
     }))
-    automatedActions    = optional(any)
-    organizationalScope = optional(any)
-    responseActions = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.security.responseAction")
-    })))
+    automatedActions = optional(object({
+      odata_type = optional(string, "#microsoft.graph.security.automatedActionSet")
+      allowFiles = optional(list(object({
+        odata_type       = optional(string, "#microsoft.graph.security.fileAction")
+        deviceGroupNames = optional(list(string))
+        sha1Column       = optional(string)
+        sha256Column     = optional(string)
+      })))
+      blockFiles = optional(list(object({
+        odata_type       = optional(string, "#microsoft.graph.security.fileAction")
+        deviceGroupNames = optional(list(string))
+        sha1Column       = optional(string)
+        sha256Column     = optional(string)
+      })))
+      collectInvestigationPackages = optional(any)
+      disableUsers = optional(list(object({
+        odata_type       = optional(string, "#microsoft.graph.security.accountSidAction")
+        accountSidColumn = optional(string)
+      })))
+      forceUserPasswordResets = optional(list(object({
+        odata_type       = optional(string, "#microsoft.graph.security.accountSidAction")
+        accountSidColumn = optional(string)
+      })))
+      hardDeleteEmails = optional(list(object({
+        odata_type             = optional(string, "#microsoft.graph.security.emailAction")
+        networkMessageIdColumn = optional(string)
+        recipientColumn        = optional(string)
+      })))
+      initiateInvestigations = optional(any)
+      isolateDevices = optional(list(object({
+        odata_type     = optional(string, "#microsoft.graph.security.isolateDeviceAction")
+        deviceIdColumn = optional(string)
+        isolationType  = optional(string)
+      })))
+      markUsersAsCompromised = optional(list(object({
+        odata_type            = optional(string, "#microsoft.graph.security.accountObjectIdAction")
+        accountObjectIdColumn = optional(string)
+      })))
+      moveEmailsToDeletedItems = optional(list(object({
+        odata_type             = optional(string, "#microsoft.graph.security.emailAction")
+        networkMessageIdColumn = optional(string)
+        recipientColumn        = optional(string)
+      })))
+      moveEmailsToInbox = optional(list(object({
+        odata_type             = optional(string, "#microsoft.graph.security.emailAction")
+        networkMessageIdColumn = optional(string)
+        recipientColumn        = optional(string)
+      })))
+      moveEmailsToJunk = optional(list(object({
+        odata_type             = optional(string, "#microsoft.graph.security.emailAction")
+        networkMessageIdColumn = optional(string)
+        recipientColumn        = optional(string)
+      })))
+      restrictAppExecutions = optional(any)
+      runAntivirusScans     = optional(any)
+      softDeleteEmails = optional(list(object({
+        odata_type             = optional(string, "#microsoft.graph.security.emailAction")
+        networkMessageIdColumn = optional(string)
+        recipientColumn        = optional(string)
+      })))
+      stopAndQuarantineFiles = optional(list(object({
+        odata_type     = optional(string, "#microsoft.graph.security.stopAndQuarantineFileAction")
+        deviceIdColumn = optional(string)
+        sha1Column     = optional(string)
+      })))
+    }))
+    organizationalScope = optional(object({
+      odata_type   = optional(string, "#microsoft.graph.security.organizationalScope")
+      deviceGroups = optional(list(string))
+      scopeNames   = optional(list(string))
+      scopeType    = optional(string)
+    }))
+    responseActions = optional(any)
   })
-  default = null
+  default   = null
+  sensitive = true
 }
 
 variable "detector_id" {
@@ -150,8 +217,14 @@ variable "is_enabled" {
 
 variable "last_run_details" {
   description = "Runtime execution details for the most recent rule run. Supports $filter on the following nested properties:String: lastRunDetails/failureReason  supports eq, ne, not, in, startsWith, endsWith, contains.DateTimeOffset: lastRunDetails/lastRunDateTime  supports eq, ne, not, le, ge, lt, gt.Enum: lastRunDetails/status, lastRunDetails/errorCode  each supports eq, ne, not, in.Deprecated. This property will be removed from this resource on 2026-10-01. Runtime execution details aren't exposed in the v1.0 API."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.security.runDetails")
+    errorCode       = optional(string)
+    failureReason   = optional(string)
+    lastRunDateTime = optional(string)
+    status          = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {

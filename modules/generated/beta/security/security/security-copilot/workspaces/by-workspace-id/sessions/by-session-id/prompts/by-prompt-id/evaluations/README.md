@@ -34,7 +34,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `is_cancelled` | `isCancelled` | `bool` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `result` | `result` | `any` | no | no |
+| `result` | `result` | `object({       odata_type = optional(string, "#microsoft.graph.security.securityCopilot.evaluationResult")       content = optional(string)       previewState = optional(string)       type = optional(string)     })` | no | no |
 | `run_start_date_time` | `runStartDateTime` | `string` | no | no |
 | `state` | `state` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -54,7 +54,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- result: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

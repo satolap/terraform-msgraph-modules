@@ -11,7 +11,7 @@ variable "team_template_id" {
 
 variable "audience" {
   description = "Describes the audience the team template is available to. The possible values are: organization, user, public, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

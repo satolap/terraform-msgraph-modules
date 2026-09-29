@@ -32,7 +32,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `owner` | `owner` | `any` | no | no |
 | `program` | `program` | `any` | no | no |
 | `program_id_2` | `programId` | `string` | no | no |
-| `resource` | `resource` | `any` | no | no |
+| `resource` | `resource` | `object({       odata_type = optional(string, "#microsoft.graph.programResource")       displayName = optional(string)       id = optional(string)       type = optional(string)     })` | no | no |
 | `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -52,8 +52,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - owner: polymorphic schema; accepts an untyped value
-- program: polymorphic schema; accepts an untyped value
-- resource: polymorphic schema; accepts an untyped value
+- program: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

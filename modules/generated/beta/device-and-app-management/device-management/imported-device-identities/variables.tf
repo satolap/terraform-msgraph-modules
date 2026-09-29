@@ -11,7 +11,7 @@ variable "description" {
 }
 
 variable "enrollment_state" {
-  description = "Microsoft Graph enrollmentState property."
+  description = "The state of the device in Intune"
   type        = string
   default     = null
 
@@ -28,7 +28,7 @@ variable "imported_device_identifier" {
 }
 
 variable "imported_device_identity_type" {
-  description = "Microsoft Graph importedDeviceIdentityType property."
+  description = "Type of Imported Device Identity"
   type        = string
   default     = null
 

@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `action_required_by_date_time` | `actionRequiredByDateTime` | `string` | no | no |
 | `attachments` | `attachments` | `list(object({       odata_type = optional(string, "#microsoft.graph.serviceAnnouncementAttachment")       content = optional(string)       contentType = optional(string)       lastModifiedDateTime = optional(string)       name = optional(string)       size = optional(number)     }))` | no | no |
 | `attachments_archive` | `attachmentsArchive` | `string` | no | no |
-| `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(any)     })` | no | no |
+| `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no |
 | `category` | `category` | `string` | no | no |
 | `details` | `details` | `list(object({       odata_type = optional(string, "#microsoft.graph.keyValuePair")       name = optional(string)       value = optional(string)     }))` | no | no |
 | `end_date_time` | `endDateTime` | `string` | no | no |
@@ -38,7 +38,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `start_date_time` | `startDateTime` | `string` | no | no |
 | `tags` | `tags` | `list(string)` | no | no |
 | `title` | `title` | `string` | no | no |
-| `view_point` | `viewPoint` | `any` | no | no |
+| `view_point` | `viewPoint` | `object({       odata_type = optional(string, "#microsoft.graph.serviceUpdateMessageViewpoint")       isArchived = optional(bool)       isFavorited = optional(bool)       isRead = optional(bool)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -56,8 +56,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- body.contentType: polymorphic schema; accepts an untyped value
-- viewPoint: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

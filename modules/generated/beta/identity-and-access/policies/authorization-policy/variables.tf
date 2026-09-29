@@ -6,7 +6,7 @@ variable "allow_email_verified_users_to_join_organization" {
 
 variable "allow_invites_from" {
   description = "Indicates who can invite guests to the organization. The possible values are: none, adminsAndGuestInviters, adminsGuestInvitersAndAllMembers, everyone. everyone is the default setting for all cloud environments except US Government. For more information, see allowInvitesFrom values."
-  type        = any
+  type        = string
   default     = null
 
   validation {

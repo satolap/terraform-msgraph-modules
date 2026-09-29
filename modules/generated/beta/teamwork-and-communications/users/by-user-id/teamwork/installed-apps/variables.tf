@@ -17,8 +17,15 @@ variable "chat" {
 
 variable "consented_permission_set" {
   description = "The set of resource-specific permissions consented to while installing or upgrading the teamsApp."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.teamsAppPermissionSet")
+    resourceSpecificPermissions = optional(list(object({
+      odata_type      = optional(string, "#microsoft.graph.teamsAppResourceSpecificPermission")
+      permissionType  = optional(string)
+      permissionValue = optional(string)
+    })))
+  })
+  default = null
 }
 
 variable "odata_type" {

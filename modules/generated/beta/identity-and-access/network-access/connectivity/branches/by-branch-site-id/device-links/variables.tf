@@ -11,7 +11,7 @@ variable "branch_site_id" {
 
 variable "bandwidth_capacity_in_mbps" {
   description = "Determines the maximum allowed Mbps (megabits per second) bandwidth from a device link. The possible values are:250,500,750,1000."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -70,18 +70,18 @@ variable "odata_type" {
 
 variable "redundancy_configuration" {
   description = "Microsoft Graph redundancyConfiguration property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.networkaccess.redundancyConfiguration")
+    redundancyTier     = optional(string)
+    zoneLocalIpAddress = optional(string)
+  })
+  default = null
 }
 
 variable "tunnel_configuration" {
   description = "Microsoft Graph tunnelConfiguration property."
-  type = object({
-    odata_type                 = optional(string, "#microsoft.graph.networkaccess.tunnelConfiguration")
-    preSharedKey               = optional(string)
-    zoneRedundancyPreSharedKey = optional(string)
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

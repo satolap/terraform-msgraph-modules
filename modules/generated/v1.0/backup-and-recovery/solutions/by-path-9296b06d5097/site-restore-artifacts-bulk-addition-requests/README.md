@@ -26,19 +26,19 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `share_point_restore_session_id` | URL parameter `sharePointRestoreSession-id` | `string` | yes | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `destination_type` | `destinationType` | `any` | no | no |
+| `destination_type` | `destinationType` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `error` | `error` | `any` | no | no |
+| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     })` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `protection_time_period` | `protectionTimePeriod` | `any` | no | no |
+| `protection_time_period` | `protectionTimePeriod` | `object({       odata_type = optional(string, "#microsoft.graph.timePeriod")       endDateTime = optional(string)       startDateTime = optional(string)     })` | no | no |
 | `protection_unit_ids` | `protectionUnitIds` | `list(string)` | no | no |
-| `restore_point_preference` | `restorePointPreference` | `any` | no | no |
+| `restore_point_preference` | `restorePointPreference` | `string` | no | no |
 | `site_ids` | `siteIds` | `list(string)` | no | no |
 | `site_web_urls` | `siteWebUrls` | `list(string)` | no | no |
 | `status` | `status` | `string` | no | no |
-| `tags` | `tags` | `any` | no | no |
+| `tags` | `tags` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -56,12 +56,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - createdBy: polymorphic schema; accepts an untyped value
-- destinationType: polymorphic schema; accepts an untyped value
-- error: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- protectionTimePeriod: polymorphic schema; accepts an untyped value
-- restorePointPreference: polymorphic schema; accepts an untyped value
-- tags: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

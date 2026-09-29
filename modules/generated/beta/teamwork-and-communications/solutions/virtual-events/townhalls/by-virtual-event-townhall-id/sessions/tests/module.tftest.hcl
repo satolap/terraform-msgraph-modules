@@ -24,15 +24,16 @@ run "typed_request" {
 
   variables {
     virtual_event_townhall_id       = "test-parent-id"
-    expiry_date_time                = "2026-01-01T00:00:00Z"
+    allow_live_share                = "enabled"
     allow_attendee_to_enable_camera = false
     capacity                        = -2147483648
+    chat_info                       = { "messageId" = null }
     anonymize_identity_for_roles    = ["attendee"]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["expiryDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
-    error_message = "expiryDateTime must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["allowLiveShare"]) == jsonencode("enabled")
+    error_message = "allowLiveShare must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -43,6 +44,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["capacity"]) == jsonencode(-2147483648)
     error_message = "capacity must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["chatInfo"]) == jsonencode({ "@odata.type" = "#microsoft.graph.chatInfo" })
+    error_message = "chatInfo must preserve typed values and omit nested nulls."
   }
 
   assert {

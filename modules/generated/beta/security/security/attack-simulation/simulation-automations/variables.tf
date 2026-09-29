@@ -1,7 +1,12 @@
 variable "created_by" {
   description = "Identity of the user who created the attack simulation automation."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "created_date_time" {
@@ -24,8 +29,13 @@ variable "display_name" {
 
 variable "last_modified_by" {
   description = "Identity of the user who most recently modified the attack simulation automation."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "last_modified_date_time" {
@@ -60,14 +70,14 @@ variable "runs" {
     endDateTime   = optional(string)
     simulationId  = optional(string)
     startDateTime = optional(string)
-    status        = optional(any)
+    status        = optional(string)
   }))
   default = null
 }
 
 variable "status" {
   description = "Status of the attack simulation automation. Supports $filter and $orderby. The possible values are: unknown, draft, notRunning, running, completed, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -23,8 +23,12 @@ variable "created_date_time" {
 
 variable "error" {
   description = "Any error that causes the async operation to fail."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.operationError")
+    code       = optional(string)
+    message    = optional(string)
+  })
+  default = null
 }
 
 variable "last_action_date_time" {

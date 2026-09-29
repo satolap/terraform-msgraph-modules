@@ -37,3 +37,26 @@ run "invalid_enum" {
 
   expect_failures = [var.region_group]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    supported_solution = "windows365, DevBox"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["supportedSolution"] == "windows365, DevBox"
+    error_message = "supportedSolution must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    supported_solution = "windows365,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.supported_solution]
+}

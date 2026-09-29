@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "#microsoft.graph.androidCustomConfiguration"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "deviceManagement/deviceConfigurations"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,9 +23,16 @@ run "typed_request" {
   command = plan
 
   variables {
-    created_date_time = "2026-01-01T00:00:00Z"
-    graph_version     = -2147483648
-    assignments       = [{}]
+    odata_type                                       = "#microsoft.graph.androidCustomConfiguration"
+    created_date_time                                = "2026-01-01T00:00:00Z"
+    graph_version                                    = -2147483648
+    device_management_applicability_rule_device_mode = { "deviceMode" = null }
+    assignments                                      = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.androidCustomConfiguration")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -35,7 +46,22 @@ run "typed_request" {
   }
 
   assert {
+    condition     = jsonencode(msgraph_resource.this.body["deviceManagementApplicabilityRuleDeviceMode"]) == jsonencode({ "@odata.type" = "#microsoft.graph.deviceManagementApplicabilityRuleDeviceMode" })
+    error_message = "deviceManagementApplicabilityRuleDeviceMode must preserve typed values and omit nested nulls."
+  }
+
+  assert {
     condition     = jsonencode(msgraph_resource.this.body["assignments"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.deviceConfigurationAssignment" }])
     error_message = "assignments must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    odata_type = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

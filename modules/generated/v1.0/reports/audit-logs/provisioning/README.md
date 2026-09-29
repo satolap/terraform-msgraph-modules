@@ -26,18 +26,18 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `change_id` | `changeId` | `string` | no | no |
 | `cycle_id` | `cycleId` | `string` | no | no |
 | `duration_in_milliseconds` | `durationInMilliseconds` | `number` | no | no |
-| `initiated_by` | `initiatedBy` | `any` | no | no |
+| `initiated_by` | `initiatedBy` | `object({       odata_type = optional(string, "#microsoft.graph.initiator")       displayName = optional(string)       id = optional(string)       initiatorType = optional(string)     })` | no | no |
 | `job_id` | `jobId` | `string` | no | no |
 | `modified_properties` | `modifiedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.modifiedProperty")       displayName = optional(string)       newValue = optional(string)       oldValue = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `provisioning_action` | `provisioningAction` | `any` | no | no |
-| `provisioning_status_info` | `provisioningStatusInfo` | `any` | no | no |
-| `provisioning_steps` | `provisioningSteps` | `list(object({       odata_type = optional(string, "#microsoft.graph.provisioningStep")       description = optional(string)       details = optional(any)       name = optional(string)       provisioningStepType = optional(any)       status = optional(any)     }))` | no | no |
-| `service_principal` | `servicePrincipal` | `any` | no | no |
-| `source_identity` | `sourceIdentity` | `any` | no | no |
-| `source_system` | `sourceSystem` | `any` | no | no |
-| `target_identity` | `targetIdentity` | `any` | no | no |
-| `target_system` | `targetSystem` | `any` | no | no |
+| `provisioning_action` | `provisioningAction` | `string` | no | no |
+| `provisioning_status_info` | `provisioningStatusInfo` | `object({       odata_type = optional(string, "#microsoft.graph.provisioningStatusInfo")       errorInformation = optional(object({       odata_type = optional(string, "#microsoft.graph.provisioningErrorInfo")       additionalDetails = optional(string)       errorCategory = optional(string)       errorCode = optional(string)       reason = optional(string)       recommendedAction = optional(string)     }))       status = optional(string)     })` | no | no |
+| `provisioning_steps` | `provisioningSteps` | `list(object({       odata_type = optional(string, "#microsoft.graph.provisioningStep")       description = optional(string)       details = optional(any)       name = optional(string)       provisioningStepType = optional(string)       status = optional(string)     }))` | no | no |
+| `service_principal` | `servicePrincipal` | `object({       odata_type = optional(string, "#microsoft.graph.provisioningServicePrincipal")       displayName = optional(string)       id = optional(string)     })` | no | no |
+| `source_identity` | `sourceIdentity` | `object({       odata_type = optional(string, "#microsoft.graph.provisionedIdentity")       details = optional(any)       displayName = optional(string)       id = optional(string)       identityType = optional(string)     })` | no | no |
+| `source_system` | `sourceSystem` | `object({       odata_type = optional(string, "#microsoft.graph.provisioningSystem")       details = optional(any)       displayName = optional(string)       id = optional(string)     })` | no | no |
+| `target_identity` | `targetIdentity` | `object({       odata_type = optional(string, "#microsoft.graph.provisionedIdentity")       details = optional(any)       displayName = optional(string)       id = optional(string)       identityType = optional(string)     })` | no | no |
+| `target_system` | `targetSystem` | `object({       odata_type = optional(string, "#microsoft.graph.provisioningSystem")       details = optional(any)       displayName = optional(string)       id = optional(string)     })` | no | no |
 | `tenant_id` | `tenantId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -55,17 +55,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- initiatedBy: polymorphic schema; accepts an untyped value
-- provisioningAction: polymorphic schema; accepts an untyped value
-- provisioningStatusInfo: polymorphic schema; accepts an untyped value
 - provisioningSteps[].details: polymorphic schema; accepts an untyped value
-- provisioningSteps[].provisioningStepType: polymorphic schema; accepts an untyped value
-- provisioningSteps[].status: polymorphic schema; accepts an untyped value
-- servicePrincipal: polymorphic schema; accepts an untyped value
-- sourceIdentity: polymorphic schema; accepts an untyped value
-- sourceSystem: polymorphic schema; accepts an untyped value
-- targetIdentity: polymorphic schema; accepts an untyped value
-- targetSystem: polymorphic schema; accepts an untyped value
+- sourceIdentity.details: polymorphic schema; accepts an untyped value
+- sourceSystem.details: polymorphic schema; accepts an untyped value
+- targetIdentity.details: polymorphic schema; accepts an untyped value
+- targetSystem.details: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -22,30 +22,24 @@ variable "mail_folder_id" {
 
 variable "attachments" {
   description = "The fileAttachment and itemAttachment attachments for the message."
-  type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.attachment")
-    contentType          = optional(string)
-    isInline             = optional(bool)
-    lastModifiedDateTime = optional(string)
-    name                 = optional(string)
-    size                 = optional(number)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "bcc_recipients" {
   description = "The Bcc: recipients for the message."
-  type = list(object({
-    odata_type   = optional(string, "#microsoft.graph.recipient")
-    emailAddress = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "body" {
   description = "The body of the message. It can be in HTML or text format. Find out about safe HTML in a message body."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.itemBody")
+    content     = optional(string)
+    contentType = optional(string)
+  })
+  default = null
 }
 
 variable "body_preview" {
@@ -62,11 +56,8 @@ variable "categories" {
 
 variable "cc_recipients" {
   description = "The Cc: recipients for the message."
-  type = list(object({
-    odata_type   = optional(string, "#microsoft.graph.recipient")
-    emailAddress = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "conversation_id" {
@@ -89,16 +80,32 @@ variable "created_date_time" {
 
 variable "extensions" {
   description = "The collection of open extensions defined for the message. Nullable."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.extension")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "flag" {
   description = "Indicates the status, start date, due date, or completion date for the message."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.followupFlag")
+    completedDateTime = optional(object({
+      odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+      dateTime   = optional(string)
+      timeZone   = optional(string)
+    }))
+    dueDateTime = optional(object({
+      odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+      dateTime   = optional(string)
+      timeZone   = optional(string)
+    }))
+    flagStatus = optional(string)
+    startDateTime = optional(object({
+      odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+      dateTime   = optional(string)
+      timeZone   = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "from" {
@@ -115,7 +122,7 @@ variable "has_attachments" {
 
 variable "importance" {
   description = "The importance of the message. The possible values are: low, normal, and high."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -126,7 +133,7 @@ variable "importance" {
 
 variable "inference_classification" {
   description = "The classification of the message for the user, based on inferred relevance or importance, or on an explicit override. The possible values are: focused or other."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -201,11 +208,8 @@ variable "received_date_time" {
 
 variable "reply_to" {
   description = "The email addresses to use when replying."
-  type = list(object({
-    odata_type   = optional(string, "#microsoft.graph.recipient")
-    emailAddress = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "sender" {
@@ -237,17 +241,18 @@ variable "subject" {
 
 variable "to_recipients" {
   description = "The To: recipients for the message."
-  type = list(object({
-    odata_type   = optional(string, "#microsoft.graph.recipient")
-    emailAddress = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "unique_body" {
   description = "The part of the body of the message that is unique to the current message. uniqueBody is not returned by default but can be retrieved for a given message by use of the ?$select=uniqueBody query. It can be in HTML or text format."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.itemBody")
+    content     = optional(string)
+    contentType = optional(string)
+  })
+  default = null
 }
 
 variable "web_link" {

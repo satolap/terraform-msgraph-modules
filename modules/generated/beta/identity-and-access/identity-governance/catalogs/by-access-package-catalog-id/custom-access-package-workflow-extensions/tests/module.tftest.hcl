@@ -25,10 +25,16 @@ run "typed_request" {
   variables {
     access_package_catalog_id = "test-parent-id"
     description               = "example"
+    client_configuration      = { "maximumRetries" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
     error_message = "description must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["clientConfiguration"]) == jsonencode({ "@odata.type" = "#microsoft.graph.customExtensionClientConfiguration" })
+    error_message = "clientConfiguration must preserve typed values and omit nested nulls."
   }
 }

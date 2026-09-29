@@ -39,8 +39,16 @@ variable "certificate_based_auth_configuration" {
 
 variable "certificate_connector_setting" {
   description = "Certificate connector setting."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                  = optional(string, "#microsoft.graph.certificateConnectorSetting")
+    certExpiryTime              = optional(string)
+    connectorVersion            = optional(string)
+    enrollmentError             = optional(string)
+    lastConnectorConnectionTime = optional(string)
+    lastUploadVersion           = optional(number)
+    status                      = optional(number)
+  })
+  default = null
 }
 
 variable "city" {
@@ -75,8 +83,12 @@ variable "deleted_date_time" {
 
 variable "directory_size_quota" {
   description = "The directory size quota information of an organization."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.directorySizeQuota")
+    total      = optional(number)
+    used       = optional(number)
+  })
+  default = null
 }
 
 variable "display_name" {
@@ -87,10 +99,8 @@ variable "display_name" {
 
 variable "extensions" {
   description = "The collection of open extensions defined for the organization resource. Nullable."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.extension")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "marketing_notification_emails" {
@@ -144,7 +154,7 @@ variable "partner_information" {
 
 variable "partner_tenant_type" {
   description = "The type of partnership this tenant has with Microsoft. The possible values are: microsoftSupport, syndicatePartner, breadthPartner, breadthPartnerDelegatedAdmin, resellerPartnerDelegatedAdmin, valueAddedResellerPartnerDelegatedAdmin, unknownFutureValue. Nullable. For more information about the possible types, see partnerTenantType values."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -167,8 +177,12 @@ variable "preferred_language" {
 
 variable "privacy_profile" {
   description = "The privacy profile of an organization."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.privacyProfile")
+    contactEmail = optional(string)
+    statementUrl = optional(string)
+  })
+  default = null
 }
 
 variable "provisioned_plans" {

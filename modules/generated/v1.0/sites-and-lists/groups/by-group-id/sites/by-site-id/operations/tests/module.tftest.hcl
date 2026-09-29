@@ -28,6 +28,7 @@ run "typed_request" {
     site_id             = "test-parent-id"
     created_date_time   = "2026-01-01T00:00:00Z"
     percentage_complete = -2147483648
+    error               = { "code" = null }
   }
 
   assert {
@@ -38,6 +39,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["percentageComplete"]) == jsonencode(-2147483648)
     error_message = "percentageComplete must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["error"]) == jsonencode({ "@odata.type" = "#microsoft.graph.publicError" })
+    error_message = "error must preserve typed values and omit nested nulls."
   }
 }
 

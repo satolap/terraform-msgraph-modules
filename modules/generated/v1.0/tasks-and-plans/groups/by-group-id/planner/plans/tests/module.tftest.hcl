@@ -23,12 +23,18 @@ run "typed_request" {
   command = plan
 
   variables {
-    group_id = "test-parent-id"
-    owner    = "example"
+    group_id  = "test-parent-id"
+    owner     = "example"
+    container = { "containerId" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["owner"]) == jsonencode("example")
     error_message = "owner must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["container"]) == jsonencode({ "@odata.type" = "#microsoft.graph.plannerPlanContainer" })
+    error_message = "container must preserve typed values and omit nested nulls."
   }
 }

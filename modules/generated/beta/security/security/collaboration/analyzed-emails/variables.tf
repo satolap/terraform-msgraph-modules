@@ -7,8 +7,47 @@ variable "alert_ids" {
 variable "attachments" {
   description = "A collection of the attachments in the email."
   type = list(object({
-    odata_type                     = optional(string, "#microsoft.graph.security.analyzedEmailAttachment")
-    detonationDetails              = optional(any)
+    odata_type = optional(string, "#microsoft.graph.security.analyzedEmailAttachment")
+    detonationDetails = optional(object({
+      odata_type       = optional(string, "#microsoft.graph.security.detonationDetails")
+      analysisDateTime = optional(string)
+      compromiseIndicators = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.security.compromiseIndicator")
+        value      = optional(string)
+        verdict    = optional(string)
+      })))
+      detonationBehaviourDetails = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.security.detonationBehaviourDetails")
+        actionStatus        = optional(string)
+        behaviourCapability = optional(string)
+        behaviourGroup      = optional(string)
+        details             = optional(string)
+        eventDateTime       = optional(string)
+        operation           = optional(string)
+        processId           = optional(string)
+        processName         = optional(string)
+        target              = optional(string)
+      }))
+      detonationBehaviourDetailsV2 = optional(string)
+      detonationChain = optional(object({
+        odata_type = optional(string, "#microsoft.graph.security.detonationChain")
+        childNodes = optional(any)
+        value      = optional(string)
+      }))
+      detonationObservables = optional(object({
+        odata_type    = optional(string, "#microsoft.graph.security.detonationObservables")
+        contactedIps  = optional(list(string))
+        contactedUrls = optional(list(string))
+        droppedfiles  = optional(list(string))
+      }))
+      detonationScreenshotUri = optional(string)
+      detonationVerdict       = optional(string)
+      detonationVerdictReason = optional(string)
+      entityMetadata          = optional(string)
+      mitreTechniques         = optional(string)
+      staticAnalysis          = optional(string)
+      submissionSource        = optional(string)
+    }))
     fileExtension                  = optional(string)
     fileName                       = optional(string)
     fileSize                       = optional(number)
@@ -16,15 +55,21 @@ variable "attachments" {
     malwareFamily                  = optional(string)
     sha256                         = optional(string)
     tenantAllowBlockListDetailInfo = optional(string)
-    threatType                     = optional(any)
+    threatType                     = optional(string)
   }))
   default = null
 }
 
 variable "authentication_details" {
   description = "The authentication details associated with the email."
-  type        = any
-  default     = null
+  type = object({
+    odata_type              = optional(string, "#microsoft.graph.security.analyzedEmailAuthenticationDetail")
+    compositeAuthentication = optional(string)
+    dkim                    = optional(string)
+    dmarc                   = optional(string)
+    senderPolicyFramework   = optional(string)
+  })
+  default = null
 }
 
 variable "bulk_complaint_level" {
@@ -53,7 +98,7 @@ variable "detection_methods" {
 
 variable "directionality" {
   description = "The direction of the emails. The possible values are: unknown, inbound, outbound, intraOrg, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -120,8 +165,14 @@ variable "language" {
 
 variable "latest_delivery" {
   description = "The latest delivery details of the email."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.security.analyzedEmailDeliveryDetail")
+    action          = optional(string)
+    latestThreats   = optional(string)
+    location        = optional(string)
+    originalThreats = optional(string)
+  })
+  default = null
 }
 
 variable "logged_date_time" {
@@ -145,8 +196,14 @@ variable "odata_type" {
 
 variable "original_delivery" {
   description = "The original delivery details of the email."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.security.analyzedEmailDeliveryDetail")
+    action          = optional(string)
+    latestThreats   = optional(string)
+    location        = optional(string)
+    originalThreats = optional(string)
+  })
+  default = null
 }
 
 variable "override_sources" {
@@ -187,8 +244,12 @@ variable "primary_override_source" {
 
 variable "recipient_detail" {
   description = "Details of the recipients."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.security.analyzedEmailRecipientDetail")
+    ccRecipients = optional(list(string))
+    domainName   = optional(string)
+  })
+  default = null
 }
 
 variable "recipient_email_address" {
@@ -205,8 +266,19 @@ variable "return_path" {
 
 variable "sender_detail" {
   description = "Sender details of the email."
-  type        = any
-  default     = null
+  type = object({
+    odata_type             = optional(string, "#microsoft.graph.security.analyzedEmailSenderDetail")
+    displayName            = optional(string)
+    domainCreationDateTime = optional(string)
+    domainName             = optional(string)
+    domainOwner            = optional(string)
+    fromAddress            = optional(string)
+    ipv4                   = optional(string)
+    location               = optional(string)
+    mailFromAddress        = optional(string)
+    mailFromDomainName     = optional(string)
+  })
+  default = null
 }
 
 variable "size_in_bytes" {
@@ -240,7 +312,7 @@ variable "threat_detection_details" {
 
 variable "threat_types" {
   description = "Indicates the threat types. The possible values are: unknown, spam, malware, phish, none, unknownFutureValue."
-  type        = any
+  type        = list(string)
   default     = null
 }
 
@@ -251,9 +323,9 @@ variable "timeline_events" {
     eventDateTime = optional(string)
     eventDetails  = optional(string)
     eventResult   = optional(string)
-    eventSource   = optional(any)
+    eventSource   = optional(string)
     eventThreats  = optional(list(string))
-    eventType     = optional(any)
+    eventType     = optional(string)
   }))
   default = null
 }
@@ -261,11 +333,50 @@ variable "timeline_events" {
 variable "urls" {
   description = "A collection of the URLs in the email."
   type = list(object({
-    odata_type                     = optional(string, "#microsoft.graph.security.analyzedEmailUrl")
-    detectionMethod                = optional(string)
-    detonationDetails              = optional(any)
+    odata_type      = optional(string, "#microsoft.graph.security.analyzedEmailUrl")
+    detectionMethod = optional(string)
+    detonationDetails = optional(object({
+      odata_type       = optional(string, "#microsoft.graph.security.detonationDetails")
+      analysisDateTime = optional(string)
+      compromiseIndicators = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.security.compromiseIndicator")
+        value      = optional(string)
+        verdict    = optional(string)
+      })))
+      detonationBehaviourDetails = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.security.detonationBehaviourDetails")
+        actionStatus        = optional(string)
+        behaviourCapability = optional(string)
+        behaviourGroup      = optional(string)
+        details             = optional(string)
+        eventDateTime       = optional(string)
+        operation           = optional(string)
+        processId           = optional(string)
+        processName         = optional(string)
+        target              = optional(string)
+      }))
+      detonationBehaviourDetailsV2 = optional(string)
+      detonationChain = optional(object({
+        odata_type = optional(string, "#microsoft.graph.security.detonationChain")
+        childNodes = optional(any)
+        value      = optional(string)
+      }))
+      detonationObservables = optional(object({
+        odata_type    = optional(string, "#microsoft.graph.security.detonationObservables")
+        contactedIps  = optional(list(string))
+        contactedUrls = optional(list(string))
+        droppedfiles  = optional(list(string))
+      }))
+      detonationScreenshotUri = optional(string)
+      detonationVerdict       = optional(string)
+      detonationVerdictReason = optional(string)
+      entityMetadata          = optional(string)
+      mitreTechniques         = optional(string)
+      staticAnalysis          = optional(string)
+      submissionSource        = optional(string)
+    }))
     tenantAllowBlockListDetailInfo = optional(string)
-    threatType                     = optional(any)
+    threatType                     = optional(string)
     url                            = optional(string)
   }))
   default = null

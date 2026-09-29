@@ -22,9 +22,9 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `activities` | `activities` | `any` | no | no |
+| `activities` | `activities` | `object({       odata_type = optional(string, "#microsoft.graph.subscriptionActivities")       transcript = optional(object({       odata_type = optional(string, "#microsoft.graph.transcriptActivity")       resultInfo = optional(object({       odata_type = optional(string, "#microsoft.graph.resultInfo")       code = optional(number)       message = optional(string)       subcode = optional(number)     }))       status = optional(string)       transport = optional(object({       odata_type = optional(string, "#microsoft.graph.activityTransport")       connectionType = optional(string)       url = optional(string)     }))     }))     })` | no | no |
 | `callback_url` | `callbackUrl` | `string` | no | no |
-| `chat_info` | `chatInfo` | `any` | no | no |
+| `chat_info` | `chatInfo` | `object({       odata_type = optional(string, "#microsoft.graph.chatInfo")       messageId = optional(string)       replyChainMessageId = optional(string)       threadId = optional(string)     })` | no | no |
 | `meeting_info` | `meetingInfo` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `user_id` | `userId` | `string` | no | no |
@@ -45,8 +45,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- activities: polymorphic schema; accepts an untyped value
-- chatInfo: polymorphic schema; accepts an untyped value
 - meetingInfo: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

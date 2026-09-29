@@ -18,17 +18,3 @@ run "minimal_request" {
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
-
-run "typed_request" {
-  command = plan
-
-  variables {
-    targeted_managed_app_configuration_id = "test-parent-id"
-    setting_instance                      = { "settingDefinitionId" = null }
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["settingInstance"]) == jsonencode({ "@odata.type" = "#microsoft.graph.deviceManagementConfigurationSettingInstance" })
-    error_message = "settingInstance must preserve typed values and omit nested nulls."
-  }
-}

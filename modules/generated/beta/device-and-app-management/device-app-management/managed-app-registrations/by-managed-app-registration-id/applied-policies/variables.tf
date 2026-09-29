@@ -9,6 +9,17 @@ variable "managed_app_registration_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.androidManagedAppProtection", "#microsoft.graph.defaultManagedAppProtection", "#microsoft.graph.iosManagedAppProtection", "#microsoft.graph.mdmWindowsInformationProtectionPolicy", "#microsoft.graph.targetedManagedAppConfiguration", "#microsoft.graph.windowsInformationProtectionPolicy", "#microsoft.graph.windowsManagedAppProtection"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "created_date_time" {
   description = "The date and time the policy was created."
   type        = string
@@ -37,13 +48,6 @@ variable "last_modified_date_time" {
   description = "Last time the policy was modified."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.managedAppPolicy"
-  nullable    = false
 }
 
 variable "role_scope_tag_ids" {

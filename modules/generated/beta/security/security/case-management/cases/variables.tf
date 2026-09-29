@@ -1,13 +1,18 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.security.caseManagement.exposureCase", "#microsoft.graph.security.caseManagement.genericCase", "#microsoft.graph.security.caseManagement.incidentCase"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "activities" {
   description = "The timeline of comments and audit events associated with the case. Supports $expand."
-  type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.security.caseManagement.activity")
-    createdBy            = optional(string)
-    createdDateTime      = optional(string)
-    lastModifiedBy       = optional(string)
-    lastModifiedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "attachments" {
@@ -23,8 +28,12 @@ variable "attachments" {
     fileSize             = optional(number)
     lastModifiedBy       = optional(string)
     lastModifiedDateTime = optional(string)
-    origin               = optional(any)
-    scanResult           = optional(string)
+    origin = optional(object({
+      odata_type   = optional(string, "#microsoft.graph.security.caseManagement.attachmentOrigin")
+      resourceId   = optional(string)
+      resourceType = optional(string)
+    }))
+    scanResult = optional(string)
   }))
   default = null
 }
@@ -65,24 +74,10 @@ variable "last_modified_date_time" {
   default     = null
 }
 
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.security.caseManagement.case"
-  nullable    = false
-}
-
 variable "relations" {
   description = "Links from the case to related security resources. Supports $expand."
-  type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.security.caseManagement.relation")
-    createdBy            = optional(string)
-    createdDateTime      = optional(string)
-    lastModifiedBy       = optional(string)
-    lastModifiedDateTime = optional(string)
-    relatedResourceId    = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "status" {

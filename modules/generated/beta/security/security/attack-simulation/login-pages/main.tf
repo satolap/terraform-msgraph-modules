@@ -2,13 +2,13 @@
 locals {
   typed_body = { for key, value in {
     "content"              = var.content
-    "createdBy"            = var.created_by
+    "createdBy"            = (var.created_by == null ? null : { for key0, value0 in { "@odata.type" = var.created_by["odata_type"], "displayName" = var.created_by["displayName"], "email" = var.created_by["email"], "id" = var.created_by["id"] } : key0 => value0 if value0 != null })
     "createdDateTime"      = var.created_date_time
     "description"          = var.description
     "displayName"          = var.display_name
     "source"               = var.graph_source
     "language"             = var.language
-    "lastModifiedBy"       = var.last_modified_by
+    "lastModifiedBy"       = (var.last_modified_by == null ? null : { for key0, value0 in { "@odata.type" = var.last_modified_by["odata_type"], "displayName" = var.last_modified_by["displayName"], "email" = var.last_modified_by["email"], "id" = var.last_modified_by["id"] } : key0 => value0 if value0 != null })
     "lastModifiedDateTime" = var.last_modified_date_time
     "@odata.type"          = var.odata_type
     "status"               = var.status

@@ -6,8 +6,11 @@ variable "app_version" {
 
 variable "device_health" {
   description = "The connector's device health."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.deviceHealth")
+    lastConnectionTime = optional(string)
+  })
+  default = null
 }
 
 variable "display_name" {
@@ -24,8 +27,29 @@ variable "fully_qualified_domain_name" {
 
 variable "location" {
   description = "The physical and/or organizational location of the connector."
-  type        = any
-  default     = null
+  type = object({
+    odata_type       = optional(string, "#microsoft.graph.printerLocation")
+    altitudeInMeters = optional(number)
+    building         = optional(string)
+    city             = optional(string)
+    countryOrRegion  = optional(string)
+    floor            = optional(string)
+    floorDescription = optional(string)
+    floorNumber      = optional(number)
+    latitude         = optional(any)
+    longitude        = optional(any)
+    organization     = optional(list(string))
+    postalCode       = optional(string)
+    roomDescription  = optional(string)
+    roomName         = optional(string)
+    roomNumber       = optional(number)
+    site             = optional(string)
+    stateOrProvince  = optional(string)
+    streetAddress    = optional(string)
+    subdivision      = optional(list(string))
+    subunit          = optional(list(string))
+  })
+  default = null
 }
 
 variable "name" {

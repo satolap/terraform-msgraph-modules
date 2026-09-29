@@ -1,11 +1,11 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "contentSource" = var.content_source
+    "contentSource" = (var.content_source == null ? null : { for key0, value0 in { "@odata.type" = var.content_source["odata_type"], "botConfiguration" = (var.content_source["botConfiguration"] == null ? null : { for key1, value1 in { "@odata.type" = var.content_source["botConfiguration"]["odata_type"], "botId" = var.content_source["botConfiguration"]["botId"] } : key1 => value1 if value1 != null }), "sourceType" = var.content_source["sourceType"] } : key0 => value0 if value0 != null })
     "defaultSize"   = var.default_size
     "description"   = var.description
     "displayName"   = var.display_name
-    "icon"          = var.icon
+    "icon"          = (var.icon == null ? null : { for key0, value0 in { "@odata.type" = var.icon["odata_type"], "iconUrl" = var.icon["iconUrl"], "officeUIFabricIconName" = var.icon["officeUIFabricIconName"] } : key0 => value0 if value0 != null })
     "@odata.type"   = var.odata_type
     "pickerGroupId" = var.picker_group_id
   } : key => value if value != null }

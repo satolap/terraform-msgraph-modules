@@ -12,8 +12,12 @@ variable "booking_business_id" {
 variable "odata_type" {
   description = "Microsoft Graph @odata.type property."
   type        = string
-  default     = "#microsoft.graph.bookingStaffMemberBase"
   nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.bookingStaffMember"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
 }
 
 variable "additional_properties" {

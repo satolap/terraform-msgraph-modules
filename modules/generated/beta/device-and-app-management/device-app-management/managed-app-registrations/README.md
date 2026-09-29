@@ -13,6 +13,7 @@ Lifecycle: `POST /deviceAppManagement/managedAppRegistrations`, `GET/PATCH/DELET
 ```hcl
 module "graph_resource" {
   source = "./device-and-app-management/device-app-management/managed-app-registrations"
+  odata_type = "#microsoft.graph.androidManagedAppRegistration"
 }
 ```
 
@@ -22,9 +23,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
+| `odata_type` | `@odata.type` | `string` | yes | no |
 | `app_identifier` | `appIdentifier` | `any` | no | no |
 | `application_version` | `applicationVersion` | `string` | no | no |
-| `applied_policies` | `appliedPolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedAppPolicy")       createdDateTime = optional(string)       description = optional(string)       displayName = optional(string)       lastModifiedDateTime = optional(string)       roleScopeTagIds = optional(list(string))       version = optional(string)     }))` | no | no |
+| `applied_policies` | `appliedPolicies` | `any` | no | no |
 | `azure_ad_device_id` | `azureADDeviceId` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `device_manufacturer` | `deviceManufacturer` | `string` | no | no |
@@ -34,18 +36,17 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `device_type` | `deviceType` | `string` | no | no |
 | `flagged_reasons` | `flaggedReasons` | `list(string)` | no | no |
 | `graph_version` | `version` | `string` | no | no |
-| `intended_policies` | `intendedPolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedAppPolicy")       createdDateTime = optional(string)       description = optional(string)       displayName = optional(string)       lastModifiedDateTime = optional(string)       roleScopeTagIds = optional(list(string))       version = optional(string)     }))` | no | no |
+| `intended_policies` | `intendedPolicies` | `any` | no | no |
 | `last_sync_date_time` | `lastSyncDateTime` | `string` | no | no |
 | `managed_app_log_collection_requests` | `managedAppLogCollectionRequests` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedAppLogCollectionRequest")       userLogUploadConsent = optional(string)       version = optional(string)     }))` | no | no |
 | `managed_device_id` | `managedDeviceId` | `string` | no | no |
 | `management_sdk_version` | `managementSdkVersion` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
 | `operations` | `operations` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedAppOperation")       displayName = optional(string)       lastModifiedDateTime = optional(string)       state = optional(string)       version = optional(string)     }))` | no | no |
 | `platform_version` | `platformVersion` | `string` | no | no |
 | `user_id` | `userId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
-Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.
 
 Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
@@ -59,8 +60,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- @odata.type: microsoft.graph.managedAppRegistration is abstract; odata_type has no default and must name a concrete type
 - Microsoft Graph beta contracts can change without notice.
 - appIdentifier: polymorphic schema; accepts an untyped value
+- appliedPolicies[]: polymorphic schema; accepts an untyped value
+- intendedPolicies[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

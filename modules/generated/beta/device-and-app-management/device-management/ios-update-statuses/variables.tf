@@ -23,7 +23,7 @@ variable "device_model" {
 }
 
 variable "install_status" {
-  description = "Microsoft Graph installStatus property."
+  description = "The installation status of the policy report."
   type        = string
   default     = null
 
@@ -59,7 +59,7 @@ variable "platform" {
 }
 
 variable "status" {
-  description = "Microsoft Graph status property."
+  description = "Compliance status of the policy report."
   type        = string
   default     = null
 

@@ -16,19 +16,21 @@ variable "federation_configuration" {
     odata_type                            = optional(string, "#microsoft.graph.internalDomainFederation")
     activeSignInUri                       = optional(string)
     displayName                           = optional(string)
-    federatedIdpMfaBehavior               = optional(any)
+    federatedIdpMfaBehavior               = optional(string)
     isSignedAuthenticationRequestRequired = optional(bool)
     issuerUri                             = optional(string)
     metadataExchangeUri                   = optional(string)
     nextSigningCertificate                = optional(string)
     passiveSignInUri                      = optional(string)
     passwordResetUri                      = optional(string)
-    preferredAuthenticationProtocol       = optional(any)
-    promptLoginBehavior                   = optional(any)
+    preferredAuthenticationProtocol       = optional(string)
+    promptLoginBehavior                   = optional(string)
     signOutUri                            = optional(string)
     signingCertificate                    = optional(string)
-    signingCertificateUpdateStatus        = optional(any)
-    systemBrowserEnabledOn                = optional(string)
+    signingCertificateUpdateStatus = optional(object({
+      odata_type = optional(string, "#microsoft.graph.signingCertificateUpdateStatus")
+    }))
+    systemBrowserEnabledOn = optional(string)
   }))
   default   = null
   sensitive = true
@@ -99,8 +101,13 @@ variable "password_validity_period_in_days" {
 
 variable "state" {
   description = "Status of asynchronous operations scheduled for the domain."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.domainState")
+    lastActionDateTime = optional(string)
+    operation          = optional(string)
+    status             = optional(string)
+  })
+  default = null
 }
 
 variable "supported_services" {

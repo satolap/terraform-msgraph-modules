@@ -28,7 +28,7 @@ variable "event_propagation_results" {
     odata_type        = optional(string, "#microsoft.graph.security.eventPropagationResult")
     location          = optional(string)
     serviceName       = optional(string)
-    status            = optional(any)
+    status            = optional(string)
     statusInformation = optional(string)
   }))
   default = null
@@ -39,15 +39,42 @@ variable "event_queries" {
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.security.eventQuery")
     query      = optional(string)
-    queryType  = optional(any)
+    queryType  = optional(string)
   }))
   default = null
 }
 
 variable "event_status" {
   description = "Status of event propogation to the scoped locations after the event has been created."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.security.retentionEventStatus")
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details = optional(list(object({
+          odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+          code       = optional(string)
+          message    = optional(string)
+          target     = optional(string)
+        })))
+        message = optional(string)
+        target  = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    status = optional(string)
+  })
+  default = null
 }
 
 variable "event_trigger_date_time" {

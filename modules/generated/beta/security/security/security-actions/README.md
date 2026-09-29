@@ -28,15 +28,15 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `client_context` | `clientContext` | `string` | no | no |
 | `completed_date_time` | `completedDateTime` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `error_info` | `errorInfo` | `any` | no | no |
+| `error_info` | `errorInfo` | `object({       odata_type = optional(string, "#microsoft.graph.resultInfo")       code = optional(number)       message = optional(string)       subcode = optional(number)     })` | no | no |
 | `last_action_date_time` | `lastActionDateTime` | `string` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `parameters` | `parameters` | `list(object({       odata_type = optional(string, "#microsoft.graph.keyValuePair")       name = optional(string)       value = optional(string)     }))` | no | no |
-| `states` | `states` | `list(object({       odata_type = optional(string, "#microsoft.graph.securityActionState")       appId = optional(string)       status = optional(any)       updatedDateTime = optional(string)       user = optional(string)     }))` | no | no |
-| `status` | `status` | `any` | no | no |
+| `states` | `states` | `list(object({       odata_type = optional(string, "#microsoft.graph.securityActionState")       appId = optional(string)       status = optional(string)       updatedDateTime = optional(string)       user = optional(string)     }))` | no | no |
+| `status` | `status` | `string` | no | no |
 | `user` | `user` | `string` | no | no |
-| `vendor_information` | `vendorInformation` | `any` | no | no |
+| `vendor_information` | `vendorInformation` | `object({       odata_type = optional(string, "#microsoft.graph.securityVendorInformation")       provider = optional(string)       providerVersion = optional(string)       subProvider = optional(string)       vendor = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -54,10 +54,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- errorInfo: polymorphic schema; accepts an untyped value
-- states[].status: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
-- vendorInformation: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

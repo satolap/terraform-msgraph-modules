@@ -13,7 +13,7 @@ variable "odata_type" {
 
 variable "request_type" {
   description = "The type of the request. Use adminAdd to add a resource, if the caller is an administrator or resource owner, adminUpdate to update a resource, or adminRemove to remove a resource."
-  type        = any
+  type        = string
   default     = null
 
   validation {

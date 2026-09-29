@@ -6,6 +6,7 @@ run "minimal_request" {
 
   variables {
     mobile_app_id = "test-parent-id"
+    odata_type    = "#microsoft.graph.mobileAppDependency"
   }
 
   assert {
@@ -14,7 +15,7 @@ run "minimal_request" {
   }
 
   assert {
-    condition     = alltrue([for key in ["targetType"] : !contains(keys(msgraph_resource.this.body), key)])
+    condition     = alltrue([for key in [] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
@@ -24,12 +25,12 @@ run "typed_request" {
 
   variables {
     mobile_app_id = "test-parent-id"
-    target_type   = "child"
+    odata_type    = "#microsoft.graph.mobileAppDependency"
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["targetType"]) == jsonencode("child")
-    error_message = "targetType must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.mobileAppDependency")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 }
 
@@ -38,8 +39,8 @@ run "invalid_enum" {
 
   variables {
     mobile_app_id = "test-parent-id"
-    target_type   = "__graphmodules_invalid_enum__"
+    odata_type    = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.target_type]
+  expect_failures = [var.odata_type]
 }

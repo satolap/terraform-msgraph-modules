@@ -11,7 +11,7 @@ variable "calendar_group_id" {
 
 variable "allowed_online_meeting_providers" {
   description = "Represent the online meeting service providers that can be used to create online meetings in this calendar. The possible values are: unknown, skypeForBusiness, skypeForConsumer, teamsForBusiness."
-  type        = any
+  type        = list(string)
   default     = null
 }
 
@@ -19,10 +19,10 @@ variable "calendar_permissions" {
   description = "The permissions of the users with whom the calendar is shared."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.calendarPermission")
-    allowedRoles         = optional(any)
+    allowedRoles         = optional(list(string))
     isInsideOrganization = optional(bool)
     isRemovable          = optional(bool)
-    role                 = optional(any)
+    role                 = optional(string)
   }))
   default = null
 }
@@ -47,7 +47,7 @@ variable "can_view_private_items" {
 
 variable "color" {
   description = "Specifies the color theme to distinguish the calendar from other calendars in a UI. The property values are: auto, lightBlue, lightGreen, lightOrange, lightGray, lightYellow, lightTeal, lightPink, lightBrown, lightRed, maxColor."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -58,7 +58,7 @@ variable "color" {
 
 variable "default_online_meeting_provider" {
   description = "The default online meeting provider for meetings sent from this calendar. The possible values are: unknown, skypeForBusiness, skypeForConsumer, teamsForBusiness."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -100,8 +100,12 @@ variable "odata_type" {
 
 variable "owner" {
   description = "If set, this represents the user who created or added the calendar. For a calendar that the user created or added, the owner property is set to the user. For a calendar shared with the user, the owner property is set to the person who shared that calendar with the user."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.emailAddress")
+    address    = optional(string)
+    name       = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

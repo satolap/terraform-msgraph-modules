@@ -29,7 +29,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `code` | `code` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `icon_type` | `iconType` | `any` | no | no |
+| `icon_type` | `iconType` | `string` | no | no |
 | `is_active` | `isActive` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -49,7 +49,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - createdBy: polymorphic schema; accepts an untyped value
-- iconType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -11,13 +11,8 @@ variable "deleted_team_id" {
 
 variable "all_members" {
   description = "A collection of membership records associated with the channel, including both direct and indirect members of shared channels."
-  type = list(object({
-    odata_type                  = optional(string, "#microsoft.graph.conversationMember")
-    displayName                 = optional(string)
-    roles                       = optional(list(string))
-    visibleHistoryStartDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "description" {
@@ -37,14 +32,18 @@ variable "enabled_apps" {
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.teamsApp")
     appDefinitions = optional(list(object({
-      odata_type           = optional(string, "#microsoft.graph.teamsAppDefinition")
-      authorization        = optional(any)
+      odata_type = optional(string, "#microsoft.graph.teamsAppDefinition")
+      authorization = optional(object({
+        odata_type            = optional(string, "#microsoft.graph.teamsAppAuthorization")
+        clientAppId           = optional(string)
+        requiredPermissionSet = optional(any)
+      }))
       bot                  = optional(any)
       createdBy            = optional(any)
       description          = optional(string)
       displayName          = optional(string)
       lastModifiedDateTime = optional(string)
-      publishingState      = optional(any)
+      publishingState      = optional(string)
       shortDescription     = optional(string)
       teamsAppId           = optional(string)
       version              = optional(string)
@@ -69,7 +68,7 @@ variable "is_favorite_by_default" {
 
 variable "layout_type" {
   description = "The layout type of the channel. It can be set during creation and updated later. The possible values are: post, chat, unknownFutureValue. The default value is post. Channels with the post layout use a traditional post‑reply conversation format, and channels with the chat layout provide a chat‑like threading experience similar to group chats."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -80,18 +79,13 @@ variable "layout_type" {
 
 variable "members" {
   description = "A collection of membership records associated with the channel."
-  type = list(object({
-    odata_type                  = optional(string, "#microsoft.graph.conversationMember")
-    displayName                 = optional(string)
-    roles                       = optional(list(string))
-    visibleHistoryStartDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "membership_type" {
   description = "The type of the channel. Can be set during creation and can't be changed. The possible values are: standard, private, unknownFutureValue, shared. The default value is standard. Use the Prefer: include-unknown-enum-members request header to get the following members in this evolvable enum: shared."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -102,70 +96,13 @@ variable "membership_type" {
 
 variable "messages" {
   description = "A collection of all the messages in the channel. A navigation property. Nullable."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.chatMessage")
-    attachments = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.chatMessageAttachment")
-      content      = optional(string)
-      contentType  = optional(string)
-      contentUrl   = optional(string)
-      name         = optional(string)
-      teamsAppId   = optional(string)
-      thumbnailUrl = optional(string)
-    })))
-    body = optional(object({
-      odata_type  = optional(string, "#microsoft.graph.itemBody")
-      content     = optional(string)
-      contentType = optional(any)
-    }))
-    channelIdentity = optional(any)
-    chatId          = optional(string)
-    createdDateTime = optional(string)
-    from            = optional(any)
-    hostedContents = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.chatMessageHostedContent")
-      contentBytes = optional(string)
-      contentType  = optional(string)
-    })))
-    importance = optional(string)
-    locale     = optional(string)
-    mentions = optional(list(object({
-      odata_type  = optional(string, "#microsoft.graph.chatMessageMention")
-      id          = optional(number)
-      mentionText = optional(string)
-      mentioned   = optional(any)
-    })))
-    messageHistory = optional(list(object({
-      odata_type       = optional(string, "#microsoft.graph.chatMessageHistoryItem")
-      actions          = optional(string)
-      modifiedDateTime = optional(string)
-      reaction         = optional(any)
-    })))
-    messageType     = optional(string)
-    policyViolation = optional(any)
-    reactions = optional(list(object({
-      odata_type         = optional(string, "#microsoft.graph.chatMessageReaction")
-      createdDateTime    = optional(string)
-      displayName        = optional(string)
-      reactionContentUrl = optional(string)
-      reactionType       = optional(string)
-      user = optional(object({
-        odata_type  = optional(string, "#microsoft.graph.chatMessageReactionIdentitySet")
-        application = optional(any)
-        device      = optional(any)
-        user        = optional(any)
-      }))
-    })))
-    replies = optional(any)
-    subject = optional(string)
-    summary = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "migration_mode" {
   description = "Indicates whether a channel is in migration mode. This value is null for channels that never entered migration mode. The possible values are: inProgress, completed, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -190,34 +127,41 @@ variable "original_created_date_time" {
 variable "shared_with_teams" {
   description = "A collection of teams with which a channel is shared."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")
-    allowedMembers = optional(list(object({
-      odata_type                  = optional(string, "#microsoft.graph.conversationMember")
-      displayName                 = optional(string)
-      roles                       = optional(list(string))
-      visibleHistoryStartDateTime = optional(string)
-    })))
-    displayName = optional(string)
-    isHostTeam  = optional(bool)
-    team        = optional(any)
-    tenantId    = optional(string)
+    odata_type     = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")
+    allowedMembers = optional(any)
+    displayName    = optional(string)
+    isHostTeam     = optional(bool)
+    team           = optional(any)
+    tenantId       = optional(string)
   }))
   default = null
 }
 
 variable "summary" {
   description = "Contains summary information about the channel, including number of owners, members, guests, and an indicator for members from other tenants. The summary property will only be returned if it is specified in the $select clause of the Get channel method."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                 = optional(string, "#microsoft.graph.channelSummary")
+    guestsCount                = optional(number)
+    hasMembersFromOtherTenants = optional(bool)
+    membersCount               = optional(number)
+    ownersCount                = optional(number)
+  })
+  default = null
 }
 
 variable "tabs" {
   description = "A collection of all the tabs in the channel. A navigation property."
   type = list(object({
-    odata_type    = optional(string, "#microsoft.graph.teamsTab")
-    configuration = optional(any)
-    displayName   = optional(string)
-    teamsApp      = optional(any)
+    odata_type = optional(string, "#microsoft.graph.teamsTab")
+    configuration = optional(object({
+      odata_type = optional(string, "#microsoft.graph.teamsTabConfiguration")
+      contentUrl = optional(string)
+      entityId   = optional(string)
+      removeUrl  = optional(string)
+      websiteUrl = optional(string)
+    }))
+    displayName = optional(string)
+    teamsApp    = optional(any)
   }))
   default = null
 }

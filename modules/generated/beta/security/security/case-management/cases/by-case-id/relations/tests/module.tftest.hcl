@@ -5,7 +5,8 @@ run "minimal_request" {
   command = plan
 
   variables {
-    case_id = "test-parent-id"
+    case_id    = "test-parent-id"
+    odata_type = "#microsoft.graph.security.caseManagement.incidentRelation"
   }
 
   assert {
@@ -24,11 +25,28 @@ run "typed_request" {
 
   variables {
     case_id    = "test-parent-id"
+    odata_type = "#microsoft.graph.security.caseManagement.incidentRelation"
     created_by = "example"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.security.caseManagement.incidentRelation")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["createdBy"]) == jsonencode("example")
     error_message = "createdBy must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    case_id    = "test-parent-id"
+    odata_type = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

@@ -22,14 +22,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `access_id` | `accessId` | `any` | no | no |
+| `access_id` | `accessId` | `string` | no | no |
 | `activated_using` | `activatedUsing` | `any` | no | no |
 | `assignment_schedule_id` | `assignmentScheduleId` | `string` | no | no |
-| `assignment_type` | `assignmentType` | `any` | no | no |
+| `assignment_type` | `assignmentType` | `string` | no | no |
 | `end_date_time` | `endDateTime` | `string` | no | no |
 | `group` | `group` | `any` | no | no |
 | `group_id` | `groupId` | `string` | no | no |
-| `member_type` | `memberType` | `any` | no | no |
+| `member_type` | `memberType` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `principal` | `principal` | `any` | no | no |
 | `principal_id` | `principalId` | `string` | no | no |
@@ -50,11 +50,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- accessId: polymorphic schema; accepts an untyped value
-- activatedUsing: polymorphic schema; accepts an untyped value
-- assignmentType: polymorphic schema; accepts an untyped value
-- group: polymorphic schema; accepts an untyped value
-- memberType: polymorphic schema; accepts an untyped value
+- activatedUsing: navigation property; accepts an untyped value
+- group: navigation property; accepts an untyped value
 - principal: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

@@ -28,8 +28,14 @@ variable "container" {
 
 variable "content_sensitivity_label_assignment" {
   description = "The sensitivity label assignment for the plan. Used to classify and protect the plan content based on organizational policies. This property is null if no sensitivity label is assigned. Optional."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.contentSensitivityLabelAssignment")
+    assignmentMethod   = optional(string)
+    justificationText  = optional(string)
+    sensitivityLabelId = optional(string)
+    tenantId           = optional(string)
+  })
+  default = null
 }
 
 variable "creation_source" {
@@ -57,7 +63,7 @@ variable "shared_with_containers" {
     odata_type  = optional(string, "#microsoft.graph.plannerSharedWithContainer")
     accessLevel = optional(string)
     containerId = optional(string)
-    type        = optional(any)
+    type        = optional(string)
     url         = optional(string)
   }))
   default = null

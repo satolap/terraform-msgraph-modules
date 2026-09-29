@@ -20,11 +20,17 @@ run "typed_request" {
 
   variables {
     backup_size_in_bytes = "example"
+    error                = { "code" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["backupSizeInBytes"]) == jsonencode("example")
     error_message = "backupSizeInBytes must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["error"]) == jsonencode({ "@odata.type" = "#microsoft.graph.publicError" })
+    error_message = "error must preserve typed values and omit nested nulls."
   }
 }
 

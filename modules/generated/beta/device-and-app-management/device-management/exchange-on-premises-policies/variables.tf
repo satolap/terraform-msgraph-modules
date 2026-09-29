@@ -3,7 +3,11 @@ variable "access_rules" {
   type = list(object({
     odata_type  = optional(string, "#microsoft.graph.deviceManagementExchangeAccessRule")
     accessLevel = optional(string)
-    deviceClass = optional(any)
+    deviceClass = optional(object({
+      odata_type = optional(string, "#microsoft.graph.deviceManagementExchangeDeviceClass")
+      name       = optional(string)
+      type       = optional(string)
+    }))
   }))
   default = null
 }

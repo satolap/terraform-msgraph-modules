@@ -25,11 +25,8 @@ variable "odata_type" {
 
 variable "policy_rules" {
   description = "Represents the definition of the policy ruleset that makes up the core definition of a policy."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.networkaccess.policyRule")
-    name       = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "private_access_app_id" {

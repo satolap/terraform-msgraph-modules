@@ -19,15 +19,15 @@ run "typed_request" {
   command = plan
 
   variables {
-    deleted_date_time                               = "2026-01-01T00:00:00Z"
+    allow_invites_from                              = "none"
     allow_email_verified_users_to_join_organization = false
     default_user_role_permissions                   = { "allowedToCreateApps" = null }
     default_user_role_overrides                     = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["deletedDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
-    error_message = "deletedDateTime must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["allowInvitesFrom"]) == jsonencode("none")
+    error_message = "allowInvitesFrom must preserve typed values and omit nested nulls."
   }
 
   assert {

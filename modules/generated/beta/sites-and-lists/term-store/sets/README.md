@@ -22,14 +22,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `children` | `children` | `list(object({       odata_type = optional(string, "#microsoft.graph.termStore.term")       children = optional(any)       descriptions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.localizedDescription")       description = optional(string)       languageTag = optional(string)     })))       labels = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.localizedLabel")       isDefault = optional(bool)       languageTag = optional(string)       name = optional(string)     })))       properties = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       relations = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.relation")       fromTerm = optional(any)       relationship = optional(any)       set = optional(any)       toTerm = optional(any)     })))       set = optional(any)     }))` | no | no |
+| `children` | `children` | `list(object({       odata_type = optional(string, "#microsoft.graph.termStore.term")       children = optional(any)       descriptions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.localizedDescription")       description = optional(string)       languageTag = optional(string)     })))       labels = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.localizedLabel")       isDefault = optional(bool)       languageTag = optional(string)       name = optional(string)     })))       properties = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       relations = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.relation")       fromTerm = optional(any)       relationship = optional(string)       set = optional(any)       toTerm = optional(any)     })))       set = optional(any)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `localized_names` | `localizedNames` | `list(object({       odata_type = optional(string, "#microsoft.graph.termStore.localizedName")       languageTag = optional(string)       name = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `parent_group` | `parentGroup` | `object({       odata_type = optional(string, "#microsoft.graph.termStore.group")       description = optional(string)       displayName = optional(string)       parentSiteId = optional(string)       scope = optional(any)       sets = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.set")       children = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.term")       children = optional(any)       descriptions = optional(any)       labels = optional(any)       properties = optional(any)       relations = optional(any)       set = optional(any)     })))       description = optional(string)       localizedNames = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.localizedName")       languageTag = optional(string)       name = optional(string)     })))       parentGroup = optional(any)       properties = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       relations = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.relation")       fromTerm = optional(any)       relationship = optional(any)       set = optional(any)       toTerm = optional(any)     })))       terms = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.term")       children = optional(any)       descriptions = optional(any)       labels = optional(any)       properties = optional(any)       relations = optional(any)       set = optional(any)     })))     })))     })` | no | no |
+| `parent_group` | `parentGroup` | `object({       odata_type = optional(string, "#microsoft.graph.termStore.group")       description = optional(string)       displayName = optional(string)       parentSiteId = optional(string)       scope = optional(string)       sets = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.set")       children = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.term")       children = optional(any)       descriptions = optional(any)       labels = optional(any)       properties = optional(any)       relations = optional(any)       set = optional(any)     })))       description = optional(string)       localizedNames = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.localizedName")       languageTag = optional(string)       name = optional(string)     })))       parentGroup = optional(any)       properties = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       relations = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.relation")       fromTerm = optional(any)       relationship = optional(string)       set = optional(any)       toTerm = optional(any)     })))       terms = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.term")       children = optional(any)       descriptions = optional(any)       labels = optional(any)       properties = optional(any)       relations = optional(any)       set = optional(any)     })))     })))     })` | no | no |
 | `properties` | `properties` | `list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     }))` | no | no |
-| `relations` | `relations` | `list(object({       odata_type = optional(string, "#microsoft.graph.termStore.relation")       fromTerm = optional(any)       relationship = optional(any)       set = optional(any)       toTerm = optional(any)     }))` | no | no |
-| `terms` | `terms` | `list(object({       odata_type = optional(string, "#microsoft.graph.termStore.term")       children = optional(any)       descriptions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.localizedDescription")       description = optional(string)       languageTag = optional(string)     })))       labels = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.localizedLabel")       isDefault = optional(bool)       languageTag = optional(string)       name = optional(string)     })))       properties = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       relations = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.relation")       fromTerm = optional(any)       relationship = optional(any)       set = optional(any)       toTerm = optional(any)     })))       set = optional(any)     }))` | no | no |
+| `relations` | `relations` | `list(object({       odata_type = optional(string, "#microsoft.graph.termStore.relation")       fromTerm = optional(any)       relationship = optional(string)       set = optional(any)       toTerm = optional(any)     }))` | no | no |
+| `terms` | `terms` | `list(object({       odata_type = optional(string, "#microsoft.graph.termStore.term")       children = optional(any)       descriptions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.localizedDescription")       description = optional(string)       languageTag = optional(string)     })))       labels = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.localizedLabel")       isDefault = optional(bool)       languageTag = optional(string)       name = optional(string)     })))       properties = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       relations = optional(list(object({       odata_type = optional(string, "#microsoft.graph.termStore.relation")       fromTerm = optional(any)       relationship = optional(string)       set = optional(any)       toTerm = optional(any)     })))       set = optional(any)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -48,39 +48,34 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - children[].children[]: recursive schema; accepts an untyped value
-- children[].relations[].fromTerm: polymorphic schema; accepts an untyped value
-- children[].relations[].relationship: polymorphic schema; accepts an untyped value
-- children[].relations[].set: polymorphic schema; accepts an untyped value
-- children[].relations[].toTerm: polymorphic schema; accepts an untyped value
-- children[].set: polymorphic schema; accepts an untyped value
-- parentGroup.scope: polymorphic schema; accepts an untyped value
+- children[].relations[].fromTerm: navigation property; accepts an untyped value
+- children[].relations[].set: navigation property; accepts an untyped value
+- children[].relations[].toTerm: navigation property; accepts an untyped value
+- children[].set: navigation property; accepts an untyped value
 - parentGroup.sets[].children[].children: nested schema exceeds depth limit; accepts an untyped value
 - parentGroup.sets[].children[].descriptions: nested schema exceeds depth limit; accepts an untyped value
 - parentGroup.sets[].children[].labels: nested schema exceeds depth limit; accepts an untyped value
 - parentGroup.sets[].children[].properties: nested schema exceeds depth limit; accepts an untyped value
 - parentGroup.sets[].children[].relations: nested schema exceeds depth limit; accepts an untyped value
-- parentGroup.sets[].children[].set: polymorphic schema; accepts an untyped value
+- parentGroup.sets[].children[].set: navigation property; accepts an untyped value
 - parentGroup.sets[].parentGroup: recursive schema; accepts an untyped value
-- parentGroup.sets[].relations[].fromTerm: polymorphic schema; accepts an untyped value
-- parentGroup.sets[].relations[].relationship: polymorphic schema; accepts an untyped value
-- parentGroup.sets[].relations[].set: polymorphic schema; accepts an untyped value
-- parentGroup.sets[].relations[].toTerm: polymorphic schema; accepts an untyped value
+- parentGroup.sets[].relations[].fromTerm: navigation property; accepts an untyped value
+- parentGroup.sets[].relations[].set: navigation property; accepts an untyped value
+- parentGroup.sets[].relations[].toTerm: navigation property; accepts an untyped value
 - parentGroup.sets[].terms[].children: nested schema exceeds depth limit; accepts an untyped value
 - parentGroup.sets[].terms[].descriptions: nested schema exceeds depth limit; accepts an untyped value
 - parentGroup.sets[].terms[].labels: nested schema exceeds depth limit; accepts an untyped value
 - parentGroup.sets[].terms[].properties: nested schema exceeds depth limit; accepts an untyped value
 - parentGroup.sets[].terms[].relations: nested schema exceeds depth limit; accepts an untyped value
-- parentGroup.sets[].terms[].set: polymorphic schema; accepts an untyped value
-- relations[].fromTerm: polymorphic schema; accepts an untyped value
-- relations[].relationship: polymorphic schema; accepts an untyped value
-- relations[].set: polymorphic schema; accepts an untyped value
-- relations[].toTerm: polymorphic schema; accepts an untyped value
+- parentGroup.sets[].terms[].set: navigation property; accepts an untyped value
+- relations[].fromTerm: navigation property; accepts an untyped value
+- relations[].set: navigation property; accepts an untyped value
+- relations[].toTerm: navigation property; accepts an untyped value
 - terms[].children[]: recursive schema; accepts an untyped value
-- terms[].relations[].fromTerm: polymorphic schema; accepts an untyped value
-- terms[].relations[].relationship: polymorphic schema; accepts an untyped value
-- terms[].relations[].set: polymorphic schema; accepts an untyped value
-- terms[].relations[].toTerm: polymorphic schema; accepts an untyped value
-- terms[].set: polymorphic schema; accepts an untyped value
+- terms[].relations[].fromTerm: navigation property; accepts an untyped value
+- terms[].relations[].set: navigation property; accepts an untyped value
+- terms[].relations[].toTerm: navigation property; accepts an untyped value
+- terms[].set: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

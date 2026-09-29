@@ -29,7 +29,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `extensions` | `extensions` | `list(string)` | no | no |
 | `file_type` | `fileType` | `string` | no | no |
 | `first_seen_date_time` | `firstSeenDateTime` | `string` | no | no |
-| `hashes` | `hashes` | `list(object({       odata_type = optional(string, "#microsoft.graph.fileHash")       hashType = optional(any)       hashValue = optional(string)     }))` | no | no |
+| `hashes` | `hashes` | `list(object({       odata_type = optional(string, "#microsoft.graph.fileHash")       hashType = optional(string)       hashValue = optional(string)     }))` | no | no |
 | `last_seen_date_time` | `lastSeenDateTime` | `string` | no | no |
 | `malware_states` | `malwareStates` | `list(object({       odata_type = optional(string, "#microsoft.graph.malwareState")       category = optional(string)       family = optional(string)       name = optional(string)       severity = optional(string)       wasRunning = optional(bool)     }))` | no | no |
 | `names` | `names` | `list(string)` | no | no |
@@ -37,7 +37,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `risk_score` | `riskScore` | `string` | no | no |
 | `size` | `size` | `number` | no | no |
 | `tags` | `tags` | `list(string)` | no | no |
-| `vendor_information` | `vendorInformation` | `any` | no | no |
+| `vendor_information` | `vendorInformation` | `object({       odata_type = optional(string, "#microsoft.graph.securityVendorInformation")       provider = optional(string)       providerVersion = optional(string)       subProvider = optional(string)       vendor = optional(string)     })` | no | no |
 | `vulnerability_states` | `vulnerabilityStates` | `list(object({       odata_type = optional(string, "#microsoft.graph.vulnerabilityState")       cve = optional(string)       severity = optional(string)       wasRunning = optional(bool)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -56,8 +56,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- hashes[].hashType: polymorphic schema; accepts an untyped value
-- vendorInformation: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

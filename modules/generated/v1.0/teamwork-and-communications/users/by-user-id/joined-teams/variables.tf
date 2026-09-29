@@ -12,13 +12,8 @@ variable "user_id" {
 variable "all_channels" {
   description = "List of channels either hosted in or shared with the team (incoming channels)."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.channel")
-    allMembers = optional(list(object({
-      odata_type                  = optional(string, "#microsoft.graph.conversationMember")
-      displayName                 = optional(string)
-      roles                       = optional(list(string))
-      visibleHistoryStartDateTime = optional(string)
-    })))
+    odata_type  = optional(string, "#microsoft.graph.channel")
+    allMembers  = optional(any)
     description = optional(string)
     displayName = optional(string)
     enabledApps = optional(list(object({
@@ -27,41 +22,13 @@ variable "all_channels" {
       displayName    = optional(string)
       externalId     = optional(string)
     })))
-    filesFolder         = optional(any)
-    isFavoriteByDefault = optional(bool)
-    layoutType          = optional(any)
-    members = optional(list(object({
-      odata_type                  = optional(string, "#microsoft.graph.conversationMember")
-      displayName                 = optional(string)
-      roles                       = optional(list(string))
-      visibleHistoryStartDateTime = optional(string)
-    })))
-    membershipType = optional(any)
-    messages = optional(list(object({
-      odata_type  = optional(string, "#microsoft.graph.chatMessage")
-      attachments = optional(any)
-      body = optional(object({
-        odata_type  = optional(string, "#microsoft.graph.itemBody")
-        content     = optional(string)
-        contentType = optional(any)
-      }))
-      channelIdentity = optional(any)
-      chatId          = optional(string)
-      createdDateTime = optional(string)
-      from            = optional(any)
-      hostedContents  = optional(any)
-      importance      = optional(string)
-      locale          = optional(string)
-      mentions        = optional(any)
-      messageHistory  = optional(any)
-      messageType     = optional(string)
-      policyViolation = optional(any)
-      reactions       = optional(any)
-      replies         = optional(any)
-      subject         = optional(string)
-      summary         = optional(string)
-    })))
-    migrationMode           = optional(any)
+    filesFolder             = optional(any)
+    isFavoriteByDefault     = optional(bool)
+    layoutType              = optional(string)
+    members                 = optional(any)
+    membershipType          = optional(string)
+    messages                = optional(any)
+    migrationMode           = optional(string)
     originalCreatedDateTime = optional(string)
     sharedWithTeams = optional(list(object({
       odata_type     = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")
@@ -71,12 +38,24 @@ variable "all_channels" {
       team           = optional(any)
       tenantId       = optional(string)
     })))
-    summary = optional(any)
+    summary = optional(object({
+      odata_type                 = optional(string, "#microsoft.graph.channelSummary")
+      guestsCount                = optional(number)
+      hasMembersFromOtherTenants = optional(bool)
+      membersCount               = optional(number)
+      ownersCount                = optional(number)
+    }))
     tabs = optional(list(object({
-      odata_type    = optional(string, "#microsoft.graph.teamsTab")
-      configuration = optional(any)
-      displayName   = optional(string)
-      teamsApp      = optional(any)
+      odata_type = optional(string, "#microsoft.graph.teamsTab")
+      configuration = optional(object({
+        odata_type = optional(string, "#microsoft.graph.teamsTabConfiguration")
+        contentUrl = optional(string)
+        entityId   = optional(string)
+        removeUrl  = optional(string)
+        websiteUrl = optional(string)
+      }))
+      displayName = optional(string)
+      teamsApp    = optional(any)
     })))
     tenantId = optional(string)
   }))
@@ -86,13 +65,8 @@ variable "all_channels" {
 variable "channels" {
   description = "The collection of channels and messages associated with the team."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.channel")
-    allMembers = optional(list(object({
-      odata_type                  = optional(string, "#microsoft.graph.conversationMember")
-      displayName                 = optional(string)
-      roles                       = optional(list(string))
-      visibleHistoryStartDateTime = optional(string)
-    })))
+    odata_type  = optional(string, "#microsoft.graph.channel")
+    allMembers  = optional(any)
     description = optional(string)
     displayName = optional(string)
     enabledApps = optional(list(object({
@@ -101,41 +75,13 @@ variable "channels" {
       displayName    = optional(string)
       externalId     = optional(string)
     })))
-    filesFolder         = optional(any)
-    isFavoriteByDefault = optional(bool)
-    layoutType          = optional(any)
-    members = optional(list(object({
-      odata_type                  = optional(string, "#microsoft.graph.conversationMember")
-      displayName                 = optional(string)
-      roles                       = optional(list(string))
-      visibleHistoryStartDateTime = optional(string)
-    })))
-    membershipType = optional(any)
-    messages = optional(list(object({
-      odata_type  = optional(string, "#microsoft.graph.chatMessage")
-      attachments = optional(any)
-      body = optional(object({
-        odata_type  = optional(string, "#microsoft.graph.itemBody")
-        content     = optional(string)
-        contentType = optional(any)
-      }))
-      channelIdentity = optional(any)
-      chatId          = optional(string)
-      createdDateTime = optional(string)
-      from            = optional(any)
-      hostedContents  = optional(any)
-      importance      = optional(string)
-      locale          = optional(string)
-      mentions        = optional(any)
-      messageHistory  = optional(any)
-      messageType     = optional(string)
-      policyViolation = optional(any)
-      reactions       = optional(any)
-      replies         = optional(any)
-      subject         = optional(string)
-      summary         = optional(string)
-    })))
-    migrationMode           = optional(any)
+    filesFolder             = optional(any)
+    isFavoriteByDefault     = optional(bool)
+    layoutType              = optional(string)
+    members                 = optional(any)
+    membershipType          = optional(string)
+    messages                = optional(any)
+    migrationMode           = optional(string)
     originalCreatedDateTime = optional(string)
     sharedWithTeams = optional(list(object({
       odata_type     = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")
@@ -145,12 +91,24 @@ variable "channels" {
       team           = optional(any)
       tenantId       = optional(string)
     })))
-    summary = optional(any)
+    summary = optional(object({
+      odata_type                 = optional(string, "#microsoft.graph.channelSummary")
+      guestsCount                = optional(number)
+      hasMembersFromOtherTenants = optional(bool)
+      membersCount               = optional(number)
+      ownersCount                = optional(number)
+    }))
     tabs = optional(list(object({
-      odata_type    = optional(string, "#microsoft.graph.teamsTab")
-      configuration = optional(any)
-      displayName   = optional(string)
-      teamsApp      = optional(any)
+      odata_type = optional(string, "#microsoft.graph.teamsTab")
+      configuration = optional(object({
+        odata_type = optional(string, "#microsoft.graph.teamsTabConfiguration")
+        contentUrl = optional(string)
+        entityId   = optional(string)
+        removeUrl  = optional(string)
+        websiteUrl = optional(string)
+      }))
+      displayName = optional(string)
+      teamsApp    = optional(any)
     })))
     tenantId = optional(string)
   }))
@@ -189,8 +147,14 @@ variable "first_channel_name" {
 
 variable "fun_settings" {
   description = "Settings to configure use of Giphy, memes, and stickers in the team."
-  type        = any
-  default     = null
+  type = object({
+    odata_type            = optional(string, "#microsoft.graph.teamFunSettings")
+    allowCustomMemes      = optional(bool)
+    allowGiphy            = optional(bool)
+    allowStickersAndMemes = optional(bool)
+    giphyContentRating    = optional(string)
+  })
+  default = null
 }
 
 variable "group" {
@@ -201,20 +165,19 @@ variable "group" {
 
 variable "guest_settings" {
   description = "Settings to configure whether guests can create, update, or delete channels in the team."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                = optional(string, "#microsoft.graph.teamGuestSettings")
+    allowCreateUpdateChannels = optional(bool)
+    allowDeleteChannels       = optional(bool)
+  })
+  default = null
 }
 
 variable "incoming_channels" {
   description = "List of channels shared with the team."
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.channel")
-    allMembers = optional(list(object({
-      odata_type                  = optional(string, "#microsoft.graph.conversationMember")
-      displayName                 = optional(string)
-      roles                       = optional(list(string))
-      visibleHistoryStartDateTime = optional(string)
-    })))
+    odata_type  = optional(string, "#microsoft.graph.channel")
+    allMembers  = optional(any)
     description = optional(string)
     displayName = optional(string)
     enabledApps = optional(list(object({
@@ -223,41 +186,13 @@ variable "incoming_channels" {
       displayName    = optional(string)
       externalId     = optional(string)
     })))
-    filesFolder         = optional(any)
-    isFavoriteByDefault = optional(bool)
-    layoutType          = optional(any)
-    members = optional(list(object({
-      odata_type                  = optional(string, "#microsoft.graph.conversationMember")
-      displayName                 = optional(string)
-      roles                       = optional(list(string))
-      visibleHistoryStartDateTime = optional(string)
-    })))
-    membershipType = optional(any)
-    messages = optional(list(object({
-      odata_type  = optional(string, "#microsoft.graph.chatMessage")
-      attachments = optional(any)
-      body = optional(object({
-        odata_type  = optional(string, "#microsoft.graph.itemBody")
-        content     = optional(string)
-        contentType = optional(any)
-      }))
-      channelIdentity = optional(any)
-      chatId          = optional(string)
-      createdDateTime = optional(string)
-      from            = optional(any)
-      hostedContents  = optional(any)
-      importance      = optional(string)
-      locale          = optional(string)
-      mentions        = optional(any)
-      messageHistory  = optional(any)
-      messageType     = optional(string)
-      policyViolation = optional(any)
-      reactions       = optional(any)
-      replies         = optional(any)
-      subject         = optional(string)
-      summary         = optional(string)
-    })))
-    migrationMode           = optional(any)
+    filesFolder             = optional(any)
+    isFavoriteByDefault     = optional(bool)
+    layoutType              = optional(string)
+    members                 = optional(any)
+    membershipType          = optional(string)
+    messages                = optional(any)
+    migrationMode           = optional(string)
     originalCreatedDateTime = optional(string)
     sharedWithTeams = optional(list(object({
       odata_type     = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")
@@ -267,12 +202,24 @@ variable "incoming_channels" {
       team           = optional(any)
       tenantId       = optional(string)
     })))
-    summary = optional(any)
+    summary = optional(object({
+      odata_type                 = optional(string, "#microsoft.graph.channelSummary")
+      guestsCount                = optional(number)
+      hasMembersFromOtherTenants = optional(bool)
+      membersCount               = optional(number)
+      ownersCount                = optional(number)
+    }))
     tabs = optional(list(object({
-      odata_type    = optional(string, "#microsoft.graph.teamsTab")
-      configuration = optional(any)
-      displayName   = optional(string)
-      teamsApp      = optional(any)
+      odata_type = optional(string, "#microsoft.graph.teamsTab")
+      configuration = optional(object({
+        odata_type = optional(string, "#microsoft.graph.teamsTabConfiguration")
+        contentUrl = optional(string)
+        entityId   = optional(string)
+        removeUrl  = optional(string)
+        websiteUrl = optional(string)
+      }))
+      displayName = optional(string)
+      teamsApp    = optional(any)
     })))
     tenantId = optional(string)
   }))
@@ -281,13 +228,8 @@ variable "incoming_channels" {
 
 variable "installed_apps" {
   description = "The apps installed in this team."
-  type = list(object({
-    odata_type             = optional(string, "#microsoft.graph.teamsAppInstallation")
-    consentedPermissionSet = optional(any)
-    teamsApp               = optional(any)
-    teamsAppDefinition     = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "internal_id" {
@@ -298,25 +240,35 @@ variable "internal_id" {
 
 variable "member_settings" {
   description = "Settings to configure whether members can perform certain actions, for example, create channels and add bots, in the team."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                        = optional(string, "#microsoft.graph.teamMemberSettings")
+    allowAddRemoveApps                = optional(bool)
+    allowCreatePrivateChannels        = optional(bool)
+    allowCreateUpdateChannels         = optional(bool)
+    allowCreateUpdateRemoveConnectors = optional(bool)
+    allowCreateUpdateRemoveTabs       = optional(bool)
+    allowDeleteChannels               = optional(bool)
+  })
+  default = null
 }
 
 variable "members" {
   description = "Members and owners of the team."
-  type = list(object({
-    odata_type                  = optional(string, "#microsoft.graph.conversationMember")
-    displayName                 = optional(string)
-    roles                       = optional(list(string))
-    visibleHistoryStartDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "messaging_settings" {
   description = "Settings to configure messaging and mentions in the team."
-  type        = any
-  default     = null
+  type = object({
+    odata_type               = optional(string, "#microsoft.graph.teamMessagingSettings")
+    allowChannelMentions     = optional(bool)
+    allowOwnerDeleteMessages = optional(bool)
+    allowTeamMentions        = optional(bool)
+    allowUserDeleteMessages  = optional(bool)
+    allowUserEditMessages    = optional(bool)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -329,10 +281,14 @@ variable "odata_type" {
 variable "operations" {
   description = "The async operations that ran or are running on this team."
   type = list(object({
-    odata_type             = optional(string, "#microsoft.graph.teamsAsyncOperation")
-    attemptsCount          = optional(number)
-    createdDateTime        = optional(string)
-    error                  = optional(any)
+    odata_type      = optional(string, "#microsoft.graph.teamsAsyncOperation")
+    attemptsCount   = optional(number)
+    createdDateTime = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.operationError")
+      code       = optional(string)
+      message    = optional(string)
+    }))
     lastActionDateTime     = optional(string)
     operationType          = optional(string)
     status                 = optional(string)
@@ -371,7 +327,7 @@ variable "schedule" {
 
 variable "specialization" {
   description = "Optional. Indicates whether the team is intended for a particular use case. Each team specialization has access to unique behaviors and experiences targeted to its use case."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -382,8 +338,13 @@ variable "specialization" {
 
 variable "summary" {
   description = "Contains summary information about the team, including number of owners, members, and guests."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.teamSummary")
+    guestsCount  = optional(number)
+    membersCount = optional(number)
+    ownersCount  = optional(number)
+  })
+  default = null
 }
 
 variable "tags" {
@@ -399,7 +360,7 @@ variable "tags" {
       tenantId    = optional(string)
       userId      = optional(string)
     })))
-    tagType = optional(any)
+    tagType = optional(string)
     teamId  = optional(string)
   }))
   default = null
@@ -419,7 +380,7 @@ variable "tenant_id" {
 
 variable "visibility" {
   description = "The visibility of the group and team. Defaults to Public."
-  type        = any
+  type        = string
   default     = null
 
   validation {

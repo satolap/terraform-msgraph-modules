@@ -17,8 +17,12 @@ variable "author" {
 
 variable "content" {
   description = "The content of the note."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.itemBody")
+    content     = optional(string)
+    contentType = optional(string)
+  })
+  default = null
 }
 
 variable "created_date_time" {

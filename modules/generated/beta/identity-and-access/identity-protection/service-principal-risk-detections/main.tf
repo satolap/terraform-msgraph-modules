@@ -12,7 +12,7 @@ locals {
     "ipAddress"                   = var.ip_address
     "keyIds"                      = (var.key_ids == null ? null : [for item0 in var.key_ids : item0 if item0 != null])
     "lastUpdatedDateTime"         = var.last_updated_date_time
-    "location"                    = var.location
+    "location"                    = (var.location == null ? null : { for key0, value0 in { "@odata.type" = var.location["odata_type"], "city" = var.location["city"], "countryOrRegion" = var.location["countryOrRegion"], "geoCoordinates" = (var.location["geoCoordinates"] == null ? null : { for key1, value1 in { "@odata.type" = var.location["geoCoordinates"]["odata_type"], "latitude" = var.location["geoCoordinates"]["latitude"], "longitude" = var.location["geoCoordinates"]["longitude"] } : key1 => value1 if value1 != null }), "state" = var.location["state"] } : key0 => value0 if value0 != null })
     "mitreTechniqueId"            = var.mitre_technique_id
     "@odata.type"                 = var.odata_type
     "requestId"                   = var.request_id

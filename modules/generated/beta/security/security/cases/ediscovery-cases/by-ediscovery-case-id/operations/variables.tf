@@ -11,7 +11,7 @@ variable "ediscovery_case_id" {
 
 variable "action" {
   description = "The type of action the operation represents. The possible values are: contentExport,  applyTags, convertToPdf, index, estimateStatistics, addToReviewSet, holdUpdate, unknownFutureValue, purgeData, exportReport, exportResult, holdPolicySync. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: purgeData, exportReport, exportResult, holdPolicySync."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -53,13 +53,18 @@ variable "percent_progress" {
 
 variable "result_info" {
   description = "Contains success and failure-specific result information."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.resultInfo")
+    code       = optional(number)
+    message    = optional(string)
+    subcode    = optional(number)
+  })
+  default = null
 }
 
 variable "status" {
   description = "The status of the case operation. The possible values are: notStarted, submissionFailed, running, succeeded, partiallySucceeded, failed, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

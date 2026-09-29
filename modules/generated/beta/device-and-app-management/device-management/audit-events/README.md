@@ -27,7 +27,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `activity_operation_type` | `activityOperationType` | `string` | no | no |
 | `activity_result` | `activityResult` | `string` | no | no |
 | `activity_type` | `activityType` | `string` | no | no |
-| `actor` | `actor` | `any` | no | no |
+| `actor` | `actor` | `object({       odata_type = optional(string, "#microsoft.graph.auditActor")       applicationDisplayName = optional(string)       applicationId = optional(string)       auditActorType = optional(string)       ipAddress = optional(string)       remoteTenantId = optional(string)       remoteUserId = optional(string)       servicePrincipalName = optional(string)       type = optional(string)       userId = optional(string)       userPermissions = optional(list(string))       userPrincipalName = optional(string)       userRoleScopeTags = optional(list(object({       odata_type = optional(string, "#microsoft.graph.roleScopeTagInfo")       displayName = optional(string)       roleScopeTagId = optional(string)     })))     })` | no | no |
 | `category` | `category` | `string` | no | no |
 | `component_name` | `componentName` | `string` | no | no |
 | `correlation_id` | `correlationId` | `string` | no | no |
@@ -51,7 +51,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- actor: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

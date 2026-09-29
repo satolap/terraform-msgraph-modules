@@ -66,7 +66,7 @@ variable "recorded_date_time" {
 
 variable "state" {
   description = "The possible values are: accepted, declined. Supports $filter (eq)."
-  type        = any
+  type        = string
   default     = null
 
   validation {

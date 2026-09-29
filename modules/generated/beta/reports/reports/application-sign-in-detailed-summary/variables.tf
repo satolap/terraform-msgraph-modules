@@ -31,8 +31,13 @@ variable "sign_in_count" {
 
 variable "status" {
   description = "Details of the sign-in status."
-  type        = any
-  default     = null
+  type = object({
+    odata_type        = optional(string, "#microsoft.graph.signInStatus")
+    additionalDetails = optional(string)
+    errorCode         = optional(number)
+    failureReason     = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

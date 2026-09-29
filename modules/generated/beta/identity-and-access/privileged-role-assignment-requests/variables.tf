@@ -43,8 +43,14 @@ variable "role_info" {
 
 variable "schedule" {
   description = "Microsoft Graph schedule property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type    = optional(string, "#microsoft.graph.governanceSchedule")
+    duration      = optional(string)
+    endDateTime   = optional(string)
+    startDateTime = optional(string)
+    type          = optional(string)
+  })
+  default = null
 }
 
 variable "status" {

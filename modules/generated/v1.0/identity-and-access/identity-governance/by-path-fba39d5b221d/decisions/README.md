@@ -27,10 +27,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `access_review_instance_id` | URL parameter `accessReviewInstance-id` | `string` | yes | no |
 | `access_review_stage_id` | URL parameter `accessReviewStage-id` | `string` | yes | no |
 | `decision` | `decision` | `string` | no | no |
-| `insights` | `insights` | `list(object({       odata_type = optional(string, "#microsoft.graph.governanceInsight")       insightCreatedDateTime = optional(string)     }))` | no | no |
+| `insights` | `insights` | `any` | no | no |
 | `justification` | `justification` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `permission` | `permission` | `any` | no | no |
+| `permission` | `permission` | `object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItemPermission")       description = optional(string)       displayName = optional(string)       id = optional(string)       type = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -47,7 +47,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- permission: polymorphic schema; accepts an untyped value
+- insights[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

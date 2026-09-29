@@ -9,6 +9,7 @@ run "minimal_request" {
     page_template_id             = "test-parent-id"
     horizontal_section_id        = "test-parent-id"
     horizontal_section_column_id = "test-parent-id"
+    odata_type                   = "#microsoft.graph.standardWebPart"
   }
 
   assert {
@@ -20,4 +21,35 @@ run "minimal_request" {
     condition     = alltrue([for key in [] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
+}
+
+run "typed_request" {
+  command = plan
+
+  variables {
+    site_id                      = "test-parent-id"
+    page_template_id             = "test-parent-id"
+    horizontal_section_id        = "test-parent-id"
+    horizontal_section_column_id = "test-parent-id"
+    odata_type                   = "#microsoft.graph.standardWebPart"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.standardWebPart")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
+  }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    site_id                      = "test-parent-id"
+    page_template_id             = "test-parent-id"
+    horizontal_section_id        = "test-parent-id"
+    horizontal_section_column_id = "test-parent-id"
+    odata_type                   = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

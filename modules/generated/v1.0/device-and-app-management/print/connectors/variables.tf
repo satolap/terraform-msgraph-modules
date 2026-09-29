@@ -18,8 +18,27 @@ variable "fully_qualified_domain_name" {
 
 variable "location" {
   description = "The physical and/or organizational location of the connector."
-  type        = any
-  default     = null
+  type = object({
+    odata_type       = optional(string, "#microsoft.graph.printerLocation")
+    altitudeInMeters = optional(number)
+    building         = optional(string)
+    city             = optional(string)
+    countryOrRegion  = optional(string)
+    floor            = optional(string)
+    floorDescription = optional(string)
+    latitude         = optional(any)
+    longitude        = optional(any)
+    organization     = optional(list(string))
+    postalCode       = optional(string)
+    roomDescription  = optional(string)
+    roomName         = optional(string)
+    site             = optional(string)
+    stateOrProvince  = optional(string)
+    streetAddress    = optional(string)
+    subdivision      = optional(list(string))
+    subunit          = optional(list(string))
+  })
+  default = null
 }
 
 variable "odata_type" {

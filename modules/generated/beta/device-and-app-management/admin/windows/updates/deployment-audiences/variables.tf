@@ -1,17 +1,13 @@
 variable "exclusions" {
   description = "Specifies the assets to exclude from the audience."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.windowsUpdates.updatableAsset")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "members" {
   description = "Specifies the assets to include in the audience."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.windowsUpdates.updatableAsset")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "odata_type" {

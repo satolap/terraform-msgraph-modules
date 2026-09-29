@@ -18,7 +18,7 @@ locals {
     "partnerTenantType"                    = var.partner_tenant_type
     "postalCode"                           = var.postal_code
     "preferredLanguage"                    = var.preferred_language
-    "privacyProfile"                       = var.privacy_profile
+    "privacyProfile"                       = (var.privacy_profile == null ? null : { for key0, value0 in { "@odata.type" = var.privacy_profile["odata_type"], "contactEmail" = var.privacy_profile["contactEmail"], "statementUrl" = var.privacy_profile["statementUrl"] } : key0 => value0 if value0 != null })
     "provisionedPlans"                     = (var.provisioned_plans == null ? null : [for item0 in var.provisioned_plans : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "capabilityStatus" = item0["capabilityStatus"], "provisioningStatus" = item0["provisioningStatus"], "service" = item0["service"] } : key1 => value1 if value1 != null }) if item0 != null])
     "securityComplianceNotificationMails"  = (var.security_compliance_notification_mails == null ? null : [for item0 in var.security_compliance_notification_mails : item0 if item0 != null])
     "securityComplianceNotificationPhones" = (var.security_compliance_notification_phones == null ? null : [for item0 in var.security_compliance_notification_phones : item0 if item0 != null])

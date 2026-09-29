@@ -1,7 +1,24 @@
 variable "activities" {
   description = "Microsoft Graph activities property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.subscriptionActivities")
+    transcript = optional(object({
+      odata_type = optional(string, "#microsoft.graph.transcriptActivity")
+      resultInfo = optional(object({
+        odata_type = optional(string, "#microsoft.graph.resultInfo")
+        code       = optional(number)
+        message    = optional(string)
+        subcode    = optional(number)
+      }))
+      status = optional(string)
+      transport = optional(object({
+        odata_type     = optional(string, "#microsoft.graph.activityTransport")
+        connectionType = optional(string)
+        url            = optional(string)
+      }))
+    }))
+  })
+  default = null
 }
 
 variable "callback_url" {
@@ -12,8 +29,13 @@ variable "callback_url" {
 
 variable "chat_info" {
   description = "Microsoft Graph chatInfo property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type          = optional(string, "#microsoft.graph.chatInfo")
+    messageId           = optional(string)
+    replyChainMessageId = optional(string)
+    threadId            = optional(string)
+  })
+  default = null
 }
 
 variable "meeting_info" {

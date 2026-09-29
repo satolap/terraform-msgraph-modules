@@ -29,7 +29,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `requested_date_time` | `requestedDateTime` | `string` | no | no |
 | `role_id` | `roleId` | `string` | no | no |
 | `role_info` | `roleInfo` | `any` | no | no |
-| `schedule` | `schedule` | `any` | no | no |
+| `schedule` | `schedule` | `object({       odata_type = optional(string, "#microsoft.graph.governanceSchedule")       duration = optional(string)       endDateTime = optional(string)       startDateTime = optional(string)       type = optional(string)     })` | no | no |
 | `status` | `status` | `string` | no | no |
 | `ticket_number` | `ticketNumber` | `string` | no | no |
 | `ticket_system` | `ticketSystem` | `string` | no | no |
@@ -52,8 +52,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- roleInfo: polymorphic schema; accepts an untyped value
-- schedule: polymorphic schema; accepts an untyped value
+- roleInfo: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

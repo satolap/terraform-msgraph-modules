@@ -31,7 +31,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `on_premises_security_identifier` | `onPremisesSecurityIdentifier` | `string` | no | no |
 | `principal_name` | `principalName` | `string` | no | no |
-| `subject_lifecycle` | `subjectLifecycle` | `any` | no | no |
+| `subject_lifecycle` | `subjectLifecycle` | `string` | no | no |
 | `type` | `type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -50,7 +50,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- subjectLifecycle: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -1,6 +1,6 @@
 variable "action_source" {
   description = "Microsoft Graph actionSource property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -86,7 +86,7 @@ variable "sublabels" {
   description = "Microsoft Graph sublabels property."
   type = list(object({
     odata_type                  = optional(string, "#microsoft.graph.sensitivityLabel")
-    actionSource                = optional(any)
+    actionSource                = optional(string)
     autoTooltip                 = optional(string)
     description                 = optional(string)
     displayName                 = optional(string)

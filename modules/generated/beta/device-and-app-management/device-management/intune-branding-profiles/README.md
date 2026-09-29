@@ -39,9 +39,9 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `is_default_profile` | `isDefaultProfile` | `bool` | no | no |
 | `is_factory_reset_disabled` | `isFactoryResetDisabled` | `bool` | no | no |
 | `is_remove_device_disabled` | `isRemoveDeviceDisabled` | `bool` | no | no |
-| `landing_page_customized_image` | `landingPageCustomizedImage` | `any` | no | no |
+| `landing_page_customized_image` | `landingPageCustomizedImage` | `object({       odata_type = optional(string, "#microsoft.graph.mimeContent")       type = optional(string)       value = optional(string)     })` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `light_background_logo` | `lightBackgroundLogo` | `any` | no | no |
+| `light_background_logo` | `lightBackgroundLogo` | `object({       odata_type = optional(string, "#microsoft.graph.mimeContent")       type = optional(string)       value = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `online_support_site_name` | `onlineSupportSiteName` | `string` | no | no |
 | `online_support_site_url` | `onlineSupportSiteUrl` | `string` | no | no |
@@ -54,8 +54,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `show_display_name_next_to_logo` | `showDisplayNameNextToLogo` | `bool` | no | no |
 | `show_logo` | `showLogo` | `bool` | no | no |
 | `show_office_web_apps` | `showOfficeWebApps` | `bool` | no | no |
-| `theme_color` | `themeColor` | `any` | no | no |
-| `theme_color_logo` | `themeColorLogo` | `any` | no | no |
+| `theme_color` | `themeColor` | `object({       odata_type = optional(string, "#microsoft.graph.rgbColor")       b = optional(number)       g = optional(number)       r = optional(number)     })` | no | no |
+| `theme_color_logo` | `themeColorLogo` | `object({       odata_type = optional(string, "#microsoft.graph.mimeContent")       type = optional(string)       value = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -74,10 +74,6 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].target: polymorphic schema; accepts an untyped value
-- landingPageCustomizedImage: polymorphic schema; accepts an untyped value
-- lightBackgroundLogo: polymorphic schema; accepts an untyped value
-- themeColor: polymorphic schema; accepts an untyped value
-- themeColorLogo: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

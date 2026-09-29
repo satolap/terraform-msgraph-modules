@@ -29,7 +29,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `policies` | `policies` | `list(object({       odata_type = optional(string, "#microsoft.graph.networkaccess.policyLink")       policy = optional(object({       odata_type = optional(string, "#microsoft.graph.networkaccess.policy")       description = optional(string)       name = optional(string)       policyRules = optional(list(object({       odata_type = optional(string, "#microsoft.graph.networkaccess.policyRule")       name = optional(string)     })))       version = optional(string)     }))       state = optional(string)       version = optional(string)     }))` | no | no |
+| `policies` | `policies` | `any` | no | no |
 | `priority` | `priority` | `number` | no | no |
 | `state` | `state` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -49,6 +49,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- policies[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

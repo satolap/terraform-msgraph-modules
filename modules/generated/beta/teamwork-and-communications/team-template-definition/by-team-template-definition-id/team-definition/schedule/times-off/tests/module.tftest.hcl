@@ -26,6 +26,7 @@ run "typed_request" {
     team_template_definition_id = "test-parent-id"
     user_id                     = "example"
     is_staged_for_deletion      = false
+    draft_time_off              = { "endDateTime" = null }
   }
 
   assert {
@@ -36,5 +37,10 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isStagedForDeletion"]) == jsonencode(false)
     error_message = "isStagedForDeletion must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["draftTimeOff"]) == jsonencode({ "@odata.type" = "#microsoft.graph.timeOffItem" })
+    error_message = "draftTimeOff must preserve typed values and omit nested nulls."
   }
 }

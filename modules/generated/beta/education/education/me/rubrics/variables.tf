@@ -1,7 +1,11 @@
 variable "description" {
   description = "The description of this rubric."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.educationItemBody")
+    content     = optional(string)
+    contentType = optional(string)
+  })
+  default = null
 }
 
 variable "display_name" {
@@ -19,8 +23,12 @@ variable "grading" {
 variable "levels" {
   description = "The collection of levels making up this rubric."
   type = list(object({
-    odata_type  = optional(string, "#microsoft.graph.rubricLevel")
-    description = optional(any)
+    odata_type = optional(string, "#microsoft.graph.rubricLevel")
+    description = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.educationItemBody")
+      content     = optional(string)
+      contentType = optional(string)
+    }))
     displayName = optional(string)
     grading     = optional(any)
     levelId     = optional(string)
@@ -40,10 +48,18 @@ variable "qualities" {
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.rubricQuality")
     criteria = optional(list(object({
-      odata_type  = optional(string, "#microsoft.graph.rubricCriterion")
-      description = optional(any)
+      odata_type = optional(string, "#microsoft.graph.rubricCriterion")
+      description = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.educationItemBody")
+        content     = optional(string)
+        contentType = optional(string)
+      }))
     })))
-    description = optional(any)
+    description = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.educationItemBody")
+      content     = optional(string)
+      contentType = optional(string)
+    }))
     displayName = optional(string)
     qualityId   = optional(string)
     weight      = optional(any)

@@ -23,7 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `transcripts` | `transcripts` | `list(object({       odata_type = optional(string, "#microsoft.graph.realTimeTranscript")       payloads = optional(list(object({       odata_type = optional(string, "#microsoft.graph.transcriptPayload")       audioCaptureDateTime = optional(string)       speaker = optional(any)       spokenLanguage = optional(string)       text = optional(string)     })))     }))` | no | no |
+| `transcripts` | `transcripts` | `list(object({       odata_type = optional(string, "#microsoft.graph.realTimeTranscript")       payloads = optional(list(object({       odata_type = optional(string, "#microsoft.graph.transcriptPayload")       audioCaptureDateTime = optional(string)       speaker = optional(object({       odata_type = optional(string, "#microsoft.graph.transcriptSpeaker")       room = optional(any)       user = optional(any)     }))       spokenLanguage = optional(string)       text = optional(string)     })))     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -41,7 +41,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- transcripts[].payloads[].speaker: polymorphic schema; accepts an untyped value
+- transcripts[].payloads[].speaker.room: nested schema exceeds depth limit; accepts an untyped value
+- transcripts[].payloads[].speaker.user: nested schema exceeds depth limit; accepts an untyped value
 
 ## Licensing and prerequisites
 

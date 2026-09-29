@@ -1,12 +1,12 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
+    "@odata.type"      = var.odata_type
     "actor"            = var.actor
     "entityId"         = var.entity_id
     "entityType"       = var.entity_type
     "eventType"        = var.event_type
     "occurredDateTime" = var.occurred_date_time
-    "@odata.type"      = var.odata_type
     "planId"           = var.plan_id
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)

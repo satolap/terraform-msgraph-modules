@@ -19,11 +19,17 @@ run "typed_request" {
   command = plan
 
   variables {
-    app_id = "example"
+    app_id                                             = "example"
+    application_authentication_client_sign_in_activity = { "lastNonInteractiveSignInDateTime" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["appId"]) == jsonencode("example")
     error_message = "appId must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["applicationAuthenticationClientSignInActivity"]) == jsonencode({ "@odata.type" = "#microsoft.graph.signInActivity" })
+    error_message = "applicationAuthenticationClientSignInActivity must preserve typed values and omit nested nulls."
   }
 }

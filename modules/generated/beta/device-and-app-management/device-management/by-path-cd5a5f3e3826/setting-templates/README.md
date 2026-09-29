@@ -25,8 +25,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `device_management_configuration_policy_template_id` | URL parameter `deviceManagementConfigurationPolicyTemplate-id` | `string` | yes | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `setting_definitions` | `settingDefinitions` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingDefinition")       accessTypes = optional(string)       applicability = optional(any)       baseUri = optional(string)       categoryId = optional(string)       description = optional(string)       displayName = optional(string)       helpText = optional(string)       infoUrls = optional(list(string))       keywords = optional(list(string))       name = optional(string)       occurrence = optional(any)       offsetUri = optional(string)       referredSettingInformationList = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationReferredSettingInformation")       settingDefinitionId = optional(string)     })))       riskLevel = optional(string)       rootDefinitionId = optional(string)       settingUsage = optional(string)       uxBehavior = optional(string)       version = optional(string)       visibility = optional(string)     }))` | no | no |
-| `setting_instance_template` | `settingInstanceTemplate` | `object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingInstanceTemplate")       isRequired = optional(bool)       settingDefinitionId = optional(string)       settingInstanceTemplateId = optional(string)     })` | no | no |
+| `setting_definitions` | `settingDefinitions` | `any` | no | no |
+| `setting_instance_template` | `settingInstanceTemplate` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -44,8 +44,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- settingDefinitions[].applicability: polymorphic schema; accepts an untyped value
-- settingDefinitions[].occurrence: polymorphic schema; accepts an untyped value
+- settingDefinitions[]: polymorphic schema; accepts an untyped value
+- settingInstanceTemplate: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

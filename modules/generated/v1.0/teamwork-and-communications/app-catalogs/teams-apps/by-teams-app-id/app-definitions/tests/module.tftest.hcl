@@ -23,13 +23,19 @@ run "typed_request" {
   command = plan
 
   variables {
-    teams_app_id = "test-parent-id"
-    description  = "example"
+    teams_app_id  = "test-parent-id"
+    description   = "example"
+    authorization = { "clientAppId" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
     error_message = "description must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["authorization"]) == jsonencode({ "@odata.type" = "#microsoft.graph.teamsAppAuthorization" })
+    error_message = "authorization must preserve typed values and omit nested nulls."
   }
 }
 

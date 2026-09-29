@@ -30,7 +30,7 @@ variable "odata_type" {
 
 variable "provisioning_type" {
   description = "The type of licenses to be used when provisioning Cloud PCs using this policy. The possible values are: dedicated, shared, unknownFutureValue. The default value is dedicated."
-  type        = any
+  type        = string
   default     = null
 
   validation {

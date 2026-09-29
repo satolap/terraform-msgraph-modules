@@ -63,7 +63,7 @@ variable "odata_type" {
 
 variable "platform" {
   description = "Indicates the device platform on which the device compliance script will be executed. Possible values are: windows10AndLater (default), linux. The default value is windows10AndLater."
-  type        = any
+  type        = string
   default     = null
 
   validation {

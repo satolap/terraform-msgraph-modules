@@ -48,7 +48,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- governancePolicyTemplate: polymorphic schema; accepts an untyped value
+- governancePolicyTemplate: navigation property; accepts an untyped value
 - policySnapshot.multiTenantApplicationsToProvision[].requiredResourceAccesses[].permissions: nested schema exceeds depth limit; accepts an untyped value
 
 ## Licensing and prerequisites

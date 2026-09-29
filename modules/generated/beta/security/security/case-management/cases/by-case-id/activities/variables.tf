@@ -9,6 +9,17 @@ variable "case_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.security.caseManagement.auditLog", "#microsoft.graph.security.caseManagement.comment"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "created_by" {
   description = "The user or service that created the resource."
   type        = string
@@ -31,13 +42,6 @@ variable "last_modified_date_time" {
   description = "The date and time when the resource was last modified."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.security.caseManagement.activity"
-  nullable    = false
 }
 
 variable "additional_properties" {

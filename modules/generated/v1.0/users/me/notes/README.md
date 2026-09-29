@@ -22,11 +22,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `attachments` | `attachments` | `list(object({       odata_type = optional(string, "#microsoft.graph.attachment")       contentType = optional(string)       isInline = optional(bool)       lastModifiedDateTime = optional(string)       name = optional(string)       size = optional(number)     }))` | no | no |
-| `body` | `body` | `any` | no | no |
+| `attachments` | `attachments` | `any` | no | no |
+| `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no |
 | `categories` | `categories` | `list(string)` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `extensions` | `extensions` | `list(object({       odata_type = optional(string, "#microsoft.graph.extension")     }))` | no | no |
+| `extensions` | `extensions` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `multi_value_extended_properties` | `multiValueExtendedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.multiValueLegacyExtendedProperty")       value = optional(list(string))     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -48,7 +48,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- body: polymorphic schema; accepts an untyped value
+- attachments[]: polymorphic schema; accepts an untyped value
+- extensions[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

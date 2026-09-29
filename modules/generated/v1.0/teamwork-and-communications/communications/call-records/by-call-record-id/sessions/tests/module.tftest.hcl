@@ -26,6 +26,7 @@ run "typed_request" {
     call_record_id = "test-parent-id"
     end_date_time  = "2026-01-01T00:00:00Z"
     is_test        = false
+    failure_info   = { "reason" = null }
     modalities     = ["audio"]
   }
 
@@ -37,6 +38,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isTest"]) == jsonencode(false)
     error_message = "isTest must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["failureInfo"]) == jsonencode({ "@odata.type" = "#microsoft.graph.callRecords.failureInfo" })
+    error_message = "failureInfo must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -23,7 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `numbers` | `numbers` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsAdministration.telephoneNumberLongRunningOperationDetails")       resourceLocation = optional(string)       status = optional(any)       statusDetail = optional(string)     }))` | no | no |
+| `numbers` | `numbers` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsAdministration.telephoneNumberLongRunningOperationDetails")       resourceLocation = optional(string)       status = optional(string)       statusDetail = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -43,7 +43,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- numbers[].status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

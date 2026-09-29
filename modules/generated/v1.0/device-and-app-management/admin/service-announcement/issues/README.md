@@ -32,7 +32,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `origin` | `origin` | `string` | no | no |
-| `posts` | `posts` | `list(object({       odata_type = optional(string, "#microsoft.graph.serviceHealthIssuePost")       createdDateTime = optional(string)       description = optional(any)       postType = optional(any)     }))` | no | no |
+| `posts` | `posts` | `list(object({       odata_type = optional(string, "#microsoft.graph.serviceHealthIssuePost")       createdDateTime = optional(string)       description = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))       postType = optional(string)     }))` | no | no |
 | `service` | `service` | `string` | no | no |
 | `start_date_time` | `startDateTime` | `string` | no | no |
 | `status` | `status` | `string` | no | no |
@@ -50,11 +50,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- posts[].description: polymorphic schema; accepts an untyped value
-- posts[].postType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

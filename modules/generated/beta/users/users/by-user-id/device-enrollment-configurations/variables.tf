@@ -9,6 +9,17 @@ variable "user_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.deviceComanagementAuthorityConfiguration", "#microsoft.graph.deviceEnrollmentLimitConfiguration", "#microsoft.graph.deviceEnrollmentNotificationConfiguration", "#microsoft.graph.deviceEnrollmentPlatformRestrictionConfiguration", "#microsoft.graph.deviceEnrollmentPlatformRestrictionsConfiguration", "#microsoft.graph.deviceEnrollmentWindowsHelloForBusinessConfiguration", "#microsoft.graph.windows10EnrollmentCompletionPageConfiguration", "#microsoft.graph.windowsRestoreDeviceEnrollmentConfiguration"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "assignments" {
   description = "The list of group assignments for the device configuration profile"
   type = list(object({
@@ -59,13 +70,6 @@ variable "last_modified_date_time" {
   description = "Last modified date time in UTC of the device enrollment configuration"
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.deviceEnrollmentConfiguration"
-  nullable    = false
 }
 
 variable "priority" {

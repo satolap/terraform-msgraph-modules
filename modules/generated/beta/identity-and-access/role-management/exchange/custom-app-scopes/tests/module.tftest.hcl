@@ -14,16 +14,3 @@ run "minimal_request" {
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
-
-run "typed_request" {
-  command = plan
-
-  variables {
-    custom_attributes = {}
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["customAttributes"]) == jsonencode({ "@odata.type" = "#microsoft.graph.customAppScopeAttributesDictionary" })
-    error_message = "customAttributes must preserve typed values and omit nested nulls."
-  }
-}

@@ -24,8 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `device_configuration_id` | URL parameter `deviceConfiguration-id` | `string` | yes | no |
-| `graph_source` | `source` | `string` | no | no |
-| `intent` | `intent` | `any` | no | no |
+| `intent` | `intent` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `target` | `target` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -45,7 +44,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- intent: polymorphic schema; accepts an untyped value
 - target: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

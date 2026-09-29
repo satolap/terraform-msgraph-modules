@@ -11,7 +11,7 @@ variable "user_id" {
 
 variable "classify_as" {
   description = "Specifies how incoming messages from a specific sender should always be classified as. The possible values are: focused, other."
-  type        = any
+  type        = string
   default     = null
 
   validation {

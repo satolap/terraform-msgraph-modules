@@ -1,6 +1,6 @@
 variable "activity" {
   description = "Indicates the activity type the detected risk is linked to."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -35,7 +35,7 @@ variable "detected_date_time" {
 
 variable "detection_timing_type" {
   description = "Timing of the detected risk (real-time/offline). The possible values are: notDefined, realtime, nearRealtime, offline, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -64,8 +64,16 @@ variable "last_updated_date_time" {
 
 variable "location" {
   description = "Location of the sign-in."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.signInLocation")
+    city            = optional(string)
+    countryOrRegion = optional(string)
+    geoCoordinates = optional(object({
+      odata_type = optional(string, "#microsoft.graph.geoCoordinates")
+    }))
+    state = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -83,7 +91,7 @@ variable "request_id" {
 
 variable "risk_detail" {
   description = "Details of the detected risk."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -100,7 +108,7 @@ variable "risk_event_type" {
 
 variable "risk_level" {
   description = "Level of the detected risk. The possible values are: low, medium, high, hidden, none, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -111,7 +119,7 @@ variable "risk_level" {
 
 variable "risk_state" {
   description = "The state of a detected risky user or sign-in. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -122,7 +130,7 @@ variable "risk_state" {
 
 variable "token_issuer_type" {
   description = "Indicates the type of token issuer for the detected sign-in risk. The possible values are: AzureAD, ADFederationServices, UnknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

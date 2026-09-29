@@ -23,10 +23,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `app_version` | `appVersion` | `string` | no | no |
-| `device_health` | `deviceHealth` | `any` | no | no |
+| `device_health` | `deviceHealth` | `object({       odata_type = optional(string, "#microsoft.graph.deviceHealth")       lastConnectionTime = optional(string)     })` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `fully_qualified_domain_name` | `fullyQualifiedDomainName` | `string` | no | no |
-| `location` | `location` | `any` | no | no |
+| `location` | `location` | `object({       odata_type = optional(string, "#microsoft.graph.printerLocation")       altitudeInMeters = optional(number)       building = optional(string)       city = optional(string)       countryOrRegion = optional(string)       floor = optional(string)       floorDescription = optional(string)       floorNumber = optional(number)       latitude = optional(any)       longitude = optional(any)       organization = optional(list(string))       postalCode = optional(string)       roomDescription = optional(string)       roomName = optional(string)       roomNumber = optional(number)       site = optional(string)       stateOrProvince = optional(string)       streetAddress = optional(string)       subdivision = optional(list(string))       subunit = optional(list(string))     })` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `operating_system` | `operatingSystem` | `string` | no | no |
@@ -48,8 +48,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- deviceHealth: polymorphic schema; accepts an untyped value
-- location: polymorphic schema; accepts an untyped value
+- location.latitude: polymorphic schema; accepts an untyped value
+- location.longitude: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

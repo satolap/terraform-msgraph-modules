@@ -27,8 +27,6 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `online_meeting_engagement_conversation_id` | URL parameter `onlineMeetingEngagementConversation-id` | `string` | yes | no |
 | `engagement_conversation_message_id` | URL parameter `engagementConversationMessage-id` | `string` | yes | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `reaction_by` | `reactionBy` | `object({       odata_type = optional(string, "#microsoft.graph.engagementIdentitySet")       application = optional(any)       audience = optional(any)       device = optional(any)       group = optional(any)       user = optional(any)     })` | no | no |
-| `reaction_type` | `reactionType` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -46,11 +44,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- reactionBy.application: polymorphic schema; accepts an untyped value
-- reactionBy.audience: polymorphic schema; accepts an untyped value
-- reactionBy.device: polymorphic schema; accepts an untyped value
-- reactionBy.group: polymorphic schema; accepts an untyped value
-- reactionBy.user: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

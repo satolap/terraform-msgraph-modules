@@ -77,10 +77,8 @@ variable "customer_time_zone" {
 
 variable "customers" {
   description = "A collection of the customer properties for an appointment. An appointment will contain a list of customer information and each unit will indicate the properties of a customer who is part of that appointment. Optional."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.bookingCustomerInformationBase")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "end" {
@@ -101,8 +99,12 @@ variable "invoice_amount" {
 
 variable "invoice_date" {
   description = "The date, time, and time zone of the invoice for this appointment."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+    dateTime   = optional(string)
+    timeZone   = optional(string)
+  })
+  default = null
 }
 
 variable "invoice_id" {

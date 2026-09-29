@@ -46,7 +46,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - catalogEntry: polymorphic schema; accepts an untyped value
-- knowledgeBaseArticle: polymorphic schema; accepts an untyped value
+- knowledgeBaseArticle: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

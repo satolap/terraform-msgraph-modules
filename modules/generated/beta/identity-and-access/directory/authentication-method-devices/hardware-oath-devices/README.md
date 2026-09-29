@@ -25,14 +25,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `assign_to` | `assignTo` | `any` | no | no |
 | `assigned_to` | `assignedTo` | `any` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `hardware_oath_devices` | `hardwareOathDevices` | `list(object({       odata_type = optional(string, "#microsoft.graph.hardwareOathTokenAuthenticationMethodDevice")       assignTo = optional(any)       assignedTo = optional(any)       displayName = optional(string)       hardwareOathDevices = optional(any)       hashFunction = optional(any)       manufacturer = optional(string)       model = optional(string)       secretKey = optional(string)       serialNumber = optional(string)       status = optional(any)       timeIntervalInSeconds = optional(number)     }))` | no | yes |
-| `hash_function` | `hashFunction` | `any` | no | no |
+| `hardware_oath_devices` | `hardwareOathDevices` | `list(object({       odata_type = optional(string, "#microsoft.graph.hardwareOathTokenAuthenticationMethodDevice")       assignTo = optional(any)       assignedTo = optional(any)       displayName = optional(string)       hardwareOathDevices = optional(any)       hashFunction = optional(string)       manufacturer = optional(string)       model = optional(string)       secretKey = optional(string)       serialNumber = optional(string)       status = optional(string)       timeIntervalInSeconds = optional(number)     }))` | no | yes |
+| `hash_function` | `hashFunction` | `string` | no | no |
 | `manufacturer` | `manufacturer` | `string` | no | no |
 | `model` | `model` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `secret_key` | `secretKey` | `string` | no | yes |
 | `serial_number` | `serialNumber` | `string` | no | no |
-| `status` | `status` | `any` | no | no |
+| `status` | `status` | `string` | no | no |
 | `time_interval_in_seconds` | `timeIntervalInSeconds` | `number` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -56,10 +56,6 @@ Generation notes:
 - hardwareOathDevices[].assignTo: polymorphic schema; accepts an untyped value
 - hardwareOathDevices[].assignedTo: polymorphic schema; accepts an untyped value
 - hardwareOathDevices[].hardwareOathDevices[]: recursive schema; accepts an untyped value
-- hardwareOathDevices[].hashFunction: polymorphic schema; accepts an untyped value
-- hardwareOathDevices[].status: polymorphic schema; accepts an untyped value
-- hashFunction: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

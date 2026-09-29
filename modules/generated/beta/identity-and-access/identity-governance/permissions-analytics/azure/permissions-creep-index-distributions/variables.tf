@@ -1,13 +1,7 @@
 variable "authorization_system" {
   description = "Microsoft Graph authorizationSystem property."
-  type = object({
-    odata_type              = optional(string, "#microsoft.graph.authorizationSystem")
-    authorizationSystemId   = optional(string)
-    authorizationSystemName = optional(string)
-    authorizationSystemType = optional(string)
-    dataCollectionInfo      = optional(any)
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "created_date_time" {

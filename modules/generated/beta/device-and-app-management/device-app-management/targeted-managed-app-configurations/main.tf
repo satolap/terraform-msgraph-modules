@@ -15,7 +15,7 @@ locals {
     "lastModifiedDateTime"        = var.last_modified_date_time
     "@odata.type"                 = var.odata_type
     "roleScopeTagIds"             = (var.role_scope_tag_ids == null ? null : [for item0 in var.role_scope_tag_ids : item0 if item0 != null])
-    "settings"                    = (var.settings == null ? null : [for item0 in var.settings : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "settingInstance" = (item0["settingInstance"] == null ? null : { for key2, value2 in { "@odata.type" = item0["settingInstance"]["odata_type"], "settingDefinitionId" = item0["settingInstance"]["settingDefinitionId"], "settingInstanceTemplateReference" = item0["settingInstance"]["settingInstanceTemplateReference"] } : key2 => value2 if value2 != null }) } : key1 => value1 if value1 != null }) if item0 != null])
+    "settings"                    = (var.settings == null ? null : [for item0 in var.settings : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "settingInstance" = item0["settingInstance"] } : key1 => value1 if value1 != null }) if item0 != null])
     "targetedAppManagementLevels" = var.targeted_app_management_levels
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)

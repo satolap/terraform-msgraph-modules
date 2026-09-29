@@ -1,28 +1,11 @@
 variable "categories" {
   description = "Collection of setting categories within the template"
   type = list(object({
-    odata_type         = optional(string, "#microsoft.graph.deviceManagementTemplateSettingCategory")
-    displayName        = optional(string)
-    hasRequiredSetting = optional(bool)
-    recommendedSettings = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.deviceManagementSettingInstance")
-      definitionId = optional(string)
-      valueJson    = optional(string)
-    })))
-    settingDefinitions = optional(list(object({
-      odata_type       = optional(string, "#microsoft.graph.deviceManagementSettingDefinition")
-      constraints      = optional(any)
-      dependencies     = optional(any)
-      description      = optional(string)
-      displayName      = optional(string)
-      documentationUrl = optional(string)
-      headerSubtitle   = optional(string)
-      headerTitle      = optional(string)
-      isTopLevel       = optional(bool)
-      keywords         = optional(list(string))
-      placeholderText  = optional(string)
-      valueType        = optional(string)
-    })))
+    odata_type          = optional(string, "#microsoft.graph.deviceManagementTemplateSettingCategory")
+    displayName         = optional(string)
+    hasRequiredSetting  = optional(bool)
+    recommendedSettings = optional(any)
+    settingDefinitions  = optional(any)
   }))
   default = null
 }
@@ -53,32 +36,8 @@ variable "is_deprecated" {
 
 variable "migratable_to" {
   description = "Collection of templates this template can migrate to"
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.deviceManagementTemplate")
-    categories = optional(list(object({
-      odata_type          = optional(string, "#microsoft.graph.deviceManagementTemplateSettingCategory")
-      displayName         = optional(string)
-      hasRequiredSetting  = optional(bool)
-      recommendedSettings = optional(any)
-      settingDefinitions  = optional(any)
-    })))
-    description       = optional(string)
-    displayName       = optional(string)
-    intentCount       = optional(number)
-    isDeprecated      = optional(bool)
-    migratableTo      = optional(any)
-    platformType      = optional(string)
-    publishedDateTime = optional(string)
-    settings = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.deviceManagementSettingInstance")
-      definitionId = optional(string)
-      valueJson    = optional(string)
-    })))
-    templateSubtype = optional(string)
-    templateType    = optional(string)
-    versionInfo     = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "odata_type" {
@@ -107,12 +66,8 @@ variable "published_date_time" {
 
 variable "settings" {
   description = "Collection of all settings this template has"
-  type = list(object({
-    odata_type   = optional(string, "#microsoft.graph.deviceManagementSettingInstance")
-    definitionId = optional(string)
-    valueJson    = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "template_subtype" {

@@ -29,12 +29,8 @@ variable "odata_type" {
 
 variable "setting_instance" {
   description = "Setting instance within policy"
-  type = object({
-    odata_type                       = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingInstance")
-    settingDefinitionId              = optional(string)
-    settingInstanceTemplateReference = optional(any)
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

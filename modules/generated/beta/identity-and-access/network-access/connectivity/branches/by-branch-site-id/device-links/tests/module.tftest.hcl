@@ -23,14 +23,14 @@ run "typed_request" {
   command = plan
 
   variables {
-    branch_site_id    = "test-parent-id"
-    device_vendor     = "barracudaNetworks"
-    bgp_configuration = { "asn" = null }
+    branch_site_id             = "test-parent-id"
+    bandwidth_capacity_in_mbps = "mbps250"
+    bgp_configuration          = { "asn" = null }
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["deviceVendor"]) == jsonencode("barracudaNetworks")
-    error_message = "deviceVendor must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["bandwidthCapacityInMbps"]) == jsonencode("mbps250")
+    error_message = "bandwidthCapacityInMbps must preserve typed values and omit nested nulls."
   }
 
   assert {

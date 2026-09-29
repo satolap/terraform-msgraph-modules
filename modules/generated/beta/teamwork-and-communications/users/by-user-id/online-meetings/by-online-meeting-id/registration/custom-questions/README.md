@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `user_id` | URL parameter `user-id` | `string` | yes | no |
 | `online_meeting_id` | URL parameter `onlineMeeting-id` | `string` | yes | no |
-| `answer_input_type` | `answerInputType` | `any` | no | no |
+| `answer_input_type` | `answerInputType` | `string` | no | no |
 | `answer_options` | `answerOptions` | `list(string)` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `is_required` | `isRequired` | `bool` | no | no |
@@ -48,7 +48,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- answerInputType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -24,15 +24,15 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `team_template_definition_id` | URL parameter `teamTemplateDefinition-id` | `string` | yes | no |
-| `breaks` | `breaks` | `list(object({       odata_type = optional(string, "#microsoft.graph.timeCardBreak")       breakId = optional(string)       end = optional(any)       notes = optional(any)       start = optional(object({       odata_type = optional(string, "#microsoft.graph.timeCardEvent")       atApprovedLocation = optional(bool)       dateTime = optional(string)       isAtApprovedLocation = optional(bool)       notes = optional(any)     }))     }))` | no | no |
-| `clock_in_event` | `clockInEvent` | `any` | no | no |
-| `clock_out_event` | `clockOutEvent` | `any` | no | no |
-| `confirmed_by` | `confirmedBy` | `any` | no | no |
+| `breaks` | `breaks` | `list(object({       odata_type = optional(string, "#microsoft.graph.timeCardBreak")       breakId = optional(string)       end = optional(object({       odata_type = optional(string, "#microsoft.graph.timeCardEvent")       atApprovedLocation = optional(bool)       dateTime = optional(string)       isAtApprovedLocation = optional(bool)       notes = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))     }))       notes = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))       start = optional(object({       odata_type = optional(string, "#microsoft.graph.timeCardEvent")       atApprovedLocation = optional(bool)       dateTime = optional(string)       isAtApprovedLocation = optional(bool)       notes = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))     }))     }))` | no | no |
+| `clock_in_event` | `clockInEvent` | `object({       odata_type = optional(string, "#microsoft.graph.timeCardEvent")       atApprovedLocation = optional(bool)       dateTime = optional(string)       isAtApprovedLocation = optional(bool)       notes = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))     })` | no | no |
+| `clock_out_event` | `clockOutEvent` | `object({       odata_type = optional(string, "#microsoft.graph.timeCardEvent")       atApprovedLocation = optional(bool)       dateTime = optional(string)       isAtApprovedLocation = optional(bool)       notes = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))     })` | no | no |
+| `confirmed_by` | `confirmedBy` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
-| `notes` | `notes` | `any` | no | no |
+| `notes` | `notes` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `original_entry` | `originalEntry` | `any` | no | no |
-| `state` | `state` | `any` | no | no |
+| `original_entry` | `originalEntry` | `object({       odata_type = optional(string, "#microsoft.graph.timeCardEntry")       breaks = optional(list(object({       odata_type = optional(string, "#microsoft.graph.timeCardBreak")       breakId = optional(string)       end = optional(object({       odata_type = optional(string, "#microsoft.graph.timeCardEvent")       atApprovedLocation = optional(bool)       dateTime = optional(string)       isAtApprovedLocation = optional(bool)       notes = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))     }))       notes = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))       start = optional(object({       odata_type = optional(string, "#microsoft.graph.timeCardEvent")       atApprovedLocation = optional(bool)       dateTime = optional(string)       isAtApprovedLocation = optional(bool)       notes = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))     }))     })))       clockInEvent = optional(object({       odata_type = optional(string, "#microsoft.graph.timeCardEvent")       atApprovedLocation = optional(bool)       dateTime = optional(string)       isAtApprovedLocation = optional(bool)       notes = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))     }))       clockOutEvent = optional(object({       odata_type = optional(string, "#microsoft.graph.timeCardEvent")       atApprovedLocation = optional(bool)       dateTime = optional(string)       isAtApprovedLocation = optional(bool)       notes = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))     }))     })` | no | no |
+| `state` | `state` | `string` | no | no |
 | `user_id` | `userId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -51,16 +51,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- breaks[].end: polymorphic schema; accepts an untyped value
-- breaks[].notes: polymorphic schema; accepts an untyped value
-- breaks[].start.notes: polymorphic schema; accepts an untyped value
-- clockInEvent: polymorphic schema; accepts an untyped value
-- clockOutEvent: polymorphic schema; accepts an untyped value
-- confirmedBy: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- notes: polymorphic schema; accepts an untyped value
-- originalEntry: polymorphic schema; accepts an untyped value
-- state: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

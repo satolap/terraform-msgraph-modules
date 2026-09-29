@@ -1,10 +1,7 @@
 variable "connection_info" {
   description = "Microsoft Graph connectionInfo property."
-  type = object({
-    odata_type = optional(string, "#microsoft.graph.connectionInfo")
-    url        = optional(string)
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "connector_type" {

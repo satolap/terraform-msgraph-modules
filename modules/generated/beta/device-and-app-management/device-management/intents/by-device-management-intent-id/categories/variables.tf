@@ -30,37 +30,14 @@ variable "odata_type" {
 
 variable "setting_definitions" {
   description = "The setting definitions this category contains"
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.deviceManagementSettingDefinition")
-    constraints = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.deviceManagementConstraint")
-    })))
-    dependencies = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.deviceManagementSettingDependency")
-      constraints  = optional(any)
-      definitionId = optional(string)
-    })))
-    description      = optional(string)
-    displayName      = optional(string)
-    documentationUrl = optional(string)
-    headerSubtitle   = optional(string)
-    headerTitle      = optional(string)
-    isTopLevel       = optional(bool)
-    keywords         = optional(list(string))
-    placeholderText  = optional(string)
-    valueType        = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "settings" {
   description = "The settings this category contains"
-  type = list(object({
-    odata_type   = optional(string, "#microsoft.graph.deviceManagementSettingInstance")
-    definitionId = optional(string)
-    valueJson    = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

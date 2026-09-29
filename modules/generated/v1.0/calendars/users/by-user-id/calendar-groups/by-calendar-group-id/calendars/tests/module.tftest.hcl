@@ -26,19 +26,25 @@ run "typed_request" {
   variables {
     user_id                          = "test-parent-id"
     calendar_group_id                = "test-parent-id"
-    name                             = "example"
+    color                            = "auto"
     can_edit                         = false
+    owner                            = { "address" = null }
     allowed_online_meeting_providers = ["unknown"]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["name"]) == jsonencode("example")
-    error_message = "name must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["color"]) == jsonencode("auto")
+    error_message = "color must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["canEdit"]) == jsonencode(false)
     error_message = "canEdit must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["owner"]) == jsonencode({ "@odata.type" = "#microsoft.graph.emailAddress" })
+    error_message = "owner must preserve typed values and omit nested nulls."
   }
 
   assert {

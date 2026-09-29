@@ -28,7 +28,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `team_id` | URL parameter `team-id` | `string` | yes | no |
 | `attempts_count` | `attemptsCount` | `number` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `error` | `error` | `any` | no | no |
+| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.operationError")       code = optional(string)       message = optional(string)     })` | no | no |
 | `last_action_date_time` | `lastActionDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `operation_type` | `operationType` | `string` | no | no |
@@ -48,10 +48,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- error: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

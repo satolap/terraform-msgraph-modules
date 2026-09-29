@@ -7,7 +7,7 @@ locals {
     "createdDateTime"   = var.created_date_time
     "@odata.type"       = var.odata_type
     "percentProgress"   = var.percent_progress
-    "resultInfo"        = var.result_info
+    "resultInfo"        = (var.result_info == null ? null : { for key0, value0 in { "@odata.type" = var.result_info["odata_type"], "code" = var.result_info["code"], "message" = var.result_info["message"], "subcode" = var.result_info["subcode"] } : key0 => value0 if value0 != null })
     "status"            = var.status
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)

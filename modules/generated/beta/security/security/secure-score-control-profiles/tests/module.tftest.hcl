@@ -22,6 +22,7 @@ run "typed_request" {
     action_type            = "example"
     deprecated             = false
     rank                   = -2147483648
+    vendor_information     = { "provider" = null }
     compliance_information = [{}]
   }
 
@@ -38,6 +39,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["rank"]) == jsonencode(-2147483648)
     error_message = "rank must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["vendorInformation"]) == jsonencode({ "@odata.type" = "#microsoft.graph.securityVendorInformation" })
+    error_message = "vendorInformation must preserve typed values and omit nested nulls."
   }
 
   assert {

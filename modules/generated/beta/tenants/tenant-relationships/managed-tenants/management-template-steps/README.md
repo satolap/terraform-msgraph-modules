@@ -23,7 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `accepted_version` | `acceptedVersion` | `any` | no | no |
-| `category` | `category` | `any` | no | no |
+| `category` | `category` | `string` | no | no |
 | `created_by_user_id` | `createdByUserId` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
@@ -33,10 +33,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `last_action_date_time` | `lastActionDateTime` | `string` | no | no |
 | `management_template` | `managementTemplate` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `portal_link` | `portalLink` | `any` | no | no |
+| `portal_link` | `portalLink` | `object({       odata_type = optional(string, "#microsoft.graph.actionUrl")       displayName = optional(string)       url = optional(string)     })` | no | no |
 | `priority` | `priority` | `number` | no | no |
 | `user_impact` | `userImpact` | `string` | no | no |
-| `versions` | `versions` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepVersion")       acceptedFor = optional(any)       contentMarkdown = optional(string)       createdByUserId = optional(string)       createdDateTime = optional(string)       deployments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepDeployment")       createdByUserId = optional(string)       createdDateTime = optional(string)       error = optional(any)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       status = optional(string)       templateStepVersion = optional(any)       tenantId = optional(string)     })))       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       name = optional(string)       templateStep = optional(any)       version = optional(number)       versionInformation = optional(string)     }))` | no | no |
+| `versions` | `versions` | `list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepVersion")       acceptedFor = optional(any)       contentMarkdown = optional(string)       createdByUserId = optional(string)       createdDateTime = optional(string)       deployments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepDeployment")       createdByUserId = optional(string)       createdDateTime = optional(string)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.graphAPIErrorDetails")       code = optional(string)       message = optional(string)     }))       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       status = optional(string)       templateStepVersion = optional(any)       tenantId = optional(string)     })))       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       name = optional(string)       templateStep = optional(any)       version = optional(number)       versionInformation = optional(string)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -54,14 +54,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- acceptedVersion: polymorphic schema; accepts an untyped value
-- category: polymorphic schema; accepts an untyped value
-- managementTemplate: polymorphic schema; accepts an untyped value
-- portalLink: polymorphic schema; accepts an untyped value
-- versions[].acceptedFor: polymorphic schema; accepts an untyped value
-- versions[].deployments[].error: polymorphic schema; accepts an untyped value
+- acceptedVersion: navigation property; accepts an untyped value
+- managementTemplate: navigation property; accepts an untyped value
+- versions[].acceptedFor: navigation property; accepts an untyped value
 - versions[].deployments[].templateStepVersion: recursive schema; accepts an untyped value
-- versions[].templateStep: polymorphic schema; accepts an untyped value
+- versions[].templateStep: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

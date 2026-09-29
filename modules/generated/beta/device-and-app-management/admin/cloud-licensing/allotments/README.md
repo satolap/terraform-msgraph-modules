@@ -23,11 +23,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `assignable_to` | `assignableTo` | `string` | no | no |
-| `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.assignment")       allotment = optional(any)       assignedTo = optional(object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     }))       disabledServicePlanIds = optional(list(string))     }))` | no | no |
+| `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.assignment")       allotment = optional(any)       assignedTo = optional(any)       disabledServicePlanIds = optional(list(string))     }))` | no | no |
 | `external_service_identifier` | `externalServiceIdentifier` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `subscriptions` | `subscriptions` | `list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.subscription")       nextLifecycleDate = optional(string)       startDate = optional(string)       state = optional(string)       subscriptionId = optional(string)       tags = optional(string)     }))` | no | no |
-| `waiting_members` | `waitingMembers` | `list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.waitingMember")       allotment = optional(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.allotment")       assignableTo = optional(string)       assignments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.assignment")       allotment = optional(any)       assignedTo = optional(any)       disabledServicePlanIds = optional(any)     })))       externalServiceIdentifier = optional(string)       subscriptions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.subscription")       nextLifecycleDate = optional(string)       startDate = optional(string)       state = optional(string)       subscriptionId = optional(string)       tags = optional(string)     })))       waitingMembers = optional(any)     }))       assignedTo = optional(object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     }))       waitingSinceDateTime = optional(string)     }))` | no | no |
+| `waiting_members` | `waitingMembers` | `list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.waitingMember")       allotment = optional(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.allotment")       assignableTo = optional(string)       assignments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.assignment")       allotment = optional(any)       assignedTo = optional(any)       disabledServicePlanIds = optional(any)     })))       externalServiceIdentifier = optional(string)       subscriptions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.subscription")       nextLifecycleDate = optional(string)       startDate = optional(string)       state = optional(string)       subscriptionId = optional(string)       tags = optional(string)     })))       waitingMembers = optional(any)     }))       assignedTo = optional(any)       waitingSinceDateTime = optional(string)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -45,11 +45,13 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- assignments[].allotment: polymorphic schema; accepts an untyped value
-- waitingMembers[].allotment.assignments[].allotment: polymorphic schema; accepts an untyped value
+- assignments[].allotment: navigation property; accepts an untyped value
+- assignments[].assignedTo: polymorphic schema; accepts an untyped value
+- waitingMembers[].allotment.assignments[].allotment: navigation property; accepts an untyped value
 - waitingMembers[].allotment.assignments[].assignedTo: nested schema exceeds depth limit; accepts an untyped value
 - waitingMembers[].allotment.assignments[].disabledServicePlanIds: nested schema exceeds depth limit; accepts an untyped value
 - waitingMembers[].allotment.waitingMembers[]: recursive schema; accepts an untyped value
+- waitingMembers[].assignedTo: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

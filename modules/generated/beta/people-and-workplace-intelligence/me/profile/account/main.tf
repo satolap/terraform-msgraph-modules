@@ -6,14 +6,14 @@ locals {
     "countryCode"          = var.country_code
     "createdBy"            = var.created_by
     "createdDateTime"      = var.created_date_time
-    "source"               = var.graph_source
-    "inference"            = var.inference
+    "source"               = (var.graph_source == null ? null : { for key0, value0 in { "@odata.type" = var.graph_source["odata_type"], "type" = (var.graph_source["type"] == null ? null : [for item1 in var.graph_source["type"] : item1 if item1 != null]) } : key0 => value0 if value0 != null })
+    "inference"            = (var.inference == null ? null : { for key0, value0 in { "@odata.type" = var.inference["odata_type"], "confidenceScore" = var.inference["confidenceScore"], "userHasVerifiedAccuracy" = var.inference["userHasVerifiedAccuracy"] } : key0 => value0 if value0 != null })
     "isSearchable"         = var.is_searchable
     "lastModifiedBy"       = var.last_modified_by
     "lastModifiedDateTime" = var.last_modified_date_time
     "@odata.type"          = var.odata_type
-    "originTenantInfo"     = var.origin_tenant_info
-    "preferredLanguageTag" = var.preferred_language_tag
+    "originTenantInfo"     = (var.origin_tenant_info == null ? null : { for key0, value0 in { "@odata.type" = var.origin_tenant_info["odata_type"], "originTenantId" = var.origin_tenant_info["originTenantId"], "originUserId" = var.origin_tenant_info["originUserId"] } : key0 => value0 if value0 != null })
+    "preferredLanguageTag" = (var.preferred_language_tag == null ? null : { for key0, value0 in { "@odata.type" = var.preferred_language_tag["odata_type"], "displayName" = var.preferred_language_tag["displayName"], "locale" = var.preferred_language_tag["locale"] } : key0 => value0 if value0 != null })
     "sources"              = (var.sources == null ? null : [for item0 in var.sources : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "isDefaultSource" = item0["isDefaultSource"], "properties" = (item0["properties"] == null ? null : [for item2 in item0["properties"] : item2 if item2 != null]), "sourceId" = item0["sourceId"] } : key1 => value1 if value1 != null }) if item0 != null])
     "userPersona"          = var.user_persona
     "userPrincipalName"    = var.user_principal_name

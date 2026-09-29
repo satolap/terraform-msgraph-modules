@@ -39,7 +39,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `role_scope_tag_ids` | `roleScopeTagIds` | `list(string)` | no | no |
 | `state` | `state` | `string` | no | no |
 | `token` | `token` | `string` | no | no |
-| `token_action_results` | `tokenActionResults` | `list(object({       odata_type = optional(string, "#microsoft.graph.vppTokenActionResult")       actionName = optional(string)       actionState = optional(string)       lastUpdatedDateTime = optional(string)       startDateTime = optional(string)     }))` | no | no |
+| `token_action_results` | `tokenActionResults` | `any` | no | no |
 | `vpp_token_account_type` | `vppTokenAccountType` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -58,6 +58,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- tokenActionResults[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

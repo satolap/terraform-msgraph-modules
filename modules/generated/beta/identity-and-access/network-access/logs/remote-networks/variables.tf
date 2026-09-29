@@ -1,3 +1,9 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+}
+
 variable "bgp_routes_advertised_count" {
   description = "The number of BGP routes advertised through tunnel."
   type        = number
@@ -20,13 +26,6 @@ variable "destination_ip" {
   description = "The IP address of the destination."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.networkaccess.remoteNetworkHealthEvent"
-  nullable    = false
 }
 
 variable "received_bytes" {

@@ -19,13 +19,7 @@ run "typed_request" {
   command = plan
 
   variables {
-    assigned_to               = { "deletedDateTime" = null }
     disabled_service_plan_ids = ["00000000-0000-0000-0000-000000000001"]
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["assignedTo"]) == jsonencode({ "@odata.type" = "#microsoft.graph.directoryObject" })
-    error_message = "assignedTo must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -4,7 +4,7 @@ locals {
     "alertConfiguration"   = var.alert_configuration
     "alertDefinition"      = var.alert_definition
     "alertDefinitionId"    = var.alert_definition_id
-    "alertIncidents"       = (var.alert_incidents == null ? null : [for item0 in var.alert_incidents : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "alertIncidents"       = (var.alert_incidents == null ? null : [for item0 in var.alert_incidents : item0 if item0 != null])
     "incidentCount"        = var.incident_count
     "isActive"             = var.is_active
     "lastModifiedDateTime" = var.last_modified_date_time

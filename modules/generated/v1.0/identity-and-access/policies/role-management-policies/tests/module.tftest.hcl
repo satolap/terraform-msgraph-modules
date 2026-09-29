@@ -35,7 +35,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["effectiveRules"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.unifiedRoleManagementPolicyRule" }])
+    condition     = jsonencode(msgraph_resource.this.body["effectiveRules"]) == jsonencode([{}])
     error_message = "effectiveRules must preserve typed values and omit nested nulls."
   }
 }

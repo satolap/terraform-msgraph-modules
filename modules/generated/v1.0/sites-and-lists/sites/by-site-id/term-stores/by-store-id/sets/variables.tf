@@ -44,7 +44,7 @@ variable "children" {
     relations = optional(list(object({
       odata_type   = optional(string, "#microsoft.graph.termStore.relation")
       fromTerm     = optional(any)
-      relationship = optional(any)
+      relationship = optional(string)
       set          = optional(any)
       toTerm       = optional(any)
     })))
@@ -83,7 +83,7 @@ variable "parent_group" {
     description  = optional(string)
     displayName  = optional(string)
     parentSiteId = optional(string)
-    scope        = optional(any)
+    scope        = optional(string)
     sets = optional(list(object({
       odata_type = optional(string, "#microsoft.graph.termStore.set")
       children = optional(list(object({
@@ -110,7 +110,7 @@ variable "parent_group" {
       relations = optional(list(object({
         odata_type   = optional(string, "#microsoft.graph.termStore.relation")
         fromTerm     = optional(any)
-        relationship = optional(any)
+        relationship = optional(string)
         set          = optional(any)
         toTerm       = optional(any)
       })))
@@ -143,7 +143,7 @@ variable "relations" {
   type = list(object({
     odata_type   = optional(string, "#microsoft.graph.termStore.relation")
     fromTerm     = optional(any)
-    relationship = optional(any)
+    relationship = optional(string)
     set          = optional(any)
     toTerm       = optional(any)
   }))
@@ -174,7 +174,7 @@ variable "terms" {
     relations = optional(list(object({
       odata_type   = optional(string, "#microsoft.graph.termStore.relation")
       fromTerm     = optional(any)
-      relationship = optional(any)
+      relationship = optional(string)
       set          = optional(any)
       toTerm       = optional(any)
     })))

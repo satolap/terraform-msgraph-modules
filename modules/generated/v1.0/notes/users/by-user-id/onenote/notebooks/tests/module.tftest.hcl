@@ -25,10 +25,16 @@ run "typed_request" {
   variables {
     user_id      = "test-parent-id"
     display_name = "example"
+    links        = { "oneNoteClientUrl" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["displayName"]) == jsonencode("example")
     error_message = "displayName must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["links"]) == jsonencode({ "@odata.type" = "#microsoft.graph.notebookLinks" })
+    error_message = "links must preserve typed values and omit nested nulls."
   }
 }

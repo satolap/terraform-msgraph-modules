@@ -9,6 +9,17 @@ variable "access_package_assignment_policy_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.accessPackageMultipleChoiceQuestion", "#microsoft.graph.accessPackageTextInputQuestion"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "is_answer_editable" {
   description = "Specifies whether the requestor is allowed to edit answers to questions for an assignment by posting an update to accessPackageAssignmentRequest."
   type        = bool
@@ -29,13 +40,6 @@ variable "localizations" {
     text         = optional(string)
   }))
   default = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.accessPackageQuestion"
-  nullable    = false
 }
 
 variable "sequence" {

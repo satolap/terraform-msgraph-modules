@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     display_name               = "example"
     is_registration_enabled    = false
+    created_by                 = { "application" = null }
     external_event_information = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isRegistrationEnabled"]) == jsonencode(false)
     error_message = "isRegistrationEnabled must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["createdBy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.communicationsIdentitySet" })
+    error_message = "createdBy must preserve typed values and omit nested nulls."
   }
 
   assert {

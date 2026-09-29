@@ -3,7 +3,6 @@ name: Release modules
 on:
   push:
     branches: [main]
-    paths: ['modules/generated/release-manifest.json']
   workflow_dispatch:
     inputs:
       tag:
@@ -14,16 +13,79 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: graphmodules-release
-  cancel-in-progress: false
-
 jobs:
-  release:
+  manifest:
     # Only the release publisher App can start a release by pushing a publication.
     if: >-
       github.ref == 'refs/heads/main' &&
       (github.event_name == 'workflow_dispatch' || github.actor == 'graphmodules-release-publisher[bot]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      # A dispatch finishes or verifies the tag it names; a push releases only a changed manifest.
+      changed: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.manifest.outputs.changed }}
+    steps:
+      - name: Check out the trusted release tooling from main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      # No paths filter on push: GitHub does not start the workflow when the pushed diff has
+      # more than 3,000 files and the manifest is not among the first 3,000. This step keeps
+      # the old meaning instead: only a push that changes the manifest releases.
+      - name: Check that the pushed publication changed the release manifest
+        id: manifest
+        if: github.event_name == 'push'
+        env:
+          BEFORE: ${{ github.event.before }}
+          PUBLICATION_COMMIT: ${{ github.sha }}
+        shell: python {0}
+        run: |
+          import os
+          import re
+          import subprocess
+          import sys
+
+          before = os.environ["BEFORE"]
+          commit = os.environ["PUBLICATION_COMMIT"]
+          manifest = "modules/generated/release-manifest.json"
+          comparable = (
+              re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", before) is not None
+              and re.fullmatch(r"0+", before) is None
+              and subprocess.run(["git", "cat-file", "-e", before + "^{commit}"]).returncode == 0
+          )
+          if not comparable:
+              # A new branch, or a previous commit that is gone: release rather than miss one.
+              shown = before if re.fullmatch(r"[0-9a-f]{1,64}", before) else "(not a commit SHA)"
+              print(f"::warning::Cannot compare with previous commit {shown}; "
+                    "treating the manifest as changed and releasing")
+              changed = True
+          else:
+              diff = subprocess.run(["git", "diff", "--quiet", before, commit, "--", manifest])
+              if diff.returncode not in (0, 1):
+                  sys.exit(f"git diff {before} {commit} failed with exit code {diff.returncode}")
+              changed = diff.returncode == 1
+          if not changed:
+              print(f"::notice::{commit} does not change {manifest}; nothing to release")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"changed={str(changed).lower()}\n")
+
+  release:
+    needs: manifest
+    if: needs.manifest.outputs.changed == 'true'
+    # One release at a time. The group is decided only after the manifest job, so a run that
+    # cannot release (a human merge, or a publisher push that leaves the manifest unchanged)
+    # never enters the shared group: a new job in a group cancels the one pending there, and a
+    # run that cannot release must never take a waiting publication's place.
+    concurrency:
+      group: >-
+        ${{ needs.manifest.outputs.changed == 'true' && 'graphmodules-release'
+        || format('graphmodules-release-skipped-{0}', github.run_id) }}
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:

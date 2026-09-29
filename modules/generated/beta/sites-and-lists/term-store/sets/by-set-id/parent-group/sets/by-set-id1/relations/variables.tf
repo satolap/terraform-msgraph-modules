@@ -35,7 +35,7 @@ variable "odata_type" {
 
 variable "relationship" {
   description = "The type of relation. The possible values are: pin, reuse."
-  type        = any
+  type        = string
   default     = null
 
   validation {

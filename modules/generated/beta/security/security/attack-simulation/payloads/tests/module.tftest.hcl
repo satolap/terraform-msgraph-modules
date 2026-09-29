@@ -19,19 +19,25 @@ run "typed_request" {
   command = plan
 
   variables {
-    created_date_time = "2026-01-01T00:00:00Z"
-    is_automated      = false
-    payload_tags      = ["example"]
+    brand        = "unknown"
+    is_automated = false
+    created_by   = { "displayName" = null }
+    payload_tags = ["example"]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["createdDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
-    error_message = "createdDateTime must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["brand"]) == jsonencode("unknown")
+    error_message = "brand must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isAutomated"]) == jsonencode(false)
     error_message = "isAutomated must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["createdBy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.emailIdentity" })
+    error_message = "createdBy must preserve typed values and omit nested nulls."
   }
 
   assert {

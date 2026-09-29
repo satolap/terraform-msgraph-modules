@@ -19,18 +19,12 @@ run "typed_request" {
   command = plan
 
   variables {
-    connector_type  = "sapIag"
-    connection_info = { "url" = null }
+    connector_type = "sapIag"
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["connectorType"]) == jsonencode("sapIag")
     error_message = "connectorType must preserve typed values and omit nested nulls."
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["connectionInfo"]) == jsonencode({ "@odata.type" = "#microsoft.graph.connectionInfo" })
-    error_message = "connectionInfo must preserve typed values and omit nested nulls."
   }
 }
 

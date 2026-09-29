@@ -19,19 +19,23 @@ variable "display_name" {
 variable "history" {
   description = "Represents the risk history of Microsoft Entra service principals."
   type = list(object({
-    odata_type              = optional(string, "#microsoft.graph.riskyServicePrincipalHistoryItem")
-    accountEnabled          = optional(bool)
-    activity                = optional(any)
+    odata_type     = optional(string, "#microsoft.graph.riskyServicePrincipalHistoryItem")
+    accountEnabled = optional(bool)
+    activity = optional(object({
+      odata_type     = optional(string, "#microsoft.graph.riskServicePrincipalActivity")
+      detail         = optional(string)
+      riskEventTypes = optional(list(string))
+    }))
     appId                   = optional(string)
     displayName             = optional(string)
     history                 = optional(any)
     initiatedBy             = optional(string)
     isEnabled               = optional(bool)
     isProcessing            = optional(bool)
-    riskDetail              = optional(any)
+    riskDetail              = optional(string)
     riskLastUpdatedDateTime = optional(string)
-    riskLevel               = optional(any)
-    riskState               = optional(any)
+    riskLevel               = optional(string)
+    riskState               = optional(string)
     servicePrincipalId      = optional(string)
     servicePrincipalType    = optional(string)
   }))
@@ -59,7 +63,7 @@ variable "odata_type" {
 
 variable "risk_detail" {
   description = "Details of the detected risk. Note: Details for this property are only available for Workload Identities Premium customers. Events in tenants without this license will be returned hidden."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -76,7 +80,7 @@ variable "risk_last_updated_date_time" {
 
 variable "risk_level" {
   description = "Level of the detected risky workload identity. The possible values are: low, medium, high, hidden, none, unknownFutureValue. Supports $filter (eq)."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -87,7 +91,7 @@ variable "risk_level" {
 
 variable "risk_state" {
   description = "State of the service principal's risk. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

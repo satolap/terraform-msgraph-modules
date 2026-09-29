@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `category` | `category` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `documentation` | `documentation` | `any` | no | no |
-| `enrichment` | `enrichment` | `any` | no | no |
+| `enrichment` | `enrichment` | `object({       odata_type = optional(string, "#microsoft.graph.healthMonitoring.enrichment")       impacts = optional(any)       state = optional(string)       supportingData = optional(any)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `scenario` | `scenario` | `string` | no | no |
 | `signals` | `signals` | `any` | no | no |
@@ -49,7 +49,8 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - documentation: polymorphic schema; accepts an untyped value
-- enrichment: polymorphic schema; accepts an untyped value
+- enrichment.impacts[]: polymorphic schema; accepts an untyped value
+- enrichment.supportingData: polymorphic schema; accepts an untyped value
 - signals: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

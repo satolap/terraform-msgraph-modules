@@ -20,7 +20,6 @@ run "typed_request" {
 
   variables {
     description  = "example"
-    settings     = {}
     policy_rules = [{}]
   }
 
@@ -30,12 +29,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["settings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.networkaccess.tlsInspectionPolicySettings" })
-    error_message = "settings must preserve typed values and omit nested nulls."
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["policyRules"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.networkaccess.policyRule" }])
+    condition     = jsonencode(msgraph_resource.this.body["policyRules"]) == jsonencode([{}])
     error_message = "policyRules must preserve typed values and omit nested nulls."
   }
 }

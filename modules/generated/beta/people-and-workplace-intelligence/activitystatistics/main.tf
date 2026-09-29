@@ -1,10 +1,10 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
+    "@odata.type"  = var.odata_type
     "activity"     = var.activity
     "duration"     = var.duration
     "endDate"      = var.end_date
-    "@odata.type"  = var.odata_type
     "startDate"    = var.start_date
     "timeZoneUsed" = var.time_zone_used
   } : key => value if value != null }

@@ -6,6 +6,7 @@ run "minimal_request" {
 
   variables {
     policy_set_id = "test-parent-id"
+    odata_type    = "#microsoft.graph.deviceCompliancePolicyPolicySetItem"
   }
 
   assert {
@@ -24,8 +25,14 @@ run "typed_request" {
 
   variables {
     policy_set_id          = "test-parent-id"
+    odata_type             = "#microsoft.graph.deviceCompliancePolicyPolicySetItem"
     created_date_time      = "2026-01-01T00:00:00Z"
     guided_deployment_tags = ["example"]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.deviceCompliancePolicyPolicySetItem")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -44,8 +51,8 @@ run "invalid_enum" {
 
   variables {
     policy_set_id = "test-parent-id"
-    error_code    = "__graphmodules_invalid_enum__"
+    odata_type    = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.error_code]
+  expect_failures = [var.odata_type]
 }

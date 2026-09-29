@@ -24,12 +24,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `user_id` | URL parameter `user-id` | `string` | yes | no |
-| `display_icon` | `displayIcon` | `any` | no | no |
+| `display_icon` | `displayIcon` | `object({       odata_type = optional(string, "#microsoft.graph.sectionDisplayIcon")       contentUrl = optional(string)       displayName = optional(string)       iconType = optional(string)     })` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `is_expanded` | `isExpanded` | `bool` | no | no |
 | `items` | `items` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamworkSectionItem")     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `sort_type` | `sortType` | `any` | no | no |
+| `sort_type` | `sortType` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -47,8 +47,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- displayIcon: polymorphic schema; accepts an untyped value
-- sortType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

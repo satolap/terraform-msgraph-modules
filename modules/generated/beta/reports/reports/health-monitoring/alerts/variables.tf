@@ -34,8 +34,13 @@ variable "documentation" {
 
 variable "enrichment" {
   description = "Investigative information on the alert. This information typically includes counts of impacted objects, which include directory objects such as users, groups, and devices, and a pointer to supporting data."
-  type        = any
-  default     = null
+  type = object({
+    odata_type     = optional(string, "#microsoft.graph.healthMonitoring.enrichment")
+    impacts        = optional(any)
+    state          = optional(string)
+    supportingData = optional(any)
+  })
+  default = null
 }
 
 variable "odata_type" {

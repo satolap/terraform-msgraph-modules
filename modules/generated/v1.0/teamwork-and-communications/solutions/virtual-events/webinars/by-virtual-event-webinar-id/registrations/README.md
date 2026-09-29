@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `virtual_event_webinar_id` | URL parameter `virtualEventWebinar-id` | `string` | yes | no |
 | `cancelation_date_time` | `cancelationDateTime` | `string` | no | no |
 | `email` | `email` | `string` | no | no |
-| `external_registration_information` | `externalRegistrationInformation` | `any` | no | no |
+| `external_registration_information` | `externalRegistrationInformation` | `object({       odata_type = optional(string, "#microsoft.graph.virtualEventExternalRegistrationInformation")       referrer = optional(string)       registrationId = optional(string)     })` | no | no |
 | `first_name` | `firstName` | `string` | no | no |
 | `last_name` | `lastName` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -34,7 +34,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `preferred_timezone` | `preferredTimezone` | `string` | no | no |
 | `registration_date_time` | `registrationDateTime` | `string` | no | no |
 | `registration_question_answers` | `registrationQuestionAnswers` | `list(object({       odata_type = optional(string, "#microsoft.graph.virtualEventRegistrationQuestionAnswer")       booleanValue = optional(bool)       displayName = optional(string)       multiChoiceValues = optional(list(string))       questionId = optional(string)       value = optional(string)     }))` | no | no |
-| `sessions` | `sessions` | `list(object({       odata_type = optional(string, "#microsoft.graph.virtualEventSession")       allowAttendeeToEnableCamera = optional(bool)       allowAttendeeToEnableMic = optional(bool)       allowBreakoutRooms = optional(bool)       allowCopyingAndSharingMeetingContent = optional(bool)       allowLiveShare = optional(any)       allowMeetingChat = optional(any)       allowParticipantsToChangeName = optional(bool)       allowPowerPointSharing = optional(bool)       allowRecording = optional(bool)       allowTeamworkReactions = optional(bool)       allowTranscription = optional(bool)       allowWhiteboard = optional(bool)       allowedLobbyAdmitters = optional(any)       allowedPresenters = optional(any)       capacity = optional(number)       chatInfo = optional(any)       chatRestrictions = optional(any)       endDateTime = optional(any)       expiryDateTime = optional(string)       isEndToEndEncryptionEnabled = optional(bool)       isEntryExitAnnounced = optional(bool)       joinMeetingIdSettings = optional(any)       lobbyBypassSettings = optional(any)       meetingOptionsWebUrl = optional(string)       meetingSpokenLanguageTag = optional(string)       recordAutomatically = optional(bool)       sensitivityLabelAssignment = optional(any)       shareMeetingChatHistoryDefault = optional(any)       startDateTime = optional(any)       subject = optional(string)       videoOnDemandWebUrl = optional(string)       watermarkProtection = optional(any)     }))` | no | no |
+| `sessions` | `sessions` | `list(object({       odata_type = optional(string, "#microsoft.graph.virtualEventSession")       allowAttendeeToEnableCamera = optional(bool)       allowAttendeeToEnableMic = optional(bool)       allowBreakoutRooms = optional(bool)       allowCopyingAndSharingMeetingContent = optional(bool)       allowLiveShare = optional(string)       allowMeetingChat = optional(string)       allowParticipantsToChangeName = optional(bool)       allowPowerPointSharing = optional(bool)       allowRecording = optional(bool)       allowTeamworkReactions = optional(bool)       allowTranscription = optional(bool)       allowWhiteboard = optional(bool)       allowedLobbyAdmitters = optional(string)       allowedPresenters = optional(string)       capacity = optional(number)       chatInfo = optional(object({       odata_type = optional(string, "#microsoft.graph.chatInfo")       messageId = optional(string)       replyChainMessageId = optional(string)       threadId = optional(string)     }))       chatRestrictions = optional(object({       odata_type = optional(string, "#microsoft.graph.chatRestrictions")       allowTextOnly = optional(bool)     }))       endDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       expiryDateTime = optional(string)       isEndToEndEncryptionEnabled = optional(bool)       isEntryExitAnnounced = optional(bool)       joinMeetingIdSettings = optional(object({       odata_type = optional(string, "#microsoft.graph.joinMeetingIdSettings")       isPasscodeRequired = optional(bool)     }))       lobbyBypassSettings = optional(object({       odata_type = optional(string, "#microsoft.graph.lobbyBypassSettings")       isDialInBypassEnabled = optional(bool)       scope = optional(string)     }))       meetingOptionsWebUrl = optional(string)       meetingSpokenLanguageTag = optional(string)       recordAutomatically = optional(bool)       sensitivityLabelAssignment = optional(object({       odata_type = optional(string, "#microsoft.graph.onlineMeetingSensitivityLabelAssignment")       sensitivityLabelId = optional(string)     }))       shareMeetingChatHistoryDefault = optional(string)       startDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       subject = optional(string)       videoOnDemandWebUrl = optional(string)       watermarkProtection = optional(object({       odata_type = optional(string, "#microsoft.graph.watermarkProtectionValues")       isEnabledForContentSharing = optional(bool)       isEnabledForVideo = optional(bool)     }))     }))` | no | no |
 | `user_id` | `userId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -49,23 +49,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- externalRegistrationInformation: polymorphic schema; accepts an untyped value
-- sessions[].allowLiveShare: polymorphic schema; accepts an untyped value
-- sessions[].allowMeetingChat: polymorphic schema; accepts an untyped value
-- sessions[].allowedLobbyAdmitters: polymorphic schema; accepts an untyped value
-- sessions[].allowedPresenters: polymorphic schema; accepts an untyped value
-- sessions[].chatInfo: polymorphic schema; accepts an untyped value
-- sessions[].chatRestrictions: polymorphic schema; accepts an untyped value
-- sessions[].endDateTime: polymorphic schema; accepts an untyped value
-- sessions[].joinMeetingIdSettings: polymorphic schema; accepts an untyped value
-- sessions[].lobbyBypassSettings: polymorphic schema; accepts an untyped value
-- sessions[].sensitivityLabelAssignment: polymorphic schema; accepts an untyped value
-- sessions[].shareMeetingChatHistoryDefault: polymorphic schema; accepts an untyped value
-- sessions[].startDateTime: polymorphic schema; accepts an untyped value
-- sessions[].watermarkProtection: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

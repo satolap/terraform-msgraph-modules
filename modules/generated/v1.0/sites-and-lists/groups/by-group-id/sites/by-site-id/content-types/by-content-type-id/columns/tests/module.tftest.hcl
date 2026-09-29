@@ -30,6 +30,7 @@ run "typed_request" {
     content_type_id       = "test-parent-id"
     column_group          = "example"
     enforce_unique_values = false
+    calculated            = { "format" = null }
   }
 
   assert {
@@ -40,5 +41,10 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["enforceUniqueValues"]) == jsonencode(false)
     error_message = "enforceUniqueValues must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["calculated"]) == jsonencode({ "@odata.type" = "#microsoft.graph.calculatedColumn" })
+    error_message = "calculated must preserve typed values and omit nested nulls."
   }
 }

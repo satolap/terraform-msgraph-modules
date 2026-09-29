@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "#microsoft.graph.iosVppEBook"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "deviceAppManagement/managedEBooks"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,8 +23,15 @@ run "typed_request" {
   command = plan
 
   variables {
+    odata_type        = "#microsoft.graph.iosVppEBook"
     created_date_time = "2026-01-01T00:00:00Z"
+    large_cover       = { "type" = null }
     assignments       = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.iosVppEBook")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -29,7 +40,22 @@ run "typed_request" {
   }
 
   assert {
+    condition     = jsonencode(msgraph_resource.this.body["largeCover"]) == jsonencode({ "@odata.type" = "#microsoft.graph.mimeContent" })
+    error_message = "largeCover must preserve typed values and omit nested nulls."
+  }
+
+  assert {
     condition     = jsonencode(msgraph_resource.this.body["assignments"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.managedEBookAssignment" }])
     error_message = "assignments must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    odata_type = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

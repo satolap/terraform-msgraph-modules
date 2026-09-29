@@ -10,7 +10,7 @@ run "minimal_request" {
   }
 
   assert {
-    condition     = alltrue([for key in ["baseline", "createdBy", "description", "displayName", "lastModifiedBy", "mode", "parameters", "status"] : !contains(keys(msgraph_resource.this.body), key)])
+    condition     = alltrue([for key in ["baseline", "description", "displayName", "mode", "parameters"] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }

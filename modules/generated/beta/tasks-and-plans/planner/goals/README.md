@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `display_name` | `displayName` | `string` | no | no |
 | `finish_date` | `finishDate` | `string` | no | no |
-| `notes` | `notes` | `any` | no | no |
+| `notes` | `notes` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `plan_id` | `planId` | `string` | no | no |
 | `priority` | `priority` | `number` | no | no |
@@ -47,7 +47,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- notes: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

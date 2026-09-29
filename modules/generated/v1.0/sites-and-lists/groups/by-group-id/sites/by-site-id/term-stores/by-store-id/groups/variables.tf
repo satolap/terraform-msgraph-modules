@@ -58,7 +58,7 @@ variable "parent_site_id" {
 
 variable "scope" {
   description = "Returns the type of the group. The possible values are: global, system, and siteCollection."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -91,7 +91,7 @@ variable "sets" {
       description  = optional(string)
       displayName  = optional(string)
       parentSiteId = optional(string)
-      scope        = optional(any)
+      scope        = optional(string)
       sets         = optional(any)
     }))
     properties = optional(list(object({
@@ -102,7 +102,7 @@ variable "sets" {
     relations = optional(list(object({
       odata_type   = optional(string, "#microsoft.graph.termStore.relation")
       fromTerm     = optional(any)
-      relationship = optional(any)
+      relationship = optional(string)
       set          = optional(any)
       toTerm       = optional(any)
     })))

@@ -34,7 +34,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["applications"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.application" }])
+    condition     = jsonencode(msgraph_resource.this.body["applications"]) == jsonencode([{}])
     error_message = "applications must preserve typed values and omit nested nulls."
   }
 }

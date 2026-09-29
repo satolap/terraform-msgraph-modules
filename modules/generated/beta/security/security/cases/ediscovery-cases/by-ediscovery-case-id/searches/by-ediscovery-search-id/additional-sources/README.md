@@ -15,6 +15,7 @@ module "graph_resource" {
   source = "./security/security/cases/ediscovery-cases/by-ediscovery-case-id/searches/by-ediscovery-search-id/additional-sources"
   ediscovery_case_id = "parent-object-id"
   ediscovery_search_id = "parent-object-id"
+  odata_type = "#microsoft.graph.security.siteSource"
 }
 ```
 
@@ -26,14 +27,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `ediscovery_case_id` | URL parameter `ediscoveryCase-id` | `string` | yes | no |
 | `ediscovery_search_id` | URL parameter `ediscoverySearch-id` | `string` | yes | no |
+| `odata_type` | `@odata.type` | `string` | yes | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `hold_status` | `holdStatus` | `any` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
+| `hold_status` | `holdStatus` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
-Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.
 
 Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
@@ -47,9 +48,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- @odata.type: microsoft.graph.security.dataSource is abstract; odata_type has no default and must name a concrete type
 - Microsoft Graph beta contracts can change without notice.
 - createdBy: polymorphic schema; accepts an untyped value
-- holdStatus: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

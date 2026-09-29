@@ -18,15 +18,21 @@ variable "applied_conditional_access_policies" {
     enforcedGrantControls   = optional(list(string))
     enforcedSessionControls = optional(list(string))
     id                      = optional(string)
-    result                  = optional(any)
+    result                  = optional(string)
   }))
   default = null
 }
 
 variable "authentication_app_device_details" {
   description = "Microsoft Graph authenticationAppDeviceDetails property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.authenticationAppDeviceDetails")
+    appVersion      = optional(string)
+    clientApp       = optional(string)
+    deviceId        = optional(string)
+    operatingSystem = optional(string)
+  })
+  default = null
 }
 
 variable "client_app_used" {
@@ -37,7 +43,7 @@ variable "client_app_used" {
 
 variable "conditional_access_status" {
   description = "Reports status of an activated conditional access policy. The possible values are: success, failure, notApplied, and unknownFutureValue.  Supports $filter (eq)."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -60,8 +66,17 @@ variable "created_date_time" {
 
 variable "device_detail" {
   description = "Device information from where the sign-in occurred; includes device ID, operating system, and browser.  Supports $filter (eq, startsWith) on browser and operatingSytem properties."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.deviceDetail")
+    browser         = optional(string)
+    deviceId        = optional(string)
+    displayName     = optional(string)
+    isCompliant     = optional(bool)
+    isManaged       = optional(bool)
+    operatingSystem = optional(string)
+    trustType       = optional(string)
+  })
+  default = null
 }
 
 variable "home_tenant_id" {
@@ -84,8 +99,16 @@ variable "is_interactive" {
 
 variable "location" {
   description = "Provides the city, state, and country code where the sign-in originated.  Supports $filter (eq, startsWith) on city, state, and countryOrRegion properties."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.signInLocation")
+    city            = optional(string)
+    countryOrRegion = optional(string)
+    geoCoordinates = optional(object({
+      odata_type = optional(string, "#microsoft.graph.geoCoordinates")
+    }))
+    state = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -115,7 +138,7 @@ variable "resource_tenant_id" {
 
 variable "risk_detail" {
   description = "The reason behind a specific state of a risky user, sign-in, or a risk event. The value none means that Microsoft Entra risk detection did not flag the user or the sign-in as a risky event so far.  Supports $filter (eq). Note: Details for this property are only available for Microsoft Entra ID P2 customers. All other customers are returned hidden."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -126,7 +149,7 @@ variable "risk_detail" {
 
 variable "risk_event_types" {
   description = "Microsoft Graph riskEventTypes property."
-  type        = any
+  type        = list(string)
   default     = null
 }
 
@@ -138,7 +161,7 @@ variable "risk_event_types_v2" {
 
 variable "risk_level_aggregated" {
   description = "Aggregated risk level. The possible values are: none, low, medium, high, hidden, and unknownFutureValue. The value hidden means the user or sign-in wasn't enabled for Microsoft Entra ID Protection.  Supports $filter (eq).  Note: Details for this property are only available for Microsoft Entra ID P2 customers. All other customers are returned hidden."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -149,7 +172,7 @@ variable "risk_level_aggregated" {
 
 variable "risk_level_during_sign_in" {
   description = "Risk level during sign-in. The possible values are: none, low, medium, high, hidden, and unknownFutureValue. The value hidden means the user or sign-in wasn't enabled for Microsoft Entra ID Protection.  Supports $filter (eq). Note: Details for this property are only available for Microsoft Entra ID P2 customers. All other customers are returned hidden."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -160,7 +183,7 @@ variable "risk_level_during_sign_in" {
 
 variable "risk_state" {
   description = "Reports status of the risky user, sign-in, or a risk event. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue.  Supports $filter (eq)."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -183,8 +206,13 @@ variable "service_principal_name" {
 
 variable "status" {
   description = "Sign-in status. Includes the error code and description of the error (if a sign-in failure occurs).  Supports $filter (eq) on errorCode property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type        = optional(string, "#microsoft.graph.signInStatus")
+    additionalDetails = optional(string)
+    errorCode         = optional(number)
+    failureReason     = optional(string)
+  })
+  default = null
 }
 
 variable "user_agent" {

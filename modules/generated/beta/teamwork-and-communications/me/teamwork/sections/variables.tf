@@ -1,7 +1,12 @@
 variable "display_icon" {
   description = "The icon displayed for the section."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.sectionDisplayIcon")
+    contentUrl  = optional(string)
+    displayName = optional(string)
+    iconType    = optional(string)
+  })
+  default = null
 }
 
 variable "display_name" {
@@ -33,7 +38,7 @@ variable "odata_type" {
 
 variable "sort_type" {
   description = "The sort order of items in the section. The valid values depend on the sectionType. The possible values are: mostRecent, unreadThenMostRecent, nameAlphabetical, userDefinedCustomOrder, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

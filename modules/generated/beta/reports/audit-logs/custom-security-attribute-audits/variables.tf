@@ -35,10 +35,33 @@ variable "correlation_id" {
 variable "initiated_by" {
   description = "Microsoft Graph initiatedBy property."
   type = object({
-    odata_type          = optional(string, "#microsoft.graph.auditActivityInitiator")
-    app                 = optional(any)
-    linkableIdentifiers = optional(any)
-    user                = optional(any)
+    odata_type = optional(string, "#microsoft.graph.auditActivityInitiator")
+    app = optional(object({
+      odata_type           = optional(string, "#microsoft.graph.appIdentity")
+      appId                = optional(string)
+      displayName          = optional(string)
+      servicePrincipalId   = optional(string)
+      servicePrincipalName = optional(string)
+    }))
+    linkableIdentifiers = optional(object({
+      odata_type = optional(string, "#microsoft.graph.linkableIdentifiers")
+      deviceId   = optional(string)
+      sessionId  = optional(string)
+      tokenDetails = optional(object({
+        odata_type            = optional(string, "#microsoft.graph.tokenDetails")
+        issuedAtDateTime      = optional(string)
+        uniqueTokenIdentifier = optional(string)
+      }))
+    }))
+    user = optional(object({
+      odata_type        = optional(string, "#microsoft.graph.auditUserIdentity")
+      displayName       = optional(string)
+      homeTenantId      = optional(string)
+      homeTenantName    = optional(string)
+      id                = optional(string)
+      ipAddress         = optional(string)
+      userPrincipalName = optional(string)
+    }))
   })
   default = null
 }
@@ -64,7 +87,7 @@ variable "operation_type" {
 
 variable "result" {
   description = "Microsoft Graph result property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -84,7 +107,7 @@ variable "target_resources" {
   type = list(object({
     odata_type  = optional(string, "#microsoft.graph.targetResource")
     displayName = optional(string)
-    groupType   = optional(any)
+    groupType   = optional(string)
     id          = optional(string)
     modifiedProperties = optional(list(object({
       odata_type  = optional(string, "#microsoft.graph.modifiedProperty")

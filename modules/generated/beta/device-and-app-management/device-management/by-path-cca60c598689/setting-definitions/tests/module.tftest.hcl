@@ -27,12 +27,18 @@ run "typed_request" {
     device_management_configuration_policy_template_id  = "test-parent-id"
     device_management_configuration_setting_template_id = "test-parent-id"
     access_types                                        = "none"
+    occurrence                                          = { "maxDeviceOccurrence" = null }
     info_urls                                           = ["example"]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["accessTypes"]) == jsonencode("none")
     error_message = "accessTypes must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["occurrence"]) == jsonencode({ "@odata.type" = "#microsoft.graph.deviceManagementConfigurationSettingOccurrence" })
+    error_message = "occurrence must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -48,6 +54,51 @@ run "invalid_enum" {
     device_management_configuration_policy_template_id  = "test-parent-id"
     device_management_configuration_setting_template_id = "test-parent-id"
     access_types                                        = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.access_types]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    device_management_configuration_policy_template_id  = "test-parent-id"
+    device_management_configuration_setting_template_id = "test-parent-id"
+    access_types                                        = "none, Add"
+    risk_level                                          = "low, Medium"
+    setting_usage                                       = "none, Configuration"
+    visibility                                          = "none, SettingsCatalog"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["accessTypes"] == "none, Add"
+    error_message = "accessTypes must accept combined flags enum members."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["riskLevel"] == "low, Medium"
+    error_message = "riskLevel must accept combined flags enum members."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["settingUsage"] == "none, Configuration"
+    error_message = "settingUsage must accept combined flags enum members."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["visibility"] == "none, SettingsCatalog"
+    error_message = "visibility must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    device_management_configuration_policy_template_id  = "test-parent-id"
+    device_management_configuration_setting_template_id = "test-parent-id"
+    access_types                                        = "none,__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.access_types]

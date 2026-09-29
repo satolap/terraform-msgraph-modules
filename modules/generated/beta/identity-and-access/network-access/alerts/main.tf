@@ -16,7 +16,7 @@ locals {
     "@odata.type"           = var.odata_type
     "policy"                = var.policy
     "productName"           = var.product_name
-    "relatedResources"      = (var.related_resources == null ? null : [for item0 in var.related_resources : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "relatedResources"      = (var.related_resources == null ? null : [for item0 in var.related_resources : item0 if item0 != null])
     "severity"              = var.severity
     "subTechniques"         = (var.sub_techniques == null ? null : [for item0 in var.sub_techniques : item0 if item0 != null])
     "techniques"            = (var.techniques == null ? null : [for item0 in var.techniques : item0 if item0 != null])

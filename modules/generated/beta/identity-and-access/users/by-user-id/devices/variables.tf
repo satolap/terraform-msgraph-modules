@@ -111,8 +111,25 @@ variable "enrollment_type" {
 
 variable "extension_attributes" {
   description = "Contains extension attributes 1-15 for the device. The individual extension attributes aren't selectable. These properties are mastered in cloud and can be set during creation or update of a device object in Microsoft Entra ID. Supports $filter (eq, not, startsWith, and eq on null values)."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.onPremisesExtensionAttributes")
+    extensionAttribute1  = optional(string)
+    extensionAttribute10 = optional(string)
+    extensionAttribute11 = optional(string)
+    extensionAttribute12 = optional(string)
+    extensionAttribute13 = optional(string)
+    extensionAttribute14 = optional(string)
+    extensionAttribute15 = optional(string)
+    extensionAttribute2  = optional(string)
+    extensionAttribute3  = optional(string)
+    extensionAttribute4  = optional(string)
+    extensionAttribute5  = optional(string)
+    extensionAttribute6  = optional(string)
+    extensionAttribute7  = optional(string)
+    extensionAttribute8  = optional(string)
+    extensionAttribute9  = optional(string)
+  })
+  default = null
 }
 
 variable "hostnames" {
@@ -202,11 +219,8 @@ variable "system_labels" {
 
 variable "transitive_member_of" {
   description = "Groups and administrative units that this device is a member of. This operation is transitive. Supports $expand."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "usage_rights" {

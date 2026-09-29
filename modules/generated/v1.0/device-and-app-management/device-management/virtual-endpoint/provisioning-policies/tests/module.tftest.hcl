@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     cloud_pc_naming_template = "example"
     enable_single_sign_on    = false
+    autopatch                = { "autopatchGroupId" = null }
     assignments              = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["enableSingleSignOn"]) == jsonencode(false)
     error_message = "enableSingleSignOn must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["autopatch"]) == jsonencode({ "@odata.type" = "#microsoft.graph.cloudPcProvisioningPolicyAutopatch" })
+    error_message = "autopatch must preserve typed values and omit nested nulls."
   }
 
   assert {

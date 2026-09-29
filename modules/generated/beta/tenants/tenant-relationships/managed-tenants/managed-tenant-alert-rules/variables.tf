@@ -14,15 +14,21 @@ variable "alerts" {
   description = "Microsoft Graph alerts property."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantAlert")
-    alertData  = optional(any)
+    alertData = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.managedTenants.alertData")
+      displayName = optional(string)
+    }))
     alertDataReferenceStrings = optional(list(object({
       odata_type  = optional(string, "#microsoft.graph.managedTenants.alertDataReferenceString")
       displayName = optional(string)
     })))
     alertLogs = optional(list(object({
-      odata_type         = optional(string, "#microsoft.graph.managedTenants.managedTenantAlertLog")
-      alert              = optional(any)
-      content            = optional(any)
+      odata_type = optional(string, "#microsoft.graph.managedTenants.managedTenantAlertLog")
+      alert      = optional(any)
+      content = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.managedTenants.alertLogContent")
+        displayName = optional(string)
+      }))
       createdByUserId    = optional(string)
       createdDateTime    = optional(string)
       lastActionByUserId = optional(string)
@@ -61,8 +67,8 @@ variable "alerts" {
     lastActionByUserId = optional(string)
     lastActionDateTime = optional(string)
     message            = optional(string)
-    severity           = optional(any)
-    status             = optional(any)
+    severity           = optional(string)
+    status             = optional(string)
     tenantId           = optional(string)
     title              = optional(string)
   }))
@@ -113,12 +119,12 @@ variable "last_run_date_time" {
 
 variable "notification_final_destinations" {
   description = "Microsoft Graph notificationFinalDestinations property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.notification_final_destinations == null ? true : contains(["none", "api", "email", "sms", "unknownFutureValue"], var.notification_final_destinations)
-    error_message = "notification_final_destinations must be one of the documented enum values."
+    condition     = var.notification_final_destinations == null ? true : try(alltrue([for value in split(",", var.notification_final_destinations) : contains(["none", "api", "email", "sms", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "notification_final_destinations must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -137,7 +143,7 @@ variable "rule_definition" {
 
 variable "severity" {
   description = "Microsoft Graph severity property."
-  type        = any
+  type        = string
   default     = null
 
   validation {

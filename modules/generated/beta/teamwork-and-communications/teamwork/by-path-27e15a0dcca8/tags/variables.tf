@@ -58,7 +58,7 @@ variable "odata_type" {
 
 variable "tag_type" {
   description = "The type of tag. Default is standard."
-  type        = any
+  type        = string
   default     = null
 
   validation {

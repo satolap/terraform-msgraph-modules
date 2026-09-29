@@ -30,7 +30,7 @@ variable "domain_names" {
 
 variable "health_issue_type" {
   description = "The type of the health issue. The possible values are: sensor, global, unknownFutureValue. For a list of all health issues and their identifiers, see Microsoft Defender for Identity health issues."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -78,7 +78,7 @@ variable "sensor_dns_names" {
 
 variable "severity" {
   description = "The severity of the health issue. The possible values are: low, medium, high, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -89,7 +89,7 @@ variable "severity" {
 
 variable "status" {
   description = "The status of the health issue. The possible values are: open, closed, suppressed, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

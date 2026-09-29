@@ -26,6 +26,7 @@ run "typed_request" {
     app_id          = "example"
     app_description = "example"
     account_enabled = false
+    info            = { "marketingUrl" = null }
     add_ins         = [{}]
   }
 
@@ -42,6 +43,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["accountEnabled"]) == jsonencode(false)
     error_message = "accountEnabled must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["info"]) == jsonencode({ "@odata.type" = "#microsoft.graph.informationalUrl" })
+    error_message = "info must preserve typed values and omit nested nulls."
   }
 
   assert {

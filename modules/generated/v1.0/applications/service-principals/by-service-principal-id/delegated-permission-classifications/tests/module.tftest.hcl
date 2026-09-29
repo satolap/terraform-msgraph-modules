@@ -24,12 +24,12 @@ run "typed_request" {
 
   variables {
     service_principal_id = "test-parent-id"
-    permission_id        = "example"
+    classification       = "low"
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["permissionId"]) == jsonencode("example")
-    error_message = "permissionId must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["classification"]) == jsonencode("low")
+    error_message = "classification must preserve typed values and omit nested nulls."
   }
 }
 

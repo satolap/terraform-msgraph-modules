@@ -20,6 +20,7 @@ run "typed_request" {
 
   variables {
     chat_type      = "oneOnOne"
+    viewpoint      = { "isHidden" = null }
     installed_apps = [{}]
   }
 
@@ -29,7 +30,12 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["installedApps"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.teamsAppInstallation" }])
+    condition     = jsonencode(msgraph_resource.this.body["viewpoint"]) == jsonencode({ "@odata.type" = "#microsoft.graph.chatViewpoint" })
+    error_message = "viewpoint must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["installedApps"]) == jsonencode([{}])
     error_message = "installedApps must preserve typed values and omit nested nulls."
   }
 }

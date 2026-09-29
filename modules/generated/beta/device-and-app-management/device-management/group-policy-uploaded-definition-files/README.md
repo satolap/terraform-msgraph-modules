@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `content` | `content` | `string` | no | no |
 | `default_language_code` | `defaultLanguageCode` | `string` | no | no |
-| `definitions` | `definitions` | `list(object({       odata_type = optional(string, "#microsoft.graph.groupPolicyDefinition")       category = optional(any)       categoryPath = optional(string)       classType = optional(string)       definitionFile = optional(any)       displayName = optional(string)       explainText = optional(string)       groupPolicyCategoryId = optional(string)       hasRelatedDefinitions = optional(bool)       lastModifiedDateTime = optional(string)       minDeviceCspVersion = optional(string)       minUserCspVersion = optional(string)       nextVersionDefinition = optional(any)       policyType = optional(string)       presentations = optional(list(object({       odata_type = optional(string, "#microsoft.graph.groupPolicyPresentation")       definition = optional(any)       label = optional(string)       lastModifiedDateTime = optional(string)     })))       previousVersionDefinition = optional(any)       supportedOn = optional(string)       version = optional(string)     }))` | no | no |
+| `definitions` | `definitions` | `list(object({       odata_type = optional(string, "#microsoft.graph.groupPolicyDefinition")       category = optional(any)       categoryPath = optional(string)       classType = optional(string)       definitionFile = optional(any)       displayName = optional(string)       explainText = optional(string)       groupPolicyCategoryId = optional(string)       hasRelatedDefinitions = optional(bool)       lastModifiedDateTime = optional(string)       minDeviceCspVersion = optional(string)       minUserCspVersion = optional(string)       nextVersionDefinition = optional(any)       policyType = optional(string)       presentations = optional(any)       previousVersionDefinition = optional(any)       supportedOn = optional(string)       version = optional(string)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `file_name` | `fileName` | `string` | no | no |
@@ -56,11 +56,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- definitions[].category: polymorphic schema; accepts an untyped value
+- definitions[].category: navigation property; accepts an untyped value
 - definitions[].definitionFile: polymorphic schema; accepts an untyped value
-- definitions[].nextVersionDefinition: polymorphic schema; accepts an untyped value
-- definitions[].presentations[].definition: polymorphic schema; accepts an untyped value
-- definitions[].previousVersionDefinition: polymorphic schema; accepts an untyped value
+- definitions[].nextVersionDefinition: navigation property; accepts an untyped value
+- definitions[].presentations[]: polymorphic schema; accepts an untyped value
+- definitions[].previousVersionDefinition: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

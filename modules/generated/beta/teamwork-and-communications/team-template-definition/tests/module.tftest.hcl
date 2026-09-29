@@ -19,13 +19,13 @@ run "typed_request" {
   command = plan
 
   variables {
-    description = "example"
-    categories  = ["example"]
+    audience   = "organization"
+    categories = ["example"]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
-    error_message = "description must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["audience"]) == jsonencode("organization")
+    error_message = "audience must preserve typed values and omit nested nulls."
   }
 
   assert {

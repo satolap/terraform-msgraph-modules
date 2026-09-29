@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.invalidLicenseAlertConfiguration", "#microsoft.graph.noMfaOnRoleActivationAlertConfiguration", "#microsoft.graph.redundantAssignmentAlertConfiguration", "#microsoft.graph.rolesAssignedOutsidePrivilegedIdentityManagementAlertConfiguration", "#microsoft.graph.sequentialActivationRenewalsAlertConfiguration", "#microsoft.graph.staleSignInAlertConfiguration", "#microsoft.graph.tooManyGlobalAdminsAssignedToTenantAlertConfiguration"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "alert_definition" {
   description = "The definition of the alert that contains its description, impact, and measures to mitigate or prevent it. Supports $expand."
   type        = any
@@ -14,13 +25,6 @@ variable "is_enabled" {
   description = "true if the alert is enabled. Setting it to false disables PIM scanning the tenant to identify instances that trigger the alert."
   type        = bool
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.unifiedRoleManagementAlertConfiguration"
-  nullable    = false
 }
 
 variable "scope_id" {

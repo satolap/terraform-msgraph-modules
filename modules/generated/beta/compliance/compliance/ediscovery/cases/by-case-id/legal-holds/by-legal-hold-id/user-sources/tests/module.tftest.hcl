@@ -46,3 +46,30 @@ run "invalid_enum" {
 
   expect_failures = [var.hold_status]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    case_id          = "test-parent-id"
+    legal_hold_id    = "test-parent-id"
+    included_sources = "mailbox, Site"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["includedSources"] == "mailbox, Site"
+    error_message = "includedSources must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    case_id          = "test-parent-id"
+    legal_hold_id    = "test-parent-id"
+    included_sources = "mailbox,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.included_sources]
+}

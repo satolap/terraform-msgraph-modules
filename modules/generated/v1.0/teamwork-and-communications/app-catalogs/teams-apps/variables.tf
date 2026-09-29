@@ -1,14 +1,21 @@
 variable "app_definitions" {
   description = "The details for each version of the app."
   type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.teamsAppDefinition")
-    authorization        = optional(any)
+    odata_type = optional(string, "#microsoft.graph.teamsAppDefinition")
+    authorization = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.teamsAppAuthorization")
+      clientAppId = optional(string)
+      requiredPermissionSet = optional(object({
+        odata_type                  = optional(string, "#microsoft.graph.teamsAppPermissionSet")
+        resourceSpecificPermissions = optional(any)
+      }))
+    }))
     bot                  = optional(any)
     createdBy            = optional(any)
     description          = optional(string)
     displayName          = optional(string)
     lastModifiedDateTime = optional(string)
-    publishingState      = optional(any)
+    publishingState      = optional(string)
     shortDescription     = optional(string)
     teamsAppId           = optional(string)
     version              = optional(string)

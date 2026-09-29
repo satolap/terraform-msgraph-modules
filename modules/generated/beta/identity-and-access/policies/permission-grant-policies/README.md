@@ -25,11 +25,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `excludes` | `excludes` | `list(object({       odata_type = optional(string, "#microsoft.graph.permissionGrantConditionSet")       certifiedClientApplicationsOnly = optional(bool)       clientApplicationIds = optional(list(string))       clientApplicationPublisherIds = optional(list(string))       clientApplicationTenantIds = optional(list(string))       clientApplicationsFromVerifiedPublisherOnly = optional(bool)       permissionClassification = optional(string)       permissionType = optional(any)       permissions = optional(list(string))       resourceApplication = optional(string)       scopeSensitivityLabels = optional(object({       odata_type = optional(string, "#microsoft.graph.scopeSensitivityLabels")       labelKind = optional(any)     }))     }))` | no | no |
+| `excludes` | `excludes` | `list(object({       odata_type = optional(string, "#microsoft.graph.permissionGrantConditionSet")       certifiedClientApplicationsOnly = optional(bool)       clientApplicationIds = optional(list(string))       clientApplicationPublisherIds = optional(list(string))       clientApplicationTenantIds = optional(list(string))       clientApplicationsFromVerifiedPublisherOnly = optional(bool)       permissionClassification = optional(string)       permissionType = optional(string)       permissions = optional(list(string))       resourceApplication = optional(string)       scopeSensitivityLabels = optional(any)     }))` | no | no |
 | `include_all_pre_approved_applications` | `includeAllPreApprovedApplications` | `bool` | no | no |
-| `includes` | `includes` | `list(object({       odata_type = optional(string, "#microsoft.graph.permissionGrantConditionSet")       certifiedClientApplicationsOnly = optional(bool)       clientApplicationIds = optional(list(string))       clientApplicationPublisherIds = optional(list(string))       clientApplicationTenantIds = optional(list(string))       clientApplicationsFromVerifiedPublisherOnly = optional(bool)       permissionClassification = optional(string)       permissionType = optional(any)       permissions = optional(list(string))       resourceApplication = optional(string)       scopeSensitivityLabels = optional(object({       odata_type = optional(string, "#microsoft.graph.scopeSensitivityLabels")       labelKind = optional(any)     }))     }))` | no | no |
+| `includes` | `includes` | `list(object({       odata_type = optional(string, "#microsoft.graph.permissionGrantConditionSet")       certifiedClientApplicationsOnly = optional(bool)       clientApplicationIds = optional(list(string))       clientApplicationPublisherIds = optional(list(string))       clientApplicationTenantIds = optional(list(string))       clientApplicationsFromVerifiedPublisherOnly = optional(bool)       permissionClassification = optional(string)       permissionType = optional(string)       permissions = optional(list(string))       resourceApplication = optional(string)       scopeSensitivityLabels = optional(any)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `resource_scope_type` | `resourceScopeType` | `any` | no | no |
+| `resource_scope_type` | `resourceScopeType` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -47,11 +47,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- excludes[].permissionType: polymorphic schema; accepts an untyped value
-- excludes[].scopeSensitivityLabels.labelKind: polymorphic schema; accepts an untyped value
-- includes[].permissionType: polymorphic schema; accepts an untyped value
-- includes[].scopeSensitivityLabels.labelKind: polymorphic schema; accepts an untyped value
-- resourceScopeType: polymorphic schema; accepts an untyped value
+- excludes[].scopeSensitivityLabels: polymorphic schema; accepts an untyped value
+- includes[].scopeSensitivityLabels: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

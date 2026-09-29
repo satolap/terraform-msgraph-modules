@@ -1,6 +1,6 @@
 variable "classification_method" {
   description = "The classification method. The possible values are: patternMatch, exactDataMatch, fingerprint, machineLearning, privacyDataMatch, aiPowered, unknownFutureValue. privacyDataMatch performs privacy data matching based on tenant data. aiPowered performs AI-powered classification and can benefit from supported caller-supplied embeddings. unknownFutureValue is an evolvable enumeration sentinel value. Don't use it."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -54,18 +54,18 @@ variable "rule_package_type" {
 
 variable "scope" {
   description = "The scope of the sensitive information type. The possible values are: fullDocument, partialDocument."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.scope == null ? true : contains(["fullDocument", "partialDocument"], var.scope)
-    error_message = "scope must be one of the documented enum values."
+    condition     = var.scope == null ? true : try(alltrue([for value in split(",", var.scope) : contains(["fulldocument", "partialdocument"], lower(trimspace(value)))]), false)
+    error_message = "scope must be one or more of the documented enum values, separated by commas."
   }
 }
 
 variable "sensitive_type_source" {
   description = "The source of sensitive type. The possible values are: outOfBox, tenant."
-  type        = any
+  type        = string
   default     = null
 
   validation {

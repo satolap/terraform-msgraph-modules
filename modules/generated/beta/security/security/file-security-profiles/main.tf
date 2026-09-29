@@ -16,7 +16,7 @@ locals {
     "riskScore"             = var.risk_score
     "size"                  = var.size
     "tags"                  = (var.tags == null ? null : [for item0 in var.tags : item0 if item0 != null])
-    "vendorInformation"     = var.vendor_information
+    "vendorInformation"     = (var.vendor_information == null ? null : { for key0, value0 in { "@odata.type" = var.vendor_information["odata_type"], "provider" = var.vendor_information["provider"], "providerVersion" = var.vendor_information["providerVersion"], "subProvider" = var.vendor_information["subProvider"], "vendor" = var.vendor_information["vendor"] } : key0 => value0 if value0 != null })
     "vulnerabilityStates"   = (var.vulnerability_states == null ? null : [for item0 in var.vulnerability_states : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "cve" = item0["cve"], "severity" = item0["severity"], "wasRunning" = item0["wasRunning"] } : key1 => value1 if value1 != null }) if item0 != null])
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)

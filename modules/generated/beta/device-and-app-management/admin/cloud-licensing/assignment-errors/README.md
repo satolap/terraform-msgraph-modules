@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `assigned_to` | `assignedTo` | `object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     })` | no | no |
+| `assigned_to` | `assignedTo` | `any` | no | no |
 | `code` | `code` | `string` | no | no |
 | `message` | `message` | `string` | no | no |
 | `occurrence_date_time` | `occurrenceDateTime` | `string` | no | no |
@@ -44,6 +44,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- assignedTo: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

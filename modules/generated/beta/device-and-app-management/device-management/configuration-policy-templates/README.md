@@ -31,7 +31,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `lifecycle_state` | `lifecycleState` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `platforms` | `platforms` | `string` | no | no |
-| `setting_templates` | `settingTemplates` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingTemplate")       settingDefinitions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingDefinition")       accessTypes = optional(string)       applicability = optional(any)       baseUri = optional(string)       categoryId = optional(string)       description = optional(string)       displayName = optional(string)       helpText = optional(string)       infoUrls = optional(list(string))       keywords = optional(list(string))       name = optional(string)       occurrence = optional(any)       offsetUri = optional(string)       referredSettingInformationList = optional(any)       riskLevel = optional(string)       rootDefinitionId = optional(string)       settingUsage = optional(string)       uxBehavior = optional(string)       version = optional(string)       visibility = optional(string)     })))       settingInstanceTemplate = optional(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingInstanceTemplate")       isRequired = optional(bool)       settingDefinitionId = optional(string)       settingInstanceTemplateId = optional(string)     }))     }))` | no | no |
+| `setting_templates` | `settingTemplates` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingTemplate")       settingDefinitions = optional(any)       settingInstanceTemplate = optional(any)     }))` | no | no |
 | `technologies` | `technologies` | `string` | no | no |
 | `template_family` | `templateFamily` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -51,9 +51,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- settingTemplates[].settingDefinitions[].applicability: polymorphic schema; accepts an untyped value
-- settingTemplates[].settingDefinitions[].occurrence: polymorphic schema; accepts an untyped value
-- settingTemplates[].settingDefinitions[].referredSettingInformationList[]: nested schema exceeds depth limit; accepts an untyped value
+- settingTemplates[].settingDefinitions[]: polymorphic schema; accepts an untyped value
+- settingTemplates[].settingInstanceTemplate: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

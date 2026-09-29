@@ -22,13 +22,13 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `applies_to` | `appliesTo` | `list(object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     }))` | no | no |
+| `applies_to` | `appliesTo` | `any` | no | no |
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `is_enabled` | `isEnabled` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `restrictions` | `restrictions` | `any` | no | no |
+| `restrictions` | `restrictions` | `object({       odata_type = optional(string, "#microsoft.graph.customAppManagementConfiguration")       applicationRestrictions = optional(object({       odata_type = optional(string, "#microsoft.graph.customAppManagementApplicationConfiguration")       identifierUris = optional(object({       odata_type = optional(string, "#microsoft.graph.identifierUriConfiguration")       nonDefaultUriAddition = optional(object({       odata_type = optional(string, "#microsoft.graph.identifierUriRestriction")       excludeActors = optional(object({       odata_type = optional(string, "#microsoft.graph.appManagementPolicyActorExemptions")       customSecurityAttributes = optional(any)     }))       excludeAppsReceivingV2Tokens = optional(bool)       excludeSaml = optional(bool)       restrictForAppsCreatedAfterDateTime = optional(string)       state = optional(string)     }))       uriAdditionWithoutUniqueTenantIdentifier = optional(object({       odata_type = optional(string, "#microsoft.graph.identifierUriRestriction")       excludeActors = optional(object({       odata_type = optional(string, "#microsoft.graph.appManagementPolicyActorExemptions")       customSecurityAttributes = optional(any)     }))       excludeAppsReceivingV2Tokens = optional(bool)       excludeSaml = optional(bool)       restrictForAppsCreatedAfterDateTime = optional(string)       state = optional(string)     }))     }))     }))       keyCredentials = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyCredentialConfiguration")       excludeActors = optional(object({       odata_type = optional(string, "#microsoft.graph.appManagementPolicyActorExemptions")       customSecurityAttributes = optional(any)     }))       maxLifetime = optional(string)       restrictForAppsCreatedAfterDateTime = optional(string)       restrictionType = optional(string)       state = optional(string)     })))       passwordCredentials = optional(list(object({       odata_type = optional(string, "#microsoft.graph.passwordCredentialConfiguration")       excludeActors = optional(object({       odata_type = optional(string, "#microsoft.graph.appManagementPolicyActorExemptions")       customSecurityAttributes = optional(any)     }))       maxLifetime = optional(string)       restrictForAppsCreatedAfterDateTime = optional(string)       restrictionType = optional(string)       state = optional(string)     })))     })` | no | yes |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -45,7 +45,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- restrictions: polymorphic schema; accepts an untyped value
+- appliesTo[]: polymorphic schema; accepts an untyped value
+- restrictions.applicationRestrictions.identifierUris.nonDefaultUriAddition.excludeActors.customSecurityAttributes: nested schema exceeds depth limit; accepts an untyped value
+- restrictions.applicationRestrictions.identifierUris.uriAdditionWithoutUniqueTenantIdentifier.excludeActors.customSecurityAttributes: nested schema exceeds depth limit; accepts an untyped value
+- restrictions.keyCredentials[].excludeActors.customSecurityAttributes[]: nested schema exceeds depth limit; accepts an untyped value
+- restrictions.passwordCredentials[].excludeActors.customSecurityAttributes[]: nested schema exceeds depth limit; accepts an untyped value
 
 ## Licensing and prerequisites
 

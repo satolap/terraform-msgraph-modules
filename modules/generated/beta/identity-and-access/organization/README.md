@@ -26,15 +26,15 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `branding` | `branding` | `any` | no | no |
 | `business_phones` | `businessPhones` | `list(string)` | no | no |
 | `certificate_based_auth_configuration` | `certificateBasedAuthConfiguration` | `list(object({       odata_type = optional(string, "#microsoft.graph.certificateBasedAuthConfiguration")       certificateAuthorities = optional(list(object({       odata_type = optional(string, "#microsoft.graph.certificateAuthority")       certificate = optional(string)       certificateRevocationListUrl = optional(string)       deltaCertificateRevocationListUrl = optional(string)       isRootAuthority = optional(bool)     })))     }))` | no | no |
-| `certificate_connector_setting` | `certificateConnectorSetting` | `any` | no | no |
+| `certificate_connector_setting` | `certificateConnectorSetting` | `object({       odata_type = optional(string, "#microsoft.graph.certificateConnectorSetting")       certExpiryTime = optional(string)       connectorVersion = optional(string)       enrollmentError = optional(string)       lastConnectorConnectionTime = optional(string)       lastUploadVersion = optional(number)       status = optional(number)     })` | no | no |
 | `city` | `city` | `string` | no | no |
 | `country` | `country` | `string` | no | no |
 | `country_letter_code` | `countryLetterCode` | `string` | no | no |
 | `default_usage_location` | `defaultUsageLocation` | `string` | no | no |
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
-| `directory_size_quota` | `directorySizeQuota` | `any` | no | no |
+| `directory_size_quota` | `directorySizeQuota` | `object({       odata_type = optional(string, "#microsoft.graph.directorySizeQuota")       total = optional(number)       used = optional(number)     })` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `extensions` | `extensions` | `list(object({       odata_type = optional(string, "#microsoft.graph.extension")     }))` | no | no |
+| `extensions` | `extensions` | `any` | no | no |
 | `marketing_notification_emails` | `marketingNotificationEmails` | `list(string)` | no | no |
 | `mobile_device_management_authority` | `mobileDeviceManagementAuthority` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
@@ -42,10 +42,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `on_premises_last_sync_date_time` | `onPremisesLastSyncDateTime` | `string` | no | no |
 | `on_premises_sync_enabled` | `onPremisesSyncEnabled` | `bool` | no | no |
 | `partner_information` | `partnerInformation` | `any` | no | no |
-| `partner_tenant_type` | `partnerTenantType` | `any` | no | no |
+| `partner_tenant_type` | `partnerTenantType` | `string` | no | no |
 | `postal_code` | `postalCode` | `string` | no | no |
 | `preferred_language` | `preferredLanguage` | `string` | no | no |
-| `privacy_profile` | `privacyProfile` | `any` | no | no |
+| `privacy_profile` | `privacyProfile` | `object({       odata_type = optional(string, "#microsoft.graph.privacyProfile")       contactEmail = optional(string)       statementUrl = optional(string)     })` | no | no |
 | `provisioned_plans` | `provisionedPlans` | `list(object({       odata_type = optional(string, "#microsoft.graph.provisionedPlan")       capabilityStatus = optional(string)       provisioningStatus = optional(string)       service = optional(string)     }))` | no | no |
 | `resource_quotas` | `resourceQuotas` | `list(object({       odata_type = optional(string, "#microsoft.graph.resourceQuota")       maxPercentage = optional(number)       resourceType = optional(string)       total = optional(number)     }))` | no | no |
 | `security_compliance_notification_mails` | `securityComplianceNotificationMails` | `list(string)` | no | no |
@@ -73,13 +73,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- branding: polymorphic schema; accepts an untyped value
-- certificateConnectorSetting: polymorphic schema; accepts an untyped value
-- directorySizeQuota: polymorphic schema; accepts an untyped value
-- partnerInformation: polymorphic schema; accepts an untyped value
-- partnerTenantType: polymorphic schema; accepts an untyped value
-- privacyProfile: polymorphic schema; accepts an untyped value
-- settings: polymorphic schema; accepts an untyped value
+- branding: navigation property; accepts an untyped value
+- extensions[]: polymorphic schema; accepts an untyped value
+- partnerInformation: navigation property; accepts an untyped value
+- settings: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

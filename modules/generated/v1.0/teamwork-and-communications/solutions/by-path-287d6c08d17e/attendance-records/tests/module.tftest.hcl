@@ -25,12 +25,13 @@ run "typed_request" {
   command = plan
 
   variables {
-    virtual_event_webinar_id     = "test-parent-id"
-    virtual_event_session_id     = "test-parent-id"
-    meeting_attendance_report_id = "test-parent-id"
-    email_address                = "example"
-    total_attendance_in_seconds  = -2147483648
-    attendance_intervals         = [{}]
+    virtual_event_webinar_id          = "test-parent-id"
+    virtual_event_session_id          = "test-parent-id"
+    meeting_attendance_report_id      = "test-parent-id"
+    email_address                     = "example"
+    total_attendance_in_seconds       = -2147483648
+    external_registration_information = { "referrer" = null }
+    attendance_intervals              = [{}]
   }
 
   assert {
@@ -41,6 +42,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["totalAttendanceInSeconds"]) == jsonencode(-2147483648)
     error_message = "totalAttendanceInSeconds must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["externalRegistrationInformation"]) == jsonencode({ "@odata.type" = "#microsoft.graph.virtualEventExternalRegistrationInformation" })
+    error_message = "externalRegistrationInformation must preserve typed values and omit nested nulls."
   }
 
   assert {

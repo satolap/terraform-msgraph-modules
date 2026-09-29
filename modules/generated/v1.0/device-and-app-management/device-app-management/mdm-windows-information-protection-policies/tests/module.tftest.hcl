@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     created_date_time                        = "2026-01-01T00:00:00Z"
     azure_rights_management_services_allowed = false
+    data_recovery_certificate                = { "certificate" = null }
     assignments                              = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["azureRightsManagementServicesAllowed"]) == jsonencode(false)
     error_message = "azureRightsManagementServicesAllowed must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["dataRecoveryCertificate"]) == jsonencode({ "@odata.type" = "#microsoft.graph.windowsInformationProtectionDataRecoveryCertificate" })
+    error_message = "dataRecoveryCertificate must preserve typed values and omit nested nulls."
   }
 
   assert {

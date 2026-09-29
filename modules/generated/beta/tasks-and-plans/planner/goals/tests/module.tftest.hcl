@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     display_name = "example"
     priority     = -2147483648
+    notes        = { "content" = null }
   }
 
   assert {
@@ -31,6 +32,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["priority"]) == jsonencode(-2147483648)
     error_message = "priority must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["notes"]) == jsonencode({ "@odata.type" = "#microsoft.graph.itemBody" })
+    error_message = "notes must preserve typed values and omit nested nulls."
   }
 }
 

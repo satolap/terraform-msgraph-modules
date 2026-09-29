@@ -1,6 +1,6 @@
 variable "attack_technique" {
   description = "The social engineering technique used in the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, credentialHarvesting, attachmentMalware, driveByUrl, linkInAttachment, linkToMalwareFile, unknownFutureValue, oAuthConsentGrant, phishTraining. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: oAuthConsentGrant, phishTraining. For more information on the types of social engineering attack techniques, see simulations."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -11,7 +11,7 @@ variable "attack_technique" {
 
 variable "attack_type" {
   description = "Attack type of the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, social, cloud, endpoint, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -34,8 +34,13 @@ variable "completion_date_time" {
 
 variable "created_by" {
   description = "Identity of the user who created the attack simulation and training campaign."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "created_date_time" {
@@ -94,8 +99,13 @@ variable "landing_page" {
 
 variable "last_modified_by" {
   description = "Identity of the user who most recently modified the attack simulation and training campaign."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "last_modified_date_time" {
@@ -118,8 +128,13 @@ variable "login_page" {
 
 variable "o_auth_consent_app_detail" {
   description = "OAuth app details for the OAuth technique."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.oAuthConsentAppDetail")
+    appScope    = optional(string)
+    displayLogo = optional(string)
+    displayName = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -137,7 +152,7 @@ variable "payload" {
 
 variable "payload_delivery_platform" {
   description = "Method of delivery of the phishing payload used in the attack simulation and training campaign. The possible values are: unknown, sms, email, teams, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -148,13 +163,78 @@ variable "payload_delivery_platform" {
 
 variable "report" {
   description = "Report of the attack simulation and training campaign."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.simulationReport")
+    overview = optional(object({
+      odata_type = optional(string, "#microsoft.graph.simulationReportOverview")
+      recommendedActions = optional(list(object({
+        odata_type           = optional(string, "#microsoft.graph.recommendedAction")
+        actionWebUrl         = optional(string)
+        potentialScoreImpact = optional(any)
+        title                = optional(string)
+      })))
+      resolvedTargetsCount = optional(number)
+      simulationEventsContent = optional(object({
+        odata_type      = optional(string, "#microsoft.graph.simulationEventsContent")
+        compromisedRate = optional(any)
+        events = optional(list(object({
+          odata_type = optional(string, "#microsoft.graph.simulationEvent")
+          count      = optional(number)
+          eventName  = optional(string)
+        })))
+      }))
+      trainingEventsContent = optional(object({
+        odata_type = optional(string, "#microsoft.graph.trainingEventsContent")
+        assignedTrainingsInfos = optional(list(object({
+          odata_type         = optional(string, "#microsoft.graph.assignedTrainingInfo")
+          assignedUserCount  = optional(number)
+          completedUserCount = optional(number)
+          displayName        = optional(string)
+        })))
+        trainingsAssignedUserCount = optional(number)
+      }))
+    }))
+    simulationUsers = optional(list(object({
+      odata_type               = optional(string, "#microsoft.graph.userSimulationDetails")
+      assignedTrainingsCount   = optional(number)
+      completedTrainingsCount  = optional(number)
+      compromisedDateTime      = optional(string)
+      inProgressTrainingsCount = optional(number)
+      isCompromised            = optional(bool)
+      latestSimulationActivity = optional(string)
+      reportedPhishDateTime    = optional(string)
+      simulationEvents = optional(list(object({
+        odata_type              = optional(string, "#microsoft.graph.userSimulationEventInfo")
+        browser                 = optional(string)
+        clickSource             = optional(string)
+        eventDateTime           = optional(string)
+        eventName               = optional(string)
+        ipAddress               = optional(string)
+        osPlatformDeviceDetails = optional(string)
+      })))
+      simulationUser = optional(object({
+        odata_type      = optional(string, "#microsoft.graph.attackSimulationUser")
+        displayName     = optional(string)
+        email           = optional(string)
+        outOfOfficeDays = optional(number)
+        userId          = optional(string)
+      }))
+      trainingEvents = optional(list(object({
+        odata_type                  = optional(string, "#microsoft.graph.userTrainingEventInfo")
+        displayName                 = optional(string)
+        latestTrainingStatus        = optional(string)
+        trainingAssignedProperties  = optional(any)
+        trainingCompletedProperties = optional(any)
+        trainingUpdatedProperties   = optional(any)
+      })))
+    })))
+  })
+  default = null
 }
 
 variable "status" {
   description = "Status of the attack simulation and training campaign. Supports $filter and $orderby. The possible values are: unknown, draft, running, scheduled, succeeded, failed, cancelled, excluded, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

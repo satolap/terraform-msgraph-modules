@@ -23,7 +23,7 @@ variable "created_date_time" {
 
 variable "destination_type" {
   description = "Indicates the restoration destination. The possible values are: new, inPlace, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -40,8 +40,31 @@ variable "display_name" {
 
 variable "error" {
   description = "Error details are populated for resource resolution failures."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.publicError")
+    code       = optional(string)
+    details = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+      code       = optional(string)
+      message    = optional(string)
+      target     = optional(string)
+    })))
+    innerError = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicInnerError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    message = optional(string)
+    target  = optional(string)
+  })
+  default = null
 }
 
 variable "last_modified_by" {
@@ -65,8 +88,12 @@ variable "odata_type" {
 
 variable "protection_time_period" {
   description = "The start and end date and time of the protection period."
-  type        = any
-  default     = null
+  type = object({
+    odata_type    = optional(string, "#microsoft.graph.timePeriod")
+    endDateTime   = optional(string)
+    startDateTime = optional(string)
+  })
+  default = null
 }
 
 variable "protection_unit_ids" {
@@ -77,7 +104,7 @@ variable "protection_unit_ids" {
 
 variable "restore_point_preference" {
   description = "Indicates which restore point to return. The possible values are: oldest, latest, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -111,12 +138,12 @@ variable "status" {
 
 variable "tags" {
   description = "The type of the restore point. The possible values are: none, fastRestore, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.tags == null ? true : contains(["none", "fastRestore", "unknownFutureValue"], var.tags)
-    error_message = "tags must be one of the documented enum values."
+    condition     = var.tags == null ? true : try(alltrue([for value in split(",", var.tags) : contains(["none", "fastrestore", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "tags must be one or more of the documented enum values, separated by commas."
   }
 }
 

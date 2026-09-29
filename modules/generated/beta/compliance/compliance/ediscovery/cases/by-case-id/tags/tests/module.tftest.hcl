@@ -23,14 +23,14 @@ run "typed_request" {
   command = plan
 
   variables {
-    case_id     = "test-parent-id"
-    description = "example"
-    child_tags  = [{}]
+    case_id             = "test-parent-id"
+    child_selectability = "One"
+    child_tags          = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
-    error_message = "description must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["childSelectability"]) == jsonencode("One")
+    error_message = "childSelectability must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -53,8 +53,8 @@ variable "platforms" {
   default     = null
 
   validation {
-    condition     = var.platforms == null ? true : contains(["none", "android", "iOS", "macOS", "windows10X", "windows10", "linux", "unknownFutureValue", "androidEnterprise", "aosp", "visionOS", "tvOS"], var.platforms)
-    error_message = "platforms must be one of the documented enum values."
+    condition     = var.platforms == null ? true : try(alltrue([for value in split(",", var.platforms) : contains(["none", "android", "ios", "macos", "windows10x", "windows10", "linux", "unknownfuturevalue", "androidenterprise", "aosp", "visionos", "tvos"], lower(trimspace(value)))]), false)
+    error_message = "platforms must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -70,8 +70,8 @@ variable "setting_usage" {
   default     = null
 
   validation {
-    condition     = var.setting_usage == null ? true : contains(["none", "configuration", "compliance", "reusableSetting", "unknownFutureValue"], var.setting_usage)
-    error_message = "setting_usage must be one of the documented enum values."
+    condition     = var.setting_usage == null ? true : try(alltrue([for value in split(",", var.setting_usage) : contains(["none", "configuration", "compliance", "reusablesetting", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "setting_usage must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -81,8 +81,8 @@ variable "technologies" {
   default     = null
 
   validation {
-    condition     = var.technologies == null ? true : contains(["none", "mdm", "windows10XManagement", "configManager", "intuneManagementExtension", "thirdParty", "documentGateway", "appleRemoteManagement", "microsoftSense", "exchangeOnline", "mobileApplicationManagement", "linuxMdm", "enrollment", "endpointPrivilegeManagement", "unknownFutureValue", "windowsOsRecovery", "android", "intuneOpenExtensibility"], var.technologies)
-    error_message = "technologies must be one of the documented enum values."
+    condition     = var.technologies == null ? true : try(alltrue([for value in split(",", var.technologies) : contains(["none", "mdm", "windows10xmanagement", "configmanager", "intunemanagementextension", "thirdparty", "documentgateway", "appleremotemanagement", "microsoftsense", "exchangeonline", "mobileapplicationmanagement", "linuxmdm", "enrollment", "endpointprivilegemanagement", "unknownfuturevalue", "windowsosrecovery", "android", "intuneopenextensibility"], lower(trimspace(value)))]), false)
+    error_message = "technologies must be one or more of the documented enum values, separated by commas."
   }
 }
 

@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "#microsoft.graph.activeDirectoryWindowsAutopilotDeploymentProfile"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "deviceManagement/windowsAutopilotDeploymentProfiles"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,9 +23,16 @@ run "typed_request" {
   command = plan
 
   variables {
-    description                      = "example"
-    hardware_hash_extraction_enabled = false
-    assigned_devices                 = [{}]
+    odata_type                        = "#microsoft.graph.activeDirectoryWindowsAutopilotDeploymentProfile"
+    description                       = "example"
+    hardware_hash_extraction_enabled  = false
+    enrollment_status_screen_settings = { "allowDeviceUseBeforeProfileAndAppInstallComplete" = null }
+    assigned_devices                  = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.activeDirectoryWindowsAutopilotDeploymentProfile")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -35,6 +46,11 @@ run "typed_request" {
   }
 
   assert {
+    condition     = jsonencode(msgraph_resource.this.body["enrollmentStatusScreenSettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.windowsEnrollmentStatusScreenSettings" })
+    error_message = "enrollmentStatusScreenSettings must preserve typed values and omit nested nulls."
+  }
+
+  assert {
     condition     = jsonencode(msgraph_resource.this.body["assignedDevices"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.windowsAutopilotDeviceIdentity" }])
     error_message = "assignedDevices must preserve typed values and omit nested nulls."
   }
@@ -44,8 +60,8 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    device_type = "__graphmodules_invalid_enum__"
+    odata_type = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.device_type]
+  expect_failures = [var.odata_type]
 }

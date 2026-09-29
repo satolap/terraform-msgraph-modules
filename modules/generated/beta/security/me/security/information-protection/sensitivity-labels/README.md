@@ -50,7 +50,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- parent: polymorphic schema; accepts an untyped value
+- parent: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

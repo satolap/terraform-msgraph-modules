@@ -49,3 +49,26 @@ run "invalid_enum" {
 
   expect_failures = [var.notification_final_destinations]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    notification_final_destinations = "none, Api"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["notificationFinalDestinations"] == "none, Api"
+    error_message = "notificationFinalDestinations must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    notification_final_destinations = "none,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.notification_final_destinations]
+}

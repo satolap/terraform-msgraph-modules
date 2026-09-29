@@ -1,7 +1,12 @@
 variable "created_by" {
   description = "Identity of the user who created the landing page."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "created_date_time" {
@@ -35,7 +40,7 @@ variable "display_name" {
 
 variable "graph_source" {
   description = "The source of the content. The possible values are: unknown, global, tenant, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -46,8 +51,13 @@ variable "graph_source" {
 
 variable "last_modified_by" {
   description = "Email identity of the user who last modified the landing page."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.emailIdentity")
+    displayName = optional(string)
+    email       = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "last_modified_date_time" {
@@ -71,7 +81,7 @@ variable "odata_type" {
 
 variable "status" {
   description = "The status of the simulation. The possible values are: unknown, draft, ready, archive, delete, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

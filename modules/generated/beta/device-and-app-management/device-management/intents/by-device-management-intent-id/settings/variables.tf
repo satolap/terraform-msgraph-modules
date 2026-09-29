@@ -9,17 +9,21 @@ variable "device_management_intent_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.deviceManagementAbstractComplexSettingInstance", "#microsoft.graph.deviceManagementBooleanSettingInstance", "#microsoft.graph.deviceManagementCollectionSettingInstance", "#microsoft.graph.deviceManagementComplexSettingInstance", "#microsoft.graph.deviceManagementIntegerSettingInstance", "#microsoft.graph.deviceManagementStringSettingInstance"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "definition_id" {
   description = "The ID of the setting definition for this instance"
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.deviceManagementSettingInstance"
-  nullable    = false
 }
 
 variable "value_json" {

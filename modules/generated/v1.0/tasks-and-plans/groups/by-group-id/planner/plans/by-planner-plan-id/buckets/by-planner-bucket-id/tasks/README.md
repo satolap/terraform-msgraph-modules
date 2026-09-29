@@ -42,7 +42,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `order_hint` | `orderHint` | `string` | no | no |
 | `percent_complete` | `percentComplete` | `number` | no | no |
 | `plan_id` | `planId` | `string` | no | no |
-| `preview_type` | `previewType` | `any` | no | no |
+| `preview_type` | `previewType` | `string` | no | no |
 | `priority` | `priority` | `number` | no | no |
 | `reference_count` | `referenceCount` | `number` | no | no |
 | `start_date_time` | `startDateTime` | `string` | no | no |
@@ -67,7 +67,6 @@ Generation notes:
 - assignments: polymorphic schema; accepts an untyped value
 - completedBy: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- previewType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

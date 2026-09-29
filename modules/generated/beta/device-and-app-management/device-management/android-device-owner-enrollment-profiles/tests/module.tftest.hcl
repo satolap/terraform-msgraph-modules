@@ -22,6 +22,7 @@ run "typed_request" {
     account_id            = "example"
     configure_wifi        = false
     enrolled_device_count = -2147483648
+    qr_code_image         = { "type" = null }
     role_scope_tag_ids    = ["example"]
   }
 
@@ -38,6 +39,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["enrolledDeviceCount"]) == jsonencode(-2147483648)
     error_message = "enrolledDeviceCount must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["qrCodeImage"]) == jsonencode({ "@odata.type" = "#microsoft.graph.mimeContent" })
+    error_message = "qrCodeImage must preserve typed values and omit nested nulls."
   }
 
   assert {

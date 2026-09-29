@@ -10,12 +10,12 @@ locals {
     "name"                              = var.name
     "@odata.type"                       = var.odata_type
     "platforms"                         = var.platforms
-    "priorityMetaData"                  = var.priority_meta_data
+    "priorityMetaData"                  = (var.priority_meta_data == null ? null : { for key0, value0 in { "@odata.type" = var.priority_meta_data["odata_type"], "priority" = var.priority_meta_data["priority"] } : key0 => value0 if value0 != null })
     "roleScopeTagIds"                   = (var.role_scope_tag_ids == null ? null : [for item0 in var.role_scope_tag_ids : item0 if item0 != null])
     "settingCount"                      = var.setting_count
-    "settings"                          = (var.settings == null ? null : [for item0 in var.settings : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "settingInstance" = (item0["settingInstance"] == null ? null : { for key2, value2 in { "@odata.type" = item0["settingInstance"]["odata_type"], "settingDefinitionId" = item0["settingInstance"]["settingDefinitionId"], "settingInstanceTemplateReference" = item0["settingInstance"]["settingInstanceTemplateReference"] } : key2 => value2 if value2 != null }) } : key1 => value1 if value1 != null }) if item0 != null])
+    "settings"                          = (var.settings == null ? null : [for item0 in var.settings : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "settingInstance" = item0["settingInstance"] } : key1 => value1 if value1 != null }) if item0 != null])
     "technologies"                      = var.technologies
-    "templateReference"                 = var.template_reference
+    "templateReference"                 = (var.template_reference == null ? null : { for key0, value0 in { "@odata.type" = var.template_reference["odata_type"], "templateId" = var.template_reference["templateId"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

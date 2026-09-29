@@ -45,8 +45,15 @@ variable "birthday" {
 
 variable "business_address" {
   description = "The contact's business address."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.physicalAddress")
+    city            = optional(string)
+    countryOrRegion = optional(string)
+    postalCode      = optional(string)
+    state           = optional(string)
+    street          = optional(string)
+  })
+  default = null
 }
 
 variable "business_home_page" {
@@ -127,8 +134,15 @@ variable "given_name" {
 
 variable "home_address" {
   description = "The contact's home address."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.physicalAddress")
+    city            = optional(string)
+    countryOrRegion = optional(string)
+    postalCode      = optional(string)
+    state           = optional(string)
+    street          = optional(string)
+  })
+  default = null
 }
 
 variable "home_phones" {
@@ -200,8 +214,15 @@ variable "office_location" {
 
 variable "other_address" {
   description = "Other addresses for the contact."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.physicalAddress")
+    city            = optional(string)
+    countryOrRegion = optional(string)
+    postalCode      = optional(string)
+    state           = optional(string)
+    street          = optional(string)
+  })
+  default = null
 }
 
 variable "parent_folder_id" {
@@ -224,8 +245,12 @@ variable "photo" {
 
 variable "primary_email_address" {
   description = "The contact's primary email address."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.emailAddress")
+    address    = optional(string)
+    name       = optional(string)
+  })
+  default = null
 }
 
 variable "profession" {
@@ -236,8 +261,12 @@ variable "profession" {
 
 variable "secondary_email_address" {
   description = "The contact's secondary email address."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.emailAddress")
+    address    = optional(string)
+    name       = optional(string)
+  })
+  default = null
 }
 
 variable "spouse_name" {
@@ -254,8 +283,12 @@ variable "surname" {
 
 variable "tertiary_email_address" {
   description = "The contact's tertiary email address."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.emailAddress")
+    address    = optional(string)
+    name       = optional(string)
+  })
+  default = null
 }
 
 variable "title" {

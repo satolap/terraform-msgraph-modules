@@ -30,6 +30,7 @@ run "typed_request" {
     workbook_worksheet_id = "test-parent-id"
     completed_date_time   = "2026-01-01T00:00:00Z"
     percent_complete      = -2147483648
+    completed_by          = { "displayName" = null }
     assignees             = [{}]
   }
 
@@ -41,6 +42,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["percentComplete"]) == jsonencode(-2147483648)
     error_message = "percentComplete must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["completedBy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.workbookEmailIdentity" })
+    error_message = "completedBy must preserve typed values and omit nested nulls."
   }
 
   assert {

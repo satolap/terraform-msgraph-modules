@@ -29,7 +29,7 @@ variable "odata_type" {
 }
 
 variable "state" {
-  description = "Microsoft Graph state property."
+  description = "User state for an intent"
   type        = string
   default     = null
 

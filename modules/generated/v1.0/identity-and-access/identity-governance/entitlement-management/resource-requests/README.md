@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `catalog` | `catalog` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `request_type` | `requestType` | `any` | no | no |
+| `request_type` | `requestType` | `string` | no | no |
 | `resource` | `resource` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -42,8 +42,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- catalog: polymorphic schema; accepts an untyped value
-- requestType: polymorphic schema; accepts an untyped value
+- catalog: navigation property; accepts an untyped value
 - resource: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

@@ -26,8 +26,14 @@ run "typed_request" {
   variables {
     calendar_group_id      = "test-parent-id"
     calendar_id            = "test-parent-id"
+    role                   = "none"
     is_inside_organization = false
     allowed_roles          = ["none"]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["role"]) == jsonencode("none")
+    error_message = "role must preserve typed values and omit nested nulls."
   }
 
   assert {

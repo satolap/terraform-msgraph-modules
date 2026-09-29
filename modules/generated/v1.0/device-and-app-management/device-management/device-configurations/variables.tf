@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.androidCustomConfiguration", "#microsoft.graph.androidGeneralDeviceConfiguration", "#microsoft.graph.androidWorkProfileCustomConfiguration", "#microsoft.graph.androidWorkProfileGeneralDeviceConfiguration", "#microsoft.graph.editionUpgradeConfiguration", "#microsoft.graph.iosCustomConfiguration", "#microsoft.graph.iosDeviceFeaturesConfiguration", "#microsoft.graph.iosGeneralDeviceConfiguration", "#microsoft.graph.iosUpdateConfiguration", "#microsoft.graph.macOSCustomConfiguration", "#microsoft.graph.macOSDeviceFeaturesConfiguration", "#microsoft.graph.macOSGeneralDeviceConfiguration", "#microsoft.graph.sharedPCConfiguration", "#microsoft.graph.windows10CustomConfiguration", "#microsoft.graph.windows10EndpointProtectionConfiguration", "#microsoft.graph.windows10EnterpriseModernAppManagementConfiguration", "#microsoft.graph.windows10GeneralConfiguration", "#microsoft.graph.windows10SecureAssessmentConfiguration", "#microsoft.graph.windows10TeamGeneralConfiguration", "#microsoft.graph.windows81GeneralConfiguration", "#microsoft.graph.windowsDefenderAdvancedThreatProtectionConfiguration", "#microsoft.graph.windowsPhone81CustomConfiguration", "#microsoft.graph.windowsPhone81GeneralConfiguration", "#microsoft.graph.windowsUpdateForBusinessConfiguration"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "assignments" {
   description = "The list of assignments for the device configuration profile."
   type = list(object({
@@ -73,13 +84,6 @@ variable "last_modified_date_time" {
   description = "DateTime the object was last modified."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.deviceConfiguration"
-  nullable    = false
 }
 
 variable "user_status_overview" {

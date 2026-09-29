@@ -54,7 +54,13 @@ variable "instances" {
       decision      = optional(string)
       insights      = optional(any)
       justification = optional(string)
-      permission    = optional(any)
+      permission = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItemPermission")
+        description = optional(string)
+        displayName = optional(string)
+        id          = optional(string)
+        type        = optional(string)
+      }))
     })))
     fallbackReviewers = optional(list(object({
       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")
@@ -110,8 +116,43 @@ variable "scope" {
 
 variable "settings" {
   description = "The settings for an access review series, see type definition below. Supports $select. Required on create."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                           = optional(string, "#microsoft.graph.accessReviewScheduleSettings")
+    applyActions                         = optional(any)
+    autoApplyDecisionsEnabled            = optional(bool)
+    decisionHistoriesForReviewersEnabled = optional(bool)
+    defaultDecision                      = optional(string)
+    defaultDecisionEnabled               = optional(bool)
+    instanceDurationInDays               = optional(number)
+    justificationRequiredOnApproval      = optional(bool)
+    mailNotificationsEnabled             = optional(bool)
+    recommendationInsightSettings        = optional(any)
+    recommendationLookBackDuration       = optional(string)
+    recommendationsEnabled               = optional(bool)
+    recurrence = optional(object({
+      odata_type = optional(string, "#microsoft.graph.patternedRecurrence")
+      pattern = optional(object({
+        odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+        dayOfMonth     = optional(number)
+        daysOfWeek     = optional(list(string))
+        firstDayOfWeek = optional(string)
+        index          = optional(string)
+        interval       = optional(number)
+        month          = optional(number)
+        type           = optional(string)
+      }))
+      range = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.recurrenceRange")
+        endDate             = optional(string)
+        numberOfOccurrences = optional(number)
+        recurrenceTimeZone  = optional(string)
+        startDate           = optional(string)
+        type                = optional(string)
+      }))
+    }))
+    reminderNotificationsEnabled = optional(bool)
+  })
+  default = null
 }
 
 variable "stage_settings" {
@@ -129,10 +170,8 @@ variable "stage_settings" {
       reviewerId = optional(string)
       scopeType  = optional(string)
     })))
-    recommendationInsightSettings = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.accessReviewRecommendationInsightSetting")
-    })))
-    recommendationsEnabled = optional(bool)
+    recommendationInsightSettings = optional(any)
+    recommendationsEnabled        = optional(bool)
     reviewers = optional(list(object({
       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")
       query      = optional(string)

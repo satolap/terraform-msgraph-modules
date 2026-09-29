@@ -5,7 +5,8 @@ run "minimal_request" {
   command = plan
 
   variables {
-    user_id = "test-parent-id"
+    user_id    = "test-parent-id"
+    odata_type = "#microsoft.graph.callActivityStatistics"
   }
 
   assert {
@@ -23,13 +24,19 @@ run "typed_request" {
   command = plan
 
   variables {
-    user_id  = "test-parent-id"
-    duration = "example"
+    user_id    = "test-parent-id"
+    odata_type = "#microsoft.graph.callActivityStatistics"
+    activity   = "Email"
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["duration"]) == jsonencode("example")
-    error_message = "duration must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.callActivityStatistics")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["activity"]) == jsonencode("Email")
+    error_message = "activity must preserve typed values and omit nested nulls."
   }
 }
 
@@ -37,9 +44,9 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    user_id  = "test-parent-id"
-    activity = "__graphmodules_invalid_enum__"
+    user_id    = "test-parent-id"
+    odata_type = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.activity]
+  expect_failures = [var.odata_type]
 }

@@ -6,7 +6,7 @@ locals {
     "additionalDetails"   = (var.additional_details == null ? null : [for item0 in var.additional_details : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "key" = item0["key"], "value" = item0["value"] } : key1 => value1 if value1 != null }) if item0 != null])
     "category"            = var.category
     "correlationId"       = var.correlation_id
-    "initiatedBy"         = (var.initiated_by == null ? null : { for key0, value0 in { "@odata.type" = var.initiated_by["odata_type"], "app" = var.initiated_by["app"], "user" = var.initiated_by["user"] } : key0 => value0 if value0 != null })
+    "initiatedBy"         = (var.initiated_by == null ? null : { for key0, value0 in { "@odata.type" = var.initiated_by["odata_type"], "app" = (var.initiated_by["app"] == null ? null : { for key1, value1 in { "@odata.type" = var.initiated_by["app"]["odata_type"], "appId" = var.initiated_by["app"]["appId"], "displayName" = var.initiated_by["app"]["displayName"], "servicePrincipalId" = var.initiated_by["app"]["servicePrincipalId"], "servicePrincipalName" = var.initiated_by["app"]["servicePrincipalName"] } : key1 => value1 if value1 != null }), "user" = (var.initiated_by["user"] == null ? null : { for key1, value1 in { "@odata.type" = var.initiated_by["user"]["odata_type"], "displayName" = var.initiated_by["user"]["displayName"], "id" = var.initiated_by["user"]["id"], "ipAddress" = var.initiated_by["user"]["ipAddress"], "userPrincipalName" = var.initiated_by["user"]["userPrincipalName"] } : key1 => value1 if value1 != null }) } : key0 => value0 if value0 != null })
     "loggedByService"     = var.logged_by_service
     "@odata.type"         = var.odata_type
     "operationType"       = var.operation_type

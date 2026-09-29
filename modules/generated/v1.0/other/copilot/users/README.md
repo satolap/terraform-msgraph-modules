@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `interaction_history` | `interactionHistory` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `online_meetings` | `onlineMeetings` | `list(object({       odata_type = optional(string, "#microsoft.graph.aiOnlineMeeting")       aiInsights = optional(list(object({       odata_type = optional(string, "#microsoft.graph.callAiInsight")       actionItems = optional(any)       callId = optional(string)       contentCorrelationId = optional(string)       createdDateTime = optional(string)       endDateTime = optional(string)       meetingNotes = optional(any)       viewpoint = optional(any)     })))     }))` | no | no |
+| `online_meetings` | `onlineMeetings` | `list(object({       odata_type = optional(string, "#microsoft.graph.aiOnlineMeeting")       aiInsights = optional(list(object({       odata_type = optional(string, "#microsoft.graph.callAiInsight")       actionItems = optional(any)       callId = optional(string)       contentCorrelationId = optional(string)       createdDateTime = optional(string)       endDateTime = optional(string)       meetingNotes = optional(any)       viewpoint = optional(object({       odata_type = optional(string, "#microsoft.graph.callAiInsightViewPoint")       mentionEvents = optional(any)     }))     })))     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -41,10 +41,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- interactionHistory: polymorphic schema; accepts an untyped value
+- interactionHistory: navigation property; accepts an untyped value
 - onlineMeetings[].aiInsights[].actionItems[]: nested schema exceeds depth limit; accepts an untyped value
 - onlineMeetings[].aiInsights[].meetingNotes[]: nested schema exceeds depth limit; accepts an untyped value
-- onlineMeetings[].aiInsights[].viewpoint: polymorphic schema; accepts an untyped value
+- onlineMeetings[].aiInsights[].viewpoint.mentionEvents: nested schema exceeds depth limit; accepts an untyped value
 
 ## Licensing and prerequisites
 

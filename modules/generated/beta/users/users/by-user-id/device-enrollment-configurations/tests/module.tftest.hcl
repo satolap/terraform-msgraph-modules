@@ -5,7 +5,8 @@ run "minimal_request" {
   command = plan
 
   variables {
-    user_id = "test-parent-id"
+    user_id    = "test-parent-id"
+    odata_type = "#microsoft.graph.deviceComanagementAuthorityConfiguration"
   }
 
   assert {
@@ -24,9 +25,15 @@ run "typed_request" {
 
   variables {
     user_id           = "test-parent-id"
+    odata_type        = "#microsoft.graph.deviceComanagementAuthorityConfiguration"
     created_date_time = "2026-01-01T00:00:00Z"
     graph_version     = -2147483648
     assignments       = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.deviceComanagementAuthorityConfiguration")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -49,9 +56,9 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    user_id                              = "test-parent-id"
-    device_enrollment_configuration_type = "__graphmodules_invalid_enum__"
+    user_id    = "test-parent-id"
+    odata_type = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.device_enrollment_configuration_type]
+  expect_failures = [var.odata_type]
 }

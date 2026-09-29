@@ -17,11 +17,8 @@ variable "decision" {
 
 variable "insights" {
   description = "Insights are recommendations to reviewers on whether to approve or deny a decision. There can be multiple insights associated with an accessReviewInstanceDecisionItem."
-  type = list(object({
-    odata_type             = optional(string, "#microsoft.graph.governanceInsight")
-    insightCreatedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "justification" {
@@ -39,8 +36,14 @@ variable "odata_type" {
 
 variable "permission" {
   description = "Microsoft Graph permission property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItemPermission")
+    description = optional(string)
+    displayName = optional(string)
+    id          = optional(string)
+    type        = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

@@ -3,7 +3,7 @@ variable "certificate_authorities" {
   type = list(object({
     odata_type                        = optional(string, "#microsoft.graph.certificateAuthorityDetail")
     certificate                       = optional(string)
-    certificateAuthorityType          = optional(any)
+    certificateAuthorityType          = optional(string)
     certificateRevocationListUrl      = optional(string)
     createdDateTime                   = optional(string)
     deletedDateTime                   = optional(string)

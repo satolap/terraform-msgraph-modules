@@ -24,14 +24,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `group_id` | URL parameter `group-id` | `string` | yes | no |
-| `cc_recipients` | `ccRecipients` | `list(object({       odata_type = optional(string, "#microsoft.graph.recipient")       emailAddress = optional(any)     }))` | no | no |
+| `cc_recipients` | `ccRecipients` | `any` | no | no |
 | `has_attachments` | `hasAttachments` | `bool` | no | no |
 | `is_locked` | `isLocked` | `bool` | no | no |
 | `last_delivered_date_time` | `lastDeliveredDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `posts` | `posts` | `list(object({       odata_type = optional(string, "#microsoft.graph.post")       body = optional(any)       categories = optional(list(string))       createdDateTime = optional(string)       from = optional(object({       odata_type = optional(string, "#microsoft.graph.recipient")       emailAddress = optional(any)     }))       hasAttachments = optional(bool)       importance = optional(any)       lastModifiedDateTime = optional(string)       mentions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.mention")       application = optional(string)       clientReference = optional(string)       createdBy = optional(any)       createdDateTime = optional(string)       deepLink = optional(string)       mentionText = optional(string)       mentioned = optional(object({       odata_type = optional(string, "#microsoft.graph.emailAddress")       address = optional(string)       name = optional(string)     }))       serverCreatedDateTime = optional(string)     })))       newParticipants = optional(list(object({       odata_type = optional(string, "#microsoft.graph.recipient")       emailAddress = optional(any)     })))       receivedDateTime = optional(string)       sender = optional(any)     }))` | no | no |
+| `posts` | `posts` | `list(object({       odata_type = optional(string, "#microsoft.graph.post")       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))       categories = optional(list(string))       createdDateTime = optional(string)       from = optional(any)       hasAttachments = optional(bool)       importance = optional(string)       lastModifiedDateTime = optional(string)       mentions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.mention")       application = optional(string)       clientReference = optional(string)       createdBy = optional(any)       createdDateTime = optional(string)       deepLink = optional(string)       mentionText = optional(string)       mentioned = optional(any)       serverCreatedDateTime = optional(string)     })))       newParticipants = optional(any)       receivedDateTime = optional(string)       sender = optional(any)     }))` | no | no |
 | `preview` | `preview` | `string` | no | no |
-| `to_recipients` | `toRecipients` | `list(object({       odata_type = optional(string, "#microsoft.graph.recipient")       emailAddress = optional(any)     }))` | no | no |
+| `to_recipients` | `toRecipients` | `any` | no | no |
 | `topic` | `topic` | `string` | no | no |
 | `unique_senders` | `uniqueSenders` | `list(string)` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -51,14 +51,13 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- ccRecipients[].emailAddress: polymorphic schema; accepts an untyped value
-- posts[].body: polymorphic schema; accepts an untyped value
-- posts[].from.emailAddress: polymorphic schema; accepts an untyped value
-- posts[].importance: polymorphic schema; accepts an untyped value
+- ccRecipients[]: polymorphic schema; accepts an untyped value
+- posts[].from: polymorphic schema; accepts an untyped value
 - posts[].mentions[].createdBy: polymorphic schema; accepts an untyped value
-- posts[].newParticipants[].emailAddress: polymorphic schema; accepts an untyped value
+- posts[].mentions[].mentioned: polymorphic schema; accepts an untyped value
+- posts[].newParticipants[]: polymorphic schema; accepts an untyped value
 - posts[].sender: polymorphic schema; accepts an untyped value
-- toRecipients[].emailAddress: polymorphic schema; accepts an untyped value
+- toRecipients[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

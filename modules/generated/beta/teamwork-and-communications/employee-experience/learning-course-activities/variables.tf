@@ -43,7 +43,7 @@ variable "odata_type" {
 
 variable "status" {
   description = "The status of the course activity. The possible values are: notStarted, inProgress, completed. Required."
-  type        = any
+  type        = string
   default     = null
 
   validation {

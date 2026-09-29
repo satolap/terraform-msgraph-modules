@@ -6,11 +6,8 @@ variable "allotment" {
 
 variable "assigned_to" {
   description = "Microsoft Graph assignedTo property."
-  type = object({
-    odata_type      = optional(string, "#microsoft.graph.directoryObject")
-    deletedDateTime = optional(string)
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "disabled_service_plan_ids" {

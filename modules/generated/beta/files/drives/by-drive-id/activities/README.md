@@ -24,12 +24,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `drive_id` | URL parameter `drive-id` | `string` | yes | no |
-| `action` | `action` | `any` | no | no |
+| `action` | `action` | `object({       odata_type = optional(string, "#microsoft.graph.itemActionSet")       comment = optional(object({       odata_type = optional(string, "#microsoft.graph.commentAction")       isReply = optional(bool)       parentAuthor = optional(any)       participants = optional(any)     }))       create = optional(any)       delete = optional(object({       odata_type = optional(string, "#microsoft.graph.deleteAction")       name = optional(string)       objectType = optional(string)     }))       edit = optional(any)       mention = optional(object({       odata_type = optional(string, "#microsoft.graph.mentionAction")       mentionees = optional(any)     }))       move = optional(object({       odata_type = optional(string, "#microsoft.graph.moveAction")       from = optional(string)       to = optional(string)     }))       rename = optional(object({       odata_type = optional(string, "#microsoft.graph.renameAction")       newName = optional(string)       oldName = optional(string)     }))       restore = optional(any)       share = optional(object({       odata_type = optional(string, "#microsoft.graph.shareAction")       recipients = optional(any)     }))       version = optional(object({       odata_type = optional(string, "#microsoft.graph.versionAction")       newVersion = optional(string)     }))     })` | no | no |
 | `actor` | `actor` | `any` | no | no |
 | `drive_item` | `driveItem` | `any` | no | no |
 | `list_item` | `listItem` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `times` | `times` | `any` | no | no |
+| `times` | `times` | `object({       odata_type = optional(string, "#microsoft.graph.itemActivityTimeSet")       lastRecordedDateTime = optional(string)       observedDateTime = optional(string)       recordedDateTime = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -47,11 +47,16 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- action: polymorphic schema; accepts an untyped value
+- action.comment.parentAuthor: polymorphic schema; accepts an untyped value
+- action.comment.participants[]: polymorphic schema; accepts an untyped value
+- action.create: polymorphic schema; accepts an untyped value
+- action.edit: polymorphic schema; accepts an untyped value
+- action.mention.mentionees[]: polymorphic schema; accepts an untyped value
+- action.restore: polymorphic schema; accepts an untyped value
+- action.share.recipients[]: polymorphic schema; accepts an untyped value
 - actor: polymorphic schema; accepts an untyped value
-- driveItem: polymorphic schema; accepts an untyped value
-- listItem: polymorphic schema; accepts an untyped value
-- times: polymorphic schema; accepts an untyped value
+- driveItem: navigation property; accepts an untyped value
+- listItem: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

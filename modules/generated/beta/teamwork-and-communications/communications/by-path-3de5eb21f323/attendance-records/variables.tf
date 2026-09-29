@@ -43,15 +43,19 @@ variable "engagements" {
     odata_type        = optional(string, "#microsoft.graph.meetingEngagement")
     dateTime          = optional(string)
     engagementSubType = optional(string)
-    engagementType    = optional(any)
+    engagementType    = optional(string)
   }))
   default = null
 }
 
 variable "external_registration_information" {
   description = "The external information for a virtual event registration."
-  type        = any
-  default     = null
+  type = object({
+    odata_type     = optional(string, "#microsoft.graph.virtualEventExternalRegistrationInformation")
+    referrer       = optional(string)
+    registrationId = optional(string)
+  })
+  default = null
 }
 
 variable "identity" {

@@ -37,8 +37,14 @@ variable "odata_type" {
 
 variable "prepaid_units" {
   description = "Information about the number and status of prepaid licenses."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.licenseUnitsDetail")
+    enabled    = optional(number)
+    lockedOut  = optional(number)
+    suspended  = optional(number)
+    warning    = optional(number)
+  })
+  default = null
 }
 
 variable "service_plans" {

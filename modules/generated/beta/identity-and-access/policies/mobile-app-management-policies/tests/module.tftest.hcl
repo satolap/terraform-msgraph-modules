@@ -19,14 +19,14 @@ run "typed_request" {
   command = plan
 
   variables {
-    compliance_url  = "example"
+    applies_to      = "none"
     is_valid        = false
     included_groups = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["complianceUrl"]) == jsonencode("example")
-    error_message = "complianceUrl must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["appliesTo"]) == jsonencode("none")
+    error_message = "appliesTo must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -48,7 +48,7 @@ variable "origin_system" {
 
 variable "type" {
   description = "The role type for the Azure resource role. The possible values are: active, eligible, application, delegated, unknownFutureValue. The values active and eligible are only supported where originSystem is AzureResources while application and delegated aren't currently implemented."
-  type        = any
+  type        = string
   default     = null
 
   validation {

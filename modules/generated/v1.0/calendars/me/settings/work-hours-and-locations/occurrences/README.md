@@ -27,7 +27,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `place_id` | `placeId` | `string` | no | no |
 | `recurrence_id` | `recurrenceId` | `string` | no | no |
 | `start` | `start` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no |
-| `time_off_details` | `timeOffDetails` | `any` | no | no |
+| `time_off_details` | `timeOffDetails` | `object({       odata_type = optional(string, "#microsoft.graph.timeOffDetails")       isAllDay = optional(bool)       subject = optional(string)     })` | no | no |
 | `work_location_type` | `workLocationType` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -42,10 +42,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- timeOffDetails: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

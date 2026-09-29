@@ -19,11 +19,17 @@ run "typed_request" {
   command = plan
 
   variables {
-    app_scope_id = "example"
+    app_scope_id  = "example"
+    schedule_info = { "expiration" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["appScopeId"]) == jsonencode("example")
     error_message = "appScopeId must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["scheduleInfo"]) == jsonencode({ "@odata.type" = "#microsoft.graph.requestSchedule" })
+    error_message = "scheduleInfo must preserve typed values and omit nested nulls."
   }
 }

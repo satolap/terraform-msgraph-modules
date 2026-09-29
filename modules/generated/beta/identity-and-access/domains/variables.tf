@@ -17,7 +17,7 @@ variable "federation_configuration" {
     activeSignInUri                        = optional(string)
     defaultInteractiveAuthenticationMethod = optional(string)
     displayName                            = optional(string)
-    federatedIdpMfaBehavior                = optional(any)
+    federatedIdpMfaBehavior                = optional(string)
     isSignedAuthenticationRequestRequired  = optional(bool)
     issuerUri                              = optional(string)
     metadataExchangeUri                    = optional(string)
@@ -26,11 +26,13 @@ variable "federation_configuration" {
     passiveSignInUri                       = optional(string)
     passwordChangeUri                      = optional(string)
     passwordResetUri                       = optional(string)
-    preferredAuthenticationProtocol        = optional(any)
-    promptLoginBehavior                    = optional(any)
+    preferredAuthenticationProtocol        = optional(string)
+    promptLoginBehavior                    = optional(string)
     signOutUri                             = optional(string)
     signingCertificate                     = optional(string)
-    signingCertificateUpdateStatus         = optional(any)
+    signingCertificateUpdateStatus = optional(object({
+      odata_type = optional(string, "#microsoft.graph.signingCertificateUpdateStatus")
+    }))
   }))
   default   = null
   sensitive = true
@@ -100,8 +102,13 @@ variable "shared_email_domain_invitations" {
 
 variable "state" {
   description = "Status of asynchronous operations scheduled for the domain."
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.domainState")
+    lastActionDateTime = optional(string)
+    operation          = optional(string)
+    status             = optional(string)
+  })
+  default = null
 }
 
 variable "supported_services" {

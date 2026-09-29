@@ -48,7 +48,7 @@ variable "odata_type" {
 
 variable "page_layout" {
   description = "The name of the page layout of the page. The possible values are: microsoftReserved, article, home, unknownFutureValue, newsLink. Use the Prefer: include-unknown-enum-members request header to get the following members in this evolvable enum: newsLink."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -59,14 +59,22 @@ variable "page_layout" {
 
 variable "parent_reference" {
   description = "Parent information, if the item has a parent. Read-write."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.itemReference")
+    driveType  = optional(string)
+    shareId    = optional(string)
+    siteId     = optional(string)
+  })
+  default = null
 }
 
 variable "publishing_state" {
   description = "The publishing status and the MM.mm version of the page."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.publicationFacet")
+    checkedOutBy = optional(any)
+  })
+  default = null
 }
 
 variable "title" {
@@ -77,16 +85,58 @@ variable "title" {
 
 variable "title_area" {
   description = "The title area on the SharePoint page template."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.titleArea")
+    alternativeText      = optional(string)
+    enableGradientEffect = optional(bool)
+    imageWebUrl          = optional(string)
+    layout               = optional(string)
+    serverProcessedContent = optional(object({
+      odata_type = optional(string, "#microsoft.graph.serverProcessedContent")
+      componentDependencies = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.metaDataKeyStringPair")
+        key        = optional(string)
+        value      = optional(string)
+      })))
+      customMetadata = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.metaDataKeyValuePair")
+        key        = optional(string)
+        value      = optional(any)
+      })))
+      htmlStrings = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.metaDataKeyStringPair")
+        key        = optional(string)
+        value      = optional(string)
+      })))
+      imageSources = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.metaDataKeyStringPair")
+        key        = optional(string)
+        value      = optional(string)
+      })))
+      links = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.metaDataKeyStringPair")
+        key        = optional(string)
+        value      = optional(string)
+      })))
+      searchablePlainTexts = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.metaDataKeyStringPair")
+        key        = optional(string)
+        value      = optional(string)
+      })))
+    }))
+    showAuthor              = optional(bool)
+    showPublishedDate       = optional(bool)
+    showTextBlockAboveTitle = optional(bool)
+    textAboveTitle          = optional(string)
+    textAlignment           = optional(string)
+  })
+  default = null
 }
 
 variable "web_parts" {
   description = "The collection of web parts on the SharePoint page."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.webPart")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

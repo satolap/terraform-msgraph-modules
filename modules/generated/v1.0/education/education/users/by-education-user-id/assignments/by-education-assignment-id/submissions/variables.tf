@@ -29,12 +29,8 @@ variable "odata_type" {
 
 variable "outcomes" {
   description = "Microsoft Graph outcomes property."
-  type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.educationOutcome")
-    lastModifiedBy       = optional(any)
-    lastModifiedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "recipient" {

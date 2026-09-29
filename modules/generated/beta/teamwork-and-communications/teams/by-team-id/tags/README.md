@@ -29,7 +29,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `member_count` | `memberCount` | `number` | no | no |
 | `members` | `members` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamworkTagMember")       displayName = optional(string)       tenantId = optional(string)       userId = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `tag_type` | `tagType` | `any` | no | no |
+| `tag_type` | `tagType` | `string` | no | no |
 | `team_id_2` | `teamId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -48,7 +48,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- tagType: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

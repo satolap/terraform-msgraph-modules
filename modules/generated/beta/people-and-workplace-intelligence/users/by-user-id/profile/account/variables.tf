@@ -17,12 +17,12 @@ variable "age_group" {
 
 variable "allowed_audiences" {
   description = "The audiences that are able to see the values contained within the associated entity. The possible values are: me, family, contacts, groupMembers, organization, federatedOrganizations, everyone, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.allowed_audiences == null ? true : contains(["me", "family", "contacts", "groupMembers", "organization", "federatedOrganizations", "everyone", "unknownFutureValue"], var.allowed_audiences)
-    error_message = "allowed_audiences must be one of the documented enum values."
+    condition     = var.allowed_audiences == null ? true : try(alltrue([for value in split(",", var.allowed_audiences) : contains(["me", "family", "contacts", "groupmembers", "organization", "federatedorganizations", "everyone", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "allowed_audiences must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -46,14 +46,21 @@ variable "created_date_time" {
 
 variable "graph_source" {
   description = "Where the values within an entity originated if synced from another service."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.personDataSources")
+    type       = optional(list(string))
+  })
+  default = null
 }
 
 variable "inference" {
   description = "Contains inference detail if the entity is inferred by the creating or modifying application."
-  type        = any
-  default     = null
+  type = object({
+    odata_type              = optional(string, "#microsoft.graph.inferenceData")
+    confidenceScore         = optional(any)
+    userHasVerifiedAccuracy = optional(bool)
+  })
+  default = null
 }
 
 variable "is_searchable" {
@@ -83,14 +90,22 @@ variable "odata_type" {
 
 variable "origin_tenant_info" {
   description = "Contains the identifiers of the user and the origin tenant that provisioned the user. This property is populated when the user is invited as a guest to the host tenant."
-  type        = any
-  default     = null
+  type = object({
+    odata_type     = optional(string, "#microsoft.graph.originTenantInfo")
+    originTenantId = optional(string)
+    originUserId   = optional(string)
+  })
+  default = null
 }
 
 variable "preferred_language_tag" {
   description = "Contains the language that the user associated as preferred for their account."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.localeInfo")
+    displayName = optional(string)
+    locale      = optional(string)
+  })
+  default = null
 }
 
 variable "sources" {
@@ -106,7 +121,7 @@ variable "sources" {
 
 variable "user_persona" {
   description = "Represents the user's persona. The possible values are: unknown, externalMember, externalGuest, internalMember, internalGuest, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

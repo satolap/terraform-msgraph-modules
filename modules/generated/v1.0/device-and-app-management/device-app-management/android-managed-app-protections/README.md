@@ -85,7 +85,7 @@ Generation notes:
 
 - apps[].mobileAppIdentifier: polymorphic schema; accepts an untyped value
 - assignments[].target: polymorphic schema; accepts an untyped value
-- deploymentSummary: polymorphic schema; accepts an untyped value
+- deploymentSummary: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

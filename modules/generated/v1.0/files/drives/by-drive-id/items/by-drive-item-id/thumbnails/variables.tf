@@ -22,20 +22,41 @@ variable "drive_item_id" {
 
 variable "graph_source" {
   description = "A custom thumbnail image or the original image used to generate other thumbnails."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.thumbnail")
+    content      = optional(string)
+    height       = optional(number)
+    sourceItemId = optional(string)
+    url          = optional(string)
+    width        = optional(number)
+  })
+  default = null
 }
 
 variable "large" {
   description = "A 1920x1920 scaled thumbnail."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.thumbnail")
+    content      = optional(string)
+    height       = optional(number)
+    sourceItemId = optional(string)
+    url          = optional(string)
+    width        = optional(number)
+  })
+  default = null
 }
 
 variable "medium" {
   description = "A 176x176 scaled thumbnail."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.thumbnail")
+    content      = optional(string)
+    height       = optional(number)
+    sourceItemId = optional(string)
+    url          = optional(string)
+    width        = optional(number)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -47,8 +68,15 @@ variable "odata_type" {
 
 variable "small" {
   description = "A 48x48 cropped thumbnail."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.thumbnail")
+    content      = optional(string)
+    height       = optional(number)
+    sourceItemId = optional(string)
+    url          = optional(string)
+    width        = optional(number)
+  })
+  default = null
 }
 
 variable "additional_properties" {

@@ -42,8 +42,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- resourceRoleScopes[].role: polymorphic schema; accepts an untyped value
-- resourceRoleScopes[].scope: polymorphic schema; accepts an untyped value
+- resourceRoleScopes[].role: navigation property; accepts an untyped value
+- resourceRoleScopes[].scope: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

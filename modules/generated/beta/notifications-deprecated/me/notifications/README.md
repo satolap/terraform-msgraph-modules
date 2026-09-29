@@ -26,10 +26,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `expiration_date_time` | `expirationDateTime` | `string` | no | no |
 | `group_name` | `groupName` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `payload` | `payload` | `object({       odata_type = optional(string, "#microsoft.graph.payloadTypes")       rawContent = optional(string)       visualContent = optional(any)     })` | no | no |
-| `priority` | `priority` | `any` | no | no |
+| `payload` | `payload` | `object({       odata_type = optional(string, "#microsoft.graph.payloadTypes")       rawContent = optional(string)       visualContent = optional(object({       odata_type = optional(string, "#microsoft.graph.visualProperties")       body = optional(string)       title = optional(string)     }))     })` | no | no |
+| `priority` | `priority` | `string` | no | no |
 | `target_host_name` | `targetHostName` | `string` | no | no |
-| `target_policy` | `targetPolicy` | `any` | no | no |
+| `target_policy` | `targetPolicy` | `object({       odata_type = optional(string, "#microsoft.graph.targetPolicyEndpoints")       platformTypes = optional(list(string))     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -47,9 +47,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- payload.visualContent: polymorphic schema; accepts an untyped value
-- priority: polymorphic schema; accepts an untyped value
-- targetPolicy: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

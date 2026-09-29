@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `file_storage_container_id` | URL parameter `fileStorageContainer-id` | `string` | yes | no |
 | `share_point_group_id` | URL parameter `sharePointGroup-id` | `string` | yes | no |
-| `identity` | `identity` | `any` | no | no |
+| `identity` | `identity` | `object({       odata_type = optional(string, "#microsoft.graph.sharePointIdentitySet")       application = optional(any)       device = optional(any)       group = optional(any)       sharePointGroup = optional(object({       odata_type = optional(string, "#microsoft.graph.sharePointGroupIdentity")       displayName = optional(string)       id = optional(string)     }))       siteGroup = optional(object({       odata_type = optional(string, "#microsoft.graph.sharePointIdentity")       displayName = optional(string)       id = optional(string)       loginName = optional(string)     }))       siteUser = optional(object({       odata_type = optional(string, "#microsoft.graph.sharePointIdentity")       displayName = optional(string)       id = optional(string)       loginName = optional(string)     }))       user = optional(any)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -44,7 +44,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- identity: polymorphic schema; accepts an untyped value
+- identity.application: polymorphic schema; accepts an untyped value
+- identity.device: polymorphic schema; accepts an untyped value
+- identity.group: polymorphic schema; accepts an untyped value
+- identity.user: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

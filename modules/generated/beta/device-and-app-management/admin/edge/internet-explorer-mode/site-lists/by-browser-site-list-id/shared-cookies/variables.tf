@@ -36,20 +36,15 @@ variable "display_name" {
 variable "history" {
   description = "The history of modifications applied to the cookie."
   type = list(object({
-    odata_type   = optional(string, "#microsoft.graph.browserSharedCookieHistory")
-    comment      = optional(string)
-    displayName  = optional(string)
-    hostOnly     = optional(bool)
-    hostOrDomain = optional(string)
-    lastModifiedBy = optional(object({
-      odata_type  = optional(string, "#microsoft.graph.identitySet")
-      application = optional(any)
-      device      = optional(any)
-      user        = optional(any)
-    }))
+    odata_type        = optional(string, "#microsoft.graph.browserSharedCookieHistory")
+    comment           = optional(string)
+    displayName       = optional(string)
+    hostOnly          = optional(bool)
+    hostOrDomain      = optional(string)
+    lastModifiedBy    = optional(any)
     path              = optional(string)
     publishedDateTime = optional(string)
-    sourceEnvironment = optional(any)
+    sourceEnvironment = optional(string)
   }))
   default = null
 }
@@ -92,7 +87,7 @@ variable "path" {
 }
 
 variable "source_environment" {
-  description = "Microsoft Graph sourceEnvironment property."
+  description = "Specifies how the cookies are shared between Microsoft Edge and Internet Explorer"
   type        = string
   default     = null
 
@@ -103,7 +98,7 @@ variable "source_environment" {
 }
 
 variable "status" {
-  description = "Microsoft Graph status property."
+  description = "The status of the cookie"
   type        = string
   default     = null
 

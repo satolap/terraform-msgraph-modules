@@ -7,6 +7,7 @@ run "minimal_request" {
   variables {
     ediscovery_case_id   = "test-parent-id"
     ediscovery_search_id = "test-parent-id"
+    odata_type           = "#microsoft.graph.security.siteSource"
   }
 
   assert {
@@ -26,7 +27,13 @@ run "typed_request" {
   variables {
     ediscovery_case_id   = "test-parent-id"
     ediscovery_search_id = "test-parent-id"
+    odata_type           = "#microsoft.graph.security.siteSource"
     created_date_time    = "2026-01-01T00:00:00Z"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.security.siteSource")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -41,8 +48,8 @@ run "invalid_enum" {
   variables {
     ediscovery_case_id   = "test-parent-id"
     ediscovery_search_id = "test-parent-id"
-    hold_status          = "__graphmodules_invalid_enum__"
+    odata_type           = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.hold_status]
+  expect_failures = [var.odata_type]
 }

@@ -34,8 +34,12 @@ variable "page_template_id" {
 variable "odata_type" {
   description = "Microsoft Graph @odata.type property."
   type        = string
-  default     = "#microsoft.graph.webPart"
   nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.standardWebPart", "#microsoft.graph.textWebPart"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
 }
 
 variable "additional_properties" {

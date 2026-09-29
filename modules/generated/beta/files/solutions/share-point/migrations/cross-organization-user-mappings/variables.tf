@@ -1,7 +1,10 @@
 variable "deleted" {
   description = "Indicates that an identity mapping was deleted successfully."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.deleted")
+    state      = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -31,8 +34,11 @@ variable "target_user_identity" {
 
 variable "target_user_migration_data" {
   description = "Additional migration-specific data for the target user. Contains the email address for the user in the destination organization."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.sharePointIdentityMappingUserMigrationData")
+    email      = optional(string)
+  })
+  default = null
 }
 
 variable "user_type" {

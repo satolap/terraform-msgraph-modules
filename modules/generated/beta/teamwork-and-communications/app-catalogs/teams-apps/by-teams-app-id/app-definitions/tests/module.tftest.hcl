@@ -23,14 +23,20 @@ run "typed_request" {
   command = plan
 
   variables {
-    teams_app_id    = "test-parent-id"
-    azure_ad_app_id = "example"
-    dashboard_cards = [{}]
+    teams_app_id                = "test-parent-id"
+    allowed_installation_scopes = "team"
+    authorization               = { "clientAppId" = null }
+    dashboard_cards             = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["azureADAppId"]) == jsonencode("example")
-    error_message = "azureADAppId must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["allowedInstallationScopes"]) == jsonencode("team")
+    error_message = "allowedInstallationScopes must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["authorization"]) == jsonencode({ "@odata.type" = "#microsoft.graph.teamsAppAuthorization" })
+    error_message = "authorization must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -45,6 +51,31 @@ run "invalid_enum" {
   variables {
     teams_app_id                = "test-parent-id"
     allowed_installation_scopes = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.allowed_installation_scopes]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    teams_app_id                = "test-parent-id"
+    allowed_installation_scopes = "team, GroupChat"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["allowedInstallationScopes"] == "team, GroupChat"
+    error_message = "allowedInstallationScopes must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    teams_app_id                = "test-parent-id"
+    allowed_installation_scopes = "team,__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.allowed_installation_scopes]

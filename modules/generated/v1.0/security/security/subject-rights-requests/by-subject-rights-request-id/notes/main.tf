@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "author"          = var.author
-    "content"         = var.content
+    "content"         = (var.content == null ? null : { for key0, value0 in { "@odata.type" = var.content["odata_type"], "content" = var.content["content"], "contentType" = var.content["contentType"] } : key0 => value0 if value0 != null })
     "createdDateTime" = var.created_date_time
     "@odata.type"     = var.odata_type
   } : key => value if value != null }

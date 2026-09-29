@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     created_date_time                = "2026-01-01T00:00:00Z"
     install_feature_updates_optional = false
+    rollout_settings                 = { "offerEndDateTimeInUTC" = null }
     assignments                      = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["installFeatureUpdatesOptional"]) == jsonencode(false)
     error_message = "installFeatureUpdatesOptional must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["rolloutSettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.windowsUpdateRolloutSettings" })
+    error_message = "rolloutSettings must preserve typed values and omit nested nulls."
   }
 
   assert {

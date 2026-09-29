@@ -23,8 +23,12 @@ variable "created_date_time" {
 
 variable "error" {
   description = "Microsoft Graph error property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.managedTenants.graphAPIErrorDetails")
+    code       = optional(string)
+    message    = optional(string)
+  })
+  default = null
 }
 
 variable "last_action_by_user_id" {
@@ -66,10 +70,14 @@ variable "template_step_version" {
     createdByUserId = optional(string)
     createdDateTime = optional(string)
     deployments = optional(list(object({
-      odata_type          = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepDeployment")
-      createdByUserId     = optional(string)
-      createdDateTime     = optional(string)
-      error               = optional(any)
+      odata_type      = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepDeployment")
+      createdByUserId = optional(string)
+      createdDateTime = optional(string)
+      error = optional(object({
+        odata_type = optional(string, "#microsoft.graph.managedTenants.graphAPIErrorDetails")
+        code       = optional(string)
+        message    = optional(string)
+      }))
       lastActionByUserId  = optional(string)
       lastActionDateTime  = optional(string)
       status              = optional(string)

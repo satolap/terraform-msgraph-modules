@@ -31,6 +31,7 @@ run "typed_request" {
     completed_date_time = "2026-01-01T00:00:00Z"
     is_cancelled        = false
     execution_count     = 0
+    result              = { "content" = null }
   }
 
   assert {
@@ -46,6 +47,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["executionCount"]) == jsonencode(0)
     error_message = "executionCount must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["result"]) == jsonencode({ "@odata.type" = "#microsoft.graph.security.securityCopilot.evaluationResult" })
+    error_message = "result must preserve typed values and omit nested nulls."
   }
 }
 

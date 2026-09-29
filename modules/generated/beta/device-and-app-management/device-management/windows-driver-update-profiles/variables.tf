@@ -13,11 +13,7 @@ variable "assignments" {
   description = "The list of group assignments of the profile."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.windowsDriverUpdateProfileAssignment")
-    target = optional(object({
-      odata_type                                 = optional(string, "#microsoft.graph.deviceAndAppManagementAssignmentTarget")
-      deviceAndAppManagementAssignmentFilterId   = optional(string)
-      deviceAndAppManagementAssignmentFilterType = optional(string)
-    }))
+    target     = optional(any)
   }))
   default = null
 }
@@ -71,8 +67,12 @@ variable "driver_inventories" {
 
 variable "inventory_sync_status" {
   description = "Driver inventory sync status for this profile."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                 = optional(string, "#microsoft.graph.windowsDriverUpdateProfileInventorySyncStatus")
+    driverInventorySyncState   = optional(string)
+    lastSuccessfulSyncDateTime = optional(string)
+  })
+  default = null
 }
 
 variable "last_modified_date_time" {

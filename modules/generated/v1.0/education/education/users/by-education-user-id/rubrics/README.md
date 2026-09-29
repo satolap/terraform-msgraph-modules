@@ -24,12 +24,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `education_user_id` | URL parameter `educationUser-id` | `string` | yes | no |
-| `description` | `description` | `any` | no | no |
+| `description` | `description` | `object({       odata_type = optional(string, "#microsoft.graph.educationItemBody")       content = optional(string)       contentType = optional(string)     })` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `grading` | `grading` | `any` | no | no |
-| `levels` | `levels` | `list(object({       odata_type = optional(string, "#microsoft.graph.rubricLevel")       description = optional(any)       displayName = optional(string)       grading = optional(any)       levelId = optional(string)     }))` | no | no |
+| `levels` | `levels` | `list(object({       odata_type = optional(string, "#microsoft.graph.rubricLevel")       description = optional(object({       odata_type = optional(string, "#microsoft.graph.educationItemBody")       content = optional(string)       contentType = optional(string)     }))       displayName = optional(string)       grading = optional(any)       levelId = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `qualities` | `qualities` | `list(object({       odata_type = optional(string, "#microsoft.graph.rubricQuality")       criteria = optional(list(object({       odata_type = optional(string, "#microsoft.graph.rubricCriterion")       description = optional(any)     })))       description = optional(any)       displayName = optional(string)       qualityId = optional(string)       weight = optional(any)     }))` | no | no |
+| `qualities` | `qualities` | `list(object({       odata_type = optional(string, "#microsoft.graph.rubricQuality")       criteria = optional(list(object({       odata_type = optional(string, "#microsoft.graph.rubricCriterion")       description = optional(object({       odata_type = optional(string, "#microsoft.graph.educationItemBody")       content = optional(string)       contentType = optional(string)     }))     })))       description = optional(object({       odata_type = optional(string, "#microsoft.graph.educationItemBody")       content = optional(string)       contentType = optional(string)     }))       displayName = optional(string)       qualityId = optional(string)       weight = optional(any)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -46,12 +46,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- description: polymorphic schema; accepts an untyped value
 - grading: polymorphic schema; accepts an untyped value
-- levels[].description: polymorphic schema; accepts an untyped value
 - levels[].grading: polymorphic schema; accepts an untyped value
-- qualities[].criteria[].description: polymorphic schema; accepts an untyped value
-- qualities[].description: polymorphic schema; accepts an untyped value
 - qualities[].weight: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

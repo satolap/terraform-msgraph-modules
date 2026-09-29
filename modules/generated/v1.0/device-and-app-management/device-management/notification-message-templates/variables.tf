@@ -4,8 +4,8 @@ variable "branding_options" {
   default     = null
 
   validation {
-    condition     = var.branding_options == null ? true : contains(["none", "includeCompanyLogo", "includeCompanyName", "includeContactInformation", "includeCompanyPortalLink", "includeDeviceDetails", "unknownFutureValue"], var.branding_options)
-    error_message = "branding_options must be one of the documented enum values."
+    condition     = var.branding_options == null ? true : try(alltrue([for value in split(",", var.branding_options) : contains(["none", "includecompanylogo", "includecompanyname", "includecontactinformation", "includecompanyportallink", "includedevicedetails", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "branding_options must be one or more of the documented enum values, separated by commas."
   }
 }
 

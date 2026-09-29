@@ -24,8 +24,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `education_class_id` | URL parameter `educationClass-id` | `string` | yes | no |
-| `add_to_calendar_action` | `addToCalendarAction` | `any` | no | no |
-| `added_student_action` | `addedStudentAction` | `any` | no | no |
+| `add_to_calendar_action` | `addToCalendarAction` | `string` | no | no |
+| `added_student_action` | `addedStudentAction` | `string` | no | no |
 | `allow_late_submissions` | `allowLateSubmissions` | `bool` | no | no |
 | `allow_students_to_add_resources_to_submission` | `allowStudentsToAddResourcesToSubmission` | `bool` | no | no |
 | `assign_to` | `assignTo` | `any` | no | no |
@@ -36,7 +36,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `grading` | `grading` | `any` | no | no |
 | `grading_category` | `gradingCategory` | `any` | no | no |
 | `grading_scheme` | `gradingScheme` | `any` | no | no |
-| `instructions` | `instructions` | `any` | no | no |
+| `instructions` | `instructions` | `object({       odata_type = optional(string, "#microsoft.graph.educationItemBody")       content = optional(string)       contentType = optional(string)     })` | no | no |
 | `language_tag` | `languageTag` | `string` | no | no |
 | `module_url` | `moduleUrl` | `string` | no | no |
 | `notification_channel_url` | `notificationChannelUrl` | `string` | no | no |
@@ -60,16 +60,13 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- addToCalendarAction: polymorphic schema; accepts an untyped value
-- addedStudentAction: polymorphic schema; accepts an untyped value
 - assignTo: polymorphic schema; accepts an untyped value
 - grading: polymorphic schema; accepts an untyped value
-- gradingCategory: polymorphic schema; accepts an untyped value
-- gradingScheme: polymorphic schema; accepts an untyped value
-- instructions: polymorphic schema; accepts an untyped value
+- gradingCategory: navigation property; accepts an untyped value
+- gradingScheme: navigation property; accepts an untyped value
 - resources[].dependentResources[]: recursive schema; accepts an untyped value
 - resources[].resource: polymorphic schema; accepts an untyped value
-- rubric: polymorphic schema; accepts an untyped value
+- rubric: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

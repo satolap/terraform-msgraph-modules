@@ -49,13 +49,8 @@ variable "organizer_v2" {
 
 variable "participants" {
   description = "List of distinct identities involved in the call. Limited to 130 entries. The participants property is deprecated and will stop returning data on June 30, 2026. Going forward, use the participants_v2 relationship."
-  type = list(object({
-    odata_type  = optional(string, "#microsoft.graph.identitySet")
-    application = optional(any)
-    device      = optional(any)
-    user        = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "participants_v2" {
@@ -66,7 +61,20 @@ variable "participants_v2" {
       odata_type = optional(string, "#microsoft.graph.callRecords.administrativeUnitInfo")
       id         = optional(string)
     })))
-    identity = optional(any)
+    identity = optional(object({
+      odata_type                     = optional(string, "#microsoft.graph.communicationsIdentitySet")
+      application                    = optional(any)
+      applicationInstance            = optional(any)
+      assertedIdentity               = optional(any)
+      azureCommunicationServicesUser = optional(any)
+      device                         = optional(any)
+      encrypted                      = optional(any)
+      endpointType                   = optional(string)
+      guest                          = optional(any)
+      onPremises                     = optional(any)
+      phone                          = optional(any)
+      user                           = optional(any)
+    }))
   }))
   default = null
 }

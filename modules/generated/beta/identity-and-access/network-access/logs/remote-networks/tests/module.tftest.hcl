@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "example"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "networkAccess/logs/remoteNetworks"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,8 +23,14 @@ run "typed_request" {
   command = plan
 
   variables {
+    odata_type                  = "example"
     created_date_time           = "2026-01-01T00:00:00Z"
     bgp_routes_advertised_count = -2147483648
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("example")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -38,7 +48,8 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    status = "__graphmodules_invalid_enum__"
+    odata_type = "example"
+    status     = "__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.status]

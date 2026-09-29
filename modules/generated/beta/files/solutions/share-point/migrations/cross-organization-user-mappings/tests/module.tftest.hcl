@@ -20,11 +20,17 @@ run "typed_request" {
 
   variables {
     source_organization_id = "00000000-0000-0000-0000-000000000001"
+    deleted                = { "state" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["sourceOrganizationId"]) == jsonencode("00000000-0000-0000-0000-000000000001")
     error_message = "sourceOrganizationId must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["deleted"]) == jsonencode({ "@odata.type" = "#microsoft.graph.deleted" })
+    error_message = "deleted must preserve typed values and omit nested nulls."
   }
 }
 

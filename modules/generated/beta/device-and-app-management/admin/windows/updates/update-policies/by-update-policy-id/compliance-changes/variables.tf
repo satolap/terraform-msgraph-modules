@@ -9,6 +9,17 @@ variable "update_policy_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.windowsUpdates.contentApproval"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "created_date_time" {
   description = "The date and time when a compliance change was created."
   type        = string
@@ -19,13 +30,6 @@ variable "is_revoked" {
   description = "True indicates that a compliance change is revoked, preventing further application. Revoking a compliance change is a final action."
   type        = bool
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.windowsUpdates.complianceChange"
-  nullable    = false
 }
 
 variable "revoked_date_time" {

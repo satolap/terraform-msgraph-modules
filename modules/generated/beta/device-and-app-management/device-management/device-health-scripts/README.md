@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceHealthScriptAssignment")       runRemediationScript = optional(bool)       runSchedule = optional(any)       target = optional(any)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `detection_script_content` | `detectionScriptContent` | `string` | no | no |
-| `detection_script_parameters` | `detectionScriptParameters` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceHealthScriptParameter")       applyDefaultValueWhenNotAssigned = optional(bool)       description = optional(string)       isRequired = optional(bool)       name = optional(string)     }))` | no | no |
+| `detection_script_parameters` | `detectionScriptParameters` | `any` | no | no |
 | `device_health_script_type` | `deviceHealthScriptType` | `string` | no | no |
 | `device_run_states` | `deviceRunStates` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceHealthScriptDeviceState")       assignmentFilterIds = optional(list(string))       detectionState = optional(string)       expectedStateUpdateDateTime = optional(string)       lastStateUpdateDateTime = optional(string)       lastSyncDateTime = optional(string)       managedDevice = optional(any)       postRemediationDetectionScriptError = optional(string)       postRemediationDetectionScriptOutput = optional(string)       preRemediationDetectionScriptError = optional(string)       preRemediationDetectionScriptOutput = optional(string)       remediationScriptError = optional(string)       remediationState = optional(string)     }))` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
@@ -35,7 +35,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `publisher` | `publisher` | `string` | no | no |
 | `remediation_script_content` | `remediationScriptContent` | `string` | no | no |
-| `remediation_script_parameters` | `remediationScriptParameters` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceHealthScriptParameter")       applyDefaultValueWhenNotAssigned = optional(bool)       description = optional(string)       isRequired = optional(bool)       name = optional(string)     }))` | no | no |
+| `remediation_script_parameters` | `remediationScriptParameters` | `any` | no | no |
 | `role_scope_tag_ids` | `roleScopeTagIds` | `list(string)` | no | no |
 | `run_as32_bit` | `runAs32Bit` | `bool` | no | no |
 | `run_as_account` | `runAsAccount` | `string` | no | no |
@@ -59,8 +59,10 @@ Generation notes:
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].runSchedule: polymorphic schema; accepts an untyped value
 - assignments[].target: polymorphic schema; accepts an untyped value
+- detectionScriptParameters[]: polymorphic schema; accepts an untyped value
 - deviceRunStates[].managedDevice: polymorphic schema; accepts an untyped value
-- runSummary: polymorphic schema; accepts an untyped value
+- remediationScriptParameters[]: polymorphic schema; accepts an untyped value
+- runSummary: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

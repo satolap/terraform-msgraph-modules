@@ -43,3 +43,26 @@ run "invalid_enum" {
 
   expect_failures = [var.assignable_to]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    assignable_to = "none, User"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["assignableTo"] == "none, User"
+    error_message = "assignableTo must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    assignable_to = "none,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.assignable_to]
+}

@@ -34,7 +34,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `last_modified_by` | `lastModifiedBy` | `string` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `origin` | `origin` | `any` | no | no |
+| `origin` | `origin` | `object({       odata_type = optional(string, "#microsoft.graph.security.caseManagement.attachmentOrigin")       resourceId = optional(string)       resourceType = optional(string)     })` | no | no |
 | `scan_result` | `scanResult` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -53,7 +53,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- origin: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

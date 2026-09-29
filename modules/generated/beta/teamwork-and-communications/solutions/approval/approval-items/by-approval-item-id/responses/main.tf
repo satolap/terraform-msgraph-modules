@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "comments"    = var.comments
-    "createdBy"   = var.created_by
+    "createdBy"   = (var.created_by == null ? null : { for key0, value0 in { "@odata.type" = var.created_by["odata_type"], "application" = var.created_by["application"], "device" = var.created_by["device"], "group" = var.created_by["group"], "user" = var.created_by["user"] } : key0 => value0 if value0 != null })
     "@odata.type" = var.odata_type
     "response"    = var.response
   } : key => value if value != null }

@@ -26,9 +26,9 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `site_id` | URL parameter `site-id` | `string` | yes | no |
 | `page_template_id` | URL parameter `pageTemplate-id` | `string` | yes | no |
-| `columns` | `columns` | `list(object({       odata_type = optional(string, "#microsoft.graph.horizontalSectionColumn")       webparts = optional(list(object({       odata_type = optional(string, "#microsoft.graph.webPart")     })))       width = optional(number)     }))` | no | no |
-| `emphasis` | `emphasis` | `any` | no | no |
-| `layout` | `layout` | `any` | no | no |
+| `columns` | `columns` | `list(object({       odata_type = optional(string, "#microsoft.graph.horizontalSectionColumn")       webparts = optional(any)       width = optional(number)     }))` | no | no |
+| `emphasis` | `emphasis` | `string` | no | no |
+| `layout` | `layout` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -47,8 +47,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- emphasis: polymorphic schema; accepts an untyped value
-- layout: polymorphic schema; accepts an untyped value
+- columns[].webparts[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

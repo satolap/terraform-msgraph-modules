@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "#microsoft.graph.emailFileAssessmentRequest"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "me/informationProtection/threatAssessmentRequests"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,7 +23,13 @@ run "typed_request" {
   command = plan
 
   variables {
-    category = "undefined"
+    odata_type = "#microsoft.graph.emailFileAssessmentRequest"
+    category   = "undefined"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.emailFileAssessmentRequest")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -32,8 +42,8 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    category = "__graphmodules_invalid_enum__"
+    odata_type = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.category]
+  expect_failures = [var.odata_type]
 }

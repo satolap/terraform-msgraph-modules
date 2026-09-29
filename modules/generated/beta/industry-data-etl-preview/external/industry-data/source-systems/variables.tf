@@ -14,8 +14,19 @@ variable "odata_type" {
 variable "user_matching_settings" {
   description = "A collection of user matching settings by roleGroup."
   type = list(object({
-    odata_type    = optional(string, "#microsoft.graph.industryData.userMatchingSetting")
-    matchTarget   = optional(any)
+    odata_type = optional(string, "#microsoft.graph.industryData.userMatchingSetting")
+    matchTarget = optional(object({
+      odata_type = optional(string, "#microsoft.graph.industryData.userMatchTargetReferenceValue")
+      code       = optional(string)
+      value = optional(object({
+        odata_type    = optional(string, "#microsoft.graph.industryData.referenceDefinition")
+        code          = optional(string)
+        displayName   = optional(string)
+        isDisabled    = optional(bool)
+        referenceType = optional(string)
+        sortIndex     = optional(number)
+      }))
+    }))
     priorityOrder = optional(number)
     roleGroup = optional(object({
       odata_type  = optional(string, "#microsoft.graph.industryData.roleGroup")

@@ -39,16 +39,20 @@ variable "body" {
   type = object({
     odata_type             = optional(string, "#microsoft.graph.chatMessageBody")
     content                = optional(string)
-    contentType            = optional(any)
-    messageBodyContentType = optional(any)
+    contentType            = optional(string)
+    messageBodyContentType = optional(string)
   })
   default = null
 }
 
 variable "channel_identity" {
   description = "If the message was sent in a channel, represents identity of the channel."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.channelIdentity")
+    channelId  = optional(string)
+    teamId     = optional(string)
+  })
+  default = null
 }
 
 variable "chat_id_2" {
@@ -65,8 +69,13 @@ variable "created_date_time" {
 
 variable "from" {
   description = "Details of the sender of the chat message. Can only be set during migration."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.chatMessageFromIdentitySet")
+    application = optional(any)
+    device      = optional(any)
+    user        = optional(any)
+  })
+  default = null
 }
 
 variable "has_replies" {
@@ -108,7 +117,23 @@ variable "mentions" {
     odata_type  = optional(string, "#microsoft.graph.chatMessageMention")
     id          = optional(number)
     mentionText = optional(string)
-    mentioned   = optional(any)
+    mentioned = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.chatMessageMentionedIdentitySet")
+      application = optional(any)
+      conversation = optional(object({
+        odata_type               = optional(string, "#microsoft.graph.teamworkConversationIdentity")
+        conversationIdentityType = optional(string)
+        displayName              = optional(string)
+        id                       = optional(string)
+      }))
+      device = optional(any)
+      tag = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.teamworkTagIdentity")
+        displayName = optional(string)
+        id          = optional(string)
+      }))
+      user = optional(any)
+    }))
   }))
   default = null
 }
@@ -119,7 +144,19 @@ variable "message_history" {
     odata_type       = optional(string, "#microsoft.graph.chatMessageHistoryItem")
     actions          = optional(string)
     modifiedDateTime = optional(string)
-    reaction         = optional(any)
+    reaction = optional(object({
+      odata_type         = optional(string, "#microsoft.graph.chatMessageReaction")
+      createdDateTime    = optional(string)
+      displayName        = optional(string)
+      reactionContentUrl = optional(string)
+      reactionType       = optional(string)
+      user = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.chatMessageReactionIdentitySet")
+        application = optional(any)
+        device      = optional(any)
+        user        = optional(any)
+      }))
+    }))
   }))
   default = null
 }
@@ -144,14 +181,31 @@ variable "odata_type" {
 
 variable "on_behalf_of" {
   description = "User attribution of the message when bot sends a message on behalf of a user."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.chatMessageFromIdentitySet")
+    application = optional(any)
+    device      = optional(any)
+    user        = optional(any)
+  })
+  default = null
 }
 
 variable "policy_violation" {
   description = "Defines the properties of a policy violation set by a data loss prevention (DLP) application."
-  type        = any
-  default     = null
+  type = object({
+    odata_type        = optional(string, "#microsoft.graph.chatMessagePolicyViolation")
+    dlpAction         = optional(string)
+    justificationText = optional(string)
+    policyTip = optional(object({
+      odata_type                   = optional(string, "#microsoft.graph.chatMessagePolicyViolationPolicyTip")
+      complianceUrl                = optional(string)
+      generalText                  = optional(string)
+      matchedConditionDescriptions = optional(list(string))
+    }))
+    userAction     = optional(string)
+    verdictDetails = optional(string)
+  })
+  default = null
 }
 
 variable "reactions" {
@@ -180,68 +234,8 @@ variable "recipient" {
 
 variable "replies" {
   description = "Replies for a specified message. Supports $expand for channel messages."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.chatMessage")
-    attachments = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.chatMessageAttachment")
-      content      = optional(string)
-      contentType  = optional(string)
-      contentUrl   = optional(string)
-      name         = optional(string)
-      teamsAppId   = optional(string)
-      thumbnailUrl = optional(string)
-    })))
-    body = optional(object({
-      odata_type             = optional(string, "#microsoft.graph.chatMessageBody")
-      content                = optional(string)
-      contentType            = optional(any)
-      messageBodyContentType = optional(any)
-    }))
-    channelIdentity = optional(any)
-    chatId          = optional(string)
-    createdDateTime = optional(string)
-    from            = optional(any)
-    hasReplies      = optional(bool)
-    hostedContents = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.chatMessageHostedContent")
-      contentBytes = optional(string)
-      contentType  = optional(string)
-    })))
-    importance = optional(string)
-    locale     = optional(string)
-    mentions = optional(list(object({
-      odata_type  = optional(string, "#microsoft.graph.chatMessageMention")
-      id          = optional(number)
-      mentionText = optional(string)
-      mentioned   = optional(any)
-    })))
-    messageHistory = optional(list(object({
-      odata_type       = optional(string, "#microsoft.graph.chatMessageHistoryItem")
-      actions          = optional(string)
-      modifiedDateTime = optional(string)
-      reaction         = optional(any)
-    })))
-    messageType     = optional(string)
-    onBehalfOf      = optional(any)
-    policyViolation = optional(any)
-    reactions = optional(list(object({
-      odata_type         = optional(string, "#microsoft.graph.chatMessageReaction")
-      createdDateTime    = optional(string)
-      displayName        = optional(string)
-      reactionContentUrl = optional(string)
-      reactionType       = optional(string)
-      user = optional(object({
-        odata_type  = optional(string, "#microsoft.graph.chatMessageReactionIdentitySet")
-        application = optional(any)
-        device      = optional(any)
-        user        = optional(any)
-      }))
-    })))
-    replies = optional(any)
-    subject = optional(string)
-    summary = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "subject" {

@@ -22,19 +22,19 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `allowed_audiences` | `allowedAudiences` | `any` | no | no |
+| `allowed_audiences` | `allowedAudiences` | `string` | no | no |
 | `categories` | `categories` | `list(string)` | no | no |
-| `colleagues` | `colleagues` | `list(object({       odata_type = optional(string, "#microsoft.graph.relatedPerson")       displayName = optional(string)       relationship = optional(any)       userId = optional(string)       userPrincipalName = optional(string)     }))` | no | no |
+| `colleagues` | `colleagues` | `list(object({       odata_type = optional(string, "#microsoft.graph.relatedPerson")       displayName = optional(string)       relationship = optional(string)       userId = optional(string)       userPrincipalName = optional(string)     }))` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `detail` | `detail` | `any` | no | no |
-| `graph_source` | `source` | `any` | no | no |
-| `inference` | `inference` | `any` | no | no |
+| `detail` | `detail` | `object({       odata_type = optional(string, "#microsoft.graph.positionDetail")       company = optional(object({       odata_type = optional(string, "#microsoft.graph.companyDetail")       address = optional(object({       odata_type = optional(string, "#microsoft.graph.physicalAddress")       city = optional(string)       countryOrRegion = optional(string)       postOfficeBox = optional(string)       postalCode = optional(string)       state = optional(string)       street = optional(string)       type = optional(string)     }))       companyCode = optional(string)       costCenter = optional(string)       department = optional(string)       displayName = optional(string)       division = optional(string)       officeLocation = optional(string)       pronunciation = optional(string)       secondaryDepartment = optional(string)       webUrl = optional(string)     }))       description = optional(string)       employeeId = optional(string)       employeeType = optional(string)       endMonthYear = optional(string)       jobTitle = optional(string)       layer = optional(number)       level = optional(string)       role = optional(string)       secondaryJobTitle = optional(string)       secondaryRole = optional(string)       startMonthYear = optional(string)       summary = optional(string)     })` | no | no |
+| `graph_source` | `source` | `object({       odata_type = optional(string, "#microsoft.graph.personDataSources")       type = optional(list(string))     })` | no | no |
+| `inference` | `inference` | `object({       odata_type = optional(string, "#microsoft.graph.inferenceData")       confidenceScore = optional(any)       userHasVerifiedAccuracy = optional(bool)     })` | no | no |
 | `is_current` | `isCurrent` | `bool` | no | no |
 | `is_searchable` | `isSearchable` | `bool` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `manager` | `manager` | `any` | no | no |
+| `manager` | `manager` | `object({       odata_type = optional(string, "#microsoft.graph.relatedPerson")       displayName = optional(string)       relationship = optional(string)       userId = optional(string)       userPrincipalName = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `sources` | `sources` | `list(object({       odata_type = optional(string, "#microsoft.graph.profileSourceAnnotation")       isDefaultSource = optional(bool)       properties = optional(list(string))       sourceId = optional(string)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -54,14 +54,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- allowedAudiences: polymorphic schema; accepts an untyped value
-- colleagues[].relationship: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- detail: polymorphic schema; accepts an untyped value
-- inference: polymorphic schema; accepts an untyped value
+- inference.confidenceScore: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- manager: polymorphic schema; accepts an untyped value
-- source: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

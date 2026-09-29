@@ -11,8 +11,19 @@ variable "teams_app_id" {
 
 variable "authorization" {
   description = "Authorization requirements specified in the Teams app manifest."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.teamsAppAuthorization")
+    clientAppId = optional(string)
+    requiredPermissionSet = optional(object({
+      odata_type = optional(string, "#microsoft.graph.teamsAppPermissionSet")
+      resourceSpecificPermissions = optional(list(object({
+        odata_type      = optional(string, "#microsoft.graph.teamsAppResourceSpecificPermission")
+        permissionType  = optional(string)
+        permissionValue = optional(string)
+      })))
+    }))
+  })
+  default = null
 }
 
 variable "bot" {
@@ -60,7 +71,7 @@ variable "odata_type" {
 
 variable "publishing_state" {
   description = "The published status of a specific version of a Teams app. The possible values are:submitted—The specific version of the Teams app was submitted and is under review.published—The request to publish the specific version of the Teams app was approved by the admin and the app is published.rejected—The admin rejected the request to publish the specific version of the Teams app."
-  type        = any
+  type        = string
   default     = null
 
   validation {

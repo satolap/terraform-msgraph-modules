@@ -7,7 +7,7 @@ locals {
     "isCancelled"          = var.is_cancelled
     "lastModifiedDateTime" = var.last_modified_date_time
     "@odata.type"          = var.odata_type
-    "result"               = var.result
+    "result"               = (var.result == null ? null : { for key0, value0 in { "@odata.type" = var.result["odata_type"], "content" = var.result["content"], "previewState" = var.result["previewState"], "type" = var.result["type"] } : key0 => value0 if value0 != null })
     "runStartDateTime"     = var.run_start_date_time
     "state"                = var.state
   } : key => value if value != null }

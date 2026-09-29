@@ -3,7 +3,7 @@ locals {
   typed_body = { for key, value in {
     "content"               = var.content
     "createdDateTime"       = var.created_date_time
-    "evaluations"           = (var.evaluations == null ? null : [for item0 in var.evaluations : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "completedDateTime" = item0["completedDateTime"], "createdDateTime" = item0["createdDateTime"], "executionCount" = item0["executionCount"], "isCancelled" = item0["isCancelled"], "lastModifiedDateTime" = item0["lastModifiedDateTime"], "result" = item0["result"], "runStartDateTime" = item0["runStartDateTime"], "state" = item0["state"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "evaluations"           = (var.evaluations == null ? null : [for item0 in var.evaluations : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "completedDateTime" = item0["completedDateTime"], "createdDateTime" = item0["createdDateTime"], "executionCount" = item0["executionCount"], "isCancelled" = item0["isCancelled"], "lastModifiedDateTime" = item0["lastModifiedDateTime"], "result" = (item0["result"] == null ? null : { for key2, value2 in { "@odata.type" = item0["result"]["odata_type"], "content" = item0["result"]["content"], "previewState" = item0["result"]["previewState"], "type" = item0["result"]["type"] } : key2 => value2 if value2 != null }), "runStartDateTime" = item0["runStartDateTime"], "state" = item0["state"] } : key1 => value1 if value1 != null }) if item0 != null])
     "inputs"                = var.inputs
     "lastModifiedDateTime"  = var.last_modified_date_time
     "@odata.type"           = var.odata_type

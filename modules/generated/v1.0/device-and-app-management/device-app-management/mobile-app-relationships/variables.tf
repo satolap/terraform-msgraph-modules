@@ -1,7 +1,6 @@
 variable "odata_type" {
   description = "Microsoft Graph @odata.type property."
   type        = string
-  default     = "#microsoft.graph.mobileAppRelationship"
   nullable    = false
 }
 

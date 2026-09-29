@@ -77,7 +77,7 @@ variable "other_properties" {
 
 variable "processing_status" {
   description = "Microsoft Graph processingStatus property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -100,12 +100,12 @@ variable "size" {
 
 variable "source_type" {
   description = "Microsoft Graph sourceType property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.source_type == null ? true : contains(["mailbox", "site", "unknownFutureValue"], var.source_type)
-    error_message = "source_type must be one of the documented enum values."
+    condition     = var.source_type == null ? true : try(alltrue([for value in split(",", var.source_type) : contains(["mailbox", "site", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "source_type must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -119,7 +119,7 @@ variable "tags" {
   description = "Tags associated with the file."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.security.ediscoveryReviewTag")
-    childSelectability   = optional(any)
+    childSelectability   = optional(string)
     childTags            = optional(any)
     createdBy            = optional(any)
     description          = optional(string)

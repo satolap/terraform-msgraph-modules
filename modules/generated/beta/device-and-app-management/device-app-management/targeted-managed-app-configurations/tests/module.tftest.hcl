@@ -55,3 +55,26 @@ run "invalid_enum" {
 
   expect_failures = [var.app_group_type]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    targeted_app_management_levels = "unspecified, Unmanaged"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["targetedAppManagementLevels"] == "unspecified, Unmanaged"
+    error_message = "targetedAppManagementLevels must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    targeted_app_management_levels = "unspecified,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.targeted_app_management_levels]
+}

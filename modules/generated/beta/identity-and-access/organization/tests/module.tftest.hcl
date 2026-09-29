@@ -19,9 +19,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    city                     = "example"
-    on_premises_sync_enabled = false
-    assigned_plans           = [{}]
+    city                          = "example"
+    on_premises_sync_enabled      = false
+    certificate_connector_setting = { "certExpiryTime" = null }
+    assigned_plans                = [{}]
   }
 
   assert {
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["onPremisesSyncEnabled"]) == jsonencode(false)
     error_message = "onPremisesSyncEnabled must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["certificateConnectorSetting"]) == jsonencode({ "@odata.type" = "#microsoft.graph.certificateConnectorSetting" })
+    error_message = "certificateConnectorSetting must preserve typed values and omit nested nulls."
   }
 
   assert {

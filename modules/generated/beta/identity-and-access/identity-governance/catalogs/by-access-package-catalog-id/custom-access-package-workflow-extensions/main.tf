@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "authenticationConfiguration" = var.authentication_configuration
-    "clientConfiguration"         = var.client_configuration
+    "clientConfiguration"         = (var.client_configuration == null ? null : { for key0, value0 in { "@odata.type" = var.client_configuration["odata_type"], "maximumRetries" = var.client_configuration["maximumRetries"], "timeoutInMilliseconds" = var.client_configuration["timeoutInMilliseconds"] } : key0 => value0 if value0 != null })
     "description"                 = var.description
     "displayName"                 = var.display_name
     "endpointConfiguration"       = var.endpoint_configuration

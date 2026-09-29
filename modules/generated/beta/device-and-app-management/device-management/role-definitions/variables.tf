@@ -45,16 +45,8 @@ variable "permissions" {
 
 variable "role_assignments" {
   description = "List of Role assignments for this role definition."
-  type = list(object({
-    odata_type     = optional(string, "#microsoft.graph.roleAssignment")
-    description    = optional(string)
-    displayName    = optional(string)
-    resourceScopes = optional(list(string))
-    roleDefinition = optional(any)
-    scopeMembers   = optional(list(string))
-    scopeType      = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "role_permissions" {

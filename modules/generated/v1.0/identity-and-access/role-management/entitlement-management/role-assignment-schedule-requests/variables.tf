@@ -1,6 +1,6 @@
 variable "action" {
   description = "Represents the type of the operation on the role assignment request. The possible values are: adminAssign, adminUpdate, adminRemove, selfActivate, selfDeactivate, adminExtend, adminRenew, selfExtend, selfRenew, unknownFutureValue. adminAssign: For administrators to assign roles to principals.adminRemove: For administrators to remove principals from roles. adminUpdate: For administrators to change existing role assignments.adminExtend: For administrators to extend expiring assignments.adminRenew: For administrators to renew expired assignments.selfActivate: For principals to activate their assignments.selfDeactivate: For principals to deactivate their active assignments.selfExtend: For principals to request to extend their expiring assignments.selfRenew: For principals to request to renew their expired assignments."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -102,8 +102,38 @@ variable "role_definition_id" {
 
 variable "schedule_info" {
   description = "The period of the role assignment. Recurring schedules are currently unsupported."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.requestSchedule")
+    expiration = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.expirationPattern")
+      duration    = optional(string)
+      endDateTime = optional(string)
+      type        = optional(string)
+    }))
+    recurrence = optional(object({
+      odata_type = optional(string, "#microsoft.graph.patternedRecurrence")
+      pattern = optional(object({
+        odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+        dayOfMonth     = optional(number)
+        daysOfWeek     = optional(list(string))
+        firstDayOfWeek = optional(string)
+        index          = optional(string)
+        interval       = optional(number)
+        month          = optional(number)
+        type           = optional(string)
+      }))
+      range = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.recurrenceRange")
+        endDate             = optional(string)
+        numberOfOccurrences = optional(number)
+        recurrenceTimeZone  = optional(string)
+        startDate           = optional(string)
+        type                = optional(string)
+      }))
+    }))
+    startDateTime = optional(string)
+  })
+  default = null
 }
 
 variable "status" {
@@ -126,8 +156,12 @@ variable "target_schedule_id" {
 
 variable "ticket_info" {
   description = "Ticket details linked to the role assignment request including details of the ticket number and ticket system."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.ticketInfo")
+    ticketNumber = optional(string)
+    ticketSystem = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

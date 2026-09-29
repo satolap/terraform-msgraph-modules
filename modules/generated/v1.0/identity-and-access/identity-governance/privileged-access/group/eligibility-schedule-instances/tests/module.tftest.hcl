@@ -19,12 +19,12 @@ run "typed_request" {
   command = plan
 
   variables {
-    eligibility_schedule_id = "example"
+    access_id = "owner"
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["eligibilityScheduleId"]) == jsonencode("example")
-    error_message = "eligibilityScheduleId must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["accessId"]) == jsonencode("owner")
+    error_message = "accessId must preserve typed values and omit nested nulls."
   }
 }
 

@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     closed_date_time     = "2026-01-01T00:00:00Z"
     include_all_versions = false
+    data_subject         = { "email" = null }
     approvers            = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["includeAllVersions"]) == jsonencode(false)
     error_message = "includeAllVersions must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["dataSubject"]) == jsonencode({ "@odata.type" = "#microsoft.graph.dataSubject" })
+    error_message = "dataSubject must preserve typed values and omit nested nulls."
   }
 
   assert {

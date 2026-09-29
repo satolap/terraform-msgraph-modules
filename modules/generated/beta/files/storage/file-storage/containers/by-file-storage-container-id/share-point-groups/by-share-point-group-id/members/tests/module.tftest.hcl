@@ -19,3 +19,18 @@ run "minimal_request" {
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
+
+run "typed_request" {
+  command = plan
+
+  variables {
+    file_storage_container_id = "test-parent-id"
+    share_point_group_id      = "test-parent-id"
+    identity                  = { "application" = null }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["identity"]) == jsonencode({ "@odata.type" = "#microsoft.graph.sharePointIdentitySet" })
+    error_message = "identity must preserve typed values and omit nested nulls."
+  }
+}

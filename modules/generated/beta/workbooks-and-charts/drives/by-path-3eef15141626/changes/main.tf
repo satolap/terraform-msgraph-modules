@@ -1,7 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "assignee"        = var.assignee
+    "assignee"        = (var.assignee == null ? null : { for key0, value0 in { "@odata.type" = var.assignee["odata_type"], "displayName" = var.assignee["displayName"], "email" = var.assignee["email"], "id" = var.assignee["id"] } : key0 => value0 if value0 != null })
     "changedBy"       = (var.changed_by == null ? null : { for key0, value0 in { "@odata.type" = var.changed_by["odata_type"], "displayName" = var.changed_by["displayName"], "email" = var.changed_by["email"], "id" = var.changed_by["id"] } : key0 => value0 if value0 != null })
     "commentId"       = var.comment_id
     "createdDateTime" = var.created_date_time

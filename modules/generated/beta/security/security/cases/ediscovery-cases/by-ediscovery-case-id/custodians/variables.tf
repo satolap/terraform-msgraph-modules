@@ -35,7 +35,7 @@ variable "email" {
 
 variable "hold_status" {
   description = "The hold status of the dataSourceContainer. The possible values are: notApplied, applied, applying, removing, partial"
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -76,7 +76,7 @@ variable "site_sources" {
     createdBy       = optional(any)
     createdDateTime = optional(string)
     displayName     = optional(string)
-    holdStatus      = optional(any)
+    holdStatus      = optional(string)
     site = optional(object({
       odata_type = optional(string, "#microsoft.graph.site")
       analytics  = optional(any)
@@ -116,7 +116,7 @@ variable "site_sources" {
       })))
       contentModels = optional(list(object({
         odata_type = optional(string, "#microsoft.graph.contentModel")
-        modelType  = optional(any)
+        modelType  = optional(string)
         name       = optional(string)
       })))
       contentTypes = optional(list(object({
@@ -142,13 +142,16 @@ variable "site_sources" {
         sealed             = optional(bool)
       })))
       createdByUser = optional(any)
-      deleted       = optional(any)
-      description   = optional(string)
+      deleted = optional(object({
+        odata_type = optional(string, "#microsoft.graph.deleted")
+        state      = optional(string)
+      }))
+      description = optional(string)
       documentProcessingJobs = optional(list(object({
         odata_type       = optional(string, "#microsoft.graph.documentProcessingJob")
-        jobType          = optional(any)
+        jobType          = optional(string)
         listItemUniqueId = optional(string)
-        status           = optional(any)
+        status           = optional(string)
       })))
       drive = optional(any)
       drives = optional(list(object({
@@ -163,9 +166,7 @@ variable "site_sources" {
         parentReference    = optional(any)
         sharePointIds      = optional(any)
       })))
-      extensions = optional(list(object({
-        odata_type = optional(string, "#microsoft.graph.extension")
-      })))
+      extensions = optional(any)
       externalColumns = optional(list(object({
         odata_type            = optional(string, "#microsoft.graph.columnDefinition")
         boolean               = optional(any)
@@ -202,15 +203,8 @@ variable "site_sources" {
       })))
       informationProtection = optional(any)
       isPersonalSite        = optional(bool)
-      items = optional(list(object({
-        odata_type         = optional(string, "#microsoft.graph.baseItem")
-        createdByUser      = optional(any)
-        description        = optional(string)
-        lastModifiedByUser = optional(any)
-        name               = optional(string)
-        parentReference    = optional(any)
-      })))
-      lastModifiedByUser = optional(any)
+      items                 = optional(any)
+      lastModifiedByUser    = optional(any)
       lists = optional(list(object({
         odata_type         = optional(string, "#microsoft.graph.list")
         activities         = optional(any)
@@ -229,7 +223,7 @@ variable "site_sources" {
         subscriptions      = optional(any)
       })))
       locale    = optional(string)
-      lockState = optional(any)
+      lockState = optional(string)
       name      = optional(string)
       onenote   = optional(any)
       operations = optional(list(object({
@@ -240,11 +234,16 @@ variable "site_sources" {
         percentageComplete = optional(number)
         resourceId         = optional(string)
         resourceLocation   = optional(string)
-        status             = optional(any)
+        status             = optional(string)
         statusDetail       = optional(string)
         type               = optional(string)
       })))
-      ownerIdentityToResolve = optional(any)
+      ownerIdentityToResolve = optional(object({
+        odata_type = optional(string, "#microsoft.graph.identityInput")
+        alias      = optional(string)
+        email      = optional(string)
+        objectId   = optional(string)
+      }))
       pageTemplates = optional(list(object({
         odata_type         = optional(string, "#microsoft.graph.pageTemplate")
         canvasLayout       = optional(any)
@@ -252,25 +251,20 @@ variable "site_sources" {
         description        = optional(string)
         lastModifiedByUser = optional(any)
         name               = optional(string)
-        pageLayout         = optional(any)
+        pageLayout         = optional(string)
         parentReference    = optional(any)
         publishingState    = optional(any)
         title              = optional(string)
         titleArea          = optional(any)
         webParts           = optional(any)
       })))
-      pages = optional(list(object({
-        odata_type         = optional(string, "#microsoft.graph.baseSitePage")
-        createdByUser      = optional(any)
-        description        = optional(string)
-        lastModifiedByUser = optional(any)
-        name               = optional(string)
-        pageLayout         = optional(any)
-        parentReference    = optional(any)
-        publishingState    = optional(any)
-        title              = optional(string)
-      })))
-      parentReference = optional(any)
+      pages = optional(any)
+      parentReference = optional(object({
+        odata_type = optional(string, "#microsoft.graph.itemReference")
+        driveType  = optional(string)
+        shareId    = optional(string)
+        siteId     = optional(string)
+      }))
       permissions = optional(list(object({
         odata_type         = optional(string, "#microsoft.graph.permission")
         expirationDateTime = optional(string)
@@ -278,7 +272,7 @@ variable "site_sources" {
       recycleBin          = optional(any)
       shareByEmailEnabled = optional(bool)
       sites               = optional(any)
-      template            = optional(any)
+      template            = optional(string)
       termStore           = optional(any)
     }))
   }))
@@ -287,7 +281,7 @@ variable "site_sources" {
 
 variable "status" {
   description = "Latest status of the dataSourceContainer. The possible values are: Active, Released."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -304,12 +298,9 @@ variable "unified_group_sources" {
     createdDateTime = optional(string)
     displayName     = optional(string)
     group = optional(object({
-      odata_type = optional(string, "#microsoft.graph.group")
-      acceptedSenders = optional(list(object({
-        odata_type      = optional(string, "#microsoft.graph.directoryObject")
-        deletedDateTime = optional(string)
-      })))
-      accessType           = optional(any)
+      odata_type           = optional(string, "#microsoft.graph.group")
+      acceptedSenders      = optional(any)
+      accessType           = optional(string)
       allowExternalSenders = optional(bool)
       appRoleAssignments = optional(list(object({
         odata_type          = optional(string, "#microsoft.graph.appRoleAssignment")
@@ -325,7 +316,11 @@ variable "unified_group_sources" {
       })))
       autoSubscribeNewMembers = optional(bool)
       classification          = optional(string)
-      cloudLicensing          = optional(any)
+      cloudLicensing = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.cloudLicensing.groupCloudLicensing")
+        assignments = optional(any)
+        usageRights = optional(any)
+      }))
       conversations = optional(list(object({
         odata_type            = optional(string, "#microsoft.graph.conversation")
         hasAttachments        = optional(bool)
@@ -351,7 +346,7 @@ variable "unified_group_sources" {
         extensions                 = optional(any)
         hasAttachments             = optional(bool)
         hideAttendees              = optional(bool)
-        importance                 = optional(any)
+        importance                 = optional(string)
         isAllDay                   = optional(bool)
         isCancelled                = optional(bool)
         isDraft                    = optional(bool)
@@ -362,7 +357,7 @@ variable "unified_group_sources" {
         location                   = optional(any)
         locations                  = optional(any)
         occurrenceId               = optional(string)
-        onlineMeetingProvider      = optional(any)
+        onlineMeetingProvider      = optional(string)
         organizer                  = optional(any)
         originalEndTimeZone        = optional(string)
         originalStart              = optional(string)
@@ -371,32 +366,46 @@ variable "unified_group_sources" {
         reminderMinutesBeforeStart = optional(number)
         responseRequested          = optional(bool)
         responseStatus             = optional(any)
-        sensitivity                = optional(any)
+        sensitivity                = optional(string)
         seriesMasterId             = optional(string)
-        showAs                     = optional(any)
+        showAs                     = optional(string)
         start                      = optional(any)
         subject                    = optional(string)
         transactionId              = optional(string)
         uid                        = optional(string)
         webLink                    = optional(string)
       })))
-      groupTypes                  = optional(list(string))
-      hasMembersWithLicenseErrors = optional(bool)
-      hideFromAddressLists        = optional(bool)
-      hideFromOutlookClients      = optional(bool)
-      infoCatalogs                = optional(list(string))
-      isAssignableToRole          = optional(bool)
-      isFavorite                  = optional(bool)
-      isSubscribedByMail          = optional(bool)
-      mailEnabled                 = optional(bool)
-      mailNickname                = optional(string)
-      members = optional(list(object({
-        odata_type      = optional(string, "#microsoft.graph.directoryObject")
-        deletedDateTime = optional(string)
-      })))
+      groupTypes                    = optional(list(string))
+      hasMembersWithLicenseErrors   = optional(bool)
+      hideFromAddressLists          = optional(bool)
+      hideFromOutlookClients        = optional(bool)
+      infoCatalogs                  = optional(list(string))
+      isAssignableToRole            = optional(bool)
+      isFavorite                    = optional(bool)
+      isSubscribedByMail            = optional(bool)
+      mailEnabled                   = optional(bool)
+      mailNickname                  = optional(string)
+      members                       = optional(any)
       membershipRule                = optional(string)
       membershipRuleProcessingState = optional(string)
-      onPremisesExtensionAttributes = optional(any)
+      onPremisesExtensionAttributes = optional(object({
+        odata_type           = optional(string, "#microsoft.graph.onPremisesExtensionAttributes")
+        extensionAttribute1  = optional(string)
+        extensionAttribute10 = optional(string)
+        extensionAttribute11 = optional(string)
+        extensionAttribute12 = optional(string)
+        extensionAttribute13 = optional(string)
+        extensionAttribute14 = optional(string)
+        extensionAttribute15 = optional(string)
+        extensionAttribute2  = optional(string)
+        extensionAttribute3  = optional(string)
+        extensionAttribute4  = optional(string)
+        extensionAttribute5  = optional(string)
+        extensionAttribute6  = optional(string)
+        extensionAttribute7  = optional(string)
+        extensionAttribute8  = optional(string)
+        extensionAttribute9  = optional(string)
+      }))
       onPremisesProvisioningErrors = optional(list(object({
         odata_type           = optional(string, "#microsoft.graph.onPremisesProvisioningError")
         category             = optional(string)
@@ -407,30 +416,19 @@ variable "unified_group_sources" {
       onPremisesSyncBehavior = optional(any)
       onenote                = optional(any)
       organizationId         = optional(string)
-      owners = optional(list(object({
-        odata_type      = optional(string, "#microsoft.graph.directoryObject")
-        deletedDateTime = optional(string)
-      })))
+      owners                 = optional(any)
       permissionGrants = optional(list(object({
         odata_type      = optional(string, "#microsoft.graph.resourceSpecificPermissionGrant")
         deletedDateTime = optional(string)
       })))
-      photo                 = optional(any)
-      preferredDataLocation = optional(string)
-      preferredLanguage     = optional(string)
-      rejectedSenders = optional(list(object({
-        odata_type      = optional(string, "#microsoft.graph.directoryObject")
-        deletedDateTime = optional(string)
-      })))
+      photo                       = optional(any)
+      preferredDataLocation       = optional(string)
+      preferredLanguage           = optional(string)
+      rejectedSenders             = optional(any)
       resourceBehaviorOptions     = optional(list(string))
       resourceProvisioningOptions = optional(list(string))
       securityEnabled             = optional(bool)
-      serviceProvisioningErrors = optional(list(object({
-        odata_type      = optional(string, "#microsoft.graph.serviceProvisioningError")
-        createdDateTime = optional(string)
-        isResolved      = optional(bool)
-        serviceInstance = optional(string)
-      })))
+      serviceProvisioningErrors   = optional(any)
       settings = optional(list(object({
         odata_type = optional(string, "#microsoft.graph.directorySetting")
         values     = optional(any)
@@ -455,7 +453,7 @@ variable "unified_group_sources" {
         lastModifiedByUser     = optional(any)
         lists                  = optional(any)
         locale                 = optional(string)
-        lockState              = optional(any)
+        lockState              = optional(string)
         name                   = optional(string)
         onenote                = optional(any)
         operations             = optional(any)
@@ -467,7 +465,7 @@ variable "unified_group_sources" {
         recycleBin             = optional(any)
         shareByEmailEnabled    = optional(bool)
         sites                  = optional(any)
-        template               = optional(any)
+        template               = optional(string)
         termStore              = optional(any)
       })))
       team  = optional(any)
@@ -484,23 +482,21 @@ variable "unified_group_sources" {
         topic                 = optional(string)
         uniqueSenders         = optional(any)
       })))
-      transitiveMemberOf = optional(list(object({
-        odata_type      = optional(string, "#microsoft.graph.directoryObject")
-        deletedDateTime = optional(string)
-      })))
-      transitiveMembers = optional(list(object({
-        odata_type      = optional(string, "#microsoft.graph.directoryObject")
-        deletedDateTime = optional(string)
-      })))
+      transitiveMemberOf       = optional(any)
+      transitiveMembers        = optional(any)
       unseenConversationsCount = optional(number)
       unseenCount              = optional(number)
       unseenMessagesCount      = optional(number)
       visibility               = optional(string)
       welcomeMessageEnabled    = optional(bool)
-      writebackConfiguration   = optional(any)
+      writebackConfiguration = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.groupWritebackConfiguration")
+        isEnabled           = optional(bool)
+        onPremisesGroupType = optional(string)
+      }))
     }))
-    holdStatus      = optional(any)
-    includedSources = optional(any)
+    holdStatus      = optional(string)
+    includedSources = optional(string)
   }))
   default = null
 }
@@ -513,8 +509,8 @@ variable "user_sources" {
     createdDateTime = optional(string)
     displayName     = optional(string)
     email           = optional(string)
-    holdStatus      = optional(any)
-    includedSources = optional(any)
+    holdStatus      = optional(string)
+    includedSources = optional(string)
   }))
   default = null
 }

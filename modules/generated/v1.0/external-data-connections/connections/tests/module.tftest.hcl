@@ -19,13 +19,19 @@ run "typed_request" {
   command = plan
 
   variables {
-    connector_id = "example"
-    groups       = [{}]
+    connector_id      = "example"
+    activity_settings = { "urlToItemResolvers" = null }
+    groups            = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["connectorId"]) == jsonencode("example")
     error_message = "connectorId must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["activitySettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.externalConnectors.activitySettings" })
+    error_message = "activitySettings must preserve typed values and omit nested nulls."
   }
 
   assert {

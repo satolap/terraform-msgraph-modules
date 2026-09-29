@@ -15,6 +15,7 @@ module "graph_resource" {
   source = "./teamwork-and-communications/teamwork/by-path-d8b3461bca58/members"
   team_template_id = "parent-object-id"
   team_template_definition_id = "parent-object-id"
+  odata_type = "#microsoft.graph.aadUserConversationMember"
 }
 ```
 
@@ -26,13 +27,13 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `team_template_id` | URL parameter `teamTemplate-id` | `string` | yes | no |
 | `team_template_definition_id` | URL parameter `teamTemplateDefinition-id` | `string` | yes | no |
+| `odata_type` | `@odata.type` | `string` | yes | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
 | `roles` | `roles` | `list(string)` | no | no |
 | `visible_history_start_date_time` | `visibleHistoryStartDateTime` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
-Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.
 
 Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
@@ -46,6 +47,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- @odata.type: microsoft.graph.conversationMember is abstract; odata_type has no default and must name a concrete type
 - Microsoft Graph beta contracts can change without notice.
 
 ## Licensing and prerequisites

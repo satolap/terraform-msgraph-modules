@@ -23,13 +23,13 @@ run "typed_request" {
   command = plan
 
   variables {
-    site_id             = "test-parent-id"
-    list_item_unique_id = "example"
+    site_id  = "test-parent-id"
+    job_type = "file"
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["listItemUniqueId"]) == jsonencode("example")
-    error_message = "listItemUniqueId must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["jobType"]) == jsonencode("file")
+    error_message = "jobType must preserve typed values and omit nested nulls."
   }
 }
 

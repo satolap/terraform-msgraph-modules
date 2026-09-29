@@ -23,7 +23,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `error` | `error` | `any` | no | no |
+| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.onenoteOperationError")       code = optional(string)       message = optional(string)     })` | no | no |
 | `last_action_date_time` | `lastActionDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `percent_complete` | `percentComplete` | `string` | no | no |
@@ -46,7 +46,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- error: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `teams_app_id` | URL parameter `teamsApp-id` | `string` | yes | no |
-| `authorization` | `authorization` | `any` | no | no |
+| `authorization` | `authorization` | `object({       odata_type = optional(string, "#microsoft.graph.teamsAppAuthorization")       clientAppId = optional(string)       requiredPermissionSet = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsAppPermissionSet")       resourceSpecificPermissions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsAppResourceSpecificPermission")       permissionType = optional(string)       permissionValue = optional(string)     })))     }))     })` | no | no |
 | `bot` | `bot` | `any` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `description` | `description` | `string` | no | no |
@@ -32,7 +32,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `graph_version` | `version` | `string` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `publishing_state` | `publishingState` | `any` | no | no |
+| `publishing_state` | `publishingState` | `string` | no | no |
 | `short_description` | `shortDescription` | `string` | no | no |
 | `teams_app_id_2` | `teamsAppId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -51,10 +51,8 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- authorization: polymorphic schema; accepts an untyped value
-- bot: polymorphic schema; accepts an untyped value
+- bot: navigation property; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- publishingState: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -11,7 +11,7 @@ variable "activation_state" {
 
 variable "assignment_category" {
   description = "Contains the assignment category such as Primary or Private. The possible values are: primary, private, alternate, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -22,7 +22,7 @@ variable "assignment_category" {
 
 variable "assignment_status" {
   description = "The assignment status of the phone number. The possible values are: unassigned, internalError, userAssigned, conferenceAssigned, voiceApplicationAssigned, thirdPartyAppAssigned, policyAssigned, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -75,7 +75,7 @@ variable "network_site_id" {
 
 variable "number_source" {
   description = "The source of the phone number. online is used for phone numbers assigned in Microsoft 365, and onPremises is used for phone numbers assigned in AD on-premises, which are synchronized into Microsoft 365. The possible values are: online, onPremises, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -110,7 +110,7 @@ variable "operator_id" {
 
 variable "port_in_status" {
   description = "The status of any port in order covering the phone number. The possible values are: completed, firmOrderCommitmentAccepted, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

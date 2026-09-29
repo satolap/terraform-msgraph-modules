@@ -37,7 +37,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `next_version_definition` | `nextVersionDefinition` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `policy_type` | `policyType` | `string` | no | no |
-| `presentations` | `presentations` | `list(object({       odata_type = optional(string, "#microsoft.graph.groupPolicyPresentation")       definition = optional(any)       label = optional(string)       lastModifiedDateTime = optional(string)     }))` | no | no |
+| `presentations` | `presentations` | `any` | no | no |
 | `previous_version_definition` | `previousVersionDefinition` | `any` | no | no |
 | `supported_on` | `supportedOn` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -57,11 +57,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- category: polymorphic schema; accepts an untyped value
+- category: navigation property; accepts an untyped value
 - definitionFile: polymorphic schema; accepts an untyped value
-- nextVersionDefinition: polymorphic schema; accepts an untyped value
-- presentations[].definition: polymorphic schema; accepts an untyped value
-- previousVersionDefinition: polymorphic schema; accepts an untyped value
+- nextVersionDefinition: navigation property; accepts an untyped value
+- presentations[]: polymorphic schema; accepts an untyped value
+- previousVersionDefinition: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

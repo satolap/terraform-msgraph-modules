@@ -20,12 +20,18 @@ run "typed_request" {
 
   variables {
     call_chain_id        = "example"
+    chat_info            = { "messageId" = null }
     audio_routing_groups = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["callChainId"]) == jsonencode("example")
     error_message = "callChainId must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["chatInfo"]) == jsonencode({ "@odata.type" = "#microsoft.graph.chatInfo" })
+    error_message = "chatInfo must preserve typed values and omit nested nulls."
   }
 
   assert {

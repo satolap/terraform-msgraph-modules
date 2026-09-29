@@ -6,7 +6,7 @@ locals {
     "appId"                   = var.app_id
     "@odata.type"             = var.odata_type
     "signInCount"             = var.sign_in_count
-    "status"                  = var.status
+    "status"                  = (var.status == null ? null : { for key0, value0 in { "@odata.type" = var.status["odata_type"], "additionalDetails" = var.status["additionalDetails"], "errorCode" = var.status["errorCode"], "failureReason" = var.status["failureReason"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

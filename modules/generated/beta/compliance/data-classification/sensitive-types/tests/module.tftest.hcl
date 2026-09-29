@@ -19,12 +19,12 @@ run "typed_request" {
   command = plan
 
   variables {
-    description = "example"
+    classification_method = "patternMatch"
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["description"]) == jsonencode("example")
-    error_message = "description must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["classificationMethod"]) == jsonencode("patternMatch")
+    error_message = "classificationMethod must preserve typed values and omit nested nulls."
   }
 }
 
@@ -36,4 +36,27 @@ run "invalid_enum" {
   }
 
   expect_failures = [var.classification_method]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    scope = "fullDocument, PartialDocument"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["scope"] == "fullDocument, PartialDocument"
+    error_message = "scope must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    scope = "fullDocument,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.scope]
 }

@@ -18,7 +18,7 @@ variable "created_date_time" {
 
 variable "decisions" {
   description = "Determines which review decisions will be included in the fetched review history data if specified. Optional on create. All decisions are included by default if no decisions are provided on create. The possible values are: approve, deny, dontKnow, notReviewed, and notNotified."
-  type        = any
+  type        = list(string)
   default     = null
 }
 
@@ -38,7 +38,7 @@ variable "instances" {
     reviewHistoryPeriodEndDateTime   = optional(string)
     reviewHistoryPeriodStartDateTime = optional(string)
     runDateTime                      = optional(string)
-    status                           = optional(any)
+    status                           = optional(string)
   }))
   default = null
 }
@@ -64,21 +64,43 @@ variable "review_history_period_start_date_time" {
 
 variable "schedule_settings" {
   description = "The settings for a recurring access review history definition series. Only required if reviewHistoryPeriodStartDateTime or reviewHistoryPeriodEndDateTime aren't defined. Not supported yet."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.accessReviewHistoryScheduleSettings")
+    recurrence = optional(object({
+      odata_type = optional(string, "#microsoft.graph.patternedRecurrence")
+      pattern = optional(object({
+        odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+        dayOfMonth     = optional(number)
+        daysOfWeek     = optional(list(string))
+        firstDayOfWeek = optional(string)
+        index          = optional(string)
+        interval       = optional(number)
+        month          = optional(number)
+        type           = optional(string)
+      }))
+      range = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.recurrenceRange")
+        endDate             = optional(string)
+        numberOfOccurrences = optional(number)
+        recurrenceTimeZone  = optional(string)
+        startDate           = optional(string)
+        type                = optional(string)
+      }))
+    }))
+    reportRange = optional(string)
+  })
+  default = null
 }
 
 variable "scopes" {
   description = "Used to scope what reviews are included in the fetched history data. Fetches reviews whose scope matches with this provided scope. Required."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.accessReviewScope")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "status" {
   description = "Represents the status of the review history data collection. The possible values are: done, inProgress, error, requested, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -29,16 +29,16 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `drive_item_id` | URL parameter `driveItem-id` | `string` | yes | no |
 | `workbook_worksheet_id` | URL parameter `workbookWorksheet-id` | `string` | yes | no |
 | `assignees` | `assignees` | `list(object({       odata_type = optional(string, "#microsoft.graph.workbookEmailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     }))` | no | no |
-| `changes` | `changes` | `list(object({       odata_type = optional(string, "#microsoft.graph.workbookDocumentTaskChange")       assignee = optional(any)       changedBy = optional(object({       odata_type = optional(string, "#microsoft.graph.workbookEmailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     }))       commentId = optional(string)       createdDateTime = optional(string)       dueDateTime = optional(string)       percentComplete = optional(number)       priority = optional(number)       startDateTime = optional(string)       title = optional(string)       type = optional(string)       undoChangeId = optional(string)     }))` | no | no |
+| `changes` | `changes` | `list(object({       odata_type = optional(string, "#microsoft.graph.workbookDocumentTaskChange")       assignee = optional(object({       odata_type = optional(string, "#microsoft.graph.workbookEmailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     }))       changedBy = optional(object({       odata_type = optional(string, "#microsoft.graph.workbookEmailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     }))       commentId = optional(string)       createdDateTime = optional(string)       dueDateTime = optional(string)       percentComplete = optional(number)       priority = optional(number)       startDateTime = optional(string)       title = optional(string)       type = optional(string)       undoChangeId = optional(string)     }))` | no | no |
 | `comment` | `comment` | `any` | no | no |
-| `completed_by` | `completedBy` | `any` | no | no |
+| `completed_by` | `completedBy` | `object({       odata_type = optional(string, "#microsoft.graph.workbookEmailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     })` | no | no |
 | `completed_date_time` | `completedDateTime` | `string` | no | no |
-| `created_by` | `createdBy` | `any` | no | no |
+| `created_by` | `createdBy` | `object({       odata_type = optional(string, "#microsoft.graph.workbookEmailIdentity")       displayName = optional(string)       email = optional(string)       id = optional(string)     })` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `percent_complete` | `percentComplete` | `number` | no | no |
 | `priority` | `priority` | `number` | no | no |
-| `start_and_due_date_time` | `startAndDueDateTime` | `any` | no | no |
+| `start_and_due_date_time` | `startAndDueDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.workbookDocumentTaskSchedule")       dueDateTime = optional(string)       startDateTime = optional(string)     })` | no | no |
 | `title` | `title` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -57,11 +57,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- changes[].assignee: polymorphic schema; accepts an untyped value
-- comment: polymorphic schema; accepts an untyped value
-- completedBy: polymorphic schema; accepts an untyped value
-- createdBy: polymorphic schema; accepts an untyped value
-- startAndDueDateTime: polymorphic schema; accepts an untyped value
+- comment: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

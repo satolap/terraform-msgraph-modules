@@ -22,13 +22,13 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `advanced_bit_locker_states` | `advancedBitLockerStates` | `any` | no | no |
+| `advanced_bit_locker_states` | `advancedBitLockerStates` | `string` | no | no |
 | `device_name` | `deviceName` | `string` | no | no |
 | `device_type` | `deviceType` | `string` | no | no |
 | `encryption_policy_setting_state` | `encryptionPolicySettingState` | `string` | no | no |
 | `encryption_readiness_state` | `encryptionReadinessState` | `string` | no | no |
 | `encryption_state` | `encryptionState` | `string` | no | no |
-| `file_vault_states` | `fileVaultStates` | `any` | no | no |
+| `file_vault_states` | `fileVaultStates` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `os_version` | `osVersion` | `string` | no | no |
 | `policy_details` | `policyDetails` | `list(object({       odata_type = optional(string, "#microsoft.graph.encryptionReportPolicyDetails")       policyId = optional(string)       policyName = optional(string)     }))` | no | no |
@@ -51,8 +51,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- advancedBitLockerStates: polymorphic schema; accepts an untyped value
-- fileVaultStates: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

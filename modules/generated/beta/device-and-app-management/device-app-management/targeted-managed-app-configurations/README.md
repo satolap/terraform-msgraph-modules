@@ -36,7 +36,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `role_scope_tag_ids` | `roleScopeTagIds` | `list(string)` | no | no |
-| `settings` | `settings` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSetting")       settingInstance = optional(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingInstance")       settingDefinitionId = optional(string)       settingInstanceTemplateReference = optional(any)     }))     }))` | no | no |
+| `settings` | `settings` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSetting")       settingInstance = optional(any)     }))` | no | no |
 | `targeted_app_management_levels` | `targetedAppManagementLevels` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -57,8 +57,8 @@ Generation notes:
 - Microsoft Graph beta contracts can change without notice.
 - apps[].mobileAppIdentifier: polymorphic schema; accepts an untyped value
 - assignments[].target: polymorphic schema; accepts an untyped value
-- deploymentSummary: polymorphic schema; accepts an untyped value
-- settings[].settingInstance.settingInstanceTemplateReference: polymorphic schema; accepts an untyped value
+- deploymentSummary: navigation property; accepts an untyped value
+- settings[].settingInstance: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -35,7 +35,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `principal_id` | `principalId` | `string` | no | no |
 | `role_definition` | `roleDefinition` | `any` | no | no |
 | `role_definition_id` | `roleDefinitionId` | `string` | no | no |
-| `schedule_info` | `scheduleInfo` | `any` | no | no |
+| `schedule_info` | `scheduleInfo` | `object({       odata_type = optional(string, "#microsoft.graph.requestSchedule")       expiration = optional(object({       odata_type = optional(string, "#microsoft.graph.expirationPattern")       duration = optional(string)       endDateTime = optional(string)       type = optional(string)     }))       recurrence = optional(object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     }))       startDateTime = optional(string)     })` | no | no |
 | `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -54,10 +54,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- activatedUsing: polymorphic schema; accepts an untyped value
+- activatedUsing: navigation property; accepts an untyped value
 - principal: polymorphic schema; accepts an untyped value
-- roleDefinition: polymorphic schema; accepts an untyped value
-- scheduleInfo: polymorphic schema; accepts an untyped value
+- roleDefinition: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

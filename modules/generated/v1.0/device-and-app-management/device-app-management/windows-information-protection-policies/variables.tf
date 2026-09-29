@@ -21,8 +21,14 @@ variable "created_date_time" {
 
 variable "data_recovery_certificate" {
   description = "Specifies a recovery certificate that can be used for data recovery of encrypted files. This is the same as the data recovery agent(DRA) certificate for encrypting file system(EFS)"
-  type        = any
-  default     = null
+  type = object({
+    odata_type         = optional(string, "#microsoft.graph.windowsInformationProtectionDataRecoveryCertificate")
+    certificate        = optional(string)
+    description        = optional(string)
+    expirationDateTime = optional(string)
+    subjectName        = optional(string)
+  })
+  default = null
 }
 
 variable "days_without_contact_before_unenroll" {
@@ -75,9 +81,7 @@ variable "enterprise_ip_ranges" {
   type = list(object({
     odata_type  = optional(string, "#microsoft.graph.windowsInformationProtectionIPRangeCollection")
     displayName = optional(string)
-    ranges = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.ipRange")
-    })))
+    ranges      = optional(any)
   }))
   default = null
 }
@@ -152,15 +156,8 @@ variable "exempt_app_locker_files" {
 
 variable "exempt_apps" {
   description = "Exempt applications can also access enterprise data, but the data handled by those applications are not protected. This is because some critical enterprise applications may have compatibility problems with encrypted data."
-  type = list(object({
-    odata_type    = optional(string, "#microsoft.graph.windowsInformationProtectionApp")
-    denied        = optional(bool)
-    description   = optional(string)
-    displayName   = optional(string)
-    productName   = optional(string)
-    publisherName = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "graph_version" {
@@ -294,15 +291,8 @@ variable "protected_app_locker_files" {
 
 variable "protected_apps" {
   description = "Protected applications can access enterprise data and the data handled by those applications are protected with encryption"
-  type = list(object({
-    odata_type    = optional(string, "#microsoft.graph.windowsInformationProtectionApp")
-    denied        = optional(bool)
-    description   = optional(string)
-    displayName   = optional(string)
-    productName   = optional(string)
-    publisherName = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "protection_under_lock_config_required" {

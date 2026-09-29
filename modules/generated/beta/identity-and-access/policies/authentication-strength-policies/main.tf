@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "allowedCombinations"       = (var.allowed_combinations == null ? null : [for item0 in var.allowed_combinations : item0 if item0 != null])
-    "combinationConfigurations" = (var.combination_configurations == null ? null : [for item0 in var.combination_configurations : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "appliesToCombinations" = (item0["appliesToCombinations"] == null ? null : [for item2 in item0["appliesToCombinations"] : item2 if item2 != null]) } : key1 => value1 if value1 != null }) if item0 != null])
+    "combinationConfigurations" = (var.combination_configurations == null ? null : [for item0 in var.combination_configurations : item0 if item0 != null])
     "createdDateTime"           = var.created_date_time
     "deletedDateTime"           = var.deleted_date_time
     "description"               = var.description

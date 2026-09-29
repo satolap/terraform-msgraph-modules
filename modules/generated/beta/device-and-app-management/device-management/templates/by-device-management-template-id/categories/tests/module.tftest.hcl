@@ -40,7 +40,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["recommendedSettings"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.deviceManagementSettingInstance" }])
+    condition     = jsonencode(msgraph_resource.this.body["recommendedSettings"]) == jsonencode([{}])
     error_message = "recommendedSettings must preserve typed values and omit nested nulls."
   }
 }

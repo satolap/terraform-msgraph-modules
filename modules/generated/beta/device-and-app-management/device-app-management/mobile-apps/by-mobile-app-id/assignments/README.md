@@ -24,7 +24,6 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `mobile_app_id` | URL parameter `mobileApp-id` | `string` | yes | no |
-| `graph_source` | `source` | `string` | no | no |
 | `intent` | `intent` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `settings` | `settings` | `any` | no | no |

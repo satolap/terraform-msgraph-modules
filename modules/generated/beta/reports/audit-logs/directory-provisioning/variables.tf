@@ -30,8 +30,13 @@ variable "duration_in_milliseconds" {
 
 variable "initiated_by" {
   description = "Details of who initiated this provisioning. Supports $filter (eq, contains)."
-  type        = any
-  default     = null
+  type = object({
+    odata_type    = optional(string, "#microsoft.graph.initiator")
+    displayName   = optional(string)
+    id            = optional(string)
+    initiatorType = optional(string)
+  })
+  default = null
 }
 
 variable "job_id" {
@@ -60,7 +65,7 @@ variable "odata_type" {
 
 variable "provisioning_action" {
   description = "Indicates the activity name or the operation name. The possible values are: create, update, delete, stageddelete, disable, other and unknownFutureValue. For a list of activities logged, refer to Microsoft Entra activity list. Supports $filter (eq, contains)."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -71,8 +76,19 @@ variable "provisioning_action" {
 
 variable "provisioning_status_info" {
   description = "Details of provisioning status. Supports $filter (eq, contains) for status."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.provisioningStatusInfo")
+    errorInformation = optional(object({
+      odata_type        = optional(string, "#microsoft.graph.provisioningErrorInfo")
+      additionalDetails = optional(string)
+      errorCategory     = optional(string)
+      errorCode         = optional(string)
+      reason            = optional(string)
+      recommendedAction = optional(string)
+    }))
+    status = optional(string)
+  })
+  default = null
 }
 
 variable "provisioning_steps" {
@@ -82,28 +98,43 @@ variable "provisioning_steps" {
     description          = optional(string)
     details              = optional(any)
     name                 = optional(string)
-    provisioningStepType = optional(any)
-    status               = optional(any)
+    provisioningStepType = optional(string)
+    status               = optional(string)
   }))
   default = null
 }
 
 variable "service_principal" {
   description = "Represents the service principal used for provisioning. Supports $filter (eq) for id and name."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.provisioningServicePrincipal")
+    displayName = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "source_identity" {
   description = "Details of source object being provisioned. Supports $filter (eq, contains) for identityType, id, and displayName."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.provisionedIdentity")
+    details      = optional(any)
+    displayName  = optional(string)
+    id           = optional(string)
+    identityType = optional(string)
+  })
+  default = null
 }
 
 variable "source_system" {
   description = "Details of source system of the object being provisioned. Supports $filter (eq, contains) for displayName."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.provisioningSystem")
+    details     = optional(any)
+    displayName = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "status_info" {
@@ -114,14 +145,25 @@ variable "status_info" {
 
 variable "target_identity" {
   description = "Details of target object being provisioned. Supports $filter (eq, contains) for identityType, id, and displayName."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.provisionedIdentity")
+    details      = optional(any)
+    displayName  = optional(string)
+    id           = optional(string)
+    identityType = optional(string)
+  })
+  default = null
 }
 
 variable "target_system" {
   description = "Details of target system of the object being provisioned. Supports $filter (eq, contains) for displayName."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.provisioningSystem")
+    details     = optional(any)
+    displayName = optional(string)
+    id          = optional(string)
+  })
+  default = null
 }
 
 variable "tenant_id" {

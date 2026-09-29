@@ -23,21 +23,21 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `activity` | `activity` | `any` | no | no |
-| `activity_state` | `activityState` | `any` | no | no |
+| `activity_state` | `activityState` | `string` | no | no |
 | `company_asset_tag` | `companyAssetTag` | `string` | no | no |
 | `configuration` | `configuration` | `any` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `current_user` | `currentUser` | `any` | no | no |
+| `current_user` | `currentUser` | `object({       odata_type = optional(string, "#microsoft.graph.teamworkUserIdentity")       displayName = optional(string)       id = optional(string)       userIdentityType = optional(string)       userPrincipalName = optional(string)     })` | no | no |
 | `device_type` | `deviceType` | `string` | no | no |
 | `hardware_detail` | `hardwareDetail` | `object({       odata_type = optional(string, "#microsoft.graph.teamworkHardwareDetail")       macAddresses = optional(list(string))       manufacturer = optional(string)       model = optional(string)       serialNumber = optional(string)       uniqueId = optional(string)     })` | no | no |
 | `health` | `health` | `any` | no | no |
-| `health_status` | `healthStatus` | `any` | no | no |
+| `health_status` | `healthStatus` | `string` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `notes` | `notes` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `operations` | `operations` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamworkDeviceOperation")       completedDateTime = optional(string)       createdBy = optional(any)       createdDateTime = optional(string)       error = optional(any)       lastActionBy = optional(any)       lastActionDateTime = optional(string)       operationType = optional(string)       startedDateTime = optional(string)       status = optional(string)     }))` | no | no |
+| `operations` | `operations` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamworkDeviceOperation")       completedDateTime = optional(string)       createdBy = optional(any)       createdDateTime = optional(string)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.operationError")       code = optional(string)       message = optional(string)     }))       lastActionBy = optional(any)       lastActionDateTime = optional(string)       operationType = optional(string)       startedDateTime = optional(string)       status = optional(string)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -55,16 +55,12 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- activity: polymorphic schema; accepts an untyped value
-- activityState: polymorphic schema; accepts an untyped value
-- configuration: polymorphic schema; accepts an untyped value
+- activity: navigation property; accepts an untyped value
+- configuration: navigation property; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- currentUser: polymorphic schema; accepts an untyped value
-- health: polymorphic schema; accepts an untyped value
-- healthStatus: polymorphic schema; accepts an untyped value
+- health: navigation property; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
 - operations[].createdBy: polymorphic schema; accepts an untyped value
-- operations[].error: polymorphic schema; accepts an untyped value
 - operations[].lastActionBy: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

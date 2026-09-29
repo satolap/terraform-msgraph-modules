@@ -22,7 +22,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `agent_setting` | `agentSetting` | `any` | no | no |
+| `agent_setting` | `agentSetting` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcExternalPartnerAgentSetting")       agentSha256 = optional(string)       agentUrl = optional(string)       autoDeploymentEnabled = optional(bool)       installParameters = optional(list(string))     })` | no | no |
 | `connection_status` | `connectionStatus` | `string` | no | no |
 | `enable_connection` | `enableConnection` | `bool` | no | no |
 | `last_sync_date_time` | `lastSyncDateTime` | `string` | no | no |
@@ -44,7 +44,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- agentSetting: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

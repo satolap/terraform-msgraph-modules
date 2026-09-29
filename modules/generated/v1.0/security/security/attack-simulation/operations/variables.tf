@@ -31,7 +31,7 @@ variable "resource_location" {
 
 variable "status" {
   description = "The status of the operation. The possible values are: notStarted, running, succeeded, failed, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -54,7 +54,7 @@ variable "tenant_id" {
 
 variable "type" {
   description = "The attack simulation operation type. The possible values are: createSimulation, updateSimulation, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

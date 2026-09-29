@@ -19,10 +19,8 @@ variable "odata_type" {
 
 variable "provisioning_flows" {
   description = "A flow that provisions relevant records of a given entity type in the Microsoft 365 tenant."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.industryData.provisioningFlow")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

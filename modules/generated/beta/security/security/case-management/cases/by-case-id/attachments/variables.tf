@@ -72,8 +72,12 @@ variable "odata_type" {
 
 variable "origin" {
   description = "The origin reference for the attachment."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.security.caseManagement.attachmentOrigin")
+    resourceId   = optional(string)
+    resourceType = optional(string)
+  })
+  default = null
 }
 
 variable "scan_result" {

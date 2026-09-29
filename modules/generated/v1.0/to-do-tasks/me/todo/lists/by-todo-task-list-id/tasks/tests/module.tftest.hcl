@@ -26,6 +26,7 @@ run "typed_request" {
     todo_task_list_id            = "test-parent-id"
     body_last_modified_date_time = "2026-01-01T00:00:00Z"
     has_attachments              = false
+    body                         = { "content" = null }
     attachment_sessions          = [{}]
   }
 
@@ -37,6 +38,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["hasAttachments"]) == jsonencode(false)
     error_message = "hasAttachments must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["body"]) == jsonencode({ "@odata.type" = "#microsoft.graph.itemBody" })
+    error_message = "body must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -182,8 +182,8 @@ variable "publisher" {
 }
 
 variable "request_status" {
-  description = "Microsoft Graph requestStatus property."
-  type        = any
+  description = "The lifecycle status of a package governance request."
+  type        = string
   default     = null
 
   validation {
@@ -193,8 +193,8 @@ variable "request_status" {
 }
 
 variable "request_type" {
-  description = "Microsoft Graph requestType property."
-  type        = any
+  description = "The type of a package governance request."
+  type        = string
   default     = null
 
   validation {

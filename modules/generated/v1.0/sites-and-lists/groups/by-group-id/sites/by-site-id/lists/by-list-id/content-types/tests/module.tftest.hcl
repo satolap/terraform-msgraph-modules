@@ -30,6 +30,7 @@ run "typed_request" {
     list_id              = "test-parent-id"
     description          = "example"
     hidden               = false
+    document_set         = { "allowedContentTypes" = null }
     associated_hubs_urls = ["example"]
   }
 
@@ -41,6 +42,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["hidden"]) == jsonencode(false)
     error_message = "hidden must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["documentSet"]) == jsonencode({ "@odata.type" = "#microsoft.graph.documentSet" })
+    error_message = "documentSet must preserve typed values and omit nested nulls."
   }
 
   assert {

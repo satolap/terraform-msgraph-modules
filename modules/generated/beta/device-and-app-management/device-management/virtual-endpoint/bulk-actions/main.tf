@@ -1,11 +1,11 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "actionSummary"                    = var.action_summary
+    "@odata.type"                      = var.odata_type
+    "actionSummary"                    = (var.action_summary == null ? null : { for key0, value0 in { "@odata.type" = var.action_summary["odata_type"], "failedCount" = var.action_summary["failedCount"], "inProgressCount" = var.action_summary["inProgressCount"], "notSupportedCount" = var.action_summary["notSupportedCount"], "pendingCount" = var.action_summary["pendingCount"], "successfulCount" = var.action_summary["successfulCount"] } : key0 => value0 if value0 != null })
     "cloudPcIds"                       = (var.cloud_pc_ids == null ? null : [for item0 in var.cloud_pc_ids : item0 if item0 != null])
     "createdDateTime"                  = var.created_date_time
     "displayName"                      = var.display_name
-    "@odata.type"                      = var.odata_type
     "scheduledDuringMaintenanceWindow" = var.scheduled_during_maintenance_window
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)

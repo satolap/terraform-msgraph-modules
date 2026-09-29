@@ -22,12 +22,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `access_package_custom_workflow_extensions` | `accessPackageCustomWorkflowExtensions` | `list(object({       odata_type = optional(string, "#microsoft.graph.customCalloutExtension")       authenticationConfiguration = optional(any)       clientConfiguration = optional(any)       description = optional(string)       displayName = optional(string)       endpointConfiguration = optional(any)     }))` | no | no |
+| `access_package_custom_workflow_extensions` | `accessPackageCustomWorkflowExtensions` | `any` | no | no |
 | `access_package_resource_scopes` | `accessPackageResourceScopes` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageResourceScope")       accessPackageResource = optional(any)       description = optional(string)       displayName = optional(string)       isRootScope = optional(bool)       originId = optional(string)       originSystem = optional(string)       roleOriginId = optional(string)       url = optional(string)     }))` | no | no |
-| `access_package_resources` | `accessPackageResources` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageResource")       accessPackageResourceEnvironment = optional(any)       attributes = optional(list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageResourceAttribute")       attributeDestination = optional(any)       attributeName = optional(string)       attributeSource = optional(any)       isEditable = optional(bool)       isPersistedOnAssignmentRemoval = optional(bool)     })))       description = optional(string)       displayName = optional(string)       originId = optional(string)       originSystem = optional(string)       resourceType = optional(string)       uploadSessions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.customDataProvidedResourceUploadSession")       data = optional(any)       files = optional(any)       isUploadDone = optional(bool)       referenceId = optional(string)       stats = optional(object({       odata_type = optional(string, "#microsoft.graph.customDataProvidedResourceUploadStats")       filesUploaded = optional(number)       totalBytesUploaded = optional(number)     }))       status = optional(string)     })))       url = optional(string)     }))` | no | no |
+| `access_package_resources` | `accessPackageResources` | `any` | no | no |
 | `catalog_status` | `catalogStatus` | `string` | no | no |
 | `catalog_type` | `catalogType` | `string` | no | no |
-| `custom_access_package_workflow_extensions` | `customAccessPackageWorkflowExtensions` | `list(object({       odata_type = optional(string, "#microsoft.graph.customAccessPackageWorkflowExtension")       authenticationConfiguration = optional(any)       clientConfiguration = optional(any)       description = optional(string)       displayName = optional(string)       endpointConfiguration = optional(any)     }))` | no | no |
+| `custom_access_package_workflow_extensions` | `customAccessPackageWorkflowExtensions` | `list(object({       odata_type = optional(string, "#microsoft.graph.customAccessPackageWorkflowExtension")       authenticationConfiguration = optional(any)       clientConfiguration = optional(object({       odata_type = optional(string, "#microsoft.graph.customExtensionClientConfiguration")       maximumRetries = optional(number)       timeoutInMilliseconds = optional(number)     }))       description = optional(string)       displayName = optional(string)       endpointConfiguration = optional(any)     }))` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `is_externally_visible` | `isExternallyVisible` | `bool` | no | no |
@@ -51,17 +51,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- accessPackageCustomWorkflowExtensions[].authenticationConfiguration: polymorphic schema; accepts an untyped value
-- accessPackageCustomWorkflowExtensions[].clientConfiguration: polymorphic schema; accepts an untyped value
-- accessPackageCustomWorkflowExtensions[].endpointConfiguration: polymorphic schema; accepts an untyped value
+- accessPackageCustomWorkflowExtensions[]: polymorphic schema; accepts an untyped value
 - accessPackageResourceScopes[].accessPackageResource: polymorphic schema; accepts an untyped value
-- accessPackageResources[].accessPackageResourceEnvironment: polymorphic schema; accepts an untyped value
-- accessPackageResources[].attributes[].attributeDestination: polymorphic schema; accepts an untyped value
-- accessPackageResources[].attributes[].attributeSource: polymorphic schema; accepts an untyped value
-- accessPackageResources[].uploadSessions[].data: polymorphic schema; accepts an untyped value
-- accessPackageResources[].uploadSessions[].files[]: nested schema exceeds depth limit; accepts an untyped value
+- accessPackageResources[]: polymorphic schema; accepts an untyped value
 - customAccessPackageWorkflowExtensions[].authenticationConfiguration: polymorphic schema; accepts an untyped value
-- customAccessPackageWorkflowExtensions[].clientConfiguration: polymorphic schema; accepts an untyped value
 - customAccessPackageWorkflowExtensions[].endpointConfiguration: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

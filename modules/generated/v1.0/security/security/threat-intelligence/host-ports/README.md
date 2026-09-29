@@ -24,15 +24,15 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `banners` | `banners` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.hostPortBanner")       banner = optional(string)       firstSeenDateTime = optional(string)       lastSeenDateTime = optional(string)       scanProtocol = optional(string)       timesObserved = optional(number)     }))` | no | no |
 | `first_seen_date_time` | `firstSeenDateTime` | `string` | no | no |
-| `host` | `host` | `object({       odata_type = optional(string, "#microsoft.graph.security.host")       childHostPairs = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.hostPair")       childHost = optional(any)       firstSeenDateTime = optional(string)       lastSeenDateTime = optional(string)       linkKind = optional(string)       parentHost = optional(any)     })))       components = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.hostComponent")       category = optional(string)       firstSeenDateTime = optional(string)       host = optional(any)       lastSeenDateTime = optional(string)       name = optional(string)       version = optional(string)     })))       cookies = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.hostCookie")       domain = optional(string)       firstSeenDateTime = optional(string)       host = optional(any)       lastSeenDateTime = optional(string)       name = optional(string)     })))       firstSeenDateTime = optional(string)       hostPairs = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.hostPair")       childHost = optional(any)       firstSeenDateTime = optional(string)       lastSeenDateTime = optional(string)       linkKind = optional(string)       parentHost = optional(any)     })))       lastSeenDateTime = optional(string)       parentHostPairs = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.hostPair")       childHost = optional(any)       firstSeenDateTime = optional(string)       lastSeenDateTime = optional(string)       linkKind = optional(string)       parentHost = optional(any)     })))       passiveDns = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.passiveDnsRecord")       artifact = optional(object({       odata_type = optional(string, "#microsoft.graph.security.artifact")     }))       collectedDateTime = optional(string)       firstSeenDateTime = optional(string)       lastSeenDateTime = optional(string)       parentHost = optional(any)       recordType = optional(string)     })))       passiveDnsReverse = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.passiveDnsRecord")       artifact = optional(object({       odata_type = optional(string, "#microsoft.graph.security.artifact")     }))       collectedDateTime = optional(string)       firstSeenDateTime = optional(string)       lastSeenDateTime = optional(string)       parentHost = optional(any)       recordType = optional(string)     })))       ports = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.hostPort")       banners = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.hostPortBanner")       banner = optional(string)       firstSeenDateTime = optional(string)       lastSeenDateTime = optional(string)       scanProtocol = optional(string)       timesObserved = optional(number)     })))       firstSeenDateTime = optional(string)       host = optional(any)       lastScanDateTime = optional(string)       lastSeenDateTime = optional(string)       mostRecentSslCertificate = optional(any)       port = optional(number)       protocol = optional(any)       services = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.hostPortComponent")       component = optional(any)       firstSeenDateTime = optional(string)       isRecent = optional(bool)       lastSeenDateTime = optional(string)     })))       status = optional(any)       timesObserved = optional(number)     })))       reputation = optional(any)       sslCertificates = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.hostSslCertificate")       firstSeenDateTime = optional(string)       host = optional(any)       lastSeenDateTime = optional(string)       ports = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.hostSslCertificatePort")       firstSeenDateTime = optional(string)       lastSeenDateTime = optional(string)       port = optional(number)     })))       sslCertificate = optional(any)     })))       subdomains = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.subdomain")       firstSeenDateTime = optional(string)       host = optional(any)     })))       trackers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.hostTracker")       firstSeenDateTime = optional(string)       host = optional(any)       kind = optional(string)       lastSeenDateTime = optional(string)       value = optional(string)     })))       whois = optional(any)     })` | no | no |
+| `host` | `host` | `any` | no | no |
 | `last_scan_date_time` | `lastScanDateTime` | `string` | no | no |
 | `last_seen_date_time` | `lastSeenDateTime` | `string` | no | no |
 | `most_recent_ssl_certificate` | `mostRecentSslCertificate` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `port` | `port` | `number` | no | no |
-| `protocol` | `protocol` | `any` | no | no |
+| `protocol` | `protocol` | `string` | no | no |
 | `services` | `services` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.hostPortComponent")       component = optional(any)       firstSeenDateTime = optional(string)       isRecent = optional(bool)       lastSeenDateTime = optional(string)     }))` | no | no |
-| `status` | `status` | `any` | no | no |
+| `status` | `status` | `string` | no | no |
 | `times_observed` | `timesObserved` | `number` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -50,31 +50,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- host.childHostPairs[].childHost: recursive schema; accepts an untyped value
-- host.childHostPairs[].parentHost: recursive schema; accepts an untyped value
-- host.components[].host: recursive schema; accepts an untyped value
-- host.cookies[].host: recursive schema; accepts an untyped value
-- host.hostPairs[].childHost: recursive schema; accepts an untyped value
-- host.hostPairs[].parentHost: recursive schema; accepts an untyped value
-- host.parentHostPairs[].childHost: recursive schema; accepts an untyped value
-- host.parentHostPairs[].parentHost: recursive schema; accepts an untyped value
-- host.passiveDnsReverse[].parentHost: recursive schema; accepts an untyped value
-- host.passiveDns[].parentHost: recursive schema; accepts an untyped value
-- host.ports[].host: recursive schema; accepts an untyped value
-- host.ports[].mostRecentSslCertificate: polymorphic schema; accepts an untyped value
-- host.ports[].protocol: polymorphic schema; accepts an untyped value
-- host.ports[].services[].component: polymorphic schema; accepts an untyped value
-- host.ports[].status: polymorphic schema; accepts an untyped value
-- host.reputation: polymorphic schema; accepts an untyped value
-- host.sslCertificates[].host: polymorphic schema; accepts an untyped value
-- host.sslCertificates[].sslCertificate: polymorphic schema; accepts an untyped value
-- host.subdomains[].host: recursive schema; accepts an untyped value
-- host.trackers[].host: recursive schema; accepts an untyped value
-- host.whois: polymorphic schema; accepts an untyped value
-- mostRecentSslCertificate: polymorphic schema; accepts an untyped value
-- protocol: polymorphic schema; accepts an untyped value
-- services[].component: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
+- host: polymorphic schema; accepts an untyped value
+- mostRecentSslCertificate: navigation property; accepts an untyped value
+- services[].component: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

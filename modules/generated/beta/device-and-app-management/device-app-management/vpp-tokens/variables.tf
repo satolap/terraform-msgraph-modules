@@ -118,14 +118,8 @@ variable "token" {
 
 variable "token_action_results" {
   description = "The collection of statuses of the actions performed on the Apple Volume Purchase Program Token."
-  type = list(object({
-    odata_type          = optional(string, "#microsoft.graph.vppTokenActionResult")
-    actionName          = optional(string)
-    actionState         = optional(string)
-    lastUpdatedDateTime = optional(string)
-    startDateTime       = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "vpp_token_account_type" {

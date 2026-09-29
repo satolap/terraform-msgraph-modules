@@ -30,7 +30,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `platforms` | `platforms` | `string` | no | no |
 | `role_scope_tag_ids` | `roleScopeTagIds` | `list(string)` | no | no |
 | `scheduled_actions_for_rule` | `scheduledActionsForRule` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementComplianceScheduledActionForRule")       ruleName = optional(string)       scheduledActionConfigurations = optional(list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementComplianceActionItem")       actionType = optional(string)       gracePeriodHours = optional(number)       notificationMessageCCList = optional(list(string))       notificationTemplateId = optional(string)     })))     }))` | no | no |
-| `settings` | `settings` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSetting")       settingInstance = optional(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingInstance")       settingDefinitionId = optional(string)       settingInstanceTemplateReference = optional(any)     }))     }))` | no | no |
+| `settings` | `settings` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSetting")       settingInstance = optional(any)     }))` | no | no |
 | `technologies` | `technologies` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -50,7 +50,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].target: polymorphic schema; accepts an untyped value
-- settings[].settingInstance.settingInstanceTemplateReference: polymorphic schema; accepts an untyped value
+- settings[].settingInstance: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

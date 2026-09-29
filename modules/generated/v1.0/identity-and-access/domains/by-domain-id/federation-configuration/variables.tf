@@ -23,7 +23,7 @@ variable "display_name" {
 
 variable "federated_idp_mfa_behavior" {
   description = "Determines whether Microsoft Entra ID accepts the MFA performed by the federated IdP when a federated user accesses an application that is governed by a conditional access policy that requires MFA. The possible values are: acceptIfMfaDoneByFederatedIdp, enforceMfaByFederatedIdp, rejectMfaByFederatedIdp, unknownFutureValue. For more information, see federatedIdpMfaBehavior values."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -78,7 +78,7 @@ variable "password_reset_uri" {
 
 variable "preferred_authentication_protocol" {
   description = "Preferred authentication protocol. The possible values are: wsFed, saml, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -89,7 +89,7 @@ variable "preferred_authentication_protocol" {
 
 variable "prompt_login_behavior" {
   description = "Sets the preferred behavior for the sign-in prompt. The possible values are: translateToFreshPasswordAuthentication, nativeSupport, disabled, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -112,8 +112,10 @@ variable "signing_certificate" {
 
 variable "signing_certificate_update_status" {
   description = "Provides status and timestamp of the last update of the signing certificate."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.signingCertificateUpdateStatus")
+  })
+  default = null
 }
 
 variable "system_browser_enabled_on" {
@@ -122,8 +124,8 @@ variable "system_browser_enabled_on" {
   default     = null
 
   validation {
-    condition     = var.system_browser_enabled_on == null ? true : contains(["none", "ios", "android", "mac", "unknownFutureValue"], var.system_browser_enabled_on)
-    error_message = "system_browser_enabled_on must be one of the documented enum values."
+    condition     = var.system_browser_enabled_on == null ? true : try(alltrue([for value in split(",", var.system_browser_enabled_on) : contains(["none", "ios", "android", "mac", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    error_message = "system_browser_enabled_on must be one or more of the documented enum values, separated by commas."
   }
 }
 

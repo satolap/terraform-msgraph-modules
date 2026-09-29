@@ -24,8 +24,28 @@ variable "issue_date_time" {
 
 variable "issuer" {
   description = "The entity that grants this certificate."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.security.sslCertificateEntity")
+    address = optional(object({
+      odata_type      = optional(string, "#microsoft.graph.physicalAddress")
+      city            = optional(string)
+      countryOrRegion = optional(string)
+      postOfficeBox   = optional(string)
+      postalCode      = optional(string)
+      state           = optional(string)
+      street          = optional(string)
+      type            = optional(string)
+    }))
+    alternateNames       = optional(list(string))
+    commonName           = optional(string)
+    email                = optional(string)
+    givenName            = optional(string)
+    organizationName     = optional(string)
+    organizationUnitName = optional(string)
+    serialNumber         = optional(string)
+    surname              = optional(string)
+  })
+  default = null
 }
 
 variable "last_seen_date_time" {
@@ -43,112 +63,8 @@ variable "odata_type" {
 
 variable "related_hosts" {
   description = "The host resources related with this sslCertificate."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.security.host")
-    childHostPairs = optional(list(object({
-      odata_type        = optional(string, "#microsoft.graph.security.hostPair")
-      childHost         = optional(any)
-      firstSeenDateTime = optional(string)
-      lastSeenDateTime  = optional(string)
-      linkKind          = optional(string)
-      parentHost        = optional(any)
-    })))
-    components = optional(list(object({
-      odata_type        = optional(string, "#microsoft.graph.security.hostComponent")
-      category          = optional(string)
-      firstSeenDateTime = optional(string)
-      host              = optional(any)
-      lastSeenDateTime  = optional(string)
-      name              = optional(string)
-      version           = optional(string)
-    })))
-    cookies = optional(list(object({
-      odata_type        = optional(string, "#microsoft.graph.security.hostCookie")
-      domain            = optional(string)
-      firstSeenDateTime = optional(string)
-      host              = optional(any)
-      lastSeenDateTime  = optional(string)
-      name              = optional(string)
-    })))
-    firstSeenDateTime = optional(string)
-    hostPairs = optional(list(object({
-      odata_type        = optional(string, "#microsoft.graph.security.hostPair")
-      childHost         = optional(any)
-      firstSeenDateTime = optional(string)
-      lastSeenDateTime  = optional(string)
-      linkKind          = optional(string)
-      parentHost        = optional(any)
-    })))
-    lastSeenDateTime = optional(string)
-    parentHostPairs = optional(list(object({
-      odata_type        = optional(string, "#microsoft.graph.security.hostPair")
-      childHost         = optional(any)
-      firstSeenDateTime = optional(string)
-      lastSeenDateTime  = optional(string)
-      linkKind          = optional(string)
-      parentHost        = optional(any)
-    })))
-    passiveDns = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.security.passiveDnsRecord")
-      artifact = optional(object({
-        odata_type = optional(string, "#microsoft.graph.security.artifact")
-      }))
-      collectedDateTime = optional(string)
-      firstSeenDateTime = optional(string)
-      lastSeenDateTime  = optional(string)
-      parentHost        = optional(any)
-      recordType        = optional(string)
-    })))
-    passiveDnsReverse = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.security.passiveDnsRecord")
-      artifact = optional(object({
-        odata_type = optional(string, "#microsoft.graph.security.artifact")
-      }))
-      collectedDateTime = optional(string)
-      firstSeenDateTime = optional(string)
-      lastSeenDateTime  = optional(string)
-      parentHost        = optional(any)
-      recordType        = optional(string)
-    })))
-    ports = optional(list(object({
-      odata_type               = optional(string, "#microsoft.graph.security.hostPort")
-      banners                  = optional(any)
-      firstSeenDateTime        = optional(string)
-      host                     = optional(any)
-      lastScanDateTime         = optional(string)
-      lastSeenDateTime         = optional(string)
-      mostRecentSslCertificate = optional(any)
-      port                     = optional(number)
-      protocol                 = optional(any)
-      services                 = optional(any)
-      status                   = optional(any)
-      timesObserved            = optional(number)
-    })))
-    reputation = optional(any)
-    sslCertificates = optional(list(object({
-      odata_type        = optional(string, "#microsoft.graph.security.hostSslCertificate")
-      firstSeenDateTime = optional(string)
-      host              = optional(any)
-      lastSeenDateTime  = optional(string)
-      ports             = optional(any)
-      sslCertificate    = optional(any)
-    })))
-    subdomains = optional(list(object({
-      odata_type        = optional(string, "#microsoft.graph.security.subdomain")
-      firstSeenDateTime = optional(string)
-      host              = optional(any)
-    })))
-    trackers = optional(list(object({
-      odata_type        = optional(string, "#microsoft.graph.security.hostTracker")
-      firstSeenDateTime = optional(string)
-      host              = optional(any)
-      kind              = optional(string)
-      lastSeenDateTime  = optional(string)
-      value             = optional(string)
-    })))
-    whois = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "serial_number" {
@@ -165,8 +81,28 @@ variable "sha1" {
 
 variable "subject" {
   description = "The person, site, machine, and so on, this certificate is for."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.security.sslCertificateEntity")
+    address = optional(object({
+      odata_type      = optional(string, "#microsoft.graph.physicalAddress")
+      city            = optional(string)
+      countryOrRegion = optional(string)
+      postOfficeBox   = optional(string)
+      postalCode      = optional(string)
+      state           = optional(string)
+      street          = optional(string)
+      type            = optional(string)
+    }))
+    alternateNames       = optional(list(string))
+    commonName           = optional(string)
+    email                = optional(string)
+    givenName            = optional(string)
+    organizationName     = optional(string)
+    organizationUnitName = optional(string)
+    serialNumber         = optional(string)
+    surname              = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

@@ -31,12 +31,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `platforms` | `platforms` | `string` | no | no |
-| `priority_meta_data` | `priorityMetaData` | `any` | no | no |
+| `priority_meta_data` | `priorityMetaData` | `object({       odata_type = optional(string, "#microsoft.graph.deviceManagementPriorityMetaData")       priority = optional(number)     })` | no | no |
 | `role_scope_tag_ids` | `roleScopeTagIds` | `list(string)` | no | no |
 | `setting_count` | `settingCount` | `number` | no | no |
-| `settings` | `settings` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSetting")       settingInstance = optional(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSettingInstance")       settingDefinitionId = optional(string)       settingInstanceTemplateReference = optional(any)     }))     }))` | no | no |
+| `settings` | `settings` | `list(object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationSetting")       settingInstance = optional(any)     }))` | no | no |
 | `technologies` | `technologies` | `string` | no | no |
-| `template_reference` | `templateReference` | `any` | no | no |
+| `template_reference` | `templateReference` | `object({       odata_type = optional(string, "#microsoft.graph.deviceManagementConfigurationPolicyTemplateReference")       templateId = optional(string)     })` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -55,9 +55,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - assignments[].target: polymorphic schema; accepts an untyped value
-- priorityMetaData: polymorphic schema; accepts an untyped value
-- settings[].settingInstance.settingInstanceTemplateReference: polymorphic schema; accepts an untyped value
-- templateReference: polymorphic schema; accepts an untyped value
+- settings[].settingInstance: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

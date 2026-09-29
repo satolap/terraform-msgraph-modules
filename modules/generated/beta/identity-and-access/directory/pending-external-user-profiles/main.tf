@@ -1,7 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "address"         = var.address
+    "address"         = (var.address == null ? null : { for key0, value0 in { "@odata.type" = var.address["odata_type"], "city" = var.address["city"], "countryOrRegion" = var.address["countryOrRegion"], "officeLocation" = var.address["officeLocation"], "postalCode" = var.address["postalCode"], "state" = var.address["state"], "street" = var.address["street"] } : key0 => value0 if value0 != null })
     "companyName"     = var.company_name
     "deletedDateTime" = var.deleted_date_time
     "department"      = var.department

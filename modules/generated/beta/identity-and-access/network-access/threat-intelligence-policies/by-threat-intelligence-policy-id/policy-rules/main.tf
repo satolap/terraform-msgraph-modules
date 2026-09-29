@@ -1,8 +1,8 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "name"        = var.name
     "@odata.type" = var.odata_type
+    "name"        = var.name
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

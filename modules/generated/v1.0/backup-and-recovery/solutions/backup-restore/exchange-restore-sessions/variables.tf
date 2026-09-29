@@ -18,8 +18,31 @@ variable "created_date_time" {
 
 variable "error" {
   description = "Contains error details if the restore session fails or completes with an error."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.publicError")
+    code       = optional(string)
+    details = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+      code       = optional(string)
+      message    = optional(string)
+      target     = optional(string)
+    })))
+    innerError = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicInnerError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    message = optional(string)
+    target  = optional(string)
+  })
+  default = null
 }
 
 variable "granular_mailbox_restore_artifacts" {
@@ -28,14 +51,32 @@ variable "granular_mailbox_restore_artifacts" {
     odata_type         = optional(string, "#microsoft.graph.granularMailboxRestoreArtifact")
     artifactCount      = optional(number)
     completionDateTime = optional(string)
-    destinationType    = optional(any)
-    error              = optional(any)
-    restorePoint       = optional(any)
-    restoredFolderId   = optional(string)
-    restoredItemCount  = optional(number)
-    searchResponseId   = optional(string)
-    startDateTime      = optional(string)
-    status             = optional(any)
+    destinationType    = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    restorePoint      = optional(any)
+    restoredFolderId  = optional(string)
+    restoredItemCount = optional(number)
+    searchResponseId  = optional(string)
+    startDateTime     = optional(string)
+    status            = optional(string)
   }))
   default = null
 }
@@ -54,38 +95,50 @@ variable "last_modified_date_time" {
 
 variable "mailbox_restore_artifacts" {
   description = "A collection of restore points and destination details that can be used to restore Exchange mailboxes."
-  type = list(object({
-    odata_type         = optional(string, "#microsoft.graph.mailboxRestoreArtifact")
-    completionDateTime = optional(string)
-    destinationType    = optional(any)
-    error              = optional(any)
-    restorePoint       = optional(any)
-    restoredFolderId   = optional(string)
-    restoredItemCount  = optional(number)
-    startDateTime      = optional(string)
-    status             = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "mailbox_restore_artifacts_bulk_addition_requests" {
   description = "A collection of user mailboxes and destination details that can be used to restore Exchange mailboxes."
   type = list(object({
-    odata_type             = optional(string, "#microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequest")
-    createdBy              = optional(any)
-    createdDateTime        = optional(string)
-    destinationType        = optional(any)
-    directoryObjectIds     = optional(list(string))
-    displayName            = optional(string)
-    error                  = optional(any)
-    lastModifiedBy         = optional(any)
-    lastModifiedDateTime   = optional(string)
-    mailboxes              = optional(list(string))
-    protectionTimePeriod   = optional(any)
+    odata_type         = optional(string, "#microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequest")
+    createdBy          = optional(any)
+    createdDateTime    = optional(string)
+    destinationType    = optional(string)
+    directoryObjectIds = optional(list(string))
+    displayName        = optional(string)
+    error = optional(object({
+      odata_type = optional(string, "#microsoft.graph.publicError")
+      code       = optional(string)
+      details = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.publicErrorDetail")
+        code       = optional(string)
+        message    = optional(string)
+        target     = optional(string)
+      })))
+      innerError = optional(object({
+        odata_type = optional(string, "#microsoft.graph.publicInnerError")
+        code       = optional(string)
+        details    = optional(any)
+        message    = optional(string)
+        target     = optional(string)
+      }))
+      message = optional(string)
+      target  = optional(string)
+    }))
+    lastModifiedBy       = optional(any)
+    lastModifiedDateTime = optional(string)
+    mailboxes            = optional(list(string))
+    protectionTimePeriod = optional(object({
+      odata_type    = optional(string, "#microsoft.graph.timePeriod")
+      endDateTime   = optional(string)
+      startDateTime = optional(string)
+    }))
     protectionUnitIds      = optional(list(string))
-    restorePointPreference = optional(any)
+    restorePointPreference = optional(string)
     status                 = optional(string)
-    tags                   = optional(any)
+    tags                   = optional(string)
   }))
   default = null
 }
@@ -99,7 +152,7 @@ variable "odata_type" {
 
 variable "restore_job_type" {
   description = "Indicates whether the restore session was created normally or by a bulk job."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -110,13 +163,19 @@ variable "restore_job_type" {
 
 variable "restore_session_artifact_count" {
   description = "The number of metadata artifacts that belong to this restore session."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.restoreSessionArtifactCount")
+    completed  = optional(number)
+    failed     = optional(number)
+    inProgress = optional(number)
+    total      = optional(number)
+  })
+  default = null
 }
 
 variable "status" {
   description = "Status of the restore session. The value is an aggregated status of the restored artifacts. The possible values are: draft, activating, active, completedWithError, completed, unknownFutureValue, failed. Use the Prefer: include-unknown-enum-members request header to get the following members in this evolvable enum: failed."
-  type        = any
+  type        = string
   default     = null
 
   validation {

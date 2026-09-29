@@ -19,9 +19,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    bulk_complaint_level = "example"
-    size_in_bytes        = -2147483648
-    alert_ids            = ["example"]
+    bulk_complaint_level   = "example"
+    size_in_bytes          = -2147483648
+    authentication_details = { "compositeAuthentication" = null }
+    alert_ids              = ["example"]
   }
 
   assert {
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["sizeInBytes"]) == jsonencode(-2147483648)
     error_message = "sizeInBytes must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["authenticationDetails"]) == jsonencode({ "@odata.type" = "#microsoft.graph.security.analyzedEmailAuthenticationDetail" })
+    error_message = "authenticationDetails must preserve typed values and omit nested nulls."
   }
 
   assert {

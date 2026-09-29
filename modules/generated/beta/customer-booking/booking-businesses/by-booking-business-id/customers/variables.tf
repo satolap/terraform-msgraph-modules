@@ -19,7 +19,7 @@ variable "addresses" {
     postalCode      = optional(string)
     state           = optional(string)
     street          = optional(string)
-    type            = optional(any)
+    type            = optional(string)
   }))
   default = null
 }
@@ -60,7 +60,7 @@ variable "phones" {
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.phone")
     number     = optional(string)
-    type       = optional(any)
+    type       = optional(string)
   }))
   default = null
 }

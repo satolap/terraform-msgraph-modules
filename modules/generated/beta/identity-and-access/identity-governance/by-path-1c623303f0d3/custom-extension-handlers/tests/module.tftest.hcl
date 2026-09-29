@@ -20,6 +20,21 @@ run "minimal_request" {
   }
 }
 
+run "typed_request" {
+  command = plan
+
+  variables {
+    access_package_id                   = "test-parent-id"
+    access_package_assignment_policy_id = "test-parent-id"
+    stage                               = "assignmentRequestCreated"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["stage"]) == jsonencode("assignmentRequestCreated")
+    error_message = "stage must preserve typed values and omit nested nulls."
+  }
+}
+
 run "invalid_enum" {
   command = plan
 

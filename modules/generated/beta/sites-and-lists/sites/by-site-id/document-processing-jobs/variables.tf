@@ -11,7 +11,7 @@ variable "site_id" {
 
 variable "job_type" {
   description = "The document processing job type. The possible values are: file, folder"
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -35,7 +35,7 @@ variable "odata_type" {
 
 variable "status" {
   description = "The document processing Job status. The possible values are: inProgress, completed, failed, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -26,7 +26,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `ediscovery_case_id` | URL parameter `ediscoveryCase-id` | `string` | yes | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `files` | `files` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.ediscoveryFile")       content = optional(string)       custodian = optional(any)       dateTime = optional(string)       extension = optional(string)       extractedTextContent = optional(string)       mediaType = optional(string)       name = optional(string)       otherProperties = optional(any)       processingStatus = optional(any)       senderOrAuthors = optional(list(string))       size = optional(number)       sourceType = optional(any)       subjectTitle = optional(string)       tags = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.ediscoveryReviewTag")       childSelectability = optional(any)       childTags = optional(any)       createdBy = optional(any)       description = optional(string)       displayName = optional(string)       lastModifiedDateTime = optional(string)       parent = optional(any)     })))     }))` | no | no |
+| `files` | `files` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.ediscoveryFile")       content = optional(string)       custodian = optional(any)       dateTime = optional(string)       extension = optional(string)       extractedTextContent = optional(string)       mediaType = optional(string)       name = optional(string)       otherProperties = optional(any)       processingStatus = optional(string)       senderOrAuthors = optional(list(string))       size = optional(number)       sourceType = optional(string)       subjectTitle = optional(string)       tags = optional(list(object({       odata_type = optional(string, "#microsoft.graph.security.ediscoveryReviewTag")       childSelectability = optional(string)       childTags = optional(any)       createdBy = optional(any)       description = optional(string)       displayName = optional(string)       lastModifiedDateTime = optional(string)       parent = optional(any)     })))     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `queries` | `queries` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.ediscoveryReviewSetQuery")       contentQuery = optional(string)       createdBy = optional(any)       createdDateTime = optional(string)       description = optional(string)       displayName = optional(string)       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -46,14 +46,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- files[].custodian: polymorphic schema; accepts an untyped value
+- files[].custodian: navigation property; accepts an untyped value
 - files[].otherProperties: polymorphic schema; accepts an untyped value
-- files[].processingStatus: polymorphic schema; accepts an untyped value
-- files[].sourceType: polymorphic schema; accepts an untyped value
-- files[].tags[].childSelectability: polymorphic schema; accepts an untyped value
 - files[].tags[].childTags[]: recursive schema; accepts an untyped value
 - files[].tags[].createdBy: polymorphic schema; accepts an untyped value
-- files[].tags[].parent: polymorphic schema; accepts an untyped value
+- files[].tags[].parent: navigation property; accepts an untyped value
 - queries[].createdBy: polymorphic schema; accepts an untyped value
 - queries[].lastModifiedBy: polymorphic schema; accepts an untyped value
 

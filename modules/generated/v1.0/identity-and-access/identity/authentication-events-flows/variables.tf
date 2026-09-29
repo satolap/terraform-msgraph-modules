@@ -1,7 +1,27 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.externalUsersSelfServiceSignUpEventsFlow"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "conditions" {
   description = "The conditions representing the context of the authentication request that's used to decide whether the events policy is invoked.  Supports $filter (eq). See support for filtering on user flows for syntax information."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.authenticationConditions")
+    applications = optional(object({
+      odata_type = optional(string, "#microsoft.graph.authenticationConditionsApplications")
+      includeApplications = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.authenticationConditionApplication")
+        appId      = optional(string)
+      })))
+    }))
+  })
+  default = null
 }
 
 variable "description" {
@@ -14,13 +34,6 @@ variable "display_name" {
   description = "Required. The display name for the events policy."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.authenticationEventsFlow"
-  nullable    = false
 }
 
 variable "additional_properties" {

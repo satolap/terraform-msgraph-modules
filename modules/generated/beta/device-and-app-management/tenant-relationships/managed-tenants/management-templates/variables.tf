@@ -82,7 +82,7 @@ variable "management_template_steps" {
   type = list(object({
     odata_type      = optional(string, "#microsoft.graph.managedTenants.managementTemplateStep")
     acceptedVersion = optional(any)
-    category        = optional(any)
+    category        = optional(string)
     createdByUserId = optional(string)
     createdDateTime = optional(string)
     description     = optional(string)
@@ -95,9 +95,13 @@ variable "management_template_steps" {
     lastActionByUserId = optional(string)
     lastActionDateTime = optional(string)
     managementTemplate = optional(any)
-    portalLink         = optional(any)
-    priority           = optional(number)
-    userImpact         = optional(string)
+    portalLink = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.actionUrl")
+      displayName = optional(string)
+      url         = optional(string)
+    }))
+    priority   = optional(number)
+    userImpact = optional(string)
     versions = optional(list(object({
       odata_type         = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepVersion")
       acceptedFor        = optional(any)

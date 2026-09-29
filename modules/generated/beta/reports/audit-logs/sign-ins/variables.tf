@@ -1,7 +1,13 @@
 variable "agent" {
   description = "Represents details about the agentic sign-in. Includes the type of agent as well as parentAppID in some cases"
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.agentic.agentSignIn")
+    agentSubjectParentId = optional(string)
+    agentSubjectType     = optional(string)
+    agentType            = optional(string)
+    parentAppId          = optional(string)
+  })
+  default = null
 }
 
 variable "app_display_name" {
@@ -24,7 +30,7 @@ variable "app_owner_tenant_id" {
 
 variable "app_token_protection_status" {
   description = "Deprecated. Use tokenProtectionStatusDetails instead. Token protection creates a cryptographically secure tie between the token and the device it's issued to. This field indicates whether the app token was bound to the device."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -36,25 +42,30 @@ variable "app_token_protection_status" {
 variable "applied_conditional_access_policies" {
   description = "A list of conditional access policies that the corresponding sign-in activity triggers. Apps need more Conditional Access-related privileges to read the details of this property. For more information, see Permissions for viewing applied conditional access (CA) policies in sign-ins."
   type = list(object({
-    odata_type              = optional(string, "#microsoft.graph.appliedConditionalAccessPolicy")
-    authenticationStrength  = optional(any)
-    conditionsNotSatisfied  = optional(any)
-    conditionsSatisfied     = optional(any)
+    odata_type = optional(string, "#microsoft.graph.appliedConditionalAccessPolicy")
+    authenticationStrength = optional(object({
+      odata_type                   = optional(string, "#microsoft.graph.authenticationStrength")
+      authenticationStrengthId     = optional(string)
+      authenticationStrengthResult = optional(string)
+      displayName                  = optional(string)
+    }))
+    conditionsNotSatisfied  = optional(string)
+    conditionsSatisfied     = optional(string)
     displayName             = optional(string)
     enforcedGrantControls   = optional(list(string))
     enforcedSessionControls = optional(list(string))
     excludeRulesSatisfied = optional(list(object({
       odata_type                 = optional(string, "#microsoft.graph.conditionalAccessRuleSatisfied")
-      conditionalAccessCondition = optional(any)
-      ruleSatisfied              = optional(any)
+      conditionalAccessCondition = optional(string)
+      ruleSatisfied              = optional(string)
     })))
     id = optional(string)
     includeRulesSatisfied = optional(list(object({
       odata_type                 = optional(string, "#microsoft.graph.conditionalAccessRuleSatisfied")
-      conditionalAccessCondition = optional(any)
-      ruleSatisfied              = optional(any)
+      conditionalAccessCondition = optional(string)
+      ruleSatisfied              = optional(string)
     })))
-    result                      = optional(any)
+    result                      = optional(string)
     sessionControlsNotSatisfied = optional(list(string))
   }))
   default = null
@@ -64,7 +75,7 @@ variable "applied_event_listeners" {
   description = "Detailed information about the listeners, such as Azure Logic Apps and Azure Functions, which the corresponding events in the sign-in event triggered."
   type = list(object({
     odata_type         = optional(string, "#microsoft.graph.appliedAuthenticationEventListener")
-    eventType          = optional(any)
+    eventType          = optional(string)
     executedListenerId = optional(string)
     handlerResult      = optional(any)
   }))
@@ -73,18 +84,24 @@ variable "applied_event_listeners" {
 
 variable "authentication_app_device_details" {
   description = "Provides details about the app and device used during a Microsoft Entra authentication step."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.authenticationAppDeviceDetails")
+    appVersion      = optional(string)
+    clientApp       = optional(string)
+    deviceId        = optional(string)
+    operatingSystem = optional(string)
+  })
+  default = null
 }
 
 variable "authentication_app_policy_evaluation_details" {
   description = "Provides details of the Microsoft Entra policies applied to a user and client authentication app during an authentication step."
   type = list(object({
     odata_type               = optional(string, "#microsoft.graph.authenticationAppPolicyDetails")
-    adminConfiguration       = optional(any)
-    authenticationEvaluation = optional(any)
+    adminConfiguration       = optional(string)
+    authenticationEvaluation = optional(string)
     policyName               = optional(string)
-    status                   = optional(any)
+    status                   = optional(string)
   }))
   default = null
 }
@@ -93,7 +110,7 @@ variable "authentication_context_class_references" {
   description = "Contains a collection of values that represent the conditional access authentication contexts applied to the sign-in."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.authenticationContext")
-    detail     = optional(any)
+    detail     = optional(string)
     id         = optional(string)
   }))
   default = null
@@ -131,12 +148,12 @@ variable "authentication_processing_details" {
 
 variable "authentication_protocol" {
   description = "Lists the protocol type or grant type used in the authentication. The possible values are: none, oAuth2, ropc, wsFederation, saml20, deviceCode, unknownFutureValue, authenticationTransfer, nativeAuth, implicitAccessTokenAndGetResponseMode, implicitIdTokenAndGetResponseMode, implicitAccessTokenAndPostResponseMode, implicitIdTokenAndPostResponseMode, authorizationCodeWithoutPkce, authorizationCodeWithPkce, clientCredentials, refreshTokenGrant, encryptedAuthorizeResponse, directUserGrant, kerberos, prtGrant, seamlessSso, prtBrokerBased, prtNonBrokerBased, onBehalfOf, samlOnBehalfOf. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: authenticationTransfer , nativeAuth , implicitAccessTokenAndGetResponseMode , implicitIdTokenAndGetResponseMode , implicitAccessTokenAndPostResponseMode , implicitIdTokenAndPostResponseMode , authorizationCodeWithoutPkce , authorizationCodeWithPkce , clientCredentials , refreshTokenGrant , encryptedAuthorizeResponse , directUserGrant , kerberos , prtGrant , seamlessSso , prtBrokerBased , prtNonBrokerBased , onBehalfOf , samlOnBehalfOf."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.authentication_protocol == null ? true : contains(["none", "oAuth2", "ropc", "wsFederation", "saml20", "deviceCode", "unknownFutureValue", "authenticationTransfer", "nativeAuth", "implicitAccessTokenAndGetResponseMode", "implicitIdTokenAndGetResponseMode", "implicitAccessTokenAndPostResponseMode", "implicitIdTokenAndPostResponseMode", "authorizationCodeWithoutPkce", "authorizationCodeWithPkce", "clientCredentials", "refreshTokenGrant", "encryptedAuthorizeResponse", "directUserGrant", "kerberos", "prtGrant", "seamlessSso", "prtBrokerBased", "prtNonBrokerBased", "onBehalfOf", "samlOnBehalfOf", "officeS2S", "wsTrust"], var.authentication_protocol)
-    error_message = "authentication_protocol must be one of the documented enum values."
+    condition     = var.authentication_protocol == null ? true : try(alltrue([for value in split(",", var.authentication_protocol) : contains(["none", "oauth2", "ropc", "wsfederation", "saml20", "devicecode", "unknownfuturevalue", "authenticationtransfer", "nativeauth", "implicitaccesstokenandgetresponsemode", "implicitidtokenandgetresponsemode", "implicitaccesstokenandpostresponsemode", "implicitidtokenandpostresponsemode", "authorizationcodewithoutpkce", "authorizationcodewithpkce", "clientcredentials", "refreshtokengrant", "encryptedauthorizeresponse", "directusergrant", "kerberos", "prtgrant", "seamlesssso", "prtbrokerbased", "prtnonbrokerbased", "onbehalfof", "samlonbehalfof", "offices2s", "wstrust"], lower(trimspace(value)))]), false)
+    error_message = "authentication_protocol must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -151,7 +168,7 @@ variable "authentication_requirement_policies" {
   type = list(object({
     odata_type          = optional(string, "#microsoft.graph.authenticationRequirementPolicy")
     detail              = optional(string)
-    requirementProvider = optional(any)
+    requirementProvider = optional(string)
   }))
   default = null
 }
@@ -176,7 +193,7 @@ variable "client_app_used" {
 
 variable "client_credential_type" {
   description = "Describes the credential type that a user client or service principal provided to Microsoft Entra ID to authenticate itself. You can review this property to track and eliminate less secure credential types or to watch for clients and service principals using anomalous credential types. The possible values are: none, clientSecret, clientAssertion, federatedIdentityCredential, managedIdentity, certificate, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
   sensitive   = true
 
@@ -200,7 +217,7 @@ variable "conditional_access_audiences" {
 
 variable "conditional_access_status" {
   description = "The status of the conditional access policy triggered. Possible values: success, failure, notApplied, or unknownFutureValue.  Supports $filter (eq)."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -223,19 +240,29 @@ variable "created_date_time" {
 
 variable "cross_tenant_access_type" {
   description = "Describes the type of cross-tenant access used by the actor to access the resource. The possible values are: none, b2bCollaboration, b2bDirectConnect, microsoftSupport, serviceProvider, unknownFutureValue, passthrough. Use the Prefer: include-unknown-enum-members request header to get the following value or values in this evolvable enum: passthrough. If the sign in didn't cross tenant boundaries, the value is none."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.cross_tenant_access_type == null ? true : contains(["none", "b2bCollaboration", "b2bDirectConnect", "microsoftSupport", "serviceProvider", "unknownFutureValue", "passthrough"], var.cross_tenant_access_type)
-    error_message = "cross_tenant_access_type must be one of the documented enum values."
+    condition     = var.cross_tenant_access_type == null ? true : try(alltrue([for value in split(",", var.cross_tenant_access_type) : contains(["none", "b2bcollaboration", "b2bdirectconnect", "microsoftsupport", "serviceprovider", "unknownfuturevalue", "passthrough"], lower(trimspace(value)))]), false)
+    error_message = "cross_tenant_access_type must be one or more of the documented enum values, separated by commas."
   }
 }
 
 variable "device_detail" {
   description = "The device information from where the sign-in occurred. Includes information such as deviceId, OS, and browser.  Supports $filter (eq, startsWith) on browser and operatingSystem properties."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.deviceDetail")
+    browser         = optional(string)
+    browserId       = optional(string)
+    deviceId        = optional(string)
+    displayName     = optional(string)
+    isCompliant     = optional(bool)
+    isManaged       = optional(bool)
+    operatingSystem = optional(string)
+    trustType       = optional(string)
+  })
+  default = null
 }
 
 variable "federated_credential_id" {
@@ -271,12 +298,12 @@ variable "home_tenant_name" {
 
 variable "incoming_token_type" {
   description = "Indicates the token types that were presented to Microsoft Entra ID to authenticate the actor in the sign in. The possible values are: none, primaryRefreshToken, saml11, saml20, unknownFutureValue, remoteDesktopToken, refreshToken.  NOTE Microsoft Entra ID might have also used token types not listed in this enum type to authenticate the actor. Don't infer the lack of a token if it isn't one of the types listed. Use the Prefer: include-unknown-enum-members request header to get the following value or values in this evolvable enum: remoteDesktopToken, refreshToken."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.incoming_token_type == null ? true : contains(["none", "primaryRefreshToken", "saml11", "saml20", "unknownFutureValue", "remoteDesktopToken", "refreshToken"], var.incoming_token_type)
-    error_message = "incoming_token_type must be one of the documented enum values."
+    condition     = var.incoming_token_type == null ? true : try(alltrue([for value in split(",", var.incoming_token_type) : contains(["none", "primaryrefreshtoken", "saml11", "saml20", "unknownfuturevalue", "remotedesktoptoken", "refreshtoken"], lower(trimspace(value)))]), false)
+    error_message = "incoming_token_type must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -312,20 +339,40 @@ variable "is_through_global_secure_access" {
 
 variable "location" {
   description = "The city, state, and two letter country code from where the sign-in occurred.  Supports $filter (eq, startsWith) on city, state, and countryOrRegion properties."
-  type        = any
-  default     = null
+  type = object({
+    odata_type      = optional(string, "#microsoft.graph.signInLocation")
+    city            = optional(string)
+    countryOrRegion = optional(string)
+    geoCoordinates = optional(object({
+      odata_type = optional(string, "#microsoft.graph.geoCoordinates")
+      latitude   = optional(any)
+      longitude  = optional(any)
+    }))
+    state = optional(string)
+  })
+  default = null
 }
 
 variable "managed_service_identity" {
   description = "Contains information about the managed identity used for the sign in, including its type, associated Azure Resource Manager (ARM) resource ID, and federated token information."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.managedIdentity")
+    associatedResourceId = optional(string)
+    federatedTokenId     = optional(string)
+    federatedTokenIssuer = optional(string)
+    msiType              = optional(string)
+  })
+  default = null
 }
 
 variable "mfa_detail" {
   description = "This property is deprecated."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.mfaDetail")
+    authDetail = optional(string)
+    authMethod = optional(string)
+  })
+  default = null
 }
 
 variable "network_location_details" {
@@ -333,7 +380,7 @@ variable "network_location_details" {
   type = list(object({
     odata_type   = optional(string, "#microsoft.graph.networkLocationDetail")
     networkNames = optional(list(string))
-    networkType  = optional(any)
+    networkType  = optional(string)
   }))
   default = null
 }
@@ -353,7 +400,7 @@ variable "original_request_id" {
 
 variable "original_transfer_method" {
   description = "Transfer method used to initiate a session throughout all subsequent request. The possible values are: none, deviceCodeFlow, authenticationTransfer, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -364,8 +411,14 @@ variable "original_transfer_method" {
 
 variable "private_link_details" {
   description = "Contains information about the Microsoft Entra Private Link policy that is associated with the sign in event."
-  type        = any
-  default     = null
+  type = object({
+    odata_type     = optional(string, "#microsoft.graph.privateLinkDetails")
+    policyId       = optional(string)
+    policyName     = optional(string)
+    policyTenantId = optional(string)
+    resourceId     = optional(string)
+  })
+  default = null
 }
 
 variable "processing_time_in_milliseconds" {
@@ -406,7 +459,7 @@ variable "resource_tenant_id" {
 
 variable "risk_detail" {
   description = "The reason behind a specific state of a risky user, sign-in, or a risk event. The value none means that Microsoft Entra risk detection hasn't flagged the user or the sign-in as a risky event so far.  Supports $filter (eq). Note: Details for this property are only available for Microsoft Entra ID P2 customers. All other customers are returned hidden."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -423,7 +476,7 @@ variable "risk_event_types_v2" {
 
 variable "risk_level_aggregated" {
   description = "The aggregated risk level. Possible values: none, low, medium, high, hidden, or unknownFutureValue. The value hidden means the user or sign-in wasn't enabled for Microsoft Entra ID Protection.  Supports $filter (eq). Note: Details for this property are only available for Microsoft Entra ID P2 customers. All other customers are returned hidden."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -434,7 +487,7 @@ variable "risk_level_aggregated" {
 
 variable "risk_level_during_sign_in" {
   description = "The risk level during sign-in. Possible values: none, low, medium, high, hidden, or unknownFutureValue. The value hidden means the user or sign-in wasn't enabled for Microsoft Entra ID Protection.  Supports $filter (eq). Note: Details for this property are only available for Microsoft Entra ID P2 customers. All other customers are returned hidden."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -445,7 +498,7 @@ variable "risk_level_during_sign_in" {
 
 variable "risk_state" {
   description = "The risk state of a risky user, sign-in, or a risk event. Possible values: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, or unknownFutureValue.  Supports $filter (eq)."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -497,7 +550,7 @@ variable "session_lifetime_policies" {
   type = list(object({
     odata_type            = optional(string, "#microsoft.graph.sessionLifetimePolicy")
     detail                = optional(string)
-    expirationRequirement = optional(any)
+    expirationRequirement = optional(string)
   }))
   default = null
 }
@@ -516,7 +569,7 @@ variable "sign_in_identifier" {
 
 variable "sign_in_identifier_type" {
   description = "The type of sign in identifier. The possible values are: userPrincipalName, phoneNumber, proxyAddress, qrCode, onPremisesUserPrincipalName, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -527,7 +580,7 @@ variable "sign_in_identifier_type" {
 
 variable "sign_in_token_protection_status" {
   description = "Deprecated. Use tokenProtectionStatusDetails instead. Token protection creates a cryptographically secure tie between the token and the device it's issued to. This field indicates whether the sign-in token was bound to the device. The possible values are: none, bound, unbound, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -538,8 +591,13 @@ variable "sign_in_token_protection_status" {
 
 variable "status" {
   description = "The sign-in status. Includes the error code and description of the error (for a sign-in failure).  Supports $filter (eq) on errorCode property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type        = optional(string, "#microsoft.graph.signInStatus")
+    additionalDetails = optional(string)
+    errorCode         = optional(number)
+    failureReason     = optional(string)
+  })
+  default = null
 }
 
 variable "token_issuer_name" {
@@ -550,7 +608,7 @@ variable "token_issuer_name" {
 
 variable "token_issuer_type" {
   description = "The type of identity provider. The possible values are: AzureAD, ADFederationServices, UnknownFutureValue, AzureADBackupAuth, ADFederationServicesMFAAdapter, NPSExtension. Use the Prefer: include-unknown-enum-members request header to get the following values in this evolvable enum: AzureADBackupAuth , ADFederationServicesMFAAdapter , NPSExtension."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -561,8 +619,12 @@ variable "token_issuer_type" {
 
 variable "token_protection_status_details" {
   description = "The status of the token protection for a request in the sign-in logs. For more information, see Conditional Access: Token Protection."
-  type        = any
-  default     = null
+  type = object({
+    odata_type              = optional(string, "#microsoft.graph.tokenProtectionStatusDetails")
+    signInSessionStatus     = optional(string)
+    signInSessionStatusCode = optional(number)
+  })
+  default = null
 }
 
 variable "unique_token_identifier" {
@@ -597,7 +659,7 @@ variable "user_principal_name" {
 
 variable "user_type" {
   description = "Identifies whether the user is a member or guest in the tenant. The possible values are: member, guest, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -23,14 +23,20 @@ run "typed_request" {
   command = plan
 
   variables {
-    team_id = "test-parent-id"
-    user_id = "example"
-    breaks  = [{}]
+    team_id        = "test-parent-id"
+    confirmed_by   = "none"
+    clock_in_event = { "dateTime" = null }
+    breaks         = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["userId"]) == jsonencode("example")
-    error_message = "userId must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["confirmedBy"]) == jsonencode("none")
+    error_message = "confirmedBy must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["clockInEvent"]) == jsonencode({ "@odata.type" = "#microsoft.graph.timeCardEvent" })
+    error_message = "clockInEvent must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -45,6 +51,31 @@ run "invalid_enum" {
   variables {
     team_id      = "test-parent-id"
     confirmed_by = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.confirmed_by]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    team_id      = "test-parent-id"
+    confirmed_by = "none, User"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["confirmedBy"] == "none, User"
+    error_message = "confirmedBy must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    team_id      = "test-parent-id"
+    confirmed_by = "none,__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.confirmed_by]

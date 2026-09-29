@@ -6,8 +6,8 @@ locals {
     "createdDateTime"      = var.created_date_time
     "displayName"          = var.display_name
     "first"                = var.first
-    "source"               = var.graph_source
-    "inference"            = var.inference
+    "source"               = (var.graph_source == null ? null : { for key0, value0 in { "@odata.type" = var.graph_source["odata_type"], "type" = (var.graph_source["type"] == null ? null : [for item1 in var.graph_source["type"] : item1 if item1 != null]) } : key0 => value0 if value0 != null })
+    "inference"            = (var.inference == null ? null : { for key0, value0 in { "@odata.type" = var.inference["odata_type"], "confidenceScore" = var.inference["confidenceScore"], "userHasVerifiedAccuracy" = var.inference["userHasVerifiedAccuracy"] } : key0 => value0 if value0 != null })
     "initials"             = var.initials
     "isSearchable"         = var.is_searchable
     "languageTag"          = var.language_tag
@@ -18,7 +18,7 @@ locals {
     "middle"               = var.middle
     "nickname"             = var.nickname
     "@odata.type"          = var.odata_type
-    "pronunciation"        = var.pronunciation
+    "pronunciation"        = (var.pronunciation == null ? null : { for key0, value0 in { "@odata.type" = var.pronunciation["odata_type"], "displayName" = var.pronunciation["displayName"], "first" = var.pronunciation["first"], "last" = var.pronunciation["last"], "maiden" = var.pronunciation["maiden"], "middle" = var.pronunciation["middle"] } : key0 => value0 if value0 != null })
     "sources"              = (var.sources == null ? null : [for item0 in var.sources : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "isDefaultSource" = item0["isDefaultSource"], "properties" = (item0["properties"] == null ? null : [for item2 in item0["properties"] : item2 if item2 != null]), "sourceId" = item0["sourceId"] } : key1 => value1 if value1 != null }) if item0 != null])
     "suffix"               = var.suffix
     "title"                = var.title

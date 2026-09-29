@@ -23,14 +23,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `creation_mode` | `creationMode` | `string` | no | no |
-| `messages` | `messages` | `list(object({       odata_type = optional(string, "#microsoft.graph.engagementConversationMessage")       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(any)     }))       conversation = optional(object({       odata_type = optional(string, "#microsoft.graph.engagementConversation")       creationMode = optional(string)       messages = optional(any)       starter = optional(any)       starterId = optional(string)     }))       creationMode = optional(string)       from = optional(any)       reactions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.engagementConversationMessageReaction")       reactionBy = optional(object({       odata_type = optional(string, "#microsoft.graph.engagementIdentitySet")       application = optional(any)       audience = optional(any)       device = optional(any)       group = optional(any)       user = optional(any)     }))       reactionType = optional(string)     })))       replies = optional(any)       replyTo = optional(any)       replyToId = optional(string)     }))` | no | no |
+| `messages` | `messages` | `any` | no | no |
 | `moderation_state` | `moderationState` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `online_meeting` | `onlineMeeting` | `object({       odata_type = optional(string, "#microsoft.graph.onlineMeeting")       allowAttendeeToEnableCamera = optional(bool)       allowAttendeeToEnableMic = optional(bool)       allowBreakoutRooms = optional(bool)       allowCopyingAndSharingMeetingContent = optional(bool)       allowLiveShare = optional(any)       allowMeetingChat = optional(any)       allowParticipantsToChangeName = optional(bool)       allowPowerPointSharing = optional(bool)       allowRecording = optional(bool)       allowTeamworkReactions = optional(bool)       allowTranscription = optional(bool)       allowWhiteboard = optional(bool)       allowedLobbyAdmitters = optional(any)       allowedPresenters = optional(any)       broadcastSettings = optional(any)       chatInfo = optional(any)       chatRestrictions = optional(any)       endDateTime = optional(string)       expiryDateTime = optional(string)       externalId = optional(string)       isBroadcast = optional(bool)       isEndToEndEncryptionEnabled = optional(bool)       isEntryExitAnnounced = optional(bool)       joinMeetingIdSettings = optional(any)       lobbyBypassSettings = optional(any)       meetingOptionsWebUrl = optional(string)       meetingSpokenLanguageTag = optional(string)       meetingTemplateId = optional(string)       participants = optional(any)       recordAutomatically = optional(bool)       sensitivityLabelAssignment = optional(any)       shareMeetingChatHistoryDefault = optional(any)       startDateTime = optional(string)       subject = optional(string)       watermarkProtection = optional(any)     })` | no | no |
+| `online_meeting` | `onlineMeeting` | `object({       odata_type = optional(string, "#microsoft.graph.onlineMeeting")       allowAttendeeToEnableCamera = optional(bool)       allowAttendeeToEnableMic = optional(bool)       allowBreakoutRooms = optional(bool)       allowCopyingAndSharingMeetingContent = optional(bool)       allowLiveShare = optional(string)       allowMeetingChat = optional(string)       allowParticipantsToChangeName = optional(bool)       allowPowerPointSharing = optional(bool)       allowRecording = optional(bool)       allowTeamworkReactions = optional(bool)       allowTranscription = optional(bool)       allowWhiteboard = optional(bool)       allowedLobbyAdmitters = optional(string)       allowedPresenters = optional(string)       broadcastSettings = optional(object({       odata_type = optional(string, "#microsoft.graph.broadcastMeetingSettings")       allowedAudience = optional(string)       captions = optional(object({       odata_type = optional(string, "#microsoft.graph.broadcastMeetingCaptionSettings")       isCaptionEnabled = optional(bool)       spokenLanguage = optional(string)       translationLanguages = optional(list(string))     }))       isAttendeeReportEnabled = optional(bool)       isQuestionAndAnswerEnabled = optional(bool)       isRecordingEnabled = optional(bool)       isVideoOnDemandEnabled = optional(bool)     }))       chatInfo = optional(object({       odata_type = optional(string, "#microsoft.graph.chatInfo")       messageId = optional(string)       replyChainMessageId = optional(string)       threadId = optional(string)     }))       chatRestrictions = optional(object({       odata_type = optional(string, "#microsoft.graph.chatRestrictions")       allowTextOnly = optional(bool)     }))       endDateTime = optional(string)       expiryDateTime = optional(string)       externalId = optional(string)       isBroadcast = optional(bool)       isEndToEndEncryptionEnabled = optional(bool)       isEntryExitAnnounced = optional(bool)       joinMeetingIdSettings = optional(object({       odata_type = optional(string, "#microsoft.graph.joinMeetingIdSettings")       isPasscodeRequired = optional(bool)     }))       lobbyBypassSettings = optional(object({       odata_type = optional(string, "#microsoft.graph.lobbyBypassSettings")       isDialInBypassEnabled = optional(bool)       scope = optional(string)     }))       meetingOptionsWebUrl = optional(string)       meetingSpokenLanguageTag = optional(string)       meetingTemplateId = optional(string)       participants = optional(object({       odata_type = optional(string, "#microsoft.graph.meetingParticipants")       attendees = optional(any)       organizer = optional(any)     }))       recordAutomatically = optional(bool)       sensitivityLabelAssignment = optional(object({       odata_type = optional(string, "#microsoft.graph.onlineMeetingSensitivityLabelAssignment")       sensitivityLabelId = optional(string)     }))       shareMeetingChatHistoryDefault = optional(string)       startDateTime = optional(string)       subject = optional(string)       watermarkProtection = optional(object({       odata_type = optional(string, "#microsoft.graph.watermarkProtectionValues")       isEnabledForContentSharing = optional(bool)       isEnabledForVideo = optional(bool)     }))     })` | no | no |
 | `online_meeting_id` | `onlineMeetingId` | `string` | no | no |
-| `organizer` | `organizer` | `object({       odata_type = optional(string, "#microsoft.graph.engagementIdentitySet")       application = optional(any)       audience = optional(any)       device = optional(any)       group = optional(any)       user = optional(any)     })` | no | no |
-| `starter` | `starter` | `object({       odata_type = optional(string, "#microsoft.graph.engagementConversationMessage")       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(any)     }))       conversation = optional(object({       odata_type = optional(string, "#microsoft.graph.engagementConversation")       creationMode = optional(string)       messages = optional(any)       starter = optional(any)       starterId = optional(string)     }))       creationMode = optional(string)       from = optional(any)       reactions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.engagementConversationMessageReaction")       reactionBy = optional(object({       odata_type = optional(string, "#microsoft.graph.engagementIdentitySet")       application = optional(any)       audience = optional(any)       device = optional(any)       group = optional(any)       user = optional(any)     }))       reactionType = optional(string)     })))       replies = optional(any)       replyTo = optional(any)       replyToId = optional(string)     })` | no | no |
-| `starter_id` | `starterId` | `string` | no | no |
+| `starter` | `starter` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -47,46 +45,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- messages[].body.contentType: polymorphic schema; accepts an untyped value
-- messages[].conversation.messages[]: recursive schema; accepts an untyped value
-- messages[].conversation.starter: recursive schema; accepts an untyped value
-- messages[].from: polymorphic schema; accepts an untyped value
-- messages[].reactions[].reactionBy.application: polymorphic schema; accepts an untyped value
-- messages[].reactions[].reactionBy.audience: polymorphic schema; accepts an untyped value
-- messages[].reactions[].reactionBy.device: polymorphic schema; accepts an untyped value
-- messages[].reactions[].reactionBy.group: polymorphic schema; accepts an untyped value
-- messages[].reactions[].reactionBy.user: polymorphic schema; accepts an untyped value
-- messages[].replies[]: recursive schema; accepts an untyped value
-- messages[].replyTo: polymorphic schema; accepts an untyped value
-- onlineMeeting.allowLiveShare: polymorphic schema; accepts an untyped value
-- onlineMeeting.allowMeetingChat: polymorphic schema; accepts an untyped value
-- onlineMeeting.allowedLobbyAdmitters: polymorphic schema; accepts an untyped value
-- onlineMeeting.allowedPresenters: polymorphic schema; accepts an untyped value
-- onlineMeeting.broadcastSettings: polymorphic schema; accepts an untyped value
-- onlineMeeting.chatInfo: polymorphic schema; accepts an untyped value
-- onlineMeeting.chatRestrictions: polymorphic schema; accepts an untyped value
-- onlineMeeting.joinMeetingIdSettings: polymorphic schema; accepts an untyped value
-- onlineMeeting.lobbyBypassSettings: polymorphic schema; accepts an untyped value
-- onlineMeeting.participants: polymorphic schema; accepts an untyped value
-- onlineMeeting.sensitivityLabelAssignment: polymorphic schema; accepts an untyped value
-- onlineMeeting.shareMeetingChatHistoryDefault: polymorphic schema; accepts an untyped value
-- onlineMeeting.watermarkProtection: polymorphic schema; accepts an untyped value
-- organizer.application: polymorphic schema; accepts an untyped value
-- organizer.audience: polymorphic schema; accepts an untyped value
-- organizer.device: polymorphic schema; accepts an untyped value
-- organizer.group: polymorphic schema; accepts an untyped value
-- organizer.user: polymorphic schema; accepts an untyped value
-- starter.body.contentType: polymorphic schema; accepts an untyped value
-- starter.conversation.messages[]: recursive schema; accepts an untyped value
-- starter.conversation.starter: recursive schema; accepts an untyped value
-- starter.from: polymorphic schema; accepts an untyped value
-- starter.reactions[].reactionBy.application: polymorphic schema; accepts an untyped value
-- starter.reactions[].reactionBy.audience: polymorphic schema; accepts an untyped value
-- starter.reactions[].reactionBy.device: polymorphic schema; accepts an untyped value
-- starter.reactions[].reactionBy.group: polymorphic schema; accepts an untyped value
-- starter.reactions[].reactionBy.user: polymorphic schema; accepts an untyped value
-- starter.replies[]: recursive schema; accepts an untyped value
-- starter.replyTo: polymorphic schema; accepts an untyped value
+- messages[]: polymorphic schema; accepts an untyped value
+- onlineMeeting.participants.attendees[]: polymorphic schema; accepts an untyped value
+- onlineMeeting.participants.organizer: polymorphic schema; accepts an untyped value
+- starter: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

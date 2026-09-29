@@ -1,9 +1,7 @@
 variable "custom_attributes" {
   description = "Microsoft Graph customAttributes property."
-  type = object({
-    odata_type = optional(string, "#microsoft.graph.customAppScopeAttributesDictionary")
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "odata_type" {

@@ -19,9 +19,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    created_date_time   = "2026-01-01T00:00:00Z"
-    local_admin_enabled = false
-    assignments         = [{}]
+    created_date_time     = "2026-01-01T00:00:00Z"
+    local_admin_enabled   = false
+    restore_point_setting = { "frequencyType" = null }
+    assignments           = [{}]
   }
 
   assert {
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["localAdminEnabled"]) == jsonencode(false)
     error_message = "localAdminEnabled must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["restorePointSetting"]) == jsonencode({ "@odata.type" = "#microsoft.graph.cloudPcRestorePointSetting" })
+    error_message = "restorePointSetting must preserve typed values and omit nested nulls."
   }
 
   assert {

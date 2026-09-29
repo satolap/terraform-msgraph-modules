@@ -26,7 +26,6 @@ run "typed_request" {
     permission_grant_policy_id         = "test-parent-id"
     permission_classification          = "example"
     certified_client_applications_only = false
-    scope_sensitivity_labels           = { "labelKind" = null }
     client_application_ids             = ["example"]
   }
 
@@ -38,11 +37,6 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["certifiedClientApplicationsOnly"]) == jsonencode(false)
     error_message = "certifiedClientApplicationsOnly must preserve typed values and omit nested nulls."
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["scopeSensitivityLabels"]) == jsonencode({ "@odata.type" = "#microsoft.graph.scopeSensitivityLabels" })
-    error_message = "scopeSensitivityLabels must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -25,16 +25,16 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `completed_date_time` | `completedDateTime` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `error` | `error` | `any` | no | no |
-| `granular_mailbox_restore_artifacts` | `granularMailboxRestoreArtifacts` | `list(object({       odata_type = optional(string, "#microsoft.graph.granularMailboxRestoreArtifact")       artifactCount = optional(number)       completionDateTime = optional(string)       destinationType = optional(any)       error = optional(any)       restorePoint = optional(any)       restoredFolderId = optional(string)       restoredItemCount = optional(number)       searchResponseId = optional(string)       startDateTime = optional(string)       status = optional(any)     }))` | no | no |
+| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     })` | no | no |
+| `granular_mailbox_restore_artifacts` | `granularMailboxRestoreArtifacts` | `list(object({       odata_type = optional(string, "#microsoft.graph.granularMailboxRestoreArtifact")       artifactCount = optional(number)       completionDateTime = optional(string)       destinationType = optional(string)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(any)       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       restorePoint = optional(any)       restoredFolderId = optional(string)       restoredItemCount = optional(number)       searchResponseId = optional(string)       startDateTime = optional(string)       status = optional(string)     }))` | no | no |
 | `last_modified_by` | `lastModifiedBy` | `any` | no | no |
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `mailbox_restore_artifacts` | `mailboxRestoreArtifacts` | `list(object({       odata_type = optional(string, "#microsoft.graph.mailboxRestoreArtifact")       completionDateTime = optional(string)       destinationType = optional(any)       error = optional(any)       restorePoint = optional(any)       restoredFolderId = optional(string)       restoredItemCount = optional(number)       startDateTime = optional(string)       status = optional(any)     }))` | no | no |
-| `mailbox_restore_artifacts_bulk_addition_requests` | `mailboxRestoreArtifactsBulkAdditionRequests` | `list(object({       odata_type = optional(string, "#microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequest")       createdBy = optional(any)       createdDateTime = optional(string)       destinationType = optional(any)       directoryObjectIds = optional(list(string))       displayName = optional(string)       error = optional(any)       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       mailboxes = optional(list(string))       protectionTimePeriod = optional(any)       protectionUnitIds = optional(list(string))       restorePointPreference = optional(any)       status = optional(string)       tags = optional(any)     }))` | no | no |
+| `mailbox_restore_artifacts` | `mailboxRestoreArtifacts` | `any` | no | no |
+| `mailbox_restore_artifacts_bulk_addition_requests` | `mailboxRestoreArtifactsBulkAdditionRequests` | `list(object({       odata_type = optional(string, "#microsoft.graph.mailboxRestoreArtifactsBulkAdditionRequest")       createdBy = optional(any)       createdDateTime = optional(string)       destinationType = optional(string)       directoryObjectIds = optional(list(string))       displayName = optional(string)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(any)       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       lastModifiedBy = optional(any)       lastModifiedDateTime = optional(string)       mailboxes = optional(list(string))       protectionTimePeriod = optional(object({       odata_type = optional(string, "#microsoft.graph.timePeriod")       endDateTime = optional(string)       startDateTime = optional(string)     }))       protectionUnitIds = optional(list(string))       restorePointPreference = optional(string)       status = optional(string)       tags = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `restore_job_type` | `restoreJobType` | `any` | no | no |
-| `restore_session_artifact_count` | `restoreSessionArtifactCount` | `any` | no | no |
-| `status` | `status` | `any` | no | no |
+| `restore_job_type` | `restoreJobType` | `string` | no | no |
+| `restore_session_artifact_count` | `restoreSessionArtifactCount` | `object({       odata_type = optional(string, "#microsoft.graph.restoreSessionArtifactCount")       completed = optional(number)       failed = optional(number)       inProgress = optional(number)       total = optional(number)     })` | no | no |
+| `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -52,26 +52,13 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - createdBy: polymorphic schema; accepts an untyped value
-- error: polymorphic schema; accepts an untyped value
-- granularMailboxRestoreArtifacts[].destinationType: polymorphic schema; accepts an untyped value
-- granularMailboxRestoreArtifacts[].error: polymorphic schema; accepts an untyped value
-- granularMailboxRestoreArtifacts[].restorePoint: polymorphic schema; accepts an untyped value
-- granularMailboxRestoreArtifacts[].status: polymorphic schema; accepts an untyped value
+- granularMailboxRestoreArtifacts[].error.innerError.details[]: nested schema exceeds depth limit; accepts an untyped value
+- granularMailboxRestoreArtifacts[].restorePoint: navigation property; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
 - mailboxRestoreArtifactsBulkAdditionRequests[].createdBy: polymorphic schema; accepts an untyped value
-- mailboxRestoreArtifactsBulkAdditionRequests[].destinationType: polymorphic schema; accepts an untyped value
-- mailboxRestoreArtifactsBulkAdditionRequests[].error: polymorphic schema; accepts an untyped value
+- mailboxRestoreArtifactsBulkAdditionRequests[].error.innerError.details[]: nested schema exceeds depth limit; accepts an untyped value
 - mailboxRestoreArtifactsBulkAdditionRequests[].lastModifiedBy: polymorphic schema; accepts an untyped value
-- mailboxRestoreArtifactsBulkAdditionRequests[].protectionTimePeriod: polymorphic schema; accepts an untyped value
-- mailboxRestoreArtifactsBulkAdditionRequests[].restorePointPreference: polymorphic schema; accepts an untyped value
-- mailboxRestoreArtifactsBulkAdditionRequests[].tags: polymorphic schema; accepts an untyped value
-- mailboxRestoreArtifacts[].destinationType: polymorphic schema; accepts an untyped value
-- mailboxRestoreArtifacts[].error: polymorphic schema; accepts an untyped value
-- mailboxRestoreArtifacts[].restorePoint: polymorphic schema; accepts an untyped value
-- mailboxRestoreArtifacts[].status: polymorphic schema; accepts an untyped value
-- restoreJobType: polymorphic schema; accepts an untyped value
-- restoreSessionArtifactCount: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
+- mailboxRestoreArtifacts[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

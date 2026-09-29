@@ -1,15 +1,25 @@
 variable "bundles" {
   description = "Collection of bundles (albums and multi-select-shared sets of items). Only in personal OneDrive."
   type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.driveItem")
-    analytics       = optional(any)
-    content         = optional(string)
-    description     = optional(string)
-    fileSystemInfo  = optional(any)
-    name            = optional(string)
-    parentReference = optional(any)
-    retentionLabel  = optional(any)
-    root            = optional(any)
+    odata_type  = optional(string, "#microsoft.graph.driveItem")
+    analytics   = optional(any)
+    content     = optional(string)
+    description = optional(string)
+    fileSystemInfo = optional(object({
+      odata_type           = optional(string, "#microsoft.graph.fileSystemInfo")
+      createdDateTime      = optional(string)
+      lastAccessedDateTime = optional(string)
+      lastModifiedDateTime = optional(string)
+    }))
+    name = optional(string)
+    parentReference = optional(object({
+      odata_type = optional(string, "#microsoft.graph.itemReference")
+      driveType  = optional(string)
+      shareId    = optional(string)
+      siteId     = optional(string)
+    }))
+    retentionLabel = optional(any)
+    root           = optional(any)
     subscriptions = optional(list(object({
       odata_type                = optional(string, "#microsoft.graph.subscription")
       changeType                = optional(string)
@@ -40,15 +50,25 @@ variable "description" {
 variable "following" {
   description = "The list of items the user is following. Only in OneDrive for Business."
   type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.driveItem")
-    analytics       = optional(any)
-    content         = optional(string)
-    description     = optional(string)
-    fileSystemInfo  = optional(any)
-    name            = optional(string)
-    parentReference = optional(any)
-    retentionLabel  = optional(any)
-    root            = optional(any)
+    odata_type  = optional(string, "#microsoft.graph.driveItem")
+    analytics   = optional(any)
+    content     = optional(string)
+    description = optional(string)
+    fileSystemInfo = optional(object({
+      odata_type           = optional(string, "#microsoft.graph.fileSystemInfo")
+      createdDateTime      = optional(string)
+      lastAccessedDateTime = optional(string)
+      lastModifiedDateTime = optional(string)
+    }))
+    name = optional(string)
+    parentReference = optional(object({
+      odata_type = optional(string, "#microsoft.graph.itemReference")
+      driveType  = optional(string)
+      shareId    = optional(string)
+      siteId     = optional(string)
+    }))
+    retentionLabel = optional(any)
+    root           = optional(any)
     subscriptions = optional(list(object({
       odata_type                = optional(string, "#microsoft.graph.subscription")
       changeType                = optional(string)
@@ -85,14 +105,28 @@ variable "odata_type" {
 
 variable "parent_reference" {
   description = "Parent information, if the item has a parent. Read-write."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.itemReference")
+    driveType  = optional(string)
+    shareId    = optional(string)
+    siteId     = optional(string)
+  })
+  default = null
 }
 
 variable "share_point_ids" {
   description = "Microsoft Graph sharePointIds property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type       = optional(string, "#microsoft.graph.sharepointIds")
+    listId           = optional(string)
+    listItemId       = optional(string)
+    listItemUniqueId = optional(string)
+    siteId           = optional(string)
+    siteUrl          = optional(string)
+    tenantId         = optional(string)
+    webId            = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

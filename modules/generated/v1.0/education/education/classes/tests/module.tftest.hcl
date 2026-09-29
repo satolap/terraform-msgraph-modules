@@ -20,12 +20,18 @@ run "typed_request" {
 
   variables {
     class_code            = "example"
+    course                = { "courseNumber" = null }
     assignment_categories = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["classCode"]) == jsonencode("example")
     error_message = "classCode must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["course"]) == jsonencode({ "@odata.type" = "#microsoft.graph.educationCourse" })
+    error_message = "course must preserve typed values and omit nested nulls."
   }
 
   assert {

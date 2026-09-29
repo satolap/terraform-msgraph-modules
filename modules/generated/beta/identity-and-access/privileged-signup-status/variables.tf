@@ -13,7 +13,7 @@ variable "odata_type" {
 
 variable "status" {
   description = "Microsoft Graph status property."
-  type        = any
+  type        = string
   default     = null
 
   validation {

@@ -1,30 +1,18 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.industryData.inboundApiFlow", "#microsoft.graph.industryData.inboundFileFlow"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "data_connector" {
   description = "Microsoft Graph dataConnector property."
-  type = object({
-    odata_type  = optional(string, "#microsoft.graph.industryData.industryDataConnector")
-    displayName = optional(string)
-    sourceSystem = optional(object({
-      odata_type  = optional(string, "#microsoft.graph.industryData.sourceSystemDefinition")
-      displayName = optional(string)
-      userMatchingSettings = optional(list(object({
-        odata_type    = optional(string, "#microsoft.graph.industryData.userMatchingSetting")
-        matchTarget   = optional(any)
-        priorityOrder = optional(number)
-        roleGroup = optional(object({
-          odata_type  = optional(string, "#microsoft.graph.industryData.roleGroup")
-          displayName = optional(string)
-          roles       = optional(any)
-        }))
-        sourceIdentifier = optional(object({
-          odata_type = optional(string, "#microsoft.graph.industryData.identifierTypeReferenceValue")
-          code       = optional(string)
-          value      = optional(any)
-        }))
-      })))
-      vendor = optional(string)
-    }))
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "data_domain" {
@@ -54,24 +42,6 @@ variable "expiration_date_time" {
   description = "The end of the time window when the flow is allowed to run. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.industryData.inboundFlow"
-  nullable    = false
-}
-
-variable "readiness_status" {
-  description = "Microsoft Graph readinessStatus property."
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.readiness_status == null ? true : contains(["notReady", "ready", "failed", "disabled", "expired", "unknownFutureValue"], var.readiness_status)
-    error_message = "readiness_status must be one of the documented enum values."
-  }
 }
 
 variable "year" {
@@ -105,7 +75,7 @@ variable "additional_properties" {
   sensitive   = true
 
   validation {
-    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["id"], key)]) : false
+    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["id", "readinessStatus"], key)]) : false
     error_message = "additional_properties must be an object without documented read-only properties."
   }
 }

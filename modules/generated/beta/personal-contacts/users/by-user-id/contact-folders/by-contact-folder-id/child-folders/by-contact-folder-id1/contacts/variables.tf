@@ -86,17 +86,15 @@ variable "email_addresses" {
     address    = optional(string)
     name       = optional(string)
     otherLabel = optional(string)
-    type       = optional(any)
+    type       = optional(string)
   }))
   default = null
 }
 
 variable "extensions" {
   description = "The collection of open extensions defined for the contact. Nullable."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.extension")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "file_as" {
@@ -107,8 +105,26 @@ variable "file_as" {
 
 variable "flag" {
   description = "The flag value that indicates the status, start date, due date, or completion date for the contact."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.followupFlag")
+    completedDateTime = optional(object({
+      odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+      dateTime   = optional(string)
+      timeZone   = optional(string)
+    }))
+    dueDateTime = optional(object({
+      odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+      dateTime   = optional(string)
+      timeZone   = optional(string)
+    }))
+    flagStatus = optional(string)
+    startDateTime = optional(object({
+      odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
+      dateTime   = optional(string)
+      timeZone   = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "gender" {
@@ -207,7 +223,7 @@ variable "phones" {
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.phone")
     number     = optional(string)
-    type       = optional(any)
+    type       = optional(string)
   }))
   default = null
 }
@@ -228,7 +244,7 @@ variable "postal_addresses" {
     postalCode      = optional(string)
     state           = optional(string)
     street          = optional(string)
-    type            = optional(any)
+    type            = optional(string)
   }))
   default = null
 }
@@ -281,7 +297,7 @@ variable "websites" {
     odata_type  = optional(string, "#microsoft.graph.website")
     address     = optional(string)
     displayName = optional(string)
-    type        = optional(any)
+    type        = optional(string)
   }))
   default = null
 }

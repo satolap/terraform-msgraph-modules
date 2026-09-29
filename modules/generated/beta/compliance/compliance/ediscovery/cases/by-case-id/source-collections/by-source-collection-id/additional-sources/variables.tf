@@ -20,6 +20,17 @@ variable "source_collection_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.ediscovery.siteSource", "#microsoft.graph.ediscovery.unifiedGroupSource", "#microsoft.graph.ediscovery.userSource"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "created_by" {
   description = "The user who created the dataSource."
   type        = any
@@ -40,20 +51,13 @@ variable "display_name" {
 
 variable "hold_status" {
   description = "Microsoft Graph holdStatus property."
-  type        = any
+  type        = string
   default     = null
 
   validation {
     condition     = var.hold_status == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial", "unknownFutureValue"], var.hold_status)
     error_message = "hold_status must be one of the documented enum values."
   }
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.ediscovery.dataSource"
-  nullable    = false
 }
 
 variable "additional_properties" {

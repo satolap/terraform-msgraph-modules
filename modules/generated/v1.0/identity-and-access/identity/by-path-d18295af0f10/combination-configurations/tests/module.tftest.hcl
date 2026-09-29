@@ -6,6 +6,7 @@ run "minimal_request" {
 
   variables {
     authentication_strength_policy_id = "test-parent-id"
+    odata_type                        = "#microsoft.graph.fido2CombinationConfiguration"
   }
 
   assert {
@@ -24,11 +25,28 @@ run "typed_request" {
 
   variables {
     authentication_strength_policy_id = "test-parent-id"
+    odata_type                        = "#microsoft.graph.fido2CombinationConfiguration"
     applies_to_combinations           = ["password"]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.fido2CombinationConfiguration")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["appliesToCombinations"]) == jsonencode(["password"])
     error_message = "appliesToCombinations must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    authentication_strength_policy_id = "test-parent-id"
+    odata_type                        = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

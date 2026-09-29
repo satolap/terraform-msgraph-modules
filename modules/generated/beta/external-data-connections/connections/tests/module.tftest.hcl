@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     connector_id         = "example"
     ingested_items_count = 0
+    activity_settings    = { "urlToItemResolvers" = null }
     groups               = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["ingestedItemsCount"]) == jsonencode(0)
     error_message = "ingestedItemsCount must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["activitySettings"]) == jsonencode({ "@odata.type" = "#microsoft.graph.externalConnectors.activitySettings" })
+    error_message = "activitySettings must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -48,4 +54,27 @@ run "invalid_enum" {
   }
 
   expect_failures = [var.content_category]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    enabled_content_experiences = "search, Compliance"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["enabledContentExperiences"] == "search, Compliance"
+    error_message = "enabledContentExperiences must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    enabled_content_experiences = "search,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.enabled_content_experiences]
 }

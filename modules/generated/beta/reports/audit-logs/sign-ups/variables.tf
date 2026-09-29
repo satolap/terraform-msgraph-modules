@@ -14,7 +14,7 @@ variable "applied_event_listeners" {
   description = "Detailed information about the listeners, such as Azure Logic Apps and Azure Functions, which the corresponding events in the sign-up event triggered."
   type = list(object({
     odata_type         = optional(string, "#microsoft.graph.appliedAuthenticationEventListener")
-    eventType          = optional(any)
+    eventType          = optional(string)
     executedListenerId = optional(string)
     handlerResult      = optional(any)
   }))
@@ -35,8 +35,17 @@ variable "created_date_time" {
 
 variable "fraud_protection_details" {
   description = "Microsoft Graph fraudProtectionDetails property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type              = optional(string, "#microsoft.graph.fraudProtectionDetails")
+    providerErrorMessages   = optional(list(string))
+    providerHttpStatusCodes = optional(list(number))
+    providerName            = optional(string)
+    providerResponseTimes   = optional(list(number))
+    providerSessionId       = optional(string)
+    reason                  = optional(string)
+    verdict                 = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -48,8 +57,12 @@ variable "odata_type" {
 
 variable "sign_up_identity" {
   description = "Unique identifier for self-service sign-up user. Supports $filter (eq) on the signUpIdentifierType."
-  type        = any
-  default     = null
+  type = object({
+    odata_type           = optional(string, "#microsoft.graph.signUpIdentity")
+    signUpIdentifier     = optional(string)
+    signUpIdentifierType = optional(string)
+  })
+  default = null
 }
 
 variable "sign_up_identity_provider" {
@@ -71,8 +84,13 @@ variable "sign_up_stage" {
 
 variable "status" {
   description = "Sign-up status. Includes the error code and description of the error (if a sign-up failure or interrupt occurs).  Supports $filter (eq) on errorCode property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type        = optional(string, "#microsoft.graph.signUpStatus")
+    additionalDetails = optional(string)
+    errorCode         = optional(number)
+    failureReason     = optional(string)
+  })
+  default = null
 }
 
 variable "user_id" {

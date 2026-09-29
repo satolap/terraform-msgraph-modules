@@ -9,8 +9,13 @@ variable "controls" {
     owner           = optional(any)
     program         = optional(any)
     programId       = optional(string)
-    resource        = optional(any)
-    status          = optional(string)
+    resource = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.programResource")
+      displayName = optional(string)
+      id          = optional(string)
+      type        = optional(string)
+    }))
+    status = optional(string)
   }))
   default = null
 }

@@ -22,7 +22,7 @@ variable "comment" {
 }
 
 variable "compatibility_mode" {
-  description = "Microsoft Graph compatibilityMode property."
+  description = "Controls what compatibility setting is used for specific sites or domains"
   type        = string
   default     = null
 
@@ -50,11 +50,11 @@ variable "history" {
     odata_type        = optional(string, "#microsoft.graph.browserSiteHistory")
     allowRedirect     = optional(bool)
     comment           = optional(string)
-    compatibilityMode = optional(any)
+    compatibilityMode = optional(string)
     lastModifiedBy    = optional(any)
-    mergeType         = optional(any)
+    mergeType         = optional(string)
     publishedDateTime = optional(string)
-    targetEnvironment = optional(any)
+    targetEnvironment = optional(string)
   }))
   default = null
 }
@@ -72,7 +72,7 @@ variable "last_modified_date_time" {
 }
 
 variable "merge_type" {
-  description = "Microsoft Graph mergeType property."
+  description = "The merge type of the site"
   type        = string
   default     = null
 
@@ -90,7 +90,7 @@ variable "odata_type" {
 }
 
 variable "status" {
-  description = "Microsoft Graph status property."
+  description = "Status of the site."
   type        = string
   default     = null
 
@@ -101,7 +101,7 @@ variable "status" {
 }
 
 variable "target_environment" {
-  description = "Microsoft Graph targetEnvironment property."
+  description = "The target environment that the site should open in."
   type        = string
   default     = null
 

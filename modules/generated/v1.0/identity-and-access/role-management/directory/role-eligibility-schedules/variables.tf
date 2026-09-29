@@ -67,8 +67,38 @@ variable "role_definition_id" {
 
 variable "schedule_info" {
   description = "The period of the role eligibility."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.requestSchedule")
+    expiration = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.expirationPattern")
+      duration    = optional(string)
+      endDateTime = optional(string)
+      type        = optional(string)
+    }))
+    recurrence = optional(object({
+      odata_type = optional(string, "#microsoft.graph.patternedRecurrence")
+      pattern = optional(object({
+        odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+        dayOfMonth     = optional(number)
+        daysOfWeek     = optional(list(string))
+        firstDayOfWeek = optional(string)
+        index          = optional(string)
+        interval       = optional(number)
+        month          = optional(number)
+        type           = optional(string)
+      }))
+      range = optional(object({
+        odata_type          = optional(string, "#microsoft.graph.recurrenceRange")
+        endDate             = optional(string)
+        numberOfOccurrences = optional(number)
+        recurrenceTimeZone  = optional(string)
+        startDate           = optional(string)
+        type                = optional(string)
+      }))
+    }))
+    startDateTime = optional(string)
+  })
+  default = null
 }
 
 variable "status" {

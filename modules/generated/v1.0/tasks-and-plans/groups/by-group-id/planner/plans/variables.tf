@@ -11,8 +11,13 @@ variable "group_id" {
 
 variable "container" {
   description = "Identifies the container of the plan. Specify only the url, the containerId and type, or all properties. After it's set, this property can’t be updated. Required."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.plannerPlanContainer")
+    containerId = optional(string)
+    type        = optional(string)
+    url         = optional(string)
+  })
+  default = null
 }
 
 variable "odata_type" {

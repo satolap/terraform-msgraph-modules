@@ -37,13 +37,16 @@ variable "decisions" {
     odata_type       = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItem")
     applyDescription = optional(string)
     decision         = optional(string)
-    insights = optional(list(object({
-      odata_type             = optional(string, "#microsoft.graph.governanceInsight")
-      insightCreatedDateTime = optional(string)
-    })))
-    instance      = optional(any)
-    justification = optional(string)
-    permission    = optional(any)
+    insights         = optional(any)
+    instance         = optional(any)
+    justification    = optional(string)
+    permission = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItemPermission")
+      description = optional(string)
+      displayName = optional(string)
+      id          = optional(string)
+      type        = optional(string)
+    }))
   }))
   default = null
 }

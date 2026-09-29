@@ -25,7 +25,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `role` | `role` | `any` | no | no |
+| `role` | `role` | `string` | no | no |
 | `tenant_id` | `tenantId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -44,7 +44,6 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- role: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -18,10 +18,8 @@ variable "alert_definition_id" {
 
 variable "alert_incidents" {
   description = "Represents the incidents of this type of alert that have been triggered in Privileged Identity Management (PIM) for Microsoft Entra roles in the tenant. Supports $expand."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.unifiedRoleManagementAlertIncident")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "incident_count" {

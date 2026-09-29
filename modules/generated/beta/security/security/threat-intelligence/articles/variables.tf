@@ -3,7 +3,7 @@ variable "body" {
   type = object({
     odata_type = optional(string, "#microsoft.graph.security.formattedContent")
     content    = optional(string)
-    format     = optional(any)
+    format     = optional(string)
   })
   default = null
 }
@@ -24,10 +24,8 @@ variable "indicators" {
   description = "Indicators related to this article."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.security.articleIndicator")
-    artifact = optional(object({
-      odata_type = optional(string, "#microsoft.graph.security.artifact")
-    }))
-    source = optional(string)
+    artifact   = optional(any)
+    source     = optional(string)
   }))
   default = null
 }
@@ -56,7 +54,7 @@ variable "summary" {
   type = object({
     odata_type = optional(string, "#microsoft.graph.security.formattedContent")
     content    = optional(string)
-    format     = optional(any)
+    format     = optional(string)
   })
   default = null
 }

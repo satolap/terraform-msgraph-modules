@@ -118,7 +118,7 @@ variable "plan_id" {
 
 variable "preview_type" {
   description = "This sets the type of preview that shows up on the task. The possible values are: automatic, noPreview, checklist, description, reference."
-  type        = any
+  type        = string
   default     = null
 
   validation {

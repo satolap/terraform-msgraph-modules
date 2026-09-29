@@ -28,21 +28,21 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `user_id` | URL parameter `user-id` | `string` | yes | no |
 | `mail_folder_id` | URL parameter `mailFolder-id` | `string` | yes | no |
 | `mail_folder_id1` | URL parameter `mailFolder-id1` | `string` | yes | no |
-| `attachments` | `attachments` | `list(object({       odata_type = optional(string, "#microsoft.graph.attachment")       contentType = optional(string)       isInline = optional(bool)       lastModifiedDateTime = optional(string)       name = optional(string)       size = optional(number)     }))` | no | no |
-| `bcc_recipients` | `bccRecipients` | `list(object({       odata_type = optional(string, "#microsoft.graph.recipient")       emailAddress = optional(any)     }))` | no | no |
-| `body` | `body` | `any` | no | no |
+| `attachments` | `attachments` | `any` | no | no |
+| `bcc_recipients` | `bccRecipients` | `any` | no | no |
+| `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no |
 | `body_preview` | `bodyPreview` | `string` | no | no |
 | `categories` | `categories` | `list(string)` | no | no |
-| `cc_recipients` | `ccRecipients` | `list(object({       odata_type = optional(string, "#microsoft.graph.recipient")       emailAddress = optional(any)     }))` | no | no |
+| `cc_recipients` | `ccRecipients` | `any` | no | no |
 | `conversation_id` | `conversationId` | `string` | no | no |
 | `conversation_index` | `conversationIndex` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `extensions` | `extensions` | `list(object({       odata_type = optional(string, "#microsoft.graph.extension")     }))` | no | no |
-| `flag` | `flag` | `any` | no | no |
+| `extensions` | `extensions` | `any` | no | no |
+| `flag` | `flag` | `object({       odata_type = optional(string, "#microsoft.graph.followupFlag")       completedDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       dueDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       flagStatus = optional(string)       startDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))     })` | no | no |
 | `from` | `from` | `any` | no | no |
 | `has_attachments` | `hasAttachments` | `bool` | no | no |
-| `importance` | `importance` | `any` | no | no |
-| `inference_classification` | `inferenceClassification` | `any` | no | no |
+| `importance` | `importance` | `string` | no | no |
+| `inference_classification` | `inferenceClassification` | `string` | no | no |
 | `internet_message_id` | `internetMessageId` | `string` | no | no |
 | `is_delivery_receipt_requested` | `isDeliveryReceiptRequested` | `bool` | no | no |
 | `is_draft` | `isDraft` | `bool` | no | no |
@@ -53,13 +53,13 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `parent_folder_id` | `parentFolderId` | `string` | no | no |
 | `received_date_time` | `receivedDateTime` | `string` | no | no |
-| `reply_to` | `replyTo` | `list(object({       odata_type = optional(string, "#microsoft.graph.recipient")       emailAddress = optional(any)     }))` | no | no |
+| `reply_to` | `replyTo` | `any` | no | no |
 | `sender` | `sender` | `any` | no | no |
 | `sent_date_time` | `sentDateTime` | `string` | no | no |
 | `single_value_extended_properties` | `singleValueExtendedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.singleValueLegacyExtendedProperty")       value = optional(string)     }))` | no | no |
 | `subject` | `subject` | `string` | no | no |
-| `to_recipients` | `toRecipients` | `list(object({       odata_type = optional(string, "#microsoft.graph.recipient")       emailAddress = optional(any)     }))` | no | no |
-| `unique_body` | `uniqueBody` | `any` | no | no |
+| `to_recipients` | `toRecipients` | `any` | no | no |
+| `unique_body` | `uniqueBody` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no |
 | `web_link` | `webLink` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -77,17 +77,14 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- bccRecipients[].emailAddress: polymorphic schema; accepts an untyped value
-- body: polymorphic schema; accepts an untyped value
-- ccRecipients[].emailAddress: polymorphic schema; accepts an untyped value
-- flag: polymorphic schema; accepts an untyped value
+- attachments[]: polymorphic schema; accepts an untyped value
+- bccRecipients[]: polymorphic schema; accepts an untyped value
+- ccRecipients[]: polymorphic schema; accepts an untyped value
+- extensions[]: polymorphic schema; accepts an untyped value
 - from: polymorphic schema; accepts an untyped value
-- importance: polymorphic schema; accepts an untyped value
-- inferenceClassification: polymorphic schema; accepts an untyped value
-- replyTo[].emailAddress: polymorphic schema; accepts an untyped value
+- replyTo[]: polymorphic schema; accepts an untyped value
 - sender: polymorphic schema; accepts an untyped value
-- toRecipients[].emailAddress: polymorphic schema; accepts an untyped value
-- uniqueBody: polymorphic schema; accepts an untyped value
+- toRecipients[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

@@ -6,7 +6,7 @@ locals {
     "activityOperationType" = var.activity_operation_type
     "activityResult"        = var.activity_result
     "activityType"          = var.activity_type
-    "actor"                 = var.actor
+    "actor"                 = (var.actor == null ? null : { for key0, value0 in { "@odata.type" = var.actor["odata_type"], "applicationDisplayName" = var.actor["applicationDisplayName"], "applicationId" = var.actor["applicationId"], "auditActorType" = var.actor["auditActorType"], "ipAddress" = var.actor["ipAddress"], "servicePrincipalName" = var.actor["servicePrincipalName"], "userId" = var.actor["userId"], "userPermissions" = (var.actor["userPermissions"] == null ? null : [for item1 in var.actor["userPermissions"] : item1 if item1 != null]), "userPrincipalName" = var.actor["userPrincipalName"] } : key0 => value0 if value0 != null })
     "category"              = var.category
     "componentName"         = var.component_name
     "correlationId"         = var.correlation_id

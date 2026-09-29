@@ -6,25 +6,14 @@ variable "audience" {
 
 variable "compliance_change_rules" {
   description = "Rules for governing the automatic creation of compliance changes."
-  type = list(object({
-    odata_type            = optional(string, "#microsoft.graph.windowsUpdates.complianceChangeRule")
-    createdDateTime       = optional(string)
-    lastEvaluatedDateTime = optional(string)
-    lastModifiedDateTime  = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "compliance_changes" {
   description = "Compliance changes like content approvals which result in the automatic creation of deployments using the audience and deploymentSettings of the policy."
-  type = list(object({
-    odata_type      = optional(string, "#microsoft.graph.windowsUpdates.complianceChange")
-    createdDateTime = optional(string)
-    isRevoked       = optional(bool)
-    revokedDateTime = optional(string)
-    updatePolicy    = optional(any)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "created_date_time" {
@@ -35,8 +24,46 @@ variable "created_date_time" {
 
 variable "deployment_settings" {
   description = "Settings for governing how to deploy content."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.windowsUpdates.deploymentSettings")
+    contentApplicability = optional(object({
+      odata_type              = optional(string, "#microsoft.graph.windowsUpdates.contentApplicabilitySettings")
+      offerWhileRecommendedBy = optional(list(string))
+      safeguard = optional(object({
+        odata_type = optional(string, "#microsoft.graph.windowsUpdates.safeguardSettings")
+        disabledSafeguardProfiles = optional(list(object({
+          odata_type = optional(string, "#microsoft.graph.windowsUpdates.safeguardProfile")
+          category   = optional(string)
+        })))
+      }))
+    }))
+    expedite = optional(object({
+      odata_type      = optional(string, "#microsoft.graph.windowsUpdates.expediteSettings")
+      isExpedited     = optional(bool)
+      isReadinessTest = optional(bool)
+    }))
+    monitoring = optional(object({
+      odata_type = optional(string, "#microsoft.graph.windowsUpdates.monitoringSettings")
+      monitoringRules = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.windowsUpdates.monitoringRule")
+        action     = optional(string)
+        signal     = optional(string)
+        threshold  = optional(number)
+      })))
+    }))
+    schedule = optional(object({
+      odata_type     = optional(string, "#microsoft.graph.windowsUpdates.scheduleSettings")
+      gradualRollout = optional(any)
+      startDateTime  = optional(string)
+    }))
+    userExperience = optional(object({
+      odata_type            = optional(string, "#microsoft.graph.windowsUpdates.userExperienceSettings")
+      daysUntilForcedReboot = optional(number)
+      isHotpatchEnabled     = optional(bool)
+      offerAsOptional       = optional(bool)
+    }))
+  })
+  default = null
 }
 
 variable "odata_type" {

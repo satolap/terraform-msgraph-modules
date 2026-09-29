@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "#microsoft.graph.invalidLicenseAlertConfiguration"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "identityGovernance/roleManagementAlerts/alertConfigurations"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,8 +23,14 @@ run "typed_request" {
   command = plan
 
   variables {
+    odata_type          = "#microsoft.graph.invalidLicenseAlertConfiguration"
     alert_definition_id = "example"
     is_enabled          = false
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.invalidLicenseAlertConfiguration")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -32,4 +42,14 @@ run "typed_request" {
     condition     = jsonencode(msgraph_resource.this.body["isEnabled"]) == jsonencode(false)
     error_message = "isEnabled must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    odata_type = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

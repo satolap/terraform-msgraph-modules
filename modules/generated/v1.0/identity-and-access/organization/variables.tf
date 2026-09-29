@@ -105,7 +105,7 @@ variable "on_premises_sync_enabled" {
 
 variable "partner_tenant_type" {
   description = "The type of partnership this tenant has with Microsoft. The possible values are: microsoftSupport, syndicatePartner, breadthPartner, breadthPartnerDelegatedAdmin, resellerPartnerDelegatedAdmin, valueAddedResellerPartnerDelegatedAdmin, unknownFutureValue. Nullable. For more information about the possible types, see partnerTenantType values."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -128,8 +128,12 @@ variable "preferred_language" {
 
 variable "privacy_profile" {
   description = "The privacy profile of an organization."
-  type        = any
-  default     = null
+  type = object({
+    odata_type   = optional(string, "#microsoft.graph.privacyProfile")
+    contactEmail = optional(string)
+    statementUrl = optional(string)
+  })
+  default = null
 }
 
 variable "provisioned_plans" {

@@ -1,6 +1,6 @@
 variable "color" {
   description = "A pre-set color constant that characterizes a category, and that is mapped to one of 25 predefined colors. For more details, see the following note."
-  type        = any
+  type        = string
   default     = null
 
   validation {

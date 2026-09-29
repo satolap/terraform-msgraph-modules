@@ -20,8 +20,13 @@ variable "resource" {
 variable "sharing_history" {
   description = "Microsoft Graph sharingHistory property."
   type = list(object({
-    odata_type     = optional(string, "#microsoft.graph.sharingDetail")
-    sharedBy       = optional(any)
+    odata_type = optional(string, "#microsoft.graph.sharingDetail")
+    sharedBy = optional(object({
+      odata_type  = optional(string, "#microsoft.graph.insightIdentity")
+      address     = optional(string)
+      displayName = optional(string)
+      id          = optional(string)
+    }))
     sharingSubject = optional(string)
     sharingType    = optional(string)
   }))

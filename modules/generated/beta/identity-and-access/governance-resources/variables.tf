@@ -38,10 +38,25 @@ variable "role_assignment_requests" {
     reason                         = optional(string)
     resourceId                     = optional(string)
     roleDefinitionId               = optional(string)
-    schedule                       = optional(any)
-    status                         = optional(any)
-    subjectId                      = optional(string)
-    type                           = optional(string)
+    schedule = optional(object({
+      odata_type    = optional(string, "#microsoft.graph.governanceSchedule")
+      duration      = optional(string)
+      endDateTime   = optional(string)
+      startDateTime = optional(string)
+      type          = optional(string)
+    }))
+    status = optional(object({
+      odata_type = optional(string, "#microsoft.graph.governanceRoleAssignmentRequestStatus")
+      status     = optional(string)
+      statusDetails = optional(list(object({
+        odata_type = optional(string, "#microsoft.graph.keyValue")
+        key        = optional(string)
+        value      = optional(string)
+      })))
+      subStatus = optional(string)
+    }))
+    subjectId = optional(string)
+    type      = optional(string)
   }))
   default = null
 }

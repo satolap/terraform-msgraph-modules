@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     activity_date_time       = "2026-01-01T00:00:00Z"
     duration_in_milliseconds = -2147483648
+    initiated_by             = { "displayName" = null }
     modified_properties      = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["durationInMilliseconds"]) == jsonencode(-2147483648)
     error_message = "durationInMilliseconds must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["initiatedBy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.initiator" })
+    error_message = "initiatedBy must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -33,7 +33,7 @@ variable "children" {
     relations = optional(list(object({
       odata_type   = optional(string, "#microsoft.graph.termStore.relation")
       fromTerm     = optional(any)
-      relationship = optional(any)
+      relationship = optional(string)
       set          = optional(any)
       toTerm       = optional(any)
     })))
@@ -85,7 +85,7 @@ variable "relations" {
   type = list(object({
     odata_type   = optional(string, "#microsoft.graph.termStore.relation")
     fromTerm     = optional(any)
-    relationship = optional(any)
+    relationship = optional(string)
     set          = optional(any)
     toTerm       = optional(any)
   }))

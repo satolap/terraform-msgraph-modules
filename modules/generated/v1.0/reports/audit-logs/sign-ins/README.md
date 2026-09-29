@@ -24,30 +24,30 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `app_display_name` | `appDisplayName` | `string` | no | no |
 | `app_id` | `appId` | `string` | no | no |
-| `applied_conditional_access_policies` | `appliedConditionalAccessPolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.appliedConditionalAccessPolicy")       displayName = optional(string)       enforcedGrantControls = optional(list(string))       enforcedSessionControls = optional(list(string))       id = optional(string)       result = optional(any)     }))` | no | no |
-| `authentication_app_device_details` | `authenticationAppDeviceDetails` | `any` | no | no |
+| `applied_conditional_access_policies` | `appliedConditionalAccessPolicies` | `list(object({       odata_type = optional(string, "#microsoft.graph.appliedConditionalAccessPolicy")       displayName = optional(string)       enforcedGrantControls = optional(list(string))       enforcedSessionControls = optional(list(string))       id = optional(string)       result = optional(string)     }))` | no | no |
+| `authentication_app_device_details` | `authenticationAppDeviceDetails` | `object({       odata_type = optional(string, "#microsoft.graph.authenticationAppDeviceDetails")       appVersion = optional(string)       clientApp = optional(string)       deviceId = optional(string)       operatingSystem = optional(string)     })` | no | no |
 | `client_app_used` | `clientAppUsed` | `string` | no | no |
-| `conditional_access_status` | `conditionalAccessStatus` | `any` | no | no |
+| `conditional_access_status` | `conditionalAccessStatus` | `string` | no | no |
 | `correlation_id` | `correlationId` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `device_detail` | `deviceDetail` | `any` | no | no |
+| `device_detail` | `deviceDetail` | `object({       odata_type = optional(string, "#microsoft.graph.deviceDetail")       browser = optional(string)       deviceId = optional(string)       displayName = optional(string)       isCompliant = optional(bool)       isManaged = optional(bool)       operatingSystem = optional(string)       trustType = optional(string)     })` | no | no |
 | `home_tenant_id` | `homeTenantId` | `string` | no | no |
 | `ip_address` | `ipAddress` | `string` | no | no |
 | `is_interactive` | `isInteractive` | `bool` | no | no |
-| `location` | `location` | `any` | no | no |
+| `location` | `location` | `object({       odata_type = optional(string, "#microsoft.graph.signInLocation")       city = optional(string)       countryOrRegion = optional(string)       geoCoordinates = optional(object({       odata_type = optional(string, "#microsoft.graph.geoCoordinates")     }))       state = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `resource_display_name` | `resourceDisplayName` | `string` | no | no |
 | `resource_id` | `resourceId` | `string` | no | no |
 | `resource_tenant_id` | `resourceTenantId` | `string` | no | no |
-| `risk_detail` | `riskDetail` | `any` | no | no |
-| `risk_event_types` | `riskEventTypes` | `any` | no | no |
+| `risk_detail` | `riskDetail` | `string` | no | no |
+| `risk_event_types` | `riskEventTypes` | `list(string)` | no | no |
 | `risk_event_types_v2` | `riskEventTypes_v2` | `list(string)` | no | no |
-| `risk_level_aggregated` | `riskLevelAggregated` | `any` | no | no |
-| `risk_level_during_sign_in` | `riskLevelDuringSignIn` | `any` | no | no |
-| `risk_state` | `riskState` | `any` | no | no |
+| `risk_level_aggregated` | `riskLevelAggregated` | `string` | no | no |
+| `risk_level_during_sign_in` | `riskLevelDuringSignIn` | `string` | no | no |
+| `risk_state` | `riskState` | `string` | no | no |
 | `service_principal_id` | `servicePrincipalId` | `string` | no | no |
 | `service_principal_name` | `servicePrincipalName` | `string` | no | no |
-| `status` | `status` | `any` | no | no |
+| `status` | `status` | `object({       odata_type = optional(string, "#microsoft.graph.signInStatus")       additionalDetails = optional(string)       errorCode = optional(number)       failureReason = optional(string)     })` | no | no |
 | `user_agent` | `userAgent` | `string` | no | no |
 | `user_display_name` | `userDisplayName` | `string` | no | no |
 | `user_id` | `userId` | `string` | no | no |
@@ -65,20 +65,6 @@ Review the Microsoft Graph API documentation for this endpoint's application/del
 Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
 
 Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
-
-Generation notes:
-
-- appliedConditionalAccessPolicies[].result: polymorphic schema; accepts an untyped value
-- authenticationAppDeviceDetails: polymorphic schema; accepts an untyped value
-- conditionalAccessStatus: polymorphic schema; accepts an untyped value
-- deviceDetail: polymorphic schema; accepts an untyped value
-- location: polymorphic schema; accepts an untyped value
-- riskDetail: polymorphic schema; accepts an untyped value
-- riskEventTypes[]: polymorphic schema; accepts an untyped value
-- riskLevelAggregated: polymorphic schema; accepts an untyped value
-- riskLevelDuringSignIn: polymorphic schema; accepts an untyped value
-- riskState: polymorphic schema; accepts an untyped value
-- status: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

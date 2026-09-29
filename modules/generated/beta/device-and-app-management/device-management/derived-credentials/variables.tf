@@ -27,8 +27,8 @@ variable "notification_type" {
   default     = null
 
   validation {
-    condition     = var.notification_type == null ? true : contains(["none", "companyPortal", "email"], var.notification_type)
-    error_message = "notification_type must be one of the documented enum values."
+    condition     = var.notification_type == null ? true : try(alltrue([for value in split(",", var.notification_type) : contains(["none", "companyportal", "email"], lower(trimspace(value)))]), false)
+    error_message = "notification_type must be one or more of the documented enum values, separated by commas."
   }
 }
 

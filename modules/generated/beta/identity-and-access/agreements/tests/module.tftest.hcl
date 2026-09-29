@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     display_name                      = "example"
     is_per_device_acceptance_required = false
+    terms_expiration                  = { "frequency" = null }
     files                             = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isPerDeviceAcceptanceRequired"]) == jsonencode(false)
     error_message = "isPerDeviceAcceptanceRequired must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["termsExpiration"]) == jsonencode({ "@odata.type" = "#microsoft.graph.termsExpiration" })
+    error_message = "termsExpiration must preserve typed values and omit nested nulls."
   }
 
   assert {

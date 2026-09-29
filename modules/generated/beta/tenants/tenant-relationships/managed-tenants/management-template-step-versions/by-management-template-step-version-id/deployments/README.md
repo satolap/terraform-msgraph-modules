@@ -26,12 +26,12 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `management_template_step_version_id` | URL parameter `managementTemplateStepVersion-id` | `string` | yes | no |
 | `created_by_user_id` | `createdByUserId` | `string` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `error` | `error` | `any` | no | no |
+| `error` | `error` | `object({       odata_type = optional(string, "#microsoft.graph.managedTenants.graphAPIErrorDetails")       code = optional(string)       message = optional(string)     })` | no | no |
 | `last_action_by_user_id` | `lastActionByUserId` | `string` | no | no |
 | `last_action_date_time` | `lastActionDateTime` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `status` | `status` | `string` | no | no |
-| `template_step_version` | `templateStepVersion` | `object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepVersion")       acceptedFor = optional(any)       contentMarkdown = optional(string)       createdByUserId = optional(string)       createdDateTime = optional(string)       deployments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepDeployment")       createdByUserId = optional(string)       createdDateTime = optional(string)       error = optional(any)       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       status = optional(string)       templateStepVersion = optional(any)       tenantId = optional(string)     })))       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       name = optional(string)       templateStep = optional(any)       version = optional(number)       versionInformation = optional(string)     })` | no | no |
+| `template_step_version` | `templateStepVersion` | `object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepVersion")       acceptedFor = optional(any)       contentMarkdown = optional(string)       createdByUserId = optional(string)       createdDateTime = optional(string)       deployments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.managementTemplateStepDeployment")       createdByUserId = optional(string)       createdDateTime = optional(string)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.managedTenants.graphAPIErrorDetails")       code = optional(string)       message = optional(string)     }))       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       status = optional(string)       templateStepVersion = optional(any)       tenantId = optional(string)     })))       lastActionByUserId = optional(string)       lastActionDateTime = optional(string)       name = optional(string)       templateStep = optional(any)       version = optional(number)       versionInformation = optional(string)     })` | no | no |
 | `tenant_id` | `tenantId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -50,11 +50,9 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- error: polymorphic schema; accepts an untyped value
-- templateStepVersion.acceptedFor: polymorphic schema; accepts an untyped value
-- templateStepVersion.deployments[].error: polymorphic schema; accepts an untyped value
+- templateStepVersion.acceptedFor: navigation property; accepts an untyped value
 - templateStepVersion.deployments[].templateStepVersion: recursive schema; accepts an untyped value
-- templateStepVersion.templateStep: polymorphic schema; accepts an untyped value
+- templateStepVersion.templateStep: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

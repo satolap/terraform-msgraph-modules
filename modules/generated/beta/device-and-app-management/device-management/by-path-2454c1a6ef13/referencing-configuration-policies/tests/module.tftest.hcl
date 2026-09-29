@@ -27,6 +27,7 @@ run "typed_request" {
     created_date_time                            = "2026-01-01T00:00:00Z"
     disable_entra_group_policy_assignment        = false
     setting_count                                = -2147483648
+    priority_meta_data                           = { "priority" = null }
     assignments                                  = [{}]
   }
 
@@ -46,6 +47,11 @@ run "typed_request" {
   }
 
   assert {
+    condition     = jsonencode(msgraph_resource.this.body["priorityMetaData"]) == jsonencode({ "@odata.type" = "#microsoft.graph.deviceManagementPriorityMetaData" })
+    error_message = "priorityMetaData must preserve typed values and omit nested nulls."
+  }
+
+  assert {
     condition     = jsonencode(msgraph_resource.this.body["assignments"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.deviceManagementConfigurationPolicyAssignment" }])
     error_message = "assignments must preserve typed values and omit nested nulls."
   }
@@ -57,6 +63,37 @@ run "invalid_enum" {
   variables {
     device_management_reusable_policy_setting_id = "test-parent-id"
     platforms                                    = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.platforms]
+}
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    device_management_reusable_policy_setting_id = "test-parent-id"
+    platforms                                    = "none, Android"
+    technologies                                 = "none, Mdm"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["platforms"] == "none, Android"
+    error_message = "platforms must accept combined flags enum members."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["technologies"] == "none, Mdm"
+    error_message = "technologies must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    device_management_reusable_policy_setting_id = "test-parent-id"
+    platforms                                    = "none,__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.platforms]

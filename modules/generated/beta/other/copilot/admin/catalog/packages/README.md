@@ -48,8 +48,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `owner_id` | `ownerId` | `string` | no | no |
 | `platform` | `platform` | `string` | no | no |
 | `publisher` | `publisher` | `string` | no | no |
-| `request_status` | `requestStatus` | `any` | no | no |
-| `request_type` | `requestType` | `any` | no | no |
+| `request_status` | `requestStatus` | `string` | no | no |
+| `request_type` | `requestType` | `string` | no | no |
 | `sensitivity` | `sensitivity` | `string` | no | no |
 | `shared_with_users_and_groups` | `sharedWithUsersAndGroups` | `list(object({       odata_type = optional(string, "#microsoft.graph.packageAccessEntity")       resourceId = optional(string)       resourceType = optional(string)     }))` | no | no |
 | `short_description` | `shortDescription` | `string` | no | no |
@@ -76,8 +76,6 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - exceptionRate: polymorphic schema; accepts an untyped value
-- requestStatus: polymorphic schema; accepts an untyped value
-- requestType: polymorphic schema; accepts an untyped value
 - totalRunTimeInHours: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

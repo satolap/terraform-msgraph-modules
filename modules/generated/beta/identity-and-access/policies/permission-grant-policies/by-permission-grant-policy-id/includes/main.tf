@@ -11,7 +11,7 @@ locals {
     "permissionType"                              = var.permission_type
     "permissions"                                 = (var.permissions == null ? null : [for item0 in var.permissions : item0 if item0 != null])
     "resourceApplication"                         = var.resource_application
-    "scopeSensitivityLabels"                      = (var.scope_sensitivity_labels == null ? null : { for key0, value0 in { "@odata.type" = var.scope_sensitivity_labels["odata_type"], "labelKind" = var.scope_sensitivity_labels["labelKind"] } : key0 => value0 if value0 != null })
+    "scopeSensitivityLabels"                      = var.scope_sensitivity_labels
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

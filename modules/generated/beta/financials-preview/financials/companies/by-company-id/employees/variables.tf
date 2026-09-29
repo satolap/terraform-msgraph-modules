@@ -11,8 +11,15 @@ variable "company_id" {
 
 variable "address" {
   description = "Microsoft Graph address property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type        = optional(string, "#microsoft.graph.postalAddressType")
+    city              = optional(string)
+    countryLetterCode = optional(string)
+    postalCode        = optional(string)
+    state             = optional(string)
+    street            = optional(string)
+  })
+  default = null
 }
 
 variable "birth_date" {

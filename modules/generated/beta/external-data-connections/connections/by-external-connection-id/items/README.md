@@ -24,10 +24,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `external_connection_id` | URL parameter `externalConnection-id` | `string` | yes | no |
-| `acl` | `acl` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.acl")       accessType = optional(string)       identitySource = optional(any)       type = optional(string)       value = optional(string)     }))` | no | no |
-| `activities` | `activities` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalActivity")       performedBy = optional(any)       startDateTime = optional(string)       type = optional(string)     }))` | no | no |
-| `content` | `content` | `any` | no | no |
-| `information_protection_label` | `informationProtectionLabel` | `any` | no | no |
+| `acl` | `acl` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.acl")       accessType = optional(string)       identitySource = optional(string)       type = optional(string)       value = optional(string)     }))` | no | no |
+| `activities` | `activities` | `any` | no | no |
+| `content` | `content` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItemContent")       type = optional(string)       value = optional(string)     })` | no | no |
+| `information_protection_label` | `informationProtectionLabel` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItemInformationProtectionLabel")       sensitivityLabelId = optional(string)     })` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `properties` | `properties` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
@@ -47,10 +47,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- acl[].identitySource: polymorphic schema; accepts an untyped value
-- activities[].performedBy: polymorphic schema; accepts an untyped value
-- content: polymorphic schema; accepts an untyped value
-- informationProtectionLabel: polymorphic schema; accepts an untyped value
+- activities[]: polymorphic schema; accepts an untyped value
 - properties: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites

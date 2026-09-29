@@ -24,17 +24,11 @@ run "typed_request" {
 
   variables {
     device_management_configuration_policy_template_id = "test-parent-id"
-    setting_instance_template                          = { "isRequired" = null }
     setting_definitions                                = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["settingInstanceTemplate"]) == jsonencode({ "@odata.type" = "#microsoft.graph.deviceManagementConfigurationSettingInstanceTemplate" })
-    error_message = "settingInstanceTemplate must preserve typed values and omit nested nulls."
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["settingDefinitions"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.deviceManagementConfigurationSettingDefinition" }])
+    condition     = jsonencode(msgraph_resource.this.body["settingDefinitions"]) == jsonencode([{}])
     error_message = "settingDefinitions must preserve typed values and omit nested nulls."
   }
 }

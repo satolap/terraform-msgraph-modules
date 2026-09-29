@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "alert"              = var.alert
-    "content"            = var.content
+    "content"            = (var.content == null ? null : { for key0, value0 in { "@odata.type" = var.content["odata_type"], "displayName" = var.content["displayName"] } : key0 => value0 if value0 != null })
     "createdByUserId"    = var.created_by_user_id
     "createdDateTime"    = var.created_date_time
     "lastActionByUserId" = var.last_action_by_user_id

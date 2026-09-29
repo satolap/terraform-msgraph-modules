@@ -20,16 +20,10 @@ run "typed_request" {
 
   variables {
     collected_date_time = "2026-01-01T00:00:00Z"
-    artifact            = {}
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["collectedDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
     error_message = "collectedDateTime must preserve typed values and omit nested nulls."
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["artifact"]) == jsonencode({ "@odata.type" = "#microsoft.graph.security.artifact" })
-    error_message = "artifact must preserve typed values and omit nested nulls."
   }
 }

@@ -8,6 +8,7 @@ run "minimal_request" {
     device_management_template_id                  = "test-parent-id"
     device_management_template_id1                 = "test-parent-id"
     device_management_template_setting_category_id = "test-parent-id"
+    odata_type                                     = "#microsoft.graph.deviceManagementAbstractComplexSettingInstance"
   }
 
   assert {
@@ -28,11 +29,30 @@ run "typed_request" {
     device_management_template_id                  = "test-parent-id"
     device_management_template_id1                 = "test-parent-id"
     device_management_template_setting_category_id = "test-parent-id"
+    odata_type                                     = "#microsoft.graph.deviceManagementAbstractComplexSettingInstance"
     definition_id                                  = "example"
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.deviceManagementAbstractComplexSettingInstance")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["definitionId"]) == jsonencode("example")
     error_message = "definitionId must preserve typed values and omit nested nulls."
   }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    device_management_template_id                  = "test-parent-id"
+    device_management_template_id1                 = "test-parent-id"
+    device_management_template_setting_category_id = "test-parent-id"
+    odata_type                                     = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.odata_type]
 }

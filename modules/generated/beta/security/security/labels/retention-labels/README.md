@@ -22,11 +22,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `action_after_retention_period` | `actionAfterRetentionPeriod` | `any` | no | no |
-| `behavior_during_retention_period` | `behaviorDuringRetentionPeriod` | `any` | no | no |
+| `action_after_retention_period` | `actionAfterRetentionPeriod` | `string` | no | no |
+| `behavior_during_retention_period` | `behaviorDuringRetentionPeriod` | `string` | no | no |
 | `created_by` | `createdBy` | `any` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
-| `default_record_behavior` | `defaultRecordBehavior` | `any` | no | no |
+| `default_record_behavior` | `defaultRecordBehavior` | `string` | no | no |
 | `description_for_admins` | `descriptionForAdmins` | `string` | no | no |
 | `description_for_users` | `descriptionForUsers` | `string` | no | no |
 | `descriptors` | `descriptors` | `any` | no | no |
@@ -39,7 +39,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `retention_duration` | `retentionDuration` | `any` | no | no |
 | `retention_event_type` | `retentionEventType` | `any` | no | no |
-| `retention_trigger` | `retentionTrigger` | `any` | no | no |
+| `retention_trigger` | `retentionTrigger` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -57,15 +57,11 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- actionAfterRetentionPeriod: polymorphic schema; accepts an untyped value
-- behaviorDuringRetentionPeriod: polymorphic schema; accepts an untyped value
 - createdBy: polymorphic schema; accepts an untyped value
-- defaultRecordBehavior: polymorphic schema; accepts an untyped value
-- descriptors: polymorphic schema; accepts an untyped value
+- descriptors: navigation property; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
 - retentionDuration: polymorphic schema; accepts an untyped value
-- retentionEventType: polymorphic schema; accepts an untyped value
-- retentionTrigger: polymorphic schema; accepts an untyped value
+- retentionEventType: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

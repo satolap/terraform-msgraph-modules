@@ -101,13 +101,8 @@ variable "policy_type" {
 
 variable "presentations" {
   description = "The group policy presentations associated with the definition."
-  type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.groupPolicyPresentation")
-    definition           = optional(any)
-    label                = optional(string)
-    lastModifiedDateTime = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "previous_version_definition" {

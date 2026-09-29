@@ -28,6 +28,7 @@ run "typed_request" {
     team_template_definition_id = "test-parent-id"
     scheduling_group_id         = "example"
     is_staged_for_deletion      = false
+    draft_open_shift            = { "activities" = null }
   }
 
   assert {
@@ -38,5 +39,10 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isStagedForDeletion"]) == jsonencode(false)
     error_message = "isStagedForDeletion must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["draftOpenShift"]) == jsonencode({ "@odata.type" = "#microsoft.graph.openShiftItem" })
+    error_message = "draftOpenShift must preserve typed values and omit nested nulls."
   }
 }

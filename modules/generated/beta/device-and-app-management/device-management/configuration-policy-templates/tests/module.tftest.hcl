@@ -49,3 +49,32 @@ run "invalid_enum" {
 
   expect_failures = [var.lifecycle_state]
 }
+
+run "flags_enum_combination" {
+  command = plan
+
+  variables {
+    platforms    = "none, Android"
+    technologies = "none, Mdm"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["platforms"] == "none, Android"
+    error_message = "platforms must accept combined flags enum members."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body["technologies"] == "none, Mdm"
+    error_message = "technologies must accept combined flags enum members."
+  }
+}
+
+run "invalid_flags_member" {
+  command = plan
+
+  variables {
+    platforms = "none,__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.platforms]
+}

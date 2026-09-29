@@ -28,8 +28,25 @@ variable "created_by" {
 
 variable "draft_open_shift" {
   description = "Draft changes in the openShift are only visible to managers until they're shared."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.openShiftItem")
+    activities = optional(list(object({
+      odata_type    = optional(string, "#microsoft.graph.shiftActivity")
+      code          = optional(string)
+      displayName   = optional(string)
+      endDateTime   = optional(string)
+      isPaid        = optional(bool)
+      startDateTime = optional(string)
+      theme         = optional(string)
+    })))
+    displayName   = optional(string)
+    endDateTime   = optional(string)
+    notes         = optional(string)
+    openSlotCount = optional(number)
+    startDateTime = optional(string)
+    theme         = optional(string)
+  })
+  default = null
 }
 
 variable "is_staged_for_deletion" {
@@ -53,8 +70,25 @@ variable "scheduling_group_id" {
 
 variable "shared_open_shift" {
   description = "The shared version of this openShift that is viewable by both employees and managers."
-  type        = any
-  default     = null
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.openShiftItem")
+    activities = optional(list(object({
+      odata_type    = optional(string, "#microsoft.graph.shiftActivity")
+      code          = optional(string)
+      displayName   = optional(string)
+      endDateTime   = optional(string)
+      isPaid        = optional(bool)
+      startDateTime = optional(string)
+      theme         = optional(string)
+    })))
+    displayName   = optional(string)
+    endDateTime   = optional(string)
+    notes         = optional(string)
+    openSlotCount = optional(number)
+    startDateTime = optional(string)
+    theme         = optional(string)
+  })
+  default = null
 }
 
 variable "additional_properties" {

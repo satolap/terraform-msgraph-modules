@@ -24,11 +24,11 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
 | `shared_drive_item_id` | URL parameter `sharedDriveItem-id` | `string` | yes | no |
-| `activities` | `activities` | `list(object({       odata_type = optional(string, "#microsoft.graph.itemActivityOLD")       action = optional(any)       actor = optional(any)       driveItem = optional(any)       listItem = optional(any)       times = optional(any)     }))` | no | no |
+| `activities` | `activities` | `list(object({       odata_type = optional(string, "#microsoft.graph.itemActivityOLD")       action = optional(object({       odata_type = optional(string, "#microsoft.graph.itemActionSet")       comment = optional(object({       odata_type = optional(string, "#microsoft.graph.commentAction")       isReply = optional(bool)       parentAuthor = optional(any)       participants = optional(any)     }))       create = optional(any)       delete = optional(object({       odata_type = optional(string, "#microsoft.graph.deleteAction")       name = optional(string)       objectType = optional(string)     }))       edit = optional(any)       mention = optional(object({       odata_type = optional(string, "#microsoft.graph.mentionAction")       mentionees = optional(any)     }))       move = optional(object({       odata_type = optional(string, "#microsoft.graph.moveAction")       from = optional(string)       to = optional(string)     }))       rename = optional(object({       odata_type = optional(string, "#microsoft.graph.renameAction")       newName = optional(string)       oldName = optional(string)     }))       restore = optional(any)       share = optional(object({       odata_type = optional(string, "#microsoft.graph.shareAction")       recipients = optional(any)     }))       version = optional(object({       odata_type = optional(string, "#microsoft.graph.versionAction")       newVersion = optional(string)     }))     }))       actor = optional(any)       driveItem = optional(any)       listItem = optional(any)       times = optional(object({       odata_type = optional(string, "#microsoft.graph.itemActivityTimeSet")       lastRecordedDateTime = optional(string)       observedDateTime = optional(string)       recordedDateTime = optional(string)     }))     }))` | no | no |
 | `analytics` | `analytics` | `any` | no | no |
-| `content_type` | `contentType` | `any` | no | no |
+| `content_type` | `contentType` | `object({       odata_type = optional(string, "#microsoft.graph.contentTypeInfo")       id = optional(string)       name = optional(string)     })` | no | no |
 | `created_by_user` | `createdByUser` | `any` | no | no |
-| `deleted` | `deleted` | `any` | no | no |
+| `deleted` | `deleted` | `object({       odata_type = optional(string, "#microsoft.graph.deleted")       state = optional(string)     })` | no | no |
 | `description` | `description` | `string` | no | no |
 | `document_set_versions` | `documentSetVersions` | `list(object({       odata_type = optional(string, "#microsoft.graph.documentSetVersion")       comment = optional(string)       createdBy = optional(any)       createdDateTime = optional(string)       fields = optional(any)       items = optional(list(object({       odata_type = optional(string, "#microsoft.graph.documentSetVersionItem")       itemId = optional(string)       title = optional(string)       versionId = optional(string)     })))       shouldCaptureMinorVersion = optional(bool)     }))` | no | no |
 | `drive_item` | `driveItem` | `any` | no | no |
@@ -36,8 +36,8 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `last_modified_by_user` | `lastModifiedByUser` | `any` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `parent_reference` | `parentReference` | `any` | no | no |
-| `versions` | `versions` | `list(object({       odata_type = optional(string, "#microsoft.graph.listItemVersion")       fields = optional(any)     }))` | no | no |
+| `parent_reference` | `parentReference` | `object({       odata_type = optional(string, "#microsoft.graph.itemReference")       driveType = optional(string)       shareId = optional(string)       siteId = optional(string)     })` | no | no |
+| `versions` | `versions` | `any` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -55,22 +55,24 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- activities[].action: polymorphic schema; accepts an untyped value
+- activities[].action.comment.parentAuthor: polymorphic schema; accepts an untyped value
+- activities[].action.comment.participants[]: nested schema exceeds depth limit; accepts an untyped value
+- activities[].action.create: polymorphic schema; accepts an untyped value
+- activities[].action.edit: polymorphic schema; accepts an untyped value
+- activities[].action.mention.mentionees[]: nested schema exceeds depth limit; accepts an untyped value
+- activities[].action.restore: polymorphic schema; accepts an untyped value
+- activities[].action.share.recipients[]: nested schema exceeds depth limit; accepts an untyped value
 - activities[].actor: polymorphic schema; accepts an untyped value
-- activities[].driveItem: polymorphic schema; accepts an untyped value
-- activities[].listItem: polymorphic schema; accepts an untyped value
-- activities[].times: polymorphic schema; accepts an untyped value
-- analytics: polymorphic schema; accepts an untyped value
-- contentType: polymorphic schema; accepts an untyped value
+- activities[].driveItem: navigation property; accepts an untyped value
+- activities[].listItem: navigation property; accepts an untyped value
+- analytics: navigation property; accepts an untyped value
 - createdByUser: polymorphic schema; accepts an untyped value
-- deleted: polymorphic schema; accepts an untyped value
 - documentSetVersions[].createdBy: polymorphic schema; accepts an untyped value
-- documentSetVersions[].fields: polymorphic schema; accepts an untyped value
-- driveItem: polymorphic schema; accepts an untyped value
-- fields: polymorphic schema; accepts an untyped value
+- documentSetVersions[].fields: navigation property; accepts an untyped value
+- driveItem: navigation property; accepts an untyped value
+- fields: navigation property; accepts an untyped value
 - lastModifiedByUser: polymorphic schema; accepts an untyped value
-- parentReference: polymorphic schema; accepts an untyped value
-- versions[].fields: polymorphic schema; accepts an untyped value
+- versions[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

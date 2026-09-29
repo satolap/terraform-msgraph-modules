@@ -77,7 +77,7 @@ variable "model_battery_health_score" {
 }
 
 variable "model_health_status" {
-  description = "Microsoft Graph modelHealthStatus property."
+  description = "The overall battery health status of a given model in a tenant."
   type        = string
   default     = null
 

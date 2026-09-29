@@ -36,7 +36,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `domain_name` | `domainName` | `string` | no | no |
 | `enrollment_profile_name` | `enrollmentProfileName` | `string` | no | no |
 | `enrollment_type` | `enrollmentType` | `string` | no | no |
-| `extension_attributes` | `extensionAttributes` | `any` | no | no |
+| `extension_attributes` | `extensionAttributes` | `object({       odata_type = optional(string, "#microsoft.graph.onPremisesExtensionAttributes")       extensionAttribute1 = optional(string)       extensionAttribute10 = optional(string)       extensionAttribute11 = optional(string)       extensionAttribute12 = optional(string)       extensionAttribute13 = optional(string)       extensionAttribute14 = optional(string)       extensionAttribute15 = optional(string)       extensionAttribute2 = optional(string)       extensionAttribute3 = optional(string)       extensionAttribute4 = optional(string)       extensionAttribute5 = optional(string)       extensionAttribute6 = optional(string)       extensionAttribute7 = optional(string)       extensionAttribute8 = optional(string)       extensionAttribute9 = optional(string)     })` | no | no |
 | `hostnames` | `hostnames` | `list(string)` | no | no |
 | `is_managed` | `isManaged` | `bool` | no | no |
 | `is_rooted` | `isRooted` | `bool` | no | no |
@@ -51,7 +51,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `profile_type` | `profileType` | `string` | no | no |
 | `status` | `status` | `string` | no | no |
 | `system_labels` | `systemLabels` | `list(string)` | no | no |
-| `transitive_member_of` | `transitiveMemberOf` | `list(object({       odata_type = optional(string, "#microsoft.graph.directoryObject")       deletedDateTime = optional(string)     }))` | no | no |
+| `transitive_member_of` | `transitiveMemberOf` | `any` | no | no |
 | `usage_rights` | `usageRights` | `list(object({       odata_type = optional(string, "#microsoft.graph.usageRight")       catalogId = optional(string)       serviceIdentifier = optional(string)       state = optional(string)     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -71,8 +71,8 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - commands[].payload: polymorphic schema; accepts an untyped value
-- commands[].responsepayload: polymorphic schema; accepts an untyped value
-- extensionAttributes: polymorphic schema; accepts an untyped value
+- commands[].responsepayload: navigation property; accepts an untyped value
+- transitiveMemberOf[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

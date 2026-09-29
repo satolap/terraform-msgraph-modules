@@ -19,14 +19,15 @@ run "typed_request" {
   command = plan
 
   variables {
-    automation_id    = "example"
+    attack_technique = "unknown"
     is_automated     = false
     duration_in_days = -2147483648
+    created_by       = { "displayName" = null }
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["automationId"]) == jsonencode("example")
-    error_message = "automationId must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["attackTechnique"]) == jsonencode("unknown")
+    error_message = "attackTechnique must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -37,6 +38,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["durationInDays"]) == jsonencode(-2147483648)
     error_message = "durationInDays must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["createdBy"]) == jsonencode({ "@odata.type" = "#microsoft.graph.emailIdentity" })
+    error_message = "createdBy must preserve typed values and omit nested nulls."
   }
 }
 

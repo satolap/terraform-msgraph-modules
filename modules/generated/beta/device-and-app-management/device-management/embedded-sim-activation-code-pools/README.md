@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `activation_code_count` | `activationCodeCount` | `number` | no | no |
 | `activation_codes` | `activationCodes` | `list(object({       odata_type = optional(string, "#microsoft.graph.embeddedSIMActivationCode")       integratedCircuitCardIdentifier = optional(string)       matchingIdentifier = optional(string)       smdpPlusServerAddress = optional(string)     }))` | no | no |
-| `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.embeddedSIMActivationCodePoolAssignment")       target = optional(object({       odata_type = optional(string, "#microsoft.graph.deviceAndAppManagementAssignmentTarget")       deviceAndAppManagementAssignmentFilterId = optional(string)       deviceAndAppManagementAssignmentFilterType = optional(string)     }))     }))` | no | no |
+| `assignments` | `assignments` | `list(object({       odata_type = optional(string, "#microsoft.graph.embeddedSIMActivationCodePoolAssignment")       target = optional(any)     }))` | no | no |
 | `created_date_time` | `createdDateTime` | `string` | no | no |
 | `device_states` | `deviceStates` | `list(object({       odata_type = optional(string, "#microsoft.graph.embeddedSIMDeviceState")       createdDateTime = optional(string)       deviceName = optional(string)       lastSyncDateTime = optional(string)       modifiedDateTime = optional(string)       state = optional(string)       stateDetails = optional(string)       universalIntegratedCircuitCardIdentifier = optional(string)       userName = optional(string)     }))` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
@@ -47,6 +47,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- assignments[].target: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

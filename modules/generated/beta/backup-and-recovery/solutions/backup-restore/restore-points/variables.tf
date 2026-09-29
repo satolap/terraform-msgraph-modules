@@ -25,12 +25,12 @@ variable "protection_unit" {
 
 variable "tags" {
   description = "The type of the restore point. The possible values are: none, fastRestore, unknownFutureValue, includeNewerItems. Use the Prefer: include-unknown-enum-members request header to get the following value in this evolvable enum: includeNewerItems."
-  type        = any
+  type        = string
   default     = null
 
   validation {
-    condition     = var.tags == null ? true : contains(["none", "fastRestore", "unknownFutureValue", "includeNewerItems"], var.tags)
-    error_message = "tags must be one of the documented enum values."
+    condition     = var.tags == null ? true : try(alltrue([for value in split(",", var.tags) : contains(["none", "fastrestore", "unknownfuturevalue", "includeneweritems"], lower(trimspace(value)))]), false)
+    error_message = "tags must be one or more of the documented enum values, separated by commas."
   }
 }
 

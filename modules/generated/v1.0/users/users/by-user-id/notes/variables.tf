@@ -11,21 +11,18 @@ variable "user_id" {
 
 variable "attachments" {
   description = "The file attachments for the note. Only inline image attachments (image/png, image/jpeg, image/gif, or image/bmp) are supported, with a maximum size of 3 MB per attachment. Use $expand to retrieve attachments."
-  type = list(object({
-    odata_type           = optional(string, "#microsoft.graph.attachment")
-    contentType          = optional(string)
-    isInline             = optional(bool)
-    lastModifiedDateTime = optional(string)
-    name                 = optional(string)
-    size                 = optional(number)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "body" {
   description = "The content of the note. Supports text or html content types."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.itemBody")
+    content     = optional(string)
+    contentType = optional(string)
+  })
+  default = null
 }
 
 variable "categories" {
@@ -42,10 +39,8 @@ variable "created_date_time" {
 
 variable "extensions" {
   description = "The collection of open extensions defined for the note."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.extension")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "last_modified_date_time" {

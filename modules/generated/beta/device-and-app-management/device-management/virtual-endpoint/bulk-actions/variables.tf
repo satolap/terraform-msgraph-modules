@@ -1,7 +1,25 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.cloudPcBulkCreateSnapshot", "#microsoft.graph.cloudPcBulkDisasterRecovery", "#microsoft.graph.cloudPcBulkDisasterRecoveryFailback", "#microsoft.graph.cloudPcBulkDisasterRecoveryFailover", "#microsoft.graph.cloudPcBulkModifyDiskEncryptionType", "#microsoft.graph.cloudPcBulkMove", "#microsoft.graph.cloudPcBulkPowerOff", "#microsoft.graph.cloudPcBulkPowerOn", "#microsoft.graph.cloudPcBulkReinstallAgent", "#microsoft.graph.cloudPcBulkReprovision", "#microsoft.graph.cloudPcBulkResize", "#microsoft.graph.cloudPcBulkRestart", "#microsoft.graph.cloudPcBulkRestore", "#microsoft.graph.cloudPcBulkSetReviewStatus", "#microsoft.graph.cloudPcBulkTroubleshoot"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "action_summary" {
   description = "Run summary of this bulk action."
-  type        = any
-  default     = null
+  type = object({
+    odata_type        = optional(string, "#microsoft.graph.cloudPcBulkActionSummary")
+    failedCount       = optional(number)
+    inProgressCount   = optional(number)
+    notSupportedCount = optional(number)
+    pendingCount      = optional(number)
+    successfulCount   = optional(number)
+  })
+  default = null
 }
 
 variable "cloud_pc_ids" {
@@ -20,13 +38,6 @@ variable "display_name" {
   description = "Name of the bulk action."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.cloudPcBulkAction"
-  nullable    = false
 }
 
 variable "scheduled_during_maintenance_window" {

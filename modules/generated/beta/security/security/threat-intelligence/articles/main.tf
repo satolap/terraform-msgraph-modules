@@ -4,7 +4,7 @@ locals {
     "body"                = (var.body == null ? null : { for key0, value0 in { "@odata.type" = var.body["odata_type"], "content" = var.body["content"], "format" = var.body["format"] } : key0 => value0 if value0 != null })
     "createdDateTime"     = var.created_date_time
     "imageUrl"            = var.image_url
-    "indicators"          = (var.indicators == null ? null : [for item0 in var.indicators : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "artifact" = (item0["artifact"] == null ? null : { for key2, value2 in { "@odata.type" = item0["artifact"]["odata_type"] } : key2 => value2 if value2 != null }), "source" = item0["source"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "indicators"          = (var.indicators == null ? null : [for item0 in var.indicators : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "artifact" = item0["artifact"], "source" = item0["source"] } : key1 => value1 if value1 != null }) if item0 != null])
     "isFeatured"          = var.is_featured
     "lastUpdatedDateTime" = var.last_updated_date_time
     "@odata.type"         = var.odata_type

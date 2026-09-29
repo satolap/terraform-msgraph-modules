@@ -41,7 +41,7 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["enrollmentProfiles"]) == jsonencode([{ "@odata.type" = "#microsoft.graph.enrollmentProfile" }])
+    condition     = jsonencode(msgraph_resource.this.body["enrollmentProfiles"]) == jsonencode([{}])
     error_message = "enrollmentProfiles must preserve typed values and omit nested nulls."
   }
 }

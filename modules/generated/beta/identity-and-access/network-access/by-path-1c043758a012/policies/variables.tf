@@ -20,32 +20,27 @@ variable "forwarding_profile_id" {
   }
 }
 
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.networkaccess.cloudFirewallPolicyLink", "#microsoft.graph.networkaccess.forwardingPolicyLink", "#microsoft.graph.networkaccess.threatIntelligencePolicyLink", "#microsoft.graph.networkaccess.tlsInspectionPolicyLink"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "graph_version" {
   description = "Version."
   type        = string
   default     = null
 }
 
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.networkaccess.policyLink"
-  nullable    = false
-}
-
 variable "policy" {
   description = "Microsoft Graph policy property."
-  type = object({
-    odata_type  = optional(string, "#microsoft.graph.networkaccess.policy")
-    description = optional(string)
-    name        = optional(string)
-    policyRules = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.networkaccess.policyRule")
-      name       = optional(string)
-    })))
-    version = optional(string)
-  })
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "state" {

@@ -1,18 +1,14 @@
 variable "constraints" {
   description = "Collection of constraints for the setting value"
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.deviceManagementConstraint")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "dependencies" {
   description = "Collection of dependencies on other settings"
   type = list(object({
-    odata_type = optional(string, "#microsoft.graph.deviceManagementSettingDependency")
-    constraints = optional(list(object({
-      odata_type = optional(string, "#microsoft.graph.deviceManagementConstraint")
-    })))
+    odata_type   = optional(string, "#microsoft.graph.deviceManagementSettingDependency")
+    constraints  = optional(any)
     definitionId = optional(string)
   }))
   default = null
@@ -74,7 +70,7 @@ variable "placeholder_text" {
 }
 
 variable "value_type" {
-  description = "Microsoft Graph valueType property."
+  description = "The data type of the value"
   type        = string
   default     = null
 

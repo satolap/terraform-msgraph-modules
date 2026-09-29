@@ -6,7 +6,7 @@ locals {
     "deployableContentDisplayName" = var.deployable_content_display_name
     "description"                  = var.description
     "displayName"                  = var.display_name
-    "expeditedUpdateSettings"      = var.expedited_update_settings
+    "expeditedUpdateSettings"      = (var.expedited_update_settings == null ? null : { for key0, value0 in { "@odata.type" = var.expedited_update_settings["odata_type"], "daysUntilForcedReboot" = var.expedited_update_settings["daysUntilForcedReboot"], "qualityUpdateCatalogItemId" = var.expedited_update_settings["qualityUpdateCatalogItemId"], "qualityUpdateRelease" = var.expedited_update_settings["qualityUpdateRelease"] } : key0 => value0 if value0 != null })
     "lastModifiedDateTime"         = var.last_modified_date_time
     "@odata.type"                  = var.odata_type
     "releaseDateDisplayName"       = var.release_date_display_name

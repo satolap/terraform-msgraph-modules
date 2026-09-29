@@ -13,25 +13,8 @@ variable "categories" {
     odata_type         = optional(string, "#microsoft.graph.deviceManagementIntentSettingCategory")
     displayName        = optional(string)
     hasRequiredSetting = optional(bool)
-    settingDefinitions = optional(list(object({
-      odata_type       = optional(string, "#microsoft.graph.deviceManagementSettingDefinition")
-      constraints      = optional(any)
-      dependencies     = optional(any)
-      description      = optional(string)
-      displayName      = optional(string)
-      documentationUrl = optional(string)
-      headerSubtitle   = optional(string)
-      headerTitle      = optional(string)
-      isTopLevel       = optional(bool)
-      keywords         = optional(list(string))
-      placeholderText  = optional(string)
-      valueType        = optional(string)
-    })))
-    settings = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.deviceManagementSettingInstance")
-      definitionId = optional(string)
-      valueJson    = optional(string)
-    })))
+    settingDefinitions = optional(any)
+    settings           = optional(any)
   }))
   default = null
 }
@@ -116,12 +99,8 @@ variable "role_scope_tag_ids" {
 
 variable "settings" {
   description = "Collection of all settings to be applied"
-  type = list(object({
-    odata_type   = optional(string, "#microsoft.graph.deviceManagementSettingInstance")
-    definitionId = optional(string)
-    valueJson    = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "template_id" {

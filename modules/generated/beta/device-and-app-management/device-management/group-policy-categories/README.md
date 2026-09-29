@@ -24,7 +24,7 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | --- | --- | --- | --- | --- |
 | `children` | `children` | `list(object({       odata_type = optional(string, "#microsoft.graph.groupPolicyCategory")       children = optional(any)       definitionFile = optional(any)       definitions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.groupPolicyDefinition")       category = optional(any)       categoryPath = optional(string)       classType = optional(string)       definitionFile = optional(any)       displayName = optional(string)       explainText = optional(string)       groupPolicyCategoryId = optional(string)       hasRelatedDefinitions = optional(bool)       lastModifiedDateTime = optional(string)       minDeviceCspVersion = optional(string)       minUserCspVersion = optional(string)       nextVersionDefinition = optional(any)       policyType = optional(string)       presentations = optional(any)       previousVersionDefinition = optional(any)       supportedOn = optional(string)       version = optional(string)     })))       displayName = optional(string)       ingestionSource = optional(string)       isRoot = optional(bool)       lastModifiedDateTime = optional(string)       parent = optional(any)     }))` | no | no |
 | `definition_file` | `definitionFile` | `any` | no | no |
-| `definitions` | `definitions` | `list(object({       odata_type = optional(string, "#microsoft.graph.groupPolicyDefinition")       category = optional(any)       categoryPath = optional(string)       classType = optional(string)       definitionFile = optional(any)       displayName = optional(string)       explainText = optional(string)       groupPolicyCategoryId = optional(string)       hasRelatedDefinitions = optional(bool)       lastModifiedDateTime = optional(string)       minDeviceCspVersion = optional(string)       minUserCspVersion = optional(string)       nextVersionDefinition = optional(any)       policyType = optional(string)       presentations = optional(list(object({       odata_type = optional(string, "#microsoft.graph.groupPolicyPresentation")       definition = optional(any)       label = optional(string)       lastModifiedDateTime = optional(string)     })))       previousVersionDefinition = optional(any)       supportedOn = optional(string)       version = optional(string)     }))` | no | no |
+| `definitions` | `definitions` | `list(object({       odata_type = optional(string, "#microsoft.graph.groupPolicyDefinition")       category = optional(any)       categoryPath = optional(string)       classType = optional(string)       definitionFile = optional(any)       displayName = optional(string)       explainText = optional(string)       groupPolicyCategoryId = optional(string)       hasRelatedDefinitions = optional(bool)       lastModifiedDateTime = optional(string)       minDeviceCspVersion = optional(string)       minUserCspVersion = optional(string)       nextVersionDefinition = optional(any)       policyType = optional(string)       presentations = optional(any)       previousVersionDefinition = optional(any)       supportedOn = optional(string)       version = optional(string)     }))` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `ingestion_source` | `ingestionSource` | `string` | no | no |
 | `is_root` | `isRoot` | `bool` | no | no |
@@ -50,19 +50,19 @@ Generation notes:
 - Microsoft Graph beta contracts can change without notice.
 - children[].children[]: recursive schema; accepts an untyped value
 - children[].definitionFile: polymorphic schema; accepts an untyped value
-- children[].definitions[].category: polymorphic schema; accepts an untyped value
+- children[].definitions[].category: navigation property; accepts an untyped value
 - children[].definitions[].definitionFile: polymorphic schema; accepts an untyped value
-- children[].definitions[].nextVersionDefinition: polymorphic schema; accepts an untyped value
+- children[].definitions[].nextVersionDefinition: navigation property; accepts an untyped value
 - children[].definitions[].presentations[]: nested schema exceeds depth limit; accepts an untyped value
-- children[].definitions[].previousVersionDefinition: polymorphic schema; accepts an untyped value
-- children[].parent: polymorphic schema; accepts an untyped value
+- children[].definitions[].previousVersionDefinition: navigation property; accepts an untyped value
+- children[].parent: navigation property; accepts an untyped value
 - definitionFile: polymorphic schema; accepts an untyped value
-- definitions[].category: polymorphic schema; accepts an untyped value
+- definitions[].category: navigation property; accepts an untyped value
 - definitions[].definitionFile: polymorphic schema; accepts an untyped value
-- definitions[].nextVersionDefinition: polymorphic schema; accepts an untyped value
-- definitions[].presentations[].definition: polymorphic schema; accepts an untyped value
-- definitions[].previousVersionDefinition: polymorphic schema; accepts an untyped value
-- parent: polymorphic schema; accepts an untyped value
+- definitions[].nextVersionDefinition: navigation property; accepts an untyped value
+- definitions[].presentations[]: polymorphic schema; accepts an untyped value
+- definitions[].previousVersionDefinition: navigation property; accepts an untyped value
+- parent: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

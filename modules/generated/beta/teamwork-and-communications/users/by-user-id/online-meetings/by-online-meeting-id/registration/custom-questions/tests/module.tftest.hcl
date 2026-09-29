@@ -26,14 +26,14 @@ run "typed_request" {
   variables {
     user_id           = "test-parent-id"
     online_meeting_id = "test-parent-id"
-    display_name      = "example"
+    answer_input_type = "text"
     is_required       = false
     answer_options    = ["example"]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["displayName"]) == jsonencode("example")
-    error_message = "displayName must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["answerInputType"]) == jsonencode("text")
+    error_message = "answerInputType must preserve typed values and omit nested nulls."
   }
 
   assert {

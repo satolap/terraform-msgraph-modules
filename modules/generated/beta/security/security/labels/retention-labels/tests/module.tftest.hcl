@@ -19,14 +19,14 @@ run "typed_request" {
   command = plan
 
   variables {
-    created_date_time         = "2026-01-01T00:00:00Z"
-    is_in_use                 = false
-    disposition_review_stages = [{}]
+    action_after_retention_period = "none"
+    is_in_use                     = false
+    disposition_review_stages     = [{}]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["createdDateTime"]) == jsonencode("2026-01-01T00:00:00Z")
-    error_message = "createdDateTime must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["actionAfterRetentionPeriod"]) == jsonencode("none")
+    error_message = "actionAfterRetentionPeriod must preserve typed values and omit nested nulls."
   }
 
   assert {

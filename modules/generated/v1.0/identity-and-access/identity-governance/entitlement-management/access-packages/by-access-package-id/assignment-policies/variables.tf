@@ -11,7 +11,7 @@ variable "access_package_id" {
 
 variable "allowed_target_scope" {
   description = "Principals that can be assigned the access package through this policy. The possible values are: notSpecified, specificDirectoryUsers, specificConnectedOrganizationUsers, specificDirectoryServicePrincipals, allMemberUsers, allDirectoryUsers, allDirectoryServicePrincipals, allConfiguredConnectedOrganizationUsers, allExternalUsers, allDirectoryAgentIdentities, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -22,8 +22,13 @@ variable "allowed_target_scope" {
 
 variable "automatic_request_settings" {
   description = "This property is only present for an auto assignment policy; if absent, this is a request-based policy."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                                 = optional(string, "#microsoft.graph.accessPackageAutomaticRequestSettings")
+    gracePeriodBeforeAccessRemoval             = optional(string)
+    removeAccessWhenTargetLeavesAllowedTargets = optional(bool)
+    requestAccessForAllowedTargets             = optional(bool)
+  })
+  default = null
 }
 
 variable "created_date_time" {
@@ -56,8 +61,13 @@ variable "display_name" {
 
 variable "expiration" {
   description = "The expiration date for assignments created in this policy."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.expirationPattern")
+    duration    = optional(string)
+    endDateTime = optional(string)
+    type        = optional(string)
+  })
+  default = null
 }
 
 variable "modified_date_time" {
@@ -68,8 +78,11 @@ variable "modified_date_time" {
 
 variable "notification_settings" {
   description = "Microsoft Graph notificationSettings property."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                       = optional(string, "#microsoft.graph.accessPackageNotificationSettings")
+    isAssignmentNotificationDisabled = optional(bool)
+  })
+  default = null
 }
 
 variable "odata_type" {
@@ -81,45 +94,99 @@ variable "odata_type" {
 
 variable "questions" {
   description = "Questions that are posed to the  requestor."
-  type = list(object({
-    odata_type       = optional(string, "#microsoft.graph.accessPackageQuestion")
-    isAnswerEditable = optional(bool)
-    isRequired       = optional(bool)
-    localizations = optional(list(object({
-      odata_type   = optional(string, "#microsoft.graph.accessPackageLocalizedText")
-      languageCode = optional(string)
-      text         = optional(string)
-    })))
-    sequence = optional(number)
-    text     = optional(string)
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "request_approval_settings" {
   description = "Specifies the settings for approval of requests for an access package assignment through this policy. For example, if approval is required for new requests."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                       = optional(string, "#microsoft.graph.accessPackageAssignmentApprovalSettings")
+    isApprovalRequiredForAdd         = optional(bool)
+    isApprovalRequiredForUpdate      = optional(bool)
+    isRequestorJustificationRequired = optional(bool)
+    stages = optional(list(object({
+      odata_type                      = optional(string, "#microsoft.graph.accessPackageApprovalStage")
+      approverInformationVisibility   = optional(string)
+      durationBeforeAutomaticDenial   = optional(string)
+      durationBeforeEscalation        = optional(string)
+      escalationApprovers             = optional(any)
+      fallbackEscalationApprovers     = optional(any)
+      fallbackPrimaryApprovers        = optional(any)
+      isApproverJustificationRequired = optional(bool)
+      isEscalationEnabled             = optional(bool)
+      primaryApprovers                = optional(any)
+    })))
+  })
+  default = null
 }
 
 variable "requestor_settings" {
   description = "Provides additional settings to select who can create a request for an access package assignment through this policy, and what they can include in their request."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                             = optional(string, "#microsoft.graph.accessPackageAssignmentRequestorSettings")
+    allowCustomAssignmentSchedule          = optional(bool)
+    enableOnBehalfRequestorsToAddAccess    = optional(bool)
+    enableOnBehalfRequestorsToRemoveAccess = optional(bool)
+    enableOnBehalfRequestorsToUpdateAccess = optional(bool)
+    enableTargetsToSelfAddAccess           = optional(bool)
+    enableTargetsToSelfRemoveAccess        = optional(bool)
+    enableTargetsToSelfUpdateAccess        = optional(bool)
+    onBehalfRequestors                     = optional(any)
+  })
+  default = null
 }
 
 variable "review_settings" {
   description = "Settings for access reviews of assignments through this policy."
-  type        = any
-  default     = null
+  type = object({
+    odata_type                      = optional(string, "#microsoft.graph.accessPackageAssignmentReviewSettings")
+    expirationBehavior              = optional(string)
+    fallbackReviewers               = optional(any)
+    isEnabled                       = optional(bool)
+    isRecommendationEnabled         = optional(bool)
+    isReviewerJustificationRequired = optional(bool)
+    isSelfReview                    = optional(bool)
+    primaryReviewers                = optional(any)
+    schedule = optional(object({
+      odata_type = optional(string, "#microsoft.graph.entitlementManagementSchedule")
+      expiration = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.expirationPattern")
+        duration    = optional(string)
+        endDateTime = optional(string)
+        type        = optional(string)
+      }))
+      recurrence = optional(object({
+        odata_type = optional(string, "#microsoft.graph.patternedRecurrence")
+        pattern = optional(object({
+          odata_type     = optional(string, "#microsoft.graph.recurrencePattern")
+          dayOfMonth     = optional(number)
+          daysOfWeek     = optional(list(string))
+          firstDayOfWeek = optional(string)
+          index          = optional(string)
+          interval       = optional(number)
+          month          = optional(number)
+          type           = optional(string)
+        }))
+        range = optional(object({
+          odata_type          = optional(string, "#microsoft.graph.recurrenceRange")
+          endDate             = optional(string)
+          numberOfOccurrences = optional(number)
+          recurrenceTimeZone  = optional(string)
+          startDate           = optional(string)
+          type                = optional(string)
+        }))
+      }))
+      startDateTime = optional(string)
+    }))
+  })
+  default = null
 }
 
 variable "specific_allowed_targets" {
   description = "The principals that can be assigned access from an access package through this policy."
-  type = list(object({
-    odata_type = optional(string, "#microsoft.graph.subjectSet")
-  }))
-  default = null
+  type        = any
+  default     = null
 }
 
 variable "additional_properties" {

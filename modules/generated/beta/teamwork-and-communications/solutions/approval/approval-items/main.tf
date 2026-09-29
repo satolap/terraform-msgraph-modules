@@ -9,7 +9,7 @@ locals {
     "@odata.type"            = var.odata_type
     "requests"               = (var.requests == null ? null : [for item0 in var.requests : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"] } : key1 => value1 if value1 != null }) if item0 != null])
     "responsePrompts"        = (var.response_prompts == null ? null : [for item0 in var.response_prompts : item0 if item0 != null])
-    "responses"              = (var.responses == null ? null : [for item0 in var.responses : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "comments" = item0["comments"], "createdBy" = item0["createdBy"], "response" = item0["response"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "responses"              = (var.responses == null ? null : [for item0 in var.responses : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "comments" = item0["comments"], "createdBy" = (item0["createdBy"] == null ? null : { for key2, value2 in { "@odata.type" = item0["createdBy"]["odata_type"], "application" = item0["createdBy"]["application"], "device" = item0["createdBy"]["device"], "group" = item0["createdBy"]["group"], "user" = item0["createdBy"]["user"] } : key2 => value2 if value2 != null }), "response" = item0["response"] } : key1 => value1 if value1 != null }) if item0 != null])
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

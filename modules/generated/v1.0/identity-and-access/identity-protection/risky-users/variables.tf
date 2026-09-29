@@ -1,16 +1,20 @@
 variable "history" {
   description = "The activity related to user risk level change"
   type = list(object({
-    odata_type              = optional(string, "#microsoft.graph.riskyUserHistoryItem")
-    activity                = optional(any)
+    odata_type = optional(string, "#microsoft.graph.riskyUserHistoryItem")
+    activity = optional(object({
+      odata_type     = optional(string, "#microsoft.graph.riskUserActivity")
+      detail         = optional(string)
+      riskEventTypes = optional(list(string))
+    }))
     history                 = optional(any)
     initiatedBy             = optional(string)
     isDeleted               = optional(bool)
     isProcessing            = optional(bool)
-    riskDetail              = optional(any)
+    riskDetail              = optional(string)
     riskLastUpdatedDateTime = optional(string)
-    riskLevel               = optional(any)
-    riskState               = optional(any)
+    riskLevel               = optional(string)
+    riskState               = optional(string)
     userDisplayName         = optional(string)
     userId                  = optional(string)
     userPrincipalName       = optional(string)
@@ -39,7 +43,7 @@ variable "odata_type" {
 
 variable "risk_detail" {
   description = "Details of the detected risk."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -56,7 +60,7 @@ variable "risk_last_updated_date_time" {
 
 variable "risk_level" {
   description = "Level of the detected risky user. The possible values are: low, medium, high, hidden, none, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -67,7 +71,7 @@ variable "risk_level" {
 
 variable "risk_state" {
   description = "State of the user's risk. The possible values are: none, confirmedSafe, remediated, dismissed, atRisk, confirmedCompromised, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {

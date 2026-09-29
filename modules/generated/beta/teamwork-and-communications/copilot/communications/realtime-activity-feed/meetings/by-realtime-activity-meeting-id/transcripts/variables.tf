@@ -21,9 +21,21 @@ variable "payloads" {
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.transcriptPayload")
     audioCaptureDateTime = optional(string)
-    speaker              = optional(any)
-    spokenLanguage       = optional(string)
-    text                 = optional(string)
+    speaker = optional(object({
+      odata_type = optional(string, "#microsoft.graph.transcriptSpeaker")
+      room = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.speakerInfo")
+        displayName = optional(string)
+        rawId       = optional(string)
+      }))
+      user = optional(object({
+        odata_type  = optional(string, "#microsoft.graph.speakerInfo")
+        displayName = optional(string)
+        rawId       = optional(string)
+      }))
+    }))
+    spokenLanguage = optional(string)
+    text           = optional(string)
   }))
   default = null
 }

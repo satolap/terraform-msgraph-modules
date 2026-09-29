@@ -1,3 +1,14 @@
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  nullable    = false
+
+  validation {
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.androidCompliancePolicy", "#microsoft.graph.androidWorkProfileCompliancePolicy", "#microsoft.graph.iosCompliancePolicy", "#microsoft.graph.macOSCompliancePolicy", "#microsoft.graph.windows10CompliancePolicy", "#microsoft.graph.windows10MobileCompliancePolicy", "#microsoft.graph.windows81CompliancePolicy", "#microsoft.graph.windowsPhone81CompliancePolicy"], var.odata_type)
+    error_message = "odata_type must name a concrete Graph type."
+  }
+}
+
 variable "assignments" {
   description = "The collection of assignments for this compliance policy."
   type = list(object({
@@ -73,13 +84,6 @@ variable "last_modified_date_time" {
   description = "DateTime the object was last modified."
   type        = string
   default     = null
-}
-
-variable "odata_type" {
-  description = "Microsoft Graph @odata.type property."
-  type        = string
-  default     = "#microsoft.graph.deviceCompliancePolicy"
-  nullable    = false
 }
 
 variable "scheduled_actions_for_rule" {

@@ -22,16 +22,16 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
-| `catalog_type` | `catalogType` | `any` | no | no |
-| `custom_workflow_extensions` | `customWorkflowExtensions` | `list(object({       odata_type = optional(string, "#microsoft.graph.customCalloutExtension")       authenticationConfiguration = optional(any)       clientConfiguration = optional(any)       description = optional(string)       displayName = optional(string)       endpointConfiguration = optional(any)     }))` | no | no |
+| `catalog_type` | `catalogType` | `string` | no | no |
+| `custom_workflow_extensions` | `customWorkflowExtensions` | `any` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
 | `is_externally_visible` | `isExternallyVisible` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `resource_roles` | `resourceRoles` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageResourceRole")       description = optional(string)       displayName = optional(string)       originId = optional(string)       originSystem = optional(string)       resource = optional(any)       type = optional(any)     }))` | no | no |
+| `resource_roles` | `resourceRoles` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageResourceRole")       description = optional(string)       displayName = optional(string)       originId = optional(string)       originSystem = optional(string)       resource = optional(any)       type = optional(string)     }))` | no | no |
 | `resource_scopes` | `resourceScopes` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageResourceScope")       description = optional(string)       displayName = optional(string)       isRootScope = optional(bool)       originId = optional(string)       originSystem = optional(string)       resource = optional(any)     }))` | no | no |
-| `resources` | `resources` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageResource")       attributes = optional(list(object({       odata_type = optional(string, "#microsoft.graph.accessPackageResourceAttribute")       destination = optional(any)       isEditable = optional(bool)       isPersistedOnAssignmentRemoval = optional(bool)       name = optional(string)       source = optional(any)     })))       description = optional(string)       displayName = optional(string)       environment = optional(any)       originId = optional(string)       originSystem = optional(string)       uploadSessions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.customDataProvidedResourceUploadSession")       data = optional(any)       files = optional(any)       isUploadDone = optional(bool)       referenceId = optional(string)       stats = optional(object({       odata_type = optional(string, "#microsoft.graph.customDataProvidedResourceUploadStats")       filesUploaded = optional(number)       totalBytesUploaded = optional(number)     }))       status = optional(string)     })))     }))` | no | no |
-| `state` | `state` | `any` | no | no |
+| `resources` | `resources` | `any` | no | no |
+| `state` | `state` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -48,19 +48,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- catalogType: polymorphic schema; accepts an untyped value
-- customWorkflowExtensions[].authenticationConfiguration: polymorphic schema; accepts an untyped value
-- customWorkflowExtensions[].clientConfiguration: polymorphic schema; accepts an untyped value
-- customWorkflowExtensions[].endpointConfiguration: polymorphic schema; accepts an untyped value
+- customWorkflowExtensions[]: polymorphic schema; accepts an untyped value
 - resourceRoles[].resource: polymorphic schema; accepts an untyped value
-- resourceRoles[].type: polymorphic schema; accepts an untyped value
 - resourceScopes[].resource: polymorphic schema; accepts an untyped value
-- resources[].attributes[].destination: polymorphic schema; accepts an untyped value
-- resources[].attributes[].source: polymorphic schema; accepts an untyped value
-- resources[].environment: polymorphic schema; accepts an untyped value
-- resources[].uploadSessions[].data: polymorphic schema; accepts an untyped value
-- resources[].uploadSessions[].files[]: nested schema exceeds depth limit; accepts an untyped value
-- state: polymorphic schema; accepts an untyped value
+- resources[]: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

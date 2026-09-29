@@ -4,6 +4,10 @@ mock_provider "msgraph" {}
 run "minimal_request" {
   command = plan
 
+  variables {
+    odata_type = "#microsoft.graph.emailAuthenticationMethodConfiguration"
+  }
+
   assert {
     condition     = msgraph_resource.this.url == "policies/authenticationMethodsPolicy/authenticationMethodConfigurations"
     error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
@@ -19,7 +23,19 @@ run "typed_request" {
   command = plan
 
   variables {
+    odata_type      = "#microsoft.graph.emailAuthenticationMethodConfiguration"
+    state           = "enabled"
     exclude_targets = [{}]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["@odata.type"]) == jsonencode("#microsoft.graph.emailAuthenticationMethodConfiguration")
+    error_message = "@odata.type must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["state"]) == jsonencode("enabled")
+    error_message = "state must preserve typed values and omit nested nulls."
   }
 
   assert {
@@ -32,8 +48,8 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    state = "__graphmodules_invalid_enum__"
+    odata_type = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.state]
+  expect_failures = [var.odata_type]
 }

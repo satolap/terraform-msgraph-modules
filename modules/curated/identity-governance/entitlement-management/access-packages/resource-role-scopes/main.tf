@@ -92,9 +92,13 @@ resource "msgraph_resource_action" "resource_role_scope" {
 
 # Deletes the role scope on destroy. Same pattern as the catalogs/resources
 # module: the one-shot action above is simply forgotten on destroy, so the
-# actual DELETE goes through the ambient Azure CLI session (the same auth the
-# msgraph provider itself defaults to). 404 is tolerated — the role scope
-# disappears with its access package if that was destroyed first.
+# actual DELETE goes through the ambient Azure CLI session. Before requesting
+# a token it requires ARM_TENANT_ID (the tenant variable the msgraph provider
+# reads) to match `az account show`, and curl reads the Authorization header
+# from a config on stdin, so the token never appears in a process argv.
+# 404 is tolerated only after that tenant check: the role scope disappears
+# with its access package if that was destroyed first.
+# Keep `triggers` unchanged: a change replaces this resource and runs the cleanup.
 resource "null_resource" "remove_on_destroy" {
   count = var.enable_destroy_cleanup ? 1 : 0
 
@@ -114,12 +118,17 @@ resource "null_resource" "remove_on_destroy" {
     }
     command = <<-EOT
       set -euo pipefail
+      set +ax
       test -n "$GRAPH_ROLE_SCOPE_ID" || { echo "ERROR: no role scope ID was captured; reconcile the access package before destroying." >&2; exit 1; }
+      expected_tenant=$(printf '%s' "$${ARM_TENANT_ID:-}" | tr '[:upper:]' '[:lower:]')
+      test -n "$expected_tenant" || { echo "ERROR: ARM_TENANT_ID is not set. Set it to the tenant ID the msgraph provider uses; destroy cleanup refuses to guess the tenant." >&2; exit 1; }
+      cli_tenant=$(az account show --query tenantId -o tsv | tr '[:upper:]' '[:lower:]')
+      test "$cli_tenant" = "$expected_tenant" || { echo "ERROR: the Azure CLI tenant ($cli_tenant) does not match ARM_TENANT_ID ($expected_tenant). Run 'az login --tenant $expected_tenant' or correct ARM_TENANT_ID, then retry destroy." >&2; exit 1; }
+      unset TOKEN
       TOKEN=$(az account get-access-token --resource https://graph.microsoft.com --query accessToken -o tsv)
-      test -n "$TOKEN"
-      status=$(curl --silent --show-error --connect-timeout 30 --max-time 120 -o /dev/null -w "%%{http_code}" -X DELETE \
-        "https://graph.microsoft.com/$GRAPH_API_VERSION/identityGovernance/entitlementManagement/accessPackages/$GRAPH_ACCESS_PACKAGE_ID/resourceRoleScopes/$GRAPH_ROLE_SCOPE_ID" \
-        -H "Authorization: Bearer $TOKEN")
+      case "$TOKEN" in "" | *[!A-Za-z0-9._~+/=-]*) echo "ERROR: the Azure CLI returned no usable Microsoft Graph access token." >&2; exit 1 ;; esac
+      status=$(printf 'header = "Authorization: Bearer %s"\n' "$TOKEN" | curl --config - --silent --show-error --connect-timeout 30 --max-time 120 -o /dev/null -w "%%{http_code}" -X DELETE \
+        "https://graph.microsoft.com/$GRAPH_API_VERSION/identityGovernance/entitlementManagement/accessPackages/$GRAPH_ACCESS_PACKAGE_ID/resourceRoleScopes/$GRAPH_ROLE_SCOPE_ID")
       case "$status" in
         200|204|404) echo "Removed role scope $GRAPH_ROLE_SCOPE_ID from access package $GRAPH_ACCESS_PACKAGE_ID (HTTP $status)" ;;
         *) echo "ERROR: DELETE of role scope $GRAPH_ROLE_SCOPE_ID returned HTTP $status" >&2; exit 1 ;;

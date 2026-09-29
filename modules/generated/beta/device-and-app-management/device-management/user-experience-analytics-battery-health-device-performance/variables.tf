@@ -70,7 +70,7 @@ variable "full_battery_drain_count" {
 }
 
 variable "health_status" {
-  description = "Microsoft Graph healthStatus property."
+  description = "The overall battery health status of the device."
   type        = string
   default     = null
 

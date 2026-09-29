@@ -25,14 +25,14 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `account_enabled` | `accountEnabled` | `bool` | no | no |
 | `app_id` | `appId` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
-| `history` | `history` | `list(object({       odata_type = optional(string, "#microsoft.graph.riskyServicePrincipalHistoryItem")       accountEnabled = optional(bool)       activity = optional(any)       appId = optional(string)       displayName = optional(string)       history = optional(any)       initiatedBy = optional(string)       isEnabled = optional(bool)       isProcessing = optional(bool)       riskDetail = optional(any)       riskLastUpdatedDateTime = optional(string)       riskLevel = optional(any)       riskState = optional(any)       servicePrincipalId = optional(string)       servicePrincipalType = optional(string)     }))` | no | no |
+| `history` | `history` | `list(object({       odata_type = optional(string, "#microsoft.graph.riskyServicePrincipalHistoryItem")       accountEnabled = optional(bool)       activity = optional(object({       odata_type = optional(string, "#microsoft.graph.riskServicePrincipalActivity")       detail = optional(string)       riskEventTypes = optional(list(string))     }))       appId = optional(string)       displayName = optional(string)       history = optional(any)       initiatedBy = optional(string)       isEnabled = optional(bool)       isProcessing = optional(bool)       riskDetail = optional(string)       riskLastUpdatedDateTime = optional(string)       riskLevel = optional(string)       riskState = optional(string)       servicePrincipalId = optional(string)       servicePrincipalType = optional(string)     }))` | no | no |
 | `is_enabled` | `isEnabled` | `bool` | no | no |
 | `is_processing` | `isProcessing` | `bool` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `risk_detail` | `riskDetail` | `any` | no | no |
+| `risk_detail` | `riskDetail` | `string` | no | no |
 | `risk_last_updated_date_time` | `riskLastUpdatedDateTime` | `string` | no | no |
-| `risk_level` | `riskLevel` | `any` | no | no |
-| `risk_state` | `riskState` | `any` | no | no |
+| `risk_level` | `riskLevel` | `string` | no | no |
+| `risk_state` | `riskState` | `string` | no | no |
 | `service_principal_type` | `servicePrincipalType` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
@@ -51,14 +51,7 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
-- history[].activity: polymorphic schema; accepts an untyped value
 - history[].history[]: recursive schema; accepts an untyped value
-- history[].riskDetail: polymorphic schema; accepts an untyped value
-- history[].riskLevel: polymorphic schema; accepts an untyped value
-- history[].riskState: polymorphic schema; accepts an untyped value
-- riskDetail: polymorphic schema; accepts an untyped value
-- riskLevel: polymorphic schema; accepts an untyped value
-- riskState: polymorphic schema; accepts an untyped value
 
 ## Licensing and prerequisites
 

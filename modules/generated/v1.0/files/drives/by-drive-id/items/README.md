@@ -27,10 +27,10 @@ Configure the Microsoft/msgraph provider in the calling root module using your c
 | `analytics` | `analytics` | `any` | no | no |
 | `content` | `content` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
-| `file_system_info` | `fileSystemInfo` | `any` | no | no |
+| `file_system_info` | `fileSystemInfo` | `object({       odata_type = optional(string, "#microsoft.graph.fileSystemInfo")       createdDateTime = optional(string)       lastAccessedDateTime = optional(string)       lastModifiedDateTime = optional(string)     })` | no | no |
 | `name` | `name` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `parent_reference` | `parentReference` | `any` | no | no |
+| `parent_reference` | `parentReference` | `object({       odata_type = optional(string, "#microsoft.graph.itemReference")       driveType = optional(string)       shareId = optional(string)       siteId = optional(string)     })` | no | no |
 | `retention_label` | `retentionLabel` | `any` | no | no |
 | `root` | `root` | `any` | no | no |
 | `subscriptions` | `subscriptions` | `list(object({       odata_type = optional(string, "#microsoft.graph.subscription")       changeType = optional(string)       clientState = optional(string)       encryptionCertificate = optional(string)       encryptionCertificateId = optional(string)       expirationDateTime = optional(string)       includeResourceData = optional(bool)       latestSupportedTlsVersion = optional(string)       lifecycleNotificationUrl = optional(string)       notificationQueryOptions = optional(string)       notificationUrl = optional(string)       notificationUrlAppId = optional(string)       resource = optional(string)     }))` | no | no |
@@ -52,12 +52,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- analytics: polymorphic schema; accepts an untyped value
-- fileSystemInfo: polymorphic schema; accepts an untyped value
-- parentReference: polymorphic schema; accepts an untyped value
-- retentionLabel: polymorphic schema; accepts an untyped value
+- analytics: navigation property; accepts an untyped value
+- retentionLabel: navigation property; accepts an untyped value
 - root: polymorphic schema; accepts an untyped value
-- workbook: polymorphic schema; accepts an untyped value
+- workbook: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

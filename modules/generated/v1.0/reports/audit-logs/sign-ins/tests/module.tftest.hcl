@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     app_display_name                    = "example"
     is_interactive                      = false
+    authentication_app_device_details   = { "appVersion" = null }
     applied_conditional_access_policies = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isInteractive"]) == jsonencode(false)
     error_message = "isInteractive must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["authenticationAppDeviceDetails"]) == jsonencode({ "@odata.type" = "#microsoft.graph.authenticationAppDeviceDetails" })
+    error_message = "authenticationAppDeviceDetails must preserve typed values and omit nested nulls."
   }
 
   assert {

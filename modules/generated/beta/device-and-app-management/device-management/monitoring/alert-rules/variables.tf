@@ -1,6 +1,6 @@
 variable "alert_rule_template" {
   description = "The rule template of the alert event. The possible values are: cloudPcProvisionScenario, cloudPcImageUploadScenario, cloudPcOnPremiseNetworkConnectionCheckScenario, unknownFutureValue, cloudPcInGracePeriodScenario, cloudPcFrontlineInsufficientLicensesScenario, cloudPcInaccessibleScenario, cloudPcFrontlineConcurrencyScenario, cloudPcUserSettingsPersistenceScenario, cloudPcDeprovisionFailedScenario.  Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: cloudPcInGracePeriodScenario, cloudPcFrontlineInsufficientLicensesScenario, cloudPcInaccessibleScenario, cloudPcFrontlineConcurrencyScenario, cloudPcUserSettingsPersistenceScenario, cloudPcDeprovisionFailedScenario."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -13,10 +13,10 @@ variable "conditions" {
   description = "The conditions that determine when to send alerts. For example, you can configure a condition to send an alert when provisioning fails for six or more Cloud PCs."
   type = list(object({
     odata_type        = optional(string, "#microsoft.graph.deviceManagement.ruleCondition")
-    aggregation       = optional(any)
-    conditionCategory = optional(any)
-    operator          = optional(any)
-    relationshipType  = optional(any)
+    aggregation       = optional(string)
+    conditionCategory = optional(string)
+    operator          = optional(string)
+    relationshipType  = optional(string)
     thresholdValue    = optional(string)
   }))
   default = null
@@ -50,7 +50,7 @@ variable "notification_channels" {
   description = "The notification channels of the rule selected by the user."
   type = list(object({
     odata_type              = optional(string, "#microsoft.graph.deviceManagement.notificationChannel")
-    notificationChannelType = optional(any)
+    notificationChannelType = optional(string)
     notificationReceivers = optional(list(object({
       odata_type         = optional(string, "#microsoft.graph.deviceManagement.notificationReceiver")
       contactInformation = optional(string)
@@ -69,7 +69,7 @@ variable "odata_type" {
 
 variable "severity" {
   description = "The severity of the rule. The possible values are: unknown, informational, warning, critical, unknownFutureValue."
-  type        = any
+  type        = string
   default     = null
 
   validation {
@@ -80,8 +80,13 @@ variable "severity" {
 
 variable "threshold" {
   description = "The conditions that determine when to send alerts. For example, you can configure a condition to send an alert when provisioning fails for six or more Cloud PCs. This property is deprecated. Use conditions instead."
-  type        = any
-  default     = null
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.deviceManagement.ruleThreshold")
+    aggregation = optional(string)
+    operator    = optional(string)
+    target      = optional(number)
+  })
+  default = null
 }
 
 variable "additional_properties" {

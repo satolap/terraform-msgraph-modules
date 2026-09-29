@@ -25,17 +25,11 @@ run "typed_request" {
   variables {
     device_management_resource_access_profile_base_id = "test-parent-id"
     intent                                            = "apply"
-    target                                            = { "deviceAndAppManagementAssignmentFilterId" = null }
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["intent"]) == jsonencode("apply")
     error_message = "intent must preserve typed values and omit nested nulls."
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["target"]) == jsonencode({ "@odata.type" = "#microsoft.graph.deviceAndAppManagementAssignmentTarget" })
-    error_message = "target must preserve typed values and omit nested nulls."
   }
 }
 

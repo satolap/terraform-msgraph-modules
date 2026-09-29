@@ -50,7 +50,7 @@ Generation notes:
 - Microsoft Graph beta contracts can change without notice.
 - createdBy: polymorphic schema; accepts an untyped value
 - lastModifiedBy: polymorphic schema; accepts an untyped value
-- planner: polymorphic schema; accepts an untyped value
+- planner: navigation property; accepts an untyped value
 
 ## Licensing and prerequisites
 

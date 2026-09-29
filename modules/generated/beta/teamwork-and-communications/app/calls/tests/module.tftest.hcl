@@ -21,6 +21,7 @@ run "typed_request" {
   variables {
     call_chain_id              = "example"
     ringing_timeout_in_seconds = -2147483648
+    chat_info                  = { "messageId" = null }
     audio_routing_groups       = [{}]
   }
 
@@ -32,6 +33,11 @@ run "typed_request" {
   assert {
     condition     = jsonencode(msgraph_resource.this.body["ringingTimeoutInSeconds"]) == jsonencode(-2147483648)
     error_message = "ringingTimeoutInSeconds must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["chatInfo"]) == jsonencode({ "@odata.type" = "#microsoft.graph.chatInfo" })
+    error_message = "chatInfo must preserve typed values and omit nested nulls."
   }
 
   assert {
