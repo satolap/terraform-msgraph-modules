@@ -107,6 +107,20 @@ module "engineering_group" {
 }
 ```
 
+Each `graphmodules-*` release tag covers both generated catalogs and the curated
+modules. Module sources take these forms:
+
+```text
+git::https://github.com/benhaspalace/GraphModules.git//modules/generated/<api-version>/<category>/<collection-path>?ref=<release-tag>
+git::https://github.com/benhaspalace/GraphModules.git//modules/curated/<module-path>?ref=<release-tag>
+```
+
+`<api-version>` is `v1.0` or `beta`. `<category>/<collection-path>` is the
+module's directory in the catalog, for example
+`applications/applications/by-application-id/extension-properties`, not the Graph
+URL path. `<module-path>` is the path after `modules/curated/` in the curated
+module table above.
+
 Replace `<release-tag>` with a `graphmodules-*` tag from
 [Releases](https://github.com/benhaspalace/GraphModules/releases), then run
 `terraform init`. HashiCorp documents the `git::` source, `//` subdirectory, and
@@ -115,6 +129,15 @@ Replace `<release-tag>` with a `graphmodules-*` tag from
 The provider supports Azure CLI, managed identity, service principal, and OpenID
 Connect authentication; choose the method described in the
 [`microsoft/msgraph` provider documentation](https://registry.terraform.io/providers/microsoft/msgraph/latest/docs).
+
+Each `graphmodules-*` release also attaches v1.0, beta, and curated archives. They
+keep the `modules/generated/...` and `modules/curated/...` paths above and add
+`LICENSE`, `NOTICE`, and `release-manifest.json` at the archive root; that
+manifest is the same file as the `release-manifest.json` release asset.
+`sha256sum -c SHA256SUMS` fails for every listed asset you did not download, so
+to check only the files you downloaded, run
+`sha256sum -c --ignore-missing SHA256SUMS`. The earlier `graphmodules-*` release
+uses a different layout, described in its release notes.
 
 For evaluation and non-production use, `?ref=latest` follows new releases without
 editing each source. The `latest` branch moves only forward, to the commit of the
