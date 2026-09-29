@@ -487,16 +487,20 @@ class ReleaseUpdatesLatestBranchTest(unittest.TestCase):
 WORKFLOW = Path(__file__).resolve().parent.parent / ".github" / "workflows" / "release.yml"
 MANIFEST = "modules/generated/release-manifest.json"
 GUARD_IF = "github.event_name == 'push'"
-RELEASE_IF = "github.event_name == 'workflow_dispatch' || steps.manifest.outputs.changed == 'true'"
 ACTOR_IF = (
     "github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || "
     "github.actor == 'graphmodules-release-publisher[bot]')"
 )
-# Only a run whose release job can run shares the release group: a new run in a group cancels
-# the run pending there, so a skipped run must never take a waiting publication's place.
+CHANGED_OUTPUT = (
+    "${{ github.event_name == 'workflow_dispatch' && 'true' || steps.manifest.outputs.changed }}"
+)
+RELEASE_JOB_IF = "needs.manifest.outputs.changed == 'true'"
+# Only a run that will release joins the release group: a new job in a group cancels the job
+# pending there, so a run that cannot release must never take a waiting publication's place.
+# The group is set on the release job because only a job-level group can read needs.
 CONCURRENCY_GROUP = (
-    f"${{{{ ({ACTOR_IF}) && 'graphmodules-release' || "
-    "format('graphmodules-release-skipped-{0}', github.run_id) }}"
+    f"${{{{ {RELEASE_JOB_IF} && 'graphmodules-release' "
+    "|| format('graphmodules-release-skipped-{0}', github.run_id) }}"
 )
 
 
@@ -537,8 +541,12 @@ def scalar(entry: list[str]) -> str:
     return " ".join(part.strip() for part in parts if part.strip())
 
 
-def workflow_steps(text: str) -> list[dict[str, list[str]]]:
-    job = mapping(mapping(mapping(text.splitlines(), 0)["jobs"][1:], 2)["release"][1:], 4)
+def workflow_job(text: str, name: str) -> dict[str, list[str]]:
+    return mapping(mapping(mapping(text.splitlines(), 0)["jobs"][1:], 2)[name][1:], 4)
+
+
+def workflow_steps(text: str, name: str) -> list[dict[str, list[str]]]:
+    job = workflow_job(text, name)
     steps: list[list[str]] = []
     for line in job["steps"][1:]:
         if line.startswith("      - "):
@@ -572,10 +580,10 @@ class ReleaseWorkflowTest(unittest.TestCase):
     def setUp(self):
         self.text = WORKFLOW.read_text(encoding="utf-8")
         self.top = mapping(self.text.splitlines(), 0)
-        self.steps = workflow_steps(self.text)
-
-    def step(self, **wanted: str) -> tuple[int, dict[str, list[str]]]:
-        return find_step(self.steps, **wanted)
+        self.jobs = mapping(self.top["jobs"][1:], 2)
+        self.manifest = workflow_job(self.text, "manifest")
+        self.release = workflow_job(self.text, "release")
+        self.steps = {name: workflow_steps(self.text, name) for name in ("manifest", "release")}
 
     def test_push_trigger_has_no_paths_filter(self):
         # GitHub does not start a paths-filtered workflow when the pushed diff has more than
@@ -590,15 +598,18 @@ class ReleaseWorkflowTest(unittest.TestCase):
         self.assertIn("tag:", "\n".join(dispatch["inputs"]))
 
     def test_push_releases_only_for_the_publisher_app(self):
-        jobs = mapping(self.top["jobs"][1:], 2)
-        self.assertEqual(set(jobs), {"release"})
-        job = mapping(jobs["release"][1:], 4)
-        self.assertEqual(scalar(job["if"]), ACTOR_IF)
+        self.assertEqual(set(self.jobs), {"manifest", "release"})
+        self.assertEqual(scalar(self.manifest["if"]), ACTOR_IF)
+        # The release job runs only after the gated manifest job succeeded and said so.
+        self.assertEqual(scalar(self.release["needs"]), "manifest")
+        self.assertEqual(scalar(self.release["if"]), RELEASE_JOB_IF)
 
-    def test_release_step_depends_on_the_manifest_change_guard(self):
-        checkout, _ = self.step(uses="actions/checkout@")
-        self.assertIn("fetch-depth: 0", "\n".join(self.steps[checkout]["with"]))
-        guard, step = self.step(id="manifest")
+    def test_release_job_depends_on_the_manifest_change_guard(self):
+        steps = self.steps["manifest"]
+        checkout, _ = find_step(steps, uses="actions/checkout@")
+        self.assertIn("fetch-depth: 0", "\n".join(steps[checkout]["with"]))
+        guard, step = find_step(steps, id="manifest")
+        self.assertGreater(guard, checkout)
         self.assertIn("if", step, "The guard must run on push only")
         self.assertEqual(scalar(step["if"]), GUARD_IF)
         self.assertEqual(scalar(step["shell"]), "python {0}")
@@ -609,38 +620,44 @@ class ReleaseWorkflowTest(unittest.TestCase):
         self.assertIn(MANIFEST, script)
         self.assertIn('"git", "diff"', script)
         self.assertIn("GITHUB_OUTPUT", script)
-        publish, step = self.step(run="scripts/release.py")
-        self.assertIn("if", step, "The release step must depend on the guard")
-        self.assertGreater(publish, guard)
-        self.assertGreater(guard, checkout)
-        self.assertEqual(scalar(step["if"]), RELEASE_IF)
+        outputs = mapping(self.manifest["outputs"][1:], 6)
+        self.assertEqual(set(outputs), {"changed"})
+        self.assertEqual(scalar(outputs["changed"]), CHANGED_OUTPUT)
+        for number, step in enumerate(steps):
+            self.assertNotIn("scripts/release.py", "\n".join(step.get("run", [])), number)
+        _, publish = find_step(self.steps["release"], run="scripts/release.py")
+        # The job-level if decides; a step-level if could only drift from it.
+        self.assertNotIn("if", publish)
 
     def test_run_scripts_read_event_values_from_env(self):
         # Script-injection hygiene: expressions go through env, never into the script text.
-        scripts = [run_script(step) for step in self.steps if "run" in step]
-        self.assertGreaterEqual(len(scripts), 2)
+        scripts = [run_script(step) for steps in self.steps.values() for step in steps if "run" in step]
+        self.assertEqual(len(scripts), 2)
         for script in scripts:
             self.assertNotIn("${{", script)
 
     def test_actions_and_permissions_are_pinned(self):
-        uses = [scalar(step["uses"]) for step in self.steps if "uses" in step]
-        self.assertEqual(len(uses), 2)
-        for action in uses:
-            self.assertRegex(action, r"^[\w-]+/[\w-]+@[0-9a-f]{40} # v\d+\.\d+\.\d+$")
+        for name, steps in self.steps.items():
+            uses = [scalar(step["uses"]) for step in steps if "uses" in step]
+            self.assertEqual(len(uses), 2, name)
+            for action in uses:
+                self.assertRegex(action, r"^[\w-]+/[\w-]+@[0-9a-f]{40} # v\d+\.\d+\.\d+$")
         self.assertEqual(content(self.top["permissions"]), ["  contents: read"])
-        job = mapping(mapping(self.top["jobs"][1:], 2)["release"][1:], 4)
-        self.assertEqual(content(job["permissions"]), ["      contents: write"])
+        self.assertNotIn("permissions", self.manifest)
+        self.assertEqual(content(self.release["permissions"]), ["      contents: write"])
 
-    def test_only_runs_that_can_release_share_the_concurrency_group(self):
+    def test_only_runs_that_will_release_share_the_concurrency_group(self):
         # "By default, any existing pending job or workflow in the same concurrency group will
         # be canceled" (GitHub docs). Without the paths filter every push to main starts a run,
-        # so a human merge in the shared group would cancel a publication waiting there.
-        concurrency = mapping(self.top["concurrency"][1:], 2)
+        # so a human merge, or a publisher push that leaves the manifest unchanged, in the
+        # shared group would cancel a publication waiting there. A workflow-level group can
+        # read only github, inputs and vars, so it cannot know the guard's result.
+        self.assertNotIn("concurrency", self.top)
+        self.assertNotIn("concurrency", self.manifest)
+        concurrency = mapping(self.release["concurrency"][1:], 6)
         self.assertEqual(set(concurrency), {"group", "cancel-in-progress"})
         self.assertEqual(scalar(concurrency["cancel-in-progress"]), "false")
         self.assertEqual(scalar(concurrency["group"]), CONCURRENCY_GROUP)
-        job = mapping(mapping(self.top["jobs"][1:], 2)["release"][1:], 4)
-        self.assertNotIn("concurrency", job)
 
 
 @unittest.skipIf(shutil.which("git") is None, "git is not installed")
@@ -648,7 +665,7 @@ class ManifestGuardTest(unittest.TestCase):
     """Runs the workflow's manifest-change guard against a scratch repository."""
 
     def setUp(self):
-        _, step = find_step(workflow_steps(WORKFLOW.read_text(encoding="utf-8")), id="manifest")
+        _, step = find_step(workflow_steps(WORKFLOW.read_text(encoding="utf-8"), "manifest"), id="manifest")
         self.script = run_script(step)
         directory = tempfile.TemporaryDirectory()
         self.addCleanup(directory.cleanup)

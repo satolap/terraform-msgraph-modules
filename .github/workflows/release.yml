@@ -13,27 +13,17 @@ on:
 permissions:
   contents: read
 
-# One release at a time. A run whose release job is skipped (a push by anyone but the
-# publisher App, or a dispatch from another ref) gets a group of its own, because a new run
-# in the shared group cancels the one pending there: a human merge must never cancel a
-# publication that is waiting for the release in progress.
-concurrency:
-  group: >-
-    ${{ (github.ref == 'refs/heads/main' &&
-    (github.event_name == 'workflow_dispatch' || github.actor == 'graphmodules-release-publisher[bot]'))
-    && 'graphmodules-release' || format('graphmodules-release-skipped-{0}', github.run_id) }}
-  cancel-in-progress: false
-
 jobs:
-  release:
+  manifest:
     # Only the release publisher App can start a release by pushing a publication.
     if: >-
       github.ref == 'refs/heads/main' &&
       (github.event_name == 'workflow_dispatch' || github.actor == 'graphmodules-release-publisher[bot]')
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    permissions:
-      contents: write
+    outputs:
+      # A dispatch finishes or verifies the tag it names; a push releases only a changed manifest.
+      changed: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.manifest.outputs.changed }}
     steps:
       - name: Check out the trusted release tooling from main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -83,8 +73,34 @@ jobs:
               print(f"::notice::{commit} does not change {manifest}; nothing to release")
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
               output.write(f"changed={str(changed).lower()}\n")
+
+  release:
+    needs: manifest
+    if: needs.manifest.outputs.changed == 'true'
+    # One release at a time. The group is decided only after the manifest job, so a run that
+    # cannot release (a human merge, or a publisher push that leaves the manifest unchanged)
+    # never enters the shared group: a new job in a group cancels the one pending there, and a
+    # run that cannot release must never take a waiting publication's place.
+    concurrency:
+      group: >-
+        ${{ needs.manifest.outputs.changed == 'true' && 'graphmodules-release'
+        || format('graphmodules-release-skipped-{0}', github.run_id) }}
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the trusted release tooling from main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
       - name: Reconstruct and verify the tested archives before releasing
-        if: github.event_name == 'workflow_dispatch' || steps.manifest.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
