@@ -708,6 +708,17 @@ class ManifestGuardTest(unittest.TestCase):
         commit = self.commit({"README.md": "docs\n"})
         for before in ("0" * 40, "", "not-a-commit", "1" * 40, "--output=/dev/null"):
             with self.subTest(before=before):
+                output, stdout = self.guard(before, commit)
+                self.assertEqual(output, "changed=true\n")
+                self.assertIn("::warning::Cannot compare with previous commit", stdout)
+
+    def test_only_a_commit_sha_is_compared(self):
+        # A symbolic ref or a non-commit object must not reach git diff, even when git could
+        # resolve it: the guard compares the pushed range only, and otherwise releases.
+        commit = self.commit({"README.md": "docs\n"})
+        tree = self.git("rev-parse", f"{self.first}^{{tree}}")
+        for before in ("HEAD~1", tree):
+            with self.subTest(before=before):
                 self.assertEqual(self.guard(before, commit)[0], "changed=true\n")
 
     def test_failed_comparison_fails_the_job(self):

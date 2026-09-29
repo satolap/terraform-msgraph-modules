@@ -70,7 +70,9 @@ jobs:
           )
           if not comparable:
               # A new branch, or a previous commit that is gone: release rather than miss one.
-              print(f"Cannot compare with previous commit '{before}'; treating the manifest as changed")
+              shown = before if re.fullmatch(r"[0-9a-f]{1,64}", before) else "(not a commit SHA)"
+              print(f"::warning::Cannot compare with previous commit {shown}; "
+                    "treating the manifest as changed and releasing")
               changed = True
           else:
               diff = subprocess.run(["git", "diff", "--quiet", before, commit, "--", manifest])
