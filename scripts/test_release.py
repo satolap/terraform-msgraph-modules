@@ -492,6 +492,12 @@ ACTOR_IF = (
     "github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || "
     "github.actor == 'graphmodules-release-publisher[bot]')"
 )
+# Only a run whose release job can run shares the release group: a new run in a group cancels
+# the run pending there, so a skipped run must never take a waiting publication's place.
+CONCURRENCY_GROUP = (
+    f"${{{{ ({ACTOR_IF}) && 'graphmodules-release' || "
+    "format('graphmodules-release-skipped-{0}', github.run_id) }}"
+)
 
 
 def mapping(lines: list[str], indent: int) -> dict[str, list[str]]:
@@ -616,7 +622,7 @@ class ReleaseWorkflowTest(unittest.TestCase):
         for script in scripts:
             self.assertNotIn("${{", script)
 
-    def test_actions_permissions_and_concurrency_are_pinned(self):
+    def test_actions_and_permissions_are_pinned(self):
         uses = [scalar(step["uses"]) for step in self.steps if "uses" in step]
         self.assertEqual(len(uses), 2)
         for action in uses:
@@ -624,10 +630,17 @@ class ReleaseWorkflowTest(unittest.TestCase):
         self.assertEqual(content(self.top["permissions"]), ["  contents: read"])
         job = mapping(mapping(self.top["jobs"][1:], 2)["release"][1:], 4)
         self.assertEqual(content(job["permissions"]), ["      contents: write"])
-        self.assertEqual(
-            content(self.top["concurrency"]),
-            ["  group: graphmodules-release", "  cancel-in-progress: false"],
-        )
+
+    def test_only_runs_that_can_release_share_the_concurrency_group(self):
+        # "By default, any existing pending job or workflow in the same concurrency group will
+        # be canceled" (GitHub docs). Without the paths filter every push to main starts a run,
+        # so a human merge in the shared group would cancel a publication waiting there.
+        concurrency = mapping(self.top["concurrency"][1:], 2)
+        self.assertEqual(set(concurrency), {"group", "cancel-in-progress"})
+        self.assertEqual(scalar(concurrency["cancel-in-progress"]), "false")
+        self.assertEqual(scalar(concurrency["group"]), CONCURRENCY_GROUP)
+        job = mapping(mapping(self.top["jobs"][1:], 2)["release"][1:], 4)
+        self.assertNotIn("concurrency", job)
 
 
 @unittest.skipIf(shutil.which("git") is None, "git is not installed")
@@ -663,14 +676,17 @@ class ManifestGuardTest(unittest.TestCase):
         self.git("commit", "--quiet", "--message", "publication")
         return self.git("rev-parse", "HEAD")
 
-    def guard(self, before: str, commit: str) -> tuple[str, str]:
+    def run_guard(self, before: str, commit: str, check: bool) -> subprocess.CompletedProcess:
         self.output.write_text("", encoding="utf-8")
-        result = subprocess.run(
-            [sys.executable, "-c", self.script], cwd=self.repository, check=True,
+        return subprocess.run(
+            [sys.executable, "-c", self.script], cwd=self.repository, check=check,
             capture_output=True, text=True,
             env={**self.environment, "BEFORE": before, "PUBLICATION_COMMIT": commit,
                  "GITHUB_OUTPUT": str(self.output)},
         )
+
+    def guard(self, before: str, commit: str) -> tuple[str, str]:
+        result = self.run_guard(before, commit, check=True)
         return self.output.read_text(encoding="utf-8"), result.stdout
 
     def test_manifest_change_releases(self):
@@ -693,6 +709,14 @@ class ManifestGuardTest(unittest.TestCase):
         for before in ("0" * 40, "", "not-a-commit", "1" * 40, "--output=/dev/null"):
             with self.subTest(before=before):
                 self.assertEqual(self.guard(before, commit)[0], "changed=true\n")
+
+    def test_failed_comparison_fails_the_job(self):
+        # A comparison that cannot run must fail the job, never be read as "not changed".
+        missing = "f" * 40  # well formed, but not a commit in the repository
+        result = self.run_guard(self.first, missing, check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(f"git diff {self.first} {missing} failed with exit code", result.stderr)
+        self.assertEqual(self.output.read_text(encoding="utf-8"), "")
 
 
 if __name__ == "__main__":

@@ -13,8 +13,15 @@ on:
 permissions:
   contents: read
 
+# One release at a time. A run whose release job is skipped (a push by anyone but the
+# publisher App, or a dispatch from another ref) gets a group of its own, because a new run
+# in the shared group cancels the one pending there: a human merge must never cancel a
+# publication that is waiting for the release in progress.
 concurrency:
-  group: graphmodules-release
+  group: >-
+    ${{ (github.ref == 'refs/heads/main' &&
+    (github.event_name == 'workflow_dispatch' || github.actor == 'graphmodules-release-publisher[bot]'))
+    && 'graphmodules-release' || format('graphmodules-release-skipped-{0}', github.run_id) }}
   cancel-in-progress: false
 
 jobs:
