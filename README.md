@@ -18,7 +18,8 @@ The repository provides two complementary module collections:
 - **Curated Microsoft Graph modules** handle common directory and identity
   governance scenarios that benefit from reviewed lifecycle behavior, including
   group membership, application and service-principal relationships, catalogs,
-  access packages, assignment policies, and resource role scopes.
+  access packages, assignment policies, resource role scopes, and Conditional
+  Access policies and named locations.
 
 Pin a [published release](https://github.com/benhaspalace/GraphModules/releases)
 to get an immutable module path and the exact metadata, provider versions, tests,
@@ -58,8 +59,8 @@ APIs are previews and can change incompatibly; see Microsoft's
 
 ## Use the curated Microsoft Graph Terraform modules
 
-The curated modules focus on Microsoft Entra ID directory objects and entitlement
-management workflows:
+The curated modules focus on Microsoft Entra ID directory objects, entitlement
+management workflows, and Conditional Access:
 
 | Microsoft Graph area | Resource or workflow | Terraform module |
 | --- | --- | --- |
@@ -72,6 +73,9 @@ management workflows:
 | Identity governance | Access packages | [`modules/curated/identity-governance/entitlement-management/access-packages`](modules/curated/identity-governance/entitlement-management/access-packages) |
 | Identity governance | Access-package resource role scopes | [`modules/curated/identity-governance/entitlement-management/access-packages/resource-role-scopes`](modules/curated/identity-governance/entitlement-management/access-packages/resource-role-scopes) |
 | Identity governance | Assignment policies | [`modules/curated/identity-governance/entitlement-management/assignment-policies`](modules/curated/identity-governance/entitlement-management/assignment-policies) |
+| Conditional Access | Policies, report-only by default, with mandatory break-glass exclusions | [`modules/curated/identity/conditional-access/policies`](modules/curated/identity/conditional-access/policies) |
+| Conditional Access | IP named locations (IPv4 and IPv6) | [`modules/curated/identity/conditional-access/named-locations/ip-ranges`](modules/curated/identity/conditional-access/named-locations/ip-ranges) |
+| Conditional Access | Country and region named locations | [`modules/curated/identity/conditional-access/named-locations/countries`](modules/curated/identity/conditional-access/named-locations/countries) |
 
 Curated modules expose higher-level Terraform inputs and outputs while preserving
 Microsoft Graph identifiers for composition. Their READMEs document required
