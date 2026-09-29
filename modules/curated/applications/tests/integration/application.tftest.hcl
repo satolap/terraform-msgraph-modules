@@ -17,7 +17,7 @@ run "create_application_with_app_role" {
 
     app_roles = [
       {
-        id           = "3e64b81f-8a54-4b3b-9c76-1f4c50f4e123"
+        id           = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab"
         display_name = "Contributor"
         description  = "Integration test app role"
         value        = "Contributor"
@@ -31,7 +31,7 @@ run "create_application_with_app_role" {
   }
 
   assert {
-    condition     = output.app_role_ids["Contributor"] == "3e64b81f-8a54-4b3b-9c76-1f4c50f4e123"
+    condition     = output.app_role_ids["Contributor"] == "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab"
     error_message = "The app role must be registered with the supplied GUID."
   }
 }
@@ -46,7 +46,7 @@ run "rename_application" {
 
     app_roles = [
       {
-        id           = "3e64b81f-8a54-4b3b-9c76-1f4c50f4e123"
+        id           = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab"
         display_name = "Contributor"
         description  = "Integration test app role"
         value        = "Contributor"
