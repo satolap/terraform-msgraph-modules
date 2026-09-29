@@ -155,7 +155,12 @@ or apply.
 
 GitHub Actions run only on `main`. An update to the publication manifest pushed
 to `main` by the release publisher App starts release verification using the tag
-recorded in that commit. Existing tags can also be verified or released by
+recorded in that commit. Every other push to `main` also starts a release
+workflow run: its jobs are skipped when the release publisher App did not push it,
+and a publisher push that leaves the manifest unchanged runs only the read-only
+manifest check. A skipped job reports success, so the status badge above can show
+a skipped run after a human merge. Filter the workflow's runs by the release
+publisher App to see the last publication. Existing tags can also be verified or released by
 manually dispatching the release workflow on `main`. Tag pushes and pull requests
 do not start workflows.
 
