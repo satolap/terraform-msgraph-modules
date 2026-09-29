@@ -1,7 +1,8 @@
 # Curated Microsoft Graph Terraform modules
 
 These modules provide task-focused Terraform inputs and outputs for Microsoft
-Entra users, groups, applications, service principals and entitlement management.
+Entra users, groups, applications, service principals, entitlement management and
+Conditional Access.
 Start with the module README for configuration, permissions, license requirements
 and lifecycle limitations.
 
@@ -16,6 +17,12 @@ curated/
 ├── README.md
 ├── applications/
 ├── groups/
+├── identity/
+│   └── conditional-access/
+│       ├── named-locations/
+│       │   ├── countries/
+│       │   └── ip-ranges/
+│       └── policies/
 ├── identity-governance/
 │   └── entitlement-management/
 │       ├── access-packages/
@@ -28,7 +35,8 @@ curated/
 ```
 
 `access-packages/` and `catalogs/` are modules themselves; their child folders
-provide separate relationship modules. A Terraform module source points to the
+provide separate relationship modules. `identity/`, `conditional-access/` and
+`named-locations/` only group modules. A Terraform module source points to the
 specific module folder, rather than this index or a grouping folder.
 
 ## Browse modules
@@ -44,6 +52,9 @@ specific module folder, rather than this index or a grouping folder.
 | [Access packages](identity-governance/entitlement-management/access-packages/README.md) | Packages of access to catalog resources |
 | [Resource role scopes](identity-governance/entitlement-management/access-packages/resource-role-scopes/README.md) | Resource roles and scopes attached to an access package |
 | [Assignment policies](identity-governance/entitlement-management/assignment-policies/README.md) | Access-package request and assignment policies |
+| [Conditional Access policies](identity/conditional-access/policies/README.md) | Conditional Access policies, report-only by default, with mandatory break-glass exclusions |
+| [IP named locations](identity/conditional-access/named-locations/ip-ranges/README.md) | IPv4 and IPv6 named locations for Conditional Access |
+| [Country named locations](identity/conditional-access/named-locations/countries/README.md) | Country and region named locations for Conditional Access |
 
 For the broader generated endpoint catalogs, browse [v1.0](../generated/v1.0/README.md)
 or [beta](../generated/beta/README.md). Module availability and offline tests do not

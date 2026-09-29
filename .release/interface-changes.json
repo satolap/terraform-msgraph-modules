@@ -1,8 +1,39 @@
 {
   "comparison_supplied": true,
-  "counts": {},
-  "decisions": [],
-  "notices": [],
+  "counts": {
+    "inventory_shift": 1,
+    "module_added": 3
+  },
+  "decisions": [
+    {
+      "accepted": [
+        {
+          "detail_sha256": "9d637f9f371e3f2168584fcfa36be93d80dbe65273359d4e191261e6dc37681b",
+          "key": "inventory_shift:curated",
+          "kind": "inventory_shift"
+        }
+      ],
+      "approved_by": "benhaspalace",
+      "decision": "2026-09-29-curated-conditional-access.json",
+      "migration_notes": "The curated catalog grows from 9 to 12 modules: modules/curated/identity/conditional-access/policies, modules/curated/identity/conditional-access/named-locations/ip-ranges and modules/curated/identity/conditional-access/named-locations/countries. No existing module changes, so upgrading gives no plan change. The new modules need microsoft/msgraph 0.5.0 or later and Microsoft Entra ID P1; sign-in and user risk conditions need Microsoft Entra ID P2. Policies default to report-only (enabledForReportingButNotEnforced) and always exclude break_glass_user_ids and break_glass_group_ids; set state = \"enabled\" only after reviewing report-only results. Adding or removing an optional part of a policy replaces it, and a trusted IP location must be set to is_trusted = false in a separate apply before it is destroyed.",
+      "previous_tag": "graphmodules-eb2d5f1aa0c898e21711",
+      "summary": "Add three curated Conditional Access modules: policies, IP named locations and country named locations"
+    }
+  ],
+  "notices": [
+    {
+      "key": "module_added:curated/identity/conditional-access/named-locations/countries",
+      "kind": "module_added"
+    },
+    {
+      "key": "module_added:curated/identity/conditional-access/named-locations/ip-ranges",
+      "kind": "module_added"
+    },
+    {
+      "key": "module_added:curated/identity/conditional-access/policies",
+      "kind": "module_added"
+    }
+  ],
   "schema_version": 1,
-  "tag": "graphmodules-eb2d5f1aa0c898e21711"
+  "tag": "graphmodules-98e58792e28057d2c5d7"
 }
