@@ -484,5 +484,216 @@ class ReleaseUpdatesLatestBranchTest(unittest.TestCase):
         self.assertIn(f"::warning::{text.strip()}", output)
 
 
+WORKFLOW = Path(__file__).resolve().parent.parent / ".github" / "workflows" / "release.yml"
+MANIFEST = "modules/generated/release-manifest.json"
+GUARD_IF = "github.event_name == 'push'"
+RELEASE_IF = "github.event_name == 'workflow_dispatch' || steps.manifest.outputs.changed == 'true'"
+ACTOR_IF = (
+    "github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || "
+    "github.actor == 'graphmodules-release-publisher[bot]')"
+)
+
+
+def mapping(lines: list[str], indent: int) -> dict[str, list[str]]:
+    """Keys at exactly `indent` spaces, each as [inline value, *nested lines].
+
+    A careful text reading of the block-style YAML in release.yml, so that the tests keep
+    using only the standard library (and "on" stays a string, not YAML 1.1's True).
+    """
+    entries: dict[str, list[str]] = {}
+    key = None
+    for line in lines:
+        depth = len(line) - len(line.lstrip(" "))
+        text = line.strip()
+        if text.startswith("#") and depth <= indent:
+            continue
+        if text and depth == indent:
+            key, separator, value = text.partition(":")
+            if not separator or key in entries:
+                raise AssertionError(f"Unexpected line at indent {indent}: {line!r}")
+            entries[key] = [value.strip()]
+        elif text and depth < indent:
+            raise AssertionError(f"Unexpected dedent to {depth}: {line!r}")
+        elif key is not None:
+            entries[key].append(line)
+    return entries
+
+
+def content(entry: list[str]) -> list[str]:
+    """The non-blank nested lines of an entry."""
+    return [line for line in entry[1:] if line.strip()]
+
+
+def scalar(entry: list[str]) -> str:
+    """A plain or folded (>-) scalar as one line."""
+    inline, *nested = entry
+    parts = nested if inline in (">", ">-") else [inline, *nested]
+    return " ".join(part.strip() for part in parts if part.strip())
+
+
+def workflow_steps(text: str) -> list[dict[str, list[str]]]:
+    job = mapping(mapping(mapping(text.splitlines(), 0)["jobs"][1:], 2)["release"][1:], 4)
+    steps: list[list[str]] = []
+    for line in job["steps"][1:]:
+        if line.startswith("      - "):
+            steps.append(["        " + line[len("      - "):]])
+        elif steps:
+            steps[-1].append(line)
+    return [mapping(step, 8) for step in steps]
+
+
+def run_script(step: dict[str, list[str]]) -> str:
+    inline, *nested = step["run"]
+    if inline != "|":
+        raise AssertionError(f"Expected a literal run block, got {inline!r}")
+    return "".join(line[10:] + "\n" for line in nested).rstrip("\n") + "\n"
+
+
+def find_step(steps: list[dict[str, list[str]]], **wanted: str) -> tuple[int, dict[str, list[str]]]:
+    """The one step whose keys contain each wanted text, with its index."""
+    found = [
+        (index, step) for index, step in enumerate(steps)
+        if all(key in step and needle in "\n".join(step[key]) for key, needle in wanted.items())
+    ]
+    if len(found) != 1:
+        raise AssertionError(f"Expected exactly one step with {wanted}, found {len(found)}")
+    return found[0]
+
+
+class ReleaseWorkflowTest(unittest.TestCase):
+    """Static checks of .github/workflows/release.yml."""
+
+    def setUp(self):
+        self.text = WORKFLOW.read_text(encoding="utf-8")
+        self.top = mapping(self.text.splitlines(), 0)
+        self.steps = workflow_steps(self.text)
+
+    def step(self, **wanted: str) -> tuple[int, dict[str, list[str]]]:
+        return find_step(self.steps, **wanted)
+
+    def test_push_trigger_has_no_paths_filter(self):
+        # GitHub does not start a paths-filtered workflow when the pushed diff has more than
+        # 3,000 files and the matching file is not among the first 3,000 (#122).
+        triggers = mapping(self.top["on"][1:], 2)
+        self.assertEqual(set(triggers), {"push", "workflow_dispatch"})
+        push = mapping(triggers["push"][1:], 4)
+        self.assertNotIn("paths", push)
+        self.assertNotIn("paths-ignore", push)
+        self.assertEqual(push, {"branches": ["[main]"]})
+        dispatch = mapping(triggers["workflow_dispatch"][1:], 4)
+        self.assertIn("tag:", "\n".join(dispatch["inputs"]))
+
+    def test_push_releases_only_for_the_publisher_app(self):
+        jobs = mapping(self.top["jobs"][1:], 2)
+        self.assertEqual(set(jobs), {"release"})
+        job = mapping(jobs["release"][1:], 4)
+        self.assertEqual(scalar(job["if"]), ACTOR_IF)
+
+    def test_release_step_depends_on_the_manifest_change_guard(self):
+        checkout, _ = self.step(uses="actions/checkout@")
+        self.assertIn("fetch-depth: 0", "\n".join(self.steps[checkout]["with"]))
+        guard, step = self.step(id="manifest")
+        self.assertIn("if", step, "The guard must run on push only")
+        self.assertEqual(scalar(step["if"]), GUARD_IF)
+        self.assertEqual(scalar(step["shell"]), "python {0}")
+        env = mapping(step["env"][1:], 10)
+        self.assertEqual(scalar(env["BEFORE"]), "${{ github.event.before }}")
+        self.assertEqual(scalar(env["PUBLICATION_COMMIT"]), "${{ github.sha }}")
+        script = run_script(step)
+        self.assertIn(MANIFEST, script)
+        self.assertIn('"git", "diff"', script)
+        self.assertIn("GITHUB_OUTPUT", script)
+        publish, step = self.step(run="scripts/release.py")
+        self.assertIn("if", step, "The release step must depend on the guard")
+        self.assertGreater(publish, guard)
+        self.assertGreater(guard, checkout)
+        self.assertEqual(scalar(step["if"]), RELEASE_IF)
+
+    def test_run_scripts_read_event_values_from_env(self):
+        # Script-injection hygiene: expressions go through env, never into the script text.
+        scripts = [run_script(step) for step in self.steps if "run" in step]
+        self.assertGreaterEqual(len(scripts), 2)
+        for script in scripts:
+            self.assertNotIn("${{", script)
+
+    def test_actions_permissions_and_concurrency_are_pinned(self):
+        uses = [scalar(step["uses"]) for step in self.steps if "uses" in step]
+        self.assertEqual(len(uses), 2)
+        for action in uses:
+            self.assertRegex(action, r"^[\w-]+/[\w-]+@[0-9a-f]{40} # v\d+\.\d+\.\d+$")
+        self.assertEqual(content(self.top["permissions"]), ["  contents: read"])
+        job = mapping(mapping(self.top["jobs"][1:], 2)["release"][1:], 4)
+        self.assertEqual(content(job["permissions"]), ["      contents: write"])
+        self.assertEqual(
+            content(self.top["concurrency"]),
+            ["  group: graphmodules-release", "  cancel-in-progress: false"],
+        )
+
+
+@unittest.skipIf(shutil.which("git") is None, "git is not installed")
+class ManifestGuardTest(unittest.TestCase):
+    """Runs the workflow's manifest-change guard against a scratch repository."""
+
+    def setUp(self):
+        _, step = find_step(workflow_steps(WORKFLOW.read_text(encoding="utf-8")), id="manifest")
+        self.script = run_script(step)
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        self.repository = Path(directory.name) / "repository"
+        self.output = Path(directory.name) / "output"
+        self.environment = {
+            **os.environ, "GIT_CONFIG_GLOBAL": os.devnull, "GIT_CONFIG_NOSYSTEM": "1",
+        }
+        self.git("init", "--quiet", str(self.repository), cwd=directory.name)
+        self.first = self.commit({MANIFEST: "{}\n", "modules/generated/v1.0/a/main.tf": "a\n"})
+
+    def git(self, *args: str, cwd=None) -> str:
+        return subprocess.run(
+            ["git", "-c", "user.name=test", "-c", "user.email=test@example.invalid",
+             "-c", "commit.gpgsign=false", *args],
+            cwd=cwd or self.repository, env=self.environment,
+            check=True, capture_output=True, text=True,
+        ).stdout.strip()
+
+    def commit(self, files: dict[str, str]) -> str:
+        for name, content in files.items():
+            (self.repository / name).parent.mkdir(parents=True, exist_ok=True)
+            (self.repository / name).write_text(content, encoding="utf-8")
+        self.git("add", "--all")
+        self.git("commit", "--quiet", "--message", "publication")
+        return self.git("rev-parse", "HEAD")
+
+    def guard(self, before: str, commit: str) -> tuple[str, str]:
+        self.output.write_text("", encoding="utf-8")
+        result = subprocess.run(
+            [sys.executable, "-c", self.script], cwd=self.repository, check=True,
+            capture_output=True, text=True,
+            env={**self.environment, "BEFORE": before, "PUBLICATION_COMMIT": commit,
+                 "GITHUB_OUTPUT": str(self.output)},
+        )
+        return self.output.read_text(encoding="utf-8"), result.stdout
+
+    def test_manifest_change_releases(self):
+        commit = self.commit({MANIFEST: '{"tag": "new"}\n'})
+        self.assertEqual(self.guard(self.first, commit)[0], "changed=true\n")
+
+    def test_large_publication_that_changes_the_manifest_releases(self):
+        files = {f"modules/generated/v1.0/m{index:04}/main.tf": "m\n" for index in range(3001)}
+        commit = self.commit({**files, MANIFEST: '{"tag": "large"}\n'})
+        self.assertEqual(self.guard(self.first, commit)[0], "changed=true\n")
+
+    def test_push_without_a_manifest_change_does_not_release(self):
+        commit = self.commit({"README.md": "docs\n"})
+        output, stdout = self.guard(self.first, commit)
+        self.assertEqual(output, "changed=false\n")
+        self.assertIn(f"::notice::{commit} does not change {MANIFEST}", stdout)
+
+    def test_unknown_previous_commit_is_treated_as_changed(self):
+        commit = self.commit({"README.md": "docs\n"})
+        for before in ("0" * 40, "", "not-a-commit", "1" * 40, "--output=/dev/null"):
+            with self.subTest(before=before):
+                self.assertEqual(self.guard(before, commit)[0], "changed=true\n")
+
+
 if __name__ == "__main__":
     unittest.main()
