@@ -12,14 +12,14 @@ Lifecycle: `POST /networkAccess/connectivity/branches/{branchSite-id}/forwarding
 
 ```hcl
 module "graph_resource" {
-  source = "./identity-and-access/network-access/connectivity/branches/by-branch-site-id/forwarding-profiles/by-forwarding-profile-id/policies"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/identity-and-access/network-access/connectivity/branches/by-branch-site-id/forwarding-profiles/by-forwarding-profile-id/policies?ref=<release-tag>"
   branch_site_id = "parent-object-id"
   forwarding_profile_id = "parent-object-id"
   odata_type = "#microsoft.graph.networkaccess.cloudFirewallPolicyLink"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

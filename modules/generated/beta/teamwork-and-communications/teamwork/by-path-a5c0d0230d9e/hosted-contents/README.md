@@ -12,14 +12,14 @@ Lifecycle: `POST /teamwork/deletedTeams/{deletedTeam-id}/channels/{channel-id}/m
 
 ```hcl
 module "graph_resource" {
-  source = "./teamwork-and-communications/teamwork/by-path-a5c0d0230d9e/hosted-contents"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/teamwork-and-communications/teamwork/by-path-a5c0d0230d9e/hosted-contents?ref=<release-tag>"
   deleted_team_id = "parent-object-id"
   channel_id = "parent-object-id"
   chat_message_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

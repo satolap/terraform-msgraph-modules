@@ -12,13 +12,13 @@ Lifecycle: `POST /users/{user-id}/outlook/taskGroups/{outlookTaskGroup-id}/taskF
 
 ```hcl
 module "graph_resource" {
-  source = "./to-do-tasks/users/by-user-id/outlook/task-groups/by-outlook-task-group-id/task-folders"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/to-do-tasks/users/by-user-id/outlook/task-groups/by-outlook-task-group-id/task-folders?ref=<release-tag>"
   user_id = "parent-object-id"
   outlook_task_group_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

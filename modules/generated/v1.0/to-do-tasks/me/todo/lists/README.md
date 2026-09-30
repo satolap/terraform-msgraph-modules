@@ -12,11 +12,11 @@ Lifecycle: `POST /me/todo/lists`, `GET/PATCH/DELETE /me/todo/lists/{todoTaskList
 
 ```hcl
 module "graph_resource" {
-  source = "./to-do-tasks/me/todo/lists"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/to-do-tasks/me/todo/lists?ref=<release-tag>"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

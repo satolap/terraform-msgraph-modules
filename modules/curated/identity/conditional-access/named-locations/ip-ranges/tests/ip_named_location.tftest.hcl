@@ -199,3 +199,97 @@ run "rejects_unknown_api_version" {
 
   expect_failures = [var.api_version]
 }
+
+run "rejects_beta_api_version" {
+  command = plan
+
+  variables {
+    api_version = "beta"
+  }
+
+  expect_failures = [var.api_version]
+}
+
+run "timeouts_default_to_the_previous_behaviour" {
+  command = plan
+
+  assert {
+    condition     = jsonencode(msgraph_resource.named_location.timeouts) == jsonencode({ create = "10m", delete = "10m", read = null, update = "10m" })
+    error_message = "With default inputs the create, update and delete timeouts must stay 10m and read must stay unset, so an upgrade plans no timeout change."
+  }
+}
+
+run "plans_custom_timeouts" {
+  command = plan
+
+  variables {
+    timeouts = { create = "30m", read = "5m", update = "20m", delete = "25m" }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.named_location.timeouts) == jsonencode({ create = "30m", delete = "25m", read = "5m", update = "20m" })
+    error_message = "Each configured timeout must be planned as given."
+  }
+}
+
+# A wrapper that forwards an unset variable passes null; the module must plan the
+# defaults, as it does when timeouts is unset.
+run "null_timeouts_plan_the_defaults" {
+  command = plan
+
+  variables {
+    timeouts = null
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.named_location.timeouts) == jsonencode({ create = "10m", delete = "10m", read = null, update = "10m" })
+    error_message = "A null timeouts must plan the create, update and delete defaults of 10m and leave read unset."
+  }
+}
+
+run "rejects_malformed_timeout" {
+  command = plan
+
+  variables {
+    timeouts = { update = "10 minutes" }
+  }
+
+  expect_failures = [var.timeouts]
+}
+
+# The provider accepts a zero duration; the module does not. read has no minimum,
+# so only the zero rule rejects it.
+run "rejects_zero_timeout" {
+  command = plan
+
+  variables {
+    timeouts = { read = "0s" }
+  }
+
+  expect_failures = [var.timeouts]
+}
+
+# The provider waits at least 10 seconds for three consistent reads after a write.
+run "rejects_short_timeout" {
+  command = plan
+
+  variables {
+    timeouts = { update = "14s" }
+  }
+
+  expect_failures = [var.timeouts]
+}
+
+# The minimum itself is accepted.
+run "accepts_15_second_timeouts" {
+  command = plan
+
+  variables {
+    timeouts = { create = "15s", update = "15s", delete = "15s" }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.named_location.timeouts) == jsonencode({ create = "15s", delete = "15s", read = null, update = "15s" })
+    error_message = "15s is the documented minimum for create, update and delete and must be accepted."
+  }
+}

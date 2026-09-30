@@ -12,14 +12,14 @@ Lifecycle: `POST /drives/{drive-id}/items/{driveItem-id}/workbook/comments/{work
 
 ```hcl
 module "graph_resource" {
-  source = "./workbooks-and-charts/drives/by-drive-id/items/by-drive-item-id/workbook/comments/by-workbook-comment-id/task/comment/replies"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/workbooks-and-charts/drives/by-drive-id/items/by-drive-item-id/workbook/comments/by-workbook-comment-id/task/comment/replies?ref=<release-tag>"
   drive_id = "parent-object-id"
   drive_item_id = "parent-object-id"
   workbook_comment_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

@@ -14,9 +14,11 @@ is replaced as a whole.
 
 ## Usage
 
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+
 ```hcl
 module "office_egress" {
-  source = "../../modules/curated/identity/conditional-access/named-locations/ip-ranges"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity/conditional-access/named-locations/ip-ranges?ref=<release-tag>"
 
   display_name = "Office egress"
   ip_ranges    = ["192.0.2.0/24", "2001:db8::/48"]
@@ -36,6 +38,20 @@ module "office_egress" {
 
 `microsoft/msgraph` 0.5.0 is the first release that sends a changed nested object in full on
 update; earlier releases are not supported by this module.
+
+The module sets minimum versions only. Azure Verified Modules also require a maximum major
+version (TFNFR25, TFNFR26); this module follows HashiCorp's guidance for reusable modules
+instead, which is to "constrain only their minimum allowed versions of Terraform and
+providers"
+([Version constraints](https://developer.hashicorp.com/terraform/language/expressions/version-constraints)).
+The provider is 0.x, so a minor release can break the module; the release manifest records
+the provider version it was tested with. Set upper bounds in your root module.
+
+Only the Microsoft Graph v1.0 API is supported: `api_version = "beta"` fails at plan, because
+Microsoft does not support beta APIs in production applications. Switching an existing named
+location from `"beta"` to `"v1.0"` plans one in-place update; it sends no PATCH request and
+reads the named location back through v1.0, so the apply fails if v1.0 cannot read it (not
+verified).
 
 | Operation | Least privileged application permissions | Least privileged delegated roles |
 | --- | --- | --- |
@@ -83,6 +99,13 @@ scopes in their token.
   ([Recover from deletions](https://learn.microsoft.com/en-us/entra/architecture/recover-from-deletions)).
 - Sign-ins are matched against the public IP address that reaches Microsoft Entra ID, not a
   private intranet address.
+- **Create, update and delete timeouts of at least `15s`.** After each request the provider
+  waits for three consistent reads 5 seconds apart, within the same timeout, so a value
+  under 10 seconds always fails after the request was sent, and the module rejects values
+  under `15s`. A create that fails this way leaves the named location in Microsoft Graph but
+  not in the state (inference from the provider code). The provider already retries status
+  codes 408, 429, 500, 502, 503 and 504 by itself, and those retries count against the
+  timeouts.
 
 <!-- licensing:begin -->
 ## Licensing and prerequisites
@@ -108,7 +131,8 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 | display_name | Display name of the location | `string` | n/a | yes |
 | ip_ranges | 1 to 2000 canonical IPv4 or IPv6 CIDR ranges, each longer than /8 | `set(string)` | n/a | yes |
 | is_trusted | Mark the location as trusted; set false before destroy | `bool` | `false` | no |
-| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
+| api_version | Graph API version; only `v1.0` is supported | `string` | `"v1.0"` | no |
+| timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; create, update and delete at least `15s`; retries count against them | `object` | `{}` (`10m` for create, update and delete; the provider default for read) | no |
 
 ## Outputs
 

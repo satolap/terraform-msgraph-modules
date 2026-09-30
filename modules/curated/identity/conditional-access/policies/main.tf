@@ -149,6 +149,26 @@ locals {
     try(local.server_parts.application_enforced_restrictions == true, false) ? "sessionControls.applicationEnforcedRestrictions" : "",
     try(local.server_parts.cloud_app_security == true, false) ? "sessionControls.cloudAppSecurity" : "",
   ]))
+
+  # The properties this module does not manage that Microsoft Graph returned
+  # set on the last read, as JSON paths; empty when no read has exported them.
+  # A replacement creates the new policy from the configuration only, so these
+  # values are lost.
+  server_unmanaged = try(msgraph_resource.policy.output.unmanaged_properties, null)
+  unmanaged_set = sort(compact([
+    try(local.server_unmanaged.description == true, false) ? "description" : "",
+    try(local.server_unmanaged.template_id == true, false) ? "templateId" : "",
+    try(local.server_unmanaged.application_filter == true, false) ? "conditions.applications.applicationFilter" : "",
+    try(local.server_unmanaged.include_guests_or_external_users == true, false) ? "conditions.users.includeGuestsOrExternalUsers" : "",
+    try(local.server_unmanaged.exclude_guests_or_external_users == true, false) ? "conditions.users.excludeGuestsOrExternalUsers" : "",
+    try(local.server_unmanaged.client_applications == true, false) ? "conditions.clientApplications" : "",
+    try(local.server_unmanaged.service_principal_risk_levels == true, false) ? "conditions.servicePrincipalRiskLevels" : "",
+    try(local.server_unmanaged.insider_risk_levels == true, false) ? "conditions.insiderRiskLevels" : "",
+    try(local.server_unmanaged.authentication_flow_transfer_methods == true, false) ? "conditions.authenticationFlows.transferMethods" : "",
+    try(local.server_unmanaged.custom_authentication_factors == true, false) ? "grantControls.customAuthenticationFactors" : "",
+    try(local.server_unmanaged.disable_resilience_defaults == true, false) ? "sessionControls.disableResilienceDefaults" : "",
+    try(local.server_unmanaged.secure_sign_in_session == true, false) ? "sessionControls.secureSignInSession" : "",
+  ]))
 }
 
 resource "terraform_data" "presence" {
@@ -169,12 +189,16 @@ resource "msgraph_resource" "policy" {
     # Which optional parts the policy has on the server, for the
     # optional_parts_not_in_configuration output.
     optional_parts = "{locations: conditions.locations != `null`, platforms: conditions.platforms != `null`, devices: conditions.devices != `null`, grant_controls: grantControls != `null`, authentication_strength: grantControls.authenticationStrength != `null`, session_controls: sessionControls != `null`, sign_in_frequency: sessionControls.signInFrequency != `null`, persistent_browser: sessionControls.persistentBrowser != `null`, application_enforced_restrictions: sessionControls.applicationEnforcedRestrictions != `null`, cloud_app_security: sessionControls.cloudAppSecurity != `null`}"
+    # Which properties that this module does not manage are set on the server,
+    # for the unmanaged_properties_set output and the unmanaged_properties check.
+    unmanaged_properties = "{description: description != `null` && description != '', template_id: templateId != `null` && templateId != '', application_filter: conditions.applications.applicationFilter != `null`, include_guests_or_external_users: conditions.users.includeGuestsOrExternalUsers != `null`, exclude_guests_or_external_users: conditions.users.excludeGuestsOrExternalUsers != `null`, client_applications: conditions.clientApplications != `null`, service_principal_risk_levels: conditions.servicePrincipalRiskLevels != `null` && conditions.servicePrincipalRiskLevels != `[]`, insider_risk_levels: conditions.insiderRiskLevels != `null`, authentication_flow_transfer_methods: conditions.authenticationFlows.transferMethods != `null` && conditions.authenticationFlows.transferMethods != 'none', custom_authentication_factors: grantControls.customAuthenticationFactors != `null` && grantControls.customAuthenticationFactors != `[]`, disable_resilience_defaults: sessionControls.disableResilienceDefaults == `true`, secure_sign_in_session: sessionControls.secureSignInSession != `null`}"
   }
 
   timeouts {
-    create = "10m"
-    update = "10m"
-    delete = "10m"
+    create = var.timeouts.create
+    read   = var.timeouts.read
+    update = var.timeouts.update
+    delete = var.timeouts.delete
   }
 
   lifecycle {
@@ -253,5 +277,16 @@ resource "msgraph_resource" "policy" {
       )
       error_message = "The urn:user:registerdevice user action allows only mfa or an authentication strength as grant controls, with no terms of use, no device_filter and client_app_types = [\"all\"]."
     }
+  }
+}
+
+# Warns, without failing the plan or apply, when Microsoft Graph returns a
+# property this module does not manage set. On a plan that creates, updates or
+# replaces the policy the read-back is not known yet, and Terraform warns that
+# the result is known after apply instead.
+check "unmanaged_properties" {
+  assert {
+    condition     = length(local.unmanaged_set) == 0
+    error_message = "Microsoft Graph returned properties that this module does not manage set: ${join(", ", local.unmanaged_set)}. Replacing the policy (adding or removing an optional part, or terraform apply -replace) creates it from the configuration only and loses these values."
   }
 }

@@ -9,9 +9,11 @@ access packages that are grouped together, typically by department or function.
 
 ## Usage
 
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+
 ```hcl
 module "engineering_catalog" {
-  source = "../../modules/curated/identity-governance/entitlement-management/catalogs"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity-governance/entitlement-management/catalogs?ref=<release-tag>"
 
   display_name = "Engineering"
   description  = "Resources and access packages for the Engineering department"

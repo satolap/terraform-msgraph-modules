@@ -12,12 +12,12 @@ Lifecycle: `POST /deviceAppManagement/windowsInformationProtectionPolicies/{wind
 
 ```hcl
 module "graph_resource" {
-  source = "./device-and-app-management/device-app-management/by-path-94d9d2380e78/protected-app-locker-files"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/device-and-app-management/device-app-management/by-path-94d9d2380e78/protected-app-locker-files?ref=<release-tag>"
   windows_information_protection_policy_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

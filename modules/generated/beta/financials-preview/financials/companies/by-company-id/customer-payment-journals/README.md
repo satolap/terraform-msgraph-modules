@@ -12,12 +12,12 @@ Lifecycle: `POST /financials/companies/{company-id}/customerPaymentJournals`, `G
 
 ```hcl
 module "graph_resource" {
-  source = "./financials-preview/financials/companies/by-company-id/customer-payment-journals"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/financials-preview/financials/companies/by-company-id/customer-payment-journals?ref=<release-tag>"
   company_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

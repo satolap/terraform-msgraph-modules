@@ -10,9 +10,11 @@ requestors must answer, and when the resulting assignment expires.
 
 ## Usage
 
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+
 ```hcl
 module "engineering_policy" {
-  source = "../../modules/curated/identity-governance/entitlement-management/assignment-policies"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity-governance/entitlement-management/assignment-policies?ref=<release-tag>"
 
   access_package_id    = module.engineering_access.id
   display_name         = "Standard request policy"

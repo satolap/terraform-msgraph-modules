@@ -1,39 +1,60 @@
 {
   "comparison_supplied": true,
   "counts": {
-    "inventory_shift": 1,
-    "module_added": 3
+    "check_changed": 1,
+    "output_added": 1,
+    "validation_changed": 3,
+    "variable_added": 3
   },
   "decisions": [
     {
       "accepted": [
         {
-          "detail_sha256": "9d637f9f371e3f2168584fcfa36be93d80dbe65273359d4e191261e6dc37681b",
-          "key": "inventory_shift:curated",
-          "kind": "inventory_shift"
+          "detail_sha256": "8f4cff6aa00b6cff7f22aa74114ec79ace6bea6d7083899dd60a6e815f7b8e6a",
+          "key": "check_changed:curated/identity/conditional-access/policies",
+          "kind": "check_changed"
+        },
+        {
+          "detail_sha256": "35df8cda3e299dbe57150d152502a1c8f16db743595332a682aa402d7280988b",
+          "key": "validation_changed:curated/identity/conditional-access/named-locations/countries:api_version",
+          "kind": "validation_changed"
+        },
+        {
+          "detail_sha256": "35df8cda3e299dbe57150d152502a1c8f16db743595332a682aa402d7280988b",
+          "key": "validation_changed:curated/identity/conditional-access/named-locations/ip-ranges:api_version",
+          "kind": "validation_changed"
+        },
+        {
+          "detail_sha256": "35df8cda3e299dbe57150d152502a1c8f16db743595332a682aa402d7280988b",
+          "key": "validation_changed:curated/identity/conditional-access/policies:api_version",
+          "kind": "validation_changed"
         }
       ],
       "approved_by": "benhaspalace",
-      "decision": "2026-09-29-curated-conditional-access.json",
-      "migration_notes": "The curated catalog grows from 9 to 12 modules: modules/curated/identity/conditional-access/policies, modules/curated/identity/conditional-access/named-locations/ip-ranges and modules/curated/identity/conditional-access/named-locations/countries. No existing module changes, so upgrading gives no plan change. The new modules need microsoft/msgraph 0.5.0 or later and Microsoft Entra ID P1; sign-in and user risk conditions need Microsoft Entra ID P2. Policies default to report-only (enabledForReportingButNotEnforced) and always exclude break_glass_user_ids and break_glass_group_ids; set state = \"enabled\" only after reviewing report-only results. Adding or removing an optional part of a policy replaces it, and a trusted IP location must be set to is_trusted = false in a separate apply before it is destroyed.",
-      "previous_tag": "graphmodules-eb2d5f1aa0c898e21711",
-      "summary": "Add three curated Conditional Access modules: policies, IP named locations and country named locations"
+      "decision": "2026-09-30-conditional-access-hardening.json",
+      "migration_notes": "modules/curated/identity/conditional-access/policies, named-locations/ip-ranges and named-locations/countries now accept only api_version = \"v1.0\"; \"beta\" fails at plan, so remove api_version or set it to \"v1.0\". Switching from \"beta\" to \"v1.0\" plans one in-place update of each such resource; it sends no PATCH request and reads the object back through v1.0, so that apply fails if v1.0 cannot read an object written through beta (not verified). The new optional input timeouts keeps the previous behaviour by default (create, update and delete 10m, the provider's default read timeout), so the named location modules plan no change. Create, update and delete timeouts under 15s are rejected. The policies module adds the output unmanaged_properties_set and the check block unmanaged_properties, which warns when Microsoft Graph returns set a property that the module does not manage; such a value is lost when the module replaces the policy. After upgrading, the first plan shows one in-place update of each policy for the new read-back key; it sends no PATCH request and does not replace the policy. A terraform test run with command = plan that creates or replaces a policy through the policies module now fails with 'Check block assertion known after apply', and expect_failures cannot name a check inside a module; run it with command = apply, or, on Terraform 1.11 or later, add an override_resource for the module's msgraph_resource.policy with override_during = plan.",
+      "previous_tag": "graphmodules-98e58792e28057d2c5d7",
+      "summary": "Conditional Access modules accept only api_version v1.0, and the policies module reports unmanaged properties that Microsoft Graph returns set"
     }
   ],
   "notices": [
     {
-      "key": "module_added:curated/identity/conditional-access/named-locations/countries",
-      "kind": "module_added"
+      "key": "output_added:curated/identity/conditional-access/policies:unmanaged_properties_set",
+      "kind": "output_added"
     },
     {
-      "key": "module_added:curated/identity/conditional-access/named-locations/ip-ranges",
-      "kind": "module_added"
+      "key": "variable_added:curated/identity/conditional-access/named-locations/countries:timeouts",
+      "kind": "variable_added"
     },
     {
-      "key": "module_added:curated/identity/conditional-access/policies",
-      "kind": "module_added"
+      "key": "variable_added:curated/identity/conditional-access/named-locations/ip-ranges:timeouts",
+      "kind": "variable_added"
+    },
+    {
+      "key": "variable_added:curated/identity/conditional-access/policies:timeouts",
+      "kind": "variable_added"
     }
   ],
   "schema_version": 1,
-  "tag": "graphmodules-98e58792e28057d2c5d7"
+  "tag": "graphmodules-1804d66a728122848656"
 }

@@ -12,12 +12,12 @@ Lifecycle: `POST /me/informationProtection/threatAssessmentRequests`, `GET/PATCH
 
 ```hcl
 module "graph_resource" {
-  source = "./security/me/information-protection/threat-assessment-requests"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/security/me/information-protection/threat-assessment-requests?ref=<release-tag>"
   odata_type = "#microsoft.graph.emailFileAssessmentRequest"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

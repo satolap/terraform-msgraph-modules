@@ -25,16 +25,18 @@ Safety defaults:
 
 ## Usage
 
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+
 ```hcl
 module "office_egress" {
-  source = "../../modules/curated/identity/conditional-access/named-locations/ip-ranges"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity/conditional-access/named-locations/ip-ranges?ref=<release-tag>"
 
   display_name = "Office egress"
   ip_ranges    = ["192.0.2.0/24"]
 }
 
 module "require_mfa_pilot" {
-  source = "../../modules/curated/identity/conditional-access/policies"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity/conditional-access/policies?ref=<release-tag>"
 
   display_name          = "Require MFA outside the office for the pilot group"
   break_glass_user_ids  = var.break_glass_user_ids
@@ -64,6 +66,20 @@ exclude nobody.
 `microsoft/msgraph` 0.5.0 is the first release that sends a changed nested object, such as
 `conditions`, in full on update; with earlier releases an update could send only the changed
 part. Earlier releases are not supported by this module.
+
+The module sets minimum versions only. Azure Verified Modules also require a maximum major
+version (TFNFR25, TFNFR26); this module follows HashiCorp's guidance for reusable modules
+instead, which is to "constrain only their minimum allowed versions of Terraform and
+providers"
+([Version constraints](https://developer.hashicorp.com/terraform/language/expressions/version-constraints)).
+The provider is 0.x, so a minor release can break the module; the release manifest records
+the provider version it was tested with. Set upper bounds in your root module.
+
+Only the Microsoft Graph v1.0 API is supported: `api_version = "beta"` fails at plan, because
+Microsoft does not support beta APIs in production applications. Switching an existing
+policy from `"beta"` to `"v1.0"` plans one in-place update; it sends no PATCH request and
+reads the policy back through v1.0, so the apply fails if v1.0 cannot read it (not
+verified).
 
 | Operation | Least privileged application permissions | Least privileged delegated roles |
 | --- | --- | --- |
@@ -213,6 +229,25 @@ Report-only policies don't block users or prompt for MFA, but they are not free 
   part stays in force. `optional_parts_not_in_configuration` lists such parts after each
   read. To remove them, recreate the policy from the configuration:
   `terraform apply -replace='<module address>.msgraph_resource.policy'`.
+- **Unmanaged properties are reported, not carried over.** `unmanaged_properties_set` lists
+  the properties from the "Not managed" list below that Microsoft Graph returned set on the
+  last read, and the `unmanaged_properties` check warns while the list is not empty. A plan
+  or apply still succeeds, but `terraform test` counts the warning as a failure. On a plan
+  that creates, updates or replaces the policy the read-back is not known yet, so Terraform
+  warns that the check result is known after apply instead. Before a change that replaces
+  the policy, run `terraform plan -refresh-only` (after at least one apply with this
+  release): its `unmanaged_properties` warning lists them, while the plan that replaces the
+  policy only warns that the result is known after apply. Upgrading from a release without
+  `unmanaged_properties_set` plans one in-place update of each policy for the new read-back
+  key; it sends no PATCH request to Microsoft Graph.
+- **Tests that call this module.** In `terraform test`, a run with `command = plan` that
+  creates or replaces a policy through this module fails with "Check block assertion known
+  after apply", and a calling test cannot name a check inside a module in
+  `expect_failures`. With a mock provider, a plan that updates the policy in place keeps the
+  last read-back and passes; with the real provider it fails the same way (inference). Use
+  `command = apply` for such runs or, on Terraform 1.11 or later, an `override_resource`
+  block for `module.<name>.msgraph_resource.policy` with `override_during = plan` and an
+  `output` value.
 - **After a failed replacement, do not rerun a plain apply.** When an apply that planned a
   replacement fails, Terraform has already recorded the new presence signature, so the
   retry plans an in-place update that cannot remove a part, and the old part stays in
@@ -225,17 +260,47 @@ Report-only policies don't block users or prompt for MFA, but they are not free 
 - Lists are sent canonicalised (GUIDs lower-cased, duplicates removed, sorted). The provider
   compares lists by position on refresh, so if Microsoft Graph returned a list in a different
   order, every plan would show a change.
-- Not managed by this module: `clientApplications` and `servicePrincipalRiskLevels` (Workload
-  Identities Premium), `insiderRiskLevels`, `authenticationFlows`, the
-  `includeGuestsOrExternalUsers` and `excludeGuestsOrExternalUsers` objects, `templateId`,
-  `description`, `disableResilienceDefaults` and the `riskRemediation` grant control.
-  Values set outside Terraform for these properties are kept on in-place updates, lost when
-  the module replaces the policy, and never reported. Losing an
-  `excludeGuestsOrExternalUsers` value widens the policy's scope.
+- Not managed by this module, and reported in `unmanaged_properties_set`: `description`,
+  `templateId`, `conditions.applications.applicationFilter`,
+  `conditions.users.includeGuestsOrExternalUsers`,
+  `conditions.users.excludeGuestsOrExternalUsers`, `conditions.clientApplications` and
+  `conditions.servicePrincipalRiskLevels` (Workload Identities Premium),
+  `conditions.insiderRiskLevels` (Microsoft Purview Insider Risk Management),
+  `conditions.authenticationFlows.transferMethods` (a value other than `none`),
+  `grantControls.customAuthenticationFactors` (custom controls, which Microsoft has
+  deprecated), `sessionControls.disableResilienceDefaults` (only `true`; `false` is the
+  default behaviour) and `sessionControls.secureSignInSession` (listed in the v1.0 metadata,
+  not on the v1.0 reference page). Values set outside Terraform for these properties are
+  lost when the module replaces the policy. Losing `excludeGuestsOrExternalUsers`,
+  `insiderRiskLevels`, `servicePrincipalRiskLevels`, `authenticationFlows.transferMethods`
+  or an `applicationFilter` in `exclude` mode widens the policy's scope; losing
+  `disableResilienceDefaults = true` or `secureSignInSession` weakens its session controls;
+  losing `customAuthenticationFactors` from a policy whose grant `operator` is `AND` weakens
+  its grant controls, because the custom control is no longer required.
+  Whether an in-place update keeps them is not verified: an update sends a changed
+  `conditions`, `grantControls` or `sessionControls` object in full, without them.
+  Properties that only the beta API has, such as the conditions `agents`,
+  `agentIdRiskLevels` and `applications.globalSecureAccess` or the session control
+  `continuousAccessEvaluation`, cannot be read through v1.0 and are not reported. A
+  replacement loses them too, and losing one that narrows the scope, such as
+  `agentIdRiskLevels`, widens the policy's scope.
+- The `riskRemediation` grant control cannot be configured: `grant_controls.built_in_controls`
+  rejects it. A value added outside Terraform shows as drift, possibly as
+  `unknownFutureValue`. When `grant_controls` is set, the next apply sends `grantControls` in
+  full without it, which removes it. On a policy without `grant_controls`, the added
+  `grantControls` is a part added outside Terraform (above): the apply sends no request,
+  `optional_parts_not_in_configuration` lists `grantControls`, and only a replacement removes
+  it (inference from the provider code, not run live).
 - Locations: `AllTrusted` in `include_locations` or `exclude_locations` means every location
   marked as trusted. Terraform cannot see that dependency, so untrusting or deleting a
   trusted location changes these policies without a plan diff here; see the IP named
   location module's README.
+- **Create, update and delete timeouts of at least `15s`.** After each request the provider
+  waits for three consistent reads 5 seconds apart, within the same timeout, so a value
+  under 10 seconds always fails after the request was sent, and the module rejects values
+  under `15s`. A create that fails this way leaves the policy in Microsoft Graph but not in
+  the state (inference from the provider code). The provider already retries status codes
+  408, 429, 500, 502, 503 and 504 by itself, and those retries count against the timeouts.
 
 <!-- licensing:begin -->
 ## Licensing and prerequisites
@@ -274,7 +339,8 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 | device_filter | Filter for devices (`mode`, `rule`) | `object` | `null` | no |
 | grant_controls | operator, built-in controls, authentication strength, terms of use | `object` | `null` | no |
 | session_controls | sign-in frequency, persistent browser, app enforced restrictions, Defender for Cloud Apps | `object` | `null` | no |
-| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
+| api_version | Graph API version; only `v1.0` is supported | `string` | `"v1.0"` | no |
+| timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; create, update and delete at least `15s`; retries count against them | `object` | `{}` (`10m` for create, update and delete; the provider default for read) | no |
 
 ## Outputs
 
@@ -286,3 +352,4 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 | excluded_user_ids | `excludeUsers` as returned on the last read, including the break-glass users |
 | excluded_group_ids | `excludeGroups` as returned on the last read, including the break-glass groups |
 | optional_parts_not_in_configuration | Optional parts Microsoft Graph returned on the last read that the configuration does not set; an apply cannot remove them |
+| unmanaged_properties_set | Properties the module does not manage that Microsoft Graph returned set on the last read; a replacement loses them |

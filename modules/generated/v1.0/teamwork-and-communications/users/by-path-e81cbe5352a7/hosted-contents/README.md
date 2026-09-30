@@ -12,7 +12,7 @@ Lifecycle: `POST /users/{user-id}/chats/{chat-id}/targetedMessages/{targetedChat
 
 ```hcl
 module "graph_resource" {
-  source = "./teamwork-and-communications/users/by-path-e81cbe5352a7/hosted-contents"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/teamwork-and-communications/users/by-path-e81cbe5352a7/hosted-contents?ref=<release-tag>"
   user_id = "parent-object-id"
   chat_id = "parent-object-id"
   targeted_chat_message_id = "parent-object-id"
@@ -20,7 +20,7 @@ module "graph_resource" {
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

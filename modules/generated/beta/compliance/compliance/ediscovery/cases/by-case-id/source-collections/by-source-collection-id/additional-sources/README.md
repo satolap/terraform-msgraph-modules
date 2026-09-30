@@ -12,14 +12,14 @@ Lifecycle: `POST /compliance/ediscovery/cases/{case-id}/sourceCollections/{sourc
 
 ```hcl
 module "graph_resource" {
-  source = "./compliance/compliance/ediscovery/cases/by-case-id/source-collections/by-source-collection-id/additional-sources"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/compliance/compliance/ediscovery/cases/by-case-id/source-collections/by-source-collection-id/additional-sources?ref=<release-tag>"
   case_id = "parent-object-id"
   source_collection_id = "parent-object-id"
   odata_type = "#microsoft.graph.ediscovery.siteSource"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

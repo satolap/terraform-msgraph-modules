@@ -12,12 +12,12 @@ Lifecycle: `POST /me/calendarGroups/{calendarGroup-id}/calendars`, `GET/PATCH/DE
 
 ```hcl
 module "graph_resource" {
-  source = "./calendars/me/calendar-groups/by-calendar-group-id/calendars"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/calendars/me/calendar-groups/by-calendar-group-id/calendars?ref=<release-tag>"
   calendar_group_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

@@ -12,7 +12,7 @@ Lifecycle: `POST /groups/{group-id}/sites/{site-id}/termStore/sets/{set-id}/pare
 
 ```hcl
 module "graph_resource" {
-  source = "./sites-and-lists/groups/by-path-ef0ba9a35bdf/relations"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/sites-and-lists/groups/by-path-ef0ba9a35bdf/relations?ref=<release-tag>"
   group_id = "parent-object-id"
   site_id = "parent-object-id"
   set_id = "parent-object-id"
@@ -22,7 +22,7 @@ module "graph_resource" {
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

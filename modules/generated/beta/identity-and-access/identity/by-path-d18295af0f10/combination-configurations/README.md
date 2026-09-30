@@ -12,13 +12,13 @@ Lifecycle: `POST /identity/conditionalAccess/authenticationStrength/policies/{au
 
 ```hcl
 module "graph_resource" {
-  source = "./identity-and-access/identity/by-path-d18295af0f10/combination-configurations"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/identity-and-access/identity/by-path-d18295af0f10/combination-configurations?ref=<release-tag>"
   authentication_strength_policy_id = "parent-object-id"
   odata_type = "#microsoft.graph.fido2CombinationConfiguration"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

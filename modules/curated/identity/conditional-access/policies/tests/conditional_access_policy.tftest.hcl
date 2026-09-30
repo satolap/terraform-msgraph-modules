@@ -19,6 +19,20 @@ mock_provider "msgraph" {
           application_enforced_restrictions = false
           cloud_app_security                = false
         }
+        unmanaged_properties = {
+          description                          = false
+          template_id                          = false
+          application_filter                   = false
+          include_guests_or_external_users     = false
+          exclude_guests_or_external_users     = false
+          client_applications                  = false
+          service_principal_risk_levels        = false
+          insider_risk_levels                  = false
+          authentication_flow_transfer_methods = false
+          custom_authentication_factors        = false
+          disable_resilience_defaults          = false
+          secure_sign_in_session               = false
+        }
       }
     }
   }
@@ -351,6 +365,10 @@ run "canonicalizes_ids_and_merges_break_glass" {
 run "canonicalizes_application_location_terms_of_use_and_strength_ids" {
   command = plan
 
+  # The policy is replaced, so its read-back and the unmanaged_properties check
+  # are known only after apply; this proves nothing about the check.
+  expect_failures = [check.unmanaged_properties]
+
   variables {
     applications = {
       include_applications = ["AAAAAAAA-0000-0000-0000-00000000000A", "aaaaaaaa-0000-0000-0000-00000000000a", "Office365"]
@@ -378,6 +396,10 @@ run "canonicalizes_application_location_terms_of_use_and_strength_ids" {
 
 run "renders_every_optional_part" {
   command = plan
+
+  # The policy is replaced, so its read-back and the unmanaged_properties check
+  # are known only after apply; this proves nothing about the check.
+  expect_failures = [check.unmanaged_properties]
 
   variables {
     locations        = { include_locations = ["All"], exclude_locations = ["AllTrusted", "77777777-7777-7777-7777-777777777777"] }
@@ -492,6 +514,10 @@ run "allows_authentication_context_as_the_only_target_selector" {
 run "allows_23_hour_sign_in_frequency" {
   command = plan
 
+  # The policy is replaced, so its read-back and the unmanaged_properties check
+  # are known only after apply; this proves nothing about the check.
+  expect_failures = [check.unmanaged_properties]
+
   variables {
     session_controls = { sign_in_frequency = { type = "hours", value = 23 } }
   }
@@ -505,6 +531,10 @@ run "allows_23_hour_sign_in_frequency" {
 run "allows_365_day_sign_in_frequency" {
   command = plan
 
+  # The policy is replaced, so its read-back and the unmanaged_properties check
+  # are known only after apply; this proves nothing about the check.
+  expect_failures = [check.unmanaged_properties]
+
   variables {
     session_controls = { sign_in_frequency = { type = "days", value = 365 } }
   }
@@ -517,6 +547,10 @@ run "allows_365_day_sign_in_frequency" {
 
 run "allows_session_controls_without_grant_controls" {
   command = plan
+
+  # The policy is replaced, so its read-back and the unmanaged_properties check
+  # are known only after apply; this proves nothing about the check.
+  expect_failures = [check.unmanaged_properties]
 
   variables {
     grant_controls   = null
@@ -1009,6 +1043,100 @@ run "rejects_unknown_api_version" {
   expect_failures = [var.api_version]
 }
 
+run "rejects_beta_api_version" {
+  command = plan
+
+  variables {
+    api_version = "beta"
+  }
+
+  expect_failures = [var.api_version]
+}
+
+run "timeouts_default_to_the_previous_behaviour" {
+  command = plan
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.timeouts) == jsonencode({ create = "10m", delete = "10m", read = null, update = "10m" })
+    error_message = "With default inputs the create, update and delete timeouts must stay 10m and read must stay unset, so an upgrade plans no timeout change."
+  }
+}
+
+run "plans_custom_timeouts" {
+  command = plan
+
+  variables {
+    timeouts = { create = "30m", read = "5m", update = "20m", delete = "25m" }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.timeouts) == jsonencode({ create = "30m", delete = "25m", read = "5m", update = "20m" })
+    error_message = "Each configured timeout must be planned as given."
+  }
+}
+
+# A wrapper that forwards an unset variable passes null; the module must plan the
+# defaults, as it does when timeouts is unset.
+run "null_timeouts_plan_the_defaults" {
+  command = plan
+
+  variables {
+    timeouts = null
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.timeouts) == jsonencode({ create = "10m", delete = "10m", read = null, update = "10m" })
+    error_message = "A null timeouts must plan the create, update and delete defaults of 10m and leave read unset."
+  }
+}
+
+run "rejects_malformed_timeout" {
+  command = plan
+
+  variables {
+    timeouts = { update = "10 minutes" }
+  }
+
+  expect_failures = [var.timeouts]
+}
+
+# The provider accepts a zero duration; the module does not. read has no minimum,
+# so only the zero rule rejects it.
+run "rejects_zero_timeout" {
+  command = plan
+
+  variables {
+    timeouts = { read = "0s" }
+  }
+
+  expect_failures = [var.timeouts]
+}
+
+# The provider waits at least 10 seconds for three consistent reads after a write.
+run "rejects_short_timeout" {
+  command = plan
+
+  variables {
+    timeouts = { update = "14s" }
+  }
+
+  expect_failures = [var.timeouts]
+}
+
+# The minimum itself is accepted.
+run "accepts_15_second_timeouts" {
+  command = plan
+
+  variables {
+    timeouts = { create = "15s", update = "15s", delete = "15s" }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.timeouts) == jsonencode({ create = "15s", delete = "15s", read = null, update = "15s" })
+    error_message = "15s is the documented minimum for create, update and delete and must be accepted."
+  }
+}
+
 run "rejects_user_actions_in_report_only" {
   command = plan
 
@@ -1367,6 +1495,212 @@ run "known_strength_id_updates_the_policy_in_place" {
   assert {
     condition     = output.id == "66666666-6666-6666-6666-000000000008"
     error_message = "A strength id that is known at plan time must update the policy in place and keep its id."
+  }
+}
+
+# unmanaged_properties_set and the unmanaged_properties check. Each apply run
+# adds or removes a session control, so the policy is replaced and the
+# override's read-back applies to the new object; a mock in-place update keeps
+# the old read-back. The override replaces the read-back object, so a mock
+# provider never evaluates the JMESPath keys that produce it; a static check in
+# the Python suite ties them to the mapping.
+run "reports_no_unmanaged_property_when_graph_returns_none" {
+  command = apply
+
+  variables {
+    session_controls = { application_enforced_restrictions = true }
+  }
+
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000013"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = true
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = true
+          cloud_app_security                = false
+        }
+        unmanaged_properties = {
+          description                          = false
+          template_id                          = false
+          application_filter                   = false
+          include_guests_or_external_users     = false
+          exclude_guests_or_external_users     = false
+          client_applications                  = false
+          service_principal_risk_levels        = false
+          insider_risk_levels                  = false
+          authentication_flow_transfer_methods = false
+          custom_authentication_factors        = false
+          disable_resilience_defaults          = false
+          secure_sign_in_session               = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-000000000013"
+    error_message = "Adding a session control must replace the policy, so the new object's read-back is used."
+  }
+
+  assert {
+    condition     = length(output.unmanaged_properties_set) == 0
+    error_message = "A read-back without unmanaged properties set must report none, and the check must not warn."
+  }
+}
+
+run "reports_one_unmanaged_property_that_graph_returns_set" {
+  command = apply
+
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000014"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = false
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = false
+          cloud_app_security                = false
+        }
+        unmanaged_properties = {
+          description                          = false
+          template_id                          = false
+          application_filter                   = false
+          include_guests_or_external_users     = false
+          exclude_guests_or_external_users     = true
+          client_applications                  = false
+          service_principal_risk_levels        = false
+          insider_risk_levels                  = false
+          authentication_flow_transfer_methods = false
+          custom_authentication_factors        = false
+          disable_resilience_defaults          = false
+          secure_sign_in_session               = false
+        }
+      }
+    }
+  }
+
+  expect_failures = [check.unmanaged_properties]
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-000000000014"
+    error_message = "Removing the session control must replace the policy, so the new object's read-back is used."
+  }
+
+  assert {
+    condition     = jsonencode(output.unmanaged_properties_set) == jsonencode(["conditions.users.excludeGuestsOrExternalUsers"])
+    error_message = "An excludeGuestsOrExternalUsers value that Microsoft Graph returned must be reported by its JSON path."
+  }
+}
+
+run "reports_every_unmanaged_property_that_graph_returns_set" {
+  command = apply
+
+  variables {
+    session_controls = { application_enforced_restrictions = true }
+  }
+
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000015"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = true
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = true
+          cloud_app_security                = false
+        }
+        unmanaged_properties = {
+          description                          = true
+          template_id                          = true
+          application_filter                   = true
+          include_guests_or_external_users     = true
+          exclude_guests_or_external_users     = true
+          client_applications                  = true
+          service_principal_risk_levels        = true
+          insider_risk_levels                  = true
+          authentication_flow_transfer_methods = true
+          custom_authentication_factors        = true
+          disable_resilience_defaults          = true
+          secure_sign_in_session               = true
+        }
+      }
+    }
+  }
+
+  expect_failures = [check.unmanaged_properties]
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-000000000015"
+    error_message = "Adding a session control must replace the policy, so the new object's read-back is used."
+  }
+
+  assert {
+    condition = jsonencode(output.unmanaged_properties_set) == jsonencode([
+      "conditions.applications.applicationFilter",
+      "conditions.authenticationFlows.transferMethods",
+      "conditions.clientApplications",
+      "conditions.insiderRiskLevels",
+      "conditions.servicePrincipalRiskLevels",
+      "conditions.users.excludeGuestsOrExternalUsers",
+      "conditions.users.includeGuestsOrExternalUsers",
+      "description",
+      "grantControls.customAuthenticationFactors",
+      "sessionControls.disableResilienceDefaults",
+      "sessionControls.secureSignInSession",
+      "templateId",
+    ])
+    error_message = "Every one of the twelve unmanaged properties must map to its JSON path."
+  }
+}
+
+# A plan without changes reads the state's read-back, so the check warns at plan.
+run "warns_on_a_plan_without_changes" {
+  command = plan
+
+  variables {
+    session_controls = { application_enforced_restrictions = true }
+  }
+
+  expect_failures = [check.unmanaged_properties]
+
+  assert {
+    condition     = length(output.unmanaged_properties_set) == 12
+    error_message = "A plan without changes must report the properties from the last read."
   }
 }
 

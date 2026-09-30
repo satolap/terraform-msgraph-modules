@@ -12,12 +12,12 @@ Lifecycle: `POST /drives/{drive-id}/list/contentTypes`, `GET/PATCH/DELETE /drive
 
 ```hcl
 module "graph_resource" {
-  source = "./sites-and-lists/drives/by-drive-id/list/content-types"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/sites-and-lists/drives/by-drive-id/list/content-types?ref=<release-tag>"
   drive_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

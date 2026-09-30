@@ -12,11 +12,11 @@ Lifecycle: `POST /me/onenote/resources`, `GET/PATCH/DELETE /me/onenote/resources
 
 ```hcl
 module "graph_resource" {
-  source = "./notes/me/onenote/resources"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/notes/me/onenote/resources?ref=<release-tag>"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

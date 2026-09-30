@@ -12,13 +12,13 @@ Lifecycle: `POST /policies/roleManagementPolicies/{unifiedRoleManagementPolicy-i
 
 ```hcl
 module "graph_resource" {
-  source = "./identity-and-access/policies/role-management-policies/by-unified-role-management-policy-id/effective-rules"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/identity-and-access/policies/role-management-policies/by-unified-role-management-policy-id/effective-rules?ref=<release-tag>"
   unified_role_management_policy_id = "parent-object-id"
   odata_type = "#microsoft.graph.unifiedRoleManagementPolicyApprovalRule"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

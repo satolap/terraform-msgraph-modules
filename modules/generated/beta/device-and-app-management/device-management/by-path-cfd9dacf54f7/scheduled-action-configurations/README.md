@@ -12,13 +12,13 @@ Lifecycle: `POST /deviceManagement/compliancePolicies/{deviceManagementComplianc
 
 ```hcl
 module "graph_resource" {
-  source = "./device-and-app-management/device-management/by-path-cfd9dacf54f7/scheduled-action-configurations"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/device-and-app-management/device-management/by-path-cfd9dacf54f7/scheduled-action-configurations?ref=<release-tag>"
   device_management_compliance_policy_id = "parent-object-id"
   device_management_compliance_scheduled_action_for_rule_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

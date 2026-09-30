@@ -13,15 +13,17 @@ output here.
 
 ## Usage
 
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+
 ```hcl
 module "internal_app" {
-  source       = "../../modules/curated/applications"
+  source       = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/applications?ref=<release-tag>"
   display_name = "Internal Tool"
   app_roles    = [/* ... */]
 }
 
 module "internal_app_sp" {
-  source = "../../modules/curated/service-principals"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/service-principals?ref=<release-tag>"
 
   app_id                       = module.internal_app.app_id
   app_role_assignment_required = true
@@ -30,7 +32,7 @@ module "internal_app_sp" {
 
 # Then add it to a catalog:
 module "app_catalog_resource" {
-  source = "../../modules/curated/identity-governance/entitlement-management/catalogs/resources"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity-governance/entitlement-management/catalogs/resources?ref=<release-tag>"
 
   catalog_id             = module.catalog.id
   resource_origin_system = "AadApplication"

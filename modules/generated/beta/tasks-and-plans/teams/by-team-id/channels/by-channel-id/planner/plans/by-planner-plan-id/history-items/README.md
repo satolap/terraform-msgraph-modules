@@ -12,7 +12,7 @@ Lifecycle: `POST /teams/{team-id}/channels/{channel-id}/planner/plans/{plannerPl
 
 ```hcl
 module "graph_resource" {
-  source = "./tasks-and-plans/teams/by-team-id/channels/by-channel-id/planner/plans/by-planner-plan-id/history-items"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/tasks-and-plans/teams/by-team-id/channels/by-channel-id/planner/plans/by-planner-plan-id/history-items?ref=<release-tag>"
   team_id = "parent-object-id"
   channel_id = "parent-object-id"
   planner_plan_id = "parent-object-id"
@@ -20,7 +20,7 @@ module "graph_resource" {
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

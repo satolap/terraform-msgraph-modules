@@ -12,13 +12,13 @@ Lifecycle: `POST /teamTemplateDefinition/{teamTemplateDefinition-id}/teamDefinit
 
 ```hcl
 module "graph_resource" {
-  source = "./mail/team-template-definition/by-path-f154aa8bd934/hosted-contents"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/mail/team-template-definition/by-path-f154aa8bd934/hosted-contents?ref=<release-tag>"
   team_template_definition_id = "parent-object-id"
   chat_message_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

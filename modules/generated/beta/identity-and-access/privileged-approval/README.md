@@ -12,11 +12,11 @@ Lifecycle: `POST /privilegedApproval`, `GET/PATCH/DELETE /privilegedApproval/{pr
 
 ```hcl
 module "graph_resource" {
-  source = "./identity-and-access/privileged-approval"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/identity-and-access/privileged-approval?ref=<release-tag>"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

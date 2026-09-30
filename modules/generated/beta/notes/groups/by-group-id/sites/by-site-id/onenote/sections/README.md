@@ -12,13 +12,13 @@ Lifecycle: `POST /groups/{group-id}/sites/{site-id}/onenote/sections`, `GET/PATC
 
 ```hcl
 module "graph_resource" {
-  source = "./notes/groups/by-group-id/sites/by-site-id/onenote/sections"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/notes/groups/by-group-id/sites/by-site-id/onenote/sections?ref=<release-tag>"
   group_id = "parent-object-id"
   site_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

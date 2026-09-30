@@ -12,7 +12,7 @@ Lifecycle: `POST /identityGovernance/accessReviews/unified/decisions/{accessRevi
 
 ```hcl
 module "graph_resource" {
-  source = "./people-and-workplace-intelligence/identity-governance/by-path-5a01016f6547/insights"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/people-and-workplace-intelligence/identity-governance/by-path-5a01016f6547/insights?ref=<release-tag>"
   access_review_instance_decision_item_id = "parent-object-id"
   access_review_stage_id = "parent-object-id"
   access_review_instance_decision_item_id1 = "parent-object-id"
@@ -20,7 +20,7 @@ module "graph_resource" {
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

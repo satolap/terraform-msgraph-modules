@@ -12,12 +12,12 @@ Lifecycle: `POST /servicePrincipals`, `GET/PATCH/DELETE /servicePrincipals/{serv
 
 ```hcl
 module "graph_resource" {
-  source = "./applications/service-principals"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/applications/service-principals?ref=<release-tag>"
   app_id = "example"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

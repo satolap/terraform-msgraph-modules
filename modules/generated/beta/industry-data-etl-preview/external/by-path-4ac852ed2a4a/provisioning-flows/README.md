@@ -12,13 +12,13 @@ Lifecycle: `POST /external/industryData/outboundProvisioningFlowSets/{outboundPr
 
 ```hcl
 module "graph_resource" {
-  source = "./industry-data-etl-preview/external/by-path-4ac852ed2a4a/provisioning-flows"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/industry-data-etl-preview/external/by-path-4ac852ed2a4a/provisioning-flows?ref=<release-tag>"
   outbound_provisioning_flow_set_id = "parent-object-id"
   odata_type = "#microsoft.graph.industryData.administrativeUnitProvisioningFlow"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

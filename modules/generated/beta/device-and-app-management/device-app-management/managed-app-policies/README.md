@@ -12,12 +12,12 @@ Lifecycle: `POST /deviceAppManagement/managedAppPolicies`, `GET/PATCH/DELETE /de
 
 ```hcl
 module "graph_resource" {
-  source = "./device-and-app-management/device-app-management/managed-app-policies"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/device-and-app-management/device-app-management/managed-app-policies?ref=<release-tag>"
   odata_type = "#microsoft.graph.androidManagedAppProtection"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

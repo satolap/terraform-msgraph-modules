@@ -12,13 +12,13 @@ Lifecycle: `POST /identityGovernance/appConsent/appConsentRequests/{appConsentRe
 
 ```hcl
 module "graph_resource" {
-  source = "./identity-and-access/identity-governance/by-path-8467c5c4ab41/stages"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/identity-and-access/identity-governance/by-path-8467c5c4ab41/stages?ref=<release-tag>"
   app_consent_request_id = "parent-object-id"
   user_consent_request_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

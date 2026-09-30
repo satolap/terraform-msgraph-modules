@@ -12,12 +12,12 @@ Lifecycle: `POST /admin/windows/updates/resourceConnections`, `GET/PATCH/DELETE 
 
 ```hcl
 module "graph_resource" {
-  source = "./device-and-app-management/admin/windows/updates/resource-connections"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/device-and-app-management/admin/windows/updates/resource-connections?ref=<release-tag>"
   odata_type = "#microsoft.graph.windowsUpdates.operationalInsightsConnection"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

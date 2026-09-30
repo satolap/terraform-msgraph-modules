@@ -12,12 +12,12 @@ Lifecycle: `POST /certificateAuthorities/certificateBasedApplicationConfiguratio
 
 ```hcl
 module "graph_resource" {
-  source = "./identity-and-access/certificate-authorities/by-path-b72370cc0461/trusted-certificate-authorities"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/identity-and-access/certificate-authorities/by-path-b72370cc0461/trusted-certificate-authorities?ref=<release-tag>"
   certificate_based_application_configuration_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

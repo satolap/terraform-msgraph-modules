@@ -67,9 +67,11 @@ token to `curl` as a command-line argument.
 
 ## Usage
 
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+
 ```hcl
 module "engineering_group_resource" {
-  source = "../../modules/curated/identity-governance/entitlement-management/catalogs/resources"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity-governance/entitlement-management/catalogs/resources?ref=<release-tag>"
 
   catalog_id             = module.engineering_catalog.id
   resource_origin_system = "AadGroup"
@@ -78,7 +80,7 @@ module "engineering_group_resource" {
 }
 
 module "engineering_sharepoint_resource" {
-  source = "../../modules/curated/identity-governance/entitlement-management/catalogs/resources"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity-governance/entitlement-management/catalogs/resources?ref=<release-tag>"
 
   catalog_id                 = module.engineering_catalog.id
   resource_origin_system     = "SharePointOnline"

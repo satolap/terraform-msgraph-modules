@@ -12,12 +12,12 @@ Lifecycle: `POST /authenticationMethodDevices/{authenticationMethodDevice-id}/ha
 
 ```hcl
 module "graph_resource" {
-  source = "./identity-and-access/authentication-method-devices/by-authentication-method-device-id/hardware-oath-devices"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/identity-and-access/authentication-method-devices/by-authentication-method-device-id/hardware-oath-devices?ref=<release-tag>"
   authentication_method_device_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

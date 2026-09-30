@@ -12,13 +12,13 @@ Lifecycle: `POST /sites/{site-id}/lists/{list-id}/items`, `GET/PATCH/DELETE /sit
 
 ```hcl
 module "graph_resource" {
-  source = "./sites-and-lists/sites/by-site-id/lists/by-list-id/items"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/sites-and-lists/sites/by-site-id/lists/by-list-id/items?ref=<release-tag>"
   site_id = "parent-object-id"
   list_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

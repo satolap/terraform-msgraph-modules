@@ -12,13 +12,13 @@ Lifecycle: `POST /deviceManagement/groupPolicyConfigurations/{groupPolicyConfigu
 
 ```hcl
 module "graph_resource" {
-  source = "./device-and-app-management/device-management/by-path-3ed98113b239/presentation-values"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/device-and-app-management/device-management/by-path-3ed98113b239/presentation-values?ref=<release-tag>"
   group_policy_configuration_id = "parent-object-id"
   group_policy_definition_value_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

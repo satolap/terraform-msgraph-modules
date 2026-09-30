@@ -12,14 +12,14 @@ Lifecycle: `POST /education/users/{educationUser-id}/assignments/{educationAssig
 
 ```hcl
 module "graph_resource" {
-  source = "./education/education/by-path-976e425516c7/submitted-resources"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/education/education/by-path-976e425516c7/submitted-resources?ref=<release-tag>"
   education_user_id = "parent-object-id"
   education_assignment_id = "parent-object-id"
   education_submission_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

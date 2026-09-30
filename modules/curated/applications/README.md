@@ -14,9 +14,11 @@ package: each role's `id` (a GUID) is the `role_origin_id` consumed by the
 
 ## Usage
 
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+
 ```hcl
 module "internal_app" {
-  source = "../../modules/curated/applications"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/applications?ref=<release-tag>"
 
   display_name     = "Internal Tool"
   sign_in_audience = "AzureADMyOrg"
@@ -32,7 +34,7 @@ module "internal_app" {
 }
 
 module "internal_app_sp" {
-  source = "../../modules/curated/service-principals"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/service-principals?ref=<release-tag>"
 
   app_id = module.internal_app.app_id
 }

@@ -12,11 +12,11 @@ Lifecycle: `POST /storage/fileStorage/deletedContainers`, `GET/PATCH/DELETE /sto
 
 ```hcl
 module "graph_resource" {
-  source = "./files/storage/file-storage/deleted-containers"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/files/storage/file-storage/deleted-containers?ref=<release-tag>"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

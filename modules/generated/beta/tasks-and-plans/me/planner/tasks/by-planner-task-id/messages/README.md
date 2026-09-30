@@ -12,12 +12,12 @@ Lifecycle: `POST /me/planner/tasks/{plannerTask-id}/messages`, `GET/PATCH/DELETE
 
 ```hcl
 module "graph_resource" {
-  source = "./tasks-and-plans/me/planner/tasks/by-planner-task-id/messages"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/tasks-and-plans/me/planner/tasks/by-planner-task-id/messages?ref=<release-tag>"
   planner_task_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

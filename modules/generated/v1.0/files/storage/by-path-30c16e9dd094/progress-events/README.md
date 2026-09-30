@@ -12,13 +12,13 @@ Lifecycle: `POST /storage/fileStorage/deletedContainers/{fileStorageContainer-id
 
 ```hcl
 module "graph_resource" {
-  source = "./files/storage/by-path-30c16e9dd094/progress-events"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/files/storage/by-path-30c16e9dd094/progress-events?ref=<release-tag>"
   file_storage_container_id = "parent-object-id"
   share_point_migration_job_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

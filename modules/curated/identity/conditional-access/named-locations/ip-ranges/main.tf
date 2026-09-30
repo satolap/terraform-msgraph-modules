@@ -26,8 +26,9 @@ resource "msgraph_resource" "named_location" {
   }
 
   timeouts {
-    create = "10m"
-    update = "10m"
-    delete = "10m"
+    create = var.timeouts.create
+    read   = var.timeouts.read
+    update = var.timeouts.update
+    delete = var.timeouts.delete
   }
 }

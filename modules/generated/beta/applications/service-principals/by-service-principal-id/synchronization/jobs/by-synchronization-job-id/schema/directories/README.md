@@ -12,13 +12,13 @@ Lifecycle: `POST /servicePrincipals/{servicePrincipal-id}/synchronization/jobs/{
 
 ```hcl
 module "graph_resource" {
-  source = "./applications/service-principals/by-service-principal-id/synchronization/jobs/by-synchronization-job-id/schema/directories"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/applications/service-principals/by-service-principal-id/synchronization/jobs/by-synchronization-job-id/schema/directories?ref=<release-tag>"
   service_principal_id = "parent-object-id"
   synchronization_job_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

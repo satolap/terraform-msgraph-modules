@@ -12,12 +12,12 @@ Lifecycle: `POST /solutions/backupRestore/sharePointRestoreSessions/{sharePointR
 
 ```hcl
 module "graph_resource" {
-  source = "./backup-and-recovery/solutions/backup-restore/share-point-restore-sessions/by-share-point-restore-session-id/site-restore-artifacts"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/backup-and-recovery/solutions/backup-restore/share-point-restore-sessions/by-share-point-restore-session-id/site-restore-artifacts?ref=<release-tag>"
   share_point_restore_session_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

@@ -14,9 +14,11 @@ to add it to a catalog and `access-packages/resource-role-scopes` to grant its m
 
 ## Usage
 
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+
 ```hcl
 module "engineering_group" {
-  source = "../../modules/curated/groups"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/groups?ref=<release-tag>"
 
   display_name     = "Engineering"
   mail_nickname    = "engineering"
@@ -28,7 +30,7 @@ module "engineering_group" {
 
 # Microsoft 365 group
 module "project_group" {
-  source = "../../modules/curated/groups"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/groups?ref=<release-tag>"
 
   display_name  = "Project X"
   mail_nickname = "projectx"

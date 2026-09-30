@@ -10,9 +10,11 @@ not list that property; the replacement is created before the old location is de
 
 ## Usage
 
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+
 ```hcl
 module "blocked_regions" {
-  source = "../../modules/curated/identity/conditional-access/named-locations/countries"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity/conditional-access/named-locations/countries?ref=<release-tag>"
 
   display_name          = "Blocked regions"
   countries_and_regions = ["CA", "IN"]
@@ -28,6 +30,20 @@ module "blocked_regions" {
 
 `microsoft/msgraph` 0.5.0 is the first release that sends a changed nested object in full on
 update; earlier releases are not supported by this module.
+
+The module sets minimum versions only. Azure Verified Modules also require a maximum major
+version (TFNFR25, TFNFR26); this module follows HashiCorp's guidance for reusable modules
+instead, which is to "constrain only their minimum allowed versions of Terraform and
+providers"
+([Version constraints](https://developer.hashicorp.com/terraform/language/expressions/version-constraints)).
+The provider is 0.x, so a minor release can break the module; the release manifest records
+the provider version it was tested with. Set upper bounds in your root module.
+
+Only the Microsoft Graph v1.0 API is supported: `api_version = "beta"` fails at plan, because
+Microsoft does not support beta APIs in production applications. Switching an existing named
+location from `"beta"` to `"v1.0"` plans one in-place update; it sends no PATCH request and
+reads the named location back through v1.0, so the apply fails if v1.0 cannot read it (not
+verified).
 
 | Operation | Least privileged application permissions | Least privileged delegated roles |
 | --- | --- | --- |
@@ -74,6 +90,13 @@ scopes in their token.
   that the `country_lookup_method` output matches the configuration.
 - Learn states the 195 named location limit for IP locations only; whether country locations
   count towards it is not documented.
+- **Create, update and delete timeouts of at least `15s`.** After each request the provider
+  waits for three consistent reads 5 seconds apart, within the same timeout, so a value
+  under 10 seconds always fails after the request was sent, and the module rejects values
+  under `15s`. A create that fails this way leaves the named location in Microsoft Graph but
+  not in the state (inference from the provider code). The provider already retries status
+  codes 408, 429, 500, 502, 503 and 504 by itself, and those retries count against the
+  timeouts.
 
 <!-- licensing:begin -->
 ## Licensing and prerequisites
@@ -100,7 +123,8 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 | countries_and_regions | Two-letter upper-case codes, at least one | `set(string)` | n/a | yes |
 | include_unknown_countries_and_regions | Also match addresses without a country or region | `bool` | `false` | no |
 | country_lookup_method | `clientIpAddress` or `authenticatorAppGps`; a change replaces the location | `string` | `"clientIpAddress"` | no |
-| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
+| api_version | Graph API version; only `v1.0` is supported | `string` | `"v1.0"` | no |
+| timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; create, update and delete at least `15s`; retries count against them | `object` | `{}` (`10m` for create, update and delete; the provider default for read) | no |
 
 ## Outputs
 

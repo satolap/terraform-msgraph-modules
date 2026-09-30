@@ -31,10 +31,12 @@ If zero or multiple roles match, the apply fails with a precondition error; the 
 
 ## Usage
 
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+
 ```hcl
 # Entra ID group membership
 module "group_member_role" {
-  source = "../../modules/curated/identity-governance/entitlement-management/access-packages/resource-role-scopes"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity-governance/entitlement-management/access-packages/resource-role-scopes?ref=<release-tag>"
 
   access_package_id      = module.engineering_access.id
   catalog_id             = module.engineering_catalog.id
@@ -45,7 +47,7 @@ module "group_member_role" {
 
 # Application app role
 module "app_role_assignment" {
-  source = "../../modules/curated/identity-governance/entitlement-management/access-packages/resource-role-scopes"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity-governance/entitlement-management/access-packages/resource-role-scopes?ref=<release-tag>"
 
   access_package_id      = module.engineering_access.id
   catalog_id             = module.engineering_catalog.id
@@ -56,7 +58,7 @@ module "app_role_assignment" {
 
 # SharePoint Online site role
 module "sharepoint_site_role" {
-  source = "../../modules/curated/identity-governance/entitlement-management/access-packages/resource-role-scopes"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity-governance/entitlement-management/access-packages/resource-role-scopes?ref=<release-tag>"
 
   access_package_id      = module.engineering_access.id
   catalog_id             = module.engineering_catalog.id

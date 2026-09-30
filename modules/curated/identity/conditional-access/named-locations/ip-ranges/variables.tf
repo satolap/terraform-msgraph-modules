@@ -43,13 +43,41 @@ variable "is_trusted" {
 }
 
 variable "api_version" {
-  description = "Microsoft Graph API version. One of \"v1.0\" or \"beta\"."
+  description = "Microsoft Graph API version. Only \"v1.0\" is supported; Microsoft does not support beta APIs in production."
   type        = string
   default     = "v1.0"
   nullable    = false
 
   validation {
-    condition     = contains(["v1.0", "beta"], var.api_version)
-    error_message = "api_version must be one of \"v1.0\" or \"beta\"."
+    condition     = var.api_version == "v1.0"
+    error_message = "api_version must be \"v1.0\"; only \"v1.0\" is supported."
+  }
+}
+
+variable "timeouts" {
+  description = "Timeouts for creating, reading, updating and deleting the named location, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete default to \"10m\" and must be at least \"15s\": after each request the provider waits for three consistent reads 5 seconds apart within the same timeout. read defaults to null, which keeps the provider's default read timeout. Retries count against these timeouts."
+  type = object({
+    create = optional(string, "10m")
+    read   = optional(string)
+    update = optional(string, "10m")
+    delete = optional(string, "10m")
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null || (can(regex("^([0-9]+[hms])+$", t)) && !can(regex("^(0+[hms])+$", t)))
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\": after each request the provider waits for three consistent reads 5 seconds apart within the same timeout."
   }
 }

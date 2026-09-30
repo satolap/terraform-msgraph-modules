@@ -46,6 +46,11 @@ run "create_policy" {
     condition     = jsonencode(output.excluded_user_ids) == jsonencode([run.setup.break_glass_user_id]) && length(output.excluded_group_ids) == 0
     error_message = "The create read-back must exclude exactly the stand-in emergency access user."
   }
+
+  assert {
+    condition     = length(output.unmanaged_properties_set) == 0
+    error_message = "Microsoft Graph returned properties that the module does not manage set on the created policy: ${join(", ", output.unmanaged_properties_set)}."
+  }
 }
 
 run "verify_created" {
@@ -125,6 +130,16 @@ run "refresh_created" {
   assert {
     condition     = jsonencode(local.server_presence) == jsonencode(local.presence)
     error_message = "The optional parts Microsoft Graph returned must be exactly the configured ones, so optional_parts_not_in_configuration stays empty."
+  }
+
+  assert {
+    condition     = try(length(local.server_unmanaged), 0) == 12
+    error_message = "The read-back must export all 12 unmanaged property keys, or unmanaged_properties_set is empty whatever Microsoft Graph returned."
+  }
+
+  assert {
+    condition     = length(output.unmanaged_properties_set) == 0
+    error_message = "Microsoft Graph returned properties that the module does not manage set on the created policy: ${join(", ", output.unmanaged_properties_set)}."
   }
 }
 
@@ -218,6 +233,16 @@ run "refresh_updated" {
     condition     = jsonencode(local.server_presence) == jsonencode(local.presence)
     error_message = "The optional parts Microsoft Graph returned must be exactly the configured ones, so optional_parts_not_in_configuration stays empty."
   }
+
+  assert {
+    condition     = try(length(local.server_unmanaged), 0) == 12
+    error_message = "The read-back must export all 12 unmanaged property keys, or unmanaged_properties_set is empty whatever Microsoft Graph returned."
+  }
+
+  assert {
+    condition     = length(output.unmanaged_properties_set) == 0
+    error_message = "Microsoft Graph returned properties that the module does not manage set on the updated policy: ${join(", ", output.unmanaged_properties_set)}."
+  }
 }
 
 # Presence change: remove the location condition, add a device filter, a
@@ -248,6 +273,11 @@ run "replace_on_presence_change" {
   assert {
     condition     = output.state == "enabledForReportingButNotEnforced"
     error_message = "The replacement must be report-only."
+  }
+
+  assert {
+    condition     = length(output.unmanaged_properties_set) == 0
+    error_message = "Microsoft Graph returned properties that the module does not manage set on the replacement: ${join(", ", output.unmanaged_properties_set)}."
   }
 }
 
@@ -315,5 +345,15 @@ run "refresh_replaced" {
   assert {
     condition     = jsonencode(local.server_presence) == jsonencode(local.presence)
     error_message = "The optional parts Microsoft Graph returned must be exactly the configured ones, so optional_parts_not_in_configuration stays empty."
+  }
+
+  assert {
+    condition     = try(length(local.server_unmanaged), 0) == 12
+    error_message = "The read-back must export all 12 unmanaged property keys, or unmanaged_properties_set is empty whatever Microsoft Graph returned."
+  }
+
+  assert {
+    condition     = length(output.unmanaged_properties_set) == 0
+    error_message = "Microsoft Graph returned properties that the module does not manage set on the replacement: ${join(", ", output.unmanaged_properties_set)}."
   }
 }

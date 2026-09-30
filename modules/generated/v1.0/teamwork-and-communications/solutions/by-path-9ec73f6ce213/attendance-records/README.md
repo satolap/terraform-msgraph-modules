@@ -12,14 +12,14 @@ Lifecycle: `POST /solutions/virtualEvents/events/{virtualEvent-id}/sessions/{vir
 
 ```hcl
 module "graph_resource" {
-  source = "./teamwork-and-communications/solutions/by-path-9ec73f6ce213/attendance-records"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/teamwork-and-communications/solutions/by-path-9ec73f6ce213/attendance-records?ref=<release-tag>"
   virtual_event_id = "parent-object-id"
   virtual_event_session_id = "parent-object-id"
   meeting_attendance_report_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

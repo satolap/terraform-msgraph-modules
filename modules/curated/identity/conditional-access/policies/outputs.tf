@@ -27,3 +27,8 @@ output "optional_parts_not_in_configuration" {
   description = "Optional parts (for example conditions.locations or sessionControls.persistentBrowser) that Microsoft Graph returned on the last read but the configuration does not set, such as a part added outside Terraform. An in-place apply cannot remove them; replace the policy with terraform apply -replace. Empty when the policy matches the configuration."
   value       = local.server_presence == null ? [] : sort(tolist(setsubtract(local.server_presence, local.presence)))
 }
+
+output "unmanaged_properties_set" {
+  description = "Properties this module does not manage (for example conditions.users.excludeGuestsOrExternalUsers) that Microsoft Graph returned set on the last read, as JSON paths, sorted. A replacement creates the policy from the configuration only and loses their values. Empty when none is set."
+  value       = local.unmanaged_set
+}

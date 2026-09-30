@@ -12,13 +12,13 @@ Lifecycle: `POST /me/chats/{chat-id}/messages/{chatMessage-id}/replies`, `GET/PA
 
 ```hcl
 module "graph_resource" {
-  source = "./teamwork-and-communications/me/chats/by-chat-id/messages/by-chat-message-id/replies"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/teamwork-and-communications/me/chats/by-chat-id/messages/by-chat-message-id/replies?ref=<release-tag>"
   chat_id = "parent-object-id"
   chat_message_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

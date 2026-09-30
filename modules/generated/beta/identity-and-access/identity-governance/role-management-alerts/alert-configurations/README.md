@@ -12,12 +12,12 @@ Lifecycle: `POST /identityGovernance/roleManagementAlerts/alertConfigurations`, 
 
 ```hcl
 module "graph_resource" {
-  source = "./identity-and-access/identity-governance/role-management-alerts/alert-configurations"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/identity-and-access/identity-governance/role-management-alerts/alert-configurations?ref=<release-tag>"
   odata_type = "#microsoft.graph.invalidLicenseAlertConfiguration"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

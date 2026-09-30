@@ -12,13 +12,13 @@ Lifecycle: `POST /users/{user-id}/mobileAppTroubleshootingEvents/{mobileAppTroub
 
 ```hcl
 module "graph_resource" {
-  source = "./device-and-app-management/users/by-path-1a2fb739065e/app-log-collection-requests"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/device-and-app-management/users/by-path-1a2fb739065e/app-log-collection-requests?ref=<release-tag>"
   user_id = "parent-object-id"
   mobile_app_troubleshooting_event_id = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

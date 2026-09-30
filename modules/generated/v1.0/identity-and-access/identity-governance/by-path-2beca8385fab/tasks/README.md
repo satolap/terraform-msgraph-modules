@@ -12,13 +12,13 @@ Lifecycle: `POST /identityGovernance/lifecycleWorkflows/deletedItems/workflows/{
 
 ```hcl
 module "graph_resource" {
-  source = "./identity-and-access/identity-governance/by-path-2beca8385fab/tasks"
+  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/identity-and-access/identity-governance/by-path-2beca8385fab/tasks?ref=<release-tag>"
   workflow_id = "parent-object-id"
   workflow_version_version_number = "parent-object-id"
 }
 ```
 
-Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 
