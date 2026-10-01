@@ -13,6 +13,9 @@ Lifecycle: `POST /roleManagement/directory/roleDefinitions`, `GET/PATCH/DELETE /
 ```hcl
 module "graph_resource" {
   source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/identity-and-access/role-management/directory/role-definitions?ref=<release-tag>"
+  display_name = "example"
+  is_enabled = false
+  role_permissions = []
 }
 ```
 
@@ -22,7 +25,13 @@ Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules R
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
+| `display_name` | `displayName` | `string` | yes | no |
+| `is_enabled` | `isEnabled` | `bool` | yes | no |
+| `role_permissions` | `rolePermissions` | `list(object({       odata_type = optional(string, "#microsoft.graph.unifiedRolePermission")       allowedResourceActions = optional(list(string))       condition = optional(string)       excludedResourceActions = optional(list(string))     }))` | yes | no |
+| `description` | `description` | `string` | no | no |
+| `graph_version` | `version` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
+| `template_id` | `templateId` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
@@ -39,8 +48,17 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
-- Excluded by conditional read-only prose: description, displayName, isEnabled, resourceScopes, rolePermissions, templateId, version. Add a reviewed contract if the property is writable for your account type.
+- Creating a custom directory role requires a Microsoft Entra ID P1 or P2 license and the RoleManagement.ReadWrite.Directory permission; the least-privileged Microsoft Entra role is Privileged Role Administrator.
+- Each rolePermissions item needs allowedResourceActions: the v1.0 documentation marks it as required, but the typed role_permissions input declares every item attribute as optional, so an item without it passes Terraform validation. Microsoft documents condition as not supported for custom roles, and the v1.0 documentation lists excludedResourceActions as not yet supported, so leave both unset. See https://learn.microsoft.com/en-us/graph/api/resources/unifiedrolepermission.
 - Microsoft Graph beta contracts can change without notice.
+- Reviewed create-required correction: displayName, isEnabled, rolePermissions.
+- Reviewed writable correction: description. Custom roles only (isBuiltIn false); read-only when isBuiltIn is true. See https://learn.microsoft.com/en-us/graph/api/resources/unifiedroledefinition.
+- Reviewed writable correction: displayName. Custom roles only (isBuiltIn false); read-only when isBuiltIn is true. See https://learn.microsoft.com/en-us/graph/api/resources/unifiedroledefinition.
+- Reviewed writable correction: isEnabled. Custom roles only (isBuiltIn false); read-only when isBuiltIn is true. See https://learn.microsoft.com/en-us/graph/api/resources/unifiedroledefinition.
+- Reviewed writable correction: rolePermissions. Custom roles only (isBuiltIn false); read-only when isBuiltIn is true. See https://learn.microsoft.com/en-us/graph/api/resources/unifiedroledefinition.
+- Reviewed writable correction: templateId. Custom roles only (isBuiltIn false); can be set when isBuiltIn is false and is read-only when isBuiltIn is true. See https://learn.microsoft.com/en-us/graph/api/resources/unifiedroledefinition.
+- Reviewed writable correction: version. Custom roles only (isBuiltIn false); read-only when isBuiltIn is true. See https://learn.microsoft.com/en-us/graph/api/resources/unifiedroledefinition.
+- resourceScopes stays excluded: Microsoft documents it as DO NOT USE and soon deprecated, and the property tables of the create and update pages do not list it. Scope a custom role through its role assignment's directoryScopeId instead.
 
 ## Licensing and prerequisites
 

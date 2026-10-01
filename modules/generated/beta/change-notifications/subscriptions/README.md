@@ -22,6 +22,32 @@ module "graph_resource" {
 
 Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
+## Replacement on change
+
+Microsoft Graph updates only `expiration_date_time` and `notification_url` in place; the generation notes cite the source. A change to any other input, set as a typed input or as the same key in `additional_properties`, plans a destroy and a create of `msgraph_resource.this` through `terraform_data.immutable` and `replace_triggered_by`, so `terraform apply -replace` is not needed. Terraform deletes the old object before it creates the new one (`create_before_destroy` is not set). The replacement has a new `id`, and anything that stored the old `id` must read the new one. `terraform_data.immutable` holds the values below and makes no API call.
+
+| Input | Graph property |
+| --- | --- |
+| `odata_type` | `@odata.type` |
+| `change_type` | `changeType` |
+| `client_state` | `clientState` |
+| `encryption_certificate` | `encryptionCertificate` |
+| `encryption_certificate_id` | `encryptionCertificateId` |
+| `include_resource_data` | `includeResourceData` |
+| `latest_supported_tls_version` | `latestSupportedTlsVersion` |
+| `lifecycle_notification_url` | `lifecycleNotificationUrl` |
+| `notification_content_type` | `notificationContentType` |
+| `notification_query_options` | `notificationQueryOptions` |
+| `notification_url_app_id` | `notificationUrlAppId` |
+| `resource` | `resource` |
+| `vapid_public_key` | `vapidPublicKey` |
+| `web_push_encryption_p256dh_public_key` | `webPushEncryptionP256dhPublicKey` |
+| `web_push_encryption_secret` | `webPushEncryptionSecret` |
+
+Any other key of `additional_properties` replaces the object too when its value changes, for example a writable property that the pinned schema lacks: `terraform_data.immutable` holds every non-null key that is not a typed input. The keys that update in place (`expirationDateTime`, `notificationUrl`) never replace the object. A value of a replacing key that is unknown at plan time plans a replacement, whether it is an input in the table or a key of `additional_properties`; an unknown value of a key that updates in place still plans an in-place update.
+
+Terraform plans a replacement only when `terraform_data.immutable` is updated or replaced, not when it is created. After an upgrade from a release that lacked it, or after an import, apply once with unchanged inputs; a change to one of these inputs made in the apply that creates it still updates the object in place. The replacement behavior is covered by mocked tests only, not by a live tenant.
+
 ## Inputs
 
 | Input | Graph property | Type | Required | Sensitive |
@@ -59,8 +85,10 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 
 Generation notes:
 
+- A replacement deletes the old subscription before it creates the new one, which uses the current expiration_date_time. Between the two no subscription of this module exists, so Microsoft Graph delivers no change notifications for it, and Microsoft documents that changes made before an app creates a subscription again are lost: fetch them separately, for example with a delta query (https://learn.microsoft.com/en-us/graph/change-notifications-lifecycle-events).
 - Microsoft Graph beta contracts can change without notice.
 - Reviewed create-required correction: changeType, expirationDateTime, notificationUrl, resource.
+- Reviewed update correction: Microsoft Graph updates only expirationDateTime and notificationUrl in place (https://learn.microsoft.com/en-us/graph/api/subscription-update); a change to any other input replaces the object.
 - Subscriptions expire and must be renewed before expirationDateTime; the module manages the object, not its renewal or notification delivery.
 
 ## Licensing and prerequisites
@@ -74,4 +102,4 @@ terraform init -backend=false
 terraform test
 ```
 
-The included mock test checks URL construction and request omission without Graph credentials. It does not verify permissions or server behavior.
+The included mock test checks URL construction and request omission without Graph credentials. Its apply runs also check which input changes update the object in place and which replace it. It does not verify permissions or server behavior.
