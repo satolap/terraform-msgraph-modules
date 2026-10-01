@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /activitystatistics`, `GET/PATCH/DELETE /activitystatistics/{activityStatistics-id}`.
 
+This module manages the same `microsoft.graph.activityStatistics` objects as the canonical module [`/me/analytics/activityStatistics`](../me/analytics/activity-statistics/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

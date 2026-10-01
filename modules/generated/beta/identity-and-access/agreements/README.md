@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /agreements`, `GET/PATCH/DELETE /agreements/{agreement-id}`.
 
+This module manages the same `microsoft.graph.agreement` objects as the canonical module [`/identityGovernance/termsOfUse/agreements`](../identity-governance/terms-of-use/agreements/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

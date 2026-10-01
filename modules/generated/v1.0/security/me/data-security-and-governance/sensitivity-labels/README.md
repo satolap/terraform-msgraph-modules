@@ -8,6 +8,8 @@ Generated from Microsoft Graph **v1.0** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/dataSecurityAndGovernance/sensitivityLabels`, `GET/PATCH/DELETE /me/dataSecurityAndGovernance/sensitivityLabels/{sensitivityLabel-id}`.
 
+This module manages the same `microsoft.graph.sensitivityLabel` objects as the canonical module [`/security/dataSecurityAndGovernance/sensitivityLabels`](../../../security/data-security-and-governance/sensitivity-labels/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

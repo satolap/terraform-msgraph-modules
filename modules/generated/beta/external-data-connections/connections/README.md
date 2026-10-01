@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /connections`, `GET/PATCH/DELETE /connections/{externalConnection-id}`.
 
+This module manages the same `microsoft.graph.externalConnectors.externalConnection` objects as the canonical module [`/external/connections`](../external/connections/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

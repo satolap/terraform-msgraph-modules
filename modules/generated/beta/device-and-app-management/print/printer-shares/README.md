@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /print/printerShares`, `GET/PATCH/DELETE /print/printerShares/{printerShare-id}`.
 
+This module manages the same `microsoft.graph.printerShare` objects as the canonical module [`/print/shares`](../shares/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

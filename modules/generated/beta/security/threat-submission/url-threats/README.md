@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /threatSubmission/urlThreats`, `GET/PATCH/DELETE /threatSubmission/urlThreats/{urlThreatSubmission-id}`.
 
+This module manages the same `microsoft.graph.security.urlThreatSubmission` objects as the canonical module [`/security/threatSubmission/urlThreats`](../../security/threat-submission/url-threats/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

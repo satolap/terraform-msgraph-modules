@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /bookingBusinesses`, `GET/PATCH/DELETE /bookingBusinesses/{bookingBusiness-id}`.
 
+This module manages the same `microsoft.graph.bookingBusiness` objects as the canonical module [`/solutions/bookingBusinesses`](../solutions/booking-businesses/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /certificateAuthorities/mutualTlsOauthConfigurations`, `GET/PATCH/DELETE /certificateAuthorities/mutualTlsOauthConfigurations/{mutualTlsOauthConfiguration-id}`.
 
+This module manages the same `microsoft.graph.mutualTlsOauthConfiguration` objects as the canonical module [`/directory/certificateAuthorities/mutualTlsOauthConfigurations`](../../directory/certificate-authorities/mutual-tls-oauth-configurations/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

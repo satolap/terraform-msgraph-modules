@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/appConsentRequestsForApproval`, `GET/PATCH/DELETE /me/appConsentRequestsForApproval/{appConsentRequest-id}`.
 
+This module manages the same `microsoft.graph.appConsentRequest` objects as the canonical module [`/identityGovernance/appConsent/appConsentRequests`](../../identity-governance/app-consent/app-consent-requests/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

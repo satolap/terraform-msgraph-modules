@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/informationProtection/dataLossPreventionPolicies`, `GET/PATCH/DELETE /me/informationProtection/dataLossPreventionPolicies/{dataLossPreventionPolicy-id}`.
 
+This module manages the same `microsoft.graph.dataLossPreventionPolicy` objects as the canonical module [`/informationProtection/dataLossPreventionPolicies`](../../../../other/information-protection/data-loss-prevention-policies/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

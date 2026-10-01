@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /auditLogs/directoryProvisioning`, `GET/PATCH/DELETE /auditLogs/directoryProvisioning/{provisioningObjectSummary-id}`.
 
+This module manages the same `microsoft.graph.provisioningObjectSummary` objects as the canonical module [`/auditLogs/provisioning`](../provisioning/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

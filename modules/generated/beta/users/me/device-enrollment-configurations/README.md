@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/deviceEnrollmentConfigurations`, `GET/PATCH/DELETE /me/deviceEnrollmentConfigurations/{deviceEnrollmentConfiguration-id}`.
 
+This module manages the same `microsoft.graph.deviceEnrollmentConfiguration` objects as the canonical module [`/deviceManagement/deviceEnrollmentConfigurations`](../../../device-and-app-management/device-management/device-enrollment-configurations/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

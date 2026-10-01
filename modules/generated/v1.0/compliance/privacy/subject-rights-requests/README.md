@@ -8,6 +8,8 @@ Generated from Microsoft Graph **v1.0** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /privacy/subjectRightsRequests`, `GET/PATCH/DELETE /privacy/subjectRightsRequests/{subjectRightsRequest-id}`.
 
+This module manages the same `microsoft.graph.subjectRightsRequest` objects as the canonical module [`/security/subjectRightsRequests`](../../security/subject-rights-requests/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

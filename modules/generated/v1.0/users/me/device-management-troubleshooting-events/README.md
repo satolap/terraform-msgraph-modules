@@ -8,6 +8,8 @@ Generated from Microsoft Graph **v1.0** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/deviceManagementTroubleshootingEvents`, `GET/PATCH/DELETE /me/deviceManagementTroubleshootingEvents/{deviceManagementTroubleshootingEvent-id}`.
 
+This module manages the same `microsoft.graph.deviceManagementTroubleshootingEvent` objects as the canonical module [`/deviceManagement/troubleshootingEvents`](../../../device-and-app-management/device-management/troubleshooting-events/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

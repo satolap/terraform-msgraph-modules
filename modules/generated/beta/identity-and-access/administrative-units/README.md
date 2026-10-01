@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /administrativeUnits`, `GET/PATCH/DELETE /administrativeUnits/{administrativeUnit-id}`.
 
+This module manages the same `microsoft.graph.administrativeUnit` objects as the canonical module [`/directory/administrativeUnits`](../directory/administrative-units/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /policies/conditionalAccessPolicies`, `GET/PATCH/DELETE /policies/conditionalAccessPolicies/{conditionalAccessPolicy-id}`.
 
+This module manages the same `microsoft.graph.conditionalAccessPolicy` objects as the canonical module [`/identity/conditionalAccess/policies`](../../identity/conditional-access/policies/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

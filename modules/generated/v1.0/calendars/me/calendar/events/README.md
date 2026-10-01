@@ -8,6 +8,8 @@ Generated from Microsoft Graph **v1.0** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/calendar/events`, `GET/PATCH/DELETE /me/calendar/events/{event-id}`.
 
+This module manages the same `microsoft.graph.event` objects as the canonical module [`/me/events`](../../events/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

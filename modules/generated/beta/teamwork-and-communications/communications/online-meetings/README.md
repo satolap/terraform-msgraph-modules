@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /communications/onlineMeetings`, `GET/PATCH/DELETE /communications/onlineMeetings/{onlineMeeting-id}`.
 
+This module manages the same `microsoft.graph.onlineMeeting` objects as the canonical module [`/me/onlineMeetings`](../../me/online-meetings/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

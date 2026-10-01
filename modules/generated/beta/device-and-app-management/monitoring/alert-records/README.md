@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /monitoring/alertRecords`, `GET/PATCH/DELETE /monitoring/alertRecords/{alertRecord-id}`.
 
+This module manages the same `microsoft.graph.deviceManagement.alertRecord` objects as the canonical module [`/deviceManagement/monitoring/alertRecords`](../../device-management/monitoring/alert-records/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

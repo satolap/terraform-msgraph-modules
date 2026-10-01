@@ -8,6 +8,8 @@ Generated from Microsoft Graph **v1.0** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /authenticationMethodsPolicy/authenticationMethodConfigurations`, `GET/PATCH/DELETE /authenticationMethodsPolicy/authenticationMethodConfigurations/{authenticationMethodConfiguration-id}`.
 
+This module manages the same `microsoft.graph.authenticationMethodConfiguration` objects as the canonical module [`/policies/authenticationMethodsPolicy/authenticationMethodConfigurations`](../../policies/authentication-methods-policy/authentication-method-configurations/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

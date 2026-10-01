@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /riskDetections`, `GET/PATCH/DELETE /riskDetections/{riskDetection-id}`.
 
+This module manages the same `microsoft.graph.riskDetection` objects as the canonical module [`/identityProtection/riskDetections`](../identity-protection/risk-detections/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

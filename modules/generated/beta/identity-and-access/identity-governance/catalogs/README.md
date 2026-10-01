@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /identityGovernance/catalogs`, `GET/PATCH/DELETE /identityGovernance/catalogs/{accessPackageCatalog-id}`.
 
+This module manages the same `microsoft.graph.accessPackageCatalog` objects as the canonical module [`/identityGovernance/entitlementManagement/accessPackageCatalogs`](../entitlement-management/access-package-catalogs/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

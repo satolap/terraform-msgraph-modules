@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /riskyUsers`, `GET/PATCH/DELETE /riskyUsers/{riskyUser-id}`.
 
+This module manages the same `microsoft.graph.riskyUser` objects as the canonical module [`/identityProtection/riskyUsers`](../identity-protection/risky-users/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

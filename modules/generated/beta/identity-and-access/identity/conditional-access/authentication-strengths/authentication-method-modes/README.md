@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /identity/conditionalAccess/authenticationStrengths/authenticationMethodModes`, `GET/PATCH/DELETE /identity/conditionalAccess/authenticationStrengths/authenticationMethodModes/{authenticationMethodModeDetail-id}`.
 
+This module manages the same `microsoft.graph.authenticationMethodModeDetail` objects as the canonical module [`/identity/conditionalAccess/authenticationStrength/authenticationMethodModes`](../../authentication-strength/authentication-method-modes/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/mobileAppTroubleshootingEvents`, `GET/PATCH/DELETE /me/mobileAppTroubleshootingEvents/{mobileAppTroubleshootingEvent-id}`.
 
+This module manages the same `microsoft.graph.mobileAppTroubleshootingEvent` objects as the canonical module [`/deviceManagement/mobileAppTroubleshootingEvents`](../../../device-and-app-management/device-management/mobile-app-troubleshooting-events/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/cloudPCs`, `GET/PATCH/DELETE /me/cloudPCs/{cloudPC-id}`.
 
+This module manages the same `microsoft.graph.cloudPC` objects as the canonical module [`/deviceManagement/virtualEndpoint/cloudPCs`](../../device-management/virtual-endpoint/cloud-p-cs/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

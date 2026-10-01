@@ -113,7 +113,19 @@ Open a category, then an endpoint README for inputs, permissions guidance, impor
 
 License requirements are reviewed for 7 of 1430 modules; every other module carries an explicit unknown licensing record in its README and manifest entry.
 
-1829 candidate collections are not generated; each exclusion and its reason is recorded under `exclusions` in [manifest.json](manifest.json). A request wrapper is never presented as management of the object it creates.
+8686 Graph paths are not generated as modules. Each is recorded under `exclusions` in [manifest.json](manifest.json) with its reason and reason code. A request wrapper is never presented as management of the object it creates.
+
+| Reason code | Paths | Meaning |
+| --- | ---: | --- |
+| `action_or_function` | 1605 | OData action or function. |
+| `cast` | 756 | OData type-cast segment. |
+| `item_requires_input` | 3 | An item operation needs a header or query parameter, such as If-Match. |
+| `no_item_lifecycle` | 1821 | No single item path with GET, PATCH or PUT, and DELETE. |
+| `no_post` | 3845 | Any other path without a POST the generator evaluates: read-only collections, items without a generated collection, `$count`, `$value`, alternate keys and unsupported segment syntax. |
+| `no_response_id` | 4 | POST response has no id to track the created object. |
+| `ref_relationship` | 121 | Relationship written through `$ref` operations. |
+| `reviewed_exclusion` | 1 | Excluded by a reviewed operation contract. |
+| `singleton` | 530 | Singleton with GET and PATCH but no POST; updated in place, not created. |
 
 Catalog scope: **Full catalog from pinned API sources**. Full-catalog licensing mapping checks run against the selected API version; partial runs do not claim mapping coverage.
 

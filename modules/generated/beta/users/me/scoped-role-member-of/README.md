@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/scopedRoleMemberOf`, `GET/PATCH/DELETE /me/scopedRoleMemberOf/{scopedRoleMembership-id}`.
 
+This module manages the same `microsoft.graph.scopedRoleMembership` objects as the canonical module [`/scopedRoleMemberships`](../../../identity-and-access/scoped-role-memberships/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /app/calls`, `GET/PATCH/DELETE /app/calls/{call-id}`.
 
+This module manages the same `microsoft.graph.call` objects as the canonical module [`/communications/calls`](../../communications/calls/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

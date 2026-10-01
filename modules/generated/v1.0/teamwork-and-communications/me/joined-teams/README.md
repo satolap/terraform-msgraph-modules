@@ -8,6 +8,8 @@ Generated from Microsoft Graph **v1.0** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/joinedTeams`, `GET/PATCH/DELETE /me/joinedTeams/{team-id}`.
 
+This module manages the same `microsoft.graph.team` objects as the canonical module [`/teams`](../../teams/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

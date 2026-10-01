@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /identityGovernance/entitlementManagement/accessPackageAssignmentRequests`, `GET/PATCH/DELETE /identityGovernance/entitlementManagement/accessPackageAssignmentRequests/{accessPackageAssignmentRequest-id}`.
 
+This module manages the same `microsoft.graph.accessPackageAssignmentRequest` objects as the canonical module [`/identityGovernance/entitlementManagement/assignmentRequests`](../assignment-requests/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

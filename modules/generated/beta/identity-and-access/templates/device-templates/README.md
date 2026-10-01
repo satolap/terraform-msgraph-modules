@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /templates/deviceTemplates`, `GET/PATCH/DELETE /templates/deviceTemplates/{deviceTemplate-id}`.
 
+This module manages the same `microsoft.graph.deviceTemplate` objects as the canonical module [`/directory/templates/deviceTemplates`](../../directory/templates/device-templates/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

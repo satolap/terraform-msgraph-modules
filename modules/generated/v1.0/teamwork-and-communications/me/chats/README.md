@@ -8,6 +8,8 @@ Generated from Microsoft Graph **v1.0** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/chats`, `GET/PATCH/DELETE /me/chats/{chat-id}`.
 
+This module manages the same `microsoft.graph.chat` objects as the canonical module [`/chats`](../../chats/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

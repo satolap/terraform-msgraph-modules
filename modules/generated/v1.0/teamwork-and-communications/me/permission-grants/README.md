@@ -8,6 +8,8 @@ Generated from Microsoft Graph **v1.0** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/permissionGrants`, `GET/PATCH/DELETE /me/permissionGrants/{resourceSpecificPermissionGrant-id}`.
 
+This module manages the same `microsoft.graph.resourceSpecificPermissionGrant` objects as the canonical module [`/permissionGrants`](../../permission-grants/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

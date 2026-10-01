@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/informationProtection/threatAssessmentRequests`, `GET/PATCH/DELETE /me/informationProtection/threatAssessmentRequests/{threatAssessmentRequest-id}`.
 
+This module manages the same `microsoft.graph.threatAssessmentRequest` objects as the canonical module [`/informationProtection/threatAssessmentRequests`](../../../information-protection/threat-assessment-requests/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

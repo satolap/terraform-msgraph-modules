@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/informationProtection/policy/labels`, `GET/PATCH/DELETE /me/informationProtection/policy/labels/{informationProtectionLabel-id}`.
 
+This module manages the same `microsoft.graph.informationProtectionLabel` objects as the canonical module [`/informationProtection/policy/labels`](../../../../information-protection/policy/labels/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

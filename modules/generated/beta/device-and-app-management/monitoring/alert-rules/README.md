@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /monitoring/alertRules`, `GET/PATCH/DELETE /monitoring/alertRules/{alertRule-id}`.
 
+This module manages the same `microsoft.graph.deviceManagement.alertRule` objects as the canonical module [`/deviceManagement/monitoring/alertRules`](../../device-management/monitoring/alert-rules/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

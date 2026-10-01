@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/cloudPcPools`, `GET/PATCH/DELETE /me/cloudPcPools/{cloudPcPool-id}`.
 
+This module manages the same `microsoft.graph.cloudPcPool` objects as the canonical module [`/deviceManagement/virtualEndpoint/cloudPcPools`](../../device-management/virtual-endpoint/cloud-pc-pools/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/adhocCalls`, `GET/PATCH/DELETE /me/adhocCalls/{adhocCall-id}`.
 
+This module manages the same `microsoft.graph.adhocCall` objects as the canonical module [`/communications/adhocCalls`](../../communications/adhoc-calls/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl

@@ -8,6 +8,8 @@ Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /directory/featureRolloutPolicies`, `GET/PATCH/DELETE /directory/featureRolloutPolicies/{featureRolloutPolicy-id}`.
 
+This module manages the same `microsoft.graph.featureRolloutPolicy` objects as the canonical module [`/policies/featureRolloutPolicies`](../../policies/feature-rollout-policies/README.md); manage each object through only one of them.
+
 ## Usage
 
 ```hcl
