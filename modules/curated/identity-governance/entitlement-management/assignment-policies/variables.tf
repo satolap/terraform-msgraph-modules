@@ -205,6 +205,65 @@ variable "questions" {
   default = []
 }
 
+variable "custom_extension_stage_settings" {
+  description = <<-EOT
+    The catalog custom extensions that run at stages of this policy's requests and assignments,
+    one entry per stage: { stage, extension_id, extension_type }. The module is authoritative
+    over the bindings of every policy it manages: it sends the list on every apply, so an empty
+    list removes the bindings that were configured outside Terraform.
+
+    stage is one of "assignmentRequestCreated", "assignmentRequestApproved",
+    "assignmentRequestGranted", "assignmentRequestRemoved" (request stages),
+    "assignmentFourteenDaysBeforeExpiration" or "assignmentOneDayBeforeExpiration" (expiration
+    stages, which run only for assignments that expire). extension_id is the ID of a custom
+    extension in the catalog of the access package. extension_type is "request_workflow" for a
+    request stage and "assignment_workflow" for an expiration stage. One extension can be
+    bound to several stages of the same type, and each stage can be bound once.
+  EOT
+  type = list(object({
+    stage          = string
+    extension_id   = string
+    extension_type = string
+  }))
+  default  = []
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for s in var.custom_extension_stage_settings : contains(concat(
+        ["assignmentRequestCreated", "assignmentRequestApproved", "assignmentRequestGranted", "assignmentRequestRemoved"],
+        ["assignmentFourteenDaysBeforeExpiration", "assignmentOneDayBeforeExpiration"],
+      ), s.stage)
+    ])
+    error_message = "custom_extension_stage_settings[*].stage must be one of \"assignmentRequestCreated\", \"assignmentRequestApproved\", \"assignmentRequestGranted\", \"assignmentRequestRemoved\", \"assignmentFourteenDaysBeforeExpiration\" or \"assignmentOneDayBeforeExpiration\"."
+  }
+
+  validation {
+    condition     = alltrue([for s in var.custom_extension_stage_settings : contains(["request_workflow", "assignment_workflow"], s.extension_type)])
+    error_message = "custom_extension_stage_settings[*].extension_type must be \"request_workflow\" or \"assignment_workflow\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for s in var.custom_extension_stage_settings :
+      contains(["assignmentRequestCreated", "assignmentRequestApproved", "assignmentRequestGranted", "assignmentRequestRemoved"], s.stage) ? s.extension_type != "assignment_workflow" : (
+        contains(["assignmentFourteenDaysBeforeExpiration", "assignmentOneDayBeforeExpiration"], s.stage) ? s.extension_type != "request_workflow" : true
+      )
+    ])
+    error_message = "The four request stages (assignmentRequestCreated, assignmentRequestApproved, assignmentRequestGranted, assignmentRequestRemoved) take an extension_type of \"request_workflow\", and the two expiration stages (assignmentFourteenDaysBeforeExpiration, assignmentOneDayBeforeExpiration) take \"assignment_workflow\"."
+  }
+
+  validation {
+    condition     = length(distinct([for s in var.custom_extension_stage_settings : s.stage])) == length(var.custom_extension_stage_settings)
+    error_message = "custom_extension_stage_settings must name each stage at most once; bind one extension to several stages with one entry per stage."
+  }
+
+  validation {
+    condition     = alltrue([for s in var.custom_extension_stage_settings : can(regex("^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$", s.extension_id))])
+    error_message = "custom_extension_stage_settings[*].extension_id must be the GUID of a custom extension in the catalog of the access package."
+  }
+}
+
 variable "api_version" {
   description = "Microsoft Graph API version to target for the assignmentPolicies endpoint. One of \"v1.0\" or \"beta\"."
   type        = string

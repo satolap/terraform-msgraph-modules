@@ -29,6 +29,7 @@ curated/
 │       │   └── resource-role-scopes/
 │       ├── assignment-policies/
 │       └── catalogs/
+│           ├── custom-extensions/
 │           └── resources/
 ├── service-principals/
 └── users/
@@ -49,6 +50,7 @@ specific module folder, rather than this index or a grouping folder.
 | [Users](users/README.md) | Microsoft Entra user accounts |
 | [Catalogs](identity-governance/entitlement-management/catalogs/README.md) | Entitlement management resource catalogs |
 | [Catalog resources](identity-governance/entitlement-management/catalogs/resources/README.md) | Resource associations within a catalog |
+| [Catalog custom extensions](identity-governance/entitlement-management/catalogs/custom-extensions/README.md) | Logic App custom workflow extensions that assignment policies call |
 | [Access packages](identity-governance/entitlement-management/access-packages/README.md) | Packages of access to catalog resources |
 | [Resource role scopes](identity-governance/entitlement-management/access-packages/resource-role-scopes/README.md) | Resource roles and scopes attached to an access package |
 | [Assignment policies](identity-governance/entitlement-management/assignment-policies/README.md) | Access-package request and assignment policies |
