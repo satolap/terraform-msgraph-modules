@@ -2,7 +2,7 @@
 
 [All categories](../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/identity-network-access-overview?view=graph-rest-beta&preserve-view=true)
 
-Microsoft Graph **beta** · **555 generated modules**.
+Microsoft Graph **beta** · **553 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -536,8 +536,6 @@ Microsoft Graph **beta** · **555 generated modules**.
 | [`/subscribedSkus`](subscribed-skus/README.md) | `microsoft.graph.subscribedSku` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/subscribedsku?view=graph-rest-beta&preserve-view=true) |
 | [`/templates/deviceTemplates`](templates/device-templates/README.md) | `microsoft.graph.deviceTemplate` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/devicetemplate?view=graph-rest-beta&preserve-view=true) |
 | [`/tenantRelationships/delegatedAdminCustomers`](tenant-relationships/delegated-admin-customers/README.md) | `microsoft.graph.delegatedAdminCustomer` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/delegatedadmincustomer?view=graph-rest-beta&preserve-view=true) |
-| [`/tenantRelationships/delegatedAdminRelationships`](tenant-relationships/delegated-admin-relationships/README.md) | `microsoft.graph.delegatedAdminRelationship` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/delegatedadminrelationship?view=graph-rest-beta&preserve-view=true) |
-| [`/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/accessAssignments`](tenant-relationships/delegated-admin-relationships/by-delegated-admin-relationship-id/access-assignments/README.md) | `microsoft.graph.delegatedAdminAccessAssignment` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/delegatedadminaccessassignment?view=graph-rest-beta&preserve-view=true) |
 | [`/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/operations`](tenant-relationships/delegated-admin-relationships/by-delegated-admin-relationship-id/operations/README.md) | `microsoft.graph.delegatedAdminRelationshipOperation` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/delegatedadminrelationshipoperation?view=graph-rest-beta&preserve-view=true) |
 | [`/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/requests`](tenant-relationships/delegated-admin-relationships/by-delegated-admin-relationship-id/requests/README.md) | `microsoft.graph.delegatedAdminRelationshipRequest` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/delegatedadminrelationshiprequest?view=graph-rest-beta&preserve-view=true) |
 | [`/trustFramework/keySets`](trust-framework/key-sets/README.md) | `microsoft.graph.trustFrameworkKeySet` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/trustframeworkkeyset?view=graph-rest-beta&preserve-view=true) |

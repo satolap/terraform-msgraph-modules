@@ -2,7 +2,7 @@
 
 [Catalog](README.md) · [manifest.json](manifest.json)
 
-1423 generated endpoints carry an unknown licensing record. Each path links to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
+1403 generated endpoints carry an unknown licensing record. Each path links to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
 
 ## Applications (`applications`)
 
@@ -466,7 +466,7 @@
 
 ## Identity and access (`identity-and-access`)
 
-319 unknown endpoints.
+317 unknown endpoints.
 
 - [`/agreementAcceptances`](identity-and-access/agreement-acceptances/README.md)
 - [`/agreements`](identity-and-access/agreements/README.md)
@@ -778,8 +778,6 @@
 - [`/subscribedSkus`](identity-and-access/subscribed-skus/README.md)
 - [`/tenantRelationships/delegatedAdminCustomers`](identity-and-access/tenant-relationships/delegated-admin-customers/README.md)
 - [`/tenantRelationships/delegatedAdminCustomers/{delegatedAdminCustomer-id}/serviceManagementDetails`](identity-and-access/tenant-relationships/delegated-admin-customers/by-delegated-admin-customer-id/service-management-details/README.md)
-- [`/tenantRelationships/delegatedAdminRelationships`](identity-and-access/tenant-relationships/delegated-admin-relationships/README.md)
-- [`/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/accessAssignments`](identity-and-access/tenant-relationships/delegated-admin-relationships/by-delegated-admin-relationship-id/access-assignments/README.md)
 - [`/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/operations`](identity-and-access/tenant-relationships/delegated-admin-relationships/by-delegated-admin-relationship-id/operations/README.md)
 - [`/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/requests`](identity-and-access/tenant-relationships/delegated-admin-relationships/by-delegated-admin-relationship-id/requests/README.md)
 - [`/users/{user-id}/appRoleAssignments`](identity-and-access/users/by-user-id/app-role-assignments/README.md)
@@ -1237,29 +1235,6 @@
 - [`/storage/fileStorage/containers/{fileStorageContainer-id}/permissions`](sites-and-lists/storage/file-storage/containers/by-file-storage-container-id/permissions/README.md)
 - [`/storage/fileStorage/deletedContainers/{fileStorageContainer-id}/columns`](sites-and-lists/storage/file-storage/deleted-containers/by-file-storage-container-id/columns/README.md)
 - [`/storage/fileStorage/deletedContainers/{fileStorageContainer-id}/permissions`](sites-and-lists/storage/file-storage/deleted-containers/by-file-storage-container-id/permissions/README.md)
-
-## Tasks and plans (`tasks-and-plans`)
-
-18 unknown endpoints.
-
-- [`/groups/{group-id}/planner/plans`](tasks-and-plans/groups/by-group-id/planner/plans/README.md)
-- [`/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets`](tasks-and-plans/groups/by-group-id/planner/plans/by-planner-plan-id/buckets/README.md)
-- [`/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks`](tasks-and-plans/groups/by-group-id/planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks/README.md)
-- [`/groups/{group-id}/planner/plans/{plannerPlan-id}/tasks`](tasks-and-plans/groups/by-group-id/planner/plans/by-planner-plan-id/tasks/README.md)
-- [`/me/planner/plans`](tasks-and-plans/me/planner/plans/README.md)
-- [`/me/planner/plans/{plannerPlan-id}/buckets`](tasks-and-plans/me/planner/plans/by-planner-plan-id/buckets/README.md)
-- [`/me/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks`](tasks-and-plans/me/planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks/README.md)
-- [`/me/planner/plans/{plannerPlan-id}/tasks`](tasks-and-plans/me/planner/plans/by-planner-plan-id/tasks/README.md)
-- [`/me/planner/tasks`](tasks-and-plans/me/planner/tasks/README.md)
-- [`/planner/buckets/{plannerBucket-id}/tasks`](tasks-and-plans/planner/buckets/by-planner-bucket-id/tasks/README.md)
-- [`/planner/plans/{plannerPlan-id}/buckets`](tasks-and-plans/planner/plans/by-planner-plan-id/buckets/README.md)
-- [`/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks`](tasks-and-plans/planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks/README.md)
-- [`/planner/plans/{plannerPlan-id}/tasks`](tasks-and-plans/planner/plans/by-planner-plan-id/tasks/README.md)
-- [`/users/{user-id}/planner/plans`](tasks-and-plans/users/by-user-id/planner/plans/README.md)
-- [`/users/{user-id}/planner/plans/{plannerPlan-id}/buckets`](tasks-and-plans/users/by-user-id/planner/plans/by-planner-plan-id/buckets/README.md)
-- [`/users/{user-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks`](tasks-and-plans/users/by-user-id/planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks/README.md)
-- [`/users/{user-id}/planner/plans/{plannerPlan-id}/tasks`](tasks-and-plans/users/by-user-id/planner/plans/by-planner-plan-id/tasks/README.md)
-- [`/users/{user-id}/planner/tasks`](tasks-and-plans/users/by-user-id/planner/tasks/README.md)
 
 ## Teamwork and communications (`teamwork-and-communications`)
 

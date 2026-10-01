@@ -135,7 +135,7 @@
     },
     {
       "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/identity-network-access-overview?view=graph-rest-1.0&preserve-view=true",
-      "module_count": 322,
+      "module_count": 320,
       "name": "Identity and access",
       "official": true,
       "path": "v1.0/identity-and-access",
@@ -223,7 +223,7 @@
     },
     {
       "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/planner-overview?view=graph-rest-1.0&preserve-view=true",
-      "module_count": 18,
+      "module_count": 0,
       "name": "Tasks and plans",
       "official": true,
       "path": "v1.0/tasks-and-plans",
@@ -19478,10 +19478,28 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/groups/{group-id}/planner/plans",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/groups/{group-id}/planner/plans/$count",
       "reason": "OData $count segment; read-only",
       "reason_code": "no_post",
       "source": "lifecycle"
+    },
+    {
+      "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}",
+      "reason": "item path without a generated collection module",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
     },
     {
       "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets/$count",
@@ -19490,8 +19508,26 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}",
+      "reason": "item path without a generated collection module",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/$count",
       "reason": "OData $count segment; read-only",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/{plannerTask-id}",
+      "reason": "item path without a generated collection module",
       "reason_code": "no_post",
       "source": "lifecycle"
     },
@@ -19526,8 +19562,20 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/tasks",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/tasks/$count",
       "reason": "OData $count segment; read-only",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/tasks/{plannerTask-id}",
+      "reason": "item path without a generated collection module",
       "reason_code": "no_post",
       "source": "lifecycle"
     },
@@ -35336,10 +35384,28 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/me/planner/plans",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/me/planner/plans/$count",
       "reason": "OData $count segment; read-only",
       "reason_code": "no_post",
       "source": "lifecycle"
+    },
+    {
+      "collection_path": "/me/planner/plans/{plannerPlan-id}",
+      "reason": "item path without a generated collection module",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/me/planner/plans/{plannerPlan-id}/buckets",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
     },
     {
       "collection_path": "/me/planner/plans/{plannerPlan-id}/buckets/$count",
@@ -35348,8 +35414,26 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/me/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}",
+      "reason": "item path without a generated collection module",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/me/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/me/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/$count",
       "reason": "OData $count segment; read-only",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/me/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/{plannerTask-id}",
+      "reason": "item path without a generated collection module",
       "reason_code": "no_post",
       "source": "lifecycle"
     },
@@ -35384,8 +35468,20 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/me/planner/plans/{plannerPlan-id}/tasks",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/me/planner/plans/{plannerPlan-id}/tasks/$count",
       "reason": "OData $count segment; read-only",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/me/planner/plans/{plannerPlan-id}/tasks/{plannerTask-id}",
+      "reason": "item path without a generated collection module",
       "reason_code": "no_post",
       "source": "lifecycle"
     },
@@ -35414,8 +35510,20 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/me/planner/tasks",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/me/planner/tasks/$count",
       "reason": "OData $count segment; read-only",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/me/planner/tasks/{plannerTask-id}",
+      "reason": "item path without a generated collection module",
       "reason_code": "no_post",
       "source": "lifecycle"
     },
@@ -36782,8 +36890,20 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/planner/buckets/{plannerBucket-id}/tasks",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/planner/buckets/{plannerBucket-id}/tasks/$count",
       "reason": "OData $count segment; read-only",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/planner/buckets/{plannerBucket-id}/tasks/{plannerTask-id}",
+      "reason": "item path without a generated collection module",
       "reason_code": "no_post",
       "source": "lifecycle"
     },
@@ -36813,8 +36933,8 @@
     },
     {
       "collection_path": "/planner/plans",
-      "reason": "Plan updates require the If-Match ETag header that the upstream description omits for PATCH; excluded until a verified ETag lifecycle is implemented.",
-      "reason_code": "reviewed_exclusion",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
       "source": "contract"
     },
     {
@@ -36830,14 +36950,38 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/planner/plans/{plannerPlan-id}/buckets",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/planner/plans/{plannerPlan-id}/buckets/$count",
       "reason": "OData $count segment; read-only",
       "reason_code": "no_post",
       "source": "lifecycle"
     },
     {
+      "collection_path": "/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}",
+      "reason": "item path without a generated collection module",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/$count",
       "reason": "OData $count segment; read-only",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/{plannerTask-id}",
+      "reason": "item path without a generated collection module",
       "reason_code": "no_post",
       "source": "lifecycle"
     },
@@ -36872,8 +37016,20 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/planner/plans/{plannerPlan-id}/tasks",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/planner/plans/{plannerPlan-id}/tasks/$count",
       "reason": "OData $count segment; read-only",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/planner/plans/{plannerPlan-id}/tasks/{plannerTask-id}",
+      "reason": "item path without a generated collection module",
       "reason_code": "no_post",
       "source": "lifecycle"
     },
@@ -47342,14 +47498,38 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/tenantRelationships/delegatedAdminRelationships",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/tenantRelationships/delegatedAdminRelationships/$count",
       "reason": "OData $count segment; read-only",
       "reason_code": "no_post",
       "source": "lifecycle"
     },
     {
+      "collection_path": "/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}",
+      "reason": "item path without a generated collection module",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/accessAssignments",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/accessAssignments/$count",
       "reason": "OData $count segment; read-only",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/accessAssignments/{delegatedAdminAccessAssignment-id}",
+      "reason": "item path without a generated collection module",
       "reason_code": "no_post",
       "source": "lifecycle"
     },
@@ -51680,10 +51860,28 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/users/{user-id}/planner/plans",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/users/{user-id}/planner/plans/$count",
       "reason": "OData $count segment; read-only",
       "reason_code": "no_post",
       "source": "lifecycle"
+    },
+    {
+      "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}",
+      "reason": "item path without a generated collection module",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/buckets",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
     },
     {
       "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/buckets/$count",
@@ -51692,8 +51890,26 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}",
+      "reason": "item path without a generated collection module",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/$count",
       "reason": "OData $count segment; read-only",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/{plannerTask-id}",
+      "reason": "item path without a generated collection module",
       "reason_code": "no_post",
       "source": "lifecycle"
     },
@@ -51728,8 +51944,20 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/tasks",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/tasks/$count",
       "reason": "OData $count segment; read-only",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/tasks/{plannerTask-id}",
+      "reason": "item path without a generated collection module",
       "reason_code": "no_post",
       "source": "lifecycle"
     },
@@ -51758,8 +51986,20 @@
       "source": "lifecycle"
     },
     {
+      "collection_path": "/users/{user-id}/planner/tasks",
+      "reason": "Update or delete requires an If-Match header with the object's current ETag; msgraph_resource sends no request headers on update or delete, so a generated module could create the object but not change or destroy it.",
+      "reason_code": "if_match_required",
+      "source": "contract"
+    },
+    {
       "collection_path": "/users/{user-id}/planner/tasks/$count",
       "reason": "OData $count segment; read-only",
+      "reason_code": "no_post",
+      "source": "lifecycle"
+    },
+    {
+      "collection_path": "/users/{user-id}/planner/tasks/{plannerTask-id}",
+      "reason": "item path without a generated collection module",
       "reason_code": "no_post",
       "source": "lifecycle"
     },
@@ -55314,14 +55554,6 @@
             "module_path": "v1.0/identity-and-access/tenant-relationships/delegated-admin-customers/by-delegated-admin-customer-id/service-management-details"
           },
           {
-            "collection_path": "/tenantRelationships/delegatedAdminRelationships",
-            "module_path": "v1.0/identity-and-access/tenant-relationships/delegated-admin-relationships"
-          },
-          {
-            "collection_path": "/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/accessAssignments",
-            "module_path": "v1.0/identity-and-access/tenant-relationships/delegated-admin-relationships/by-delegated-admin-relationship-id/access-assignments"
-          },
-          {
             "collection_path": "/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/operations",
             "module_path": "v1.0/identity-and-access/tenant-relationships/delegated-admin-relationships/by-delegated-admin-relationship-id/operations"
           },
@@ -55350,7 +55582,7 @@
             "module_path": "v1.0/identity-and-access/users/by-user-id/authentication/phone-methods"
           }
         ],
-        "unknown_count": 319
+        "unknown_count": 317
       },
       {
         "family": "mail",
@@ -57010,85 +57242,6 @@
         "unknown_count": 190
       },
       {
-        "family": "tasks-and-plans",
-        "name": "Tasks and plans",
-        "paths": [
-          {
-            "collection_path": "/groups/{group-id}/planner/plans",
-            "module_path": "v1.0/tasks-and-plans/groups/by-group-id/planner/plans"
-          },
-          {
-            "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets",
-            "module_path": "v1.0/tasks-and-plans/groups/by-group-id/planner/plans/by-planner-plan-id/buckets"
-          },
-          {
-            "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
-            "module_path": "v1.0/tasks-and-plans/groups/by-group-id/planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks"
-          },
-          {
-            "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/tasks",
-            "module_path": "v1.0/tasks-and-plans/groups/by-group-id/planner/plans/by-planner-plan-id/tasks"
-          },
-          {
-            "collection_path": "/me/planner/plans",
-            "module_path": "v1.0/tasks-and-plans/me/planner/plans"
-          },
-          {
-            "collection_path": "/me/planner/plans/{plannerPlan-id}/buckets",
-            "module_path": "v1.0/tasks-and-plans/me/planner/plans/by-planner-plan-id/buckets"
-          },
-          {
-            "collection_path": "/me/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
-            "module_path": "v1.0/tasks-and-plans/me/planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks"
-          },
-          {
-            "collection_path": "/me/planner/plans/{plannerPlan-id}/tasks",
-            "module_path": "v1.0/tasks-and-plans/me/planner/plans/by-planner-plan-id/tasks"
-          },
-          {
-            "collection_path": "/me/planner/tasks",
-            "module_path": "v1.0/tasks-and-plans/me/planner/tasks"
-          },
-          {
-            "collection_path": "/planner/buckets/{plannerBucket-id}/tasks",
-            "module_path": "v1.0/tasks-and-plans/planner/buckets/by-planner-bucket-id/tasks"
-          },
-          {
-            "collection_path": "/planner/plans/{plannerPlan-id}/buckets",
-            "module_path": "v1.0/tasks-and-plans/planner/plans/by-planner-plan-id/buckets"
-          },
-          {
-            "collection_path": "/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
-            "module_path": "v1.0/tasks-and-plans/planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks"
-          },
-          {
-            "collection_path": "/planner/plans/{plannerPlan-id}/tasks",
-            "module_path": "v1.0/tasks-and-plans/planner/plans/by-planner-plan-id/tasks"
-          },
-          {
-            "collection_path": "/users/{user-id}/planner/plans",
-            "module_path": "v1.0/tasks-and-plans/users/by-user-id/planner/plans"
-          },
-          {
-            "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/buckets",
-            "module_path": "v1.0/tasks-and-plans/users/by-user-id/planner/plans/by-planner-plan-id/buckets"
-          },
-          {
-            "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
-            "module_path": "v1.0/tasks-and-plans/users/by-user-id/planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks"
-          },
-          {
-            "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/tasks",
-            "module_path": "v1.0/tasks-and-plans/users/by-user-id/planner/plans/by-planner-plan-id/tasks"
-          },
-          {
-            "collection_path": "/users/{user-id}/planner/tasks",
-            "module_path": "v1.0/tasks-and-plans/users/by-user-id/planner/tasks"
-          }
-        ],
-        "unknown_count": 18
-      },
-      {
         "family": "teamwork-and-communications",
         "name": "Teamwork and communications",
         "paths": [
@@ -58328,11 +58481,11 @@
         "unknown_count": 16
       }
     ],
-    "family_count": 32,
-    "unknown_count": 1423
+    "family_count": 31,
+    "unknown_count": 1403
   },
   "licensing_reviewed_count": 7,
-  "module_count": 1430,
+  "module_count": 1410,
   "modules": [
     {
       "category": "tenants",
@@ -104601,636 +104754,6 @@
       "property_count": 2,
       "schema_name": "microsoft.graph.resourceSpecificPermissionGrant",
       "warnings": []
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/groups/{group-id}/planner/plans",
-      "contract_hash": "abb2a5b07244ca251bbd4575ed46ffe8e90a3f9fa1f59bad8e68acadba9cf005",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannerplan?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/groups/{group-id}/planner/plans",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "1e0d80e68db0c4134b6aaeadf2dbde60877240087fad9c2cf17dd7da947d849b",
-          "contract_hash": "abb2a5b07244ca251bbd4575ed46ffe8e90a3f9fa1f59bad8e68acadba9cf005",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 2,
-            "executed": 2,
-            "passed": 2,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 0,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "container": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "object ( { odata_type = optional ( string \"#microsoft.graph.plannerPlanContainer\" ) containerId = optional ( string ) type = optional ( string ) url = optional ( string ) } )"
-          },
-          "group_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerPlan",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "owner": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "title": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/groups/by-group-id/planner/plans",
-      "property_count": 4,
-      "schema_name": "microsoft.graph.plannerPlan",
-      "warnings": []
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets",
-      "contract_hash": "fea76a97c85d5c644e82fc892738a41378ff6eec6ab7695c6e743a73dc09f639",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannerbucket?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "87897ae5404a417adf17928a775db9e009851a89e6c31cb77c9b5ed2f60499f1",
-          "contract_hash": "fea76a97c85d5c644e82fc892738a41378ff6eec6ab7695c6e743a73dc09f639",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 2,
-            "executed": 2,
-            "passed": 2,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 0,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "group_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "name": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerBucket",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "planner_plan_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/groups/by-group-id/planner/plans/by-planner-plan-id/buckets",
-      "property_count": 4,
-      "schema_name": "microsoft.graph.plannerBucket",
-      "warnings": []
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
-      "contract_hash": "a324d9aae282ebd6650ba9fcbdbc106910e17e9a7645b6195ee0acff679f0f5c",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "3e4b2d60bf5d42f8e2d6b7c4f58a872753824db03ae1e2663bf8eac7f39b8b80",
-          "contract_hash": "a324d9aae282ebd6650ba9fcbdbc106910e17e9a7645b6195ee0acff679f0f5c",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 3,
-            "executed": 3,
-            "passed": 3,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 4,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "active_checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "applied_categories": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "assignee_priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "assignments": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "bucket_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "completed_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "conversation_thread_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "created_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "due_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "group_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerTask",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "percent_complete": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "planner_bucket_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "planner_plan_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "preview_type": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "reference_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "start_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "title": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/{plannerTask-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/groups/by-group-id/planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks",
-      "property_count": 19,
-      "schema_name": "microsoft.graph.plannerTask",
-      "warnings": [
-        "appliedCategories: polymorphic schema; accepts an untyped value",
-        "assignments: polymorphic schema; accepts an untyped value",
-        "completedBy: polymorphic schema; accepts an untyped value",
-        "createdBy: polymorphic schema; accepts an untyped value"
-      ]
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/tasks",
-      "contract_hash": "c9d62fb258ace539650313cd7f3a39df670d918eefb7d54cecd068f90bc2c1f5",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/groups/{group-id}/planner/plans/{plannerPlan-id}/tasks",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "65d2fc32c3ce9637ca442c8af3917509d5bea81d8418930d9c9bfc1152dab6b4",
-          "contract_hash": "c9d62fb258ace539650313cd7f3a39df670d918eefb7d54cecd068f90bc2c1f5",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 3,
-            "executed": 3,
-            "passed": 3,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 4,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "active_checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "applied_categories": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "assignee_priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "assignments": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "bucket_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "completed_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "conversation_thread_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "created_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "due_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "group_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerTask",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "percent_complete": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "planner_plan_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "preview_type": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "reference_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "start_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "title": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/groups/{group-id}/planner/plans/{plannerPlan-id}/tasks/{plannerTask-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/groups/by-group-id/planner/plans/by-planner-plan-id/tasks",
-      "property_count": 19,
-      "schema_name": "microsoft.graph.plannerTask",
-      "warnings": [
-        "appliedCategories: polymorphic schema; accepts an untyped value",
-        "assignments: polymorphic schema; accepts an untyped value",
-        "completedBy: polymorphic schema; accepts an untyped value",
-        "createdBy: polymorphic schema; accepts an untyped value"
-      ]
     },
     {
       "category": "identity-and-access",
@@ -172278,805 +171801,6 @@
       "warnings": []
     },
     {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/me/planner/plans",
-      "contract_hash": "1e3c098c369c8992dfbf76fe71c7a9c9cfac7b6720bd4c47e90614814a28c2cb",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannerplan?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/me/planner/plans",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "aaea62ffc6250520cc39f0152991ac2b3cf034838726022865b000be83249414",
-          "contract_hash": "1e3c098c369c8992dfbf76fe71c7a9c9cfac7b6720bd4c47e90614814a28c2cb",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 2,
-            "executed": 2,
-            "passed": 2,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 0,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "container": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "object ( { odata_type = optional ( string \"#microsoft.graph.plannerPlanContainer\" ) containerId = optional ( string ) type = optional ( string ) url = optional ( string ) } )"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerPlan",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "owner": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "title": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/me/planner/plans/{plannerPlan-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/me/planner/plans",
-      "property_count": 4,
-      "schema_name": "microsoft.graph.plannerPlan",
-      "warnings": []
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/me/planner/plans/{plannerPlan-id}/buckets",
-      "contract_hash": "588f09d14b05dcbd4faf11bbd7fed1afbc3664084107470c8e0786f5881534cc",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannerbucket?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/me/planner/plans/{plannerPlan-id}/buckets",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "351efd01bf3a8aed8404f6dee9c1cbe41135db52ed85b3fbec1e3440a704d785",
-          "contract_hash": "588f09d14b05dcbd4faf11bbd7fed1afbc3664084107470c8e0786f5881534cc",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 2,
-            "executed": 2,
-            "passed": 2,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 0,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "name": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerBucket",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "planner_plan_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/me/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/me/planner/plans/by-planner-plan-id/buckets",
-      "property_count": 4,
-      "schema_name": "microsoft.graph.plannerBucket",
-      "warnings": []
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/me/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
-      "contract_hash": "623fd81b0007410e232a8f15debcf4736eaefa27c21e749e4d2f4eb3b613a4cd",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/me/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "0cbee62ad5b0d747bdfda4fa1c45ed777b9fc1019311742ad75b80152bc3dec1",
-          "contract_hash": "623fd81b0007410e232a8f15debcf4736eaefa27c21e749e4d2f4eb3b613a4cd",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 3,
-            "executed": 3,
-            "passed": 3,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 4,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "active_checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "applied_categories": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "assignee_priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "assignments": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "bucket_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "completed_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "conversation_thread_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "created_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "due_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerTask",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "percent_complete": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "planner_bucket_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "planner_plan_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "preview_type": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "reference_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "start_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "title": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/me/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/{plannerTask-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/me/planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks",
-      "property_count": 19,
-      "schema_name": "microsoft.graph.plannerTask",
-      "warnings": [
-        "appliedCategories: polymorphic schema; accepts an untyped value",
-        "assignments: polymorphic schema; accepts an untyped value",
-        "completedBy: polymorphic schema; accepts an untyped value",
-        "createdBy: polymorphic schema; accepts an untyped value"
-      ]
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/me/planner/plans/{plannerPlan-id}/tasks",
-      "contract_hash": "63b4f9d8bebdfa956abdbf2492344671501c37154c9a2b70c0461cd31b5b4d1f",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/me/planner/plans/{plannerPlan-id}/tasks",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "3cd0bbf4815d8fae01ee56ee6c319fc14da0df40e9ddbe726635a13cab8b49b1",
-          "contract_hash": "63b4f9d8bebdfa956abdbf2492344671501c37154c9a2b70c0461cd31b5b4d1f",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 3,
-            "executed": 3,
-            "passed": 3,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 4,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "active_checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "applied_categories": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "assignee_priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "assignments": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "bucket_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "completed_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "conversation_thread_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "created_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "due_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerTask",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "percent_complete": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "planner_plan_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "preview_type": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "reference_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "start_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "title": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/me/planner/plans/{plannerPlan-id}/tasks/{plannerTask-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/me/planner/plans/by-planner-plan-id/tasks",
-      "property_count": 19,
-      "schema_name": "microsoft.graph.plannerTask",
-      "warnings": [
-        "appliedCategories: polymorphic schema; accepts an untyped value",
-        "assignments: polymorphic schema; accepts an untyped value",
-        "completedBy: polymorphic schema; accepts an untyped value",
-        "createdBy: polymorphic schema; accepts an untyped value"
-      ]
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/me/planner/tasks",
-      "contract_hash": "200e0b3a7dca4bd3e37e2a48f179d503c5738ebb38a89dc5f75267a626a5b5bd",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/me/planner/tasks",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "10f9c3440494aff60692541f13474bc04d964c02bdb2da8af5c69186567a85a9",
-          "contract_hash": "200e0b3a7dca4bd3e37e2a48f179d503c5738ebb38a89dc5f75267a626a5b5bd",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 3,
-            "executed": 3,
-            "passed": 3,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 4,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "active_checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "applied_categories": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "assignee_priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "assignments": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "bucket_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "completed_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "conversation_thread_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "created_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "due_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerTask",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "percent_complete": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "preview_type": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "reference_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "start_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "title": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/me/planner/tasks/{plannerTask-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/me/planner/tasks",
-      "property_count": 19,
-      "schema_name": "microsoft.graph.plannerTask",
-      "warnings": [
-        "appliedCategories: polymorphic schema; accepts an untyped value",
-        "assignments: polymorphic schema; accepts an untyped value",
-        "completedBy: polymorphic schema; accepts an untyped value",
-        "createdBy: polymorphic schema; accepts an untyped value"
-      ]
-    },
-    {
       "canonical_basis": "inferred",
       "canonical_path": "/scopedRoleMemberships",
       "category": "users",
@@ -175402,713 +174126,6 @@
       "property_count": 2,
       "schema_name": "microsoft.graph.resourceSpecificPermissionGrant",
       "warnings": []
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/planner/buckets/{plannerBucket-id}/tasks",
-      "contract_hash": "932c23865396a1b1d8aaec9473fb40a315b6b830798729edd511bd24da2dcf87",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/planner/buckets/{plannerBucket-id}/tasks",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "d7f2ec2707f9d38d9a341740838852fe13d710b378389f5e69a71f5ef7e6c71e",
-          "contract_hash": "932c23865396a1b1d8aaec9473fb40a315b6b830798729edd511bd24da2dcf87",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 3,
-            "executed": 3,
-            "passed": 3,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 4,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "active_checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "applied_categories": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "assignee_priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "assignments": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "bucket_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "completed_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "conversation_thread_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "created_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "due_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerTask",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "percent_complete": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "planner_bucket_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "preview_type": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "reference_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "start_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "title": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/planner/buckets/{plannerBucket-id}/tasks/{plannerTask-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/planner/buckets/by-planner-bucket-id/tasks",
-      "property_count": 19,
-      "schema_name": "microsoft.graph.plannerTask",
-      "warnings": [
-        "appliedCategories: polymorphic schema; accepts an untyped value",
-        "assignments: polymorphic schema; accepts an untyped value",
-        "completedBy: polymorphic schema; accepts an untyped value",
-        "createdBy: polymorphic schema; accepts an untyped value"
-      ]
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/planner/plans/{plannerPlan-id}/buckets",
-      "contract_hash": "588f09d14b05dcbd4faf11bbd7fed1afbc3664084107470c8e0786f5881534cc",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannerbucket?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/planner/plans/{plannerPlan-id}/buckets",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "40f0aeb94d3d35b38e773bd0dda9f96172da5c5088ef5293266c5cb2add86c4d",
-          "contract_hash": "588f09d14b05dcbd4faf11bbd7fed1afbc3664084107470c8e0786f5881534cc",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 2,
-            "executed": 2,
-            "passed": 2,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 0,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "name": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerBucket",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "planner_plan_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/planner/plans/by-planner-plan-id/buckets",
-      "property_count": 4,
-      "schema_name": "microsoft.graph.plannerBucket",
-      "warnings": []
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
-      "contract_hash": "623fd81b0007410e232a8f15debcf4736eaefa27c21e749e4d2f4eb3b613a4cd",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "ffad415890edb69b39606f19d36e7d3648a5dae79d631ffa24d9e9f14c525bc0",
-          "contract_hash": "623fd81b0007410e232a8f15debcf4736eaefa27c21e749e4d2f4eb3b613a4cd",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 3,
-            "executed": 3,
-            "passed": 3,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 4,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "active_checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "applied_categories": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "assignee_priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "assignments": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "bucket_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "completed_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "conversation_thread_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "created_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "due_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerTask",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "percent_complete": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "planner_bucket_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "planner_plan_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "preview_type": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "reference_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "start_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "title": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/{plannerTask-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks",
-      "property_count": 19,
-      "schema_name": "microsoft.graph.plannerTask",
-      "warnings": [
-        "appliedCategories: polymorphic schema; accepts an untyped value",
-        "assignments: polymorphic schema; accepts an untyped value",
-        "completedBy: polymorphic schema; accepts an untyped value",
-        "createdBy: polymorphic schema; accepts an untyped value"
-      ]
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/planner/plans/{plannerPlan-id}/tasks",
-      "contract_hash": "63b4f9d8bebdfa956abdbf2492344671501c37154c9a2b70c0461cd31b5b4d1f",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/planner/plans/{plannerPlan-id}/tasks",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "e9f9c4a0ecb7fdccc588e66cf59706ac4b81080a7ab6e7c31584fce948f690d3",
-          "contract_hash": "63b4f9d8bebdfa956abdbf2492344671501c37154c9a2b70c0461cd31b5b4d1f",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 3,
-            "executed": 3,
-            "passed": 3,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 4,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "active_checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "applied_categories": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "assignee_priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "assignments": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "bucket_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "completed_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "conversation_thread_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "created_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "due_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerTask",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "percent_complete": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "planner_plan_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "preview_type": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "reference_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "start_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "title": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/planner/plans/{plannerPlan-id}/tasks/{plannerTask-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/planner/plans/by-planner-plan-id/tasks",
-      "property_count": 19,
-      "schema_name": "microsoft.graph.plannerTask",
-      "warnings": [
-        "appliedCategories: polymorphic schema; accepts an untyped value",
-        "assignments: polymorphic schema; accepts an untyped value",
-        "completedBy: polymorphic schema; accepts an untyped value",
-        "createdBy: polymorphic schema; accepts an untyped value"
-      ]
     },
     {
       "category": "identity-and-access",
@@ -230690,232 +228707,6 @@
       "category": "identity-and-access",
       "category_name": "Identity and access",
       "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/tenantRelationships/delegatedAdminRelationships",
-      "contract_hash": "64e79e8da30e9b029a28683ea6a8ca3dc462d305d8f67bcf7baeca04ad3f272a",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/delegatedadminrelationship?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/tenantRelationships/delegatedAdminRelationships",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "212be4e9b87f66e16cde7c688038c92f7d3fa71bc744111b449d59ac2be30709",
-          "contract_hash": "64e79e8da30e9b029a28683ea6a8ca3dc462d305d8f67bcf7baeca04ad3f272a",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 2,
-            "executed": 2,
-            "passed": 2,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 0,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "access_assignments": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "list ( object ( { odata_type = optional ( string \"#microsoft.graph.delegatedAdminAccessAssignment\" ) accessContainer = optional ( object ( { odata_type = optional ( string \"#microsoft.graph.delegatedAdminAccessContainer\" ) accessContainerId = optional ( string ) accessContainerType = optional ( string ) } ) ) accessDetails = optional ( object ( { odata_type = optional ( string \"#microsoft.graph.delegatedAdminAccessDetails\" ) unifiedRoles = optional ( list ( object ( { odata_type = optional ( string \"#microsoft.graph.unifiedRole\" ) roleDefinitionId = optional ( string ) } ) ) ) } ) ) } ) )"
-          },
-          "access_details": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "object ( { odata_type = optional ( string \"#microsoft.graph.delegatedAdminAccessDetails\" ) unifiedRoles = optional ( list ( object ( { odata_type = optional ( string \"#microsoft.graph.unifiedRole\" ) roleDefinitionId = optional ( string ) } ) ) ) } )"
-          },
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "auto_extend_duration": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "customer": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "object ( { odata_type = optional ( string \"#microsoft.graph.delegatedAdminRelationshipCustomerParticipant\" ) tenantId = optional ( string ) } )"
-          },
-          "display_name": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "duration": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.delegatedAdminRelationship",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "operations": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "list ( object ( { odata_type = optional ( string \"#microsoft.graph.delegatedAdminRelationshipOperation\" ) operationType = optional ( string ) status = optional ( string ) } ) )"
-          },
-          "requests": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "list ( object ( { odata_type = optional ( string \"#microsoft.graph.delegatedAdminRelationshipRequest\" ) action = optional ( string ) } ) )"
-          }
-        }
-      },
-      "item_path": "/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/identity-and-access/tenant-relationships/delegated-admin-relationships",
-      "property_count": 9,
-      "schema_name": "microsoft.graph.delegatedAdminRelationship",
-      "warnings": []
-    },
-    {
-      "category": "identity-and-access",
-      "category_name": "Identity and access",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/accessAssignments",
-      "contract_hash": "812a17b669bcc713d677e49d6a9d7eb9a7b944670af9cbc1ca4e7e47d35c6c1a",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/delegatedadminaccessassignment?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/accessAssignments",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "513396da8ec3531b30b91d9007381955be7da4287b5d8b14f13f3aac657584ab",
-          "contract_hash": "812a17b669bcc713d677e49d6a9d7eb9a7b944670af9cbc1ca4e7e47d35c6c1a",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 2,
-            "executed": 2,
-            "passed": 2,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 0,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "access_container": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "object ( { odata_type = optional ( string \"#microsoft.graph.delegatedAdminAccessContainer\" ) accessContainerId = optional ( string ) accessContainerType = optional ( string ) } )"
-          },
-          "access_details": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "object ( { odata_type = optional ( string \"#microsoft.graph.delegatedAdminAccessDetails\" ) unifiedRoles = optional ( list ( object ( { odata_type = optional ( string \"#microsoft.graph.unifiedRole\" ) roleDefinitionId = optional ( string ) } ) ) ) } )"
-          },
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "delegated_admin_relationship_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.delegatedAdminAccessAssignment",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/accessAssignments/{delegatedAdminAccessAssignment-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/identity-and-access/tenant-relationships/delegated-admin-relationships/by-delegated-admin-relationship-id/access-assignments",
-      "property_count": 3,
-      "schema_name": "microsoft.graph.delegatedAdminAccessAssignment",
-      "warnings": []
-    },
-    {
-      "category": "identity-and-access",
-      "category_name": "Identity and access",
-      "classification_basis": "resource type in Microsoft Graph reference",
       "collection_path": "/tenantRelationships/delegatedAdminRelationships/{delegatedAdminRelationship-id}/operations",
       "contract_hash": "eeea4049b5620589547c238c398854e08bc918b1a1e6c7ab5903fbd25803a483",
       "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/delegatedadminrelationshipoperation?view=graph-rest-1.0&preserve-view=true",
@@ -250783,835 +248574,6 @@
       "property_count": 2,
       "schema_name": "microsoft.graph.resourceSpecificPermissionGrant",
       "warnings": []
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/users/{user-id}/planner/plans",
-      "contract_hash": "a185ab4ac40b4c5b03ebb5cd9b0558c69a3db73613e32d55e15e4aeab62e522f",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannerplan?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/users/{user-id}/planner/plans",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "39bb845eab1a5227a9ce801a7d74e7a611e967d44511cd3975c9f7b97713f525",
-          "contract_hash": "a185ab4ac40b4c5b03ebb5cd9b0558c69a3db73613e32d55e15e4aeab62e522f",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 2,
-            "executed": 2,
-            "passed": 2,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 0,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "container": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "object ( { odata_type = optional ( string \"#microsoft.graph.plannerPlanContainer\" ) containerId = optional ( string ) type = optional ( string ) url = optional ( string ) } )"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerPlan",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "owner": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "title": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "user_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/users/{user-id}/planner/plans/{plannerPlan-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/users/by-user-id/planner/plans",
-      "property_count": 4,
-      "schema_name": "microsoft.graph.plannerPlan",
-      "warnings": []
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/buckets",
-      "contract_hash": "2090d8a130ed5981b68da38df6c95fc8d8fa0e7a2b52b6a14756a7bb995238d3",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannerbucket?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/users/{user-id}/planner/plans/{plannerPlan-id}/buckets",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "318d22a62adc247ef89c358f16ecde747135e71d84d326adfb70bd7b456d1f7c",
-          "contract_hash": "2090d8a130ed5981b68da38df6c95fc8d8fa0e7a2b52b6a14756a7bb995238d3",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 2,
-            "executed": 2,
-            "passed": 2,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 0,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "name": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerBucket",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "planner_plan_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "user_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/users/by-user-id/planner/plans/by-planner-plan-id/buckets",
-      "property_count": 4,
-      "schema_name": "microsoft.graph.plannerBucket",
-      "warnings": []
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
-      "contract_hash": "068a6a0f25b7b51bf030df46f159775c1a670ce48181893d76a8529406de93b0",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/users/{user-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "94d25fdfab277e7c24f6247bff886fc5c127640057c8538d9ac5b20968f9539c",
-          "contract_hash": "068a6a0f25b7b51bf030df46f159775c1a670ce48181893d76a8529406de93b0",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 3,
-            "executed": 3,
-            "passed": 3,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 4,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "active_checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "applied_categories": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "assignee_priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "assignments": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "bucket_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "completed_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "conversation_thread_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "created_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "due_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerTask",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "percent_complete": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "planner_bucket_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "planner_plan_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "preview_type": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "reference_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "start_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "title": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "user_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/{plannerTask-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/users/by-user-id/planner/plans/by-planner-plan-id/buckets/by-planner-bucket-id/tasks",
-      "property_count": 19,
-      "schema_name": "microsoft.graph.plannerTask",
-      "warnings": [
-        "appliedCategories: polymorphic schema; accepts an untyped value",
-        "assignments: polymorphic schema; accepts an untyped value",
-        "completedBy: polymorphic schema; accepts an untyped value",
-        "createdBy: polymorphic schema; accepts an untyped value"
-      ]
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/tasks",
-      "contract_hash": "f529002b0c3ec037846ab41977d10b036cbebc6333bc8af2ca902621e7701ba2",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/users/{user-id}/planner/plans/{plannerPlan-id}/tasks",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "5b62872df63c51e61dc733a596131a551dbf0d29d841d6a135d6bd535271a146",
-          "contract_hash": "f529002b0c3ec037846ab41977d10b036cbebc6333bc8af2ca902621e7701ba2",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 3,
-            "executed": 3,
-            "passed": 3,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 4,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "active_checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "applied_categories": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "assignee_priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "assignments": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "bucket_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "completed_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "conversation_thread_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "created_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "due_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerTask",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "percent_complete": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "planner_plan_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          },
-          "preview_type": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "reference_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "start_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "title": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "user_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/users/{user-id}/planner/plans/{plannerPlan-id}/tasks/{plannerTask-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/users/by-user-id/planner/plans/by-planner-plan-id/tasks",
-      "property_count": 19,
-      "schema_name": "microsoft.graph.plannerTask",
-      "warnings": [
-        "appliedCategories: polymorphic schema; accepts an untyped value",
-        "assignments: polymorphic schema; accepts an untyped value",
-        "completedBy: polymorphic schema; accepts an untyped value",
-        "createdBy: polymorphic schema; accepts an untyped value"
-      ]
-    },
-    {
-      "category": "tasks-and-plans",
-      "category_name": "Tasks and plans",
-      "classification_basis": "resource type in Microsoft Graph reference",
-      "collection_path": "/users/{user-id}/planner/tasks",
-      "contract_hash": "74081141d4dce360acf3cfe3761afc76e7ed2ae80fbeec36089bdc9ebadeb5d5",
-      "documentation_url": "https://learn.microsoft.com/en-us/graph/api/resources/plannertask?view=graph-rest-1.0&preserve-view=true",
-      "endpoint_id": "v1.0:/users/{user-id}/planner/tasks",
-      "evidence": {
-        "contract_reviewed": null,
-        "lifecycle_verified": null,
-        "schema_validated": {
-          "kind": "offline_validation",
-          "fingerprint": "f3245a2da07e02753c5fb7992ea73b6c2fa5fe5dc56ab627e855d84c176c822a",
-          "contract_hash": "74081141d4dce360acf3cfe3761afc76e7ed2ae80fbeec36089bdc9ebadeb5d5",
-          "verified_on": "2026-10-01",
-          "terraform_version": "1.16.2",
-          "provider_versions": {
-            "microsoft/msgraph": "0.6.0"
-          },
-          "tests": {
-            "expected": 3,
-            "executed": 3,
-            "passed": 3,
-            "failed": 0,
-            "errored": 0,
-            "skipped": 0
-          }
-        }
-      },
-      "fallback_causes": {
-        "depth": 0,
-        "dictionary": 0,
-        "missing_metadata": 0,
-        "other": 0,
-        "polymorphism": 4,
-        "recursion": 0
-      },
-      "interface": {
-        "outputs": {
-          "id": {
-            "sensitive": false
-          },
-          "resource_url": {
-            "sensitive": false
-          },
-          "response": {
-            "sensitive": true
-          }
-        },
-        "variables": {
-          "active_checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "additional_properties": {
-            "default": {},
-            "nullable": false,
-            "required": false,
-            "type": "any"
-          },
-          "applied_categories": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "assignee_priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "assignments": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "bucket_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "checklist_item_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "completed_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "conversation_thread_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "created_by": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "any"
-          },
-          "due_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "odata_type": {
-            "default": "#microsoft.graph.plannerTask",
-            "nullable": false,
-            "required": false,
-            "type": "string"
-          },
-          "order_hint": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "percent_complete": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "plan_id": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "preview_type": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "priority": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "reference_count": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "number"
-          },
-          "start_date_time": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "title": {
-            "default": null,
-            "nullable": true,
-            "required": false,
-            "type": "string"
-          },
-          "user_id": {
-            "default": null,
-            "nullable": false,
-            "required": true,
-            "type": "string"
-          }
-        }
-      },
-      "item_path": "/users/{user-id}/planner/tasks/{plannerTask-id}",
-      "licensing": {
-        "based_on": null,
-        "confidence": "unknown",
-        "features": [],
-        "mapped_from": null,
-        "note": "License requirements for this endpoint have not been reviewed.",
-        "reviewed_on": null,
-        "status": "unknown"
-      },
-      "path": "v1.0/tasks-and-plans/users/by-user-id/planner/tasks",
-      "property_count": 19,
-      "schema_name": "microsoft.graph.plannerTask",
-      "warnings": [
-        "appliedCategories: polymorphic schema; accepts an untyped value",
-        "assignments: polymorphic schema; accepts an untyped value",
-        "completedBy: polymorphic schema; accepts an untyped value",
-        "createdBy: polymorphic schema; accepts an untyped value"
-      ]
     },
     {
       "category": "users",

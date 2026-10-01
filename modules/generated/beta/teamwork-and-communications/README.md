@@ -2,7 +2,7 @@
 
 [All categories](../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview?view=graph-rest-beta&preserve-view=true)
 
-Microsoft Graph **beta** · **332 generated modules**.
+Microsoft Graph **beta** · **328 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -150,8 +150,6 @@ Microsoft Graph **beta** · **332 generated modules**.
 | [`/me/permissionGrants`](me/permission-grants/README.md) | `microsoft.graph.resourceSpecificPermissionGrant` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/resourcespecificpermissiongrant?view=graph-rest-beta&preserve-view=true) |
 | [`/me/teamwork/associatedTeams`](me/teamwork/associated-teams/README.md) | `microsoft.graph.associatedTeamInfo` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview?view=graph-rest-beta&preserve-view=true) |
 | [`/me/teamwork/installedApps`](me/teamwork/installed-apps/README.md) | `microsoft.graph.userScopeTeamsAppInstallation` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview?view=graph-rest-beta&preserve-view=true) |
-| [`/me/teamwork/sections`](me/teamwork/sections/README.md) | `microsoft.graph.teamworkSection` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teamworksection?view=graph-rest-beta&preserve-view=true) |
-| [`/me/teamwork/sections/{teamworkSection-id}/items`](me/teamwork/sections/by-teamwork-section-id/items/README.md) | `microsoft.graph.teamworkSectionItem` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teamworksectionitem?view=graph-rest-beta&preserve-view=true) |
 | [`/permissionGrants`](permission-grants/README.md) | `microsoft.graph.resourceSpecificPermissionGrant` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/resourcespecificpermissiongrant?view=graph-rest-beta&preserve-view=true) |
 | [`/servicePrincipals/{servicePrincipal-id}/licenseDetails`](service-principals/by-service-principal-id/license-details/README.md) | `microsoft.graph.licenseDetails` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/licensedetails?view=graph-rest-beta&preserve-view=true) |
 | [`/solutions/approval/approvalItems`](solutions/approval/approval-items/README.md) | `microsoft.graph.approvalItem` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/approvalitem?view=graph-rest-beta&preserve-view=true) |
@@ -336,7 +334,5 @@ Microsoft Graph **beta** · **332 generated modules**.
 | [`/users/{user-id}/permissionGrants`](users/by-user-id/permission-grants/README.md) | `microsoft.graph.resourceSpecificPermissionGrant` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/resourcespecificpermissiongrant?view=graph-rest-beta&preserve-view=true) |
 | [`/users/{user-id}/teamwork/associatedTeams`](users/by-user-id/teamwork/associated-teams/README.md) | `microsoft.graph.associatedTeamInfo` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview?view=graph-rest-beta&preserve-view=true) |
 | [`/users/{user-id}/teamwork/installedApps`](users/by-user-id/teamwork/installed-apps/README.md) | `microsoft.graph.userScopeTeamsAppInstallation` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview?view=graph-rest-beta&preserve-view=true) |
-| [`/users/{user-id}/teamwork/sections`](users/by-user-id/teamwork/sections/README.md) | `microsoft.graph.teamworkSection` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teamworksection?view=graph-rest-beta&preserve-view=true) |
-| [`/users/{user-id}/teamwork/sections/{teamworkSection-id}/items`](users/by-user-id/teamwork/sections/by-teamwork-section-id/items/README.md) | `microsoft.graph.teamworkSectionItem` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teamworksectionitem?view=graph-rest-beta&preserve-view=true) |
 
 Modules follow the conservative CRUD subset described in the catalog. Each endpoint appears once, even when Microsoft documentation cross-lists its resource type.

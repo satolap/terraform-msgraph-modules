@@ -1,6 +1,6 @@
 # Microsoft Graph v1.0 module catalog
 
-**1430 generated modules**, organized by the [Microsoft Graph API reference](https://github.com/microsoftgraph/microsoft-graph-docs-contrib/blob/4ad99fd37a9e2e8538275a0a9cdff7907052f3ec/api-reference/v1.0/toc.yml).
+**1410 generated modules**, organized by the [Microsoft Graph API reference](https://github.com/microsoftgraph/microsoft-graph-docs-contrib/blob/4ad99fd37a9e2e8538275a0a9cdff7907052f3ec/api-reference/v1.0/toc.yml).
 
 Only collections with documented POST and item GET, PATCH/PUT, and DELETE operations are generated. Counts describe this supported CRUD subset; they do not imply coverage of every API in a category. Categories with no generated module are retained for browsing.
 
@@ -29,7 +29,7 @@ v1.0/
 ├── extensions/  # 39 modules
 ├── external-data-connections/  # 12 modules
 ├── files/  # 23 modules
-├── identity-and-access/  # 322 modules
+├── identity-and-access/  # 320 modules
 ├── mail/  # 25 modules
 ├── mailbox-import-and-export/  # 1 module
 ├── notes/  # 70 modules
@@ -40,7 +40,7 @@ v1.0/
 ├── search/  # 3 modules
 ├── security/  # 72 modules
 ├── sites-and-lists/  # 190 modules
-├── tasks-and-plans/  # 18 modules
+├── tasks-and-plans/  # 0 modules
 ├── teamwork-and-communications/  # 251 modules
 ├── tenants/  # 2 modules
 ├── to-do-tasks/  # 8 modules
@@ -89,7 +89,7 @@ v1.0/
 | [Extensions](extensions/README.md) | 39 | [Documentation](https://learn.microsoft.com/en-us/graph/extensibility-overview?view=graph-rest-1.0&preserve-view=true) |
 | [External data connections](external-data-connections/README.md) | 12 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/connectors-api-overview?view=graph-rest-1.0&preserve-view=true) |
 | [Files](files/README.md) | 23 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/onedrive?view=graph-rest-1.0&preserve-view=true) |
-| [Identity and access](identity-and-access/README.md) | 322 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/identity-network-access-overview?view=graph-rest-1.0&preserve-view=true) |
+| [Identity and access](identity-and-access/README.md) | 320 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/identity-network-access-overview?view=graph-rest-1.0&preserve-view=true) |
 | [Mail](mail/README.md) | 25 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/mail-api-overview?view=graph-rest-1.0&preserve-view=true) |
 | [Mailbox import and export](mailbox-import-and-export/README.md) | 1 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/mailbox-import-export-api-overview?view=graph-rest-1.0&preserve-view=true) |
 | [Notes](notes/README.md) | 70 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/onenote-api-overview?view=graph-rest-1.0&preserve-view=true) |
@@ -100,7 +100,7 @@ v1.0/
 | [Search](search/README.md) | 3 | [Documentation](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0&preserve-view=true) |
 | [Security](security/README.md) | 72 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/security-api-overview?view=graph-rest-1.0&preserve-view=true) |
 | [Sites and lists](sites-and-lists/README.md) | 190 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/sharepoint?view=graph-rest-1.0&preserve-view=true) |
-| [Tasks and plans](tasks-and-plans/README.md) | 18 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/planner-overview?view=graph-rest-1.0&preserve-view=true) |
+| [Tasks and plans](tasks-and-plans/README.md) | 0 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/planner-overview?view=graph-rest-1.0&preserve-view=true) |
 | [Teamwork and communications](teamwork-and-communications/README.md) | 251 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview?view=graph-rest-1.0&preserve-view=true) |
 | [Tenants](tenants/README.md) | 2 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/tenants-overview?view=graph-rest-1.0&preserve-view=true) |
 | [To-do tasks](to-do-tasks/README.md) | 8 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/todo-overview?view=graph-rest-1.0&preserve-view=true) |
@@ -111,20 +111,20 @@ Each endpoint has one physical module. Resource types and service routes resolve
 
 Open a category, then an endpoint README for inputs, permissions guidance, import notes, and credential-free tests. Exact Graph URLs remain in every module and in [manifest.json](manifest.json).
 
-License requirements are reviewed for 7 of 1430 modules; every other module carries an explicit unknown licensing record in its README and manifest entry.
+License requirements are reviewed for 7 of 1410 modules; every other module carries an explicit unknown licensing record in its README and manifest entry.
 
-8686 Graph paths are not generated as modules. Each is recorded under `exclusions` in [manifest.json](manifest.json) with its reason and reason code. A request wrapper is never presented as management of the object it creates.
+8726 Graph paths are not generated as modules. Each is recorded under `exclusions` in [manifest.json](manifest.json) with its reason and reason code. A request wrapper is never presented as management of the object it creates.
 
 | Reason code | Paths | Meaning |
 | --- | ---: | --- |
 | `action_or_function` | 1605 | OData action or function. |
 | `cast` | 756 | OData type-cast segment. |
+| `if_match_required` | 21 | Update or delete needs an If-Match ETag header that `msgraph_resource` cannot send. |
 | `item_requires_input` | 3 | An item operation needs a header or query parameter, such as If-Match. |
 | `no_item_lifecycle` | 1821 | No single item path with GET, PATCH or PUT, and DELETE. |
-| `no_post` | 3845 | Any other path without a POST the generator evaluates: read-only collections, items without a generated collection, `$count`, `$value`, alternate keys and unsupported segment syntax. |
+| `no_post` | 3865 | Any other path without a POST the generator evaluates: read-only collections, items without a generated collection, `$count`, `$value`, alternate keys and unsupported segment syntax. |
 | `no_response_id` | 4 | POST response has no id to track the created object. |
 | `ref_relationship` | 121 | Relationship written through `$ref` operations. |
-| `reviewed_exclusion` | 1 | Excluded by a reviewed operation contract. |
 | `singleton` | 530 | Singleton with GET and PATCH but no POST; updated in place, not created. |
 
 Catalog scope: **Full catalog from pinned API sources**. Full-catalog licensing mapping checks run against the selected API version; partial runs do not claim mapping coverage.
@@ -133,7 +133,7 @@ Reviewed generated mapping coverage: 7 generated, 0 explicitly excluded, 0 missi
 
 ## Unknown licensing review queue
 
-1423 unknown endpoints across 32 catalog families. [LICENSING-REVIEW.md](LICENSING-REVIEW.md) lists each path with a link to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
+1403 unknown endpoints across 31 catalog families. [LICENSING-REVIEW.md](LICENSING-REVIEW.md) lists each path with a link to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
 
 | Family | Unknown endpoints |
 | --- | ---: |
@@ -151,7 +151,7 @@ Reviewed generated mapping coverage: 7 generated, 0 explicitly excluded, 0 missi
 | External data connections (`external-data-connections`) | 12 |
 | Files (`files`) | 23 |
 | Groups (`groups`) | 4 |
-| Identity and access (`identity-and-access`) | 319 |
+| Identity and access (`identity-and-access`) | 317 |
 | Mail (`mail`) | 25 |
 | Mailbox import and export (`mailbox-import-and-export`) | 1 |
 | Notes (`notes`) | 70 |
@@ -163,7 +163,6 @@ Reviewed generated mapping coverage: 7 generated, 0 explicitly excluded, 0 missi
 | Search (`search`) | 3 |
 | Security (`security`) | 72 |
 | Sites and lists (`sites-and-lists`) | 190 |
-| Tasks and plans (`tasks-and-plans`) | 18 |
 | Teamwork and communications (`teamwork-and-communications`) | 251 |
 | Tenants (`tenants`) | 2 |
 | To-do tasks (`to-do-tasks`) | 8 |
