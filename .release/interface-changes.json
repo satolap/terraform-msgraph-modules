@@ -1,47 +1,8 @@
 {
   "comparison_supplied": true,
-  "counts": {
-    "check_changed": 1,
-    "module_added": 1,
-    "output_added": 1,
-    "precondition_changed": 1,
-    "variable_added": 1
-  },
-  "decisions": [
-    {
-      "accepted": [
-        {
-          "detail_sha256": "5fda38f5ab0ca9468510735052966cfeb258eb567c7225aa3253bff4a7eda5b5",
-          "key": "check_changed:curated/identity-governance/entitlement-management/assignment-policies",
-          "kind": "check_changed"
-        },
-        {
-          "detail_sha256": "e5b07aaa4b51891c5da0e02516f15260f1803a448a69a46f9f34a7ff4cd5528a",
-          "key": "precondition_changed:curated/identity-governance/entitlement-management/assignment-policies",
-          "kind": "precondition_changed"
-        }
-      ],
-      "approved_by": "benhaspalace",
-      "decision": "2026-10-01-assignment-policy-custom-extensions.json",
-      "migration_notes": "The assignment policy module (modules/curated/identity-governance/entitlement-management/assignment-policies) now sends customExtensionStageSettings on every apply, and it is authoritative over the custom extension bindings of every policy it manages. The new input custom_extension_stage_settings defaults to [], so with no input the next apply removes custom extension bindings that were configured outside Terraform, in the portal or by another tool, which stops their Logic Apps from being called for that policy. Before upgrading, read the bindings of each policy the module manages with GET /identityGovernance/entitlementManagement/assignmentPolicies/{id}?$expand=customExtensionStageSettings($expand=customExtension) and declare each one in custom_extension_stage_settings as { stage, extension_id, extension_type }, where extension_id is customExtension.id and extension_type is request_workflow for #microsoft.graph.accessPackageAssignmentRequestWorkflowExtension or assignment_workflow for #microsoft.graph.accessPackageAssignmentWorkflowExtension. The first plan after upgrading shows an in-place update of every policy the module manages, because the request body changes, and the policy is also read with the expand from then on. When the server has a different number of bindings than the configuration declares, the plan diff of that policy can print the expanded extension objects, including their endpoint configuration, so review the first plan before sharing its output. The new check undeclared_custom_extension_bindings warns, per policy, about each binding on the server that the next apply would remove because it is not declared; it reads the policy once per plan, so it cannot warn before the policy exists. Apply only when no policy warns. The new input is validated: a documented stage (not unknownFutureValue), request stages with request_workflow and expiration stages with assignment_workflow, each stage at most once, and GUID extension ids. Three new preconditions can fail plans that declare bindings: an expiration stage needs expiration.type other than noExpiration, the access package read must return its catalog, and every extension_id must be in the catalog of the access package. For those guards the module reads the access package and lists the catalog's custom extensions, only when bindings are declared, so a policy without bindings makes no extra request. The new check guest_custom_extension_prerequisite warns when bindings are declared for a policy whose allowed_target_scope can include guests or external users; such a policy needs the tenant linked to an Azure subscription for Microsoft Entra ID Governance for guests, and each successful request is billed. The new output custom_extension_stage_settings returns the bindings Microsoft Graph reported as { stage, extension_id }, or null when the read returned none. Because the new checks read the policy back, a terraform test run with command = plan that creates a policy through this module now fails with 'Check block assertion known after apply', and expect_failures cannot name a check inside a module; run it with command = apply, or on Terraform 1.7 or later add an override_module block for the module. Verified with mocked providers only; not verified in a licensed tenant.",
-      "previous_tag": "graphmodules-59a4cae78d14be98f105",
-      "summary": "Assignment policies always send their custom extension bindings, read them back, and warn about bindings that the next apply would remove"
-    }
-  ],
-  "notices": [
-    {
-      "key": "module_added:curated/identity-governance/entitlement-management/catalogs/custom-extensions",
-      "kind": "module_added"
-    },
-    {
-      "key": "output_added:curated/identity-governance/entitlement-management/assignment-policies:custom_extension_stage_settings",
-      "kind": "output_added"
-    },
-    {
-      "key": "variable_added:curated/identity-governance/entitlement-management/assignment-policies:custom_extension_stage_settings",
-      "kind": "variable_added"
-    }
-  ],
+  "counts": {},
+  "decisions": [],
+  "notices": [],
   "schema_version": 1,
-  "tag": "graphmodules-2a06155127be2da9de94"
+  "tag": "graphmodules-23d890654ff0004072ef"
 }
