@@ -1,6 +1,6 @@
 # GraphModules
 
-[![Release modules](https://github.com/benhaspalace/GraphModules/actions/workflows/release.yml/badge.svg)](https://github.com/benhaspalace/GraphModules/actions/workflows/release.yml)
+[![Release modules](https://github.com/satolap/terraform-msgraph-modules/actions/workflows/release.yml/badge.svg)](https://github.com/satolap/terraform-msgraph-modules/actions/workflows/release.yml)
 
 GraphModules is a public catalog of tested, versioned **Terraform modules for
 Microsoft Graph**. It helps manage **Microsoft Entra ID (formerly Azure Active
@@ -21,7 +21,7 @@ The repository provides two complementary module collections:
   access packages, assignment policies, resource role scopes, and Conditional
   Access policies and named locations.
 
-Pin a [published release](https://github.com/benhaspalace/GraphModules/releases)
+Pin a [published release](https://github.com/satolap/terraform-msgraph-modules/releases)
 to get an immutable module path and the exact metadata, provider versions, tests,
 and checksums associated with it.
 
@@ -81,6 +81,33 @@ Curated modules expose higher-level Terraform inputs and outputs while preservin
 Microsoft Graph identifiers for composition. Their READMEs document required
 permissions, lifecycle choices, relationship cleanup, and module-specific examples.
 
+## Install a module from the Terraform Registry
+
+The catalog is published to the public Terraform Registry as
+[`satolap/modules/msgraph`](https://registry.terraform.io/modules/satolap/modules/msgraph).
+Every module is a nested module of that registry module: append `//` and the
+module's directory to the registry source, and pin a registry version:
+
+```hcl
+module "engineering_group" {
+  source  = "satolap/modules/msgraph//modules/curated/groups"
+  version = "1.0.0"
+
+  display_name     = "Engineering"
+  mail_nickname    = "engineering"
+  security_enabled = true
+}
+```
+
+One registry version covers every module, like a `graphmodules-*` tag; each
+release's notes name the registry version it was published as. Versions follow
+the release gate's interface changes: a release that a reviewed release decision
+accepts breaking changes for is a major version, one with other interface changes
+or notices is a minor version, and one without findings is a patch version. The
+root module at the repository root exists only because the registry requires one;
+it manages nothing. Releases published before the registry versions were
+introduced have only their `graphmodules-*` tag.
+
 ## Install a module from GitHub
 
 Configure the Microsoft Graph provider in the calling root module, then use a
@@ -99,12 +126,12 @@ terraform {
 provider "msgraph" {}
 
 module "application" {
-  source       = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/applications/applications?ref=<release-tag>"
+  source       = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/v1.0/applications/applications?ref=<release-tag>"
   display_name = "Example application"
 }
 
 module "engineering_group" {
-  source           = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/groups?ref=<release-tag>"
+  source           = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/curated/groups?ref=<release-tag>"
   display_name     = "Engineering"
   mail_nickname    = "engineering"
   security_enabled = true
@@ -115,8 +142,8 @@ Each `graphmodules-*` release tag covers both generated catalogs and the curated
 modules. Module sources take these forms:
 
 ```text
-git::https://github.com/benhaspalace/GraphModules.git//modules/generated/<api-version>/<category>/<collection-path>?ref=<release-tag>
-git::https://github.com/benhaspalace/GraphModules.git//modules/curated/<module-path>?ref=<release-tag>
+git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/<api-version>/<category>/<collection-path>?ref=<release-tag>
+git::https://github.com/satolap/terraform-msgraph-modules.git//modules/curated/<module-path>?ref=<release-tag>
 ```
 
 `<api-version>` is `v1.0` or `beta`. `<category>/<collection-path>` is the
@@ -126,7 +153,7 @@ URL path. `<module-path>` is the path after `modules/curated/` in the curated
 module table above.
 
 Replace `<release-tag>` with a `graphmodules-*` tag from
-[Releases](https://github.com/benhaspalace/GraphModules/releases), then run
+[Releases](https://github.com/satolap/terraform-msgraph-modules/releases), then run
 `terraform init`. HashiCorp documents the `git::` source, `//` subdirectory, and
 `?ref=` tag syntax in
 [Use modules in your configuration](https://developer.hashicorp.com/terraform/language/modules/configuration).
@@ -210,9 +237,15 @@ tag is created:
    from the tagged commit and requires their byte-level SHA-256 checksums to match
    the already tested artifacts before publishing the GitHub Release.
 
+After publishing the GitHub Release, the release workflow tags the same commit with
+the release's Terraform Registry version, `vX.Y.Z`, which the registry imports. A
+recovery run for an older release never creates a version above a newer one.
+
 A daily scheduled workflow rebuilds every published release the same way and fails
 if its tag commit or any asset's SHA-256 digest no longer matches the GitHub Release,
-or if the `latest` branch points anywhere other than the GitHub Latest release.
+if the `latest` branch points anywhere other than the GitHub Latest release, or if a
+registry version tag is not on a published release, does not follow the previous
+version in history, or is missing from the GitHub Latest release.
 
 Mock tests and schema validation do not prove that a caller has the required
 Microsoft Graph permissions, license, or tenant configuration. Endpoint READMEs
@@ -220,7 +253,7 @@ link to the public API documentation for those deployment requirements. Live-ten
 integration checks are separate and opt-in; generated modules do not claim live
 tenant coverage merely because their offline tests pass.
 
-Each [GitHub Release](https://github.com/benhaspalace/GraphModules/releases)
+Each [GitHub Release](https://github.com/satolap/terraform-msgraph-modules/releases)
 contains:
 
 - `graphmodules-v1.0-modules.tar.gz`

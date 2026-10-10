@@ -95,3 +95,9 @@ jobs:
               output.write(f"## Latest branch\n\n{summary}\n")
           if failure:
               sys.exit(failure)
+      - name: Check that the Terraform Registry tags follow the published releases
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: python scripts/release.py --verify-registry-tags --repository "$GH_REPO"
