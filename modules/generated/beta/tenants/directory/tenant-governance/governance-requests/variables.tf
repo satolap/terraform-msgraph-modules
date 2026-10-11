@@ -1,35 +1,35 @@
 variable "expiration_date_time" {
-  description = "Microsoft Graph expirationDateTime property."
+  description = "The date and time when the request expires if not accepted or rejected. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. Supports $filter (lt, le, gt, ge, eq, ne) and $orderBy."
   type        = string
   default     = null
 }
 
 variable "governance_policy_template" {
-  description = "Microsoft Graph governancePolicyTemplate property."
+  description = "The governance policy template associated with this request."
   type        = any
   default     = null
 }
 
 variable "governed_tenant_id" {
-  description = "Microsoft Graph governedTenantId property."
+  description = "The Microsoft Entra tenant ID of the governed tenant. Supports $filter (eq, ne) and $orderBy."
   type        = string
   default     = null
 }
 
 variable "governed_tenant_name" {
-  description = "Microsoft Graph governedTenantName property."
+  description = "The display name of the governed tenant. Supports $filter (eq, ne) and $orderBy."
   type        = string
   default     = null
 }
 
 variable "governing_tenant_id" {
-  description = "Microsoft Graph governingTenantId property."
+  description = "The Microsoft Entra tenant ID of the governing tenant. Supports $filter (eq, ne) and $orderBy."
   type        = string
   default     = null
 }
 
 variable "governing_tenant_name" {
-  description = "Microsoft Graph governingTenantName property."
+  description = "The display name of the governing tenant. Supports $filter (eq, ne) and $orderBy."
   type        = string
   default     = null
 }
@@ -46,9 +46,8 @@ variable "policy_snapshot" {
   type = object({
     odata_type = optional(string, "#microsoft.graph.relationshipPolicy")
     delegatedAdministrationRoleAssignments = optional(list(object({
-      odata_type       = optional(string, "#microsoft.graph.delegatedAdministrationRoleAssignmentSnapshot")
-      groupDisplayName = optional(string)
-      groupId          = optional(string)
+      odata_type = optional(string, "#microsoft.graph.delegatedAdministrationRoleAssignmentSnapshot")
+      groupId    = optional(string)
       roleTemplates = optional(list(object({
         odata_type = optional(string, "#microsoft.graph.roleTemplate")
         id         = optional(string)
@@ -73,7 +72,7 @@ variable "policy_snapshot" {
 }
 
 variable "request_date_time" {
-  description = "Microsoft Graph requestDateTime property."
+  description = "The date and time when the request was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. Supports $filter (lt, le, gt, ge, eq, ne) and $orderBy."
   type        = string
   default     = null
 }

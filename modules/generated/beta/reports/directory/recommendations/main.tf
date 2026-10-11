@@ -21,7 +21,6 @@ locals {
     "lastModifiedDateTime"         = var.last_modified_date_time
     "maxScore"                     = var.max_score
     "needsMoreActionResourceCount" = var.needs_more_action_resource_count
-    "nistClassifications"          = (var.nist_classifications == null ? null : [for item0 in var.nist_classifications : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "category" = item0["category"], "description" = item0["description"], "function" = item0["function"], "name" = item0["name"] } : key1 => value1 if value1 != null }) if item0 != null])
     "@odata.type"                  = var.odata_type
     "postponeUntilDateTime"        = var.postpone_until_date_time
     "priority"                     = var.priority

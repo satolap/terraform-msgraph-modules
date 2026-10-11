@@ -12,13 +12,13 @@ Lifecycle: `POST /identityGovernance/accessReviews/definitions/{accessReviewSche
 
 ```hcl
 module "graph_resource" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/identity-and-access/identity-governance/by-path-5e961c358859/stages?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/v1.0/identity-and-access/identity-governance/by-path-5e961c358859/stages?ref=<release-tag>"
   access_review_schedule_definition_id = "parent-object-id"
   access_review_instance_id = "parent-object-id"
 }
 ```
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 
@@ -26,7 +26,7 @@ Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules R
 | --- | --- | --- | --- | --- |
 | `access_review_schedule_definition_id` | URL parameter `accessReviewScheduleDefinition-id` | `string` | yes | no |
 | `access_review_instance_id` | URL parameter `accessReviewInstance-id` | `string` | yes | no |
-| `decisions` | `decisions` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItem")       decision = optional(string)       insights = optional(any)       justification = optional(string)       permission = optional(object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItemPermission")       description = optional(string)       displayName = optional(string)       id = optional(string)       type = optional(string)     }))     }))` | no | no |
+| `decisions` | `decisions` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItem")       decision = optional(string)       insights = optional(any)       justification = optional(string)     }))` | no | no |
 | `fallback_reviewers` | `fallbackReviewers` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")       query = optional(string)       queryRoot = optional(string)       queryType = optional(string)       reviewerId = optional(string)       scopeType = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `reviewers` | `reviewers` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")       query = optional(string)       queryRoot = optional(string)       queryType = optional(string)       reviewerId = optional(string)       scopeType = optional(string)     }))` | no | no |

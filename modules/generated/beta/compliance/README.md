@@ -2,7 +2,7 @@
 
 [All categories](../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/complianceapioverview?view=graph-rest-beta&preserve-view=true)
 
-Microsoft Graph **beta** · **29 generated modules**.
+Microsoft Graph **beta** · **28 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -30,7 +30,6 @@ Microsoft Graph **beta** · **29 generated modules**.
 | [`/dataClassification/exactMatchDataStores/{exactMatchDataStore-id}/sessions`](data-classification/exact-match-data-stores/by-exact-match-data-store-id/sessions/README.md) | `microsoft.graph.exactMatchSession` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/complianceapioverview?view=graph-rest-beta&preserve-view=true) |
 | [`/dataClassification/exactMatchUploadAgents`](data-classification/exact-match-upload-agents/README.md) | `microsoft.graph.exactMatchUploadAgent` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/complianceapioverview?view=graph-rest-beta&preserve-view=true) |
 | [`/dataClassification/jobs`](data-classification/jobs/README.md) | `microsoft.graph.jobResponseBase` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/complianceapioverview?view=graph-rest-beta&preserve-view=true) |
-| [`/dataClassification/sensitiveTypes`](data-classification/sensitive-types/README.md) | `microsoft.graph.sensitiveType` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/complianceapioverview?view=graph-rest-beta&preserve-view=true) |
 | [`/privacy/subjectRightsRequests`](privacy/subject-rights-requests/README.md) | `microsoft.graph.subjectRightsRequest` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/subjectrightsrequest?view=graph-rest-beta&preserve-view=true) |
 | [`/privacy/subjectRightsRequests/{subjectRightsRequest-id}/notes`](privacy/subject-rights-requests/by-subject-rights-request-id/notes/README.md) | `microsoft.graph.authoredNote` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/complianceapioverview?view=graph-rest-beta&preserve-view=true) |
 | [`/security/dataSecurityAndGovernance/policyFiles`](security/data-security-and-governance/policy-files/README.md) | `microsoft.graph.policyFile` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/complianceapioverview?view=graph-rest-beta&preserve-view=true) |

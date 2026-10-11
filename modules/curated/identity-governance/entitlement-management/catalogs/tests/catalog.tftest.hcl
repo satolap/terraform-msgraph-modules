@@ -52,6 +52,61 @@ run "creates_catalog_with_defaults" {
     condition     = output.display_name == "Engineering"
     error_message = "display_name output must expose the response displayName."
   }
+
+  assert {
+    condition = jsonencode(msgraph_resource.catalog.body) == jsonencode({
+      catalogType = "userManaged"
+      description = null
+      displayName = "Engineering"
+      state       = "unpublished"
+    })
+    error_message = "Without is_externally_visible the body must be exactly the body sent before that input existed."
+  }
+
+  assert {
+    condition     = output.is_externally_visible == null
+    error_message = "is_externally_visible output must be null when the input is not set."
+  }
+}
+
+run "sends_external_visibility_when_set" {
+  command = apply
+
+  variables {
+    display_name          = "Engineering"
+    is_externally_visible = true
+  }
+
+  assert {
+    condition     = msgraph_resource.catalog.body.isExternallyVisible == true
+    error_message = "is_externally_visible = true must be sent as isExternallyVisible."
+  }
+
+  assert {
+    condition     = output.is_externally_visible == true
+    error_message = "is_externally_visible output must expose the configured value."
+  }
+}
+
+# The previous run created the catalog; the mock keeps its id on an in-place
+# update, which a PATCH of isExternallyVisible is.
+run "changes_external_visibility_in_place" {
+  command = apply
+
+  variables {
+    display_name          = "Engineering"
+    is_externally_visible = false
+  }
+
+  assert {
+    condition     = msgraph_resource.catalog.body.isExternallyVisible == false
+    error_message = "is_externally_visible = false must be sent, not left out."
+  }
+
+  assert {
+    condition     = msgraph_resource.catalog.id == "11111111-1111-1111-1111-111111111111"
+    error_message = "Changing is_externally_visible must update the catalog in place."
+  }
 }
 
 run "creates_published_catalog" {

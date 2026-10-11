@@ -23,6 +23,7 @@ variable "online_meetings" {
       createdDateTime      = optional(string)
       endDateTime          = optional(string)
       meetingNotes         = optional(any)
+      recapUrl             = optional(string)
       viewpoint = optional(object({
         odata_type    = optional(string, "#microsoft.graph.callAiInsightViewPoint")
         mentionEvents = optional(any)

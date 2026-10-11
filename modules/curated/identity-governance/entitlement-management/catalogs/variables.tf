@@ -14,6 +14,12 @@ variable "description" {
   default     = null
 }
 
+variable "is_externally_visible" {
+  description = "Whether users outside the tenant, such as users of a connected organization, can request the access packages of the catalog (isExternallyVisible). An access package also needs a policy for them. null leaves the property out of the request: Microsoft Graph documents no default, and the Microsoft Entra admin center enables it for a new catalog. Changing true or false back to null keeps the last value in Microsoft Graph."
+  type        = bool
+  default     = null
+}
+
 variable "state" {
   description = "Whether the catalog is published and available for management. One of \"unpublished\" or \"published\"."
   type        = string

@@ -2,7 +2,7 @@
 
 [All categories](../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/mail-api-overview?view=graph-rest-1.0&preserve-view=true)
 
-Microsoft Graph **v1.0** · **25 generated modules**.
+Microsoft Graph **v1.0** · **27 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -19,6 +19,7 @@ Microsoft Graph **v1.0** · **25 generated modules**.
 | [`/me/mailFolders/{mailFolder-id}/messageRules`](me/mail-folders/by-mail-folder-id/message-rules/README.md) | `microsoft.graph.messageRule` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/messagerule?view=graph-rest-1.0&preserve-view=true) |
 | [`/me/mailFolders/{mailFolder-id}/messages`](me/mail-folders/by-mail-folder-id/messages/README.md) | `microsoft.graph.message` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/message?view=graph-rest-1.0&preserve-view=true) |
 | [`/me/messages`](me/messages/README.md) | `microsoft.graph.message` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/message?view=graph-rest-1.0&preserve-view=true) |
+| [`/me/notes`](me/notes/README.md) | `microsoft.graph.note` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/note?view=graph-rest-1.0&preserve-view=true) |
 | [`/users/{user-id}/inferenceClassification/overrides`](users/by-user-id/inference-classification/overrides/README.md) | `microsoft.graph.inferenceClassificationOverride` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/inferenceclassificationoverride?view=graph-rest-1.0&preserve-view=true) |
 | [`/users/{user-id}/joinedTeams/{team-id}/channels/{channel-id}/messages/{chatMessage-id}/hostedContents`](users/by-user-id/joined-teams/by-team-id/channels/by-channel-id/messages/by-chat-message-id/hosted-contents/README.md) | `microsoft.graph.chatMessageHostedContent` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/mail-api-overview?view=graph-rest-1.0&preserve-view=true) |
 | [`/users/{user-id}/joinedTeams/{team-id}/channels/{channel-id}/messages/{chatMessage-id}/replies/{chatMessage-id1}/hostedContents`](users/by-path-1fc77f22fd8b/hosted-contents/README.md) | `microsoft.graph.chatMessageHostedContent` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/mail-api-overview?view=graph-rest-1.0&preserve-view=true) |
@@ -31,5 +32,6 @@ Microsoft Graph **v1.0** · **25 generated modules**.
 | [`/users/{user-id}/mailFolders/{mailFolder-id}/messageRules`](users/by-user-id/mail-folders/by-mail-folder-id/message-rules/README.md) | `microsoft.graph.messageRule` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/messagerule?view=graph-rest-1.0&preserve-view=true) |
 | [`/users/{user-id}/mailFolders/{mailFolder-id}/messages`](users/by-user-id/mail-folders/by-mail-folder-id/messages/README.md) | `microsoft.graph.message` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/message?view=graph-rest-1.0&preserve-view=true) |
 | [`/users/{user-id}/messages`](users/by-user-id/messages/README.md) | `microsoft.graph.message` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/message?view=graph-rest-1.0&preserve-view=true) |
+| [`/users/{user-id}/notes`](users/by-user-id/notes/README.md) | `microsoft.graph.note` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/note?view=graph-rest-1.0&preserve-view=true) |
 
 Modules follow the conservative CRUD subset described in the catalog. Each endpoint appears once, even when Microsoft documentation cross-lists its resource type.

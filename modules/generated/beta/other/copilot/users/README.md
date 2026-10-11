@@ -12,11 +12,11 @@ Lifecycle: `POST /copilot/users`, `GET/PATCH/DELETE /copilot/users/{aiUser-id}`.
 
 ```hcl
 module "graph_resource" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/other/copilot/users?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/beta/other/copilot/users?ref=<release-tag>"
 }
 ```
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 
@@ -24,7 +24,7 @@ Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules R
 | --- | --- | --- | --- | --- |
 | `interaction_history` | `interactionHistory` | `any` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `online_meetings` | `onlineMeetings` | `list(object({       odata_type = optional(string, "#microsoft.graph.aiOnlineMeeting")       aiInsights = optional(list(object({       odata_type = optional(string, "#microsoft.graph.callAiInsight")       actionItems = optional(any)       callId = optional(string)       contentCorrelationId = optional(string)       createdDateTime = optional(string)       endDateTime = optional(string)       meetingNotes = optional(any)       viewpoint = optional(object({       odata_type = optional(string, "#microsoft.graph.callAiInsightViewPoint")       mentionEvents = optional(any)     }))     })))     }))` | no | no |
+| `online_meetings` | `onlineMeetings` | `list(object({       odata_type = optional(string, "#microsoft.graph.aiOnlineMeeting")       aiInsights = optional(list(object({       odata_type = optional(string, "#microsoft.graph.callAiInsight")       actionItems = optional(any)       callId = optional(string)       contentCorrelationId = optional(string)       createdDateTime = optional(string)       endDateTime = optional(string)       meetingNotes = optional(any)       recapUrl = optional(string)       viewpoint = optional(object({       odata_type = optional(string, "#microsoft.graph.callAiInsightViewPoint")       mentionEvents = optional(any)     }))     })))     }))` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

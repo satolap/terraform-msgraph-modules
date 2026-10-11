@@ -137,7 +137,7 @@ variable "app_role_assignments" {
 }
 
 variable "app_roles" {
-  description = "The roles exposed by the application, which this service principal represents. For more information, see the appRoles property definition on the application entity. Not nullable."
+  description = "The roles exposed by the application, which this service principal represents. For more information, see the appRoles property definition on the application entity. Not nullable. App roles and exposed delegated permission scopes (publishedPermissionScopes) share a default limit of 700 permission definitions per service principal, including definitions inherited from the application and definitions added directly to the service principal. Enabled and disabled definitions both count. This limit counts definitions, not app role assignments. For counting rules, behavior for existing objects above the limit, and design guidance, see App role limits."
   type = list(object({
     odata_type         = optional(string, "#microsoft.graph.appRole")
     allowedMemberTypes = optional(list(string))
@@ -393,7 +393,7 @@ variable "preferred_token_signing_key_thumbprint" {
 }
 
 variable "published_permission_scopes" {
-  description = "The delegated permissions exposed by the application. For more information, see the oauth2PermissionScopes property on the application entity's api property. Not nullable. Note: This property is named oauth2PermissionScopes in v1.0."
+  description = "The delegated permissions exposed by the application. For more information, see the oauth2PermissionScopes property on the application entity's api property. Not nullable. Note: This property is named oauth2PermissionScopes in v1.0. These scopes and appRoles share a default limit of 700 permission definitions per service principal. Enabled and disabled definitions both count. For counting rules, behavior for existing objects above the limit, and design guidance, see App role limits."
   type = list(object({
     odata_type              = optional(string, "#microsoft.graph.permissionScope")
     adminConsentDescription = optional(string)

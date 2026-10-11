@@ -1,6 +1,6 @@
 # Microsoft Graph beta module catalog
 
-**2399 generated modules**, organized by the [Microsoft Graph API reference](https://github.com/microsoftgraph/microsoft-graph-docs-contrib/blob/4ad99fd37a9e2e8538275a0a9cdff7907052f3ec/api-reference/beta/toc.yml).
+**2400 generated modules**, organized by the [Microsoft Graph API reference](https://github.com/microsoftgraph/microsoft-graph-docs-contrib/blob/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc.yml).
 
 Only collections with documented POST and item GET, PATCH/PUT, and DELETE operations are generated. Counts describe this supported CRUD subset; they do not imply coverage of every API in a category. Categories with no generated module are retained for browsing.
 
@@ -13,24 +13,24 @@ beta/
 ├── README.md
 ├── LICENSING-REVIEW.md
 ├── manifest.json
-├── users/  # 23 modules
+├── users/  # 27 modules
 ├── groups/  # 6 modules
 ├── applications/  # 31 modules
 ├── agents/  # 4 modules
 ├── backup-and-recovery/  # 40 modules
 ├── calendars/  # 32 modules
 ├── change-notifications/  # 6 modules
-├── compliance/  # 29 modules
+├── compliance/  # 28 modules
 ├── cross-device-experiences/  # 10 modules
 ├── customer-booking/  # 14 modules
-├── device-and-app-management/  # 474 modules
+├── device-and-app-management/  # 469 modules
 ├── education/  # 41 modules
 ├── employee-experience/  # 10 modules
 ├── extensions/  # 44 modules
 ├── external-data-connections/  # 13 modules
 ├── files/  # 25 modules
 ├── financials-preview/  # 22 modules
-├── identity-and-access/  # 553 modules
+├── identity-and-access/  # 549 modules
 ├── industry-data-etl-preview/  # 8 modules
 ├── mail/  # 21 modules
 ├── mailbox-import-and-export/  # 3 modules
@@ -38,16 +38,16 @@ beta/
 ├── notifications-deprecated/  # 2 modules
 ├── people-and-workplace-intelligence/  # 80 modules
 ├── personal-contacts/  # 12 modules
-├── reports/  # 30 modules
+├── reports/  # 33 modules
 ├── search/  # 3 modules
-├── security/  # 137 modules
+├── security/  # 138 modules
 ├── sites-and-lists/  # 184 modules
 ├── tasks-and-plans/  # 51 modules
-├── teamwork-and-communications/  # 328 modules
+├── teamwork-and-communications/  # 329 modules
 ├── tenants/  # 29 modules
 ├── to-do-tasks/  # 20 modules
 ├── workbooks-and-charts/  # 26 modules
-└── other/  # 18 modules
+└── other/  # 20 modules
 ```
 
 Each category contains a README index. Zero-count categories contain an index only.
@@ -75,24 +75,24 @@ beta/
 
 | Category | Modules | Microsoft reference |
 | --- | ---: | --- |
-| [Users](users/README.md) | 23 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-beta&preserve-view=true) |
+| [Users](users/README.md) | 27 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-beta&preserve-view=true) |
 | [Groups](groups/README.md) | 6 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/groups-overview?view=graph-rest-beta&preserve-view=true) |
 | [Applications](applications/README.md) | 31 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/applications-api-overview?view=graph-rest-beta&preserve-view=true) |
 | [Agents](agents/README.md) | 4 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/agentid-platform-overview?view=graph-rest-beta&preserve-view=true) |
 | [Backup and recovery](backup-and-recovery/README.md) | 40 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/tenants-backup-recovery-overview?view=graph-rest-beta&preserve-view=true) |
 | [Calendars](calendars/README.md) | 32 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/calendar-overview?view=graph-rest-beta&preserve-view=true) |
 | [Change notifications](change-notifications/README.md) | 6 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/change-notifications-api-overview?view=graph-rest-beta&preserve-view=true) |
-| [Compliance](compliance/README.md) | 29 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/complianceapioverview?view=graph-rest-beta&preserve-view=true) |
+| [Compliance](compliance/README.md) | 28 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/complianceapioverview?view=graph-rest-beta&preserve-view=true) |
 | [Cross-device experiences](cross-device-experiences/README.md) | 10 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/project-rome-overview?view=graph-rest-beta&preserve-view=true) |
 | [Customer booking](customer-booking/README.md) | 14 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/booking-api-overview?view=graph-rest-beta&preserve-view=true) |
-| [Device and app management](device-and-app-management/README.md) | 474 | [Documentation](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-beta&preserve-view=true) |
+| [Device and app management](device-and-app-management/README.md) | 469 | [Documentation](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-beta&preserve-view=true) |
 | [Education](education/README.md) | 41 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/education-overview?view=graph-rest-beta&preserve-view=true) |
 | [Employee experience](employee-experience/README.md) | 10 | [Documentation](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-beta&preserve-view=true) |
 | [Extensions](extensions/README.md) | 44 | [Documentation](https://learn.microsoft.com/en-us/graph/extensibility-overview?view=graph-rest-beta&preserve-view=true) |
 | [External data connections](external-data-connections/README.md) | 13 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/connectors-api-overview?view=graph-rest-beta&preserve-view=true) |
 | [Files](files/README.md) | 25 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/onedrive?view=graph-rest-beta&preserve-view=true) |
 | [Financials (preview)](financials-preview/README.md) | 22 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/dynamics-graph-reference?view=graph-rest-beta&preserve-view=true) |
-| [Identity and access](identity-and-access/README.md) | 553 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/identity-network-access-overview?view=graph-rest-beta&preserve-view=true) |
+| [Identity and access](identity-and-access/README.md) | 549 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/identity-network-access-overview?view=graph-rest-beta&preserve-view=true) |
 | [Industry data ETL (preview)](industry-data-etl-preview/README.md) | 8 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/industrydata-overview?view=graph-rest-beta&preserve-view=true) |
 | [Mail](mail/README.md) | 21 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/mail-api-overview?view=graph-rest-beta&preserve-view=true) |
 | [Mailbox import and export](mailbox-import-and-export/README.md) | 3 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/mailbox-import-export-api-overview?view=graph-rest-beta&preserve-view=true) |
@@ -100,34 +100,34 @@ beta/
 | [Notifications (deprecated)](notifications-deprecated/README.md) | 2 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/notifications-api-overview?view=graph-rest-beta&preserve-view=true) |
 | [People and workplace intelligence](people-and-workplace-intelligence/README.md) | 80 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/social-overview?view=graph-rest-beta&preserve-view=true) |
 | [Personal contacts](personal-contacts/README.md) | 12 | [Documentation](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-beta&preserve-view=true) |
-| [Reports](reports/README.md) | 30 | [Documentation](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-beta&preserve-view=true) |
+| [Reports](reports/README.md) | 33 | [Documentation](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-beta&preserve-view=true) |
 | [Search](search/README.md) | 3 | [Documentation](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-beta&preserve-view=true) |
-| [Security](security/README.md) | 137 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/security-api-overview?view=graph-rest-beta&preserve-view=true) |
+| [Security](security/README.md) | 138 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/security-api-overview?view=graph-rest-beta&preserve-view=true) |
 | [Sites and lists](sites-and-lists/README.md) | 184 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/sharepoint?view=graph-rest-beta&preserve-view=true) |
 | [Tasks and plans](tasks-and-plans/README.md) | 51 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/planner-overview?view=graph-rest-beta&preserve-view=true) |
-| [Teamwork and communications](teamwork-and-communications/README.md) | 328 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview?view=graph-rest-beta&preserve-view=true) |
+| [Teamwork and communications](teamwork-and-communications/README.md) | 329 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview?view=graph-rest-beta&preserve-view=true) |
 | [Tenants](tenants/README.md) | 29 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/tenants-overview?view=graph-rest-beta&preserve-view=true) |
 | [To-do tasks](to-do-tasks/README.md) | 20 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/todo-overview?view=graph-rest-beta&preserve-view=true) |
 | [Workbooks and charts](workbooks-and-charts/README.md) | 26 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/excel?view=graph-rest-beta&preserve-view=true) |
-| [Uncategorized](other/README.md) | 18 | [Documentation](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-beta&preserve-view=true) |
+| [Uncategorized](other/README.md) | 20 | [Documentation](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-beta&preserve-view=true) |
 
 Each endpoint has one physical module. Resource types and service routes resolve documentation cross-listings; parent paths such as `/users` do not turn mail or calendar modules into user modules. Uncategorized is a generator fallback, not an official Microsoft category.
 
 Open a category, then an endpoint README for inputs, permissions guidance, import notes, and credential-free tests. Exact Graph URLs remain in every module and in [manifest.json](manifest.json).
 
-License requirements are reviewed for 7 of 2399 modules; every other module carries an explicit unknown licensing record in its README and manifest entry.
+License requirements are reviewed for 7 of 2400 modules; every other module carries an explicit unknown licensing record in its README and manifest entry.
 
 13785 Graph paths are not generated as modules. Each is recorded under `exclusions` in [manifest.json](manifest.json) with its reason and reason code. A request wrapper is never presented as management of the object it creates.
 
 | Reason code | Paths | Meaning |
 | --- | ---: | --- |
-| `action_or_function` | 2261 | OData action or function. |
+| `action_or_function` | 2262 | OData action or function. |
 | `cast` | 1036 | OData type-cast segment. |
 | `if_match_required` | 81 | Update or delete needs an If-Match ETag header that `msgraph_resource` cannot send. |
 | `item_requires_input` | 4 | An item operation needs a header or query parameter, such as If-Match. |
 | `no_item_lifecycle` | 3088 | No single item path with GET, PATCH or PUT, and DELETE. |
 | `no_post` | 6076 | Any other path without a POST the generator evaluates: read-only collections, items without a generated collection, `$count`, `$value`, alternate keys and unsupported segment syntax. |
-| `no_response_id` | 30 | POST response has no id to track the created object. |
+| `no_response_id` | 29 | POST response has no id to track the created object. |
 | `ref_relationship` | 181 | Relationship written through `$ref` operations. |
 | `singleton` | 1028 | Singleton with GET and PATCH but no POST; updated in place, not created. |
 
@@ -137,7 +137,7 @@ Reviewed generated mapping coverage: 7 generated, 0 explicitly excluded, 0 missi
 
 ## Unknown licensing review queue
 
-2392 unknown endpoints across 35 catalog families. [LICENSING-REVIEW.md](LICENSING-REVIEW.md) lists each path with a link to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
+2393 unknown endpoints across 35 catalog families. [LICENSING-REVIEW.md](LICENSING-REVIEW.md) lists each path with a link to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
 
 | Family | Unknown endpoints |
 | --- | ---: |
@@ -146,10 +146,10 @@ Reviewed generated mapping coverage: 7 generated, 0 explicitly excluded, 0 missi
 | Backup and recovery (`backup-and-recovery`) | 40 |
 | Calendars (`calendars`) | 32 |
 | Change notifications (`change-notifications`) | 6 |
-| Compliance (`compliance`) | 29 |
+| Compliance (`compliance`) | 28 |
 | Cross-device experiences (`cross-device-experiences`) | 10 |
 | Customer booking (`customer-booking`) | 14 |
-| Device and app management (`device-and-app-management`) | 474 |
+| Device and app management (`device-and-app-management`) | 469 |
 | Education (`education`) | 41 |
 | Employee experience (`employee-experience`) | 10 |
 | Extensions (`extensions`) | 44 |
@@ -157,22 +157,22 @@ Reviewed generated mapping coverage: 7 generated, 0 explicitly excluded, 0 missi
 | Files (`files`) | 25 |
 | Financials (preview) (`financials-preview`) | 22 |
 | Groups (`groups`) | 5 |
-| Identity and access (`identity-and-access`) | 550 |
+| Identity and access (`identity-and-access`) | 546 |
 | Industry data ETL (preview) (`industry-data-etl-preview`) | 8 |
 | Mail (`mail`) | 21 |
 | Mailbox import and export (`mailbox-import-and-export`) | 3 |
 | Notes (`notes`) | 70 |
 | Notifications (deprecated) (`notifications-deprecated`) | 2 |
-| Uncategorized (`other`) | 18 |
+| Uncategorized (`other`) | 20 |
 | People and workplace intelligence (`people-and-workplace-intelligence`) | 80 |
 | Personal contacts (`personal-contacts`) | 12 |
-| Reports (`reports`) | 30 |
+| Reports (`reports`) | 33 |
 | Search (`search`) | 3 |
-| Security (`security`) | 137 |
+| Security (`security`) | 138 |
 | Sites and lists (`sites-and-lists`) | 184 |
 | Tasks and plans (`tasks-and-plans`) | 51 |
-| Teamwork and communications (`teamwork-and-communications`) | 328 |
+| Teamwork and communications (`teamwork-and-communications`) | 329 |
 | Tenants (`tenants`) | 29 |
 | To-do tasks (`to-do-tasks`) | 20 |
-| Users (`users`) | 22 |
+| Users (`users`) | 26 |
 | Workbooks and charts (`workbooks-and-charts`) | 26 |

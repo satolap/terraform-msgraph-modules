@@ -14,7 +14,7 @@ run "minimal_request" {
   }
 
   assert {
-    condition     = alltrue([for key in ["actionItems", "callId", "contentCorrelationId", "createdDateTime", "endDateTime", "meetingNotes", "viewpoint"] : !contains(keys(msgraph_resource.this.body), key)])
+    condition     = alltrue([for key in ["actionItems", "callId", "contentCorrelationId", "createdDateTime", "endDateTime", "meetingNotes", "recapUrl", "viewpoint"] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }

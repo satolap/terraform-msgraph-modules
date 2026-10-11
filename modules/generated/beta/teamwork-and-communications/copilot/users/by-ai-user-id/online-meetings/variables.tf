@@ -29,6 +29,7 @@ variable "ai_insights" {
       text       = optional(string)
       title      = optional(string)
     })))
+    recapUrl = optional(string)
     viewpoint = optional(object({
       odata_type = optional(string, "#microsoft.graph.callAiInsightViewPoint")
       mentionEvents = optional(list(object({

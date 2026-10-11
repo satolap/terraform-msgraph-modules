@@ -23,7 +23,7 @@ run "minimal_request" {
   }
 
   assert {
-    condition     = alltrue([for key in ["clientState", "encryptionCertificate", "encryptionCertificateId", "includeResourceData", "latestSupportedTlsVersion", "lifecycleNotificationUrl", "notificationQueryOptions", "notificationUrlAppId"] : !contains(keys(msgraph_resource.this.body), key)])
+    condition     = alltrue([for key in ["clientState", "encryptionCertificate", "encryptionCertificateId", "includeResourceData", "latestSupportedTlsVersion", "lifecycleNotificationUrl", "notificationQueryOptions", "notificationUrlAppId", "vapidPublicKey", "webPushEncryptionP256dhPublicKey", "webPushEncryptionSecret"] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
@@ -376,5 +376,86 @@ run "replace_on_notification_url_app_id" {
   assert {
     condition     = msgraph_resource.this.id != run.replace_on_notification_query_options.id
     error_message = "Changing notification_url_app_id must replace the object."
+  }
+}
+
+run "replace_on_vapid_public_key" {
+  command = apply
+
+  variables {
+    change_type                  = "example-changed"
+    expiration_date_time         = "2026-01-01T00:00:00Z-changed"
+    notification_url             = "example-changed"
+    resource                     = "example-changed"
+    additional_properties        = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
+    client_state                 = "example-changed"
+    encryption_certificate       = "example-changed"
+    encryption_certificate_id    = "example-changed"
+    include_resource_data        = true
+    latest_supported_tls_version = "example-changed"
+    lifecycle_notification_url   = "example-changed"
+    notification_query_options   = "example-changed"
+    notification_url_app_id      = "example-changed"
+    vapid_public_key             = "example-changed"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.id != run.replace_on_notification_url_app_id.id
+    error_message = "Changing vapid_public_key must replace the object."
+  }
+}
+
+run "replace_on_web_push_encryption_p256dh_public_key" {
+  command = apply
+
+  variables {
+    change_type                           = "example-changed"
+    expiration_date_time                  = "2026-01-01T00:00:00Z-changed"
+    notification_url                      = "example-changed"
+    resource                              = "example-changed"
+    additional_properties                 = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
+    client_state                          = "example-changed"
+    encryption_certificate                = "example-changed"
+    encryption_certificate_id             = "example-changed"
+    include_resource_data                 = true
+    latest_supported_tls_version          = "example-changed"
+    lifecycle_notification_url            = "example-changed"
+    notification_query_options            = "example-changed"
+    notification_url_app_id               = "example-changed"
+    vapid_public_key                      = "example-changed"
+    web_push_encryption_p256dh_public_key = "example-changed"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.id != run.replace_on_vapid_public_key.id
+    error_message = "Changing web_push_encryption_p256dh_public_key must replace the object."
+  }
+}
+
+run "replace_on_web_push_encryption_secret" {
+  command = apply
+
+  variables {
+    change_type                           = "example-changed"
+    expiration_date_time                  = "2026-01-01T00:00:00Z-changed"
+    notification_url                      = "example-changed"
+    resource                              = "example-changed"
+    additional_properties                 = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
+    client_state                          = "example-changed"
+    encryption_certificate                = "example-changed"
+    encryption_certificate_id             = "example-changed"
+    include_resource_data                 = true
+    latest_supported_tls_version          = "example-changed"
+    lifecycle_notification_url            = "example-changed"
+    notification_query_options            = "example-changed"
+    notification_url_app_id               = "example-changed"
+    vapid_public_key                      = "example-changed"
+    web_push_encryption_p256dh_public_key = "example-changed"
+    web_push_encryption_secret            = "example-changed"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.id != run.replace_on_web_push_encryption_p256dh_public_key.id
+    error_message = "Changing web_push_encryption_secret must replace the object."
   }
 }

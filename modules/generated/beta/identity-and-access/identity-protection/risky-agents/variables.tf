@@ -1,13 +1,69 @@
+variable "additional_info" {
+  description = "Microsoft Graph additionalInfo property."
+  type        = string
+  default     = null
+}
+
 variable "agent_display_name" {
   description = "Name of the agent.  Supports $filter (eq, startsWith)."
   type        = string
   default     = null
 }
 
+variable "agent_platform" {
+  description = "Microsoft Graph agentPlatform property."
+  type        = string
+  default     = null
+}
+
+variable "associated_user_id" {
+  description = "Microsoft Graph associatedUserId property."
+  type        = string
+  default     = null
+}
+
+variable "blast_radius_risk" {
+  description = "Microsoft Graph blastRadiusRisk property."
+  type = object({
+    odata_type     = optional(string, "#microsoft.graph.blastRadiusRisk")
+    riskIndicators = optional(list(string))
+    riskLevel      = optional(string)
+    riskRecommendations = optional(list(object({
+      odata_type  = optional(string, "#microsoft.graph.riskRecommendation")
+      displayName = optional(string)
+      severity    = optional(string)
+    })))
+    riskUrl = optional(string)
+  })
+  default = null
+}
+
 variable "blueprint_id" {
   description = "The identifier of the blueprint associated with the agent. Nullable."
   type        = string
   default     = null
+}
+
+variable "device_id" {
+  description = "Microsoft Graph deviceId property."
+  type        = string
+  default     = null
+}
+
+variable "exposure_risk" {
+  description = "Microsoft Graph exposureRisk property."
+  type = object({
+    odata_type     = optional(string, "#microsoft.graph.exposureRisk")
+    riskIndicators = optional(list(string))
+    riskLevel      = optional(string)
+    riskRecommendations = optional(list(object({
+      odata_type  = optional(string, "#microsoft.graph.riskRecommendation")
+      displayName = optional(string)
+      severity    = optional(string)
+    })))
+    riskUrl = optional(string)
+  })
+  default = null
 }
 
 variable "identity_type" {
@@ -39,6 +95,12 @@ variable "is_processing" {
   default     = null
 }
 
+variable "machine_id" {
+  description = "Microsoft Graph machineId property."
+  type        = string
+  default     = null
+}
+
 variable "odata_type" {
   description = "Microsoft Graph @odata.type property."
   type        = string
@@ -52,7 +114,7 @@ variable "risk_detail" {
   default     = null
 
   validation {
-    condition     = var.risk_detail == null ? true : contains(["none", "adminGeneratedTemporaryPassword", "userPerformedSecuredPasswordChange", "userPerformedSecuredPasswordReset", "adminConfirmedSigninSafe", "aiConfirmedSigninSafe", "userPassedMFADrivenByRiskBasedPolicy", "adminDismissedAllRiskForUser", "adminConfirmedSigninCompromised", "hidden", "adminConfirmedUserCompromised", "unknownFutureValue", "adminConfirmedServicePrincipalCompromised", "adminDismissedAllRiskForServicePrincipal", "m365DAdminDismissedDetection", "userChangedPasswordOnPremises", "adminDismissedRiskForSignIn", "adminConfirmedAccountSafe", "adminConfirmedAgentSafe", "adminConfirmedAgentCompromised", "adminDismissedRiskForAgent", "microsoftRevokedSessions"], var.risk_detail)
+    condition     = var.risk_detail == null ? true : contains(["none", "adminGeneratedTemporaryPassword", "userPerformedSecuredPasswordChange", "userPerformedSecuredPasswordReset", "adminConfirmedSigninSafe", "aiConfirmedSigninSafe", "userPassedMFADrivenByRiskBasedPolicy", "adminDismissedAllRiskForUser", "adminConfirmedSigninCompromised", "hidden", "adminConfirmedUserCompromised", "unknownFutureValue", "adminConfirmedServicePrincipalCompromised", "adminDismissedAllRiskForServicePrincipal", "m365DAdminDismissedDetection", "userChangedPasswordOnPremises", "adminDismissedRiskForSignIn", "adminConfirmedAccountSafe", "adminConfirmedAgentSafe", "adminConfirmedAgentCompromised", "adminDismissedRiskForAgent", "microsoftRevokedSessions", "aiElevatedAccountRisk", "userPassedVerifiedIdDrivenByRiskBasedPolicy"], var.risk_detail)
     error_message = "risk_detail must be one of the documented enum values."
   }
 }
@@ -83,6 +145,29 @@ variable "risk_state" {
     condition     = var.risk_state == null ? true : contains(["none", "confirmedSafe", "remediated", "dismissed", "atRisk", "confirmedCompromised", "unknownFutureValue"], var.risk_state)
     error_message = "risk_state must be one of the documented enum values."
   }
+}
+
+variable "runtime_risk" {
+  description = "Microsoft Graph runtimeRisk property."
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.runtimeRisk")
+    alerts = optional(list(object({
+      odata_type      = optional(string, "#microsoft.graph.riskAlert")
+      displayName     = optional(string)
+      mitreTechniques = optional(list(string))
+      providerAlertId = optional(string)
+      severity        = optional(string)
+    })))
+    riskLevel = optional(string)
+    riskUrl   = optional(string)
+  })
+  default = null
+}
+
+variable "sources" {
+  description = "Microsoft Graph sources property."
+  type        = list(string)
+  default     = null
 }
 
 variable "additional_properties" {

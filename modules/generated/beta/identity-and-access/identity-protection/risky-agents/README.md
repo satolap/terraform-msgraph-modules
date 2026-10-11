@@ -12,27 +12,36 @@ Lifecycle: `POST /identityProtection/riskyAgents`, `GET/PATCH/DELETE /identityPr
 
 ```hcl
 module "graph_resource" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/identity-and-access/identity-protection/risky-agents?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/beta/identity-and-access/identity-protection/risky-agents?ref=<release-tag>"
 }
 ```
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 
 | Input | Graph property | Type | Required | Sensitive |
 | --- | --- | --- | --- | --- |
+| `additional_info` | `additionalInfo` | `string` | no | no |
 | `agent_display_name` | `agentDisplayName` | `string` | no | no |
+| `agent_platform` | `agentPlatform` | `string` | no | no |
+| `associated_user_id` | `associatedUserId` | `string` | no | no |
+| `blast_radius_risk` | `blastRadiusRisk` | `object({       odata_type = optional(string, "#microsoft.graph.blastRadiusRisk")       riskIndicators = optional(list(string))       riskLevel = optional(string)       riskRecommendations = optional(list(object({       odata_type = optional(string, "#microsoft.graph.riskRecommendation")       displayName = optional(string)       severity = optional(string)     })))       riskUrl = optional(string)     })` | no | no |
 | `blueprint_id` | `blueprintId` | `string` | no | no |
+| `device_id` | `deviceId` | `string` | no | no |
+| `exposure_risk` | `exposureRisk` | `object({       odata_type = optional(string, "#microsoft.graph.exposureRisk")       riskIndicators = optional(list(string))       riskLevel = optional(string)       riskRecommendations = optional(list(object({       odata_type = optional(string, "#microsoft.graph.riskRecommendation")       displayName = optional(string)       severity = optional(string)     })))       riskUrl = optional(string)     })` | no | no |
 | `identity_type` | `identityType` | `string` | no | no |
 | `is_deleted` | `isDeleted` | `bool` | no | no |
 | `is_enabled` | `isEnabled` | `bool` | no | no |
 | `is_processing` | `isProcessing` | `bool` | no | no |
+| `machine_id` | `machineId` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `risk_detail` | `riskDetail` | `string` | no | no |
 | `risk_last_modified_date_time` | `riskLastModifiedDateTime` | `string` | no | no |
 | `risk_level` | `riskLevel` | `string` | no | no |
 | `risk_state` | `riskState` | `string` | no | no |
+| `runtime_risk` | `runtimeRisk` | `object({       odata_type = optional(string, "#microsoft.graph.runtimeRisk")       alerts = optional(list(object({       odata_type = optional(string, "#microsoft.graph.riskAlert")       displayName = optional(string)       mitreTechniques = optional(list(string))       providerAlertId = optional(string)       severity = optional(string)     })))       riskLevel = optional(string)       riskUrl = optional(string)     })` | no | no |
+| `sources` | `sources` | `list(string)` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

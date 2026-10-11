@@ -9,18 +9,18 @@ that users can request access to, governed by one or more assignment policies.
 
 ## Usage
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one.
 
 ```hcl
 module "catalog" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity-governance/entitlement-management/catalogs?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/curated/identity-governance/entitlement-management/catalogs?ref=<release-tag>"
 
   display_name = "Engineering"
   state        = "published"
 }
 
 module "engineering_access" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity-governance/entitlement-management/access-packages?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/curated/identity-governance/entitlement-management/access-packages?ref=<release-tag>"
 
   catalog_id   = module.catalog.id
   display_name = "Engineering Team Access"

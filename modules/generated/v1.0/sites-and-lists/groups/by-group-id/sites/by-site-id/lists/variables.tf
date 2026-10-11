@@ -556,21 +556,25 @@ variable "parent_reference" {
 variable "subscriptions" {
   description = "The set of subscriptions on the list."
   type = list(object({
-    odata_type                = optional(string, "#microsoft.graph.subscription")
-    changeType                = optional(string)
-    clientState               = optional(string)
-    encryptionCertificate     = optional(string)
-    encryptionCertificateId   = optional(string)
-    expirationDateTime        = optional(string)
-    includeResourceData       = optional(bool)
-    latestSupportedTlsVersion = optional(string)
-    lifecycleNotificationUrl  = optional(string)
-    notificationQueryOptions  = optional(string)
-    notificationUrl           = optional(string)
-    notificationUrlAppId      = optional(string)
-    resource                  = optional(string)
+    odata_type                       = optional(string, "#microsoft.graph.subscription")
+    changeType                       = optional(string)
+    clientState                      = optional(string)
+    encryptionCertificate            = optional(string)
+    encryptionCertificateId          = optional(string)
+    expirationDateTime               = optional(string)
+    includeResourceData              = optional(bool)
+    latestSupportedTlsVersion        = optional(string)
+    lifecycleNotificationUrl         = optional(string)
+    notificationQueryOptions         = optional(string)
+    notificationUrl                  = optional(string)
+    notificationUrlAppId             = optional(string)
+    resource                         = optional(string)
+    vapidPublicKey                   = optional(string)
+    webPushEncryptionP256dhPublicKey = optional(string)
+    webPushEncryptionSecret          = optional(string)
   }))
-  default = null
+  default   = null
+  sensitive = true
 }
 
 variable "additional_properties" {

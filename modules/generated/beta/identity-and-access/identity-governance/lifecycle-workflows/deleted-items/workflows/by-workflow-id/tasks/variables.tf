@@ -171,6 +171,7 @@ variable "task_processing_results" {
         accountEnabled         = optional(bool)
         alternativeNames       = optional(any)
         alternativeSecurityIds = optional(any)
+        cloudLicensing         = optional(any)
         commands               = optional(any)
         deletedDateTime        = optional(string)
         deviceCategory         = optional(string)

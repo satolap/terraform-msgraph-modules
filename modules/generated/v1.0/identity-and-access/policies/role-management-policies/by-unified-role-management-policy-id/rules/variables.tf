@@ -15,7 +15,7 @@ variable "odata_type" {
   nullable    = false
 
   validation {
-    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.unifiedRoleManagementPolicyApprovalRule", "#microsoft.graph.unifiedRoleManagementPolicyAuthenticationContextRule", "#microsoft.graph.unifiedRoleManagementPolicyEnablementRule", "#microsoft.graph.unifiedRoleManagementPolicyExpirationRule", "#microsoft.graph.unifiedRoleManagementPolicyNotificationRule"], var.odata_type)
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.unifiedRoleManagementPolicyApprovalRule", "#microsoft.graph.unifiedRoleManagementPolicyAuthenticationContextRule", "#microsoft.graph.unifiedRoleManagementPolicyCustomExtensionRule", "#microsoft.graph.unifiedRoleManagementPolicyEnablementRule", "#microsoft.graph.unifiedRoleManagementPolicyExpirationRule", "#microsoft.graph.unifiedRoleManagementPolicyNotificationRule"], var.odata_type)
     error_message = "odata_type must name a concrete Graph type."
   }
 }

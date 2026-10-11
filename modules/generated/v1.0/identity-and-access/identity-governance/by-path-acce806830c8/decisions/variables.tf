@@ -45,18 +45,6 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "permission" {
-  description = "Microsoft Graph permission property."
-  type = object({
-    odata_type  = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItemPermission")
-    description = optional(string)
-    displayName = optional(string)
-    id          = optional(string)
-    type        = optional(string)
-  })
-  default = null
-}
-
 variable "additional_properties" {
   description = "Additional writable Graph properties using API field names. Explicit typed inputs take precedence. Null top-level values are omitted; callers must omit nested nulls in untyped values."
   type        = any
@@ -65,7 +53,7 @@ variable "additional_properties" {
   sensitive   = true
 
   validation {
-    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["accessReviewId", "appliedBy", "appliedDateTime", "applyDescription", "applyResult", "id", "principal", "principalLink", "recommendation", "resource", "resourceLink", "reviewedBy", "reviewedDateTime"], key)]) : false
+    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["accessReviewId", "appliedBy", "appliedDateTime", "applyDescription", "applyResult", "id", "permission", "principal", "principalLink", "recommendation", "resource", "resourceLink", "reviewedBy", "reviewedDateTime"], key)]) : false
     error_message = "additional_properties must be an object without documented read-only properties."
   }
 }

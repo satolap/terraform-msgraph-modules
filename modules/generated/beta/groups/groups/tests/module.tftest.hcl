@@ -17,7 +17,7 @@ run "minimal_request" {
   }
 
   assert {
-    condition     = alltrue([for key in ["acceptedSenders", "appRoleAssignments", "assignedLabels", "classification", "cloudLicensing", "conversations", "deletedDateTime", "description", "events", "groupTypes", "hasMembersWithLicenseErrors", "infoCatalogs", "isAssignableToRole", "members", "membershipRule", "membershipRuleProcessingState", "onPremisesExtensionAttributes", "onPremisesProvisioningErrors", "onPremisesSyncBehavior", "onenote", "organizationId", "owners", "permissionGrants", "photo", "preferredDataLocation", "preferredLanguage", "rejectedSenders", "resourceBehaviorOptions", "resourceProvisioningOptions", "serviceProvisioningErrors", "settings", "sites", "team", "theme", "threads", "transitiveMemberOf", "transitiveMembers", "visibility", "welcomeMessageEnabled", "writebackConfiguration"] : !contains(keys(msgraph_resource.this.body), key)])
+    condition     = alltrue([for key in ["acceptedSenders", "appRoleAssignments", "assignedLabels", "classification", "cloudLicensing", "conversations", "deletedDateTime", "description", "disableNesting", "events", "groupTypes", "hasMembersWithLicenseErrors", "infoCatalogs", "isAssignableToRole", "members", "membershipRule", "membershipRuleProcessingState", "onPremisesExtensionAttributes", "onPremisesProvisioningErrors", "onPremisesSyncBehavior", "onenote", "organizationId", "owners", "permissionGrants", "photo", "preferredDataLocation", "preferredLanguage", "rejectedSenders", "resourceBehaviorOptions", "resourceProvisioningOptions", "serviceProvisioningErrors", "settings", "sites", "team", "theme", "threads", "transitiveMemberOf", "transitiveMembers", "visibility", "welcomeMessageEnabled", "writebackConfiguration"] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
@@ -26,14 +26,14 @@ run "typed_request" {
   command = plan
 
   variables {
-    display_name                    = "example"
-    mail_enabled                    = false
-    mail_nickname                   = "example"
-    security_enabled                = false
-    classification                  = "example"
-    has_members_with_license_errors = false
-    cloud_licensing                 = { "assignments" = null }
-    accepted_senders                = [{}]
+    display_name     = "example"
+    mail_enabled     = false
+    mail_nickname    = "example"
+    security_enabled = false
+    classification   = "example"
+    disable_nesting  = false
+    cloud_licensing  = { "assignments" = null }
+    accepted_senders = [{}]
   }
 
   assert {
@@ -62,8 +62,8 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["hasMembersWithLicenseErrors"]) == jsonencode(false)
-    error_message = "hasMembersWithLicenseErrors must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["disableNesting"]) == jsonencode(false)
+    error_message = "disableNesting must preserve typed values and omit nested nulls."
   }
 
   assert {

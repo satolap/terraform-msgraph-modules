@@ -1,6 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
+    "a2aAuthorization"           = (var.a2a_authorization == null ? null : { for key0, value0 in { "@odata.type" = var.a2a_authorization["odata_type"], "referenceId" = var.a2a_authorization["referenceId"], "type" = var.a2a_authorization["type"] } : key0 => value0 if value0 != null })
     "agentCard"                  = var.agent_card
     "agentIdentityBlueprintId"   = var.agent_identity_blueprint_id
     "agentIdentityId"            = var.agent_identity_id

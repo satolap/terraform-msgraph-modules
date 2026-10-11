@@ -47,11 +47,11 @@ when the type or catalog changes.
 
 ## Usage
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one.
 
 ```hcl
 module "grant_notice" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity-governance/entitlement-management/catalogs/custom-extensions?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/curated/identity-governance/entitlement-management/catalogs/custom-extensions?ref=<release-tag>"
 
   catalog_id     = module.engineering_catalog.id
   extension_type = "request_workflow"
@@ -71,7 +71,7 @@ Add the stage with `merge`:
 
 ```hcl
 module "engineering_policy" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity-governance/entitlement-management/assignment-policies?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/curated/identity-governance/entitlement-management/assignment-policies?ref=<release-tag>"
 
   # ... the other policy inputs ...
 

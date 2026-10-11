@@ -22,6 +22,27 @@ variable "device_instances" {
       key              = optional(string)
       type             = optional(number)
     })))
+    cloudLicensing = optional(object({
+      odata_type = optional(string, "#microsoft.graph.cloudLicensing.deviceCloudLicensing")
+      assignments = optional(list(object({
+        odata_type             = optional(string, "#microsoft.graph.cloudLicensing.assignment")
+        allotment              = optional(any)
+        assignedTo             = optional(any)
+        disabledServicePlanIds = optional(any)
+      })))
+      usageRights = optional(list(object({
+        odata_type                = optional(string, "#microsoft.graph.cloudLicensing.usageRight")
+        allotments                = optional(any)
+        assignments               = optional(any)
+        externalServiceIdentifier = optional(string)
+      })))
+      waitingMembers = optional(list(object({
+        odata_type           = optional(string, "#microsoft.graph.cloudLicensing.waitingMember")
+        allotment            = optional(any)
+        assignedTo           = optional(any)
+        waitingSinceDateTime = optional(string)
+      })))
+    }))
     commands = optional(list(object({
       odata_type        = optional(string, "#microsoft.graph.command")
       appServiceName    = optional(string)

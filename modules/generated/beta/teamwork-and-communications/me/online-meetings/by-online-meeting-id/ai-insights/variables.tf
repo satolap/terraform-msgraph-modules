@@ -66,6 +66,12 @@ variable "odata_type" {
   nullable    = false
 }
 
+variable "recap_url" {
+  description = "Microsoft Graph recapUrl property."
+  type        = string
+  default     = null
+}
+
 variable "viewpoint" {
   description = "Microsoft Graph viewpoint property."
   type = object({
