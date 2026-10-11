@@ -2,7 +2,7 @@
 
 [All categories](../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview?view=graph-rest-beta&preserve-view=true)
 
-Microsoft Graph **beta** · **328 generated modules**.
+Microsoft Graph **beta** · **329 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -261,6 +261,7 @@ Microsoft Graph **beta** · **328 generated modules**.
 | [`/teamwork/deletedTeams/{deletedTeam-id}/channels/{channel-id}/tabs`](teamwork/deleted-teams/by-deleted-team-id/channels/by-channel-id/tabs/README.md) | `microsoft.graph.teamsTab` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teamstab?view=graph-rest-beta&preserve-view=true) |
 | [`/teamwork/devices`](teamwork/devices/README.md) | `microsoft.graph.teamworkDevice` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teamworkdevice?view=graph-rest-beta&preserve-view=true) |
 | [`/teamwork/devices/{teamworkDevice-id}/operations`](teamwork/devices/by-teamwork-device-id/operations/README.md) | `microsoft.graph.teamworkDeviceOperation` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teamworkdeviceoperation?view=graph-rest-beta&preserve-view=true) |
+| [`/teamwork/messaging/customEmojis`](teamwork/messaging/custom-emojis/README.md) | `microsoft.graph.teamworkCustomEmoji` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teamworkcustomemoji?view=graph-rest-beta&preserve-view=true) |
 | [`/teamwork/teamTemplates`](teamwork/team-templates/README.md) | `microsoft.graph.teamTemplate` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview?view=graph-rest-beta&preserve-view=true) |
 | [`/teamwork/teamTemplates/{teamTemplate-id}/definitions`](teamwork/team-templates/by-team-template-id/definitions/README.md) | `microsoft.graph.teamTemplateDefinition` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview?view=graph-rest-beta&preserve-view=true) |
 | [`/teamwork/teamTemplates/{teamTemplate-id}/definitions/{teamTemplateDefinition-id}/teamDefinition/channels`](teamwork/by-path-c661a7b63aad/channels/README.md) | `microsoft.graph.channel` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/channel?view=graph-rest-beta&preserve-view=true) |

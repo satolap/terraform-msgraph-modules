@@ -1,0 +1,61 @@
+# /policies/crossTenantAccessPolicy/partners/{crossTenantAccessPolicyConfigurationPartner-tenantId}/m365Capabilities
+
+Create Microsoft 365 capability for partner
+
+[Catalog](../../../../README.md) · [Tenants](../../../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/m365capabilitybase?view=graph-rest-1.0&preserve-view=true)
+
+Generated from Microsoft Graph **v1.0** OpenAPI and optional EDMX metadata.
+
+Lifecycle: `POST /policies/crossTenantAccessPolicy/partners/{crossTenantAccessPolicyConfigurationPartner-tenantId}/m365Capabilities`, `GET/PATCH/DELETE /policies/crossTenantAccessPolicy/partners/{crossTenantAccessPolicyConfigurationPartner-tenantId}/m365Capabilities/{m365CapabilityBase-name}`.
+
+## Usage
+
+```hcl
+module "graph_resource" {
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/v1.0/tenants/policies/by-path-06eb97e19b87/m365-capabilities?ref=<release-tag>"
+  cross_tenant_access_policy_configuration_partner_tenant_id = "parent-object-id"
+  odata_type = "#microsoft.graph.crossTenantCalendarAvailabilityBasic"
+}
+```
+
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+
+## Inputs
+
+| Input | Graph property | Type | Required | Sensitive |
+| --- | --- | --- | --- | --- |
+| `cross_tenant_access_policy_configuration_partner_tenant_id` | URL parameter `crossTenantAccessPolicyConfigurationPartner-tenantId` | `string` | yes | no |
+| `odata_type` | `@odata.type` | `string` | yes | no |
+| `inbound_access` | `inboundAccess` | `object({       odata_type = optional(string, "#microsoft.graph.m365CapabilityInboundAccess")       isAllowed = optional(bool)       resourceScopes = optional(object({       odata_type = optional(string, "#microsoft.graph.m365CapabilityResourceScopes")       excluded = optional(list(object({       odata_type = optional(string, "#microsoft.graph.m365CapabilityResourceScope")       resourceId = optional(string)       resourceType = optional(string)     })))       included = optional(list(object({       odata_type = optional(string, "#microsoft.graph.m365CapabilityResourceScope")       resourceId = optional(string)       resourceType = optional(string)     })))     }))     })` | no | no |
+| `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
+| `name` | `name` | `string` | no | no |
+| `additional_properties` | Additional writable API properties | `any` | no | yes |
+
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.
+
+Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
+
+## Permissions and limitations
+
+Review the Microsoft Graph API documentation for this endpoint's application/delegated permissions, required create fields, licensing, and tenant restrictions. Required inputs come from the request schema and explicit reviewed corrections, not from EDMX response nullability. The generated module is schema-derived; its lifecycle has not been tested against a live tenant.
+
+Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
+
+Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
+
+Generation notes:
+
+- @odata.type: microsoft.graph.m365CapabilityBase is abstract; odata_type has no default and must name a concrete type
+
+## Licensing and prerequisites
+
+License requirements for this endpoint have not been reviewed. Check the Microsoft Graph documentation and Microsoft Entra licensing for the feature this resource belongs to before relying on the module; a successful API call does not establish entitlement.
+
+## Offline test
+
+```sh
+terraform init -backend=false
+terraform test
+```
+
+The included mock test checks URL construction and request omission without Graph credentials. It does not verify permissions or server behavior.

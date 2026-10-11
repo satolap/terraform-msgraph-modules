@@ -17,11 +17,11 @@ management as:
 
 ## Usage
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one.
 
 ```hcl
 module "developer" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/users?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/curated/users?ref=<release-tag>"
 
   user_principal_name = "jdoe@contoso.com"
   display_name        = "Jane Doe"

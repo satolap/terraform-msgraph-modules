@@ -10,7 +10,7 @@ run "minimal_request" {
   }
 
   assert {
-    condition     = alltrue([for key in ["actionSteps", "benefits", "category", "categoryGroup", "completedBySystemDateTime", "completedByUserDateTime", "createdDateTime", "currentScore", "displayName", "failedReviewDateTime", "featureAreas", "impactStartDateTime", "impactType", "impactedResources", "insights", "lastCheckedDateTime", "lastModifiedBy", "lastModifiedDateTime", "maxScore", "needsMoreActionResourceCount", "nistClassifications", "postponeUntilDateTime", "priority", "recommendationType", "releaseType", "remediatedDateTime", "remediationImpact", "requiredLicenses", "status", "statusModifiedDateTime", "tags"] : !contains(keys(msgraph_resource.this.body), key)])
+    condition     = alltrue([for key in ["actionSteps", "benefits", "category", "categoryGroup", "completedBySystemDateTime", "completedByUserDateTime", "createdDateTime", "currentScore", "displayName", "failedReviewDateTime", "featureAreas", "impactStartDateTime", "impactType", "impactedResources", "insights", "lastCheckedDateTime", "lastModifiedBy", "lastModifiedDateTime", "maxScore", "needsMoreActionResourceCount", "postponeUntilDateTime", "priority", "recommendationType", "releaseType", "remediatedDateTime", "remediationImpact", "requiredLicenses", "status", "statusModifiedDateTime", "tags"] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }

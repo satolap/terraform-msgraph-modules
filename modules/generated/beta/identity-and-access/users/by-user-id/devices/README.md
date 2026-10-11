@@ -12,12 +12,12 @@ Lifecycle: `POST /users/{user-id}/devices`, `GET/PATCH/DELETE /users/{user-id}/d
 
 ```hcl
 module "graph_resource" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/identity-and-access/users/by-user-id/devices?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/beta/identity-and-access/users/by-user-id/devices?ref=<release-tag>"
   user_id = "parent-object-id"
 }
 ```
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 
@@ -27,6 +27,7 @@ Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules R
 | `account_enabled` | `accountEnabled` | `bool` | no | no |
 | `alternative_names` | `alternativeNames` | `list(string)` | no | no |
 | `alternative_security_ids` | `alternativeSecurityIds` | `list(object({       odata_type = optional(string, "#microsoft.graph.alternativeSecurityId")       identityProvider = optional(string)       key = optional(string)       type = optional(number)     }))` | no | no |
+| `cloud_licensing` | `cloudLicensing` | `object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.deviceCloudLicensing")       assignments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.assignment")       allotment = optional(any)       assignedTo = optional(any)       disabledServicePlanIds = optional(list(string))     })))       usageRights = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.usageRight")       allotments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.allotment")       assignableTo = optional(string)       assignments = optional(any)       externalServiceIdentifier = optional(string)       subscriptions = optional(any)       waitingMembers = optional(any)     })))       assignments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.assignment")       allotment = optional(any)       assignedTo = optional(any)       disabledServicePlanIds = optional(any)     })))       externalServiceIdentifier = optional(string)     })))       waitingMembers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.waitingMember")       allotment = optional(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.allotment")       assignableTo = optional(string)       assignments = optional(any)       externalServiceIdentifier = optional(string)       subscriptions = optional(any)       waitingMembers = optional(any)     }))       assignedTo = optional(any)       waitingSinceDateTime = optional(string)     })))     })` | no | no |
 | `commands` | `commands` | `list(object({       odata_type = optional(string, "#microsoft.graph.command")       appServiceName = optional(string)       error = optional(string)       packageFamilyName = optional(string)       payload = optional(any)       permissionTicket = optional(string)       postBackUri = optional(string)       responsepayload = optional(any)       status = optional(string)       type = optional(string)     }))` | no | no |
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
 | `device_category` | `deviceCategory` | `string` | no | no |
@@ -72,6 +73,18 @@ Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`
 Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
+- cloudLicensing.assignments[].allotment: navigation property; accepts an untyped value
+- cloudLicensing.assignments[].assignedTo: polymorphic schema; accepts an untyped value
+- cloudLicensing.usageRights[].allotments[].assignments: nested schema exceeds depth limit; accepts an untyped value
+- cloudLicensing.usageRights[].allotments[].subscriptions: nested schema exceeds depth limit; accepts an untyped value
+- cloudLicensing.usageRights[].allotments[].waitingMembers: nested schema exceeds depth limit; accepts an untyped value
+- cloudLicensing.usageRights[].assignments[].allotment: navigation property; accepts an untyped value
+- cloudLicensing.usageRights[].assignments[].assignedTo: nested schema exceeds depth limit; accepts an untyped value
+- cloudLicensing.usageRights[].assignments[].disabledServicePlanIds: nested schema exceeds depth limit; accepts an untyped value
+- cloudLicensing.waitingMembers[].allotment.assignments[]: nested schema exceeds depth limit; accepts an untyped value
+- cloudLicensing.waitingMembers[].allotment.subscriptions[]: nested schema exceeds depth limit; accepts an untyped value
+- cloudLicensing.waitingMembers[].allotment.waitingMembers[]: recursive schema; accepts an untyped value
+- cloudLicensing.waitingMembers[].assignedTo: polymorphic schema; accepts an untyped value
 - commands[].payload: polymorphic schema; accepts an untyped value
 - commands[].responsepayload: navigation property; accepts an untyped value
 - transitiveMemberOf[]: polymorphic schema; accepts an untyped value

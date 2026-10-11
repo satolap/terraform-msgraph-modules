@@ -77,7 +77,7 @@ variable "odata_type" {
 }
 
 variable "offboard_requested_date_time" {
-  description = "The time when protection unit offboard was requested."
+  description = "The time when protection unit offboard was requested. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2024, is 2024-01-01T00:00:00Z."
   type        = string
   default     = null
 }

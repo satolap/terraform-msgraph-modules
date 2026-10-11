@@ -15,7 +15,7 @@ run "minimal_request" {
   }
 
   assert {
-    condition     = alltrue([for key in ["assignments", "capabilities", "cloudPcConfiguration", "description", "displayName", "networkConfiguration"] : !contains(keys(msgraph_resource.this.body), key)])
+    condition     = alltrue([for key in ["assignments", "cloudPcConfiguration", "description", "displayName", "networkConfiguration"] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }

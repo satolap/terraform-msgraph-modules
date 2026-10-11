@@ -2,7 +2,7 @@
 
 [All categories](../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-beta&preserve-view=true)
 
-Microsoft Graph **beta** · **30 generated modules**.
+Microsoft Graph **beta** · **33 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -17,8 +17,11 @@ Microsoft Graph **beta** · **30 generated modules**.
 | [`/deviceManagement/reports/cachedReportConfigurations`](device-management/reports/cached-report-configurations/README.md) | `microsoft.graph.deviceManagementCachedReportConfiguration` | [Documentation](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-beta&preserve-view=true) |
 | [`/deviceManagement/reports/exportJobs`](device-management/reports/export-jobs/README.md) | `microsoft.graph.deviceManagementExportJob` | [Documentation](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-beta&preserve-view=true) |
 | [`/directory/impactedResources`](directory/impacted-resources/README.md) | `microsoft.graph.impactedResource` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/impactedresource?view=graph-rest-beta&preserve-view=true) |
+| [`/directory/impactedResources/{impactedResource-id}/tags`](directory/impacted-resources/by-impacted-resource-id/tags/README.md) | `microsoft.graph.recommendationTag` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/recommendationtag?view=graph-rest-beta&preserve-view=true) |
 | [`/directory/recommendations`](directory/recommendations/README.md) | `microsoft.graph.recommendation` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/recommendation?view=graph-rest-beta&preserve-view=true) |
 | [`/directory/recommendations/{recommendation-id}/impactedResources`](directory/recommendations/by-recommendation-id/impacted-resources/README.md) | `microsoft.graph.impactedResource` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/impactedresource?view=graph-rest-beta&preserve-view=true) |
+| [`/directory/recommendations/{recommendation-id}/impactedResources/{impactedResource-id}/tags`](directory/recommendations/by-recommendation-id/impacted-resources/by-impacted-resource-id/tags/README.md) | `microsoft.graph.recommendationTag` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/recommendationtag?view=graph-rest-beta&preserve-view=true) |
+| [`/directory/recommendations/{recommendation-id}/tags`](directory/recommendations/by-recommendation-id/tags/README.md) | `microsoft.graph.recommendationTag` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/recommendationtag?view=graph-rest-beta&preserve-view=true) |
 | [`/reports/appCredentialSignInActivities`](reports/app-credential-sign-in-activities/README.md) | `microsoft.graph.appCredentialSignInActivity` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/appcredentialsigninactivity?view=graph-rest-beta&preserve-view=true) |
 | [`/reports/applicationSignInDetailedSummary`](reports/application-sign-in-detailed-summary/README.md) | `microsoft.graph.applicationSignInDetailedSummary` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/applicationsignindetailedsummary?view=graph-rest-beta&preserve-view=true) |
 | [`/reports/authenticationMethods/userEventsSummary`](reports/authentication-methods/user-events-summary/README.md) | `microsoft.graph.userEventsSummary` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/usereventssummary?view=graph-rest-beta&preserve-view=true) |

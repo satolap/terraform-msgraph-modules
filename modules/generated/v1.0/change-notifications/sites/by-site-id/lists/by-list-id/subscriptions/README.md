@@ -12,13 +12,13 @@ Lifecycle: `POST /sites/{site-id}/lists/{list-id}/subscriptions`, `GET/PATCH/DEL
 
 ```hcl
 module "graph_resource" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/change-notifications/sites/by-site-id/lists/by-list-id/subscriptions?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/v1.0/change-notifications/sites/by-site-id/lists/by-list-id/subscriptions?ref=<release-tag>"
   site_id = "parent-object-id"
   list_id = "parent-object-id"
 }
 ```
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 
@@ -39,6 +39,9 @@ Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules R
 | `notification_url_app_id` | `notificationUrlAppId` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `resource` | `resource` | `string` | no | no |
+| `vapid_public_key` | `vapidPublicKey` | `string` | no | no |
+| `web_push_encryption_p256dh_public_key` | `webPushEncryptionP256dhPublicKey` | `string` | no | no |
+| `web_push_encryption_secret` | `webPushEncryptionSecret` | `string` | no | yes |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

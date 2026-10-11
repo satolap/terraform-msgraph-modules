@@ -2,7 +2,7 @@
 
 [All categories](../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-1.0&preserve-view=true)
 
-Microsoft Graph **v1.0** · **25 generated modules**.
+Microsoft Graph **v1.0** · **23 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -15,7 +15,6 @@ Microsoft Graph **v1.0** · **25 generated modules**.
 | [`/me/joinedTeams/{team-id}/primaryChannel/allMembers`](me/joined-teams/by-team-id/primary-channel/all-members/README.md) | `microsoft.graph.conversationMember` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-1.0&preserve-view=true) |
 | [`/me/joinedTeams/{team-id}/primaryChannel/members`](me/joined-teams/by-team-id/primary-channel/members/README.md) | `microsoft.graph.conversationMember` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-1.0&preserve-view=true) |
 | [`/me/joinedTeams/{team-id}/primaryChannel/sharedWithTeams`](me/joined-teams/by-team-id/primary-channel/shared-with-teams/README.md) | `microsoft.graph.sharedWithChannelTeamInfo` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-1.0&preserve-view=true) |
-| [`/me/notes`](me/notes/README.md) | `microsoft.graph.note` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-1.0&preserve-view=true) |
 | [`/me/outlook/masterCategories`](me/outlook/master-categories/README.md) | `microsoft.graph.outlookCategory` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/outlookcategory?view=graph-rest-1.0&preserve-view=true) |
 | [`/me/scopedRoleMemberOf`](me/scoped-role-member-of/README.md) | `microsoft.graph.scopedRoleMembership` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-1.0&preserve-view=true) |
 | [`/users`](users/README.md) | `microsoft.graph.user` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/user?view=graph-rest-1.0&preserve-view=true) |
@@ -28,7 +27,6 @@ Microsoft Graph **v1.0** · **25 generated modules**.
 | [`/users/{user-id}/joinedTeams/{team-id}/primaryChannel/allMembers`](users/by-user-id/joined-teams/by-team-id/primary-channel/all-members/README.md) | `microsoft.graph.conversationMember` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-1.0&preserve-view=true) |
 | [`/users/{user-id}/joinedTeams/{team-id}/primaryChannel/members`](users/by-user-id/joined-teams/by-team-id/primary-channel/members/README.md) | `microsoft.graph.conversationMember` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-1.0&preserve-view=true) |
 | [`/users/{user-id}/joinedTeams/{team-id}/primaryChannel/sharedWithTeams`](users/by-user-id/joined-teams/by-team-id/primary-channel/shared-with-teams/README.md) | `microsoft.graph.sharedWithChannelTeamInfo` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-1.0&preserve-view=true) |
-| [`/users/{user-id}/notes`](users/by-user-id/notes/README.md) | `microsoft.graph.note` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-1.0&preserve-view=true) |
 | [`/users/{user-id}/outlook/masterCategories`](users/by-user-id/outlook/master-categories/README.md) | `microsoft.graph.outlookCategory` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/outlookcategory?view=graph-rest-1.0&preserve-view=true) |
 | [`/users/{user-id}/scopedRoleMemberOf`](users/by-user-id/scoped-role-member-of/README.md) | `microsoft.graph.scopedRoleMembership` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-1.0&preserve-view=true) |
 

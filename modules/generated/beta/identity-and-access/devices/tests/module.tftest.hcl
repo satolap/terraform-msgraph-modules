@@ -10,7 +10,7 @@ run "minimal_request" {
   }
 
   assert {
-    condition     = alltrue([for key in ["accountEnabled", "alternativeNames", "alternativeSecurityIds", "commands", "deletedDateTime", "deviceCategory", "deviceId", "deviceMetadata", "deviceOwnership", "deviceVersion", "displayName", "domainName", "enrollmentProfileName", "enrollmentType", "extensionAttributes", "hostnames", "isManaged", "isRooted", "kind", "managementType", "name", "operatingSystem", "operatingSystemVersion", "physicalIds", "platform", "profileType", "status", "systemLabels", "transitiveMemberOf", "usageRights"] : !contains(keys(msgraph_resource.this.body), key)])
+    condition     = alltrue([for key in ["accountEnabled", "alternativeNames", "alternativeSecurityIds", "cloudLicensing", "commands", "deletedDateTime", "deviceCategory", "deviceId", "deviceMetadata", "deviceOwnership", "deviceVersion", "displayName", "domainName", "enrollmentProfileName", "enrollmentType", "extensionAttributes", "hostnames", "isManaged", "isRooted", "kind", "managementType", "name", "operatingSystem", "operatingSystemVersion", "physicalIds", "platform", "profileType", "status", "systemLabels", "transitiveMemberOf", "usageRights"] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
@@ -19,11 +19,11 @@ run "typed_request" {
   command = plan
 
   variables {
-    deleted_date_time    = "2026-01-01T00:00:00Z"
-    account_enabled      = false
-    device_version       = -2147483648
-    extension_attributes = { "extensionAttribute1" = null }
-    alternative_names    = ["example"]
+    deleted_date_time = "2026-01-01T00:00:00Z"
+    account_enabled   = false
+    device_version    = -2147483648
+    cloud_licensing   = { "assignments" = null }
+    alternative_names = ["example"]
   }
 
   assert {
@@ -42,8 +42,8 @@ run "typed_request" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["extensionAttributes"]) == jsonencode({ "@odata.type" = "#microsoft.graph.onPremisesExtensionAttributes" })
-    error_message = "extensionAttributes must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["cloudLicensing"]) == jsonencode({ "@odata.type" = "#microsoft.graph.cloudLicensing.deviceCloudLicensing" })
+    error_message = "cloudLicensing must preserve typed values and omit nested nulls."
   }
 
   assert {

@@ -42,13 +42,13 @@ variable "category_group" {
 }
 
 variable "completed_by_system_date_time" {
-  description = "Microsoft Graph completedBySystemDateTime property."
+  description = "The date and time when the recommendations service verified that the recommendation was fully remediated and set its status to completedBySystem. Is null if the recommendation wasn't completed by the system. Supports $filter."
   type        = string
   default     = null
 }
 
 variable "completed_by_user_date_time" {
-  description = "Microsoft Graph completedByUserDateTime property."
+  description = "The date and time when the recommendation was marked as completed by the user for the current review cycle, including when the value is rolled up from all impacted resources being marked as completed by the user. Is null if the recommendation wasn't completed by a user in the current cycle. Supports $filter."
   type        = string
   default     = null
 }
@@ -72,7 +72,7 @@ variable "display_name" {
 }
 
 variable "failed_review_date_time" {
-  description = "Microsoft Graph failedReviewDateTime property."
+  description = "The date and time when the recommendations service most recently verified that one or more impacted resources the user marked as completed are still impacted, moving them to needsMoreAction. Is cleared when the reviewed resources are remediated, so it's mutually exclusive with remediatedDateTime. Is null when no user-reviewed resource is currently failing verification. Supports $filter."
   type        = string
   default     = null
 }
@@ -156,21 +156,9 @@ variable "max_score" {
 }
 
 variable "needs_more_action_resource_count" {
-  description = "Microsoft Graph needsMoreActionResourceCount property."
+  description = "The number of impacted resources that the user marked as completed and that the recommendations service subsequently verified are still impacted (moved to needsMoreAction). This value is greater than zero exactly when failedReviewDateTime is set. Is null when the recommendation doesn't participate in the review lifecycle."
   type        = number
   default     = null
-}
-
-variable "nist_classifications" {
-  description = "Microsoft Graph nistClassifications property."
-  type = list(object({
-    odata_type  = optional(string, "#microsoft.graph.nistClassification")
-    category    = optional(string)
-    description = optional(string)
-    function    = optional(string)
-    name        = optional(string)
-  }))
-  default = null
 }
 
 variable "odata_type" {
@@ -215,7 +203,7 @@ variable "release_type" {
 }
 
 variable "remediated_date_time" {
-  description = "Microsoft Graph remediatedDateTime property."
+  description = "The date and time when the recommendations service verified that the impacted resources the user marked as completed were remediated, meaning the user-reviewed resources reached completedBySystem. Is superseded by failedReviewDateTime if a reviewed resource subsequently fails verification. Is null if the system hasn't verified a user-driven remediation in the current cycle. Supports $filter."
   type        = string
   default     = null
 }
@@ -227,7 +215,7 @@ variable "remediation_impact" {
 }
 
 variable "required_licenses" {
-  description = "The required licenses to view the recommendation. The possible values are: notApplicable, microsoftEntraIdFree, microsoftEntraIdP1, microsoftEntraIdP2, microsoftEntraIdGovernance, microsoftEntraWorkloadId, unknownFutureValue, aatp. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: aatp."
+  description = "The required licenses to view the recommendation. The possible values are: notApplicable, microsoftEntraIdFree, microsoftEntraIdP1, microsoftEntraIdP2, microsoftEntraIdGovernance, microsoftEntraWorkloadId, unknownFutureValue, aatp, microsoftEntraSuite. Use the Prefer: include-unknown-enum-members request header to get the following values from this evolvable enum: aatp, microsoftEntraSuite."
   type        = string
   default     = null
 
@@ -249,13 +237,13 @@ variable "status" {
 }
 
 variable "status_modified_date_time" {
-  description = "Microsoft Graph statusModifiedDateTime property."
+  description = "The date and time when the recommendation's status last changed, for example from active to completedByUser, dismissed, postponed, or needsMoreAction. Unlike lastModifiedDateTime, this value isn't updated when only the recommendation's insight data changes while the status stays the same. Is null until the recommendation's status changes for the first time. Supports $filter."
   type        = string
   default     = null
 }
 
 variable "tags" {
-  description = "Microsoft Graph tags property."
+  description = "The user-defined free-form labels applied to the recommendation. The collection isn't directly writable; tags are created and removed through the addTag and removeTag actions."
   type = list(object({
     odata_type  = optional(string, "#microsoft.graph.recommendationTag")
     displayName = optional(string)
@@ -271,7 +259,7 @@ variable "additional_properties" {
   sensitive   = true
 
   validation {
-    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["id"], key)]) : false
+    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["id", "nistClassifications"], key)]) : false
     error_message = "additional_properties must be an object without documented read-only properties."
   }
 }

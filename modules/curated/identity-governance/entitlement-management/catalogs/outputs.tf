@@ -17,3 +17,8 @@ output "catalog_type" {
   description = "The type of the entitlement management catalog."
   value       = msgraph_resource.catalog.output.catalog_type
 }
+
+output "is_externally_visible" {
+  description = "Whether the catalog is enabled for external users, as configured in is_externally_visible; null when the module leaves the property to Microsoft Graph."
+  value       = var.is_externally_visible
+}

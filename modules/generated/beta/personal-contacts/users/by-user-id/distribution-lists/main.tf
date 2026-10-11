@@ -7,6 +7,7 @@ locals {
     "lastModifiedDateTime" = var.last_modified_date_time
     "notes"                = var.notes
     "@odata.type"          = var.odata_type
+    "personId"             = var.person_id
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

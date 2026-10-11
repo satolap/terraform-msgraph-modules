@@ -15,7 +15,7 @@ variable "odata_type" {
   nullable    = false
 
   validation {
-    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.accessPackageAssignmentRequestWorkflowExtension", "#microsoft.graph.accessPackageAssignmentWorkflowExtension", "#microsoft.graph.identityGovernance.customTaskExtension", "#microsoft.graph.onAttributeCollectionStartCustomExtension", "#microsoft.graph.onAttributeCollectionSubmitCustomExtension", "#microsoft.graph.onOtpSendCustomExtension", "#microsoft.graph.onPasswordSubmitCustomExtension", "#microsoft.graph.onTokenIssuanceStartCustomExtension", "#microsoft.graph.onVerifiedIdClaimValidationCustomExtension"], var.odata_type)
+    condition     = var.odata_type == null ? true : contains(["#microsoft.graph.accessPackageAssignmentRequestWorkflowExtension", "#microsoft.graph.accessPackageAssignmentWorkflowExtension", "#microsoft.graph.identityGovernance.customTaskExtension", "#microsoft.graph.onAttributeCollectionStartCustomExtension", "#microsoft.graph.onAttributeCollectionSubmitCustomExtension", "#microsoft.graph.onOtpSendCustomExtension", "#microsoft.graph.onPasswordSubmitCustomExtension", "#microsoft.graph.onTokenIssuanceStartCustomExtension", "#microsoft.graph.onVerifiedIdClaimValidationCustomExtension", "#microsoft.graph.roleManagementCustomCalloutExtension"], var.odata_type)
     error_message = "odata_type must name a concrete Graph type."
   }
 }

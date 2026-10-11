@@ -67,15 +67,92 @@ locals {
     }
   ]
 
+  # The concrete type of each question type. The variable validation lists the types.
+  question_odata_types = {
+    text_input      = "#microsoft.graph.accessPackageTextInputQuestion"
+    multiple_choice = "#microsoft.graph.accessPackageMultipleChoiceQuestion"
+  }
+
+  # The five keys every question has always sent, then only the attributes the caller
+  # set: a question that sets none of the newer attributes keeps its earlier body. Each
+  # optional part is a one-key object, because a conditional between an object and {}
+  # must unify to a map, which needs every attribute of the object to share one type.
   questions_body = [
-    for q in var.questions : {
-      "@odata.type"    = "#microsoft.graph.accessPackageTextInputQuestion"
-      isRequired       = q.is_required
-      isAnswerEditable = q.is_answer_editable
-      sequence         = q.sequence
-      text             = q.text
-    }
+    for q in var.questions : merge(
+      {
+        "@odata.type"    = local.question_odata_types[q.type]
+        isRequired       = q.is_required
+        isAnswerEditable = q.is_answer_editable
+        sequence         = q.sequence
+        text             = q.text
+      },
+      q.localizations != null ? {
+        localizations = [for l in q.localizations : { text = l.text, languageCode = l.language_code }]
+      } : {},
+      q.type == "text_input" && q.is_single_line_question != null ? { isSingleLineQuestion = q.is_single_line_question } : {},
+      q.type == "text_input" && q.regex_pattern != null ? { regexPattern = q.regex_pattern } : {},
+      q.type == "multiple_choice" ? { isMultipleSelectionAllowed = coalesce(q.is_multiple_selection_allowed, false) } : {},
+      q.type == "multiple_choice" ? {
+        choices = [
+          for c in coalesce(q.choices, []) : merge(
+            { text = c.text, actualValue = c.actual_value },
+            c.localizations != null ? {
+              localizations = [for l in c.localizations : { text = l.text, languageCode = l.language_code }]
+            } : {},
+          )
+        ]
+      } : {},
+    )
   ]
+
+  # Reviewers are the documented singleUser and groupMembers subject sets, so each one
+  # carries the id field of its type from subject_id_field.
+  review_settings_body = var.review_settings == null ? null : {
+    isEnabled                       = var.review_settings.is_enabled
+    expirationBehavior              = var.review_settings.expiration_behavior
+    isRecommendationEnabled         = var.review_settings.is_recommendation_enabled
+    isReviewerJustificationRequired = var.review_settings.is_reviewer_justification_required
+    isSelfReview                    = var.review_settings.is_self_review
+    primaryReviewers = [
+      for r in var.review_settings.primary_reviewers : {
+        "@odata.type"                    = "#microsoft.graph.${r.type}"
+        (local.subject_id_field[r.type]) = r.id
+      }
+    ]
+    fallbackReviewers = [
+      for r in var.review_settings.fallback_reviewers : {
+        "@odata.type"                    = "#microsoft.graph.${r.type}"
+        (local.subject_id_field[r.type]) = r.id
+      }
+    ]
+    schedule = {
+      startDateTime = var.review_settings.schedule.start_date_time
+      expiration = {
+        type     = "afterDuration"
+        duration = "P${var.review_settings.schedule.duration_in_days}D"
+      }
+      recurrence = {
+        # Microsoft Learn requires dayOfMonth with absoluteMonthly, access reviews
+        # included; when day_of_month is null, the day of start_date_time is sent,
+        # the day on which the first review starts. weekly takes no day.
+        pattern = merge(
+          {
+            type     = var.review_settings.schedule.recurrence.type
+            interval = var.review_settings.schedule.recurrence.interval
+          },
+          var.review_settings.schedule.recurrence.type == "absoluteMonthly" ? {
+            dayOfMonth = var.review_settings.schedule.recurrence.day_of_month != null ? var.review_settings.schedule.recurrence.day_of_month : tonumber(formatdate("D", var.review_settings.schedule.start_date_time))
+          } : {},
+        )
+        # numberOfOccurrences 0 with noEnd is what the Learn example of a policy with
+        # recurring reviews sends.
+        range = {
+          type                = var.review_settings.schedule.recurrence.range_type
+          numberOfOccurrences = var.review_settings.schedule.recurrence.range_type == "numbered" ? var.review_settings.schedule.recurrence.number_of_occurrences : 0
+        }
+      }
+    }
+  }
 
   # The stages that run only for assignments that expire, and the concrete type of
   # each extension type. The variable validations list the stages.
@@ -165,6 +242,14 @@ locals {
       id = var.access_package_id
     }
   }
+
+  # reviewSettings is part of the body only when review_settings is set, so a policy
+  # without reviews keeps the body it had before the input existed. Learn does not say
+  # what a PUT without the key does to reviews configured elsewhere; see the README.
+  request_body = merge(
+    local.body,
+    var.review_settings == null ? {} : { reviewSettings = local.review_settings_body },
+  )
 }
 
 # The access package's catalog, and the extensions in that catalog, are read only
@@ -207,7 +292,7 @@ data "msgraph_resource" "catalog_extensions" {
 resource "msgraph_resource" "assignment_policy" {
   url         = "identityGovernance/entitlementManagement/assignmentPolicies"
   api_version = var.api_version
-  body        = local.body
+  body        = local.request_body
 
   # Graph's assignmentPolicies endpoint only supports full-object PUT for
   # updates (PATCH is not implemented); without this every post-create

@@ -16,13 +16,6 @@ variable "decisions" {
     decision      = optional(string)
     insights      = optional(any)
     justification = optional(string)
-    permission = optional(object({
-      odata_type  = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItemPermission")
-      description = optional(string)
-      displayName = optional(string)
-      id          = optional(string)
-      type        = optional(string)
-    }))
   }))
   default = null
 }
@@ -69,13 +62,6 @@ variable "stages" {
       decision      = optional(string)
       insights      = optional(any)
       justification = optional(string)
-      permission = optional(object({
-        odata_type  = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItemPermission")
-        description = optional(string)
-        displayName = optional(string)
-        id          = optional(string)
-        type        = optional(string)
-      }))
     })))
     fallbackReviewers = optional(list(object({
       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")
