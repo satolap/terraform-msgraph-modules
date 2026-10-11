@@ -16,17 +16,17 @@ from urllib.error import HTTPError
 
 import release
 
-TAG = "graphmodules-067c9d13832914ce38d2"
+TAG = "v1.4.0"
 SHA = "539975df7dbe162de40f2afff3f5c94f59e5db9e"
-NEWER_TAG = "graphmodules-4002ec490efccb9d7832"
+NEWER_TAG = "v1.5.0"
 OLDER_SHA = "f7648218ee56488fe7a18f646a48404bd153464f"
 REPOSITORY = "owner/name"
 FORBIDDEN = "gh: Resource not accessible by integration (HTTP 403)\n"
 CHANGES = b'{\n  "schema_version": 1\n}\n'
 CATALOGS = {
-    "v1.0": "modules/generated/v1.0",
-    "beta": "modules/generated/beta",
-    "curated": "modules/curated",
+    "v1.0": "v1.0",
+    "beta": "beta",
+    "curated": "curated",
 }
 ASSETS = [
     "graphmodules-v1.0-modules.tar.gz",
@@ -168,16 +168,23 @@ class BuildTest(unittest.TestCase):
         self.source = Path(directory.name) / "source"
         self.output = Path(directory.name) / "output"
         self.output.mkdir()
+        self.archives = Path(directory.name)
         inputs = {"generator": {"commit": OLDER_SHA}}
         fingerprint = digest(json.dumps(inputs, sort_keys=True, separators=(",", ":")).encode())
-        self.tag = f"graphmodules-{fingerprint[:20]}"
+        self.tag = "v1.2.3"
+        self.legacy_tag = f"graphmodules-{fingerprint[:20]}"
+        self.inputs, self.fingerprint = inputs, fingerprint
+        self.publish(self.tag)
+
+    def publish(self, manifest_tag: str) -> None:
+        """Write a publication whose manifest records `manifest_tag`, and its tested sums."""
         self.provenance = json.dumps(
-            {**inputs, "tag": self.tag, "fingerprint": fingerprint}
+            {**self.inputs, "tag": manifest_tag, "fingerprint": self.fingerprint}
         ).encode()
         notices = {"LICENSE": b"license\n", "NOTICE": b"notice\n"}
         files = {
             **notices,
-            "modules/generated/release-manifest.json": self.provenance,
+            "release-manifest.json": self.provenance,
             ".release/release-notes.md": b"Notes.\n",
         }
         # SHA256SUMS as the publisher writes it for the archives of this tree.
@@ -185,7 +192,7 @@ class BuildTest(unittest.TestCase):
         for api, prefix in CATALOGS.items():
             module = {f"{prefix}/example/main.tf": b"# module\n"}
             files.update(module)
-            archive = Path(directory.name) / f"graphmodules-{api}-modules.tar.gz"
+            archive = self.archives / f"graphmodules-{api}-modules.tar.gz"
             release.archive(
                 archive, {**module, **notices, "release-manifest.json": self.provenance}
             )
@@ -230,6 +237,15 @@ class BuildTest(unittest.TestCase):
         self.assertEqual((self.output / "SHA256SUMS").read_bytes(), checksums)
         self.assertFalse((self.output / "interface-changes.json").exists())
 
+    def test_manifest_naming_another_release_is_rejected(self):
+        # Every release tag is a version; the fingerprint tag of earlier releases is not one.
+        for recorded in ("v1.2.4", self.legacy_tag):
+            with self.subTest(recorded=recorded):
+                self.publish(recorded)
+                self.commit(changes=None, listed=None)
+                with self.assertRaisesRegex(ValueError, "does not match the release tag"):
+                    self.build()
+
     def test_publishes_committed_interface_changes(self):
         checksums = self.commit(changes=CHANGES, listed=CHANGES)
         _, assets = self.build()
@@ -259,7 +275,7 @@ class BuildTest(unittest.TestCase):
         # SHA256SUMS lists the link target's bytes, so only the symlink check refuses it.
         self.commit(changes=None, listed=self.provenance)
         link = self.source / ".release/interface-changes.json"
-        link.symlink_to("../modules/generated/release-manifest.json")
+        link.symlink_to("../release-manifest.json")
         with self.assertRaisesRegex(ValueError, "Publication contains a symlink"):
             self.build()
 
@@ -487,17 +503,6 @@ class ReleaseUpdatesLatestBranchTest(unittest.TestCase):
 REGISTRY_REPOSITORY = "satolap/terraform-msgraph-modules"
 
 
-def interface_changes(tag: str, counts=None, decisions=None, compared=True) -> str:
-    return json.dumps({
-        "schema_version": 1,
-        "tag": tag,
-        "comparison_supplied": compared,
-        "counts": counts or {},
-        "decisions": decisions or [],
-        "notices": [],
-    })
-
-
 class RegistryAddressTest(unittest.TestCase):
     def test_registry_named_repository(self):
         self.assertEqual(release.registry_address(REGISTRY_REPOSITORY), "satolap/modules/msgraph")
@@ -508,208 +513,45 @@ class RegistryAddressTest(unittest.TestCase):
                 self.assertIsNone(release.registry_address(repository))
 
 
-class VersionBumpTest(unittest.TestCase):
-    def bump(self, **kwargs) -> int:
-        return release.version_bump(json.loads(interface_changes(TAG, **kwargs)))
-
-    def test_no_findings_is_a_patch(self):
-        self.assertEqual(self.bump(), 2)
-
-    def test_findings_without_decisions_are_a_minor(self):
-        self.assertEqual(self.bump(counts={"module_added": 3}), 1)
-
-    def test_accepted_decisions_are_a_major(self):
-        self.assertEqual(self.bump(counts={"module_removed": 1}, decisions=[{"decision": "d"}]), 0)
-
-    def test_unknown_compatibility_is_a_major(self):
-        self.assertEqual(self.bump(compared=False), 0)
+class ReleaseTagTest(unittest.TestCase):
+    def test_release_tags_are_semantic_versions(self):
+        for tag in ("v1.0.0", "v0.1.0", "v12.30.4"):
+            with self.subTest(tag=tag):
+                self.assertIsNotNone(release.RELEASE_TAG.fullmatch(tag))
+        for tag in ("1.0.0", "v1.0", "v01.0.0", "v1.0.0-rc.1", "graphmodules-067c9d13832914ce38d2"):
+            with self.subTest(tag=tag):
+                self.assertIsNone(release.RELEASE_TAG.fullmatch(tag))
+                with self.assertRaisesRegex(ValueError, "Invalid GraphModules release tag"):
+                    release.build(tag, Path("unused"))
 
 
-@unittest.skipIf(shutil.which("git") is None, "git is not installed")
-class RegistryVersionTest(unittest.TestCase):
-    """Chooses registry versions in a scratch repository whose origin is itself."""
-
-    def setUp(self):
-        directory = tempfile.TemporaryDirectory()
-        self.addCleanup(directory.cleanup)
-        self.repository = Path(directory.name)
-        environment = {"GIT_CONFIG_GLOBAL": os.devnull, "GIT_CONFIG_NOSYSTEM": "1"}
-        patcher = mock.patch.dict(os.environ, environment)
-        patcher.start()
-        self.addCleanup(patcher.stop)
-        self.git("init", "--quiet", ".")
-        self.git("remote", "add", "origin", str(self.repository))
-        self.count = 0
-
-    def git(self, *args: str) -> str:
-        return subprocess.run(
-            ["git", "-c", "user.name=test", "-c", "user.email=test@example.invalid",
-             "-c", "commit.gpgsign=false", "-c", "tag.gpgsign=false", *args],
-            cwd=self.repository, check=True, capture_output=True, text=True,
-        ).stdout.strip()
-
-    def publish(self, **kwargs) -> tuple[str, str]:
-        """Commit a publication and return its tag and commit."""
-        self.count += 1
-        tag = f"graphmodules-{self.count:020x}"
-        path = self.repository / ".release/interface-changes.json"
-        path.parent.mkdir(exist_ok=True)
-        path.write_text(interface_changes(tag, **kwargs), encoding="utf-8")
-        self.git("add", "--all")
-        self.git("commit", "--quiet", "--message", tag)
-        return tag, self.git("rev-parse", "HEAD")
-
-    def version(self, tag: str, sha: str):
-        with contextlib.chdir(self.repository):
-            return release.registry_version(tag, sha)
-
-    def test_first_registry_version(self):
-        self.assertEqual(self.version(*self.publish()), ("v1.0.0", False))
-
-    def test_bumps_from_the_newest_registry_tag(self):
-        _, first = self.publish()
-        self.git("tag", "v1.0.0", first)
-        cases = [
-            ("v1.0.1", {}),
-            ("v1.1.0", {"counts": {"output_added": 1}}),
-            ("v2.0.0", {"counts": {"output_removed": 1}, "decisions": [{"decision": "d"}]}),
-            ("v2.0.0", {"compared": False}),
-        ]
-        for expected, changes in cases:
-            with self.subTest(changes=changes):
-                self.git("reset", "--quiet", "--hard", first)
-                self.assertEqual(self.version(*self.publish(**changes)), (expected, False))
-
-    def test_untagged_breaking_publication_still_counts(self):
-        _, first = self.publish()
-        self.git("tag", "v1.4.2", first)
-        self.publish(decisions=[{"decision": "d"}])  # its registry tag was never created
-        self.assertEqual(self.version(*self.publish()), ("v2.0.0", False))
-
-    def test_existing_tag_is_reused(self):
-        tag, sha = self.publish()
-        self.git("tag", "--annotate", "--message", "v", "v1.0.0", sha)
-        self.assertEqual(self.version(tag, sha), ("v1.0.0", True))
-
-    def test_annotated_newest_tag_is_peeled(self):
-        _, first = self.publish()
-        self.git("tag", "--annotate", "--message", "v", "v1.0.0", first)
-        self.assertEqual(self.version(*self.publish(counts={"module_added": 1})), ("v1.1.0", False))
-
-    def test_recovery_run_for_an_older_publication_gets_no_version(self):
-        old_tag, old = self.publish()
-        _, new = self.publish()
-        self.git("tag", "v1.0.0", new)
-        self.assertIsNone(self.version(old_tag, old))
-
-    def test_ignores_tags_that_are_not_semver(self):
-        _, first = self.publish()
-        for name in ("v1.0", "v01.0.0", "1.0.0", "graphmodules-x"):
-            self.git("tag", name, first)
-        self.assertEqual(self.version(*self.publish()), ("v1.0.0", False))
-
-    def test_rejects_interface_changes_of_another_tag(self):
-        _, first = self.publish()
-        self.git("tag", "v1.0.0", first)
-        _, sha = self.publish()
-        with self.assertRaisesRegex(ValueError, "does not describe graphmodules-other"):
-            self.version("graphmodules-other", sha)
-
-
-class ReleaseTagsRegistryVersionTest(unittest.TestCase):
+class ReleaseNamesTheRegistryVersionTest(unittest.TestCase):
     def setUp(self):
         directory = tempfile.TemporaryDirectory()
         self.addCleanup(directory.cleanup)
         self.directory = Path(directory.name)
         (self.directory / "release-notes.md").write_text("Notes.\n", encoding="utf-8")
         self.github = FakeGitHub()
-
-    def publish(self) -> str:
-        with mock.patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": ""}), self.github.serve() as output:
-            release.release(REGISTRY_REPOSITORY, TAG, SHA, [], self.directory)
-        return output.getvalue()
-
-    def tag_writes(self):
-        return [c for c in self.github.ref_writes() if "ref=refs/tags/v1.0.0" in c]
-
-    def test_new_release_tags_after_publishing_and_names_the_version(self):
         self.github.release = {"draft": True, "target_commitish": SHA, "html_url": "draft"}
-        self.publish()
-        commands = [" ".join(c[:3]) for c in self.github.commands]
-        self.assertEqual(len(self.tag_writes()), 1)
-        tag_write = self.github.commands.index(self.tag_writes()[0])
-        self.assertGreater(tag_write, commands.index("gh release edit"))
-        notes = (self.directory / "release-notes.md").read_text(encoding="utf-8")
-        self.assertIn("Terraform Registry: `satolap/modules/msgraph` version `1.0.0`.", notes)
 
-    def test_already_published_release_is_tagged_too(self):
-        self.github.release = {"draft": False, "target_commitish": SHA, "html_url": "published"}
-        self.publish()
-        self.assertEqual(len(self.tag_writes()), 1)
-
-    def test_refused_tag_only_warns(self):
-        self.github.release = {"draft": False, "target_commitish": SHA, "html_url": "published"}
-        self.github.gh_api_error = FORBIDDEN
-        output = self.publish()
-        self.assertIn(f"`git push origin {SHA}:refs/tags/v1.0.0`", output)
-
-    def test_repository_not_named_for_the_registry_is_never_tagged(self):
-        self.github.release = {"draft": True, "target_commitish": SHA, "html_url": "draft"}
+    def notes(self, repository: str) -> str:
         with self.github.serve():
-            release.release(REPOSITORY, TAG, SHA, [], self.directory)
-        self.assertEqual(self.tag_writes(), [])
-        self.assertNotIn("Terraform Registry", (self.directory / "release-notes.md").read_text())
+            release.release(repository, TAG, SHA, [], self.directory)
+        return (self.directory / "release-notes.md").read_text(encoding="utf-8")
 
+    def test_registry_repository_notes_name_the_version(self):
+        self.assertIn("Terraform Registry: `satolap/modules/msgraph` version `1.4.0`.", self.notes(REGISTRY_REPOSITORY))
 
-class VerifyRegistryTagsTest(unittest.TestCase):
-    def verify(self, tags, releases=None, latest=TAG, ancestor=True) -> list[str]:
-        with (
-            mock.patch.object(release, "registry_tags", return_value=tags),
-            mock.patch.object(release, "published_release_commits",
-                              return_value=releases if releases is not None else {SHA: TAG}),
-            mock.patch.object(release, "request_json", return_value={"tag_name": latest}),
-            mock.patch.object(release, "is_ancestor", return_value=ancestor),
-            contextlib.redirect_stdout(io.StringIO()),
-        ):
-            return release.verify_registry_tags(REGISTRY_REPOSITORY)
+    def test_other_repositories_name_no_registry_version(self):
+        self.assertNotIn("Terraform Registry", self.notes(REPOSITORY))
 
-    def test_accepts_tags_on_published_releases(self):
-        self.assertEqual(self.verify({(1, 0, 0): SHA}), [])
-
-    def test_no_tags_yet_is_not_a_failure(self):
-        self.assertEqual(self.verify({}), [])
-
-    def test_rejects_a_tag_on_an_unpublished_commit(self):
-        failures = self.verify({(1, 0, 0): OLDER_SHA, (1, 0, 1): SHA}, releases={SHA: TAG})
-        self.assertEqual(failures, [f"v1.0.0 at {OLDER_SHA} is not a published release"])
-
-    def test_rejects_versions_out_of_history_order(self):
-        tags = {(1, 0, 0): SHA, (1, 1, 0): OLDER_SHA}
-        failures = self.verify(tags, releases={SHA: TAG, OLDER_SHA: NEWER_TAG}, ancestor=False)
-        self.assertEqual(failures, ["v1.1.0 does not follow v1.0.0 in history"])
-
-    def test_rejects_a_latest_release_without_a_version(self):
-        failures = self.verify({(1, 0, 0): SHA}, releases={SHA: TAG, OLDER_SHA: NEWER_TAG},
-                               latest=NEWER_TAG)
-        self.assertEqual(failures, [f"GitHub Latest release {NEWER_TAG} has no registry version tag"])
-
-    def test_repository_not_named_for_the_registry_is_skipped(self):
-        with mock.patch.object(release, "registry_tags") as tags, contextlib.redirect_stdout(io.StringIO()):
-            self.assertEqual(release.verify_registry_tags("benhaspalace/GraphModules"), [])
-        tags.assert_not_called()
-
-    def test_main_needs_no_tag_and_fails_on_failures(self):
-        argv = ["release.py", "--verify-registry-tags", "--repository", REGISTRY_REPOSITORY]
-        with mock.patch.object(sys, "argv", argv):
-            with mock.patch.object(release, "verify_registry_tags", return_value=[]):
-                release.main()
-            with mock.patch.object(release, "verify_registry_tags", return_value=["x"]):
-                with self.assertRaises(SystemExit):
-                    release.main()
+    def test_release_creates_no_other_tag(self):
+        self.notes(REGISTRY_REPOSITORY)
+        self.assertFalse([c for c in self.github.ref_writes() if "refs/tags/" in " ".join(c)])
 
 
 WORKFLOW = Path(__file__).resolve().parent.parent / ".github" / "workflows" / "release.yml"
-MANIFEST = "modules/generated/release-manifest.json"
+MANIFEST = "release-manifest.json"
 GUARD_IF = "github.event_name == 'push'"
 ACTOR_IF = (
     "github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || "
@@ -899,7 +741,7 @@ class ManifestGuardTest(unittest.TestCase):
             **os.environ, "GIT_CONFIG_GLOBAL": os.devnull, "GIT_CONFIG_NOSYSTEM": "1",
         }
         self.git("init", "--quiet", str(self.repository), cwd=directory.name)
-        self.first = self.commit({MANIFEST: "{}\n", "modules/generated/v1.0/a/main.tf": "a\n"})
+        self.first = self.commit({MANIFEST: "{}\n", "v1.0/a/main.tf": "a\n"})
 
     def git(self, *args: str, cwd=None) -> str:
         return subprocess.run(
@@ -935,7 +777,7 @@ class ManifestGuardTest(unittest.TestCase):
         self.assertEqual(self.guard(self.first, commit)[0], "changed=true\n")
 
     def test_large_publication_that_changes_the_manifest_releases(self):
-        files = {f"modules/generated/v1.0/m{index:04}/main.tf": "m\n" for index in range(3001)}
+        files = {f"v1.0/m{index:04}/main.tf": "m\n" for index in range(3001)}
         commit = self.commit({**files, MANIFEST: '{"tag": "large"}\n'})
         self.assertEqual(self.guard(self.first, commit)[0], "changed=true\n")
 

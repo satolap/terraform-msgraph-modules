@@ -21,31 +21,35 @@ The repository provides two complementary module collections:
   access packages, assignment policies, resource role scopes, and Conditional
   Access policies and named locations.
 
+Every module is a subdirectory of the Terraform Registry module
+[`satolap/modules/msgraph`](https://registry.terraform.io/modules/satolap/modules/msgraph).
 Pin a [published release](https://github.com/satolap/terraform-msgraph-modules/releases)
-to get an immutable module path and the exact metadata, provider versions, tests,
+version to get immutable modules and the exact metadata, provider versions, tests,
 and checksums associated with it.
 
 ## Browse generated Microsoft Graph Terraform modules
 
-Browse the **[Microsoft Graph v1.0 module catalog](modules/generated/v1.0/README.md)**
-or the **[Microsoft Graph beta module catalog](modules/generated/beta/README.md)**.
-The catalogs follow the service areas in the
+Browse the **[Microsoft Graph v1.0 module catalog](v1.0/README.md)**
+or the **[Microsoft Graph beta module catalog](beta/README.md)**.
+Each catalog groups its modules by the service areas in the
 [Microsoft Graph REST API reference](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0&preserve-view=true),
 including Users, Groups, Applications, Identity and access, Mail, Calendars,
 Teams, Files, Security, Devices, and other Microsoft 365 workloads.
 
-Generated modules use this repository layout:
+A generated module's directory is its Microsoft Graph route beneath the API version:
 
 ```text
-modules/generated/<api-version>/<category>/<collection-path>/
+<api-version>/<graph-route>/
 ```
 
-Each endpoint appears once under its relevant service category. For example,
-user messages appear under **Mail**, while group events appear under
-**Calendars**. Category pages list the available Terraform modules and link each
-one to its public Microsoft Graph resource documentation. Every module README
-describes its inputs, outputs, Graph URL, lifecycle, permissions considerations,
-schema limitations, import address, and offline test command.
+For example, `/users/{user-id}/messages` is `v1.0/users/by-user-id/messages`, where
+`by-<parameter>` marks a parent-ID parameter; complex routes can use a stable
+`by-path-<hash>` segment. Service areas group modules in the catalog README only, so
+a change to Microsoft's documentation navigation never moves a module. Each module
+README names its service area and links to the Microsoft Graph resource
+documentation, and describes its inputs, outputs, Graph URL, lifecycle,
+permissions considerations, schema limitations, import address, and offline test
+command.
 
 Generation targets collection endpoints with a documented `POST` operation and
 an item lifecycle that supports `GET`, `PATCH` or `PUT`, and `DELETE`. Actions,
@@ -64,18 +68,23 @@ management workflows, and Conditional Access:
 
 | Microsoft Graph area | Resource or workflow | Terraform module |
 | --- | --- | --- |
-| Users | `/users` | [`modules/curated/users`](modules/curated/users) |
-| Groups | `/groups`, owners, and members | [`modules/curated/groups`](modules/curated/groups) |
-| Applications | `/applications` | [`modules/curated/applications`](modules/curated/applications) |
-| Applications | `/servicePrincipals` | [`modules/curated/service-principals`](modules/curated/service-principals) |
-| Identity governance | Entitlement-management catalogs | [`modules/curated/identity-governance/entitlement-management/catalogs`](modules/curated/identity-governance/entitlement-management/catalogs) |
-| Identity governance | Catalog resources | [`modules/curated/identity-governance/entitlement-management/catalogs/resources`](modules/curated/identity-governance/entitlement-management/catalogs/resources) |
-| Identity governance | Access packages | [`modules/curated/identity-governance/entitlement-management/access-packages`](modules/curated/identity-governance/entitlement-management/access-packages) |
-| Identity governance | Access-package resource role scopes | [`modules/curated/identity-governance/entitlement-management/access-packages/resource-role-scopes`](modules/curated/identity-governance/entitlement-management/access-packages/resource-role-scopes) |
-| Identity governance | Assignment policies | [`modules/curated/identity-governance/entitlement-management/assignment-policies`](modules/curated/identity-governance/entitlement-management/assignment-policies) |
-| Conditional Access | Policies, report-only by default, with mandatory break-glass exclusions | [`modules/curated/identity/conditional-access/policies`](modules/curated/identity/conditional-access/policies) |
-| Conditional Access | IP named locations (IPv4 and IPv6) | [`modules/curated/identity/conditional-access/named-locations/ip-ranges`](modules/curated/identity/conditional-access/named-locations/ip-ranges) |
-| Conditional Access | Country and region named locations | [`modules/curated/identity/conditional-access/named-locations/countries`](modules/curated/identity/conditional-access/named-locations/countries) |
+| Users | `/users` | [`curated/users`](curated/users) |
+| Groups | `/groups`, owners, and members | [`curated/groups`](curated/groups) |
+| Groups | Group members as one authoritative collection | [`curated/groups/members`](curated/groups/members) |
+| Directory | Administrative units | [`curated/directory/administrative-units`](curated/directory/administrative-units) |
+| Applications | `/applications` | [`curated/applications`](curated/applications) |
+| Applications | `/servicePrincipals` | [`curated/service-principals`](curated/service-principals) |
+| Identity governance | Entitlement-management catalogs | [`curated/identity-governance/entitlement-management/catalogs`](curated/identity-governance/entitlement-management/catalogs) |
+| Identity governance | Catalog resources | [`curated/identity-governance/entitlement-management/catalogs/resources`](curated/identity-governance/entitlement-management/catalogs/resources) |
+| Identity governance | Catalog custom extensions | [`curated/identity-governance/entitlement-management/catalogs/custom-extensions`](curated/identity-governance/entitlement-management/catalogs/custom-extensions) |
+| Identity governance | Access packages | [`curated/identity-governance/entitlement-management/access-packages`](curated/identity-governance/entitlement-management/access-packages) |
+| Identity governance | Access-package resource role scopes | [`curated/identity-governance/entitlement-management/access-packages/resource-role-scopes`](curated/identity-governance/entitlement-management/access-packages/resource-role-scopes) |
+| Identity governance | Assignment policies | [`curated/identity-governance/entitlement-management/assignment-policies`](curated/identity-governance/entitlement-management/assignment-policies) |
+| Identity governance | Connected organizations | [`curated/identity-governance/entitlement-management/connected-organizations`](curated/identity-governance/entitlement-management/connected-organizations) |
+| Conditional Access | Policies, report-only by default, with mandatory break-glass exclusions | [`curated/identity/conditional-access/policies`](curated/identity/conditional-access/policies) |
+| Conditional Access | IP named locations (IPv4 and IPv6) | [`curated/identity/conditional-access/named-locations/ip-ranges`](curated/identity/conditional-access/named-locations/ip-ranges) |
+| Conditional Access | Country and region named locations | [`curated/identity/conditional-access/named-locations/countries`](curated/identity/conditional-access/named-locations/countries) |
+| Naming | Object names rendered from a naming convention | [`curated/naming`](curated/naming) |
 
 Curated modules expose higher-level Terraform inputs and outputs while preserving
 Microsoft Graph identifiers for composition. Their READMEs document required
@@ -83,35 +92,8 @@ permissions, lifecycle choices, relationship cleanup, and module-specific exampl
 
 ## Install a module from the Terraform Registry
 
-The catalog is published to the public Terraform Registry as
-[`satolap/modules/msgraph`](https://registry.terraform.io/modules/satolap/modules/msgraph).
-Every module is a nested module of that registry module: append `//` and the
-module's directory to the registry source, and pin a registry version:
-
-```hcl
-module "engineering_group" {
-  source  = "satolap/modules/msgraph//modules/curated/groups"
-  version = "1.0.0"
-
-  display_name     = "Engineering"
-  mail_nickname    = "engineering"
-  security_enabled = true
-}
-```
-
-One registry version covers every module, like a `graphmodules-*` tag; each
-release's notes name the registry version it was published as. Versions follow
-the release gate's interface changes: a release that a reviewed release decision
-accepts breaking changes for is a major version, one with other interface changes
-or notices is a minor version, and one without findings is a patch version. The
-root module at the repository root exists only because the registry requires one;
-it manages nothing. Releases published before the registry versions were
-introduced have only their `graphmodules-*` tag.
-
-## Install a module from GitHub
-
-Configure the Microsoft Graph provider in the calling root module, then use a
-Git source with a release tag:
+Configure the Microsoft Graph provider in the calling root module, then use the
+registry source with the module's directory after `//` and a release version:
 
 ```hcl
 terraform {
@@ -126,63 +108,78 @@ terraform {
 provider "msgraph" {}
 
 module "application" {
-  source       = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/v1.0/applications/applications?ref=<release-tag>"
+  source  = "satolap/modules/msgraph//v1.0/applications"
+  version = "1.0.0"
+
   display_name = "Example application"
 }
 
 module "engineering_group" {
-  source           = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/curated/groups?ref=<release-tag>"
+  source  = "satolap/modules/msgraph//curated/groups"
+  version = "1.0.0"
+
   display_name     = "Engineering"
   mail_nickname    = "engineering"
   security_enabled = true
 }
 ```
 
-Each `graphmodules-*` release tag covers both generated catalogs and the curated
-modules. Module sources take these forms:
+Module sources take these forms:
 
 ```text
-git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/<api-version>/<category>/<collection-path>?ref=<release-tag>
-git::https://github.com/satolap/terraform-msgraph-modules.git//modules/curated/<module-path>?ref=<release-tag>
+satolap/modules/msgraph//v1.0/<graph-route>
+satolap/modules/msgraph//beta/<graph-route>
+satolap/modules/msgraph//curated/<module-path>
 ```
 
-`<api-version>` is `v1.0` or `beta`. `<category>/<collection-path>` is the
-module's directory in the catalog, for example
-`applications/applications/by-application-id/extension-properties`, not the Graph
-URL path. `<module-path>` is the path after `modules/curated/` in the curated
-module table above.
+`<graph-route>` is the module's directory in the catalog, and `<module-path>` is
+the path after `curated/` in the curated module table above. Each release is one
+version that covers both generated catalogs and the curated modules; its tag is
+`v<version>`, for example `v1.0.0`. Versions follow the release gate's interface
+changes: a release with breaking changes, which a reviewed release decision must
+accept, is a major version; one with other interface changes or notices is a minor
+version; one without findings is a patch version. Read the "Breaking changes and
+migration" section of each new major version's release notes before upgrading.
 
-Replace `<release-tag>` with a `graphmodules-*` tag from
-[Releases](https://github.com/satolap/terraform-msgraph-modules/releases), then run
-`terraform init`. HashiCorp documents the `git::` source, `//` subdirectory, and
-`?ref=` tag syntax in
+Terraform downloads the whole catalog once for every module call, even though each
+call uses one directory, so a first `terraform init` downloads the catalog for each
+module block. The registry lists only the root module, which exists because the
+registry requires Terraform files at the repository root and manages nothing;
+browse the catalogs above for module documentation.
+
+HashiCorp documents registry sources, the `//` subdirectory, and version
+constraints in
 [Use modules in your configuration](https://developer.hashicorp.com/terraform/language/modules/configuration).
 The provider supports Azure CLI, managed identity, service principal, and OpenID
 Connect authentication; choose the method described in the
 [`microsoft/msgraph` provider documentation](https://registry.terraform.io/providers/microsoft/msgraph/latest/docs).
 
-Each `graphmodules-*` release also attaches v1.0, beta, and curated archives. They
-keep the `modules/generated/...` and `modules/curated/...` paths above and add
-`LICENSE`, `NOTICE`, and `release-manifest.json` at the archive root; that
-manifest is the same file as the `release-manifest.json` release asset.
-`sha256sum -c SHA256SUMS` fails for every listed asset you did not download, so
-to check only the files you downloaded, run
-`sha256sum -c --ignore-missing SHA256SUMS`. The earlier `graphform-*` release
-uses a different layout, described in its release notes.
+## Install a module from GitHub
+
+A Git source pins the same release by its tag:
+
+```text
+git::https://github.com/satolap/terraform-msgraph-modules.git//v1.0/<graph-route>?ref=v1.0.0
+```
 
 For evaluation and non-production use, `?ref=latest` follows new releases without
 editing each source. The `latest` branch moves only forward, to the commit of the
 GitHub Latest release, after the release workflow has verified that release. Every
 `terraform init -upgrade` then accepts the newest release, including breaking
-interface changes, so first read the "Breaking changes and migration" section of
-each new release's notes, when present. Pin production configurations to a
-`graphmodules-*` tag or a commit SHA.
+interface changes. Pin production configurations to a version.
 
 The release job cannot move the branch when the commits it would add change
 workflow files, because GitHub does not give the job's token workflow permission.
 The daily verification then reports the drift, and a maintainer fast-forwards the
 branch with `git push origin <sha>:refs/heads/latest`, where `<sha>` is the commit
 of the Latest release.
+
+Each release also attaches v1.0, beta, and curated archives. They keep the `v1.0/`,
+`beta/` and `curated/` paths above and add `LICENSE`, `NOTICE`, and
+`release-manifest.json` at the archive root; that manifest is the same file as the
+`release-manifest.json` release asset. `sha256sum -c SHA256SUMS` fails for every
+listed asset you did not download, so to check only the files you downloaded, run
+`sha256sum -c --ignore-missing SHA256SUMS`.
 
 ## Module sources and provenance
 
@@ -200,7 +197,7 @@ The generated Terraform module interfaces come from public Microsoft sources:
 
 Each release pins immutable upstream commit IDs, source URLs, SHA-256 hashes,
 provider versions, dependency hashes, and the complete input fingerprint. Inspect
-[`modules/generated/release-manifest.json`](modules/generated/release-manifest.json)
+[`release-manifest.json`](release-manifest.json)
 or download the release's `release-manifest.json` asset to audit those inputs.
 The catalogs do not fetch schemas or documentation during `terraform init`, plan,
 or apply.
@@ -214,7 +211,7 @@ workflow run: its jobs are skipped when the release publisher App did not push i
 and a publisher push that leaves the manifest unchanged runs only the read-only
 manifest check. A skipped job reports success, so the status badge above can show
 a skipped run after a human merge. Filter the workflow's runs by the release
-publisher App to see the last publication. Existing tags can also be verified or released by
+publisher App to see the last publication. Existing release tags can also be verified or released by
 manually dispatching the release workflow on `main`. Tag pushes and pull requests
 do not start workflows.
 
@@ -237,15 +234,9 @@ tag is created:
    from the tagged commit and requires their byte-level SHA-256 checksums to match
    the already tested artifacts before publishing the GitHub Release.
 
-After publishing the GitHub Release, the release workflow tags the same commit with
-the release's Terraform Registry version, `vX.Y.Z`, which the registry imports. A
-recovery run for an older release never creates a version above a newer one.
-
 A daily scheduled workflow rebuilds every published release the same way and fails
 if its tag commit or any asset's SHA-256 digest no longer matches the GitHub Release,
-if the `latest` branch points anywhere other than the GitHub Latest release, or if a
-registry version tag is not on a published release, does not follow the previous
-version in history, or is missing from the GitHub Latest release.
+or if the `latest` branch points anywhere other than the GitHub Latest release.
 
 Mock tests and schema validation do not prove that a caller has the required
 Microsoft Graph permissions, license, or tenant configuration. Endpoint READMEs
@@ -265,8 +256,7 @@ contains:
 
 `interface-changes.json` lists the exact interface changes that each release
 decision accepted, while the release notes summarize them with counts per kind.
-Verify it with the other downloads using `sha256sum -c SHA256SUMS`; releases
-published before this asset was introduced do not have it.
+Verify it with the other downloads using `sha256sum -c SHA256SUMS`.
 
 ## Public documentation
 
