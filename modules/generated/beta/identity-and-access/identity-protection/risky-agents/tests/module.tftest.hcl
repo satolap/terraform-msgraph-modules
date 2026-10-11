@@ -10,7 +10,7 @@ run "minimal_request" {
   }
 
   assert {
-    condition     = alltrue([for key in ["agentDisplayName", "blueprintId", "identityType", "isDeleted", "isEnabled", "isProcessing", "riskDetail", "riskLastModifiedDateTime", "riskLevel", "riskState"] : !contains(keys(msgraph_resource.this.body), key)])
+    condition     = alltrue([for key in ["additionalInfo", "agentDisplayName", "agentPlatform", "associatedUserId", "blastRadiusRisk", "blueprintId", "deviceId", "exposureRisk", "identityType", "isDeleted", "isEnabled", "isProcessing", "machineId", "riskDetail", "riskLastModifiedDateTime", "riskLevel", "riskState", "runtimeRisk", "sources"] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
@@ -19,18 +19,30 @@ run "typed_request" {
   command = plan
 
   variables {
-    agent_display_name = "example"
-    is_deleted         = false
+    additional_info   = "example"
+    is_deleted        = false
+    blast_radius_risk = { "riskIndicators" = null }
+    sources           = ["example"]
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.body["agentDisplayName"]) == jsonencode("example")
-    error_message = "agentDisplayName must preserve typed values and omit nested nulls."
+    condition     = jsonencode(msgraph_resource.this.body["additionalInfo"]) == jsonencode("example")
+    error_message = "additionalInfo must preserve typed values and omit nested nulls."
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["isDeleted"]) == jsonencode(false)
     error_message = "isDeleted must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["blastRadiusRisk"]) == jsonencode({ "@odata.type" = "#microsoft.graph.blastRadiusRisk" })
+    error_message = "blastRadiusRisk must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["sources"]) == jsonencode(["example"])
+    error_message = "sources must preserve typed values and omit nested nulls."
   }
 }
 

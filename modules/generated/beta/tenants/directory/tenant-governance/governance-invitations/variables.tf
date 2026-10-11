@@ -1,35 +1,35 @@
 variable "created_date_time" {
-  description = "Microsoft Graph createdDateTime property."
+  description = "The date and time when the invitation was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. Supports $filter (lt, le, gt, ge, eq, ne) and $orderBy."
   type        = string
   default     = null
 }
 
 variable "expiration_date_time" {
-  description = "Microsoft Graph expirationDateTime property."
+  description = "The date and time when the invitation expires. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. Supports $filter (lt, le, gt, ge, eq, ne) and $orderBy."
   type        = string
   default     = null
 }
 
 variable "governed_tenant_id" {
-  description = "Microsoft Graph governedTenantId property."
+  description = "The Microsoft Entra tenant ID of the governed tenant. Supports $filter (eq, ne) and $orderBy."
   type        = string
   default     = null
 }
 
 variable "governed_tenant_name" {
-  description = "Microsoft Graph governedTenantName property."
+  description = "The display name of the governed tenant. Supports $filter (eq, ne) and $orderBy."
   type        = string
   default     = null
 }
 
 variable "governing_tenant_id" {
-  description = "Microsoft Graph governingTenantId property."
+  description = "The Microsoft Entra tenant ID of the governing tenant. Supports $filter (eq, ne) and $orderBy."
   type        = string
   default     = null
 }
 
 variable "governing_tenant_name" {
-  description = "Microsoft Graph governingTenantName property."
+  description = "The display name of the governing tenant. Supports $filter (eq, ne) and $orderBy."
   type        = string
   default     = null
 }

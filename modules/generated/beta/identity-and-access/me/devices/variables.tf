@@ -21,6 +21,51 @@ variable "alternative_security_ids" {
   default = null
 }
 
+variable "cloud_licensing" {
+  description = "The cloud licensing relationships for this device, including assignments, usage rights, and waiting members."
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.cloudLicensing.deviceCloudLicensing")
+    assignments = optional(list(object({
+      odata_type             = optional(string, "#microsoft.graph.cloudLicensing.assignment")
+      allotment              = optional(any)
+      assignedTo             = optional(any)
+      disabledServicePlanIds = optional(list(string))
+    })))
+    usageRights = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.cloudLicensing.usageRight")
+      allotments = optional(list(object({
+        odata_type                = optional(string, "#microsoft.graph.cloudLicensing.allotment")
+        assignableTo              = optional(string)
+        assignments               = optional(any)
+        externalServiceIdentifier = optional(string)
+        subscriptions             = optional(any)
+        waitingMembers            = optional(any)
+      })))
+      assignments = optional(list(object({
+        odata_type             = optional(string, "#microsoft.graph.cloudLicensing.assignment")
+        allotment              = optional(any)
+        assignedTo             = optional(any)
+        disabledServicePlanIds = optional(any)
+      })))
+      externalServiceIdentifier = optional(string)
+    })))
+    waitingMembers = optional(list(object({
+      odata_type = optional(string, "#microsoft.graph.cloudLicensing.waitingMember")
+      allotment = optional(object({
+        odata_type                = optional(string, "#microsoft.graph.cloudLicensing.allotment")
+        assignableTo              = optional(string)
+        assignments               = optional(any)
+        externalServiceIdentifier = optional(string)
+        subscriptions             = optional(any)
+        waitingMembers            = optional(any)
+      }))
+      assignedTo           = optional(any)
+      waitingSinceDateTime = optional(string)
+    })))
+  })
+  default = null
+}
+
 variable "commands" {
   description = "Set of commands sent to this device."
   type = list(object({

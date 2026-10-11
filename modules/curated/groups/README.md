@@ -7,6 +7,10 @@ mail-enabled) or security groups (not mail-enabled). Dynamic groups require a ru
 and cannot accept static `member_ids` or be role-assignable. Group owner/member
 bindings currently target the public Microsoft Graph cloud.
 
+`member_ids` binds members in the create request only; to keep the members in sync with a list
+after creation, leave it empty and use [`groups/members`](members/README.md), which manages them
+authoritatively on every apply.
+
 Groups are one of the resource types that can be added to an entitlement management catalog
 (`resource_origin_system = "AadGroup"`), and their member/owner roles can then be granted
 through an access package. This module creates the group; use `catalogs/resources`
@@ -14,11 +18,11 @@ to add it to a catalog and `access-packages/resource-role-scopes` to grant its m
 
 ## Usage
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one.
 
 ```hcl
 module "engineering_group" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/groups?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/curated/groups?ref=<release-tag>"
 
   display_name     = "Engineering"
   mail_nickname    = "engineering"
@@ -30,7 +34,7 @@ module "engineering_group" {
 
 # Microsoft 365 group
 module "project_group" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/groups?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/curated/groups?ref=<release-tag>"
 
   display_name  = "Project X"
   mail_nickname = "projectx"

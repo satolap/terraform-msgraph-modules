@@ -1,35 +1,35 @@
 variable "app_b2_b_sign_in_activity_metrics" {
-  description = "Microsoft Graph appB2BSignInActivityMetrics property."
+  description = "B2B sign-in activity metrics for this related tenant. Expanded by default."
   type        = any
   default     = null
 }
 
 variable "b2_b_registration_metrics" {
-  description = "Microsoft Graph b2BRegistrationMetrics property."
+  description = "B2B registration metrics for this related tenant. Expanded by default."
   type        = any
   default     = null
 }
 
 variable "b2_b_sign_in_activity_metrics" {
-  description = "Microsoft Graph b2BSignInActivityMetrics property."
+  description = "B2B sign-in activity metrics for this related tenant. Expanded by default."
   type        = any
   default     = null
 }
 
 variable "billing_metrics" {
-  description = "Microsoft Graph billingMetrics property."
+  description = "Billing metrics for this related tenant. Expanded by default."
   type        = any
   default     = null
 }
 
 variable "created_date_time" {
-  description = "Microsoft Graph createdDateTime property."
+  description = "The date and time when the related tenant was discovered. The timestamp type represents date and time information using ISO 8601 format and is always in UTC."
   type        = string
   default     = null
 }
 
 variable "multi_tenant_application_metrics" {
-  description = "Microsoft Graph multiTenantApplicationMetrics property."
+  description = "Multi-tenant application usage metrics for this related tenant. Expanded by default."
   type        = any
   default     = null
 }

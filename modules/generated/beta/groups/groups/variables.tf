@@ -113,6 +113,12 @@ variable "description" {
   default     = null
 }
 
+variable "disable_nesting" {
+  description = "Indicates whether other groups can be added as members of this group. The default value is false. When set to true, other groups can't be added as members. You can set this property only for security groups that have isAssignableToRole set to false. The property is read-only for Microsoft 365 groups and groups that have isAssignableToRole set to true. Not nullable. Requires $select to retrieve. Supports $filter (eq). The least privileged permission to read or write this property is Group-NestingSupport.ReadWrite.All."
+  type        = bool
+  default     = null
+}
+
 variable "events" {
   description = "The group's events."
   type = list(object({

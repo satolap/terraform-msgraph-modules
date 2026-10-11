@@ -12,7 +12,7 @@ Lifecycle: `POST /groups`, `GET/PATCH/DELETE /groups/{group-id}`.
 
 ```hcl
 module "graph_resource" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/groups/groups?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/beta/groups/groups?ref=<release-tag>"
   display_name = "example"
   mail_enabled = false
   mail_nickname = "example"
@@ -20,7 +20,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 
@@ -38,6 +38,7 @@ Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules R
 | `conversations` | `conversations` | `list(object({       odata_type = optional(string, "#microsoft.graph.conversation")       hasAttachments = optional(bool)       lastDeliveredDateTime = optional(string)       preview = optional(string)       topic = optional(string)       uniqueSenders = optional(list(string))     }))` | no | no |
 | `deleted_date_time` | `deletedDateTime` | `string` | no | no |
 | `description` | `description` | `string` | no | no |
+| `disable_nesting` | `disableNesting` | `bool` | no | no |
 | `events` | `events` | `list(object({       odata_type = optional(string, "#microsoft.graph.event")       allowNewTimeProposals = optional(bool)       attendees = optional(list(object({       odata_type = optional(string, "#microsoft.graph.attendee")       emailAddress = optional(any)       proposedNewTime = optional(any)       status = optional(object({       odata_type = optional(string, "#microsoft.graph.responseStatus")       response = optional(string)       time = optional(string)     }))       type = optional(string)     })))       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))       bodyPreview = optional(string)       cancelledOccurrences = optional(list(string))       categories = optional(list(string))       createdDateTime = optional(string)       end = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       exceptionOccurrences = optional(any)       extensions = optional(any)       hasAttachments = optional(bool)       hideAttendees = optional(bool)       importance = optional(string)       isAllDay = optional(bool)       isCancelled = optional(bool)       isDraft = optional(bool)       isOnlineMeeting = optional(bool)       isOrganizer = optional(bool)       isReminderOn = optional(bool)       lastModifiedDateTime = optional(string)       location = optional(any)       locations = optional(any)       occurrenceId = optional(string)       onlineMeetingProvider = optional(string)       organizer = optional(any)       originalEndTimeZone = optional(string)       originalStart = optional(string)       originalStartTimeZone = optional(string)       recurrence = optional(object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     }))       reminderMinutesBeforeStart = optional(number)       responseRequested = optional(bool)       responseStatus = optional(object({       odata_type = optional(string, "#microsoft.graph.responseStatus")       response = optional(string)       time = optional(string)     }))       sensitivity = optional(string)       seriesMasterId = optional(string)       showAs = optional(string)       start = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       subject = optional(string)       transactionId = optional(string)       uid = optional(string)       webLink = optional(string)     }))` | no | no |
 | `group_types` | `groupTypes` | `list(string)` | no | no |
 | `has_members_with_license_errors` | `hasMembersWithLicenseErrors` | `bool` | no | no |
@@ -89,6 +90,7 @@ Generation notes:
 
 - Microsoft Graph beta contracts can change without notice.
 - Reviewed create-required correction: displayName, mailEnabled, mailNickname, securityEnabled.
+- Reviewed writable correction: disableNesting. Writable for security groups with isAssignableToRole set to false; read-only for Microsoft 365 groups and role-assignable groups. Writing it needs Group-NestingSupport.ReadWrite.All. See https://learn.microsoft.com/en-us/graph/api/resources/group?view=graph-rest-beta.
 - acceptedSenders[]: polymorphic schema; accepts an untyped value
 - cloudLicensing.assignments[].allotment: navigation property; accepts an untyped value
 - cloudLicensing.assignments[].assignedTo: polymorphic schema; accepts an untyped value

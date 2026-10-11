@@ -12,14 +12,14 @@ Lifecycle: `POST /security/cases/ediscoveryCases/{ediscoveryCase-id}/searches/{e
 
 ```hcl
 module "graph_resource" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/security/security/cases/ediscovery-cases/by-ediscovery-case-id/searches/by-ediscovery-search-id/additional-sources?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/v1.0/security/security/cases/ediscovery-cases/by-ediscovery-case-id/searches/by-ediscovery-search-id/additional-sources?ref=<release-tag>"
   ediscovery_case_id = "parent-object-id"
   ediscovery_search_id = "parent-object-id"
   odata_type = "#microsoft.graph.security.siteSource"
 }
 ```
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 

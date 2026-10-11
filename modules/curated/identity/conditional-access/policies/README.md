@@ -25,18 +25,18 @@ Safety defaults:
 
 ## Usage
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one.
 
 ```hcl
 module "office_egress" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity/conditional-access/named-locations/ip-ranges?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/curated/identity/conditional-access/named-locations/ip-ranges?ref=<release-tag>"
 
   display_name = "Office egress"
   ip_ranges    = ["192.0.2.0/24"]
 }
 
 module "require_mfa_pilot" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity/conditional-access/policies?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/curated/identity/conditional-access/policies?ref=<release-tag>"
 
   display_name          = "Require MFA outside the office for the pilot group"
   break_glass_user_ids  = var.break_glass_user_ids

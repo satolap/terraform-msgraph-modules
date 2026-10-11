@@ -2,7 +2,7 @@
 
 [Catalog](README.md) · [manifest.json](manifest.json)
 
-1403 generated endpoints carry an unknown licensing record. Each path links to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
+1404 generated endpoints carry an unknown licensing record. Each path links to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
 
 ## Applications (`applications`)
 
@@ -466,7 +466,7 @@
 
 ## Identity and access (`identity-and-access`)
 
-317 unknown endpoints.
+311 unknown endpoints.
 
 - [`/agreementAcceptances`](identity-and-access/agreement-acceptances/README.md)
 - [`/agreements`](identity-and-access/agreements/README.md)
@@ -495,11 +495,6 @@
 - [`/directory/recovery/snapshots`](identity-and-access/directory/recovery/snapshots/README.md)
 - [`/directory/remoteTenantGroups`](identity-and-access/directory/remote-tenant-groups/README.md)
 - [`/directory/subscriptions`](identity-and-access/directory/subscriptions/README.md)
-- [`/directory/tenantGovernance/governanceInvitations`](identity-and-access/directory/tenant-governance/governance-invitations/README.md)
-- [`/directory/tenantGovernance/governancePolicyTemplates`](identity-and-access/directory/tenant-governance/governance-policy-templates/README.md)
-- [`/directory/tenantGovernance/governanceRelationships`](identity-and-access/directory/tenant-governance/governance-relationships/README.md)
-- [`/directory/tenantGovernance/governanceRequests`](identity-and-access/directory/tenant-governance/governance-requests/README.md)
-- [`/directory/tenantGovernance/relatedTenants`](identity-and-access/directory/tenant-governance/related-tenants/README.md)
 - [`/directoryObjects`](identity-and-access/directory-objects/README.md)
 - [`/directoryRoleTemplates`](identity-and-access/directory-role-templates/README.md)
 - [`/directoryRoles`](identity-and-access/directory-roles/README.md)
@@ -703,6 +698,7 @@
 - [`/identityGovernance/lifecycleWorkflows/workflows`](identity-and-access/identity-governance/lifecycle-workflows/workflows/README.md)
 - [`/identityGovernance/lifecycleWorkflows/workflows/{workflow-id}/tasks`](identity-and-access/identity-governance/lifecycle-workflows/workflows/by-workflow-id/tasks/README.md)
 - [`/identityGovernance/lifecycleWorkflows/workflows/{workflow-id}/versions/{workflowVersion-versionNumber}/tasks`](identity-and-access/identity-governance/by-path-e1c257f8acfe/tasks/README.md)
+- [`/identityGovernance/privilegedAccess/customExtensions`](identity-and-access/identity-governance/privileged-access/custom-extensions/README.md)
 - [`/identityGovernance/privilegedAccess/group/assignmentApprovals`](identity-and-access/identity-governance/privileged-access/group/assignment-approvals/README.md)
 - [`/identityGovernance/privilegedAccess/group/assignmentApprovals/{approval-id}/stages`](identity-and-access/identity-governance/privileged-access/group/assignment-approvals/by-approval-id/stages/README.md)
 - [`/identityGovernance/privilegedAccess/group/assignmentScheduleInstances`](identity-and-access/identity-governance/privileged-access/group/assignment-schedule-instances/README.md)
@@ -739,8 +735,6 @@
 - [`/policies/authenticationStrengthPolicies`](identity-and-access/policies/authentication-strength-policies/README.md)
 - [`/policies/authenticationStrengthPolicies/{authenticationStrengthPolicy-id}/combinationConfigurations`](identity-and-access/policies/authentication-strength-policies/by-authentication-strength-policy-id/combination-configurations/README.md)
 - [`/policies/conditionalAccessPolicies`](identity-and-access/policies/conditional-access-policies/README.md)
-- [`/policies/crossTenantAccessPolicy/default/m365Capabilities`](identity-and-access/policies/cross-tenant-access-policy/default/m365-capabilities/README.md)
-- [`/policies/crossTenantAccessPolicy/partners/{crossTenantAccessPolicyConfigurationPartner-tenantId}/m365Capabilities`](identity-and-access/policies/by-path-06eb97e19b87/m365-capabilities/README.md)
 - [`/policies/featureRolloutPolicies`](identity-and-access/policies/feature-rollout-policies/README.md)
 - [`/policies/homeRealmDiscoveryPolicies`](identity-and-access/policies/home-realm-discovery-policies/README.md)
 - [`/policies/permissionGrantPolicies`](identity-and-access/policies/permission-grant-policies/README.md)
@@ -788,7 +782,7 @@
 
 ## Mail (`mail`)
 
-25 unknown endpoints.
+27 unknown endpoints.
 
 - [`/admin/exchange/tracing/messageTraces`](mail/admin/exchange/tracing/message-traces/README.md)
 - [`/me/inferenceClassification/overrides`](mail/me/inference-classification/overrides/README.md)
@@ -803,6 +797,7 @@
 - [`/me/mailFolders/{mailFolder-id}/messageRules`](mail/me/mail-folders/by-mail-folder-id/message-rules/README.md)
 - [`/me/mailFolders/{mailFolder-id}/messages`](mail/me/mail-folders/by-mail-folder-id/messages/README.md)
 - [`/me/messages`](mail/me/messages/README.md)
+- [`/me/notes`](mail/me/notes/README.md)
 - [`/users/{user-id}/inferenceClassification/overrides`](mail/users/by-user-id/inference-classification/overrides/README.md)
 - [`/users/{user-id}/joinedTeams/{team-id}/channels/{channel-id}/messages/{chatMessage-id}/hostedContents`](mail/users/by-user-id/joined-teams/by-team-id/channels/by-channel-id/messages/by-chat-message-id/hosted-contents/README.md)
 - [`/users/{user-id}/joinedTeams/{team-id}/channels/{channel-id}/messages/{chatMessage-id}/replies/{chatMessage-id1}/hostedContents`](mail/users/by-path-1fc77f22fd8b/hosted-contents/README.md)
@@ -815,6 +810,7 @@
 - [`/users/{user-id}/mailFolders/{mailFolder-id}/messageRules`](mail/users/by-user-id/mail-folders/by-mail-folder-id/message-rules/README.md)
 - [`/users/{user-id}/mailFolders/{mailFolder-id}/messages`](mail/users/by-user-id/mail-folders/by-mail-folder-id/messages/README.md)
 - [`/users/{user-id}/messages`](mail/users/by-user-id/messages/README.md)
+- [`/users/{user-id}/notes`](mail/users/by-user-id/notes/README.md)
 
 ## Mailbox import and export (`mailbox-import-and-export`)
 
@@ -1494,9 +1490,16 @@
 
 ## Tenants (`tenants`)
 
-2 unknown endpoints.
+9 unknown endpoints.
 
 - [`/admin/configurationManagement/configurationMonitors`](tenants/admin/configuration-management/configuration-monitors/README.md)
+- [`/directory/tenantGovernance/governanceInvitations`](tenants/directory/tenant-governance/governance-invitations/README.md)
+- [`/directory/tenantGovernance/governancePolicyTemplates`](tenants/directory/tenant-governance/governance-policy-templates/README.md)
+- [`/directory/tenantGovernance/governanceRelationships`](tenants/directory/tenant-governance/governance-relationships/README.md)
+- [`/directory/tenantGovernance/governanceRequests`](tenants/directory/tenant-governance/governance-requests/README.md)
+- [`/directory/tenantGovernance/relatedTenants`](tenants/directory/tenant-governance/related-tenants/README.md)
+- [`/policies/crossTenantAccessPolicy/default/m365Capabilities`](tenants/policies/cross-tenant-access-policy/default/m365-capabilities/README.md)
+- [`/policies/crossTenantAccessPolicy/partners/{crossTenantAccessPolicyConfigurationPartner-tenantId}/m365Capabilities`](tenants/policies/by-path-06eb97e19b87/m365-capabilities/README.md)
 - [`/tenantRelationships/multiTenantOrganization/tenants`](tenants/tenant-relationships/multi-tenant-organization/tenants/README.md)
 
 ## To-do tasks (`to-do-tasks`)
@@ -1514,7 +1517,7 @@
 
 ## Users (`users`)
 
-24 unknown endpoints.
+22 unknown endpoints.
 
 - [`/me/deviceManagementTroubleshootingEvents`](users/me/device-management-troubleshooting-events/README.md)
 - [`/me/joinedTeams/{team-id}/channels/{channel-id}/allMembers`](users/me/joined-teams/by-team-id/channels/by-channel-id/all-members/README.md)
@@ -1525,7 +1528,6 @@
 - [`/me/joinedTeams/{team-id}/primaryChannel/allMembers`](users/me/joined-teams/by-team-id/primary-channel/all-members/README.md)
 - [`/me/joinedTeams/{team-id}/primaryChannel/members`](users/me/joined-teams/by-team-id/primary-channel/members/README.md)
 - [`/me/joinedTeams/{team-id}/primaryChannel/sharedWithTeams`](users/me/joined-teams/by-team-id/primary-channel/shared-with-teams/README.md)
-- [`/me/notes`](users/me/notes/README.md)
 - [`/me/outlook/masterCategories`](users/me/outlook/master-categories/README.md)
 - [`/me/scopedRoleMemberOf`](users/me/scoped-role-member-of/README.md)
 - [`/users/{user-id}/deviceManagementTroubleshootingEvents`](users/users/by-user-id/device-management-troubleshooting-events/README.md)
@@ -1537,7 +1539,6 @@
 - [`/users/{user-id}/joinedTeams/{team-id}/primaryChannel/allMembers`](users/users/by-user-id/joined-teams/by-team-id/primary-channel/all-members/README.md)
 - [`/users/{user-id}/joinedTeams/{team-id}/primaryChannel/members`](users/users/by-user-id/joined-teams/by-team-id/primary-channel/members/README.md)
 - [`/users/{user-id}/joinedTeams/{team-id}/primaryChannel/sharedWithTeams`](users/users/by-user-id/joined-teams/by-team-id/primary-channel/shared-with-teams/README.md)
-- [`/users/{user-id}/notes`](users/users/by-user-id/notes/README.md)
 - [`/users/{user-id}/outlook/masterCategories`](users/users/by-user-id/outlook/master-categories/README.md)
 - [`/users/{user-id}/scopedRoleMemberOf`](users/users/by-user-id/scoped-role-member-of/README.md)
 

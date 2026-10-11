@@ -15,12 +15,6 @@ variable "assignments" {
   default     = null
 }
 
-variable "capabilities" {
-  description = "Microsoft Graph capabilities property."
-  type        = any
-  default     = null
-}
-
 variable "cloud_pc_configuration" {
   description = "Microsoft Graph cloudPcConfiguration property."
   type = object({

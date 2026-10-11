@@ -14,12 +14,12 @@ This module manages the same `microsoft.graph.cloudPcPool` objects as the canoni
 
 ```hcl
 module "graph_resource" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/device-and-app-management/me/cloud-pc-pools?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/beta/device-and-app-management/me/cloud-pc-pools?ref=<release-tag>"
   odata_type = "#microsoft.graph.cloudPcAgentPool"
 }
 ```
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 
@@ -27,7 +27,6 @@ Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules R
 | --- | --- | --- | --- | --- |
 | `odata_type` | `@odata.type` | `string` | yes | no |
 | `assignments` | `assignments` | `any` | no | no |
-| `capabilities` | `capabilities` | `any` | no | no |
 | `cloud_pc_configuration` | `cloudPcConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.cloudPcConfiguration")       imageId = optional(string)       imageType = optional(string)       osLocale = optional(string)     })` | no | no |
 | `description` | `description` | `string` | no | no |
 | `display_name` | `displayName` | `string` | no | no |
@@ -51,7 +50,6 @@ Generation notes:
 - @odata.type: microsoft.graph.cloudPcPool is abstract; odata_type has no default and must name a concrete type
 - Microsoft Graph beta contracts can change without notice.
 - assignments[]: polymorphic schema; accepts an untyped value
-- capabilities: object without documented properties; accepts an untyped value
 - networkConfiguration: object without documented properties; accepts an untyped value
 
 ## Licensing and prerequisites

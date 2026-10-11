@@ -317,7 +317,7 @@ variable "consent_provided_for_minor" {
 }
 
 variable "country" {
-  description = "The country or region where the user is located; for example, US or UK. Maximum length is 128 characters. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values)."
+  description = "The ISO 3166-1 alpha-2 location code associated with the user; for example, US or GB. The property name is part of the Microsoft Graph API contract. Maximum length is 128 characters. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
@@ -381,6 +381,27 @@ variable "devices" {
       key              = optional(string)
       type             = optional(number)
     })))
+    cloudLicensing = optional(object({
+      odata_type = optional(string, "#microsoft.graph.cloudLicensing.deviceCloudLicensing")
+      assignments = optional(list(object({
+        odata_type             = optional(string, "#microsoft.graph.cloudLicensing.assignment")
+        allotment              = optional(any)
+        assignedTo             = optional(any)
+        disabledServicePlanIds = optional(any)
+      })))
+      usageRights = optional(list(object({
+        odata_type                = optional(string, "#microsoft.graph.cloudLicensing.usageRight")
+        allotments                = optional(any)
+        assignments               = optional(any)
+        externalServiceIdentifier = optional(string)
+      })))
+      waitingMembers = optional(list(object({
+        odata_type           = optional(string, "#microsoft.graph.cloudLicensing.waitingMember")
+        allotment            = optional(any)
+        assignedTo           = optional(any)
+        waitingSinceDateTime = optional(string)
+      })))
+    }))
     commands = optional(list(object({
       odata_type        = optional(string, "#microsoft.graph.command")
       appServiceName    = optional(string)
@@ -2438,7 +2459,7 @@ variable "transitive_member_of" {
 }
 
 variable "usage_location" {
-  description = "A two-letter country code (ISO standard 3166). Required for users that are assigned licenses due to legal requirements to check for availability of services in countries.  Examples include: US, JP, and GB. Not nullable. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values)."
+  description = "A two-letter country/region code (ISO standard 3166). Required for users that are assigned licenses due to legal requirements to check for availability of services in countries/regions. Examples include: US, JP, and GB. Not nullable. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values)."
   type        = string
   default     = null
 }

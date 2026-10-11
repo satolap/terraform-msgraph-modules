@@ -15,7 +15,7 @@ run "minimal_request" {
   }
 
   assert {
-    condition     = alltrue([for key in ["decision", "insights", "justification", "permission"] : !contains(keys(msgraph_resource.this.body), key)])
+    condition     = alltrue([for key in ["decision", "insights", "justification"] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
@@ -27,18 +27,12 @@ run "typed_request" {
     access_review_instance_id = "test-parent-id"
     access_review_stage_id    = "test-parent-id"
     decision                  = "example"
-    permission                = { "description" = null }
     insights                  = [{}]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["decision"]) == jsonencode("example")
     error_message = "decision must preserve typed values and omit nested nulls."
-  }
-
-  assert {
-    condition     = jsonencode(msgraph_resource.this.body["permission"]) == jsonencode({ "@odata.type" = "#microsoft.graph.accessReviewInstanceDecisionItemPermission" })
-    error_message = "permission must preserve typed values and omit nested nulls."
   }
 
   assert {

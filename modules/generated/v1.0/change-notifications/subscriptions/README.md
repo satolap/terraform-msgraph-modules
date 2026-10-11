@@ -12,7 +12,7 @@ Lifecycle: `POST /subscriptions`, `GET/PATCH/DELETE /subscriptions/{subscription
 
 ```hcl
 module "graph_resource" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/v1.0/change-notifications/subscriptions?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/v1.0/change-notifications/subscriptions?ref=<release-tag>"
   change_type = "example"
   expiration_date_time = "2026-01-01T00:00:00Z"
   notification_url = "example"
@@ -20,7 +20,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Replacement on change
 
@@ -39,6 +39,9 @@ Microsoft Graph updates only `expiration_date_time` and `notification_url` in pl
 | `notification_query_options` | `notificationQueryOptions` |
 | `notification_url_app_id` | `notificationUrlAppId` |
 | `resource` | `resource` |
+| `vapid_public_key` | `vapidPublicKey` |
+| `web_push_encryption_p256dh_public_key` | `webPushEncryptionP256dhPublicKey` |
+| `web_push_encryption_secret` | `webPushEncryptionSecret` |
 
 Any other key of `additional_properties` replaces the object too when its value changes, for example a writable property that the pinned schema lacks: `terraform_data.immutable` holds every non-null key that is not a typed input. The keys that update in place (`expirationDateTime`, `notificationUrl`) never replace the object. A value of a replacing key that is unknown at plan time plans a replacement, whether it is an input in the table or a key of `additional_properties`; an unknown value of a key that updates in place still plans an in-place update.
 
@@ -61,6 +64,9 @@ Terraform plans a replacement only when `terraform_data.immutable` is updated or
 | `notification_query_options` | `notificationQueryOptions` | `string` | no | no |
 | `notification_url_app_id` | `notificationUrlAppId` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
+| `vapid_public_key` | `vapidPublicKey` | `string` | no | no |
+| `web_push_encryption_p256dh_public_key` | `webPushEncryptionP256dhPublicKey` | `string` | no | no |
+| `web_push_encryption_secret` | `webPushEncryptionSecret` | `string` | no | yes |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

@@ -1,3 +1,13 @@
+variable "a2a_authorization" {
+  description = "Authentication configuration used to invoke the Agent2Agent server."
+  type = object({
+    odata_type  = optional(string, "#microsoft.graph.a2aAuthorization")
+    referenceId = optional(string)
+    type        = optional(string)
+  })
+  default = null
+}
+
 variable "agent_card" {
   description = "Flexible Json manifest containing agent card information following public manifest\nspecifications. Can include displayName, description, iconUrl, version, provider,\ncapabilities, skills, security, and other manifest-defined fields."
   type        = any

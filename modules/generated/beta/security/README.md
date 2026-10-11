@@ -2,10 +2,11 @@
 
 [All categories](../README.md) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/security-api-overview?view=graph-rest-beta&preserve-view=true)
 
-Microsoft Graph **beta** · **137 generated modules**.
+Microsoft Graph **beta** · **138 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
+| [`/dataClassification/sensitiveTypes`](data-classification/sensitive-types/README.md) | `microsoft.graph.sensitiveType` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/sensitivetype?view=graph-rest-beta&preserve-view=true) |
 | [`/dataClassification/sensitivityLabels`](data-classification/sensitivity-labels/README.md) | `microsoft.graph.sensitivityLabel` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/security-sensitivitylabel?view=graph-rest-beta&preserve-view=true) |
 | [`/dataClassification/sensitivityLabels/{sensitivityLabel-id}/sublabels`](data-classification/sensitivity-labels/by-sensitivity-label-id/sublabels/README.md) | `microsoft.graph.sensitivityLabel` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/security-sensitivitylabel?view=graph-rest-beta&preserve-view=true) |
 | [`/groups/{group-id}/sites/{site-id}/informationProtection/policy/labels`](groups/by-group-id/sites/by-site-id/information-protection/policy/labels/README.md) | `microsoft.graph.informationProtectionLabel` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/informationprotectionlabel?view=graph-rest-beta&preserve-view=true) |

@@ -2,7 +2,7 @@
 
 [Catalog](README.md) · [manifest.json](manifest.json)
 
-2392 generated endpoints carry an unknown licensing record. Each path links to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
+2393 generated endpoints carry an unknown licensing record. Each path links to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
 
 ## Agents (`agents`)
 
@@ -142,7 +142,7 @@
 
 ## Compliance (`compliance`)
 
-29 unknown endpoints.
+28 unknown endpoints.
 
 - [`/compliance/ediscovery/cases`](compliance/compliance/ediscovery/cases/README.md)
 - [`/compliance/ediscovery/cases/{case-id}/custodians`](compliance/compliance/ediscovery/cases/by-case-id/custodians/README.md)
@@ -168,7 +168,6 @@
 - [`/dataClassification/exactMatchDataStores/{exactMatchDataStore-id}/sessions`](compliance/data-classification/exact-match-data-stores/by-exact-match-data-store-id/sessions/README.md)
 - [`/dataClassification/exactMatchUploadAgents`](compliance/data-classification/exact-match-upload-agents/README.md)
 - [`/dataClassification/jobs`](compliance/data-classification/jobs/README.md)
-- [`/dataClassification/sensitiveTypes`](compliance/data-classification/sensitive-types/README.md)
 - [`/privacy/subjectRightsRequests`](compliance/privacy/subject-rights-requests/README.md)
 - [`/privacy/subjectRightsRequests/{subjectRightsRequest-id}/notes`](compliance/privacy/subject-rights-requests/by-subject-rights-request-id/notes/README.md)
 - [`/security/dataSecurityAndGovernance/policyFiles`](compliance/security/data-security-and-governance/policy-files/README.md)
@@ -210,7 +209,7 @@
 
 ## Device and app management (`device-and-app-management`)
 
-474 unknown endpoints.
+469 unknown endpoints.
 
 - [`/admin/cloudLicensing/allotments`](device-and-app-management/admin/cloud-licensing/allotments/README.md)
 - [`/admin/cloudLicensing/assignmentErrors`](device-and-app-management/admin/cloud-licensing/assignment-errors/README.md)
@@ -596,12 +595,10 @@
 - [`/deviceManagement/windowsUpdateCatalogItems`](device-and-app-management/device-management/windows-update-catalog-items/README.md)
 - [`/deviceManagement/zebraFotaArtifacts`](device-and-app-management/device-management/zebra-fota-artifacts/README.md)
 - [`/deviceManagement/zebraFotaDeployments`](device-and-app-management/device-management/zebra-fota-deployments/README.md)
-- [`/devices/{device-id}/usageRights`](device-and-app-management/devices/by-device-id/usage-rights/README.md)
 - [`/me/cloudPCs`](device-and-app-management/me/cloud-p-cs/README.md)
 - [`/me/cloudPcPools`](device-and-app-management/me/cloud-pc-pools/README.md)
 - [`/me/cloudPcPools/{cloudPcPool-id}/assignments`](device-and-app-management/me/cloud-pc-pools/by-cloud-pc-pool-id/assignments/README.md)
 - [`/me/deviceEnrollmentConfigurations/{deviceEnrollmentConfiguration-id}/assignments`](device-and-app-management/me/device-enrollment-configurations/by-device-enrollment-configuration-id/assignments/README.md)
-- [`/me/devices/{device-id}/usageRights`](device-and-app-management/me/devices/by-device-id/usage-rights/README.md)
 - [`/me/managedAppLogCollectionRequests`](device-and-app-management/me/managed-app-log-collection-requests/README.md)
 - [`/me/managedDevices`](device-and-app-management/me/managed-devices/README.md)
 - [`/me/managedDevices/{managedDevice-id}/assignmentFilterEvaluationStatusDetails`](device-and-app-management/me/managed-devices/by-managed-device-id/assignment-filter-evaluation-status-details/README.md)
@@ -614,7 +611,6 @@
 - [`/me/managedDevices/{managedDevice-id}/windowsProtectionState/detectedMalwareState`](device-and-app-management/me/managed-devices/by-managed-device-id/windows-protection-state/detected-malware-state/README.md)
 - [`/me/mobileAppTroubleshootingEvents/{mobileAppTroubleshootingEvent-id}/appLogCollectionRequests`](device-and-app-management/me/mobile-app-troubleshooting-events/by-mobile-app-troubleshooting-event-id/app-log-collection-requests/README.md)
 - [`/me/settings/storage/quota/services`](device-and-app-management/me/settings/storage/quota/services/README.md)
-- [`/me/usageRights`](device-and-app-management/me/usage-rights/README.md)
 - [`/monitoring/alertRecords`](device-and-app-management/monitoring/alert-records/README.md)
 - [`/monitoring/alertRules`](device-and-app-management/monitoring/alert-rules/README.md)
 - [`/print/connectors`](device-and-app-management/print/connectors/README.md)
@@ -672,7 +668,6 @@
 - [`/users/{user-id}/cloudPcPools`](device-and-app-management/users/by-user-id/cloud-pc-pools/README.md)
 - [`/users/{user-id}/cloudPcPools/{cloudPcPool-id}/assignments`](device-and-app-management/users/by-user-id/cloud-pc-pools/by-cloud-pc-pool-id/assignments/README.md)
 - [`/users/{user-id}/deviceEnrollmentConfigurations/{deviceEnrollmentConfiguration-id}/assignments`](device-and-app-management/users/by-user-id/device-enrollment-configurations/by-device-enrollment-configuration-id/assignments/README.md)
-- [`/users/{user-id}/devices/{device-id}/usageRights`](device-and-app-management/users/by-user-id/devices/by-device-id/usage-rights/README.md)
 - [`/users/{user-id}/managedAppLogCollectionRequests`](device-and-app-management/users/by-user-id/managed-app-log-collection-requests/README.md)
 - [`/users/{user-id}/managedDevices`](device-and-app-management/users/by-user-id/managed-devices/README.md)
 - [`/users/{user-id}/managedDevices/{managedDevice-id}/assignmentFilterEvaluationStatusDetails`](device-and-app-management/users/by-user-id/managed-devices/by-managed-device-id/assignment-filter-evaluation-status-details/README.md)
@@ -685,7 +680,6 @@
 - [`/users/{user-id}/managedDevices/{managedDevice-id}/windowsProtectionState/detectedMalwareState`](device-and-app-management/users/by-user-id/managed-devices/by-managed-device-id/windows-protection-state/detected-malware-state/README.md)
 - [`/users/{user-id}/mobileAppTroubleshootingEvents/{mobileAppTroubleshootingEvent-id}/appLogCollectionRequests`](device-and-app-management/users/by-path-1a2fb739065e/app-log-collection-requests/README.md)
 - [`/users/{user-id}/settings/storage/quota/services`](device-and-app-management/users/by-user-id/settings/storage/quota/services/README.md)
-- [`/users/{user-id}/usageRights`](device-and-app-management/users/by-user-id/usage-rights/README.md)
 
 ## Education (`education`)
 
@@ -884,7 +878,7 @@
 
 ## Identity and access (`identity-and-access`)
 
-550 unknown endpoints.
+546 unknown endpoints.
 
 - [`/accessReviewDecisions`](identity-and-access/access-review-decisions/README.md)
 - [`/accessReviews`](identity-and-access/access-reviews/README.md)
@@ -929,18 +923,14 @@
 - [`/directory/externalUserProfiles`](identity-and-access/directory/external-user-profiles/README.md)
 - [`/directory/featureRolloutPolicies`](identity-and-access/directory/feature-rollout-policies/README.md)
 - [`/directory/federationConfigurations`](identity-and-access/directory/federation-configurations/README.md)
-- [`/directory/impactedResources/{impactedResource-id}/tags`](identity-and-access/directory/impacted-resources/by-impacted-resource-id/tags/README.md)
 - [`/directory/onPremisesSynchronization`](identity-and-access/directory/on-premises-synchronization/README.md)
 - [`/directory/pendingExternalUserProfiles`](identity-and-access/directory/pending-external-user-profiles/README.md)
 - [`/directory/publicKeyInfrastructure/certificateBasedAuthConfigurations`](identity-and-access/directory/public-key-infrastructure/certificate-based-auth-configurations/README.md)
 - [`/directory/publicKeyInfrastructure/certificateBasedAuthConfigurations/{certificateBasedAuthPki-id}/certificateAuthorities`](identity-and-access/directory/by-path-719c5bb4e4a5/certificate-authorities/README.md)
-- [`/directory/recommendations/{recommendation-id}/impactedResources/{impactedResource-id}/tags`](identity-and-access/directory/recommendations/by-recommendation-id/impacted-resources/by-impacted-resource-id/tags/README.md)
-- [`/directory/recommendations/{recommendation-id}/tags`](identity-and-access/directory/recommendations/by-recommendation-id/tags/README.md)
 - [`/directory/remoteTenantGroups`](identity-and-access/directory/remote-tenant-groups/README.md)
 - [`/directory/sharedEmailDomains`](identity-and-access/directory/shared-email-domains/README.md)
 - [`/directory/subscriptions`](identity-and-access/directory/subscriptions/README.md)
 - [`/directory/templates/deviceTemplates`](identity-and-access/directory/templates/device-templates/README.md)
-- [`/directory/tenantGovernance/governancePolicyTemplates`](identity-and-access/directory/tenant-governance/governance-policy-templates/README.md)
 - [`/directoryObjects`](identity-and-access/directory-objects/README.md)
 - [`/directoryRoleTemplates`](identity-and-access/directory-role-templates/README.md)
 - [`/directoryRoles`](identity-and-access/directory-roles/README.md)
@@ -1568,7 +1558,7 @@
 
 ## Uncategorized (`other`)
 
-18 unknown endpoints.
+20 unknown endpoints.
 
 - [`/admin/exchange/messageTraces`](other/admin/exchange/message-traces/README.md)
 - [`/admin/exchange/messageTraces/{messageTrace-id}/recipients`](other/admin/exchange/message-traces/by-message-trace-id/recipients/README.md)
@@ -1577,11 +1567,13 @@
 - [`/approvalWorkflowProviders`](other/approval-workflow-providers/README.md)
 - [`/approvalWorkflowProviders/{approvalWorkflowProvider-id}/businessFlows`](other/approval-workflow-providers/by-approval-workflow-provider-id/business-flows/README.md)
 - [`/approvalWorkflowProviders/{approvalWorkflowProvider-id}/businessFlowsWithRequestsAwaitingMyDecision`](other/approval-workflow-providers/by-approval-workflow-provider-id/business-flows-with-requests-awaiting-my-decision/README.md)
+- [`/approvalWorkflowProviders/{approvalWorkflowProvider-id}/policyTemplates`](other/approval-workflow-providers/by-approval-workflow-provider-id/policy-templates/README.md)
 - [`/commands`](other/commands/README.md)
 - [`/copilot/admin/catalog/packages`](other/copilot/admin/catalog/packages/README.md)
 - [`/copilot/admin/policySettings`](other/copilot/admin/policy-settings/README.md)
 - [`/copilot/users`](other/copilot/users/README.md)
 - [`/devices/{device-id}/commands`](other/devices/by-device-id/commands/README.md)
+- [`/devices/{device-id}/usageRights`](other/devices/by-device-id/usage-rights/README.md)
 - [`/informationProtection/dataLossPreventionPolicies`](other/information-protection/data-loss-prevention-policies/README.md)
 - [`/messageEvents`](other/message-events/README.md)
 - [`/messageRecipients`](other/message-recipients/README.md)
@@ -1693,7 +1685,7 @@
 
 ## Reports (`reports`)
 
-30 unknown endpoints.
+33 unknown endpoints.
 
 - [`/auditLogs/auditActivityTypes`](reports/audit-logs/audit-activity-types/README.md)
 - [`/auditLogs/customSecurityAttributeAudits`](reports/audit-logs/custom-security-attribute-audits/README.md)
@@ -1706,8 +1698,11 @@
 - [`/deviceManagement/reports/cachedReportConfigurations`](reports/device-management/reports/cached-report-configurations/README.md)
 - [`/deviceManagement/reports/exportJobs`](reports/device-management/reports/export-jobs/README.md)
 - [`/directory/impactedResources`](reports/directory/impacted-resources/README.md)
+- [`/directory/impactedResources/{impactedResource-id}/tags`](reports/directory/impacted-resources/by-impacted-resource-id/tags/README.md)
 - [`/directory/recommendations`](reports/directory/recommendations/README.md)
 - [`/directory/recommendations/{recommendation-id}/impactedResources`](reports/directory/recommendations/by-recommendation-id/impacted-resources/README.md)
+- [`/directory/recommendations/{recommendation-id}/impactedResources/{impactedResource-id}/tags`](reports/directory/recommendations/by-recommendation-id/impacted-resources/by-impacted-resource-id/tags/README.md)
+- [`/directory/recommendations/{recommendation-id}/tags`](reports/directory/recommendations/by-recommendation-id/tags/README.md)
 - [`/reports/appCredentialSignInActivities`](reports/reports/app-credential-sign-in-activities/README.md)
 - [`/reports/applicationSignInDetailedSummary`](reports/reports/application-sign-in-detailed-summary/README.md)
 - [`/reports/authenticationMethods/userEventsSummary`](reports/reports/authentication-methods/user-events-summary/README.md)
@@ -1736,8 +1731,9 @@
 
 ## Security (`security`)
 
-137 unknown endpoints.
+138 unknown endpoints.
 
+- [`/dataClassification/sensitiveTypes`](security/data-classification/sensitive-types/README.md)
 - [`/dataClassification/sensitivityLabels`](security/data-classification/sensitivity-labels/README.md)
 - [`/dataClassification/sensitivityLabels/{sensitivityLabel-id}/sublabels`](security/data-classification/sensitivity-labels/by-sensitivity-label-id/sublabels/README.md)
 - [`/groups/{group-id}/sites/{site-id}/informationProtection/policy/labels`](security/groups/by-group-id/sites/by-site-id/information-protection/policy/labels/README.md)
@@ -2123,7 +2119,7 @@
 
 ## Teamwork and communications (`teamwork-and-communications`)
 
-328 unknown endpoints.
+329 unknown endpoints.
 
 - [`/admin/teams/policy/userAssignments`](teamwork-and-communications/admin/teams/policy/user-assignments/README.md)
 - [`/admin/teams/telephoneNumberManagement/numberAssignments`](teamwork-and-communications/admin/teams/telephone-number-management/number-assignments/README.md)
@@ -2380,6 +2376,7 @@
 - [`/teamwork/deletedTeams/{deletedTeam-id}/channels/{channel-id}/tabs`](teamwork-and-communications/teamwork/deleted-teams/by-deleted-team-id/channels/by-channel-id/tabs/README.md)
 - [`/teamwork/devices`](teamwork-and-communications/teamwork/devices/README.md)
 - [`/teamwork/devices/{teamworkDevice-id}/operations`](teamwork-and-communications/teamwork/devices/by-teamwork-device-id/operations/README.md)
+- [`/teamwork/messaging/customEmojis`](teamwork-and-communications/teamwork/messaging/custom-emojis/README.md)
 - [`/teamwork/teamTemplates`](teamwork-and-communications/teamwork/team-templates/README.md)
 - [`/teamwork/teamTemplates/{teamTemplate-id}/definitions`](teamwork-and-communications/teamwork/team-templates/by-team-template-id/definitions/README.md)
 - [`/teamwork/teamTemplates/{teamTemplate-id}/definitions/{teamTemplateDefinition-id}/teamDefinition/channels`](teamwork-and-communications/teamwork/by-path-c661a7b63aad/channels/README.md)
@@ -2459,8 +2456,8 @@
 29 unknown endpoints.
 
 - [`/admin/configurationManagement/configurationMonitors`](tenants/admin/configuration-management/configuration-monitors/README.md)
-- [`/approvalWorkflowProviders/{approvalWorkflowProvider-id}/policyTemplates`](tenants/approval-workflow-providers/by-approval-workflow-provider-id/policy-templates/README.md)
 - [`/directory/tenantGovernance/governanceInvitations`](tenants/directory/tenant-governance/governance-invitations/README.md)
+- [`/directory/tenantGovernance/governancePolicyTemplates`](tenants/directory/tenant-governance/governance-policy-templates/README.md)
 - [`/directory/tenantGovernance/governanceRelationships`](tenants/directory/tenant-governance/governance-relationships/README.md)
 - [`/directory/tenantGovernance/governanceRequests`](tenants/directory/tenant-governance/governance-requests/README.md)
 - [`/directory/tenantGovernance/relatedTenants`](tenants/directory/tenant-governance/related-tenants/README.md)
@@ -2515,11 +2512,12 @@
 
 ## Users (`users`)
 
-22 unknown endpoints.
+26 unknown endpoints.
 
 - [`/me/deviceEnrollmentConfigurations`](users/me/device-enrollment-configurations/README.md)
 - [`/me/deviceManagementTroubleshootingEvents`](users/me/device-management-troubleshooting-events/README.md)
 - [`/me/devices/{device-id}/commands`](users/me/devices/by-device-id/commands/README.md)
+- [`/me/devices/{device-id}/usageRights`](users/me/devices/by-device-id/usage-rights/README.md)
 - [`/me/informationProtection/dataLossPreventionPolicies`](users/me/information-protection/data-loss-prevention-policies/README.md)
 - [`/me/mobileAppIntentAndStates`](users/me/mobile-app-intent-and-states/README.md)
 - [`/me/mobileAppTroubleshootingEvents`](users/me/mobile-app-troubleshooting-events/README.md)
@@ -2528,9 +2526,11 @@
 - [`/me/pendingAccessReviewInstances/{accessReviewInstance-id}/decisions/{accessReviewInstanceDecisionItem-id}/instance/contactedReviewers`](users/me/by-path-19c3ec264169/contacted-reviewers/README.md)
 - [`/me/pendingAccessReviewInstances/{accessReviewInstance-id}/stages/{accessReviewStage-id}/decisions/{accessReviewInstanceDecisionItem-id}/instance/contactedReviewers`](users/me/by-path-aeaa7e344bb1/contacted-reviewers/README.md)
 - [`/me/scopedRoleMemberOf`](users/me/scoped-role-member-of/README.md)
+- [`/me/usageRights`](users/me/usage-rights/README.md)
 - [`/users/{user-id}/deviceEnrollmentConfigurations`](users/users/by-user-id/device-enrollment-configurations/README.md)
 - [`/users/{user-id}/deviceManagementTroubleshootingEvents`](users/users/by-user-id/device-management-troubleshooting-events/README.md)
 - [`/users/{user-id}/devices/{device-id}/commands`](users/users/by-user-id/devices/by-device-id/commands/README.md)
+- [`/users/{user-id}/devices/{device-id}/usageRights`](users/users/by-user-id/devices/by-device-id/usage-rights/README.md)
 - [`/users/{user-id}/informationProtection/dataLossPreventionPolicies`](users/users/by-user-id/information-protection/data-loss-prevention-policies/README.md)
 - [`/users/{user-id}/mobileAppIntentAndStates`](users/users/by-user-id/mobile-app-intent-and-states/README.md)
 - [`/users/{user-id}/mobileAppTroubleshootingEvents`](users/users/by-user-id/mobile-app-troubleshooting-events/README.md)
@@ -2539,6 +2539,7 @@
 - [`/users/{user-id}/pendingAccessReviewInstances/{accessReviewInstance-id}/decisions/{accessReviewInstanceDecisionItem-id}/instance/contactedReviewers`](users/users/by-path-1f649fe0dfc0/contacted-reviewers/README.md)
 - [`/users/{user-id}/pendingAccessReviewInstances/{accessReviewInstance-id}/stages/{accessReviewStage-id}/decisions/{accessReviewInstanceDecisionItem-id}/instance/contactedReviewers`](users/users/by-path-0f38b98ffb81/contacted-reviewers/README.md)
 - [`/users/{user-id}/scopedRoleMemberOf`](users/users/by-user-id/scoped-role-member-of/README.md)
+- [`/users/{user-id}/usageRights`](users/users/by-user-id/usage-rights/README.md)
 
 ## Workbooks and charts (`workbooks-and-charts`)
 

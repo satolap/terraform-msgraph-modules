@@ -9,11 +9,11 @@ access packages that are grouped together, typically by department or function.
 
 ## Usage
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one.
 
 ```hcl
 module "engineering_catalog" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/curated/identity-governance/entitlement-management/catalogs?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/curated/identity-governance/entitlement-management/catalogs?ref=<release-tag>"
 
   display_name = "Engineering"
   description  = "Resources and access packages for the Engineering department"
@@ -21,6 +21,30 @@ module "engineering_catalog" {
   catalog_type = "userManaged"
 }
 ```
+
+## External users
+
+`is_externally_visible` sets the catalog's **Enabled for external users** setting
+(`isExternallyVisible`). Users of a connected organization can request an access package
+only when its catalog is enabled for external users and the access package has a policy
+for them ([Share link to request an access package](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-access-package-settings)).
+The setting does not limit administrators who assign external users directly
+([Create and manage a catalog](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-catalog-create)).
+
+- `null`, the default, leaves the property out of the request body, so existing callers send
+  the same body as before. The [create](https://learn.microsoft.com/en-us/graph/api/entitlementmanagement-post-catalogs?view=graph-rest-1.0)
+  page documents no default; the admin center enables the setting for a new catalog.
+- `true` or `false` is sent on create and, when it changes, in a `PATCH`, which
+  [documents](https://learn.microsoft.com/en-us/graph/api/accesspackagecatalog-update?view=graph-rest-1.0)
+  `isExternallyVisible` as updatable.
+- Changing `true` or `false` back to `null` sends nothing, so the catalog keeps its last
+  value. Set `false` to turn the setting off.
+- With `true` or `false`, the property is part of the configured body, which the provider
+  refreshes from Microsoft Graph like the other body keys. A change made in the admin center
+  therefore shows as drift in the next plan, and the next apply sets the configured value
+  again. With `null` the module does not manage the property, and a change made outside
+  Terraform stays. Whether Graph returns the value it applied when the request leaves it out
+  is not verified.
 
 ## Requirements
 
@@ -54,6 +78,7 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 |------|-------------|------|---------|----------|
 | display_name | Display name of the catalog (1-90 characters) | `string` | n/a | yes |
 | description | Description of the catalog | `string` | `null` | no |
+| is_externally_visible | Whether users of connected organizations can request the catalog's access packages; `null` leaves it to Microsoft Graph | `bool` | `null` | no |
 | state | `unpublished` or `published` | `string` | `"unpublished"` | no |
 | catalog_type | `userManaged` or `serviceDefault` | `string` | `"userManaged"` | no |
 | api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
@@ -66,3 +91,4 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 | display_name | The display name of the catalog |
 | state | The published state of the catalog |
 | catalog_type | The type of the catalog |
+| is_externally_visible | The configured `is_externally_visible`, or `null` when not set |

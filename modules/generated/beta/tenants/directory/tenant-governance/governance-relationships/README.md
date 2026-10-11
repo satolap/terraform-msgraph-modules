@@ -12,11 +12,11 @@ Lifecycle: `POST /directory/tenantGovernance/governanceRelationships`, `GET/PATC
 
 ```hcl
 module "graph_resource" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/tenants/directory/tenant-governance/governance-relationships?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/beta/tenants/directory/tenant-governance/governance-relationships?ref=<release-tag>"
 }
 ```
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 
@@ -29,7 +29,7 @@ Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules R
 | `governing_tenant_id` | `governingTenantId` | `string` | no | no |
 | `governing_tenant_name` | `governingTenantName` | `string` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
-| `policy_snapshot` | `policySnapshot` | `object({       odata_type = optional(string, "#microsoft.graph.relationshipPolicy")       delegatedAdministrationRoleAssignments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.delegatedAdministrationRoleAssignmentSnapshot")       groupDisplayName = optional(string)       groupId = optional(string)       roleTemplates = optional(list(object({       odata_type = optional(string, "#microsoft.graph.roleTemplate")       id = optional(string)       name = optional(string)     })))     })))       governedTenantCanTerminate = optional(bool)       multiTenantApplicationsToProvision = optional(list(object({       odata_type = optional(string, "#microsoft.graph.multiTenantApplicationsToProvisionSnapshot")       appId = optional(string)       displayName = optional(string)       objectId = optional(string)       requiredResourceAccesses = optional(list(object({       odata_type = optional(string, "#microsoft.graph.applicationsRequiredResourceAccess")       permissions = optional(any)       resourceAppId = optional(string)     })))     })))       policyId = optional(string)     })` | no | no |
+| `policy_snapshot` | `policySnapshot` | `object({       odata_type = optional(string, "#microsoft.graph.relationshipPolicy")       delegatedAdministrationRoleAssignments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.delegatedAdministrationRoleAssignmentSnapshot")       groupId = optional(string)       roleTemplates = optional(list(object({       odata_type = optional(string, "#microsoft.graph.roleTemplate")       id = optional(string)       name = optional(string)     })))     })))       governedTenantCanTerminate = optional(bool)       multiTenantApplicationsToProvision = optional(list(object({       odata_type = optional(string, "#microsoft.graph.multiTenantApplicationsToProvisionSnapshot")       appId = optional(string)       displayName = optional(string)       objectId = optional(string)       requiredResourceAccesses = optional(list(object({       odata_type = optional(string, "#microsoft.graph.applicationsRequiredResourceAccess")       permissions = optional(any)       resourceAppId = optional(string)     })))     })))       policyId = optional(string)     })` | no | no |
 | `status` | `status` | `string` | no | no |
 | `additional_properties` | Additional writable API properties | `any` | no | yes |
 

@@ -46,6 +46,12 @@ variable "odata_type" {
   nullable    = false
 }
 
+variable "person_id" {
+  description = "Microsoft Graph personId property."
+  type        = string
+  default     = null
+}
+
 variable "additional_properties" {
   description = "Additional writable Graph properties using API field names. Explicit typed inputs take precedence. Null top-level values are omitted; callers must omit nested nulls in untyped values."
   type        = any
@@ -54,7 +60,7 @@ variable "additional_properties" {
   sensitive   = true
 
   validation {
-    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["changeKey", "id", "members", "personIdentifier", "singleValueExtendedProperties"], key)]) : false
+    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["changeKey", "id", "members", "singleValueExtendedProperties"], key)]) : false
     error_message = "additional_properties must be an object without documented read-only properties."
   }
 }

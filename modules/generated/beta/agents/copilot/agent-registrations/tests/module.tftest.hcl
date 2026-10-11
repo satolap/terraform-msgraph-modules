@@ -10,7 +10,7 @@ run "minimal_request" {
   }
 
   assert {
-    condition     = alltrue([for key in ["agentCard", "agentIdentityBlueprintId", "agentIdentityId", "createdBy", "description", "displayName", "lastPublishedBy", "managedByAppId", "originatingStore", "ownerIds", "sourceAgentId", "sourceCreatedDateTime", "sourceLastModifiedDateTime"] : !contains(keys(msgraph_resource.this.body), key)])
+    condition     = alltrue([for key in ["a2aAuthorization", "agentCard", "agentIdentityBlueprintId", "agentIdentityId", "createdBy", "description", "displayName", "lastPublishedBy", "managedByAppId", "originatingStore", "ownerIds", "sourceAgentId", "sourceCreatedDateTime", "sourceLastModifiedDateTime"] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
 }
@@ -20,12 +20,18 @@ run "typed_request" {
 
   variables {
     agent_identity_blueprint_id = "example"
+    a2a_authorization           = { "referenceId" = null }
     owner_ids                   = ["example"]
   }
 
   assert {
     condition     = jsonencode(msgraph_resource.this.body["agentIdentityBlueprintId"]) == jsonencode("example")
     error_message = "agentIdentityBlueprintId must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["a2aAuthorization"]) == jsonencode({ "@odata.type" = "#microsoft.graph.a2aAuthorization" })
+    error_message = "a2aAuthorization must preserve typed values and omit nested nulls."
   }
 
   assert {

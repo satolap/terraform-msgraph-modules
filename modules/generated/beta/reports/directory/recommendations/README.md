@@ -12,11 +12,11 @@ Lifecycle: `POST /directory/recommendations`, `GET/PATCH/DELETE /directory/recom
 
 ```hcl
 module "graph_resource" {
-  source = "git::https://github.com/benhaspalace/GraphModules.git//modules/generated/beta/reports/directory/recommendations?ref=<release-tag>"
+  source = "git::https://github.com/satolap/terraform-msgraph-modules.git//modules/generated/beta/reports/directory/recommendations?ref=<release-tag>"
 }
 ```
 
-Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/benhaspalace/GraphModules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-github) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 
@@ -42,7 +42,6 @@ Replace `<release-tag>` with a `graphmodules-*` release tag; the [GraphModules R
 | `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
 | `max_score` | `maxScore` | `any` | no | no |
 | `needs_more_action_resource_count` | `needsMoreActionResourceCount` | `number` | no | no |
-| `nist_classifications` | `nistClassifications` | `list(object({       odata_type = optional(string, "#microsoft.graph.nistClassification")       category = optional(string)       description = optional(string)       function = optional(string)       name = optional(string)     }))` | no | no |
 | `odata_type` | `@odata.type` | `string` | no | no |
 | `postpone_until_date_time` | `postponeUntilDateTime` | `string` | no | no |
 | `priority` | `priority` | `string` | no | no |

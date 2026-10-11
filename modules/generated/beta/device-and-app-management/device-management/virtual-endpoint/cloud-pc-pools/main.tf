@@ -3,7 +3,6 @@ locals {
   typed_body = { for key, value in {
     "@odata.type"          = var.odata_type
     "assignments"          = (var.assignments == null ? null : [for item0 in var.assignments : item0 if item0 != null])
-    "capabilities"         = var.capabilities
     "cloudPcConfiguration" = (var.cloud_pc_configuration == null ? null : { for key0, value0 in { "@odata.type" = var.cloud_pc_configuration["odata_type"], "imageId" = var.cloud_pc_configuration["imageId"], "imageType" = var.cloud_pc_configuration["imageType"], "osLocale" = var.cloud_pc_configuration["osLocale"] } : key0 => value0 if value0 != null })
     "description"          = var.description
     "displayName"          = var.display_name
