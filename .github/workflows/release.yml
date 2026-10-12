@@ -52,7 +52,7 @@ jobs:
 
           before = os.environ["BEFORE"]
           commit = os.environ["PUBLICATION_COMMIT"]
-          manifest = "modules/generated/release-manifest.json"
+          manifest = "release-manifest.json"
           comparable = (
               re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", before) is not None
               and re.fullmatch(r"0+", before) is None
@@ -116,7 +116,7 @@ jobs:
           tag = os.environ["RELEASE_TAG"]
           if os.environ["GITHUB_EVENT_NAME"] == "push":
               # Read the triggering publication, even if main has advanced while queued.
-              revision = os.environ["PUBLICATION_COMMIT"] + ":modules/generated/release-manifest.json"
+              revision = os.environ["PUBLICATION_COMMIT"] + ":release-manifest.json"
               manifest = subprocess.check_output(["git", "show", revision], text=True)
               tag = json.loads(manifest)["tag"]
           subprocess.run([
