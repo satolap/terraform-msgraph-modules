@@ -1,0 +1,68 @@
+# /identityGovernance/accessReviews/definitions/{accessReviewScheduleDefinition-id}/instances/{accessReviewInstance-id}/decisions/{accessReviewInstanceDecisionItem-id}/instance/stages
+
+Create new navigation property to stages for identityGovernance
+
+[Catalog](../../../README.md) · [Identity and access](../../../README.md#identity-and-access) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/accessreviewstage?view=graph-rest-beta&preserve-view=true)
+
+Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
+
+Lifecycle: `POST /identityGovernance/accessReviews/definitions/{accessReviewScheduleDefinition-id}/instances/{accessReviewInstance-id}/decisions/{accessReviewInstanceDecisionItem-id}/instance/stages`, `GET/PATCH/DELETE /identityGovernance/accessReviews/definitions/{accessReviewScheduleDefinition-id}/instances/{accessReviewInstance-id}/decisions/{accessReviewInstanceDecisionItem-id}/instance/stages/{accessReviewStage-id}`.
+
+## Usage
+
+```hcl
+module "graph_resource" {
+  source  = "satolap/modules/msgraph//beta/identity-governance/by-path-528da6358223/stages"
+  version = "<version>"
+
+  access_review_schedule_definition_id = "parent-object-id"
+  access_review_instance_id = "parent-object-id"
+  access_review_instance_decision_item_id = "parent-object-id"
+}
+```
+
+Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+
+## Inputs
+
+| Input | Graph property | Type | Required | Sensitive |
+| --- | --- | --- | --- | --- |
+| `access_review_schedule_definition_id` | URL parameter `accessReviewScheduleDefinition-id` | `string` | yes | no |
+| `access_review_instance_id` | URL parameter `accessReviewInstance-id` | `string` | yes | no |
+| `access_review_instance_decision_item_id` | URL parameter `accessReviewInstanceDecisionItem-id` | `string` | yes | no |
+| `decisions` | `decisions` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItem")       applyDescription = optional(string)       decision = optional(string)       insights = optional(any)       instance = optional(any)       justification = optional(string)       permission = optional(object({       odata_type = optional(string, "#microsoft.graph.accessReviewInstanceDecisionItemPermission")       description = optional(string)       displayName = optional(string)       id = optional(string)       type = optional(string)     }))     }))` | no | no |
+| `fallback_reviewers` | `fallbackReviewers` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")       query = optional(string)       queryRoot = optional(string)       queryType = optional(string)       reviewerId = optional(string)       scopeType = optional(string)     }))` | no | no |
+| `odata_type` | `@odata.type` | `string` | no | no |
+| `reviewers` | `reviewers` | `list(object({       odata_type = optional(string, "#microsoft.graph.accessReviewReviewerScope")       query = optional(string)       queryRoot = optional(string)       queryType = optional(string)       reviewerId = optional(string)       scopeType = optional(string)     }))` | no | no |
+| `additional_properties` | Additional writable API properties | `any` | no | yes |
+
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+
+Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
+
+## Permissions and limitations
+
+Review the Microsoft Graph API documentation for this endpoint's application/delegated permissions, required create fields, licensing, and tenant restrictions. Required inputs come from the request schema and explicit reviewed corrections, not from EDMX response nullability. The generated module is schema-derived; its lifecycle has not been tested against a live tenant.
+
+Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
+
+Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
+
+Generation notes:
+
+- Microsoft Graph beta contracts can change without notice.
+- decisions[].insights[]: polymorphic schema; accepts an untyped value
+- decisions[].instance: navigation property; accepts an untyped value
+
+## Licensing and prerequisites
+
+License requirements for this endpoint have not been reviewed. Check the Microsoft Graph documentation and Microsoft Entra licensing for the feature this resource belongs to before relying on the module; a successful API call does not establish entitlement.
+
+## Offline test
+
+```sh
+terraform init -backend=false
+terraform test
+```
+
+The included mock test checks URL construction and request omission without Graph credentials. It does not verify permissions or server behavior.

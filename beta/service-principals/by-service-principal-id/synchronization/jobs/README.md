@@ -1,0 +1,66 @@
+# /servicePrincipals/{servicePrincipal-id}/synchronization/jobs
+
+Create synchronizationJob
+
+[Catalog](../../../../README.md) · [Applications](../../../../README.md#applications) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/applications-api-overview?view=graph-rest-beta&preserve-view=true)
+
+Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
+
+Lifecycle: `POST /servicePrincipals/{servicePrincipal-id}/synchronization/jobs`, `GET/PATCH/DELETE /servicePrincipals/{servicePrincipal-id}/synchronization/jobs/{synchronizationJob-id}`.
+
+## Usage
+
+```hcl
+module "graph_resource" {
+  source  = "satolap/modules/msgraph//beta/service-principals/by-service-principal-id/synchronization/jobs"
+  version = "<version>"
+
+  service_principal_id = "parent-object-id"
+}
+```
+
+Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+
+## Inputs
+
+| Input | Graph property | Type | Required | Sensitive |
+| --- | --- | --- | --- | --- |
+| `service_principal_id` | URL parameter `servicePrincipal-id` | `string` | yes | no |
+| `bulk_upload` | `bulkUpload` | `any` | no | no |
+| `odata_type` | `@odata.type` | `string` | no | no |
+| `schema` | `schema` | `any` | no | no |
+| `status` | `status` | `object({       odata_type = optional(string, "#microsoft.graph.synchronizationStatus")       code = optional(string)       countSuccessiveCompleteFailures = optional(number)       escrowsPruned = optional(bool)       lastExecution = optional(object({       odata_type = optional(string, "#microsoft.graph.synchronizationTaskExecution")       activityIdentifier = optional(string)       countEntitled = optional(number)       countEntitledForProvisioning = optional(number)       countEscrowed = optional(number)       countEscrowedRaw = optional(number)       countExported = optional(number)       countExports = optional(number)       countImported = optional(number)       countImportedDeltas = optional(number)       countImportedReferenceDeltas = optional(number)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.synchronizationError")       code = optional(string)       message = optional(string)       tenantActionable = optional(bool)     }))       state = optional(string)       timeBegan = optional(string)       timeEnded = optional(string)     }))       lastSuccessfulExecution = optional(object({       odata_type = optional(string, "#microsoft.graph.synchronizationTaskExecution")       activityIdentifier = optional(string)       countEntitled = optional(number)       countEntitledForProvisioning = optional(number)       countEscrowed = optional(number)       countEscrowedRaw = optional(number)       countExported = optional(number)       countExports = optional(number)       countImported = optional(number)       countImportedDeltas = optional(number)       countImportedReferenceDeltas = optional(number)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.synchronizationError")       code = optional(string)       message = optional(string)       tenantActionable = optional(bool)     }))       state = optional(string)       timeBegan = optional(string)       timeEnded = optional(string)     }))       lastSuccessfulExecutionWithExports = optional(object({       odata_type = optional(string, "#microsoft.graph.synchronizationTaskExecution")       activityIdentifier = optional(string)       countEntitled = optional(number)       countEntitledForProvisioning = optional(number)       countEscrowed = optional(number)       countEscrowedRaw = optional(number)       countExported = optional(number)       countExports = optional(number)       countImported = optional(number)       countImportedDeltas = optional(number)       countImportedReferenceDeltas = optional(number)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.synchronizationError")       code = optional(string)       message = optional(string)       tenantActionable = optional(bool)     }))       state = optional(string)       timeBegan = optional(string)       timeEnded = optional(string)     }))       progress = optional(list(object({       odata_type = optional(string, "#microsoft.graph.synchronizationProgress")       completedUnits = optional(number)       progressObservationDateTime = optional(string)       totalUnits = optional(number)       units = optional(string)     })))       quarantine = optional(object({       odata_type = optional(string, "#microsoft.graph.synchronizationQuarantine")       currentBegan = optional(string)       error = optional(object({       odata_type = optional(string, "#microsoft.graph.synchronizationError")       code = optional(string)       message = optional(string)       tenantActionable = optional(bool)     }))       nextAttempt = optional(string)       reason = optional(string)       seriesBegan = optional(string)       seriesCount = optional(number)     }))       steadyStateFirstAchievedTime = optional(string)       steadyStateLastAchievedTime = optional(string)       synchronizedEntryCountByType = optional(list(object({       odata_type = optional(string, "#microsoft.graph.stringKeyLongValuePair")       key = optional(string)       value = optional(number)     })))       troubleshootingUrl = optional(string)     })` | no | no |
+| `synchronization_job_settings` | `synchronizationJobSettings` | `list(object({       odata_type = optional(string, "#microsoft.graph.keyValuePair")       name = optional(string)       value = optional(string)     }))` | no | no |
+| `template_id` | `templateId` | `string` | no | no |
+| `additional_properties` | Additional writable API properties | `any` | no | yes |
+
+Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
+
+Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
+
+## Permissions and limitations
+
+Review the Microsoft Graph API documentation for this endpoint's application/delegated permissions, required create fields, licensing, and tenant restrictions. Required inputs come from the request schema and explicit reviewed corrections, not from EDMX response nullability. The generated module is schema-derived; its lifecycle has not been tested against a live tenant.
+
+Read-only properties are excluded using OpenAPI flags/descriptions and EDMX computed annotations. Metadata can enrich an existing request property but never adds response-only properties. Polymorphic, recursive, or very deep values use `any`; their server-side shape remains the caller's responsibility.
+
+Documented collection GET parameters: `$count`, `$expand`, `$filter`, `$orderby`, `$search`, `$select`, `$skip`, `$top`. This module manages an object; it does not implement listing or pagination.
+
+Generation notes:
+
+- Microsoft Graph beta contracts can change without notice.
+- bulkUpload: navigation property; accepts an untyped value
+- schema: navigation property; accepts an untyped value
+
+## Licensing and prerequisites
+
+License requirements for this endpoint have not been reviewed. Check the Microsoft Graph documentation and Microsoft Entra licensing for the feature this resource belongs to before relying on the module; a successful API call does not establish entitlement.
+
+## Offline test
+
+```sh
+terraform init -backend=false
+terraform test
+```
+
+The included mock test checks URL construction and request omission without Graph credentials. It does not verify permissions or server behavior.
