@@ -3,8 +3,8 @@
     "requirements-dev.txt": "4407121b06fc73b566b5c70b64ecb980b4b92ad98441401befac8ef77e173bb3",
     "requirements.txt": "ad488d53a098f26ddcb1303c16b81fb8d444c232d7ac067718650f04d6dfe29b"
   },
-  "fingerprint": "d14d59c9000a035c39ba0d830209073ae3bf875d9513456aff243d7e60b232ee",
-  "generator_commit": "cebc3b43769d8e20b32f32020bab2a28f384acf5",
+  "fingerprint": "b804e648b78e233dec44fbce1f39a2088ad6b4c4b25092970e9673b350ea9d5d",
+  "generator_commit": "b83536ccf5ffec33f222e55e897b3737dd30125c",
   "providers": {
     "hashicorp/null": "3.3.2",
     "hashicorp/random": "3.9.1",
@@ -327,5 +327,5 @@
     "repository": "microsoftgraph/msgraph-metadata",
     "schema_version": 1
   },
-  "tag": "graphmodules-d14d59c9000a035c39ba"
+  "tag": "graphmodules-b804e648b78e233dec44"
 }
