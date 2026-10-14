@@ -1,0 +1,33 @@
+name: Contributors
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  identities:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Reject commits that carry a forbidden identity or trailer
+        env:
+          RANGE: ${{ github.event_name == 'pull_request' && format('{0}..{1}', github.event.pull_request.base.sha, github.event.pull_request.head.sha) || github.sha }}
+        run: |
+          pattern='anthropic\.com|lindt\.com|^claude$|co-authored-by:|claude-session:'
+          if [ "${{ github.event_name }}" = push ]; then
+            log=$(git log -n 20 --format='%an <%ae>%n%cn <%ce>%n%B' "$RANGE")
+          else
+            log=$(git log --format='%an <%ae>%n%cn <%ce>%n%B' "$RANGE")
+          fi
+          if printf '%s\n' "$log" | grep -i -E "$pattern"; then
+            echo "::error::Commits must be attributed to benhaspalace only, with no co-author trailers."
+            exit 1
+          fi
