@@ -1,15 +1,16 @@
 name: Contributors
 
 on:
-  pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   identities:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -17,17 +18,28 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Reject commits that carry a forbidden identity or trailer
+      - name: Reject commits from identities other than the owner and the GitHub bots
         env:
-          RANGE: ${{ github.event_name == 'pull_request' && format('{0}..{1}', github.event.pull_request.base.sha, github.event.pull_request.head.sha) || github.sha }}
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
         run: |
-          pattern='anthropic\.com|lindt\.com|^claude$|co-authored-by:|claude-session:'
-          if [ "${{ github.event_name }}" = push ]; then
-            log=$(git log -n 20 --format='%an <%ae>%n%cn <%ce>%n%B' "$RANGE")
+          allowed='^([^<]* <47789600\+benhaspalace@users\.noreply\.github\.com>|GitHub <noreply@github\.com>|github-actions\[bot\] <41898282\+github-actions\[bot\]@users\.noreply\.github\.com>|dependabot\[bot\] <49699333\+dependabot\[bot\]@users\.noreply\.github\.com>)$'
+          if [ -n "$BEFORE" ] && [ "$BEFORE" != 0000000000000000000000000000000000000000 ] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            range="$BEFORE..$AFTER"
           else
-            log=$(git log --format='%an <%ae>%n%cn <%ce>%n%B' "$RANGE")
+            range="$AFTER"
           fi
-          if printf '%s\n' "$log" | grep -i -E "$pattern"; then
-            echo "::error::Commits must be attributed to benhaspalace only, with no co-author trailers."
-            exit 1
-          fi
+          bad=0
+          while read -r sha; do
+            for who in "$(git log -1 --format='%an <%ae>' "$sha")" "$(git log -1 --format='%cn <%ce>' "$sha")"; do
+              if ! printf '%s\n' "$who" | grep -q -E "$allowed"; then
+                echo "::error::$sha has the identity $who"
+                bad=1
+              fi
+            done
+            if git log -1 --format=%B "$sha" | grep -q -i -E '^(co-authored-by|claude-session):'; then
+              echo "::error::$sha has a co-author or session trailer"
+              bad=1
+            fi
+          done < <(git rev-list "$range")
+          exit "$bad"
