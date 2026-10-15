@@ -17,11 +17,11 @@ from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 
-# The flat layout: the catalogs v1.0/, beta/ and curated/ and the provenance manifest are at
+# The flat layout: the catalogs v1.0/, beta/ and verified/ and the provenance manifest are at
 # the repository root, so Terraform Registry sources read satolap/modules/msgraph//v1.0/<route>.
 # GraphForm's publisher checks for this line before it publishes the flat layout.
 PUBLIC_MANIFEST = "release-manifest.json"
-CATALOGS = ("v1.0", "beta", "curated")
+CATALOGS = ("v1.0", "beta", "verified")
 
 
 def git(*args: str) -> str:

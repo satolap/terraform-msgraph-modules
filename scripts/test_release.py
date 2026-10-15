@@ -26,12 +26,12 @@ CHANGES = b'{\n  "schema_version": 1\n}\n'
 CATALOGS = {
     "v1.0": "v1.0",
     "beta": "beta",
-    "curated": "curated",
+    "verified": "verified",
 }
 ASSETS = [
     "graphmodules-v1.0-modules.tar.gz",
     "graphmodules-beta-modules.tar.gz",
-    "graphmodules-curated-modules.tar.gz",
+    "graphmodules-verified-modules.tar.gz",
     "release-manifest.json",
 ]
 

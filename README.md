@@ -15,7 +15,7 @@ The repository provides two complementary module collections:
   and delete lifecycles from the Microsoft Graph v1.0 and beta schemas. They
   provide typed Terraform variables, request shaping, stable outputs, endpoint
   documentation, and credential-free mock tests.
-- **Curated Microsoft Graph modules** handle common directory and identity
+- **Verified Microsoft Graph modules** handle common directory and identity
   governance scenarios that benefit from reviewed lifecycle behavior, including
   group membership, application and service-principal relationships, catalogs,
   access packages, assignment policies, resource role scopes, and Conditional
@@ -61,32 +61,32 @@ Microsoft recommends v1.0 APIs for production applications. Microsoft Graph beta
 APIs are previews and can change incompatibly; see Microsoft's
 [versioning and support policy](https://learn.microsoft.com/en-us/graph/versioning-and-support).
 
-## Use the curated Microsoft Graph Terraform modules
+## Use the verified Microsoft Graph Terraform modules
 
-The curated modules focus on Microsoft Entra ID directory objects, entitlement
+The verified modules focus on Microsoft Entra ID directory objects, entitlement
 management workflows, and Conditional Access:
 
 | Microsoft Graph area | Resource or workflow | Terraform module |
 | --- | --- | --- |
-| Users | `/users` | [`curated/users`](curated/users) |
-| Groups | `/groups`, owners, and members | [`curated/groups`](curated/groups) |
-| Groups | Group members as one authoritative collection | [`curated/groups/members`](curated/groups/members) |
-| Directory | Administrative units | [`curated/directory/administrative-units`](curated/directory/administrative-units) |
-| Applications | `/applications` | [`curated/applications`](curated/applications) |
-| Applications | `/servicePrincipals` | [`curated/service-principals`](curated/service-principals) |
-| Identity governance | Entitlement-management catalogs | [`curated/identity-governance/entitlement-management/catalogs`](curated/identity-governance/entitlement-management/catalogs) |
-| Identity governance | Catalog resources | [`curated/identity-governance/entitlement-management/catalogs/resources`](curated/identity-governance/entitlement-management/catalogs/resources) |
-| Identity governance | Catalog custom extensions | [`curated/identity-governance/entitlement-management/catalogs/custom-extensions`](curated/identity-governance/entitlement-management/catalogs/custom-extensions) |
-| Identity governance | Access packages | [`curated/identity-governance/entitlement-management/access-packages`](curated/identity-governance/entitlement-management/access-packages) |
-| Identity governance | Access-package resource role scopes | [`curated/identity-governance/entitlement-management/access-packages/resource-role-scopes`](curated/identity-governance/entitlement-management/access-packages/resource-role-scopes) |
-| Identity governance | Assignment policies | [`curated/identity-governance/entitlement-management/assignment-policies`](curated/identity-governance/entitlement-management/assignment-policies) |
-| Identity governance | Connected organizations | [`curated/identity-governance/entitlement-management/connected-organizations`](curated/identity-governance/entitlement-management/connected-organizations) |
-| Conditional Access | Policies, report-only by default, with mandatory break-glass exclusions | [`curated/identity/conditional-access/policies`](curated/identity/conditional-access/policies) |
-| Conditional Access | IP named locations (IPv4 and IPv6) | [`curated/identity/conditional-access/named-locations/ip-ranges`](curated/identity/conditional-access/named-locations/ip-ranges) |
-| Conditional Access | Country and region named locations | [`curated/identity/conditional-access/named-locations/countries`](curated/identity/conditional-access/named-locations/countries) |
-| Naming | Object names rendered from a naming convention | [`curated/naming`](curated/naming) |
+| Users | `/users` | [`verified/users`](verified/users) |
+| Groups | `/groups`, owners, and members | [`verified/groups`](verified/groups) |
+| Groups | Group members as one authoritative collection | [`verified/groups/members`](verified/groups/members) |
+| Directory | Administrative units | [`verified/directory/administrative-units`](verified/directory/administrative-units) |
+| Applications | `/applications` | [`verified/applications`](verified/applications) |
+| Applications | `/servicePrincipals` | [`verified/service-principals`](verified/service-principals) |
+| Identity governance | Entitlement-management catalogs | [`verified/identity-governance/entitlement-management/catalogs`](verified/identity-governance/entitlement-management/catalogs) |
+| Identity governance | Catalog resources | [`verified/identity-governance/entitlement-management/catalogs/resources`](verified/identity-governance/entitlement-management/catalogs/resources) |
+| Identity governance | Catalog custom extensions | [`verified/identity-governance/entitlement-management/catalogs/custom-extensions`](verified/identity-governance/entitlement-management/catalogs/custom-extensions) |
+| Identity governance | Access packages | [`verified/identity-governance/entitlement-management/access-packages`](verified/identity-governance/entitlement-management/access-packages) |
+| Identity governance | Access-package resource role scopes | [`verified/identity-governance/entitlement-management/access-packages/resource-role-scopes`](verified/identity-governance/entitlement-management/access-packages/resource-role-scopes) |
+| Identity governance | Assignment policies | [`verified/identity-governance/entitlement-management/assignment-policies`](verified/identity-governance/entitlement-management/assignment-policies) |
+| Identity governance | Connected organizations | [`verified/identity-governance/entitlement-management/connected-organizations`](verified/identity-governance/entitlement-management/connected-organizations) |
+| Conditional Access | Policies, report-only by default, with mandatory break-glass exclusions | [`verified/identity/conditional-access/policies`](verified/identity/conditional-access/policies) |
+| Conditional Access | IP named locations (IPv4 and IPv6) | [`verified/identity/conditional-access/named-locations/ip-ranges`](verified/identity/conditional-access/named-locations/ip-ranges) |
+| Conditional Access | Country and region named locations | [`verified/identity/conditional-access/named-locations/countries`](verified/identity/conditional-access/named-locations/countries) |
+| Naming | Object names rendered from a naming convention | [`verified/naming`](verified/naming) |
 
-Curated modules expose higher-level Terraform inputs and outputs while preserving
+Verified modules expose higher-level Terraform inputs and outputs while preserving
 Microsoft Graph identifiers for composition. Their READMEs document required
 permissions, lifecycle choices, relationship cleanup, and module-specific examples.
 
@@ -115,7 +115,7 @@ module "application" {
 }
 
 module "engineering_group" {
-  source  = "satolap/modules/msgraph//curated/groups"
+  source  = "satolap/modules/msgraph//verified/groups"
   version = "1.0.0"
 
   display_name     = "Engineering"
@@ -129,12 +129,12 @@ Module sources take these forms:
 ```text
 satolap/modules/msgraph//v1.0/<graph-route>
 satolap/modules/msgraph//beta/<graph-route>
-satolap/modules/msgraph//curated/<module-path>
+satolap/modules/msgraph//verified/<module-path>
 ```
 
 `<graph-route>` is the module's directory in the catalog, and `<module-path>` is
-the path after `curated/` in the curated module table above. Each release is one
-version that covers both generated catalogs and the curated modules; its tag is
+the path after `verified/` in the verified module table above. Each release is one
+version that covers both generated catalogs and the verified modules; its tag is
 `v<version>`, for example `v1.0.0`. Versions follow the release gate's interface
 changes: a release with breaking changes, which a reviewed release decision must
 accept, is a major version; one with other interface changes or notices is a minor
@@ -174,8 +174,8 @@ The daily verification then reports the drift, and a maintainer fast-forwards th
 branch with `git push origin <sha>:refs/heads/latest`, where `<sha>` is the commit
 of the Latest release.
 
-Each release also attaches v1.0, beta, and curated archives. They keep the `v1.0/`,
-`beta/` and `curated/` paths above and add `LICENSE`, `NOTICE`, and
+Each release also attaches v1.0, beta, and verified archives. They keep the `v1.0/`,
+`beta/` and `verified/` paths above and add `LICENSE`, `NOTICE`, and
 `release-manifest.json` at the archive root; that manifest is the same file as the
 `release-manifest.json` release asset. `sha256sum -c SHA256SUMS` fails for every
 listed asset you did not download, so to check only the files you downloaded, run
@@ -224,13 +224,13 @@ tag is created:
    classification, deterministic output, safe archive handling, and atomic
    publication behavior.
 3. `terraform fmt -check`, `terraform init -backend=false`, and
-   `terraform validate` run for every generated module and every curated module
+   `terraform validate` run for every generated module and every verified module
    against the exact provider versions recorded in the release manifest.
 4. Credential-free `terraform test` suites use provider mocks to check Graph URL
    construction, typed request bodies, omission of null optional properties,
-   validation failures, and curated relationship behavior without contacting a
+   validation failures, and verified relationship behavior without contacting a
    Microsoft Graph tenant.
-5. The GraphModules release workflow rebuilds the v1.0, beta, and curated archives
+5. The GraphModules release workflow rebuilds the v1.0, beta, and verified archives
    from the tagged commit and requires their byte-level SHA-256 checksums to match
    the already tested artifacts before publishing the GitHub Release.
 
@@ -249,7 +249,7 @@ contains:
 
 - `graphmodules-v1.0-modules.tar.gz`
 - `graphmodules-beta-modules.tar.gz`
-- `graphmodules-curated-modules.tar.gz`
+- `graphmodules-verified-modules.tar.gz`
 - `release-manifest.json`
 - `interface-changes.json`
 - `SHA256SUMS`
@@ -269,7 +269,7 @@ Verify it with the other downloads using `sha256sum -c SHA256SUMS`.
 
 ## Licensing and community
 
-The repository code and curated modules are available under the
+The repository code and verified modules are available under the
 [MIT License](LICENSE). Generated schema descriptions and module interfaces are
 derived from Microsoft Graph metadata, which Microsoft publishes under the MIT
 License. Catalog categories and resource links are adapted from Microsoft Graph
