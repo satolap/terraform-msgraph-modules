@@ -62384,13 +62384,13 @@
       },
       "item_path": "/applications/{application-id}",
       "licensing": {
-        "based_on": "curated/applications",
+        "based_on": "verified/applications",
         "confidence": "inferred",
         "features": [
           "DIRECTORY-BASIC"
         ],
         "mapped_from": "/applications",
-        "note": "Baseline rules reviewed for the equivalent curated module; input-dependent rules were not re-verified against this module's inputs.",
+        "note": "Baseline rules reviewed for the equivalent verified module; input-dependent rules were not re-verified against this module's inputs.",
         "reviewed_on": "2026-09-18",
         "status": "reviewed"
       },
@@ -101550,13 +101550,13 @@
       },
       "item_path": "/groups/{group-id}",
       "licensing": {
-        "based_on": "curated/groups",
+        "based_on": "verified/groups",
         "confidence": "inferred",
         "features": [
           "DIRECTORY-BASIC"
         ],
         "mapped_from": "/groups",
-        "note": "Baseline rules reviewed for the equivalent curated module; input-dependent rules were not re-verified against this module's inputs.",
+        "note": "Baseline rules reviewed for the equivalent verified module; input-dependent rules were not re-verified against this module's inputs.",
         "reviewed_on": "2026-09-18",
         "status": "reviewed"
       },
@@ -141625,13 +141625,13 @@
       },
       "item_path": "/identityGovernance/entitlementManagement/accessPackages/{accessPackage-id}",
       "licensing": {
-        "based_on": "curated/identity-governance/entitlement-management/access-packages",
+        "based_on": "verified/identity-governance/entitlement-management/access-packages",
         "confidence": "inferred",
         "features": [
           "EM-CORE"
         ],
         "mapped_from": "/identityGovernance/entitlementManagement/accessPackages",
-        "note": "Baseline rules reviewed for the equivalent curated module; input-dependent rules were not re-verified against this module's inputs.",
+        "note": "Baseline rules reviewed for the equivalent verified module; input-dependent rules were not re-verified against this module's inputs.",
         "reviewed_on": "2026-09-18",
         "status": "reviewed"
       },
@@ -142147,13 +142147,13 @@
       },
       "item_path": "/identityGovernance/entitlementManagement/assignmentPolicies/{accessPackageAssignmentPolicy-id}",
       "licensing": {
-        "based_on": "curated/identity-governance/entitlement-management/assignment-policies",
+        "based_on": "verified/identity-governance/entitlement-management/assignment-policies",
         "confidence": "inferred",
         "features": [
           "EM-CORE"
         ],
         "mapped_from": "/identityGovernance/entitlementManagement/assignmentPolicies",
-        "note": "Baseline rules reviewed for the equivalent curated module; input-dependent rules were not re-verified against this module's inputs.",
+        "note": "Baseline rules reviewed for the equivalent verified module; input-dependent rules were not re-verified against this module's inputs.",
         "reviewed_on": "2026-09-18",
         "status": "reviewed"
       },
@@ -142726,13 +142726,13 @@
       },
       "item_path": "/identityGovernance/entitlementManagement/catalogs/{accessPackageCatalog-id}",
       "licensing": {
-        "based_on": "curated/identity-governance/entitlement-management/catalogs",
+        "based_on": "verified/identity-governance/entitlement-management/catalogs",
         "confidence": "inferred",
         "features": [
           "EM-CORE"
         ],
         "mapped_from": "/identityGovernance/entitlementManagement/catalogs",
-        "note": "Baseline rules reviewed for the equivalent curated module; input-dependent rules were not re-verified against this module's inputs.",
+        "note": "Baseline rules reviewed for the equivalent verified module; input-dependent rules were not re-verified against this module's inputs.",
         "reviewed_on": "2026-09-18",
         "status": "reviewed"
       },
@@ -193944,13 +193944,13 @@
       },
       "item_path": "/servicePrincipals/{servicePrincipal-id}",
       "licensing": {
-        "based_on": "curated/service-principals",
+        "based_on": "verified/service-principals",
         "confidence": "inferred",
         "features": [
           "DIRECTORY-BASIC"
         ],
         "mapped_from": "/servicePrincipals",
-        "note": "Baseline rules reviewed for the equivalent curated module; input-dependent rules were not re-verified against this module's inputs.",
+        "note": "Baseline rules reviewed for the equivalent verified module; input-dependent rules were not re-verified against this module's inputs.",
         "reviewed_on": "2026-09-18",
         "status": "reviewed"
       },
@@ -229837,13 +229837,13 @@
       },
       "item_path": "/users/{user-id}",
       "licensing": {
-        "based_on": "curated/users",
+        "based_on": "verified/users",
         "confidence": "inferred",
         "features": [
           "DIRECTORY-BASIC"
         ],
         "mapped_from": "/users",
-        "note": "Baseline rules reviewed for the equivalent curated module; input-dependent rules were not re-verified against this module's inputs.",
+        "note": "Baseline rules reviewed for the equivalent verified module; input-dependent rules were not re-verified against this module's inputs.",
         "reviewed_on": "2026-09-18",
         "status": "reviewed"
       },
