@@ -23,7 +23,7 @@ jobs:
           BEFORE: ${{ github.event.before }}
           AFTER: ${{ github.sha }}
         run: |
-          allowed='^(Ben P <47789600\+benhaspalace@users\.noreply\.github\.com>|GitHub <noreply@github\.com>|github-actions\[bot\] <41898282\+github-actions\[bot\]@users\.noreply\.github\.com>|dependabot\[bot\] <49699333\+dependabot\[bot\]@users\.noreply\.github\.com>)$'
+          allowed='^([^<]* <47789600\+benhaspalace@users\.noreply\.github\.com>|GitHub <noreply@github\.com>|github-actions\[bot\] <41898282\+github-actions\[bot\]@users\.noreply\.github\.com>|dependabot\[bot\] <49699333\+dependabot\[bot\]@users\.noreply\.github\.com>)$'
           if [ -n "$BEFORE" ] && [ "$BEFORE" != 0000000000000000000000000000000000000000 ] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
             range="$BEFORE..$AFTER"
           else
