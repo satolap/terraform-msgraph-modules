@@ -1,0 +1,14 @@
+name: Security contact request
+description: Ask a maintainer for a private channel to report a suspected vulnerability.
+title: Security contact request
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Do not put technical details, reproduction steps, credentials, or tenant data in this issue.**
+        This issue only asks a maintainer to arrange a private reporting channel. See the [security policy](https://github.com/satolap/terraform-msgraph-modules/blob/main/SECURITY.md).
+  - type: textarea
+    id: contact
+    attributes:
+      label: How should a maintainer reach you?
+      description: Optional. Leave blank to be contacted through your GitHub profile.
