@@ -108,6 +108,19 @@ scopes in their token.
   codes 408, 429, 500, 502, 503 and 504 by itself, and those retries count against the
   timeouts.
 
+## Independent checks
+
+No [Maester](https://maester.dev/) test reads an IP named location's ranges.
+[MT.1011](https://maester.dev/docs/tests/MT.1011/) reads its `is_trusted` flag: the check
+looks for an enabled policy that targets all users, all client apps and the security
+information registration user action, includes all locations, and excludes `AllTrusted` or a
+named location that Maester resolves as trusted by reading every IP named location's
+`isTrusted`. A location created with `is_trusted = true` can be the exclusion that satisfies
+the check; one with `is_trusted = false` cannot, whatever the policy excludes. Only enabled
+policies count, so a report-only policy never satisfies it. Maester reads named locations and
+policies through the beta endpoint while the module uses v1.0, so a disagreement over a
+beta-only property is a finding to investigate, not a module failure.
+
 <!-- licensing:begin -->
 ## Licensing and prerequisites
 

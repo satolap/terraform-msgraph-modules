@@ -97,7 +97,8 @@ resource "msgraph_resource_action" "resource_role_scope" {
 # reads) to match `az account show`, and curl reads the Authorization header
 # from a config on stdin, so the token never appears in a process argv.
 # 404 is tolerated only after that tenant check: the role scope disappears
-# with its access package if that was destroyed first.
+# with its access package if that was destroyed first. Any other failure
+# prints Graph's error body, with control characters removed.
 # Keep `triggers` unchanged: a change replaces this resource and runs the cleanup.
 resource "null_resource" "remove_on_destroy" {
   count = var.enable_destroy_cleanup ? 1 : 0
@@ -127,11 +128,17 @@ resource "null_resource" "remove_on_destroy" {
       unset TOKEN
       TOKEN=$(az account get-access-token --resource https://graph.microsoft.com --query accessToken -o tsv)
       case "$TOKEN" in "" | *[!A-Za-z0-9._~+/=-]*) echo "ERROR: the Azure CLI returned no usable Microsoft Graph access token." >&2; exit 1 ;; esac
-      status=$(printf 'header = "Authorization: Bearer %s"\n' "$TOKEN" | curl --config - --silent --show-error --connect-timeout 30 --max-time 120 -o /dev/null -w "%%{http_code}" -X DELETE \
+      response=$(printf 'header = "Authorization: Bearer %s"\n' "$TOKEN" | curl --config - --silent --show-error --connect-timeout 30 --max-time 120 -w '\n%%{http_code}' -X DELETE \
         "https://graph.microsoft.com/$GRAPH_API_VERSION/identityGovernance/entitlementManagement/accessPackages/$GRAPH_ACCESS_PACKAGE_ID/resourceRoleScopes/$GRAPH_ROLE_SCOPE_ID")
+      status=$${response##*$'\n'}
       case "$status" in
         200|204|404) echo "Removed role scope $GRAPH_ROLE_SCOPE_ID from access package $GRAPH_ACCESS_PACKAGE_ID (HTTP $status)" ;;
-        *) echo "ERROR: DELETE of role scope $GRAPH_ROLE_SCOPE_ID returned HTTP $status" >&2; exit 1 ;;
+        *)
+          body=$${response%$'\n'*}
+          body=$(printf '%s' "$${body:0:2000}" | tr -c '[:print:]' ' ')
+          echo "ERROR: DELETE of role scope $GRAPH_ROLE_SCOPE_ID returned HTTP $status: $body" >&2
+          exit 1
+          ;;
       esac
     EOT
   }

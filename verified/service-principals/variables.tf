@@ -1,5 +1,5 @@
 variable "app_id" {
-  description = "The application (client) ID of the application this service principal is associated with. Typically the app_id output of the applications module."
+  description = "The application (client) ID of the application this service principal is associated with. Typically the app_id output of the applications module. A change replaces the service principal, because Microsoft Graph cannot update appId; a change of only its case does not."
   type        = string
 
   validation {

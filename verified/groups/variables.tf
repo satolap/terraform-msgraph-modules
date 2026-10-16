@@ -9,12 +9,20 @@ variable "display_name" {
 }
 
 variable "mail_nickname" {
-  description = "The mail alias for the group. May not contain spaces or these characters: @ () \\ [] \" ; : <> , SPACE."
+  description = "The mail alias for the group, at most 64 characters. Microsoft Graph accepts only ASCII characters and none of these: @ ( ) \\ [ ] \" ; : < > , or a space. A period is allowed."
   type        = string
 
+  # Microsoft Learn's group resource and create group pages allow ASCII 0 to 127
+  # except the characters below. A period is not among them, and Exchange
+  # aliases such as help.desk use one; only the update group page also lists it.
   validation {
-    condition     = can(regex("^[^@()\\\\\\[\\]\";:<>, ]+$", var.mail_nickname))
-    error_message = "mail_nickname must not contain spaces or the characters @ () \\ [ ] \" ; : <> , ."
+    condition     = can(regex("^[^@()\\\\\\[\\]\";:<>, \\x{80}-\\x{10FFFF}]+$", var.mail_nickname))
+    error_message = "mail_nickname must hold only ASCII characters and none of these: @ ( ) \\ [ ] \" ; : < > , or a space. A period is allowed."
+  }
+
+  validation {
+    condition     = length(var.mail_nickname) <= 64
+    error_message = "mail_nickname must be at most 64 characters long."
   }
 }
 
@@ -48,7 +56,7 @@ variable "group_types" {
 }
 
 variable "visibility" {
-  description = "Visibility of a Microsoft 365 group: \"Public\", \"Private\", or \"HiddenMembership\". Ignored for security groups."
+  description = "Visibility of a Microsoft 365 group: \"Public\", \"Private\", or \"HiddenMembership\". Ignored for security groups. Microsoft Graph sets HiddenMembership only at creation, so changing to or from it replaces the group."
   type        = string
   default     = null
 
@@ -59,7 +67,7 @@ variable "visibility" {
 }
 
 variable "is_assignable_to_role" {
-  description = "Whether Microsoft Entra roles can be assigned to the group. Can only be set at creation time and requires the group to be a security group."
+  description = "Whether Microsoft Entra roles can be assigned to the group. Microsoft Graph sets it only at creation, so changing it between true and false or null replaces the group. Requires the group to be a security group."
   type        = bool
   default     = null
 }

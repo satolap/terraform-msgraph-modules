@@ -2,8 +2,9 @@
 # -test-directory=tests/integration`. Requires msgraph provider credentials
 # (az login or ARM_* environment variables) with
 # EntitlementManagement.ReadWrite.All, User.ReadWrite.All and Group.ReadWrite.All.
-# Set TF_VAR_verified_domain and TF_VAR_initial_user_password for two disposable
-# users. Their license assignment/readiness must be commissioned separately.
+# Set TF_VAR_verified_domain for two disposable users; the setup module generates a
+# separate random password for each. Their license assignment/readiness must be
+# commissioned separately.
 
 run "setup" {
   module {

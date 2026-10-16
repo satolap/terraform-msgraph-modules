@@ -99,6 +99,13 @@ scopes in their token.
   codes 408, 429, 500, 502, 503 and 504 by itself, and those retries count against the
   timeouts.
 
+## Independent checks
+
+No [Maester](https://maester.dev/) test in 2.3.0 reads a country named location or its lookup
+method, so there is no scanner row to look for; the prompts of a GPS-based location show in the
+sign-in logs instead. The policies that reference the location are covered by the checks listed
+in the policies module README.
+
 <!-- licensing:begin -->
 ## Licensing and prerequisites
 

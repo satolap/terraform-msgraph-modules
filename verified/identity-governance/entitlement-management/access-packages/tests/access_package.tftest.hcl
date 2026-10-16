@@ -15,6 +15,10 @@ variables {
   display_name = "Engineering Team Access"
 }
 
+# The runs below share one state in file order: the first run creates the
+# access package, later runs update or replace it. A replacement takes the id
+# of the override_resource block; an in-place update keeps the id in the state.
+
 run "creates_access_package" {
   command = apply
 
@@ -42,6 +46,11 @@ run "creates_access_package" {
     condition     = output.catalog_id == "11111111-1111-1111-1111-111111111111"
     error_message = "catalog_id output must round-trip the input."
   }
+
+  assert {
+    condition     = jsonencode(terraform_data.immutable.input) == jsonencode({ catalog_id = "11111111-1111-1111-1111-111111111111" })
+    error_message = "The replace trigger must hold the catalog id, the value an update cannot change."
+  }
 }
 
 run "creates_hidden_access_package" {
@@ -60,6 +69,75 @@ run "creates_hidden_access_package" {
   assert {
     condition     = msgraph_resource.access_package.body.description == "Standard access bundle"
     error_message = "description must be passed through."
+  }
+}
+
+# Used only if the access package were replaced: an in-place update keeps the
+# id in the state.
+run "changing_updatable_properties_updates_in_place" {
+  command = apply
+
+  variables {
+    display_name = "Engineering Team Access (renamed)"
+    description  = "Renamed bundle"
+    is_hidden    = false
+  }
+
+  override_resource {
+    target = msgraph_resource.access_package
+    values = {
+      id = "77777777-7777-7777-7777-000000000002"
+      output = {
+        display_name = "Engineering Team Access (renamed)"
+        is_hidden    = false
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "77777777-7777-7777-7777-777777777777"
+    error_message = "displayName, description and isHidden are updatable, so changing them must update the access package in place and keep its id."
+  }
+
+  assert {
+    condition     = msgraph_resource.access_package.body.displayName == "Engineering Team Access (renamed)" && msgraph_resource.access_package.body.catalog.id == "11111111-1111-1111-1111-111111111111"
+    error_message = "The update must carry the new name and keep the catalog unchanged."
+  }
+}
+
+run "changing_the_catalog_replaces_the_access_package" {
+  command = apply
+
+  variables {
+    catalog_id   = "44444444-4444-4444-4444-444444444444"
+    display_name = "Engineering Team Access (renamed)"
+    description  = "Renamed bundle"
+  }
+
+  override_resource {
+    target = msgraph_resource.access_package
+    values = {
+      id = "77777777-7777-7777-7777-000000000003"
+      output = {
+        display_name = "Engineering Team Access (renamed)"
+        is_hidden    = false
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "77777777-7777-7777-7777-000000000003"
+    error_message = "A new catalog must replace the access package, because the catalog is read-only after creation."
+  }
+
+  assert {
+    condition     = msgraph_resource.access_package.body.catalog.id == "44444444-4444-4444-4444-444444444444" && output.catalog_id == "44444444-4444-4444-4444-444444444444"
+    error_message = "The replacement must be created in the new catalog."
+  }
+
+  assert {
+    condition     = jsonencode(terraform_data.immutable.input) == jsonencode({ catalog_id = "44444444-4444-4444-4444-444444444444" })
+    error_message = "The replace trigger must follow the catalog id."
   }
 }
 

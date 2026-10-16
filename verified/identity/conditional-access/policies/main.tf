@@ -128,6 +128,22 @@ locals {
   terms_of_use    = try(var.grant_controls.terms_of_use, [])
   register_device = contains(local.apps.include_user_actions, "urn:user:registerdevice")
 
+  # Microsoft Graph can answer a request that references a named location
+  # created moments before with 400 BadRequest, error 1040, "NamedLocation with
+  # id <id> does not exist in the directory.", because the replica that serves
+  # the request has not seen the location yet. The provider retries a 400 only
+  # when its message matches one of these expressions, and the retries count
+  # against timeouts.create and timeouts.update, which bound the wait. The
+  # retry is set whenever the policy has a locations condition and not at all
+  # otherwise, so a policy without the condition sends no retrying request. It
+  # does not depend on the IDs themselves, because a location created in the
+  # same apply has an ID that is unknown at plan time. A retry never sleeps
+  # unless Graph returned one of these errors, so All and AllTrusted wait for
+  # nothing either.
+  named_location_replication_errors = [
+    "NamedLocation with id [0-9A-Fa-f-]+ does not exist in the directory",
+  ]
+
   # Every ID any include list names, for the break-glass conflict checks.
   included_ids = concat(local.users.include_users, local.users.include_groups, local.users.include_roles)
 
@@ -192,6 +208,10 @@ resource "msgraph_resource" "policy" {
     # Which properties that this module does not manage are set on the server,
     # for the unmanaged_properties_set output and the unmanaged_properties check.
     unmanaged_properties = "{description: description != `null` && description != '', template_id: templateId != `null` && templateId != '', application_filter: conditions.applications.applicationFilter != `null`, include_guests_or_external_users: conditions.users.includeGuestsOrExternalUsers != `null`, exclude_guests_or_external_users: conditions.users.excludeGuestsOrExternalUsers != `null`, client_applications: conditions.clientApplications != `null`, service_principal_risk_levels: conditions.servicePrincipalRiskLevels != `null` && conditions.servicePrincipalRiskLevels != `[]`, insider_risk_levels: conditions.insiderRiskLevels != `null`, authentication_flow_transfer_methods: conditions.authenticationFlows.transferMethods != `null` && conditions.authenticationFlows.transferMethods != 'none', custom_authentication_factors: grantControls.customAuthenticationFactors != `null` && grantControls.customAuthenticationFactors != `[]`, disable_resilience_defaults: sessionControls.disableResilienceDefaults == `true`, secure_sign_in_session: sessionControls.secureSignInSession != `null`}"
+  }
+
+  retry = var.locations == null ? null : {
+    error_message_regex = local.named_location_replication_errors
   }
 
   timeouts {
