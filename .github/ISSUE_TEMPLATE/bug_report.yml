@@ -1,0 +1,56 @@
+name: Report a problem
+description: A module does not behave as documented, or a release does not install or verify.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Remove tenant IDs, credentials, tokens, and personal data from everything you paste.
+        For a suspected vulnerability, use the [security policy](https://github.com/satolap/terraform-msgraph-modules/blob/main/SECURITY.md) instead of this form.
+  - type: input
+    id: release
+    attributes:
+      label: Release tag
+      description: The GraphModules release you pinned.
+      placeholder: v2.0.0
+    validations:
+      required: true
+  - type: input
+    id: module
+    attributes:
+      label: Module path
+      description: The module's directory beneath the release.
+      placeholder: v1.0/users/by-user-id/messages
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Terraform and provider versions
+      description: Output of `terraform version`, including the `microsoft/msgraph` provider.
+      placeholder: Terraform v1.9.0, microsoft/msgraph v0.1.0
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal configuration
+      description: The smallest configuration that reproduces the behavior.
+      render: hcl
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Include sanitized logs or diagnostics.
+      render: text
+    validations:
+      required: true
