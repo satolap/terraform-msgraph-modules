@@ -27,10 +27,24 @@ variable "verified_domain" {
   description = "Verified domain of the commissioned disposable tenant."
 }
 
-variable "initial_user_password" {
-  type        = string
-  sensitive   = true
-  description = "Ephemeral password supplied through TF_VAR_initial_user_password."
+# Each user gets its own random initial password. A password shared with the approver
+# would let the requestor sign in as the approver, set a new password at the forced
+# change prompt and approve its own request. Nothing signs in as these users, so the
+# passwords stay in this run's state, which terraform test destroys with the users.
+resource "random_password" "requestor" {
+  length      = 20
+  min_lower   = 1
+  min_upper   = 1
+  min_numeric = 1
+  min_special = 1
+}
+
+resource "random_password" "approver" {
+  length      = 20
+  min_lower   = 1
+  min_upper   = 1
+  min_numeric = 1
+  min_special = 1
 }
 
 module "requestor" {
@@ -39,7 +53,7 @@ module "requestor" {
   user_principal_name = "tftest-pol-requestor-${random_string.suffix.result}@${var.verified_domain}"
   display_name        = "tftest-policy-requestor-${random_string.suffix.result}"
   mail_nickname       = "tftest-pol-requestor-${random_string.suffix.result}"
-  password            = var.initial_user_password
+  password            = random_password.requestor.result
   usage_location      = "US"
 }
 
@@ -49,7 +63,7 @@ module "approver" {
   user_principal_name = "tftest-pol-approver-${random_string.suffix.result}@${var.verified_domain}"
   display_name        = "tftest-policy-approver-${random_string.suffix.result}"
   mail_nickname       = "tftest-pol-approver-${random_string.suffix.result}"
-  password            = var.initial_user_password
+  password            = random_password.approver.result
   usage_location      = "US"
 }
 

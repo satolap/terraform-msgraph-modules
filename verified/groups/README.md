@@ -46,6 +46,42 @@ module "project_group" {
 }
 ```
 
+## Mail nickname
+
+`mail_nickname` takes at most 64 ASCII characters and none of `@ ( ) \ [ ] " ; : < > ,`
+or a space, as Microsoft Learn's [group resource](https://learn.microsoft.com/en-us/graph/api/resources/group?view=graph-rest-1.0)
+and [Create group](https://learn.microsoft.com/en-us/graph/api/group-post-groups?view=graph-rest-1.0)
+pages document. A period is allowed, as in `help.desk`. The
+[Update group](https://learn.microsoft.com/en-us/graph/api/group-update?view=graph-rest-1.0)
+page also lists the period, so a change to a nickname with a period may be refused on update
+even though creation accepts it.
+
+## Replacement
+
+Microsoft Graph sets `isAssignableToRole`, and the `HiddenMembership` visibility, only when
+it creates a group. A change of `is_assignable_to_role` between `true` and `false` or `null`,
+or of `visibility` to or from `"HiddenMembership"`, therefore replaces the group: Terraform
+plans a destroy and a create of `msgraph_resource.group`. The old group is deleted before the
+new one is created, because a Microsoft 365 group's mail nickname must be unique. The new
+group has a new object ID, so role assignments, catalog resources and anything else that holds
+the old ID must follow it. Owners and members are bound again from `owner_ids` and
+`member_ids`; members added outside them are not. A deleted Microsoft 365 group or cloud
+security group can be restored for 30 days; Microsoft Learn does not say whether it keeps its
+mail nickname during that time, so if creating the new group fails on the nickname, either
+permanently delete the old group or choose another `mail_nickname`. A change between `null`
+and `false` keeps the group and sends nothing: `false` is Graph's default, so the module sends
+`isAssignableToRole` only when it is `true`. A state written by an earlier release with
+`is_assignable_to_role = false` plans one in-place update that drops the key from the stored
+body; the provider sends no request for a key that left the body.
+
+Because the old group is gone before Graph sees the new one, the plan refuses combinations
+that Graph documents as invalid: a role-assignable group with a `visibility` other than `null`
+or `"Private"`, and `"HiddenMembership"` on a group whose `group_types` lacks `"Unified"`.
+
+`terraform_data.immutable` holds these two values and makes no API call. Upgrading from a
+release without it plans only its creation and no change to the group. Terraform does not
+replace in the apply that creates it, so make a change to these inputs in a later apply.
+
 ## Requirements
 
 | Name | Version |
@@ -80,13 +116,13 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | display_name | Display name of the group | `string` | n/a | yes |
-| mail_nickname | Mail alias (no spaces/special characters) | `string` | n/a | yes |
+| mail_nickname | Mail alias, at most 64 ASCII characters; see [Mail nickname](#mail-nickname) | `string` | n/a | yes |
 | description | Description of the group | `string` | `null` | no |
 | security_enabled | Whether the group is a security group | `bool` | `true` | no |
 | mail_enabled | Whether the group is mail-enabled | `bool` | `false` | no |
 | group_types | `["Unified"]` for M365, `[]` for security; add `"DynamicMembership"` for dynamic | `list(string)` | `[]` | no |
-| visibility | `Public`/`Private`/`HiddenMembership` (M365 groups only) | `string` | `null` | no |
-| is_assignable_to_role | Allow Entra role assignment to the group (create-time only) | `bool` | `null` | no |
+| visibility | `Public`/`Private`/`HiddenMembership` (M365 groups only); a change to or from `HiddenMembership` replaces the group | `string` | `null` | no |
+| is_assignable_to_role | Allow Entra role assignment to the group; a change replaces the group | `bool` | `null` | no |
 | membership_rule | Dynamic membership rule (required with `DynamicMembership`) | `string` | `null` | no |
 | owner_ids | Directory object IDs to set as owners | `list(string)` | `[]` | no |
 | member_ids | Directory object IDs to set as members | `list(string)` | `[]` | no |

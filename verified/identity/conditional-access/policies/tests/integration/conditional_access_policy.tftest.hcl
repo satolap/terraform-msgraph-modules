@@ -4,8 +4,8 @@
 # Policy.ReadWrite.ConditionalAccess, Group.ReadWrite.All and User.ReadWrite.All.
 # Delegated access needs those scopes in the token plus the Conditional Access
 # Administrator (or Security Administrator) and User Administrator roles.
-# Set TF_VAR_verified_domain and TF_VAR_initial_user_password for the disabled
-# stand-in emergency access user.
+# Set TF_VAR_verified_domain for the disabled stand-in emergency access user; the
+# setup module generates its random password.
 #
 # Safety: every policy here is disabled or report-only, includes only an empty
 # disposable group, and never includes All users. Destroy is implicit: the policy

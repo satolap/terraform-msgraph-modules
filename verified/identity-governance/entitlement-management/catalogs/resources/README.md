@@ -19,7 +19,13 @@ appear). To handle this within a generic `msgraph`-provider-based module, this m
    (`msgraph_resource_action.add_request`) rather than a CRUD-managed `msgraph_resource` —
    a CRUD-managed request would make `terraform destroy` fail when the provider attempts the
    unsupported `DELETE resourceRequests/{id}`.
-2. Waits `verification_delay_seconds` (`time_sleep.wait_for_delivery`).
+2. Waits `verification_delay_seconds` (`time_sleep.wait_for_delivery`). A change of
+   `catalog_id`, `resource_origin_id`, `resource_origin_system` or `api_version` submits a new
+   `adminAdd` and replaces the sleep (`terraform_data.add_target`), so the next step waits again
+   and reads the catalog during apply instead of during plan. A change of
+   `resource_display_name` alone runs the action again for a resource that is already in the
+   catalog and keeps the sleep, so the captured resource `id` stays known and the destroy hook
+   is not replaced.
 3. Reads the catalog's resources back, filtered by `originId` via `query_parameters`
    (`data.msgraph_resource.verify`), to confirm the add landed **and** to capture the
    resource's catalog-internal `id` (different from `resource_origin_id`) that role scopes
@@ -30,7 +36,7 @@ appear). To handle this within a generic `msgraph`-provider-based module, this m
    provider's own resource lifecycle has no concept of "run a different request on destroy").
 
 **Because of step 5, the machine running `terraform destroy` needs Bash, the Azure CLI (`az`)
-logged in with `az login`, `curl` 7.76 or later, and `ARM_TENANT_ID` set to the tenant ID the
+logged in with `az login`, `curl`, and `ARM_TENANT_ID` set to the tenant ID the
 `msgraph` provider uses.** The hook targets the public cloud (`graph.microsoft.com`). Before it
 requests a token, it compares `ARM_TENANT_ID` with `az account show --query tenantId` and stops
 if the variable is unset or the tenants differ, so the request cannot reach another tenant.
@@ -39,6 +45,15 @@ appear in the process list. Missing IDs, credentials, a tenant mismatch and HTTP
 cause destroy to fail so state can be retained for retry. Request delivery is asynchronous;
 verify removal in the Microsoft Entra admin center afterward. Destroy cleanup is unsupported
 on Windows.
+
+**Destroy the access packages that use the resource first.** Graph removes a resource from a
+catalog only when no access package in the catalog uses it
+([Remove resources from a catalog](https://learn.microsoft.com/entra/id-governance/entitlement-management-catalog-create#remove-resources-from-a-catalog)).
+Terraform orders destroy by references, and a role scope's reference to `resource_id` does not
+order the access package itself, so give the access package module a `depends_on` on the
+catalog resource modules, as the usage example below does. Graph can keep refusing the removal briefly after the access package is gone, so the hook
+retries HTTP 400, 409, 429 and 5xx answers six times, 20 seconds apart, and prints Graph's
+error body each time.
 
 ## Upgrade note: destroy cleanup requires `ARM_TENANT_ID`
 
@@ -89,6 +104,17 @@ module "engineering_sharepoint_resource" {
   resource_origin_id         = "https://contoso.sharepoint.com/sites/Engineering"
   verification_delay_seconds = 90 # SharePoint site provisioning is slower than groups/apps
 }
+
+module "engineering_access_package" {
+  source  = "satolap/modules/msgraph//verified/identity-governance/entitlement-management/access-packages"
+  version = "<version>"
+
+  catalog_id   = module.engineering_catalog.id
+  display_name = "Engineering Team Access"
+
+  # Destroy removes the access package before the catalog resources it uses.
+  depends_on = [module.engineering_group_resource, module.engineering_sharepoint_resource]
+}
 ```
 
 ## Requirements
@@ -99,7 +125,7 @@ module "engineering_sharepoint_resource" {
 | msgraph | >= 0.3.0 |
 | time | >= 0.9.0 |
 | null | >= 3.2.0 |
-| Bash, Azure CLI (`az`), `curl` 7.76+ and `ARM_TENANT_ID` | Required on the machine running `terraform destroy`; Windows is unsupported for destroy cleanup |
+| Bash, Azure CLI (`az`), `curl` and `ARM_TENANT_ID` | Required on the machine running `terraform destroy`; Windows is unsupported for destroy cleanup |
 
 Permissions needed (application or delegated, in addition to
 `EntitlementManagement.ReadWrite.All`), depending on `resource_origin_system`:
@@ -153,7 +179,8 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 
 `terraform test` runs offline unit tests (`tests/catalog_resource.tftest.hcl`) that mock the
 providers and disable the destroy hook. They assert the adminAdd body, escaped OData
-filter, captured ID, and missing/ambiguous verification failures. Terraform mocking does
+filter, captured ID, missing/ambiguous verification failures, and which input changes
+wait again before verifying. Terraform mocking does
 not suppress provisioners by itself. Tests require Terraform 1.7 or later.
 
 See [live test setup and lifecycle limits](../../../../../docs/test-tenant-setup.md).

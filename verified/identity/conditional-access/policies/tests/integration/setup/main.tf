@@ -2,7 +2,9 @@
 # stands in for an emergency access account, an empty include group, an empty
 # stand-in emergency access group, and one IP and one country named location
 # for the policy to reference. This state is destroyed after the policy's, so
-# the locations outlive the policy that references them.
+# the locations outlive the policy that references them. The policy module retries
+# the not-yet-replicated named location error, so the policy created right after
+# these locations waits for them; this fixture needs no sleep of its own.
 terraform {
   required_providers {
     random = {
@@ -21,10 +23,15 @@ variable "verified_domain" {
   description = "Verified domain of the commissioned disposable tenant."
 }
 
-variable "initial_user_password" {
-  type        = string
-  sensitive   = true
-  description = "Ephemeral password supplied through TF_VAR_initial_user_password."
+# The stand-in emergency access user is disabled and nothing signs in as it. Its own
+# random password keeps it from sharing one with any other fixture user, and stays in
+# this run's state, which terraform test destroys with the user.
+resource "random_password" "break_glass_user" {
+  length      = 20
+  min_lower   = 1
+  min_upper   = 1
+  min_numeric = 1
+  min_special = 1
 }
 
 resource "random_string" "suffix" {
@@ -42,7 +49,7 @@ module "break_glass_user" {
   user_principal_name = "tftest-ca-bg-${random_string.suffix.result}@${var.verified_domain}"
   display_name        = "tftest-ca-break-glass-${random_string.suffix.result}"
   mail_nickname       = "tftest-ca-bg-${random_string.suffix.result}"
-  password            = var.initial_user_password
+  password            = random_password.break_glass_user.result
   account_enabled     = false
 }
 

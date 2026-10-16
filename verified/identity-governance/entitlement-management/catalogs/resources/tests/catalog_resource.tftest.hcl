@@ -174,3 +174,134 @@ run "rejects_ambiguous_resource_lookup" {
   }
   expect_failures = [terraform_data.verification_gate]
 }
+
+# The runs below change the target of the add request. Plan runs leave the
+# state of the first run, which created the add request and the sleep; apply
+# runs update it. A replaced sleep takes the id of the override_resource block,
+# a kept sleep keeps the id in the state.
+
+# A new catalog submits a new adminAdd, so the verification read must wait for
+# apply and the new delay. With the default empty read and
+# fail_on_verification_mismatch, a read at plan time would fail this plan.
+run "a_new_catalog_defers_verification_to_apply" {
+  command = plan
+
+  variables {
+    catalog_id                    = "44444444-4444-4444-4444-444444444444"
+    fail_on_verification_mismatch = true
+  }
+
+  assert {
+    condition     = msgraph_resource_action.add_request.body.catalog.id == "44444444-4444-4444-4444-444444444444"
+    error_message = "The new adminAdd must name the new catalog."
+  }
+
+  assert {
+    condition = jsonencode(terraform_data.add_target.input) == jsonencode({
+      api_version            = "v1.0"
+      catalog_id             = "44444444-4444-4444-4444-444444444444"
+      resource_origin_id     = "33333333-3333-3333-3333-333333333333"
+      resource_origin_system = "AadGroup"
+    })
+    error_message = "The add target must hold the catalog, the resource and the api_version."
+  }
+}
+
+run "a_new_catalog_waits_again_before_verifying" {
+  command = apply
+
+  variables {
+    catalog_id = "44444444-4444-4444-4444-444444444444"
+  }
+
+  override_resource {
+    target = time_sleep.wait_for_delivery
+    values = {
+      id = "sleep-after-new-catalog"
+    }
+  }
+
+  assert {
+    condition     = time_sleep.wait_for_delivery.id == "sleep-after-new-catalog"
+    error_message = "A new adminAdd must replace the sleep, so that verification waits again."
+  }
+
+  assert {
+    condition     = data.msgraph_resource.verify.url == "identityGovernance/entitlementManagement/catalogs/44444444-4444-4444-4444-444444444444/resources"
+    error_message = "Verification must read the new catalog."
+  }
+}
+
+run "a_new_resource_waits_again_before_verifying" {
+  command = apply
+
+  variables {
+    catalog_id         = "44444444-4444-4444-4444-444444444444"
+    resource_origin_id = "55555555-5555-5555-5555-555555555555"
+  }
+
+  override_resource {
+    target = time_sleep.wait_for_delivery
+    values = {
+      id = "sleep-after-new-resource"
+    }
+  }
+
+  assert {
+    condition     = time_sleep.wait_for_delivery.id == "sleep-after-new-resource"
+    error_message = "A new resource must replace the sleep, so that verification waits again."
+  }
+}
+
+run "a_new_api_version_waits_again_before_verifying" {
+  command = apply
+
+  variables {
+    catalog_id         = "44444444-4444-4444-4444-444444444444"
+    resource_origin_id = "55555555-5555-5555-5555-555555555555"
+    api_version        = "beta"
+  }
+
+  override_resource {
+    target = time_sleep.wait_for_delivery
+    values = {
+      id = "sleep-after-new-api-version"
+    }
+  }
+
+  assert {
+    condition     = time_sleep.wait_for_delivery.id == "sleep-after-new-api-version"
+    error_message = "A new api_version replaces the add request, so the sleep must be replaced too."
+  }
+}
+
+# A new display name alone runs the action again for a resource that is
+# already in the catalog. The sleep is kept, so verification reads at plan time
+# and the captured resource id, which the destroy hook holds, stays known.
+run "a_new_display_name_keeps_the_sleep" {
+  command = apply
+
+  variables {
+    catalog_id            = "44444444-4444-4444-4444-444444444444"
+    resource_origin_id    = "55555555-5555-5555-5555-555555555555"
+    api_version           = "beta"
+    resource_display_name = "Engineering (renamed)"
+  }
+
+  override_resource {
+    target = time_sleep.wait_for_delivery
+    values = {
+      id = "sleep-after-new-display-name"
+    }
+  }
+
+  assert {
+    condition     = time_sleep.wait_for_delivery.id == "sleep-after-new-api-version"
+    error_message = "A new display name alone must not replace the sleep."
+  }
+
+  assert {
+    condition     = msgraph_resource_action.add_request.body.resource.displayName == "Engineering (renamed)"
+    error_message = "The add request must carry the new display name."
+  }
+}

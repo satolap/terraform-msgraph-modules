@@ -1954,3 +1954,86 @@ run "reports_an_optional_part_that_graph_has_and_the_configuration_lacks" {
     error_message = "A part that Microsoft Graph returned and the configuration lacks must be reported, because an in-place apply cannot remove it."
   }
 }
+
+# A named location created moments before can be missing from the replica that
+# serves the policy request: Graph answers 400, error 1040, "NamedLocation with
+# id <id> does not exist in the directory." The module hands the provider a
+# retry on that message instead of sleeping, so nothing waits unless Graph
+# returned the error, and a policy without a locations condition has no retry.
+# A mock provider cannot send a request, so these runs check the configuration
+# the provider receives and that its expression matches the message Graph
+# returns.
+run "no_locations_condition_sets_no_retry" {
+  command = apply
+
+  assert {
+    condition     = msgraph_resource.policy.retry == null
+    error_message = "A policy without a locations condition must not set a retry: nothing it sends references a named location."
+  }
+
+  assert {
+    condition     = !contains(local.presence, "conditions.locations")
+    error_message = "The default policy must have no locations condition."
+  }
+}
+
+run "named_location_reference_retries_the_replication_error" {
+  command = apply
+
+  variables {
+    locations = { include_locations = ["AAAAAAAA-0000-0000-0000-000000000001"], exclude_locations = ["aaaaaaaa-0000-0000-0000-000000000002"] }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.retry) == jsonencode({ error_message_regex = ["NamedLocation with id [0-9A-Fa-f-]+ does not exist in the directory"] })
+    error_message = "A policy that names a location must retry the not-yet-replicated named location error, and nothing else."
+  }
+
+  assert {
+    condition = alltrue([
+      for re in msgraph_resource.policy.retry.error_message_regex :
+      can(regex(re, "{\"error\":{\"code\":\"BadRequest\",\"message\":\"1040: NamedLocation with id 77777777-7777-7777-7777-777777777777 does not exist in the directory.\"}}"))
+    ])
+    error_message = "The retry expression must match the message Microsoft Graph returns for a named location that has not replicated."
+  }
+
+  assert {
+    condition = alltrue([
+      for re in msgraph_resource.policy.retry.error_message_regex :
+      !can(regex(re, "{\"error\":{\"code\":\"BadRequest\",\"message\":\"Property includeGroups contains an invalid value.\"}}"))
+    ])
+    error_message = "The retry expression must not match unrelated 400 errors, which would retry until the timeout."
+  }
+
+  assert {
+    condition     = msgraph_resource.policy.timeouts.create == "10m" && msgraph_resource.policy.timeouts.update == "10m"
+    error_message = "The retry is bounded by the create and update timeouts, which default to 10m."
+  }
+}
+
+run "the_wait_is_bounded_by_the_configured_timeouts" {
+  command = apply
+
+  variables {
+    locations = { include_locations = ["aaaaaaaa-0000-0000-0000-000000000001"] }
+    timeouts  = { create = "3m", update = "2m" }
+  }
+
+  assert {
+    condition     = msgraph_resource.policy.timeouts.create == "3m" && msgraph_resource.policy.timeouts.update == "2m"
+    error_message = "timeouts.create and timeouts.update must bound the retry."
+  }
+}
+
+run "special_location_values_are_sent_as_given" {
+  command = apply
+
+  variables {
+    locations = { include_locations = ["All"], exclude_locations = ["AllTrusted"] }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.locations) == jsonencode({ excludeLocations = ["AllTrusted"], includeLocations = ["All"] })
+    error_message = "All and AllTrusted must be sent as given."
+  }
+}

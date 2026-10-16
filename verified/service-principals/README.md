@@ -57,6 +57,22 @@ stable-ID checks remain pending; omission is not a verified import/drift
 contract. Application app roles have their own staged deletion requirements;
 this module's tags change does not implement role or relationship removal.
 
+## Replacement
+
+A service principal belongs to one application: Microsoft Learn's
+[Update servicePrincipal](https://learn.microsoft.com/en-us/graph/api/serviceprincipal-update?view=graph-rest-1.0)
+page does not list `appId`. A change of `app_id` therefore replaces the service principal:
+Terraform plans a destroy and a create of `msgraph_resource.service_principal`, and the old
+one is deleted before the new one is created. The new service principal has a new object ID,
+and app role assignments, permission grants, catalog resources and anything else that holds
+the old ID must follow it. A change of only the case of `app_id` keeps the service principal
+and sends nothing: the module ignores `appId` in an in-place update, and sends it only when it
+creates the service principal.
+
+`terraform_data.immutable` holds the application ID and makes no API call. Upgrading from a
+release without it plans only its creation and no change to the service principal. Terraform
+does not replace in the apply that creates it, so change `app_id` in a later apply.
+
 ## Requirements
 
 | Name | Version |
@@ -86,7 +102,7 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
-| app_id | Application (client) ID (GUID) | `string` | n/a | yes |
+| app_id | Application (client) ID (GUID); a change replaces the service principal | `string` | n/a | yes |
 | account_enabled | Whether the service principal is enabled | `bool` | `true` | no |
 | app_role_assignment_required | Require app role assignment before sign-in/token | `bool` | `false` | no |
 | description | Free-text description | `string` | `null` | no |

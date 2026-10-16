@@ -134,6 +134,20 @@ verified).
   Graph"
   ([Plan a Conditional Access deployment](https://learn.microsoft.com/en-us/entra/identity/conditional-access/plan-conditional-access#recommendations)).
 
+## Independent checks
+
+[Maester](https://maester.dev/) is a read-only posture scanner that can confirm, from outside
+Terraform, what this module wrote. The checks below read what the module manages; the IDs are
+Maester's and the claims are this project's words. Maester reads policies through the beta
+endpoint while the module uses v1.0, so a disagreement over a beta-only property is a finding
+to investigate, not a module failure.
+
+| Check | What it reads | How this module relates |
+| --- | --- | --- |
+| [MT.1005](https://maester.dev/docs/tests/MT.1005/) | Every policy Maester considers excludes every configured break-glass user and group; authentication-context and service-principal scoped policies are left out. | The module merges `break_glass_user_ids` and `break_glass_group_ids` into every policy in every state. Configure the same IDs as Maester's `EmergencyAccessAccounts`, as typed user and group entries; without that configuration Maester only infers the single most common exclusion. |
+| [MT.1038](https://maester.dev/docs/tests/MT.1038/), [MT.1066](https://maester.dev/docs/tests/MT.1066/) | No policy includes or excludes a deleted group, user or role. | The module validates ID format only, so these catch an ID that stopped existing after apply. MT.1066 needs `RoleManagement.Read.Directory` or `Directory.Read.All` to resolve roles. |
+| [MT.1003](https://maester.dev/docs/tests/MT.1003/), [MT.1004](https://maester.dev/docs/tests/MT.1004/), [MT.1006](https://maester.dev/docs/tests/MT.1006/), [MT.1007](https://maester.dev/docs/tests/MT.1007/), [MT.1009](https://maester.dev/docs/tests/MT.1009/), [MT.1010](https://maester.dev/docs/tests/MT.1010/); [CISA.MS.AAD.1.1](https://maester.dev/docs/tests/CISA.MS.AAD.1.1/), [3.1](https://maester.dev/docs/tests/CISA.MS.AAD.3.1/), [3.2](https://maester.dev/docs/tests/CISA.MS.AAD.3.2/), [3.6](https://maester.dev/docs/tests/CISA.MS.AAD.3.6/) | Whether an enabled policy targets all applications and all users, requires MFA for administrators and for all users, blocks legacy authentication, or requires phishing-resistant MFA. | Only `state = "enabled"` counts. A report-only policy, this module's default, never satisfies them, so they measure enforcement, not configuration. |
+
 ## Report-only side effects
 
 Report-only policies don't block users or prompt for MFA, but they are not free of effects
@@ -297,6 +311,15 @@ Report-only policies don't block users or prompt for MFA, but they are not free 
   marked as trusted. Terraform cannot see that dependency, so untrusting or deleting a
   trusted location changes these policies without a plan diff here; see the IP named
   location module's README.
+- **Named location replication delay.** A location created moments before can be missing
+  from the replica that serves the policy request, and Graph answers `400 BadRequest`,
+  error 1040, "NamedLocation with id ... does not exist in the directory." With `locations` set,
+  the module sets the provider's `retry` to that message, so the create or update is retried
+  until `timeouts.create` or `timeouts.update` (10 minutes by default) runs out; shorten or
+  extend the wait there. Without `locations` no retry is set, and nothing sleeps unless Graph
+  returns the error. Adding the `retry` argument to an existing policy may show as an in-place
+  change without a change to the request body (not checked). Not run live yet: the live `conditional-access`
+  profile has to pass for the fix to count as verified.
 - **Create, update and delete timeouts of at least `15s`.** After each request the provider
   waits for three consistent reads 5 seconds apart, within the same timeout, so a value
   under 10 seconds always fails after the request was sent, and the module rejects values

@@ -34,8 +34,13 @@ run "creates_catalog_with_defaults" {
   }
 
   assert {
-    condition     = msgraph_resource.catalog.body.catalogType == "userManaged"
-    error_message = "catalogType must default to userManaged."
+    condition     = !contains(keys(msgraph_resource.catalog.body), "catalogType")
+    error_message = "The create request does not take catalogType, so the body must not carry it."
+  }
+
+  assert {
+    condition     = output.catalog_type == "userManaged"
+    error_message = "catalog_type output must read the type back from Microsoft Graph."
   }
 
   assert {
@@ -55,12 +60,11 @@ run "creates_catalog_with_defaults" {
 
   assert {
     condition = jsonencode(msgraph_resource.catalog.body) == jsonencode({
-      catalogType = "userManaged"
       description = null
       displayName = "Engineering"
       state       = "unpublished"
     })
-    error_message = "Without is_externally_visible the body must be exactly the body sent before that input existed."
+    error_message = "Without is_externally_visible the body must hold exactly the documented create properties displayName, description and state."
   }
 
   assert {
@@ -148,6 +152,39 @@ run "rejects_invalid_state" {
   }
 
   expect_failures = [var.state]
+}
+
+# catalog_type is deprecated: "userManaged", the former default, is still
+# accepted so that existing callers keep working, and changes nothing.
+run "accepts_the_deprecated_user_managed_catalog_type" {
+  command = plan
+
+  variables {
+    display_name          = "Engineering"
+    catalog_type          = "userManaged"
+    is_externally_visible = true
+  }
+
+  assert {
+    condition = jsonencode(msgraph_resource.catalog.body) == jsonencode({
+      description         = null
+      displayName         = "Engineering"
+      isExternallyVisible = true
+      state               = "unpublished"
+    })
+    error_message = "A configured catalog_type must not add catalogType to the body."
+  }
+}
+
+run "rejects_the_service_default_catalog_type" {
+  command = plan
+
+  variables {
+    display_name = "Engineering"
+    catalog_type = "serviceDefault"
+  }
+
+  expect_failures = [var.catalog_type]
 }
 
 run "rejects_invalid_catalog_type" {

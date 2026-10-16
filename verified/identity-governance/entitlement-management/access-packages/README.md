@@ -31,6 +31,22 @@ module "engineering_access" {
 }
 ```
 
+## Changing the catalog
+
+Microsoft Learn documents the access package's `catalog` relationship as
+[required on create and read-only](https://learn.microsoft.com/en-us/graph/api/resources/accesspackage?view=graph-rest-1.0#relationships),
+and the [update](https://learn.microsoft.com/en-us/graph/api/accesspackage-update?view=graph-rest-1.0)
+accepts only `displayName`, `description` and `isHidden`. A change of `catalog_id` therefore
+replaces the access package (`terraform_data.immutable` and `replace_triggered_by`). The new
+package is created in the new catalog before the old one is deleted, and it has a new `id`:
+assignment policies, resource role scopes and anything else that references the old `id` must
+follow it, and existing assignments are not moved. Microsoft Graph may refuse to delete the old
+package while it still has assignments or policies. `catalog_id` is compared as written, so a
+change of letter case alone also replaces the package.
+
+The first apply of a module version that adds `terraform_data.immutable` only creates it and
+does not replace the access package. Change `catalog_id` in a later apply.
+
 ## Requirements
 
 | Name | Version |
@@ -61,7 +77,7 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
-| catalog_id | ID of the catalog this access package belongs to | `string` | n/a | yes |
+| catalog_id | ID of the catalog this access package belongs to; a change replaces the access package | `string` | n/a | yes |
 | display_name | Display name of the access package (1-90 characters) | `string` | n/a | yes |
 | description | Description of the access package | `string` | `null` | no |
 | is_hidden | Whether the access package is hidden from requestors | `bool` | `false` | no |

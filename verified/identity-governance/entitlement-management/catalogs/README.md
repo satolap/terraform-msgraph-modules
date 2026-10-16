@@ -19,7 +19,6 @@ module "engineering_catalog" {
   display_name = "Engineering"
   description  = "Resources and access packages for the Engineering department"
   state        = "published"
-  catalog_type = "userManaged"
 }
 ```
 
@@ -46,6 +45,20 @@ The setting does not limit administrators who assign external users directly
   again. With `null` the module does not manage the property, and a change made outside
   Terraform stays. Whether Graph returns the value it applied when the request leaves it out
   is not verified.
+
+## Catalog type
+
+The [create request](https://learn.microsoft.com/en-us/graph/api/entitlementmanagement-post-catalogs?view=graph-rest-1.0)
+documents only `displayName`, `description`, `state` and `isExternallyVisible`, so the module
+does not send `catalogType`. Microsoft Learn describes `catalogType` as whether a user or
+entitlement management created the catalog, and the create example returns `userManaged`. The
+`catalog_type` output reads the value back.
+
+`catalog_type` is deprecated and ignored. It still accepts `"userManaged"`, its former default,
+so existing callers keep working; remove it. `"serviceDefault"` is rejected. A catalog created by
+an earlier module version, whose request body held `catalogType`, plans one in-place update
+after upgrading. Its `PATCH` sends no property, because the provider sends only the properties
+that changed or were added, so the catalog keeps its type.
 
 ## Requirements
 
@@ -81,7 +94,7 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 | description | Description of the catalog | `string` | `null` | no |
 | is_externally_visible | Whether users of connected organizations can request the catalog's access packages; `null` leaves it to Microsoft Graph | `bool` | `null` | no |
 | state | `unpublished` or `published` | `string` | `"unpublished"` | no |
-| catalog_type | `userManaged` or `serviceDefault` | `string` | `"userManaged"` | no |
+| catalog_type | Deprecated and ignored; accepts only `userManaged`. Remove it | `string` | `"userManaged"` | no |
 | api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
 
 ## Outputs
@@ -91,5 +104,5 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 | id | The ID of the catalog |
 | display_name | The display name of the catalog |
 | state | The published state of the catalog |
-| catalog_type | The type of the catalog |
+| catalog_type | The type of the catalog, as Microsoft Graph returns it |
 | is_externally_visible | The configured `is_externally_visible`, or `null` when not set |

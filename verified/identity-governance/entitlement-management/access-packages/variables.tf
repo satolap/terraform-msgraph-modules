@@ -1,5 +1,5 @@
 variable "catalog_id" {
-  description = "ID of the entitlement management catalog this access package belongs to."
+  description = "ID of the entitlement management catalog this access package belongs to. The catalog is read-only after creation, so a change replaces the access package: the new one is created in the new catalog before the old one is deleted."
   type        = string
 }
 

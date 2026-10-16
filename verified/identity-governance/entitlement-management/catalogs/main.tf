@@ -1,12 +1,17 @@
 locals {
-  # isExternallyVisible is sent only when set, so that a caller who does not set
-  # it keeps the same request body as before the input existed.
+  # The body holds only the properties that Microsoft Learn documents for the
+  # create request: displayName, description, state and isExternallyVisible.
+  # catalogType is not one of them: Learn's create example leaves it out and
+  # returns userManaged, and the catalog_type output reads it back. A catalog
+  # created while the body still held catalogType plans one in-place update,
+  # whose PATCH does not send catalogType and leaves the catalog's type as it
+  # is. isExternallyVisible is sent only when set, so that a caller who does
+  # not set it keeps the same request body as before the input existed.
   body = merge(
     {
       displayName = var.display_name
       description = var.description
       state       = var.state
-      catalogType = var.catalog_type
     },
     var.is_externally_visible == null ? {} : { isExternallyVisible = var.is_externally_visible },
   )
