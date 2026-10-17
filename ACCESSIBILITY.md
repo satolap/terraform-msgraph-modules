@@ -25,7 +25,7 @@ in current versions of major browsers, with or without a screen reader.
 
 ## Report a barrier
 
-Open a [GitHub issue](https://github.com/satolap/terraform-msgraph-modules/issues)
+Open an [accessibility report](https://github.com/satolap/terraform-msgraph-modules/issues/new?template=accessibility_report.yml)
 with the page or module path and a description of the barrier and the assistive
 technology you use. For a suspected vulnerability, follow [SECURITY.md](SECURITY.md)
 instead.
