@@ -1,0 +1,50 @@
+name: Request or change a module
+description: Ask for a new module or a change to an existing one.
+title: "[Module]: "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Module trees are generated and verified in a separate pipeline, so changes to them are made at the source rather than by pull request.
+        Describing the change here is how it gets made and tested.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What do you need?
+      options:
+        - New generated module
+        - New verified module
+        - Change to an existing module
+    validations:
+      required: true
+  - type: input
+    id: target
+    attributes:
+      label: Microsoft Graph endpoint or existing module path
+      description: The Graph route or the module directory.
+      placeholder: /users/{user-id}/messages or v1.0/users/by-user-id/messages
+    validations:
+      required: true
+  - type: dropdown
+    id: api_version
+    attributes:
+      label: API version
+      options:
+        - v1.0
+        - beta
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: scenario
+    attributes:
+      label: Scenario
+      description: What you want to manage and why the current modules do not cover it.
+    validations:
+      required: true
+  - type: textarea
+    id: docs
+    attributes:
+      label: Microsoft Graph documentation
+      description: Links to the relevant Microsoft Graph reference pages, if you have them.
