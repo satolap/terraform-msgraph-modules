@@ -813,5 +813,32 @@ class ManifestGuardTest(unittest.TestCase):
         self.assertEqual(self.output.read_text(encoding="utf-8"), "")
 
 
+class VerifyReleasesSelectionTest(unittest.TestCase):
+    """The verify-releases workflow rebuilds only releases at or above the minimum version."""
+
+    def setUp(self):
+        text = (WORKFLOW.parent / "verify-releases.yml").read_text(encoding="utf-8")
+        step = find_step(workflow_steps(text, "verify"), name="Rebuild every published release")[1]
+        script = run_script(step)
+        self.script = script
+        # Run only the definitions that precede the first gh call.
+        namespace: dict = {}
+        with mock.patch.dict(os.environ, {"GH_REPO": "owner/repo"}):
+            exec(script.split("released = ")[0], namespace)
+        self.namespace = namespace
+
+    def test_only_supported_versions_are_verified(self):
+        supported = self.namespace["supported"]
+        self.assertEqual(self.namespace["MINIMUM_VERIFIED"], (2, 0, 0))
+        for tag in ("v2.0.0", "v2.0.1", "v3.0.0", "v10.0.0"):
+            self.assertTrue(supported(tag), tag)
+        for tag in ("v0.9.9", "v1.0.0", "v1.99.99"):
+            self.assertFalse(supported(tag), tag)
+
+    def test_skipped_releases_are_reported_not_failed(self):
+        self.assertIn("::notice::Skipped {tag}: unsupported, below {minimum_tag}", self.script)
+        self.assertIn("Skipped (unsupported, below {minimum_tag}): `{tag}`", self.script)
+
+
 if __name__ == "__main__":
     unittest.main()
