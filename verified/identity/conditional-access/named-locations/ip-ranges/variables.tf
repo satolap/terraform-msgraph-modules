@@ -81,3 +81,14 @@ variable "timeouts" {
     error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\": after each request the provider waits for three consistent reads 5 seconds apart within the same timeout."
   }
 }
+
+variable "name_pattern" {
+  description = "Regular expression (RE2 syntax, not anchored unless it says so) that display_name must match, such as the pattern of a naming convention. When it is set and display_name does not match, the plan fails. Null, the default, accepts any display_name."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.name_pattern == null || can(regexall(var.name_pattern, ""))
+    error_message = "name_pattern must be a valid regular expression (RE2 syntax)."
+  }
+}

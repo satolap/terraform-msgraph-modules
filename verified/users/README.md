@@ -40,7 +40,7 @@ module "developer" {
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.3.0 |
 
 Requires the `User.ReadWrite.All` Microsoft Graph permission (or `Directory.ReadWrite.All`).
@@ -74,7 +74,9 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 |------|-------------|------|---------|----------|
 | user_principal_name | UPN (alias@verified-domain) | `string` | n/a | yes |
 | display_name | Display name (1-256 characters) | `string` | n/a | yes |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
 | mail_nickname | Mail alias | `string` | n/a | yes |
+| mail_nickname_pattern | Regular expression (RE2, not anchored unless it says so) that mail_nickname must match, or the plan fails; null accepts any alias | `string` | `null` | no |
 | password | Initial password (sensitive) | `string` | n/a | yes |
 | force_change_password_next_sign_in | Force password change on next sign-in | `bool` | `true` | no |
 | account_enabled | Whether the account is enabled | `bool` | `true` | no |

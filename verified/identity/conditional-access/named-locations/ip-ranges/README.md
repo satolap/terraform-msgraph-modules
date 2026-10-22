@@ -34,7 +34,7 @@ module "office_egress" {
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.5.0 |
 
 `microsoft/msgraph` 0.5.0 is the first release that sends a changed nested object in full on
@@ -143,6 +143,7 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | display_name | Display name of the location | `string` | n/a | yes |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
 | ip_ranges | 1 to 2000 canonical IPv4 or IPv6 CIDR ranges, each longer than /8 | `set(string)` | n/a | yes |
 | is_trusted | Mark the location as trusted; set false before destroy | `bool` | `false` | no |
 | api_version | Graph API version; only `v1.0` is supported | `string` | `"v1.0"` | no |

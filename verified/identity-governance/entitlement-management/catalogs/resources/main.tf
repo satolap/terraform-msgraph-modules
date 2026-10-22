@@ -1,4 +1,13 @@
 locals {
+  # Entitlement management onboards an Azure subscription or management group,
+  # never a resource group, and the request names which with resourceType. The
+  # documented origin ID formats decide it; Graph matches origin IDs without
+  # regard to letter case, so neither pattern does either.
+  azure_resource_type = var.resource_origin_system != "AzureResources" ? null : (
+    can(regex("(?i)^/subscriptions/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.resource_origin_id)) ? "Subscription" :
+    can(regex("(?i)^/providers/Microsoft\\.Management/managementGroups/[^/]+$", var.resource_origin_id)) ? "ManagementGroup" : null
+  )
+
   add_body = {
     requestType = "adminAdd"
     catalog = {
@@ -10,6 +19,7 @@ locals {
         originSystem = var.resource_origin_system
       },
       var.resource_display_name != null ? { displayName = var.resource_display_name } : {},
+      local.azure_resource_type != null ? { resourceType = local.azure_resource_type } : {},
     )
   }
 
@@ -37,6 +47,13 @@ resource "msgraph_resource_action" "add_request" {
   response_export_values = {
     request_id = "id"
     state      = "state"
+  }
+
+  lifecycle {
+    precondition {
+      condition     = var.resource_origin_system != "AzureResources" || local.azure_resource_type != null
+      error_message = "For AzureResources, resource_origin_id must be a subscription (/subscriptions/<subscription GUID>) or a management group (/providers/Microsoft.Management/managementGroups/<management group ID>). A resource group cannot be added to a catalog: add its subscription, then scope the role to the resource group in access-packages/resource-role-scopes."
+    }
   }
 }
 

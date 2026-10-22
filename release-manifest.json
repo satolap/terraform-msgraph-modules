@@ -1,10 +1,10 @@
 {
   "dependency_files": {
-    "requirements-dev.txt": "39e6d3a29899e0ffe641000bdf43f3bbf63d38eadf0617f5d49e1b5f7e07e5eb",
+    "requirements-dev.txt": "400551452c6f5517d1b5cb28de6b2bc3e4ceac4d9c2b3be26e4df65cb910a88d",
     "requirements.txt": "ad488d53a098f26ddcb1303c16b81fb8d444c232d7ac067718650f04d6dfe29b"
   },
-  "fingerprint": "084e0a66ce07566db32a2ce9cb5d852c3aa312900a06a88fbf94a942e52421c8",
-  "generator_commit": "e6b363d58f7008a29d2ec91ad671498ed0394e9c",
+  "fingerprint": "e9e7b7662970789a33e8053be3785e203edd0155fdbe523dc43466d3620d469a",
+  "generator_commit": "080e653afe19f02da075681bc7ff2c8a1773a133",
   "providers": {
     "hashicorp/null": "3.3.2",
     "hashicorp/random": "3.9.1",
@@ -13,286 +13,286 @@
   },
   "schema_version": 1,
   "sources": {
-    "commit": "fd42f0e5bcd96b0c5edd5e62e2956a1dc1c5d17a",
+    "commit": "34b8e9c29032c82352a6fd7138be0a864a842bb2",
     "documentation": {
-      "commit": "56602fde3f9889e14ac89916234200ab881feb33",
+      "commit": "98a98cc88051a857c119a2e1bb61587633585284",
       "files": {
         "beta": {
           "sha256": "a461b5c441b78cc05a1c57c9ec74c47235fe526a418692822039486157360d79",
-          "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc.yml"
+          "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc.yml"
         },
         "v1.0": {
           "sha256": "dcbd271b5c2a0cb5de9e726c1c03aed193e0f338b89e4d4a6f3dfd1fba684f3d",
-          "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc.yml"
+          "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc.yml"
         }
       },
       "includes": {
         "beta": {
           "toc/agents/toc.yml": {
             "sha256": "0eab10f69489028c4866a151b68904af3a86fa90feca5cade1c1ee5803e1a171",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/agents/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/agents/toc.yml"
           },
           "toc/applications/toc.yml": {
             "sha256": "83b26e63572344e599daeb709cb77800373a90ab41dfb884805a50006ca19a93",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/applications/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/applications/toc.yml"
           },
           "toc/backup-and-recovery/toc.yml": {
-            "sha256": "eb91a3b86e95ad058cb844f93d6980d3ef5c072520dc83be1d5e281438f1acad",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/backup-and-recovery/toc.yml"
+            "sha256": "62cc2667dd0f3976ea9437e7c202d3f14888e7a040db57d94b05d53410535517",
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/backup-and-recovery/toc.yml"
           },
           "toc/calendars/toc.yml": {
             "sha256": "303e05d1fbb4c24e4a0fe98d503605adfb1b7c1737f640ec41db79070b35eb22",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/calendars/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/calendars/toc.yml"
           },
           "toc/change-notifications/toc.yml": {
             "sha256": "fa2166fe3b0112abc0a523a208fd0ced3d086bd7a2915de570ace64e74e65878",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/change-notifications/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/change-notifications/toc.yml"
           },
           "toc/compliance/toc.yml": {
             "sha256": "dcf4f2a8c7cfd2276dadcb511ed1c6245a899b6f6cdcb2833467e7b49887ccd7",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/compliance/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/compliance/toc.yml"
           },
           "toc/cross-device-experiences/toc.yml": {
             "sha256": "329ae236c3a3219f5087b2f2c8b782d31d356634d691a87bfcaf85c499ca0af6",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/cross-device-experiences/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/cross-device-experiences/toc.yml"
           },
           "toc/customer-booking/toc.yml": {
             "sha256": "74a0a76ba238c94b40bad7e57fe8942aa50f596facef5dc083912ac4327ea2d2",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/customer-booking/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/customer-booking/toc.yml"
           },
           "toc/device-and-app-management/toc.yml": {
             "sha256": "a3876843af645f9b4fca33deef0fa1606fb9c42b3eab92ed50c03a2619e3a9f9",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/device-and-app-management/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/device-and-app-management/toc.yml"
           },
           "toc/education/toc.yml": {
             "sha256": "24c81c2ef14eaebdac8ba9eb99f1660de6ea6352073d636c1906b34deb6943af",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/education/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/education/toc.yml"
           },
           "toc/employee-experience/toc.yml": {
             "sha256": "bb33241c0902ccaae0c03e11574ba0e5e1de2d09cee9be60569557afce671676",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/employee-experience/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/employee-experience/toc.yml"
           },
           "toc/extensions/toc.yml": {
             "sha256": "4fbe745a42cf1400ea56991b1f3c01280101c9a3e82d2de54afa515a05f4f107",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/extensions/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/extensions/toc.yml"
           },
           "toc/external-data-connections/toc.yml": {
             "sha256": "eb9d47c6670d8d8216b49bbb5887c9acb994704b7dadb8b25dd27006e91f3d04",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/external-data-connections/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/external-data-connections/toc.yml"
           },
           "toc/files/toc.yml": {
             "sha256": "18bc2f92fe5a9e8fd1315f7da8023c6a8cdc2ce09ae18446db4aafe9a90b41c2",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/files/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/files/toc.yml"
           },
           "toc/financials-(preview)/toc.yml": {
             "sha256": "19142598a86dbb7428387515862e025eda952cd91c294fdaa0008ef2a568fea1",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/financials-(preview)/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/financials-(preview)/toc.yml"
           },
           "toc/groups/toc.yml": {
             "sha256": "45b30cdf8272617439e75ed59fac5e236cc3bfa3d8c459817299c5fdac52298a",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/groups/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/groups/toc.yml"
           },
           "toc/identity-and-access/toc.yml": {
-            "sha256": "a0d878cb7e2fdb397f44e9557678321a9d91d1a7dad1108f6ac9e0350e9919df",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/identity-and-access/toc.yml"
+            "sha256": "770232d683b147e095a9db086aff75c09f7ba67b9976b1e19311f5b902ab293b",
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/identity-and-access/toc.yml"
           },
           "toc/industry-data-etl-(preview)/toc.yml": {
             "sha256": "7d98d3325227850b6f080068f7209a4fefb7522ebb6a0737beaa7f9bfe7be200",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/industry-data-etl-(preview)/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/industry-data-etl-(preview)/toc.yml"
           },
           "toc/mail/toc.yml": {
             "sha256": "85498e097bda25b97c953b03747a89c0628cf4d99e79aec7fbb2ac8a662baff1",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/mail/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/mail/toc.yml"
           },
           "toc/mailbox-import-and-export/toc.yml": {
             "sha256": "9fc1b74285df50db9f11a75356bd5df55915a7c0d67f4562f21aff3a6db85b57",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/mailbox-import-and-export/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/mailbox-import-and-export/toc.yml"
           },
           "toc/notes/toc.yml": {
             "sha256": "2281316887a9d7095c3d82616dca63bd6932e7f0ebd840d6b20e8f9a06e4977a",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/notes/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/notes/toc.yml"
           },
           "toc/notifications-(deprecated)/toc.yml": {
             "sha256": "9051dd81908ebaa1e30c6134e6ba9b7823b8a0190eeedb6171620b013e15a2e0",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/notifications-(deprecated)/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/notifications-(deprecated)/toc.yml"
           },
           "toc/people-and-workplace-intelligence/toc.yml": {
             "sha256": "5047cf167fd4555ef0b98f58527c0284dc832fcc8d13245a4c713e96d9a1591d",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/people-and-workplace-intelligence/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/people-and-workplace-intelligence/toc.yml"
           },
           "toc/personal-contacts/toc.yml": {
             "sha256": "9e34e3da1e31d9b9a519e43f9da3cc849cfd8742830dd398a523bffa3ccb3459",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/personal-contacts/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/personal-contacts/toc.yml"
           },
           "toc/reports/toc.yml": {
             "sha256": "ed55c088c3bc0e8846efa188e97b540487458fc7ca75462cd45b377ec9fc87c4",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/reports/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/reports/toc.yml"
           },
           "toc/search/toc.yml": {
             "sha256": "450b7f2bc3cfe62bb802d71f2e5736560a0ca3a20675ba1570d66c34397c1483",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/search/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/search/toc.yml"
           },
           "toc/security/toc.yml": {
-            "sha256": "cd6fdcb5461d94d72aac62785165118987f694cd59b6b3b4248e8d087002900e",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/security/toc.yml"
+            "sha256": "cef75dc3cd59a4bee81d57bb9346b9ae7eae12df203b00432740f12faab80ab1",
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/security/toc.yml"
           },
           "toc/sites-and-lists/toc.yml": {
             "sha256": "5319d857a6b9fefaae4889488704ad7fffba4c45a311269679526130a6b10e68",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/sites-and-lists/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/sites-and-lists/toc.yml"
           },
           "toc/tasks-and-plans/toc.yml": {
-            "sha256": "2e61e5f2f93ce52b92d8403b2dcca4cf0d6abca6e0d46af04bfb05822fadbc26",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/tasks-and-plans/toc.yml"
+            "sha256": "f8c13bb221c267a5e02bee07886adad7b04583b3ca47963d166d9495a09c1ada",
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/tasks-and-plans/toc.yml"
           },
           "toc/teamwork-and-communications/toc.yml": {
             "sha256": "28740de8793fd203150c8474a582495746940e8b0842bbbe9c7ef45a9638b312",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/teamwork-and-communications/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/teamwork-and-communications/toc.yml"
           },
           "toc/tenants/toc.yml": {
             "sha256": "93925f932b9001f1d8520f17533ac33308ba2cf54b64610d6379ef58dcd80dc6",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/tenants/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/tenants/toc.yml"
           },
           "toc/to-do-tasks/toc.yml": {
             "sha256": "9dc559c1b50c907292db7b6aa9e240c0687002ae38fc765282f9ec82682a1674",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/to-do-tasks/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/to-do-tasks/toc.yml"
           },
           "toc/users/toc.yml": {
             "sha256": "cdbcba7a2522185df6e3a44b8e589f00a3d064a9e5f78dc2cf8baafed422013c",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/users/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/users/toc.yml"
           },
           "toc/workbooks-and-charts/toc.yml": {
             "sha256": "40ca6d10482fcc77f94c1641c9955de395b7757952e5f6455faba22c6994193b",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/beta/toc/workbooks-and-charts/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/beta/toc/workbooks-and-charts/toc.yml"
           }
         },
         "v1.0": {
           "toc/agents/toc.yml": {
             "sha256": "a5d521eca874c69b81cf378992ba8114c537d25da59f60b301f59174d681bb8a",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/agents/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/agents/toc.yml"
           },
           "toc/applications/toc.yml": {
             "sha256": "41476b9a7b3c6cb9221eee776515410c7c82054aa7ee73ccb43be29ad94cbd1e",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/applications/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/applications/toc.yml"
           },
           "toc/backup-and-recovery/toc.yml": {
             "sha256": "b689d30083189cc80cf81a04f5fadf51c58fdeca4070a283e0babf3662fee4e5",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/backup-and-recovery/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/backup-and-recovery/toc.yml"
           },
           "toc/calendars/toc.yml": {
-            "sha256": "d2951ba277a11563932f2bf5d0a05058889cc837714ff4244f1d027b53ed1c0e",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/calendars/toc.yml"
+            "sha256": "6987eade63758d258240a9fbc4b5176d62b8da1e9e9486408f48bd195387c8ba",
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/calendars/toc.yml"
           },
           "toc/change-notifications/toc.yml": {
             "sha256": "fa2166fe3b0112abc0a523a208fd0ced3d086bd7a2915de570ace64e74e65878",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/change-notifications/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/change-notifications/toc.yml"
           },
           "toc/compliance/toc.yml": {
             "sha256": "0246f2757e52d1fd8bc4e411c8fb9e239191ff6e00d2f6203f348e6ceeb34d7a",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/compliance/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/compliance/toc.yml"
           },
           "toc/cross-device-experiences/toc.yml": {
             "sha256": "9e2371dc877f672ba94f0622870e1452816e3d2d17825eaefe86e3cc0032eac4",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/cross-device-experiences/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/cross-device-experiences/toc.yml"
           },
           "toc/customer-booking/toc.yml": {
             "sha256": "556022d158630e204d5bab1c0688c5d6eac684cfc6606b9cf3dc1ade43104335",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/customer-booking/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/customer-booking/toc.yml"
           },
           "toc/device-and-app-management/toc.yml": {
             "sha256": "35d49bf09273ea2f37e7f521bbe05452901b10dd123495ffb4fa307b15065190",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/device-and-app-management/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/device-and-app-management/toc.yml"
           },
           "toc/education/toc.yml": {
             "sha256": "8927c719fef8041b9090bd0caf9db0312987b4e9e24d6639ac6cf32744dc9c03",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/education/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/education/toc.yml"
           },
           "toc/employee-experience/toc.yml": {
             "sha256": "a15a1cc7c6039043e50c3feaa880d8c1251dd6937420f3d3b0fb5c511170fb96",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/employee-experience/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/employee-experience/toc.yml"
           },
           "toc/extensions/toc.yml": {
             "sha256": "7592d6a93b5036af53c7fb8668881e7d4fc82feaa3b72196e55e939b9761fcf3",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/extensions/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/extensions/toc.yml"
           },
           "toc/external-data-connections/toc.yml": {
             "sha256": "1fd22cfca2f8be724711bde842bc906a039d2439bfa2d74b2f308cbe5a2dd1a4",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/external-data-connections/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/external-data-connections/toc.yml"
           },
           "toc/files/toc.yml": {
             "sha256": "619d77274259dc0a467c240d543ab9314503ad612c30db7b3e797efa856cd6a1",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/files/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/files/toc.yml"
           },
           "toc/groups/toc.yml": {
             "sha256": "b413a1924a7c35d015d26e8784dbd5c3b108c2b36711237ac65e33835e785662",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/groups/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/groups/toc.yml"
           },
           "toc/identity-and-access/toc.yml": {
-            "sha256": "2d9f5ae5b2e36b72984f8786f56c6156760f70c7236249b7dc064a06fc1d0641",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/identity-and-access/toc.yml"
+            "sha256": "4f62d184f0601a059c5fbfaad25f245a9ed16a701698fa3e40aeb4a2f71a1831",
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/identity-and-access/toc.yml"
           },
           "toc/mail/toc.yml": {
             "sha256": "11a3640ab03f0b2b3613f9474dfa6714cb91e0c3d97370c6b212c19fd6c27d62",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/mail/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/mail/toc.yml"
           },
           "toc/mailbox-import-and-export/toc.yml": {
             "sha256": "4067a1388d498f6e1676090b9de161e504b2c16c194278c792024cab28eefa73",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/mailbox-import-and-export/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/mailbox-import-and-export/toc.yml"
           },
           "toc/notes/toc.yml": {
             "sha256": "f4ed83233032de86eb07b07798437bcb220ade8c2c18acac469a895bc7be1366",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/notes/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/notes/toc.yml"
           },
           "toc/partner-billing-reports/toc.yml": {
             "sha256": "58c2254afcf1d5ecc4ca7d5c866ff02e87f2e00be40792fc2bff486226a7f4a9",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/partner-billing-reports/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/partner-billing-reports/toc.yml"
           },
           "toc/people-and-workplace-intelligence/toc.yml": {
             "sha256": "59cf5d67dfa15b2c76af665df8bcedac4f10bde8f685195b5fe2124a1c14e7bb",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/people-and-workplace-intelligence/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/people-and-workplace-intelligence/toc.yml"
           },
           "toc/personal-contacts/toc.yml": {
             "sha256": "093e289bbe467e4e6383bc6c4eeab7f472568457f9c44cd5413642d6c9eddcb0",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/personal-contacts/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/personal-contacts/toc.yml"
           },
           "toc/reports/toc.yml": {
             "sha256": "2f4b1b934c1efa10383f9e42d516edc7c0d70c88e9f45a682ddf32374a1d0c01",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/reports/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/reports/toc.yml"
           },
           "toc/search/toc.yml": {
             "sha256": "63a96cff7115138b0db6540df93cddc513909860ad12af12d3ce9cd6620d57bd",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/search/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/search/toc.yml"
           },
           "toc/security/toc.yml": {
             "sha256": "00b7a1324401f64d0d3e7fd4855aa82677562dd52e9eb1189eec5db0c6d5ec57",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/security/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/security/toc.yml"
           },
           "toc/sites-and-lists/toc.yml": {
             "sha256": "0d5785a7a5a12438f749d82c91cd457ebdd253e1e3b64822dc529503e4f3bea8",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/sites-and-lists/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/sites-and-lists/toc.yml"
           },
           "toc/tasks-and-plans/toc.yml": {
             "sha256": "5dff84872ba3700f6277d703bc43b084e100b01a6a39409b7ea18192d55c1ee3",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/tasks-and-plans/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/tasks-and-plans/toc.yml"
           },
           "toc/teamwork-and-communications/toc.yml": {
             "sha256": "32c3e6fb652a9d2737415a733f0ce862df709b350dc3a796a8f65461ed5704f1",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/teamwork-and-communications/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/teamwork-and-communications/toc.yml"
           },
           "toc/tenants/toc.yml": {
             "sha256": "d85043985898f87f03ce26bfb0d5150bc15cb17d156c79d430dfc7826c1f88a5",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/tenants/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/tenants/toc.yml"
           },
           "toc/to-do-tasks/toc.yml": {
             "sha256": "b7e50845b09ab1a2038a647dbd73a01cf640079834b2cf595cd94c34dacb5e98",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/to-do-tasks/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/to-do-tasks/toc.yml"
           },
           "toc/users/toc.yml": {
             "sha256": "f77980b92e16770c0e304b14b6b21b30409e74003d2ae27c5e8c60e533f4a7ac",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/users/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/users/toc.yml"
           },
           "toc/workbooks-and-charts/toc.yml": {
             "sha256": "324219fd2541e363ef903ec9a0fdbaa2c009c6749e5cbb18fe12173d1786da75",
-            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/56602fde3f9889e14ac89916234200ab881feb33/api-reference/v1.0/toc/workbooks-and-charts/toc.yml"
+            "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc/workbooks-and-charts/toc.yml"
           }
         }
       },
@@ -301,22 +301,22 @@
     "files": {
       "beta": {
         "edmx": {
-          "sha256": "3cda32db3be8ad674d29b05d4b8c79bd043c9ac3415a53faeeb93f426ee0a956",
-          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/fd42f0e5bcd96b0c5edd5e62e2956a1dc1c5d17a/schemas/beta-Prod.csdl"
+          "sha256": "0f2d8ee4bc6de9513ee690e2abb1422e332d30cf9171d32bf1f400f43bd7ae3a",
+          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/34b8e9c29032c82352a6fd7138be0a864a842bb2/schemas/beta-Prod.csdl"
         },
         "openapi": {
           "sha256": "55a69a729eec89322e1fba942a7673ff9de0243216b121d4541d07b7faaf696a",
-          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/fd42f0e5bcd96b0c5edd5e62e2956a1dc1c5d17a/openapi/beta/openapi.yaml"
+          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/34b8e9c29032c82352a6fd7138be0a864a842bb2/openapi/beta/openapi.yaml"
         }
       },
       "v1.0": {
         "edmx": {
-          "sha256": "3ace5b4a52b618cc5db871a22604abd1fff17d91415f0890f7454474f5339208",
-          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/fd42f0e5bcd96b0c5edd5e62e2956a1dc1c5d17a/schemas/v1.0-Prod.csdl"
+          "sha256": "286cdc5d812b88bba9870b452d63d37aed925e6180541f20e034c949cd1816f0",
+          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/34b8e9c29032c82352a6fd7138be0a864a842bb2/schemas/v1.0-Prod.csdl"
         },
         "openapi": {
           "sha256": "533f6d86985584327109ba2c52c0e51454ce1ba2153c11f4d841e898b88c5b1b",
-          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/fd42f0e5bcd96b0c5edd5e62e2956a1dc1c5d17a/openapi/v1.0/openapi.yaml"
+          "url": "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/34b8e9c29032c82352a6fd7138be0a864a842bb2/openapi/v1.0/openapi.yaml"
         }
       }
     },
@@ -327,5 +327,5 @@
     "repository": "microsoftgraph/msgraph-metadata",
     "schema_version": 1
   },
-  "tag": "v2.0.0"
+  "tag": "v3.0.0"
 }

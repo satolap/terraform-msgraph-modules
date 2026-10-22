@@ -18,7 +18,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.7 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Inputs
 
@@ -40,6 +40,8 @@ Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules R
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
 
+Sensitive inputs, `additional_properties`, and the `response` output are redacted in normal Terraform presentation. Their values still exist in saved plans and state: restrict access to those files and the state backend. Sensitivity is not encryption or a substitute for state access controls.
+
 Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
 ## Permissions and limitations
@@ -60,7 +62,9 @@ Generation notes:
 
 ## Licensing and prerequisites
 
-License requirements for this endpoint have not been reviewed. Check the Microsoft Graph documentation and Microsoft Entra licensing for the feature this resource belongs to before relying on the module; a successful API call does not establish entitlement.
+Feature rules reviewed on 2026-10-19 for the Microsoft Entra feature this endpoint belongs to (confidence: inferred). Input-dependent rules were not verified against this module's inputs.
+
+- **LIFECYCLE-WORKFLOWS**: Lifecycle workflows, including their custom task extensions, require Microsoft Entra ID Governance or Microsoft Entra Suite for the organization's member users. Microsoft Entra ID P2 alone is not sufficient. Agent sponsorship tasks need Microsoft Agent 365, and some capabilities involve guest billing. Any of: Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). Coverage: Every member user a workflow processes, and the Lifecycle Workflows administrator. Assignment: direct; capacity: per_user. Sources: [Lifecycle workflows license requirements](https://learn.microsoft.com/en-us/entra/id-governance/what-are-lifecycle-workflows#license-requirements), [Microsoft Entra licensing: lifecycle workflows](https://learn.microsoft.com/en-us/entra/fundamentals/licensing#lifecycle-workflows), [Microsoft Entra ID Governance licensing fundamentals: licensing FAQs](https://learn.microsoft.com/en-us/entra/id-governance/licensing-fundamentals#licensing-faqs).
 
 ## Offline test
 

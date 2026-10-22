@@ -34,4 +34,11 @@ resource "msgraph_resource" "application" {
     app_id       = "appId"
     display_name = "displayName"
   }
+
+  lifecycle {
+    precondition {
+      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.display_name))
+      error_message = "display_name \"${var.display_name}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set display_name to a value that matches, or change name_pattern."
+    }
+  }
 }

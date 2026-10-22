@@ -1,8 +1,8 @@
 # identity-governance/entitlement-management/catalogs/resources
 
-Adds an Entra ID group, application (service principal), or SharePoint Online site to an
-entitlement management catalog, via the `microsoft/msgraph` Terraform provider. The folder
-mirrors the Graph collection it manages:
+Adds an Entra ID group, application (service principal), SharePoint Online site, or Azure
+subscription or management group to an entitlement management catalog, via the
+`microsoft/msgraph` Terraform provider. The folder mirrors the Graph collection it manages:
 `identityGovernance/entitlementManagement/catalogs/{id}/resources`.
 
 ## Why this module looks different from the others
@@ -54,6 +54,31 @@ order the access package itself, so give the access package module a `depends_on
 catalog resource modules, as the usage example below does. Graph can keep refusing the removal briefly after the access package is gone, so the hook
 retries HTTP 400, 409, 429 and 5xx answers six times, 20 seconds apart, and prints Graph's
 error body each time.
+
+## Azure subscriptions and management groups
+
+With `resource_origin_system = "AzureResources"`, the module adds an Azure subscription or
+management group, so that access packages in the catalog can grant its Azure RBAC roles
+([Microsoft Learn](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-azure-role-assignments)).
+Grant the roles with the `access-packages/resource-role-scopes` module.
+
+- **Origin ID:** the Azure resource ID, `/subscriptions/<subscription GUID>` or
+  `/providers/Microsoft.Management/managementGroups/<management group ID>`, for example the
+  `id` of an `azurerm_subscription` or `azurerm_management_group` data source. The module
+  derives the request's `resourceType` (`Subscription` or `ManagementGroup`) from this format,
+  as in Microsoft's
+  [examples](https://learn.microsoft.com/en-us/graph/api/entitlementmanagement-post-resourcerequests?view=graph-rest-1.0#example-6-add-a-management-group-resource-to-catalog),
+  and refuses any other ID before it sends a request. Graph matches origin IDs without regard
+  to letter case.
+- **Resource groups:** a resource group cannot be added to a catalog. Add its subscription;
+  Graph then lists the subscription's resource groups as scopes that a role can target.
+- **Azure permissions:** entitlement management checks that the identity adding the resource
+  can manage role assignments at that scope
+  (`Microsoft.Authorization/roleAssignments/read`, `write` and `delete`), for example through
+  the Role Based Access Control Administrator, User Access Administrator or Owner role.
+  Without them the add fails.
+- **Licensing:** Azure resource roles need Microsoft Entra ID Governance or Microsoft Entra
+  Suite, not Microsoft Entra ID P2 alone; see the licensing section below.
 
 ## Upgrade note: destroy cleanup requires `ARM_TENANT_ID`
 
@@ -115,13 +140,33 @@ module "engineering_access_package" {
   # Destroy removes the access package before the catalog resources it uses.
   depends_on = [module.engineering_group_resource, module.engineering_sharepoint_resource]
 }
+
+# An access package that grants these Azure roles needs the same depends_on.
+module "platform_subscription_resource" {
+  source  = "satolap/modules/msgraph//verified/identity-governance/entitlement-management/catalogs/resources"
+  version = "<version>"
+
+  catalog_id             = module.engineering_catalog.id
+  resource_origin_system = "AzureResources"
+  resource_origin_id     = "/subscriptions/00000000-0000-0000-0000-000000000000"
+  resource_display_name  = "Platform"
+}
+
+module "landing_zones_resource" {
+  source  = "satolap/modules/msgraph//verified/identity-governance/entitlement-management/catalogs/resources"
+  version = "<version>"
+
+  catalog_id             = module.engineering_catalog.id
+  resource_origin_system = "AzureResources"
+  resource_origin_id     = "/providers/Microsoft.Management/managementGroups/landing-zones"
+}
 ```
 
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.3.0 |
 | time | >= 0.9.0 |
 | null | >= 3.2.0 |
@@ -135,6 +180,7 @@ Permissions needed (application or delegated, in addition to
 | AadGroup | `Group.ReadWrite.All` |
 | AadApplication | Ownership of, or a directory role permitting modification of, the application |
 | SharePointOnline | `Sites.FullControl.All` |
+| AzureResources | None; the identity needs Azure RBAC `Microsoft.Authorization/roleAssignments/read`, `write` and `delete` at the subscription or management group |
 
 <!-- licensing:begin -->
 ## Licensing and prerequisites
@@ -145,12 +191,15 @@ Reviewed against public Microsoft documentation on 2026-09-18. Requirements depe
 | --- | --- | --- | --- | --- | --- |
 | Always | EM-CORE | Catalogs, access packages with group, application and SharePoint resources, standard approval stages, requestor questions and expiration are included in Microsoft Entra ID P2, Microsoft Entra ID Governance and Microsoft Entra Suite. Evaluate the exact feature combination; not every accepted policy option is core. Any of: Microsoft Entra ID P2 (`AAD_PREMIUM_P2`); Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). | Every user who can request or receive an access package assignment, including everyone covered by an all-member policy scope; guest scenarios can involve billing | direct / per_user | documented |
 | `resource_origin_system` is `"SharePointOnline"` | SHAREPOINT | Internal users who access a SharePoint Online site need an assigned license that includes SharePoint Online. Entitlement management licensing does not supply the workload entitlement, and the site must already exist. All of: SharePoint Online (any plan) (`SHAREPOINTENTERPRISE`). | Internal users who will access the site | direct / per_user | documented |
+| `resource_origin_system` is `"AzureResources"` | EM-AZURE-ROLES | Granting active or eligible Azure RBAC roles at a management group, subscription or resource group through entitlement management requires Microsoft Entra ID Governance or Microsoft Entra Suite. Microsoft Entra ID P2 alone is not sufficient. The Azure subscription or management group must already exist, and its Azure costs are separate. Any of: Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). | Every user who can request or receive an access package assignment that grants the Azure role; eligible roles are activated through Privileged Identity Management, whose users need the same coverage | group_based / per_user | documented |
 
 Notes:
 
 - Agent, API-permission or other advanced resource types need a separate reviewed rule; the module's acceptance of an origin system does not establish support.
+- Adding an Azure subscription or management group also needs Azure RBAC permission to manage role assignments at that scope (Microsoft.Authorization/roleAssignments/read, write and delete); that is an Azure authorization requirement, not a license. See [Assign Azure RBAC roles](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-azure-role-assignments#azure-rbac-requirements-for-catalog-onboarding).
+- The Azure resource role rules were reviewed against Microsoft Learn on 2026-10-12, which is later than the review date stated above.
 
-Sources: [Entitlement management license requirements](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-overview#license-requirements), [Microsoft Entra features by license](https://learn.microsoft.com/en-us/entra/fundamentals/licensing#features-by-license), [SharePoint Online service description](https://learn.microsoft.com/en-us/office365/servicedescriptions/sharepoint-online-service-description/sharepoint-online-service-description).
+Sources: [Entitlement management license requirements](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-overview#license-requirements), [Microsoft Entra features by license](https://learn.microsoft.com/en-us/entra/fundamentals/licensing#features-by-license), [SharePoint Online service description](https://learn.microsoft.com/en-us/office365/servicedescriptions/sharepoint-online-service-description/sharepoint-online-service-description), [Assign Azure role-based access control (RBAC) roles with entitlement management](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-azure-role-assignments#prerequisites), [Microsoft Entra ID Governance licensing fundamentals: Privileged Identity Management](https://learn.microsoft.com/en-us/entra/id-governance/licensing-fundamentals#privileged-identity-management).
 <!-- licensing:end -->
 
 ## Inputs
@@ -158,8 +207,8 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | catalog_id | ID of the catalog to add the resource to | `string` | n/a | yes |
-| resource_origin_system | `AadGroup`, `AadApplication`, or `SharePointOnline` | `string` | n/a | yes |
-| resource_origin_id | Group object ID / service principal object ID / SharePoint site URL | `string` | n/a | yes |
+| resource_origin_system | `AadGroup`, `AadApplication`, `SharePointOnline`, or `AzureResources` | `string` | n/a | yes |
+| resource_origin_id | Group object ID / service principal object ID / SharePoint site URL / Azure subscription or management group resource ID | `string` | n/a | yes |
 | resource_display_name | Optional display name for the resource request | `string` | `null` | no |
 | verification_delay_seconds | Seconds to wait before verifying the add landed | `number` | `30` | no |
 | fail_on_verification_mismatch | Fail apply if verification doesn't find the resource | `bool` | `true` | no |
@@ -179,8 +228,9 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 
 `terraform test` runs offline unit tests (`tests/catalog_resource.tftest.hcl`) that mock the
 providers and disable the destroy hook. They assert the adminAdd body, escaped OData
-filter, captured ID, missing/ambiguous verification failures, and which input changes
-wait again before verifying. Terraform mocking does
-not suppress provisioners by itself. Tests require Terraform 1.7 or later.
+filter, captured ID, missing/ambiguous verification failures, which input changes
+wait again before verifying, the Azure subscription and management group `resourceType`, and
+the refusal of other Azure IDs. Terraform mocking does
+not suppress provisioners by itself. Tests require Terraform 1.11 or later.
 
 See [live test setup and lifecycle limits](../../../../../docs/test-tenant-setup.md).

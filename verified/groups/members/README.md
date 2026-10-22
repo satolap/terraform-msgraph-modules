@@ -78,10 +78,10 @@ module "automation_members" {
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.5.0 |
 
-The offline test suite needs Terraform 1.7 or later. The module sets minimum versions only; set
+The offline test suite needs the same Terraform minimum. The module sets minimum versions only; set
 upper bounds in your root module. microsoft/msgraph 0.5.0 is the first release whose
 `msgraph_resource_collection` does not abort with "Provider produced inconsistent final plan"
 when `member_ids` mixes IDs known during the plan with IDs known only during the same apply,
@@ -156,7 +156,7 @@ subject to change and that their use in production applications is not supported
   direct member the list returned, not only those in `member_ids`. The provider's `skip_destroy`
   argument is not exposed, so that a removed module call always removes what it added. To stop managing
   the members without removing them, use a `removed` block with `lifecycle { destroy = false }`
-  for the module call (Terraform 1.7 or later) or `terraform state rm`. When the group is
+  for the module call or `terraform state rm`. When the group is
   destroyed in the same apply, Terraform removes the members first, because the collection
   depends on the group ID.
 - **Changing `group_id` replaces the collection.** The provider replaces the collection when its
@@ -256,7 +256,7 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 ## Tests
 
-`tests/group_members.tftest.hcl` runs offline against a mock provider and needs Terraform 1.7 or
+`tests/group_members.tftest.hcl` runs offline against a mock provider and needs Terraform 1.11 or
 later: `terraform init` and `terraform test` in this folder. It covers the url, the reference
 IDs, the API version, the retry expression (that it matches the documented replication message
 and not the errors for an existing or a missing object), lower-casing, the empty list, the

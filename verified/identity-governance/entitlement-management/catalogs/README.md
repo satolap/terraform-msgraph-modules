@@ -64,7 +64,7 @@ that changed or were added, so the catalog keeps its type.
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.3.0 |
 
 The configuring identity/application needs the `EntitlementManagement.ReadWrite.All`
@@ -91,6 +91,7 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | display_name | Display name of the catalog (1-90 characters) | `string` | n/a | yes |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
 | description | Description of the catalog | `string` | `null` | no |
 | is_externally_visible | Whether users of connected organizations can request the catalog's access packages; `null` leaves it to Microsoft Graph | `bool` | `null` | no |
 | state | `unpublished` or `published` | `string` | `"unpublished"` | no |

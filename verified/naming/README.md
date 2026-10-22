@@ -200,8 +200,24 @@ tokens = {
 The module checks the names that pass through it. A configuration can still give a module a
 literal name, so the module makes the compliant path the easy one rather than the only one:
 
-- A verified module with a `name_pattern` input, such as the catalog custom extension module,
-  fails the plan when its display name does not match. Pass the same pattern there.
+- Every verified module with a `display_name` input takes an optional `name_pattern` and
+  fails the plan when its display name does not match; the groups and users modules also
+  take `mail_nickname_pattern`. Pass the patterns of the convention there, for example:
+
+  ```hcl
+  module "guests_group" {
+    source  = "satolap/modules/msgraph//verified/groups"
+    version = "<version>"
+
+    display_name          = module.partner_names.names.guests_group
+    mail_nickname         = module.partner_names.names.guests_nickname
+    name_pattern          = "-guests$"
+    mail_nickname_pattern = "^[a-z0-9-]+-guests$"
+  }
+  ```
+
+  For a Conditional Access policy, a pattern such as
+  `^(ENABLE IN EMERGENCY - )?CA[0-9]{3}-` also accepts the contingency prefix.
 - A policy-as-code check in the pipeline that runs Terraform, for example Conftest or Open
   Policy Agent on the JSON of `terraform show -json`, catches names that bypass both. It
   belongs to that pipeline, not to these modules.
@@ -210,10 +226,10 @@ literal name, so the module makes the compliant path the easy one rather than th
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 
 No provider. Terraform 1.5 is the first version with the `strcontains` function that a
-validation uses. The offline test suite needs Terraform 1.7 or later.
+validation uses. The module and its offline test suite need Terraform 1.11 or later.
 
 ## Limits
 
@@ -260,7 +276,7 @@ Notes:
 
 ## Tests
 
-`tests/naming.tftest.hcl` runs offline and needs Terraform 1.7 or later: `terraform init`
+`tests/naming.tftest.hcl` runs offline and needs Terraform 1.11 or later: `terraform init`
 and `terraform test` in this folder. Every run is a plan, because the module has no
 provider. The runs cover each filter and their order, the transliteration table and its
 overrides, NFC normalization, optional segments, the built-in tokens, the token rules, the

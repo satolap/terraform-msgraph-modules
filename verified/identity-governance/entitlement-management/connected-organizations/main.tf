@@ -165,6 +165,10 @@ resource "msgraph_resource" "this" {
       condition     = length(distinct(local.claimed_tenant_ids)) == length(local.claimed_tenant_ids)
       error_message = "identity_sources name the same Microsoft Entra tenant more than once: ${join(", ", sort(distinct([for t in local.claimed_tenant_ids : t if length([for u in local.claimed_tenant_ids : u if u == t]) > 1])))}. A \"tenant_domain\" source resolves to its tenant ID, so it must not name a tenant that another source names. Keep one source per tenant."
     }
+    precondition {
+      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.display_name))
+      error_message = "display_name \"${var.display_name}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set display_name to a value that matches, or change name_pattern."
+    }
   }
 }
 

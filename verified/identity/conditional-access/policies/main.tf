@@ -306,6 +306,10 @@ resource "msgraph_resource" "policy" {
       )
       error_message = "The urn:user:registerdevice user action allows only mfa or an authentication strength as grant controls, with no terms of use, no device_filter and client_app_types = [\"all\"]."
     }
+    precondition {
+      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.display_name))
+      error_message = "display_name \"${var.display_name}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set display_name to a value that matches, or change name_pattern."
+    }
   }
 }
 
