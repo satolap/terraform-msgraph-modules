@@ -37,6 +37,15 @@ jobs:
 
           repository = os.environ["GH_REPO"]
           tag_pattern = re.compile(r"v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)")
+          # Releases below this version are not rebuilt: v1 has no verified module catalog.
+          MINIMUM_VERIFIED = (2, 0, 0)
+
+
+          def supported(tag):
+              return tuple(map(int, tag[1:].split("."))) >= MINIMUM_VERIFIED
+
+
+          minimum_tag = "v" + ".".join(map(str, MINIMUM_VERIFIED))
           released = subprocess.check_output([
               "gh", "api", "--paginate", f"repos/{repository}/releases",
               "--jq", ".[] | select(.draft | not) | .tag_name",
@@ -45,6 +54,10 @@ jobs:
           summary = ["## Release verification", ""]
           failed = []
           for tag in sorted(filter(tag_pattern.fullmatch, released)):
+              if not supported(tag):
+                  print(f"::notice::Skipped {tag}: unsupported, below {minimum_tag}")
+                  summary.append(f"- Skipped (unsupported, below {minimum_tag}): `{tag}`")
+                  continue
               result = subprocess.run([
                   sys.executable, "scripts/release.py", "--tag", tag,
                   "--repository", repository, "--verify-only", "--verify-assets",
