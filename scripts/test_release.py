@@ -822,9 +822,11 @@ class VerifyReleasesSelectionTest(unittest.TestCase):
         script = run_script(step)
         self.script = script
         # Run only the definitions that precede the first gh call.
+        parts = script.split("released = subprocess")
+        self.assertEqual(len(parts), 2)
         namespace: dict = {}
         with mock.patch.dict(os.environ, {"GH_REPO": "owner/repo"}):
-            exec(script.split("released = ")[0], namespace)
+            exec(parts[0], namespace)
         self.namespace = namespace
 
     def test_only_supported_versions_are_verified(self):
@@ -836,8 +838,22 @@ class VerifyReleasesSelectionTest(unittest.TestCase):
             self.assertFalse(supported(tag), tag)
 
     def test_skipped_releases_are_reported_not_failed(self):
-        self.assertIn("::notice::Skipped {tag}: unsupported, below {minimum_tag}", self.script)
-        self.assertIn("Skipped (unsupported, below {minimum_tag}): `{tag}`", self.script)
+        outputs = iter(["v1.0.0 v2.0.0 v3.0.0", "v1.0.0 v2.0.0 v3.0.0 v4.0.0"])
+        summary = Path(tempfile.mkdtemp()) / "summary.md"
+        self.addCleanup(shutil.rmtree, summary.parent, True)
+        env = {"GH_REPO": "owner/repo", "GITHUB_STEP_SUMMARY": str(summary)}
+        stdout = io.StringIO()
+        with mock.patch.dict(os.environ, env),                 mock.patch("subprocess.check_output", side_effect=lambda *a, **k: next(outputs)),                 mock.patch("subprocess.run", return_value=mock.Mock(returncode=0)) as run,                 contextlib.redirect_stdout(stdout):
+            exec(self.script, {})
+        rebuilt = [call.args[0][3] for call in run.call_args_list]
+        self.assertEqual(rebuilt, ["v2.0.0", "v3.0.0"])
+        self.assertIn("::notice::Skipped v1.0.0: unsupported, below v2.0.0", stdout.getvalue())
+        lines = summary.read_text(encoding="utf-8").splitlines()
+        self.assertIn("- Skipped (unsupported, below v2.0.0): `v1.0.0`", lines)
+        self.assertIn("- Verified: `v2.0.0`", lines)
+        self.assertIn("- Verified: `v3.0.0`", lines)
+        self.assertIn("- Warning: tag `v4.0.0` has no published release", lines)
+        self.assertFalse([line for line in lines if "Failed" in line])
 
 
 if __name__ == "__main__":
