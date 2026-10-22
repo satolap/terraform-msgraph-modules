@@ -62,7 +62,7 @@ exclude nobody.
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.5.0 |
 
 `microsoft/msgraph` 0.5.0 is the first release that sends a changed nested object, such as
@@ -261,7 +261,7 @@ Report-only policies don't block users or prompt for MFA, but they are not free 
   after apply", and a calling test cannot name a check inside a module in
   `expect_failures`. With a mock provider, a plan that updates the policy in place keeps the
   last read-back and passes; with the real provider it fails the same way (inference). Use
-  `command = apply` for such runs or, on Terraform 1.11 or later, an `override_resource`
+  `command = apply` for such runs or an `override_resource`
   block for `module.<name>.msgraph_resource.policy` with `override_during = plan` and an
   `output` value.
 - **After a failed replacement, do not rerun a plain apply.** When an apply that planned a
@@ -351,6 +351,7 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | display_name | Display name of the policy | `string` | n/a | yes |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
 | state | `disabled`, `enabledForReportingButNotEnforced` or `enabled` | `string` | `"enabledForReportingButNotEnforced"` | no |
 | break_glass_user_ids | Emergency access user IDs (lowercase GUIDs), always excluded | `set(string)` | n/a | yes |
 | break_glass_group_ids | Emergency access group IDs (lowercase GUIDs), always excluded | `set(string)` | `[]` | no |

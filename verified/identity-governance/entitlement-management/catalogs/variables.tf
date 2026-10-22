@@ -52,3 +52,14 @@ variable "api_version" {
     error_message = "api_version must be one of \"v1.0\" or \"beta\"."
   }
 }
+
+variable "name_pattern" {
+  description = "Regular expression (RE2 syntax, not anchored unless it says so) that display_name must match, such as the pattern of a naming convention. When it is set and display_name does not match, the plan fails. Null, the default, accepts any display_name."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.name_pattern == null || can(regexall(var.name_pattern, ""))
+    error_message = "name_pattern must be a valid regular expression (RE2 syntax)."
+  }
+}

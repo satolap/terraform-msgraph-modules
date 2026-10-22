@@ -77,7 +77,7 @@ does not replace in the apply that creates it, so change `app_id` in a later app
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.3.0 |
 
 Requires the `Application.ReadWrite.All` Microsoft Graph permission.

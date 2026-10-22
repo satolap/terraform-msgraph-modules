@@ -26,7 +26,7 @@ module "blocked_regions" {
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.5.0 |
 
 `microsoft/msgraph` 0.5.0 is the first release that sends a changed nested object in full on
@@ -128,6 +128,7 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | display_name | Display name of the location | `string` | n/a | yes |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
 | countries_and_regions | Two-letter upper-case codes, at least one | `set(string)` | n/a | yes |
 | include_unknown_countries_and_regions | Also match addresses without a country or region | `bool` | `false` | no |
 | country_lookup_method | `clientIpAddress` or `authenticatorAppGps`; a change replaces the location | `string` | `"clientIpAddress"` | no |

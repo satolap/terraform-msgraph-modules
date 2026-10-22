@@ -88,6 +88,72 @@ run "submits_admin_add_request" {
     condition     = output.request_id == "req-00000000-0000-0000-0000-000000000001"
     error_message = "request_id output must expose the accessPackageResourceRequest id."
   }
+
+  assert {
+    condition     = join(",", sort(keys(msgraph_resource_action.add_request.body.resource))) == "displayName,originId,originSystem"
+    error_message = "Non-Azure resources must not carry resourceType; a changed body would re-run the add on existing deployments."
+  }
+}
+
+run "adds_azure_subscription" {
+  command = plan
+
+  variables {
+    resource_origin_system = "AzureResources"
+    resource_origin_id     = "/subscriptions/88888888-8888-4888-8888-888888888888"
+    resource_display_name  = "Dev"
+  }
+
+  assert {
+    condition     = msgraph_resource_action.add_request.body.resource.resourceType == "Subscription"
+    error_message = "A subscription must be added with resourceType Subscription."
+  }
+
+  assert {
+    condition     = msgraph_resource_action.add_request.body.resource.originSystem == "AzureResources" && msgraph_resource_action.add_request.body.resource.originId == "/subscriptions/88888888-8888-4888-8888-888888888888"
+    error_message = "The subscription must be referenced by its Azure resource ID with the AzureResources origin system."
+  }
+
+  assert {
+    condition     = data.msgraph_resource.verify.query_parameters["$filter"][0] == "originId eq '/subscriptions/88888888-8888-4888-8888-888888888888' and originSystem eq 'AzureResources'"
+    error_message = "Verification must filter by the subscription's resource ID."
+  }
+}
+
+run "adds_azure_management_group" {
+  command = plan
+
+  variables {
+    resource_origin_system = "AzureResources"
+    resource_origin_id     = "/providers/Microsoft.Management/managementGroups/mg-platform"
+  }
+
+  assert {
+    condition     = msgraph_resource_action.add_request.body.resource.resourceType == "ManagementGroup"
+    error_message = "A management group must be added with resourceType ManagementGroup."
+  }
+}
+
+run "rejects_azure_resource_group" {
+  command = plan
+
+  variables {
+    resource_origin_system = "AzureResources"
+    resource_origin_id     = "/subscriptions/88888888-8888-4888-8888-888888888888/resourceGroups/rg-app"
+  }
+
+  expect_failures = [msgraph_resource_action.add_request]
+}
+
+run "rejects_bare_subscription_guid" {
+  command = plan
+
+  variables {
+    resource_origin_system = "AzureResources"
+    resource_origin_id     = "88888888-8888-4888-8888-888888888888"
+  }
+
+  expect_failures = [msgraph_resource_action.add_request]
 }
 
 run "captures_resource_id_when_found" {

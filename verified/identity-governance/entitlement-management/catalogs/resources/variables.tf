@@ -10,12 +10,12 @@ variable "catalog_id" {
 }
 
 variable "resource_origin_system" {
-  description = "The origin system of the resource being added. One of \"AadGroup\", \"AadApplication\", or \"SharePointOnline\"."
+  description = "The origin system of the resource being added. One of \"AadGroup\", \"AadApplication\", \"SharePointOnline\", or \"AzureResources\" (an Azure subscription or management group, whose Azure RBAC roles access packages can then grant)."
   type        = string
 
   validation {
-    condition     = contains(["AadGroup", "AadApplication", "SharePointOnline"], var.resource_origin_system)
-    error_message = "resource_origin_system must be one of \"AadGroup\", \"AadApplication\", or \"SharePointOnline\"."
+    condition     = contains(["AadGroup", "AadApplication", "SharePointOnline", "AzureResources"], var.resource_origin_system)
+    error_message = "resource_origin_system must be one of \"AadGroup\", \"AadApplication\", \"SharePointOnline\", or \"AzureResources\"."
   }
 }
 
@@ -25,12 +25,14 @@ variable "resource_origin_id" {
       - AadGroup:         the Entra group's object ID
       - AadApplication:   the application's service principal object ID
       - SharePointOnline: the SharePoint Online site URL
+      - AzureResources:   the Azure resource ID of a subscription (/subscriptions/<subscription GUID>)
+                          or a management group (/providers/Microsoft.Management/managementGroups/<ID>)
   EOT
   type        = string
 }
 
 variable "resource_display_name" {
-  description = "Optional display name to associate with the resource request."
+  description = "Optional display name to associate with the resource request. Microsoft's Azure resource examples set it to the subscription or management group name."
   type        = string
   default     = null
 }

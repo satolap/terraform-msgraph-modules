@@ -72,7 +72,7 @@ and provider version.
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.3.0 |
 
 Requires the `Application.ReadWrite.All` Microsoft Graph permission.
@@ -98,6 +98,7 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | display_name | Display name (1-120 characters) | `string` | n/a | yes |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
 | sign_in_audience | Supported account types | `string` | `"AzureADMyOrg"` | no |
 | description | Free-text description | `string` | `null` | no |
 | notes | Management notes | `string` | `null` | no |

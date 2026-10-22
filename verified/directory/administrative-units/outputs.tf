@@ -28,6 +28,11 @@ output "visibility" {
   value       = var.visibility
 }
 
+output "scoped_role_member_ids" {
+  description = "The IDs of the scopedRoleMembership objects that the module created, keyed like scoped_role_members. Empty when scoped_role_members is empty."
+  value       = { for key, resource in msgraph_resource.scoped_role_member : key => resource.id }
+}
+
 output "member_ids" {
   description = "The member IDs that the module manages, in lower case, read from the member collection, so a reference to this output waits until the members are added. Null when member_ids is null and the members are not managed."
   value       = one(msgraph_resource_collection.members[*].reference_ids)

@@ -86,7 +86,7 @@ replace in the apply that creates it, so make a change to these inputs in a late
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.3.0 |
 
 Requires the `Group.ReadWrite.All` Microsoft Graph permission (or `Directory.ReadWrite.All`).
@@ -116,7 +116,9 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | display_name | Display name of the group | `string` | n/a | yes |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
 | mail_nickname | Mail alias, at most 64 ASCII characters; see [Mail nickname](#mail-nickname) | `string` | n/a | yes |
+| mail_nickname_pattern | Regular expression (RE2, not anchored unless it says so) that mail_nickname must match, or the plan fails; null accepts any alias | `string` | `null` | no |
 | description | Description of the group | `string` | `null` | no |
 | security_enabled | Whether the group is a security group | `bool` | `true` | no |
 | mail_enabled | Whether the group is mail-enabled | `bool` | `false` | no |

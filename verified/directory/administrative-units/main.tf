@@ -84,6 +84,10 @@ resource "msgraph_resource" "this" {
       condition     = !local.is_dynamic || var.member_ids == null
       error_message = "membership_type is \"Dynamic\", so member_ids must be null: Microsoft Learn says that adding and removing members is disabled for a dynamic unit, whose rule selects them."
     }
+    precondition {
+      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.display_name))
+      error_message = "display_name \"${var.display_name}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set display_name to a value that matches, or change name_pattern."
+    }
   }
 }
 
@@ -106,5 +110,49 @@ resource "msgraph_resource_collection" "members" {
 
   retry = {
     error_message_regex = local.replication_delay_errors
+  }
+}
+
+# Learn documents create, list, get and delete for a scoped role membership and
+# no update, so a change of an entry's role or member must replace the
+# assignment instead of sending a PATCH. This stand-in holds the pair of each
+# entry and triggers that replacement.
+resource "terraform_data" "scoped_role_member" {
+  for_each = var.scoped_role_members
+
+  input = {
+    role_id   = lower(each.value.role_id)
+    member_id = lower(each.value.member_id)
+  }
+}
+
+# Microsoft Entra role assignments scoped to this unit, one scopedRoleMembership
+# per entry. The entries are keyed by names that the caller chooses, so the
+# keys are known at plan time while a role_id or member_id can be the id of an
+# object that the same apply creates, and the request retries the replication
+# delays that a new object causes. The url holds the unit's id, so a replacement
+# of the unit replaces every assignment: the new unit gets them again.
+resource "msgraph_resource" "scoped_role_member" {
+  for_each = var.scoped_role_members
+
+  url         = "directory/administrativeUnits/${msgraph_resource.this.id}/scopedRoleMembers"
+  api_version = "v1.0"
+  body = {
+    roleId = lower(each.value.role_id)
+    roleMemberInfo = {
+      id = lower(each.value.member_id)
+    }
+  }
+
+  # The response adds the member's displayName and userPrincipalName and the
+  # unit's id next to the sent values.
+  ignore_missing_property = true
+
+  retry = {
+    error_message_regex = local.replication_delay_errors
+  }
+
+  lifecycle {
+    replace_triggered_by = [terraform_data.scoped_role_member[each.key]]
   }
 }

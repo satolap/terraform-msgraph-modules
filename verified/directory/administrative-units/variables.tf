@@ -73,7 +73,7 @@ variable "membership_rule_processing_state" {
 }
 
 variable "member_ids" {
-  description = "Object IDs of the users, groups and devices that are the members of the unit. Null leaves the members unmanaged and creates no member resource. A list, including an empty one, is authoritative: the module adds the IDs that are missing and removes every other member. The list itself must be known at plan time; the IDs in it can come from resources that the same apply creates. Rejected when membership_type is \"Dynamic\". The module uses the IDs in lower case."
+  description = "Object IDs of the users, groups and devices that are the members of the unit; a device is named by its object ID, not its deviceId. Null leaves the members unmanaged and creates no member resource. A list, including an empty one, is authoritative: the module adds the IDs that are missing and removes every other member. The list itself must be known at plan time; the IDs in it can come from resources that the same apply creates. Rejected when membership_type is \"Dynamic\". The module uses the IDs in lower case."
   type        = list(string)
   default     = null
 
@@ -87,5 +87,45 @@ variable "member_ids" {
   validation {
     condition     = var.member_ids == null ? true : try(length(distinct([for id in var.member_ids : lower(id)])) == length(var.member_ids), false)
     error_message = "member_ids must name each object once; IDs that differ only in case name the same object."
+  }
+}
+
+variable "scoped_role_members" {
+  description = "Microsoft Entra role assignments that are limited to this unit, one scopedRoleMembership per entry, keyed by a name that you choose (Microsoft Learn: Add a scopedRoleMember). The keys must be known at plan time; role_id and member_id can be IDs of objects that the same apply creates. role_id is the object ID of the activated directoryRole, not the ID of its role template or role definition; member_id is the object ID of the user that holds the role. Learn documents no update, so changing a pair replaces that assignment. The map is not authoritative: an assignment that an administrator added is neither read nor removed. Each administrator needs Microsoft Entra ID P1. Null is treated as an empty map and assigns nothing. Renaming a key replaces the assignment."
+  type = map(object({
+    role_id   = string
+    member_id = string
+  }))
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for m in values(var.scoped_role_members) : can(regex("^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$", try(m.role_id, "")))
+    ])
+    error_message = "scoped_role_members role_id must be the object ID of a directory role, a GUID."
+  }
+
+  validation {
+    condition = alltrue([
+      for m in values(var.scoped_role_members) : can(regex("^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$", try(m.member_id, "")))
+    ])
+    error_message = "scoped_role_members member_id must be the object ID of the member, a GUID."
+  }
+
+  validation {
+    condition     = try(length(distinct([for m in values(var.scoped_role_members) : "${lower(m.role_id)}/${lower(m.member_id)}"])) == length(var.scoped_role_members), false)
+    error_message = "scoped_role_members must name each role and member pair once; IDs that differ only in case name the same pair."
+  }
+}
+
+variable "name_pattern" {
+  description = "Regular expression (RE2 syntax, not anchored unless it says so) that display_name must match, such as the pattern of a naming convention. When it is set and display_name does not match, the plan fails. Null, the default, accepts any display_name."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.name_pattern == null || can(regexall(var.name_pattern, ""))
+    error_message = "name_pattern must be a valid regular expression (RE2 syntax)."
   }
 }

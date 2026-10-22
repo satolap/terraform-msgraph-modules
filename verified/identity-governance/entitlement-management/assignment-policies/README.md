@@ -170,7 +170,7 @@ module "engineering_policy" {
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.3.0 |
 
 The configuring identity/application needs the `EntitlementManagement.ReadWrite.All`
@@ -226,8 +226,9 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
-| access_package_id | ID of the access package this policy applies to | `string` | n/a | yes |
+| access_package_id | ID of the access package this policy applies to; a change replaces the policy | `string` | n/a | yes |
 | display_name | Display name of the policy (1-90 characters) | `string` | n/a | yes |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
 | description | Description of the policy | `string` | `null` | no |
 | allowed_target_scope | Who can be assigned via this policy (see `accessPackageAssignmentPolicy.allowedTargetScope` values) | `string` | `"notSpecified"` | no |
 | specific_allowed_targets | Principals allowed when allowed_target_scope is a "specific*" value | `list(object)` | `[]` | no |
@@ -483,12 +484,57 @@ The module does not check the link or the billing.
   `undeclared_custom_extension_bindings` is known after apply. In a `terraform test` run with
   `command = plan` that creates a policy through this module, that is an error
   ("Check block assertion known after apply"), and `expect_failures` cannot name a check inside
-  a module. Run it with `command = apply`, or with Terraform 1.7 or later add an
+  a module. Run it with `command = apply`, or add an
   `override_module` block for the module.
 - `api_version = "beta"` sends the same body, including `customExtensionStageSettings`,
   `reviewSettings` and both question types. The documented contract is v1.0, and beta is not
   verified.
 - Verified with mocked providers only. Live test status: not verified in a licensed tenant.
+
+## Changing the access package
+
+Microsoft Learn documents the policy's `accessPackage` relationship as
+[read-only](https://learn.microsoft.com/en-us/graph/api/resources/accesspackageassignmentpolicy?view=graph-rest-1.0#relationships).
+The [update](https://learn.microsoft.com/en-us/graph/api/accesspackageassignmentpolicy-update?view=graph-rest-1.0)
+is a full-body `PUT` whose body must carry `accessPackage.id`, but it is not documented to move
+a policy to another access package. A change of `access_package_id` therefore replaces the
+policy (`terraform_data.immutable` and `replace_triggered_by`) instead of sending a `PUT` that
+names another package. This also happens when the access package itself is replaced, for
+example because its catalog changed: the policy follows the new package id.
+
+- The new policy is created before the old one is deleted, and it has a new `id`. Existing
+  assignments stay with the old policy and the old access package; they are not moved to the
+  new package. Learn's
+  [tutorial](https://learn.microsoft.com/en-us/graph/tutorial-access-package-api#step-4-clean-up-resources)
+  says to remove all assignments before deleting a policy, so Microsoft Graph may refuse to
+  delete a policy that still has assignments. The apply then fails after the new policy is
+  created, and Terraform keeps the old policy as a deposed object that every later apply tries
+  to delete again. To move the users, remove their assignments and have them request the new
+  package.
+- Terraform updates `terraform_data.immutable` before it replaces the policy. Had the old policy
+  been deleted first, a refused delete would leave the trigger at the new package, and the next
+  plan would no longer replace the policy. Created first, the new policy is in the state before
+  the delete runs.
+- If an apply fails after that trigger update and before the new policy exists, for example
+  because Graph refuses to create it, the next plan sees no trigger change and keeps the old
+  policy. An update never sends another access package (`ignore_changes` on
+  `body.accessPackage`), and a postcondition fails that plan with the policy id and both
+  package ids instead of letting it look complete. Fix the cause, then plan and apply with
+  `-replace` set to the address of this module's `msgraph_resource.assignment_policy`
+  (`tests/failed_replacement.tftest.hcl`). Terraform keeps no record of a replacement that did
+  not start, so this one step is manual.
+- Because the policy is created first, Terraform also creates first any resource it refers to
+  whenever that resource is replaced, such as a group named as a target, approver or reviewer,
+  as it does for the conditional access policy module. Where the old and the new object cannot
+  exist together, such as two Microsoft 365 groups with the same mail nickname, that
+  replacement fails: give the new object another unique value, or remove the reference from
+  the policy first.
+- `access_package_id` is compared in lower case, so a change of letter case alone keeps the
+  policy and sends no request: an update keeps the access package id the policy was created
+  with.
+- The first apply of a module version that adds `terraform_data.immutable` only creates it and
+  does not replace the policy (`tests/upgrade/destroy-cleanup/tests/assignment_policy_replacement.tftest.hcl`). Change
+  `access_package_id` in a later apply.
 
 ## Upgrading from a release without custom extension bindings
 
@@ -550,7 +596,14 @@ folder. `tests/assignment_policy.tftest.hcl` covers the base body and validation
 previous release built, `tests/questions.tftest.hcl` covers both question types and their
 validations, `tests/review_settings.tftest.hcl` covers the review bodies, a reviewer group that
 the same apply creates and every review validation, and the `custom_extension_*` files cover
-the bindings, their guards and read-back. A mock provider does not read the error messages, so
+the bindings, their guards and read-back. `tests/upgrade/destroy-cleanup/tests/assignment_policy_replacement.tftest.hcl` (repository
+root, Terraform 1.11 or later, run by `make ci-terraform` and the Linux compatibility jobs) checks
+that a new `access_package_id` replaces the policy, that updatable changes and a change of
+letter case keep it, and that upgrading from the previous release replaces nothing;
+`tests/replaced_package.tftest.hcl` replaces the access package and the policy in one apply,
+and `tests/failed_replacement.tftest.hcl` covers a replacement that failed after the trigger
+changed.
+A mock provider does not read the error messages, so
 Python tests (`tests/test_assignment_policy_custom_extensions.py` and
 `tests/test_assignment_policy_reviews_questions.py`) check the wording of every validation.
 `tests/integration` holds the live suite, which does not cover questions or reviews yet.

@@ -65,7 +65,7 @@ run "grants_member_role" {
   }
 
   assert {
-    condition     = data.msgraph_resource.resource_roles.url == "identityGovernance/entitlementManagement/catalogs/11111111-1111-1111-1111-111111111111/resourceRoles"
+    condition     = data.msgraph_resource.resource_roles[0].url == "identityGovernance/entitlementManagement/catalogs/11111111-1111-1111-1111-111111111111/resourceRoles"
     error_message = "Roles must be resolved from the catalog's resourceRoles endpoint."
   }
 
@@ -102,6 +102,20 @@ run "grants_member_role" {
   assert {
     condition     = output.resource_origin_id == "33333333-3333-3333-3333-333333333333"
     error_message = "resource_origin_id output must expose the resource's origin id from the lookup."
+  }
+
+  assert {
+    condition = (
+      join(",", sort(keys(msgraph_resource_action.resource_role_scope.body.role))) == "displayName,originId,originSystem,resource" &&
+      join(",", sort(keys(msgraph_resource_action.resource_role_scope.body.role.resource))) == "id,originId,originSystem" &&
+      join(",", sort(keys(msgraph_resource_action.resource_role_scope.body.scope))) == "displayName,isRootScope,originId,originSystem"
+    )
+    error_message = "Non-Azure bodies must keep their earlier fields; a changed body would re-run the create action on existing deployments."
+  }
+
+  assert {
+    condition     = length(data.msgraph_resource.azure_resource) == 0 && output.available_scopes == []
+    error_message = "Non-Azure origin systems must not read the Azure catalog resource."
   }
 }
 

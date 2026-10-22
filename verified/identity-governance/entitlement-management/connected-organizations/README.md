@@ -112,11 +112,11 @@ With the values above `specific_allowed_target` is
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.5.0 |
 
-Terraform 1.5 is the first version with `check` blocks. The offline test suite needs Terraform
-1.7 or later. The module sets minimum versions only; set upper bounds in your root module.
+Terraform 1.5 is the first version with `check` blocks. The module and its offline test suite need
+Terraform 1.11 or later. The module sets minimum versions only; set upper bounds in your root module.
 `microsoft/msgraph` 0.5.0 is the first release that does not abort a sponsor collection with
 "Provider produced inconsistent final plan" when its IDs mix values known during the plan
 with values known only during the same apply
@@ -307,6 +307,7 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | display_name | Display name of the organization; not empty | `string` | n/a | yes |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
 | identity_sources | At least one `{ type, tenant_id, domain_name, display_name }`: `type` is `tenant` (with a GUID `tenant_id`), `tenant_domain` (with `domain_name`, looked up during the plan, no `display_name`) or `domain` (with `domain_name`); each tenant ID and domain name at most once; sent in order and in place | `list(object)` | n/a | yes |
 | description | Description; always sent, as `null` when unset | `string` | `null` | no |
 | state | `configured` or `proposed` | `string` | `"configured"` | no |
@@ -328,7 +329,7 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 ## Tests
 
 `tests/connected_organization.tftest.hcl` and `tests/identity_source_conflict_on_create.tftest.hcl`
-run offline against a mock provider and need Terraform 1.7 or later: `terraform init` and
+run offline against a mock provider and need Terraform 1.11 or later: `terraform init` and
 `terraform test` in this folder. They cover the body of each identity source type and of several
 together, the tenant lookup through a mocked data source and its failure, the request, update
 method and drift settings, in-place updates that keep the id, the description sent as `null`, the

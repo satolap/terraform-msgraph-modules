@@ -51,7 +51,7 @@ does not replace the access package. Change `catalog_id` in a later apply.
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.3.0 |
 
 The configuring identity/application needs the `EntitlementManagement.ReadWrite.All`
@@ -79,6 +79,7 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 |------|-------------|------|---------|----------|
 | catalog_id | ID of the catalog this access package belongs to; a change replaces the access package | `string` | n/a | yes |
 | display_name | Display name of the access package (1-90 characters) | `string` | n/a | yes |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
 | description | Description of the access package | `string` | `null` | no |
 | is_hidden | Whether the access package is hidden from requestors | `bool` | `false` | no |
 | api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |

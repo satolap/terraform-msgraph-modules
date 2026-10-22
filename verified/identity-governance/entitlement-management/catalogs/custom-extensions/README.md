@@ -92,11 +92,11 @@ of its own catalog.
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.3.0 |
 
-Terraform 1.5 is the first version with `check` blocks. The offline test suite needs Terraform
-1.7 or later. The module sets minimum versions only; set upper bounds in your root module.
+Terraform 1.5 is the first version with `check` blocks. The module and its offline test suite need
+Terraform 1.11 or later. The module sets minimum versions only; set upper bounds in your root module.
 
 | Operation | Least privileged application permission | Least privileged delegated roles |
 | --- | --- | --- |
@@ -284,7 +284,7 @@ Sources: [Microsoft Entra features by license](https://learn.microsoft.com/en-us
 ## Tests
 
 `tests/custom_extension.tftest.hcl` runs offline against a mock provider and needs Terraform
-1.7 or later: `terraform init` and `terraform test` in this folder. It covers both body
+1.11 or later: `terraform init` and `terraform test` in this folder. It covers both body
 shapes, the request, update method and drift settings, the replacement of the extension when
 the type or catalog changes, the description sent as `null`, the outputs and the `binding`
 merge, each check, `name_pattern`, and every validation. A mock provider evaluates none of the

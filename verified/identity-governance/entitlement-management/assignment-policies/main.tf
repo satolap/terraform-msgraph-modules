@@ -289,6 +289,30 @@ data "msgraph_resource" "catalog_extensions" {
   }
 }
 
+# Microsoft Learn documents the policy's accessPackage relationship as
+# read-only. The update is a full-body PUT that must carry accessPackage.id,
+# and Learn does not say that it can move the policy to another access
+# package. A change of access_package_id therefore replaces the policy instead
+# of sending a PUT that names another package. The id is compared in lower
+# case, so a change of letter case alone keeps the policy.
+#
+# The new policy is created before the old one is deleted. Existing
+# assignments stay with the old policy, and Graph may refuse to delete a policy
+# that still has assignments. Terraform updates this trigger before it replaces
+# the policy, so a replacement that deleted the old policy first and failed
+# would leave the trigger at the new package and the next plan would send an
+# in-place PUT naming it. Created first, the new policy is in the state before
+# the delete runs, and a refused delete leaves the old policy deposed, which
+# every later apply deletes again. Terraform then also creates first any
+# resource this policy refers to whenever that resource is replaced, such as
+# a group named as a target, approver or reviewer, as the conditional access
+# policy module already does.
+resource "terraform_data" "immutable" {
+  input = {
+    access_package_id = lower(var.access_package_id)
+  }
+}
+
 resource "msgraph_resource" "assignment_policy" {
   url         = "identityGovernance/entitlementManagement/assignmentPolicies"
   api_version = var.api_version
@@ -310,6 +334,27 @@ resource "msgraph_resource" "assignment_policy" {
   }
 
   lifecycle {
+    create_before_destroy = true
+    replace_triggered_by  = [terraform_data.immutable]
+
+    # accessPackage is sent when the policy is created; Terraform plans a create
+    # from the full configuration. An in-place update keeps the access package
+    # the policy was created for, because the relationship is read-only. So a
+    # change of letter case alone sends no PUT, and an update never names
+    # another package.
+    ignore_changes = [body.accessPackage]
+
+    # Terraform updates terraform_data.immutable before it replaces the policy.
+    # When an apply fails after that update and before the replacement exists,
+    # for example because Graph refuses to create it, the next plan sees no
+    # trigger change and keeps the old policy. Its planned body then still names
+    # the old package, which this check reports instead of a plan that looks
+    # complete.
+    postcondition {
+      condition     = lower(self.body.accessPackage.id) == lower(var.access_package_id)
+      error_message = "Policy ${self.id} belongs to access package ${self.body.accessPackage.id}, but access_package_id is ${var.access_package_id}. The access package of a policy cannot change, so the policy must be replaced; an earlier apply changed the replacement trigger and then failed before the replacement policy was created. Fix the cause of that failure, then plan and apply with -replace set to the address of this module's msgraph_resource.assignment_policy."
+    }
+
     precondition {
       condition     = !local.has_expiration_stage || var.expiration.type != "noExpiration"
       error_message = "custom_extension_stage_settings binds an expiration stage (assignmentFourteenDaysBeforeExpiration or assignmentOneDayBeforeExpiration), but expiration.type is \"noExpiration\". These stages run only for assignments that expire; set expiration.type to \"afterDuration\" or \"afterDateTime\", or remove the binding."
@@ -318,6 +363,10 @@ resource "msgraph_resource" "assignment_policy" {
     precondition {
       condition     = length(local.missing_extension_ids) == 0
       error_message = "custom_extension_stage_settings names custom extensions that are not in the catalog of access package ${var.access_package_id} (catalog ${local.catalog_id}): ${join(", ", local.missing_extension_ids)}. A policy can use only the custom extensions of its own catalog."
+    }
+    precondition {
+      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.display_name))
+      error_message = "display_name \"${var.display_name}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set display_name to a value that matches, or change name_pattern."
     }
   }
 }

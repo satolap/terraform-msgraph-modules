@@ -13,9 +13,23 @@ What the module manages, and what it does not:
   object IDs. Null leaves the members unmanaged and creates no member resource. A list,
   including an empty one, is authoritative: the module adds the IDs that are missing and
   removes every other member, including members added outside Terraform.
-- **No role assignments.** The module assigns no role over the unit. Use
-  `directory_scope_id` as the `directoryScopeId` of a role assignment made elsewhere.
-- **No groups created inside the unit,** no open extensions, and no restore of a deleted unit.
+- **Scoped role members, when you ask for them.** `scoped_role_members` is a map, with keys
+  that you choose, of `{ role_id, member_id }` pairs, each a Microsoft Entra role assignment
+  limited to this unit
+  (`directory/administrativeUnits/{id}/scopedRoleMembers`). The map is additive, not
+  authoritative: assignments that were added elsewhere are neither read nor removed. Learn
+  documents no update for one, so a changed pair (or a renamed key) deletes the old assignment
+  and creates the new one. The keys are known at plan time, so `role_id` and `member_id` can be
+  IDs of objects that the same apply creates. Renaming a key while keeping the same pair runs a
+  create and a delete with no ordering between them: the create can conflict with the
+  assignment that still exists, and a second apply clears it. The repository has no verified module for tenant `roleManagement/directory/roleAssignments`,
+  so this input is the one writer for scoped role members of the unit; do not also make the same
+  assignment with a `roleAssignments` resource whose `directoryScopeId` is `directory_scope_id`.
+  A role assignment of another kind (for example a custom role, or one made through
+  `verified/role-management/directory/role-schedules`) can still use `directory_scope_id`.
+- **Not supported:** groups created inside the unit, open extensions (the documented
+  `extensions` relationship), and the restore of a deleted unit. The Graph v1.0 administrativeUnit
+  resource has no other writable property than the ones above.
 - **Every managed key is in the body,** on create and on update, except the dynamic rule and
   its processing state, which are sent only for a dynamic unit. Microsoft Learn says that an
   update keeps the properties its body omits, so the module sends `description` and
@@ -83,15 +97,37 @@ module "sales_unit" {
 }
 ```
 
-A role assignment over the unit, made outside this module, takes `directory_scope_id`
-(`/administrativeUnits/{id}`) as its `directoryScopeId`:
+A unit with a user, a group and a device as members, and a user who holds a role over the unit.
+`role_id` is the object ID of the directory role as activated in the tenant (the `id` of
+`/directoryRoles`, not the `roleTemplateId` and not a role definition ID):
+
+```hcl
+module "devices_unit" {
+  source  = "satolap/modules/msgraph//verified/directory/administrative-units"
+  version = "<version>"
+
+  display_name = "Contoso devices"
+  member_ids   = [var.user_object_id, var.group_object_id, var.device_object_id]
+
+  scoped_role_members = {
+    partner_groups_administrator = {
+      role_id   = var.groups_administrator_directory_role_id
+      member_id = var.partner_administrator_id
+    }
+  }
+}
+```
+
+A role assignment of another kind over the unit, such as a custom role, takes
+`directory_scope_id` (`/administrativeUnits/{id}`) as its `directoryScopeId`. Do not make the
+same assignment as a scoped role member and as a `roleAssignments` resource.
 
 ```hcl
 resource "msgraph_resource" "partner_groups_administrator" {
   url = "roleManagement/directory/roleAssignments"
   body = {
     principalId      = var.partner_administrator_id
-    roleDefinitionId = var.groups_administrator_role_definition_id
+    roleDefinitionId = var.custom_role_definition_id
     directoryScopeId = module.partner_unit.directory_scope_id
   }
 }
@@ -101,10 +137,10 @@ resource "msgraph_resource" "partner_groups_administrator" {
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
+| terraform | >= 1.11.0 |
 | msgraph | >= 0.5.0 |
 
-The offline test suite needs Terraform 1.7 or later. The module sets minimum versions only; set
+The offline test suite needs the same Terraform minimum. The module sets minimum versions only; set
 upper bounds in your root module. The module needs `microsoft/msgraph` 0.5.0 or later, because
 `member_ids` can mix known IDs with IDs that are known only after apply, for example when one
 of several member groups is replaced, and the provider's 0.5.0 changelog fixes a "Provider
@@ -118,9 +154,14 @@ produced inconsistent final plan" error on `reference_ids` in that case.
 | [Read, to refresh](https://learn.microsoft.com/en-us/graph/api/administrativeunit-get?view=graph-rest-1.0) | `AdministrativeUnit.Read.All` | Directory Readers (basic properties), Global Reader |
 | [Add a member](https://learn.microsoft.com/en-us/graph/api/administrativeunit-post-members?view=graph-rest-1.0) | `AdministrativeUnit.ReadWrite.All` | Privileged Role Administrator |
 | [Remove a member](https://learn.microsoft.com/en-us/graph/api/administrativeunit-delete-members?view=graph-rest-1.0) | `AdministrativeUnit.ReadWrite.All` | Privileged Role Administrator |
+| [Assign a scoped role member](https://learn.microsoft.com/en-us/graph/api/administrativeunit-post-scopedrolemembers?view=graph-rest-1.0) | `RoleManagement.ReadWrite.Directory` | Privileged Role Administrator |
+| [Remove a scoped role member](https://learn.microsoft.com/en-us/graph/api/administrativeunit-delete-scopedrolemembers?view=graph-rest-1.0) | `RoleManagement.ReadWrite.Directory` | Privileged Role Administrator |
+| [Read a scoped role member, to refresh](https://learn.microsoft.com/en-us/graph/api/administrativeunit-get-scopedrolemembers?view=graph-rest-1.0) | `RoleManagement.Read.Directory` or `RoleManagement.ReadWrite.Directory` | Directory Readers, Global Reader |
 | [List the members, to refresh](https://learn.microsoft.com/en-us/graph/api/administrativeunit-list-members?view=graph-rest-1.0) | `AdministrativeUnit.Read.All`, and `Member.Read.Hidden` for a unit with hidden membership | Directory Readers, Global Reader |
 
-- Every write needs `AdministrativeUnit.ReadWrite.All`, which also covers the reads. Learn
+- Every write to the unit and its members needs `AdministrativeUnit.ReadWrite.All`, which also
+  covers the reads. `scoped_role_members` also needs `RoleManagement.ReadWrite.Directory` for
+  its writes and `RoleManagement.Read.Directory` (or the write permission) for its reads. Learn
   names Privileged Role Administrator as the least privileged role for each write.
 - The member resource reads the members with the list operation (`.../members`), not
   `.../members/$ref`. Learn says that an application without permission to read a member's
@@ -280,6 +321,10 @@ only. These checks are pending, and each needs a tenant and credentials:
 8. Three groups created in the same apply as the unit's members, and the replacement of one of
    them.
 9. Import of the unit and of its member resource, and the first plan after each.
+10. Scoped role members: assign a role over the unit with a directoryRole object ID that is
+    activated and one that is not yet activated, record what Graph returns, and check that the
+    next plan is empty and that changing a pair replaces the assignment. Whether a
+    roleDefinition or roleTemplate ID is also accepted as `roleId` is not verified.
 
 <!-- licensing:begin -->
 ## Licensing and prerequisites
@@ -290,15 +335,17 @@ Reviewed against public Microsoft documentation on 2026-09-18. Requirements depe
 | --- | --- | --- | --- | --- | --- |
 | Always | DIRECTORY-BASIC | The reviewed create APIs for users, assigned security groups, applications and service principals specify no additional premium license. This covers the object operation only; features built on these objects can require licenses. No additional license specified. | No per-user entitlement for the object operation itself | direct / per_tenant | documented |
 | `membership_type` is `"Dynamic"` | ADMIN-UNITS-DYNAMIC | Dynamic membership rules for administrative units require Microsoft Entra ID P1 coverage in the tenant for each unique user who is a member of one or more dynamic administrative units. Licenses do not have to be assigned to those users. Devices that are members of a dynamic administrative unit need no license. Any of: Microsoft Entra ID P1 (`AAD_PREMIUM`). | Each unique user who is a member of any dynamic administrative unit | group_based / per_tenant | documented |
+| `scoped_role_members` is set | ADMIN-UNITS | Creating administrative units is available with Microsoft Entra ID Free, and their members need only Microsoft Entra ID Free. Each administrator who is assigned a Microsoft Entra role at the scope of an administrative unit, including a restricted management administrative unit, needs Microsoft Entra ID P1. Any of: Microsoft Entra ID P1 (`AAD_PREMIUM`). | Each administrator assigned a Microsoft Entra role scoped to the administrative unit; the members of the unit need only Microsoft Entra ID Free | direct / per_user | documented |
 
 Notes:
 
-- Creating an administrative unit and managing its members is available with Microsoft Entra ID Free, so the baseline is DIRECTORY-BASIC. The module assigns no role: the ADMIN-UNITS rule, Microsoft Entra ID P1 for each administrator assigned a role scoped to the unit, applies to the configuration that makes such an assignment. See [Administrative units license requirements](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/administrative-units#license-requirements).
+- Creating an administrative unit and managing its members is available with Microsoft Entra ID Free, so the baseline is DIRECTORY-BASIC. The module assigns a role over the unit only through scoped_role_members: the ADMIN-UNITS rule, Microsoft Entra ID P1 for each administrator assigned a role scoped to the unit, applies when that input is set, and to any role assignment over the unit that another configuration makes. See [Administrative units license requirements](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/administrative-units#license-requirements).
 - Learn lists dynamic membership rules for administrative units as available in the global Azure cloud only, not in specialized clouds such as Azure Government or Microsoft Azure operated by 21Vianet.
 - The administrative unit rules were reviewed against Microsoft Learn on 2026-10-07, which is later than the review date stated above.
+- When `scoped_role_members` is set: Each administrator that scoped_role_members assigns a Microsoft Entra role at the scope of the unit needs Microsoft Entra ID P1.
 - When `is_member_management_restricted` is `true`: A restricted management administrative unit has the same license rule as any other unit. Microsoft Learn says that the groups and users in such a unit cannot be managed with Microsoft Entra ID Governance features such as entitlement management, access reviews, lifecycle workflows and Privileged Identity Management, so do not use one for groups that an access package grants.
 
-Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-users?view=graph-rest-1.0), [Create group](https://learn.microsoft.com/en-us/graph/api/group-post-groups?view=graph-rest-1.0), [Create application](https://learn.microsoft.com/en-us/graph/api/application-post-applications?view=graph-rest-1.0), [Create servicePrincipal](https://learn.microsoft.com/en-us/graph/api/serviceprincipal-post-serviceprincipals?view=graph-rest-1.0), [Dynamic membership rules for administrative units prerequisites](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/admin-units-members-dynamic#prerequisites), [Administrative units license requirements](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/administrative-units#license-requirements).
+Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-users?view=graph-rest-1.0), [Create group](https://learn.microsoft.com/en-us/graph/api/group-post-groups?view=graph-rest-1.0), [Create application](https://learn.microsoft.com/en-us/graph/api/application-post-applications?view=graph-rest-1.0), [Create servicePrincipal](https://learn.microsoft.com/en-us/graph/api/serviceprincipal-post-serviceprincipals?view=graph-rest-1.0), [Dynamic membership rules for administrative units prerequisites](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/admin-units-members-dynamic#prerequisites), [Administrative units license requirements](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/administrative-units#license-requirements), [Restricted management administrative units license requirements](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/admin-units-restricted-management#license-requirements).
 <!-- licensing:end -->
 
 ## Inputs
@@ -306,13 +353,15 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | display_name | Display name; not empty, at most 256 characters | `string` | n/a | yes |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
 | description | Description; always sent, as `null` when unset | `string` | `null` | no |
 | visibility | `null` (public) or `HiddenMembership`; always sent, as `null` when unset | `string` | `null` | no |
 | is_member_management_restricted | Restricted management unit; a change replaces the unit | `bool` | `false` | no |
 | membership_type | `Assigned` or `Dynamic` | `string` | `"Assigned"` | no |
 | membership_rule | Dynamic membership rule; required for `Dynamic`, rejected for `Assigned` | `string` | `null` | no |
 | membership_rule_processing_state | `On` or `Paused`; null sends `On` for `Dynamic`; rejected for `Assigned` | `string` | `null` | no |
-| member_ids | Object IDs of users, groups and devices; null leaves the members unmanaged, a list is authoritative; GUIDs, each once; rejected for `Dynamic` | `list(string)` | `null` | no |
+| member_ids | Object IDs of users, groups and devices (a device by its object ID, not its deviceId); null leaves the members unmanaged, a list is authoritative; GUIDs, each once; rejected for `Dynamic` | `list(string)` | `null` | no |
+| scoped_role_members | Entra role assignments limited to the unit, map of `{ role_id, member_id }` entries under keys you choose; `role_id` is the activated directoryRole object ID, not the role template or definition ID; additive; GUIDs, each pair once; `null` counts as `{}` | `map(object)` | `{}` | no |
 
 ## Outputs
 
@@ -325,11 +374,14 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 | membership_type | `Assigned` or `Dynamic` |
 | visibility | `null` or `HiddenMembership` |
 | member_ids | The managed member IDs in lower case, read from the member resource; `null` when the members are not managed |
+| scoped_role_member_ids | scopedRoleMembership IDs, keyed like `scoped_role_members`; empty when none are managed |
 
 ## Tests
 
+`tests/scoped_role_members.tftest.hcl` covers `scoped_role_members` (one resource per entry,
+body, replacement, a member created in the same configuration, validation) and members that are users, groups and devices.
 `tests/administrative_unit.tftest.hcl` runs offline against a mock provider and needs Terraform
-1.7 or later: `terraform init` and `terraform test` in this folder. It covers the body of an
+1.11 or later: `terraform init` and `terraform test` in this folder. It covers the body of an
 assigned, a dynamic and a restricted unit, values cleared to `null`, the member resource for
 null, empty and listed `member_ids` with its URL and lower-cased references, in-place updates,
 the replacement when the restriction changes, every validation and precondition, the outputs,

@@ -144,9 +144,12 @@ run "refresh_created" {
 }
 
 # PATCH in place: rename, disabled to report-only, add a break-glass group,
-# change client app types and add the country location. The grant operator stays "OR":
-# with the one non-prompting control (mfa) Microsoft Graph stores "OR" anyway, and the
-# module refuses "AND" with a single control (offline test).
+# change client app types, add the country location, and change the grant
+# control from mfa to block, so the PATCH carries grantControls. The grant
+# operator stays "OR": Microsoft Graph stores "OR" for a single control, and the
+# module refuses "AND" with one (offline test). Every built-in control that can
+# be combined with mfa, and terms of use, can prompt users, so no combination of
+# controls is tested live.
 run "update_in_place" {
   command = apply
 
@@ -159,7 +162,7 @@ run "update_in_place" {
     applications          = { include_applications = ["All"] }
     client_app_types      = ["all"]
     locations             = { include_locations = [run.setup.ip_location_id, run.setup.country_location_id] }
-    grant_controls        = { operator = "OR", built_in_controls = ["mfa"] }
+    grant_controls        = { operator = "OR", built_in_controls = ["block"] }
   }
 
   # Only the id is asserted here: after an update the provider waits for the
@@ -202,8 +205,8 @@ run "verify_updated" {
   }
 
   assert {
-    condition     = jsonencode(output.configuration.grant_controls) == jsonencode({ authentication_strength_id = null, built_in_controls = ["mfa"], operator = "OR", terms_of_use = [] })
-    error_message = "A fresh GET must return the unchanged mfa grant control."
+    condition     = jsonencode(output.configuration.grant_controls) == jsonencode({ authentication_strength_id = null, built_in_controls = ["block"], operator = "OR", terms_of_use = [] })
+    error_message = "A fresh GET must return block as the only grant control."
   }
 }
 
@@ -223,7 +226,7 @@ run "refresh_updated" {
     applications          = { include_applications = ["All"] }
     client_app_types      = ["all"]
     locations             = { include_locations = [run.setup.ip_location_id, run.setup.country_location_id] }
-    grant_controls        = { operator = "OR", built_in_controls = ["mfa"] }
+    grant_controls        = { operator = "OR", built_in_controls = ["block"] }
   }
 
   assert {
@@ -249,7 +252,7 @@ run "refresh_updated" {
 
 # Presence change: remove the location condition, add a device filter, a
 # sign-in frequency session control and the built-in Multifactor
-# authentication strength (which replaces the mfa control). The policy is
+# authentication strength (which replaces the block control). The policy is
 # replaced, create before destroy.
 run "replace_on_presence_change" {
   command = apply
