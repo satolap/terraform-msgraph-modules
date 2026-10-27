@@ -4,7 +4,7 @@ variable "chat_type" {
   default     = null
 
   validation {
-    condition     = var.chat_type == null ? true : contains(["oneOnOne", "group", "meeting", "unknownFutureValue"], var.chat_type)
+    condition     = var.chat_type == null ? true : contains(["oneOnOne", "group", "meeting"], var.chat_type)
     error_message = "chat_type must be one of the documented enum values."
   }
 }
@@ -39,7 +39,7 @@ variable "migration_mode" {
   default     = null
 
   validation {
-    condition     = var.migration_mode == null ? true : contains(["inProgress", "completed", "unknownFutureValue"], var.migration_mode)
+    condition     = var.migration_mode == null ? true : contains(["inProgress", "completed"], var.migration_mode)
     error_message = "migration_mode must be one of the documented enum values."
   }
 }
@@ -69,6 +69,11 @@ variable "operations" {
     targetResourceLocation = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.operations == null ? true : alltrue([alltrue([for input0 in var.operations : (input0 == null ? true : alltrue([(input0["operationType"] == null ? true : alltrue([(input0["operationType"] == null ? true : contains(["invalid", "cloneTeam", "archiveTeam", "unarchiveTeam", "createTeam"], input0["operationType"]))])), (input0["status"] == null ? true : alltrue([(input0["status"] == null ? true : contains(["invalid", "notStarted", "inProgress", "succeeded", "failed"], input0["status"]))]))]))])]))
+    error_message = "operations: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "original_created_date_time" {
@@ -177,6 +182,7 @@ variable "targeted_messages" {
         createdDateTime    = optional(string)
         displayName        = optional(string)
         reactionContentUrl = optional(string)
+        reactionId         = optional(string)
         reactionType       = optional(string)
         user               = optional(any)
       }))
@@ -206,6 +212,7 @@ variable "targeted_messages" {
       createdDateTime    = optional(string)
       displayName        = optional(string)
       reactionContentUrl = optional(string)
+      reactionId         = optional(string)
       reactionType       = optional(string)
       user = optional(object({
         odata_type  = optional(string, "#microsoft.graph.chatMessageReactionIdentitySet")
@@ -220,6 +227,11 @@ variable "targeted_messages" {
     summary   = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.targeted_messages == null ? true : alltrue([alltrue([for input0 in var.targeted_messages : (input0 == null ? true : alltrue([(input0["body"] == null ? true : alltrue([(input0["body"]["contentType"] == null ? true : alltrue([(input0["body"]["contentType"] == null ? true : contains(["text", "html"], input0["body"]["contentType"]))])), (input0["body"]["messageBodyContentType"] == null ? true : alltrue([(input0["body"]["messageBodyContentType"] == null ? true : contains(["text", "html", "markdown"], input0["body"]["messageBodyContentType"]))]))])), (input0["importance"] == null ? true : alltrue([(input0["importance"] == null ? true : contains(["normal", "high", "urgent"], input0["importance"]))])), (input0["messageHistory"] == null ? true : alltrue([alltrue([for input2 in input0["messageHistory"] : (input2 == null ? true : alltrue([(input2["actions"] == null ? true : alltrue([(input2["actions"] == null ? true : try(alltrue([for value in split(",", input2["actions"]) : contains(["reactionadded", "reactionremoved", "actionundefined"], lower(trimspace(value)))]), false))]))]))])])), (input0["messageType"] == null ? true : alltrue([(input0["messageType"] == null ? true : contains(["message", "chatEvent", "typing"], input0["messageType"]))])), (input0["policyViolation"] == null ? true : alltrue([(input0["policyViolation"]["dlpAction"] == null ? true : alltrue([(input0["policyViolation"]["dlpAction"] == null ? true : try(alltrue([for value in split(",", input0["policyViolation"]["dlpAction"]) : contains(["none", "notifysender", "blockaccess", "blockaccessexternal"], lower(trimspace(value)))]), false))])), (input0["policyViolation"]["userAction"] == null ? true : alltrue([(input0["policyViolation"]["userAction"] == null ? true : try(alltrue([for value in split(",", input0["policyViolation"]["userAction"]) : contains(["none", "override", "reportfalsepositive"], lower(trimspace(value)))]), false))])), (input0["policyViolation"]["verdictDetails"] == null ? true : alltrue([(input0["policyViolation"]["verdictDetails"] == null ? true : try(alltrue([for value in split(",", input0["policyViolation"]["verdictDetails"]) : contains(["none", "allowfalsepositiveoverride", "allowoverridewithoutjustification", "allowoverridewithjustification"], lower(trimspace(value)))]), false))]))]))]))])]))
+    error_message = "targeted_messages: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "topic" {
@@ -236,6 +248,41 @@ variable "viewpoint" {
     lastMessageReadDateTime = optional(string)
   })
   default = null
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

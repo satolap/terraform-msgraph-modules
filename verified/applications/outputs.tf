@@ -5,7 +5,7 @@ output "id" {
 
 output "app_id" {
   description = "The application (client) ID. Pass this to the service-principals module's app_id to create the matching service principal."
-  value       = msgraph_resource.application.output.app_id
+  value       = terraform_data.app_id.input
 }
 
 output "display_name" {

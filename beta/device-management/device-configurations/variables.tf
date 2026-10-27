@@ -17,6 +17,11 @@ variable "assignments" {
     target     = optional(any)
   }))
   default = null
+
+  validation {
+    condition     = (var.assignments == null ? true : alltrue([alltrue([for input0 in var.assignments : (input0 == null ? true : alltrue([(input0["intent"] == null ? true : alltrue([(input0["intent"] == null ? true : contains(["apply", "remove"], input0["intent"]))]))]))])]))
+    error_message = "assignments: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "created_date_time" {
@@ -40,6 +45,11 @@ variable "device_management_applicability_rule_device_mode" {
     ruleType   = optional(string)
   })
   default = null
+
+  validation {
+    condition     = (var.device_management_applicability_rule_device_mode == null ? true : alltrue([(var.device_management_applicability_rule_device_mode["deviceMode"] == null ? true : alltrue([(var.device_management_applicability_rule_device_mode["deviceMode"] == null ? true : contains(["standardConfiguration", "sModeConfiguration"], var.device_management_applicability_rule_device_mode["deviceMode"]))])), (var.device_management_applicability_rule_device_mode["ruleType"] == null ? true : alltrue([(var.device_management_applicability_rule_device_mode["ruleType"] == null ? true : contains(["include", "exclude"], var.device_management_applicability_rule_device_mode["ruleType"]))]))]))
+    error_message = "device_management_applicability_rule_device_mode: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "device_management_applicability_rule_os_edition" {
@@ -51,6 +61,11 @@ variable "device_management_applicability_rule_os_edition" {
     ruleType       = optional(string)
   })
   default = null
+
+  validation {
+    condition     = (var.device_management_applicability_rule_os_edition == null ? true : alltrue([(var.device_management_applicability_rule_os_edition["osEditionTypes"] == null ? true : alltrue([alltrue([for input1 in var.device_management_applicability_rule_os_edition["osEditionTypes"] : (input1 == null ? true : alltrue([(input1 == null ? true : contains(["windows10Enterprise", "windows10EnterpriseN", "windows10Education", "windows10EducationN", "windows10MobileEnterprise", "windows10HolographicEnterprise", "windows10Professional", "windows10ProfessionalN", "windows10ProfessionalEducation", "windows10ProfessionalEducationN", "windows10ProfessionalWorkstation", "windows10ProfessionalWorkstationN", "notConfigured", "windows10Home", "windows10HomeChina", "windows10HomeN", "windows10HomeSingleLanguage", "windows10Mobile", "windows10IoTCore", "windows10IoTCoreCommercial"], input1))]))])])), (var.device_management_applicability_rule_os_edition["ruleType"] == null ? true : alltrue([(var.device_management_applicability_rule_os_edition["ruleType"] == null ? true : contains(["include", "exclude"], var.device_management_applicability_rule_os_edition["ruleType"]))]))]))
+    error_message = "device_management_applicability_rule_os_edition: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "device_management_applicability_rule_os_version" {
@@ -63,6 +78,11 @@ variable "device_management_applicability_rule_os_version" {
     ruleType     = optional(string)
   })
   default = null
+
+  validation {
+    condition     = (var.device_management_applicability_rule_os_version == null ? true : alltrue([(var.device_management_applicability_rule_os_version["ruleType"] == null ? true : alltrue([(var.device_management_applicability_rule_os_version["ruleType"] == null ? true : contains(["include", "exclude"], var.device_management_applicability_rule_os_version["ruleType"]))]))]))
+    error_message = "device_management_applicability_rule_os_version: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "device_setting_state_summaries" {
@@ -102,6 +122,11 @@ variable "device_statuses" {
     userPrincipalName                       = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.device_statuses == null ? true : alltrue([alltrue([for input0 in var.device_statuses : (input0 == null ? true : alltrue([(input0["status"] == null ? true : alltrue([(input0["status"] == null ? true : contains(["unknown", "notApplicable", "compliant", "remediated", "nonCompliant", "error", "conflict", "notAssigned"], input0["status"]))]))]))])]))
+    error_message = "device_statuses: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "display_name" {
@@ -156,6 +181,46 @@ variable "user_statuses" {
     userPrincipalName    = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.user_statuses == null ? true : alltrue([alltrue([for input0 in var.user_statuses : (input0 == null ? true : alltrue([(input0["status"] == null ? true : alltrue([(input0["status"] == null ? true : contains(["unknown", "notApplicable", "compliant", "remediated", "nonCompliant", "error", "conflict", "notAssigned"], input0["status"]))]))]))])]))
+    error_message = "user_statuses: nested required attributes must be non-null and enum values must be supported input members."
+  }
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

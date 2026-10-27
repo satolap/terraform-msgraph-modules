@@ -1,5 +1,28 @@
 # emergency-access-guard
 
+<!-- state-protection:start -->
+## State and plan protection
+
+This module's state and saved plans retain these declared values:
+
+Sensitive outputs: `conditional_access_users_exclusions`, `emergency_access_user_ids`, `exclude_groups`, `exclude_users`, `warnings`.
+Potential personal-data inputs: `expected_group_member_ids`.
+
+Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
+
+See [Terraform sensitive state guidance](https://developer.hashicorp.com/terraform/language/state/sensitive-data). These are exposure indicators, not a complete data classification; unmarked fields and provider responses also need protection.
+<!-- state-protection:end -->
+
+<!-- uses-beta:start -->
+Uses beta: **conditional**. When groups are configured, the guard reads members through beta because v1.0 omits service principals and cannot prove that all direct members are users (GB-security-baseline-509). Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Read-only checks of the emergency access (break-glass) accounts of the
 [security baseline](../README.md). The guard takes the object IDs of existing break-glass
 users and groups, fails the plan unless they exist and follow Microsoft's
@@ -261,27 +284,27 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| tier | `free`, `p1` or `p2` | `string` | n/a | yes |
-| break_glass_user_ids | Object IDs of existing emergency access users; 1 to 15 lowercase GUIDs | `set(string)` | n/a | yes |
-| break_glass_group_ids | Discovery-only group IDs; at most 15, never emitted as group exclusions | `set(string)` | `[]` | no |
-| minimum_accounts | Minimum number of resolved users, at least 1 | `number` | `2` | no |
-| require_onmicrosoft_upn | Require UPNs that end in `.onmicrosoft.com` | `bool` | `true` | no |
-| expected_group_member_ids | When set, the direct members of the groups, taken together, must equal it | `set(string)` | `null` | no |
-| require_role_assignable_group | Fail, instead of warn, when a group is not role-assignable | `bool` | `false` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| tier | `free`, `p1` or `p2` | `string` | n/a | yes | changes `module.licence_guard`; see the module notes |
+| break_glass_user_ids | Object IDs of existing emergency access users; 1 to 15 lowercase GUIDs | `set(string)` | n/a | yes | no object change (validation or timing only) |
+| break_glass_group_ids | Discovery-only group IDs; at most 15, never emitted as group exclusions | `set(string)` | `[]` | no | no object change (validation or timing only) |
+| minimum_accounts | Minimum number of resolved users, at least 1 | `number` | `2` | no | no object change (validation or timing only) |
+| require_onmicrosoft_upn | Require UPNs that end in `.onmicrosoft.com` | `bool` | `true` | no | no object change (validation or timing only) |
+| expected_group_member_ids | When set, the direct members of the groups, taken together, must equal it | `set(string)` | `null` | no | no object change (validation or timing only) |
+| require_role_assignable_group | Fail, instead of warn, when a group is not role-assignable | `bool` | `false` | no | no object change (validation or timing only) |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| exclude_users | Sorted snapshot of all validated resolved users, including discovery-group members, for `conditions.users.excludeUsers` |
-| exclude_groups | Always an empty `list(string)`; no mutable group ID is emitted for Conditional Access exclusion |
-| conditional_access_users_exclusions | `{ excludeUsers = validated resolved users, excludeGroups = [] }` for a policy and `verify` |
-| emergency_access_user_ids | The resolved user IDs: direct users plus group members, without duplicates |
-| tier | The tier, once the licence guard passes |
-| checks | Each check with its result: `passed`, `failed`, `warning` or `not_applicable` |
-| warnings | Findings that do not fail the plan |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| exclude_users | Sorted snapshot of all validated resolved users, including discovery-group members, for `conditions.users.excludeUsers` | no |
+| exclude_groups | Always an empty `list(string)`; no mutable group ID is emitted for Conditional Access exclusion | yes |
+| conditional_access_users_exclusions | `{ excludeUsers = validated resolved users, excludeGroups = [] }` for a policy and `verify` | no |
+| emergency_access_user_ids | The resolved user IDs: direct users plus group members, without duplicates | no |
+| tier | The tier, once the licence guard passes | no |
+| checks | Each check with its result: `passed`, `failed`, `warning` or `not_applicable` | no |
+| warnings | Findings that do not fail the plan | no |
 
 All outputs depend on the gate so their consumers wait for the checks. Identity and
 warning outputs are sensitive; `checks` exposes only fixed status labels. Inputs may come

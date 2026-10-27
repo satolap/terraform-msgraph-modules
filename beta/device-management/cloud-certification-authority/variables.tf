@@ -4,7 +4,7 @@ variable "certificate_key_size" {
   default     = null
 
   validation {
-    condition     = var.certificate_key_size == null ? true : contains(["unknown", "rsa2048", "rsa3072", "rsa4096", "eCP256", "eCP256k", "eCP384", "eCP521", "unknownFutureValue"], var.certificate_key_size)
+    condition     = var.certificate_key_size == null ? true : contains(["unknown", "rsa2048", "rsa3072", "rsa4096", "eCP256", "eCP256k", "eCP384", "eCP521"], var.certificate_key_size)
     error_message = "certificate_key_size must be one of the documented enum values."
   }
 }
@@ -15,7 +15,7 @@ variable "certification_authority_status" {
   default     = null
 
   validation {
-    condition     = var.certification_authority_status == null ? true : contains(["unknown", "active", "paused", "revoked", "signingPending", "unknownFutureValue", "expired"], var.certification_authority_status)
+    condition     = var.certification_authority_status == null ? true : contains(["unknown", "active", "paused", "revoked", "signingPending"], var.certification_authority_status)
     error_message = "certification_authority_status must be one of the documented enum values."
   }
 }
@@ -26,7 +26,7 @@ variable "cloud_certification_authority_hashing_algorithm" {
   default     = null
 
   validation {
-    condition     = var.cloud_certification_authority_hashing_algorithm == null ? true : contains(["unknown", "sha256", "sha384", "sha512", "unknownFutureValue"], var.cloud_certification_authority_hashing_algorithm)
+    condition     = var.cloud_certification_authority_hashing_algorithm == null ? true : contains(["unknown", "sha256", "sha384", "sha512"], var.cloud_certification_authority_hashing_algorithm)
     error_message = "cloud_certification_authority_hashing_algorithm must be one of the documented enum values."
   }
 }
@@ -38,6 +38,11 @@ variable "cloud_certification_authority_leaf_certificate" {
     certificateStatus = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.cloud_certification_authority_leaf_certificate == null ? true : alltrue([alltrue([for input0 in var.cloud_certification_authority_leaf_certificate : (input0 == null ? true : alltrue([(input0["certificateStatus"] == null ? true : alltrue([(input0["certificateStatus"] == null ? true : contains(["unknown", "active", "revoked", "expired"], input0["certificateStatus"]))]))]))])]))
+    error_message = "cloud_certification_authority_leaf_certificate: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "cloud_certification_authority_type" {
@@ -46,7 +51,7 @@ variable "cloud_certification_authority_type" {
   default     = null
 
   validation {
-    condition     = var.cloud_certification_authority_type == null ? true : contains(["unknown", "rootCertificationAuthority", "issuingCertificationAuthority", "issuingCertificationAuthorityWithExternalRoot", "unknownFutureValue"], var.cloud_certification_authority_type)
+    condition     = var.cloud_certification_authority_type == null ? true : contains(["unknown", "rootCertificationAuthority", "issuingCertificationAuthority", "issuingCertificationAuthorityWithExternalRoot"], var.cloud_certification_authority_type)
     error_message = "cloud_certification_authority_type must be one of the documented enum values."
   }
 }
@@ -81,7 +86,7 @@ variable "key_platform" {
   default     = null
 
   validation {
-    condition     = var.key_platform == null ? true : contains(["unknown", "software", "hardwareSecurityModule", "unknownFutureValue"], var.key_platform)
+    condition     = var.key_platform == null ? true : contains(["unknown", "software", "hardwareSecurityModule"], var.key_platform)
     error_message = "key_platform must be one of the documented enum values."
   }
 }
@@ -109,6 +114,41 @@ variable "validity_period_in_years" {
   description = "The certification authority validity period in years configured by admins."
   type        = number
   default     = null
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

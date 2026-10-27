@@ -72,6 +72,11 @@ variable "conditions" {
     }))
   })
   default = null
+
+  validation {
+    condition     = (var.conditions == null ? true : alltrue([(var.conditions["applications"] == null ? true : alltrue([(var.conditions["applications"]["applicationFilter"] == null ? true : alltrue([(var.conditions["applications"]["applicationFilter"]["mode"] == null ? true : alltrue([(var.conditions["applications"]["applicationFilter"]["mode"] == null ? true : contains(["include", "exclude"], var.conditions["applications"]["applicationFilter"]["mode"]))]))]))])), (var.conditions["authenticationFlows"] == null ? true : alltrue([(var.conditions["authenticationFlows"]["transferMethods"] == null ? true : alltrue([(var.conditions["authenticationFlows"]["transferMethods"] == null ? true : try(alltrue([for value in split(",", var.conditions["authenticationFlows"]["transferMethods"]) : contains(["none", "devicecodeflow", "authenticationtransfer"], lower(trimspace(value)))]), false))]))])), (var.conditions["clientAppTypes"] == null ? true : alltrue([alltrue([for input1 in var.conditions["clientAppTypes"] : (input1 == null ? true : alltrue([(input1 == null ? true : contains(["all", "browser", "mobileAppsAndDesktopClients", "exchangeActiveSync", "easSupported", "other"], input1))]))])])), (var.conditions["clientApplications"] == null ? true : alltrue([(var.conditions["clientApplications"]["servicePrincipalFilter"] == null ? true : alltrue([(var.conditions["clientApplications"]["servicePrincipalFilter"]["mode"] == null ? true : alltrue([(var.conditions["clientApplications"]["servicePrincipalFilter"]["mode"] == null ? true : contains(["include", "exclude"], var.conditions["clientApplications"]["servicePrincipalFilter"]["mode"]))]))]))])), (var.conditions["devices"] == null ? true : alltrue([(var.conditions["devices"]["deviceFilter"] == null ? true : alltrue([(var.conditions["devices"]["deviceFilter"]["mode"] == null ? true : alltrue([(var.conditions["devices"]["deviceFilter"]["mode"] == null ? true : contains(["include", "exclude"], var.conditions["devices"]["deviceFilter"]["mode"]))]))]))])), (var.conditions["insiderRiskLevels"] == null ? true : alltrue([(var.conditions["insiderRiskLevels"] == null ? true : try(alltrue([for value in split(",", var.conditions["insiderRiskLevels"]) : contains(["minor", "moderate", "elevated"], lower(trimspace(value)))]), false))])), (var.conditions["platforms"] == null ? true : alltrue([(var.conditions["platforms"]["excludePlatforms"] == null ? true : alltrue([alltrue([for input2 in var.conditions["platforms"]["excludePlatforms"] : (input2 == null ? true : alltrue([(input2 == null ? true : contains(["android", "iOS", "windows", "windowsPhone", "macOS", "all"], input2))]))])])), (var.conditions["platforms"]["includePlatforms"] == null ? true : alltrue([alltrue([for input2 in var.conditions["platforms"]["includePlatforms"] : (input2 == null ? true : alltrue([(input2 == null ? true : contains(["android", "iOS", "windows", "windowsPhone", "macOS", "all"], input2))]))])]))])), (var.conditions["servicePrincipalRiskLevels"] == null ? true : alltrue([alltrue([for input1 in var.conditions["servicePrincipalRiskLevels"] : (input1 == null ? true : alltrue([(input1 == null ? true : contains(["low", "medium", "high", "hidden", "none"], input1))]))])])), (var.conditions["signInRiskLevels"] == null ? true : alltrue([alltrue([for input1 in var.conditions["signInRiskLevels"] : (input1 == null ? true : alltrue([(input1 == null ? true : contains(["low", "medium", "high", "hidden", "none"], input1))]))])])), (var.conditions["userRiskLevels"] == null ? true : alltrue([alltrue([for input1 in var.conditions["userRiskLevels"] : (input1 == null ? true : alltrue([(input1 == null ? true : contains(["low", "medium", "high", "hidden", "none"], input1))]))])])), (var.conditions["users"] == null ? true : alltrue([(var.conditions["users"]["excludeGuestsOrExternalUsers"] == null ? true : alltrue([(var.conditions["users"]["excludeGuestsOrExternalUsers"]["guestOrExternalUserTypes"] == null ? true : alltrue([(var.conditions["users"]["excludeGuestsOrExternalUsers"]["guestOrExternalUserTypes"] == null ? true : try(alltrue([for value in split(",", var.conditions["users"]["excludeGuestsOrExternalUsers"]["guestOrExternalUserTypes"]) : contains(["none", "internalguest", "b2bcollaborationguest", "b2bcollaborationmember", "b2bdirectconnectuser", "otherexternaluser", "serviceprovider"], lower(trimspace(value)))]), false))]))])), (var.conditions["users"]["includeGuestsOrExternalUsers"] == null ? true : alltrue([(var.conditions["users"]["includeGuestsOrExternalUsers"]["guestOrExternalUserTypes"] == null ? true : alltrue([(var.conditions["users"]["includeGuestsOrExternalUsers"]["guestOrExternalUserTypes"] == null ? true : try(alltrue([for value in split(",", var.conditions["users"]["includeGuestsOrExternalUsers"]["guestOrExternalUserTypes"]) : contains(["none", "internalguest", "b2bcollaborationguest", "b2bcollaborationmember", "b2bdirectconnectuser", "otherexternaluser", "serviceprovider"], lower(trimspace(value)))]), false))]))]))]))]))
+    error_message = "conditions: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "deleted_date_time" {
@@ -103,6 +108,11 @@ variable "grant_controls" {
     termsOfUse                  = optional(list(string))
   })
   default = null
+
+  validation {
+    condition     = (var.grant_controls == null ? true : alltrue([(var.grant_controls["builtInControls"] == null ? true : alltrue([alltrue([for input1 in var.grant_controls["builtInControls"] : (input1 == null ? true : alltrue([(input1 == null ? true : contains(["block", "mfa", "compliantDevice", "domainJoinedDevice", "approvedApplication", "compliantApplication", "passwordChange"], input1))]))])]))]))
+    error_message = "grant_controls: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "odata_type" {
@@ -145,6 +155,11 @@ variable "session_controls" {
     }))
   })
   default = null
+
+  validation {
+    condition     = (var.session_controls == null ? true : alltrue([(var.session_controls["cloudAppSecurity"] == null ? true : alltrue([(var.session_controls["cloudAppSecurity"]["cloudAppSecurityType"] == null ? true : alltrue([(var.session_controls["cloudAppSecurity"]["cloudAppSecurityType"] == null ? true : contains(["mcasConfigured", "monitorOnly", "blockDownloads"], var.session_controls["cloudAppSecurity"]["cloudAppSecurityType"]))]))])), (var.session_controls["persistentBrowser"] == null ? true : alltrue([(var.session_controls["persistentBrowser"]["mode"] == null ? true : alltrue([(var.session_controls["persistentBrowser"]["mode"] == null ? true : contains(["always", "never"], var.session_controls["persistentBrowser"]["mode"]))]))])), (var.session_controls["signInFrequency"] == null ? true : alltrue([(var.session_controls["signInFrequency"]["authenticationType"] == null ? true : alltrue([(var.session_controls["signInFrequency"]["authenticationType"] == null ? true : contains(["primaryAndSecondaryAuthentication", "secondaryAuthentication"], var.session_controls["signInFrequency"]["authenticationType"]))])), (var.session_controls["signInFrequency"]["frequencyInterval"] == null ? true : alltrue([(var.session_controls["signInFrequency"]["frequencyInterval"] == null ? true : contains(["timeBased", "everyTime"], var.session_controls["signInFrequency"]["frequencyInterval"]))])), (var.session_controls["signInFrequency"]["type"] == null ? true : alltrue([(var.session_controls["signInFrequency"]["type"] == null ? true : contains(["days", "hours"], var.session_controls["signInFrequency"]["type"]))]))]))]))
+    error_message = "session_controls: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "state" {
@@ -162,6 +177,41 @@ variable "template_id" {
   description = "Specifies the unique identifier of a Conditional Access template. Inherited from entity."
   type        = string
   default     = null
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

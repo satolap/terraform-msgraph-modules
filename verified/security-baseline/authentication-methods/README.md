@@ -1,5 +1,28 @@
 # authentication-methods
 
+<!-- state-protection:start -->
+## State and plan protection
+
+This module's state and saved plans retain these declared values:
+
+Sensitive outputs: `previous_state`.
+Potential personal-data inputs: `phone_methods`, `phone_methods_group_id`.
+
+Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
+
+See [Terraform sensitive state guidance](https://developer.hashicorp.com/terraform/language/state/sensitive-data). These are exposure indicators, not a complete data classification; unmarked fields and provider responses also need protection.
+<!-- state-protection:end -->
+
+<!-- uses-beta:start -->
+Uses beta: **no**. This module and its local child modules do not select beta.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Baseline for the tenant authentication methods policy of the
 [security baseline](../README.md). After it runs, a new tenant offers strong methods and prompts
 users to register them:
@@ -173,35 +196,35 @@ from `secureScoreControlProfiles` in the test tenant during live acceptance.
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| tier | `free`, `p1` or `p2` | `string` | n/a | yes |
-| break_glass_user_ids | Existing emergency access users, at least one, lowercase GUIDs | `set(string)` | n/a | yes |
-| break_glass_group_ids | Emergency access groups, lowercase GUIDs | `set(string)` | `[]` | no |
-| authenticator_include_group_id | `all_users` or a group ID | `string` | `"all_users"` | no |
-| authenticator_mode | `any` or `push` (`deviceBasedPush` refused) | `string` | `"any"` | no |
-| authenticator_show_app_name | `enabled`, `disabled` or `default` | `string` | `"enabled"` | no |
-| authenticator_show_location | `enabled`, `disabled` or `default` | `string` | `"enabled"` | no |
-| fido2_include_group_id | `all_users` or a break-glass group | `string` | `"all_users"` | no |
-| fido2_exclude_group_ids | Groups excluded from passkeys; never a break-glass group | `set(string)` | `[]` | no |
-| fido2_self_service_registration | Allow self-service passkey registration | `bool` | `true` | no |
-| campaign_state | `enabled`, `disabled` or `default` | `string` | `"enabled"` | no |
-| campaign_method | `microsoftAuthenticator` or `fido2` | `string` | `"microsoftAuthenticator"` | no |
-| campaign_include_group_id | `all_users` or a group ID | `string` | `"all_users"` | no |
-| campaign_snooze_days | 0 to 14 | `number` | `1` | no |
-| campaign_require_after_snoozes | Force registration after the snoozes | `bool` | `false` | no |
-| phone_methods | `unmanaged` or `restrict` | `string` | `"unmanaged"` | no |
-| phone_methods_group_id | Group that keeps SMS and voice for `restrict` | `string` | `null` | no |
-| restore_previous_state | Objects whose snapshot is sent back instead of the baseline | `set(string)` | `[]` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| tier | `free`, `p1` or `p2` | `string` | n/a | yes | changes `module.licence_guard`; see the module notes |
+| break_glass_user_ids | Existing emergency access users, at least one, lowercase GUIDs | `set(string)` | n/a | yes | in place |
+| break_glass_group_ids | Emergency access groups, lowercase GUIDs | `set(string)` | `[]` | no | in place |
+| authenticator_include_group_id | `all_users` or a group ID | `string` | `"all_users"` | no | in place |
+| authenticator_mode | `any` or `push` (`deviceBasedPush` refused) | `string` | `"any"` | no | in place |
+| authenticator_show_app_name | `enabled`, `disabled` or `default` | `string` | `"enabled"` | no | in place |
+| authenticator_show_location | `enabled`, `disabled` or `default` | `string` | `"enabled"` | no | in place |
+| fido2_include_group_id | `all_users` or a break-glass group | `string` | `"all_users"` | no | in place |
+| fido2_exclude_group_ids | Groups excluded from passkeys; never a break-glass group | `set(string)` | `[]` | no | in place |
+| fido2_self_service_registration | Allow self-service passkey registration | `bool` | `true` | no | in place |
+| campaign_state | `enabled`, `disabled` or `default` | `string` | `"enabled"` | no | in place |
+| campaign_method | `microsoftAuthenticator` or `fido2` | `string` | `"microsoftAuthenticator"` | no | in place |
+| campaign_include_group_id | `all_users` or a group ID | `string` | `"all_users"` | no | in place |
+| campaign_snooze_days | 0 to 14 | `number` | `1` | no | in place |
+| campaign_require_after_snoozes | Force registration after the snoozes | `bool` | `false` | no | in place |
+| phone_methods | `unmanaged` or `restrict` | `string` | `"unmanaged"` | no | creates or deletes `msgraph_update_resource.object` instances; not replaced or moved: the update targets the existing object; recreate it to move it |
+| phone_methods_group_id | Group that keeps SMS and voice for `restrict` | `string` | `null` | no | in place |
+| restore_previous_state | Objects whose snapshot is sent back instead of the baseline | `set(string)` | `[]` | no | creates or deletes `msgraph_update_resource.object` instances; not replaced or moved: the update targets the existing object; recreate it to move it |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| tier | The tier, once the licence guard and the plan-time checks passed |
-| managed_urls | Item URLs the module PATCHes, by object |
-| previous_state | Sensitive snapshot of the prior writable properties of all five objects |
-| policy_migration_state | `policyMigrationState` as read at plan time (never written) |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| tier | The tier, once the licence guard and the plan-time checks passed | no |
+| managed_urls | Item URLs the module PATCHes, by object | yes |
+| previous_state | Sensitive snapshot of the prior writable properties of all five objects | no |
+| policy_migration_state | `policyMigrationState` as read at plan time (never written) | no |
 
 ## Limitations and unverified items
 

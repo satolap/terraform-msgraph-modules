@@ -15,7 +15,7 @@ variable "allowed_installation_scopes" {
   default     = null
 
   validation {
-    condition     = var.allowed_installation_scopes == null ? true : try(alltrue([for value in split(",", var.allowed_installation_scopes) : contains(["team", "groupchat", "personal", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    condition     = var.allowed_installation_scopes == null ? true : try(alltrue([for value in split(",", var.allowed_installation_scopes) : contains(["team", "groupchat", "personal"], lower(trimspace(value)))]), false)
     error_message = "allowed_installation_scopes must be one or more of the documented enum values, separated by commas."
   }
 }
@@ -35,6 +35,11 @@ variable "authorization" {
     }))
   })
   default = null
+
+  validation {
+    condition     = (var.authorization == null ? true : alltrue([(var.authorization["requiredPermissionSet"] == null ? true : alltrue([(var.authorization["requiredPermissionSet"]["resourceSpecificPermissions"] == null ? true : alltrue([alltrue([for input2 in var.authorization["requiredPermissionSet"]["resourceSpecificPermissions"] : (input2 == null ? true : alltrue([(input2["permissionType"] == null ? true : alltrue([(input2["permissionType"] == null ? true : contains(["delegated", "application"], input2["permissionType"]))]))]))])]))]))]))
+    error_message = "authorization: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "azure_ad_app_id" {
@@ -84,6 +89,11 @@ variable "dashboard_cards" {
     pickerGroupId = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.dashboard_cards == null ? true : alltrue([alltrue([for input0 in var.dashboard_cards : (input0 == null ? true : alltrue([(input0["contentSource"] == null ? true : alltrue([(input0["contentSource"]["sourceType"] == null ? true : alltrue([(input0["contentSource"]["sourceType"] == null ? true : contains(["bot"], input0["contentSource"]["sourceType"]))]))])), (input0["defaultSize"] == null ? true : alltrue([(input0["defaultSize"] == null ? true : contains(["medium", "large"], input0["defaultSize"]))]))]))])]))
+    error_message = "dashboard_cards: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "description" {
@@ -129,7 +139,7 @@ variable "publishing_state" {
   default     = null
 
   validation {
-    condition     = var.publishing_state == null ? true : contains(["submitted", "rejected", "published", "unknownFutureValue"], var.publishing_state)
+    condition     = var.publishing_state == null ? true : contains(["submitted", "rejected", "published"], var.publishing_state)
     error_message = "publishing_state must be one of the documented enum values."
   }
 }
@@ -144,6 +154,41 @@ variable "teams_app_id_2" {
   description = "The ID from the Teams app manifest."
   type        = string
   default     = null
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

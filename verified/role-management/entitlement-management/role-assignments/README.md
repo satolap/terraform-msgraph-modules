@@ -1,5 +1,27 @@
 # role-management/entitlement-management/role-assignments
 
+<!-- state-protection:start -->
+## State and plan protection
+
+This module's state and saved plans retain these declared values:
+
+Potential personal-data inputs: `principal_id`.
+
+Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
+
+See [Terraform sensitive state guidance](https://developer.hashicorp.com/terraform/language/state/sensitive-data). These are exposure indicators, not a complete data classification; unmarked fields and provider responses also need protection.
+<!-- state-protection:end -->
+
+<!-- uses-beta:start -->
+Uses beta: **optional**. Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Assigns an entitlement management role to a user, group or service principal, via the
 `microsoft/msgraph` Terraform provider. The folder mirrors the Graph collection it manages:
 `roleManagement/entitlementManagement/roleAssignments`
@@ -135,23 +157,23 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| principal_id | Object ID (GUID) of the user, group or service principal that receives the role | `string` | n/a | yes |
-| role | Role by name: `catalog_creator`, `catalog_owner`, `catalog_reader`, `access_package_manager` or `access_package_assignment_manager`; set this or `role_definition_id` | `string` | `null` | no |
-| role_definition_id | Role definition ID (GUID) of a role without a name here; set this or `role` | `string` | `null` | no |
-| catalog_id | Catalog ID (GUID): required for catalog roles, refused for `catalog_creator`; with `role_definition_id`, set means catalog scope and null tenant scope | `string` | `null` | no |
-| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| principal_id | Object ID (GUID) of the user, group or service principal that receives the role | `string` | n/a | yes | replaces `msgraph_resource.assignment` when its effect on `local.principal_id` changes |
+| role | Role by name: `catalog_creator`, `catalog_owner`, `catalog_reader`, `access_package_manager` or `access_package_assignment_manager`; set this or `role_definition_id` | `string` | `null` | no | replaces `msgraph_resource.assignment` when its effect on `local.role_definition_id`, `local.app_scope_id`, `local.directory_scope_id` changes |
+| role_definition_id | Role definition ID (GUID) of a role without a name here; set this or `role` | `string` | `null` | no | replaces `msgraph_resource.assignment` when its effect on `local.role_definition_id` changes |
+| catalog_id | Catalog ID (GUID): required for catalog roles, refused for `catalog_creator`; with `role_definition_id`, set means catalog scope and null tenant scope | `string` | `null` | no | replaces `msgraph_resource.assignment` when its effect on `local.app_scope_id`, `local.directory_scope_id` changes |
+| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no | replaces `msgraph_resource.assignment` |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The ID of the role assignment; changes whenever an input changes |
-| role_definition_id | The role definition ID assigned |
-| app_scope_id | `/AccessPackageCatalog/{catalog-id}` for a catalog role; null for a tenant-wide role |
-| directory_scope_id | `/` for a tenant-wide role; null for a catalog role |
-| principal_id | The principal's object ID, in lower case |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The ID of the role assignment; changes whenever an input changes | yes |
+| role_definition_id | The role definition ID assigned | yes |
+| app_scope_id | `/AccessPackageCatalog/{catalog-id}` for a catalog role; null for a tenant-wide role | yes |
+| directory_scope_id | `/` for a tenant-wide role; null for a catalog role | yes |
+| principal_id | The principal's object ID, in lower case | yes |
 
 ## Tests
 

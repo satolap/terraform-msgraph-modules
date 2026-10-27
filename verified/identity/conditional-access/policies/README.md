@@ -1,5 +1,15 @@
 # Conditional Access policies
 
+<!-- uses-beta:start -->
+Uses beta: **no**. This module and its local child modules do not select beta.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified live-accepted** (2026-10-24, commit `344ecc7e`). Acceptance covers the recorded run and configuration.
+
+![live Dev: passed 2026-10-24](https://img.shields.io/badge/live%20Dev-passed%202026--10--24-brightgreen)
+<!-- live-status:end -->
+
 Creates one Microsoft Entra Conditional Access policy (`identity/conditionalAccess/policies`)
 via the `microsoft/msgraph` Terraform provider. Compose several module instances for a policy
 set.
@@ -348,34 +358,34 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| display_name | Display name of the policy | `string` | n/a | yes |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
-| state | `disabled`, `enabledForReportingButNotEnforced` or `enabled` | `string` | `"enabledForReportingButNotEnforced"` | no |
-| break_glass_user_ids | Emergency access user IDs (lowercase GUIDs), always excluded | `set(string)` | n/a | yes |
-| break_glass_group_ids | Emergency access group IDs (lowercase GUIDs), always excluded | `set(string)` | `[]` | no |
-| users | include/exclude users, groups and roles | `object` | n/a | yes |
-| applications | include/exclude applications, user actions, authentication contexts | `object` | n/a | yes |
-| client_app_types | Client app types | `set(string)` | `["all"]` | no |
-| sign_in_risk_levels | Sign-in risk levels (P2) | `set(string)` | `[]` | no |
-| user_risk_levels | User risk levels (P2) | `set(string)` | `[]` | no |
-| locations | include/exclude named locations, `All` or `AllTrusted` | `object` | `null` | no |
-| platforms | include/exclude device platforms | `object` | `null` | no |
-| device_filter | Filter for devices (`mode`, `rule`) | `object` | `null` | no |
-| grant_controls | operator, built-in controls, authentication strength, terms of use | `object` | `null` | no |
-| session_controls | sign-in frequency, persistent browser, app enforced restrictions, Defender for Cloud Apps | `object` | `null` | no |
-| api_version | Graph API version; only `v1.0` is supported | `string` | `"v1.0"` | no |
-| timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; create, update and delete at least `15s`; retries count against them | `object` | `{}` (`10m` for create, update and delete; the provider default for read) | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| display_name | Display name of the policy | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| state | `disabled`, `enabledForReportingButNotEnforced` or `enabled` | `string` | `"enabledForReportingButNotEnforced"` | no | in place |
+| break_glass_user_ids | Emergency access user IDs (lowercase GUIDs), always excluded | `set(string)` | n/a | yes | in place |
+| break_glass_group_ids | Emergency access group IDs (lowercase GUIDs), always excluded | `set(string)` | `[]` | no | in place |
+| users | include/exclude users, groups and roles | `object` | n/a | yes | in place |
+| applications | include/exclude applications, user actions, authentication contexts | `object` | n/a | yes | in place |
+| client_app_types | Client app types | `set(string)` | `["all"]` | no | in place |
+| sign_in_risk_levels | Sign-in risk levels (P2) | `set(string)` | `[]` | no | in place |
+| user_risk_levels | User risk levels (P2) | `set(string)` | `[]` | no | in place |
+| locations | include/exclude named locations, `All` or `AllTrusted` | `object` | `null` | no | replaces `msgraph_resource.policy` when its effect on `local.presence` changes |
+| platforms | include/exclude device platforms | `object` | `null` | no | replaces `msgraph_resource.policy` when its effect on `local.presence` changes |
+| device_filter | Filter for devices (`mode`, `rule`) | `object` | `null` | no | replaces `msgraph_resource.policy` when its effect on `local.presence` changes |
+| grant_controls | operator, built-in controls, authentication strength, terms of use | `object` | `null` | no | replaces `msgraph_resource.policy` when its effect on `local.presence` changes |
+| session_controls | sign-in frequency, persistent browser, app enforced restrictions, Defender for Cloud Apps | `object` | `null` | no | replaces `msgraph_resource.policy` when its effect on `local.presence` changes |
+| api_version | Graph API version; only `v1.0` is supported | `string` | `"v1.0"` | no | in place |
+| timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; create, update and delete at least `15s`; retries count against them | `object` | `{}` (`10m` for create, update and delete; the provider default for read) | no | no object change (validation or timing only) |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The policy ID; it changes when an optional part is added or removed, or when the authentication strength id is unknown at plan time |
-| display_name | The display name Microsoft Graph returned on the last read |
-| state | The state Microsoft Graph returned on the last read |
-| excluded_user_ids | `excludeUsers` as returned on the last read, including the break-glass users |
-| excluded_group_ids | `excludeGroups` as returned on the last read, including the break-glass groups |
-| optional_parts_not_in_configuration | Optional parts Microsoft Graph returned on the last read that the configuration does not set; an apply cannot remove them |
-| unmanaged_properties_set | Properties the module does not manage that Microsoft Graph returned set on the last read; a replacement loses them |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The policy ID; it changes when an optional part is added or removed, or when the authentication strength id is unknown at plan time | yes |
+| display_name | The display name Microsoft Graph returned on the last read | no |
+| state | The state Microsoft Graph returned on the last read | no |
+| excluded_user_ids | `excludeUsers` as returned on the last read, including the break-glass users | no |
+| excluded_group_ids | `excludeGroups` as returned on the last read, including the break-glass groups | no |
+| optional_parts_not_in_configuration | Optional parts Microsoft Graph returned on the last read that the configuration does not set; an apply cannot remove them | no |
+| unmanaged_properties_set | Properties the module does not manage that Microsoft Graph returned set on the last read; a replacement loses them | no |

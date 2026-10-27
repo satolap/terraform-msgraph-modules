@@ -1,5 +1,27 @@
 # identity-governance/entitlement-management/connected-organizations
 
+<!-- state-protection:start -->
+## State and plan protection
+
+This module's state and saved plans retain these declared values:
+
+Potential personal-data inputs: `external_sponsor_ids`, `internal_sponsor_ids`.
+
+Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
+
+See [Terraform sensitive state guidance](https://developer.hashicorp.com/terraform/language/state/sensitive-data). These are exposure indicators, not a complete data classification; unmarked fields and provider responses also need protection.
+<!-- state-protection:end -->
+
+<!-- uses-beta:start -->
+Uses beta: **no**. This module and its local child modules do not select beta.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Manages one Microsoft Entra ID Governance entitlement management **connected organization**
 (`identityGovernance/entitlementManagement/connectedOrganizations`) and, when you ask for them,
 its internal and external sponsors, via the `microsoft/msgraph` Terraform provider. A connected
@@ -304,27 +326,27 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| display_name | Display name of the organization; not empty | `string` | n/a | yes |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
-| identity_sources | At least one `{ type, tenant_id, domain_name, display_name }`: `type` is `tenant` (with a GUID `tenant_id`), `tenant_domain` (with `domain_name`, looked up during the plan, no `display_name`) or `domain` (with `domain_name`); each tenant ID and domain name at most once; sent in order and in place | `list(object)` | n/a | yes |
-| description | Description; always sent, as `null` when unset | `string` | `null` | no |
-| state | `configured` or `proposed` | `string` | `"configured"` | no |
-| internal_sponsor_ids | Object IDs (GUIDs) of the users or groups that are internal sponsors, each at most once; `null` leaves them alone, a list is authoritative, `[]` removes them all | `list(string)` | `null` | no |
-| external_sponsor_ids | Object IDs (GUIDs) of the users or groups that are external sponsors, each at most once; `null` leaves them alone, a list is authoritative, `[]` removes them all | `list(string)` | `null` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| display_name | Display name of the organization; not empty | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| identity_sources | At least one `{ type, tenant_id, domain_name, display_name }`: `type` is `tenant` (with a GUID `tenant_id`), `tenant_domain` (with `domain_name`, looked up during the plan, no `display_name`) or `domain` (with `domain_name`); each tenant ID and domain name at most once; sent in order and in place | `list(object)` | n/a | yes | in place |
+| description | Description; always sent, as `null` when unset | `string` | `null` | no | in place |
+| state | `configured` or `proposed` | `string` | `"configured"` | no | in place |
+| internal_sponsor_ids | Object IDs (GUIDs) of the users or groups that are internal sponsors, each at most once; `null` leaves them alone, a list is authoritative, `[]` removes them all | `list(string)` | `null` | no | adds or removes relationships of `msgraph_resource_collection.internal_sponsors` |
+| external_sponsor_ids | Object IDs (GUIDs) of the users or groups that are external sponsors, each at most once; `null` leaves them alone, a list is authoritative, `[]` removes them all | `list(string)` | `null` | no | adds or removes relationships of `msgraph_resource_collection.external_sponsors` |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The ID of the connected organization; an update keeps it |
-| display_name | The display name, as configured |
-| state | `configured` or `proposed`, as configured |
-| identity_sources | The identity sources as sent, in Graph's shape, with tenant IDs and domain names in lower case |
-| internal_sponsor_ids | The managed internal sponsor IDs in lower case, or `null` when they are not managed |
-| external_sponsor_ids | The managed external sponsor IDs in lower case, or `null` when they are not managed |
-| specific_allowed_target | `{ type = "connectedOrganizationMembers", id }`, one element of an assignment policy's `specific_allowed_targets` |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The ID of the connected organization; an update keeps it | yes |
+| display_name | The display name, as configured | yes |
+| state | `configured` or `proposed`, as configured | yes |
+| identity_sources | The identity sources as sent, in Graph's shape, with tenant IDs and domain names in lower case | no |
+| internal_sponsor_ids | The managed internal sponsor IDs in lower case, or `null` when they are not managed | no |
+| external_sponsor_ids | The managed external sponsor IDs in lower case, or `null` when they are not managed | no |
+| specific_allowed_target | `{ type = "connectedOrganizationMembers", id }`, one element of an assignment policy's `specific_allowed_targets` | yes |
 
 ## Tests
 

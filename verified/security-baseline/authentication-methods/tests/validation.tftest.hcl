@@ -455,6 +455,38 @@ run "campaign_all_users_with_scoped_fido2" {
   expect_failures = [terraform_data.guard]
 }
 
+# A passkey campaign for a group that is excluded from passkeys is refused, also when
+# passkeys are enabled for all users.
+run "campaign_group_excluded_from_fido2" {
+  command = plan
+
+  variables {
+    campaign_method           = "fido2"
+    campaign_include_group_id = "00000000-0000-4000-8000-0000000000b0"
+    fido2_include_group_id    = "all_users"
+    fido2_exclude_group_ids   = ["00000000-0000-4000-8000-0000000000b0"]
+  }
+
+  expect_failures = [terraform_data.guard]
+}
+
+# The same exclusion does not matter for an Authenticator campaign.
+run "authenticator_campaign_ignores_fido2_exclusion" {
+  command = plan
+
+  variables {
+    campaign_include_group_id = "00000000-0000-4000-8000-0000000000b0"
+    fido2_exclude_group_ids   = ["00000000-0000-4000-8000-0000000000b0"]
+  }
+
+  override_data {
+    target = data.msgraph_resource.security_defaults
+    values = { output = { is_enabled = false } }
+  }
+
+  expect_failures = [check.security_defaults_stay_on_for_free]
+}
+
 # A method configuration without includeTargets and excludeTargets cannot be snapshotted.
 run "snapshot_needs_targets" {
   command = plan

@@ -1,5 +1,15 @@
 # identity-governance/entitlement-management/assignment-policies
 
+<!-- uses-beta:start -->
+Uses beta: **optional**. Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live Dev: skipped (blocked_capacity) 2026-10-24](https://img.shields.io/badge/live%20Dev-skipped%20%28blocked__capacity%29%202026--10--24-yellow)
+<!-- live-status:end -->
+
 Manages a Microsoft Entra ID Governance Entitlement Management **access package assignment
 policy** (`identityGovernance/entitlementManagement/assignmentPolicies`) via the
 `microsoft/msgraph` Terraform provider.
@@ -224,21 +234,21 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| access_package_id | ID of the access package this policy applies to; a change replaces the policy | `string` | n/a | yes |
-| display_name | Display name of the policy (1-90 characters) | `string` | n/a | yes |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
-| description | Description of the policy | `string` | `null` | no |
-| allowed_target_scope | Who can be assigned via this policy (see `accessPackageAssignmentPolicy.allowedTargetScope` values) | `string` | `"notSpecified"` | no |
-| specific_allowed_targets | Principals allowed when allowed_target_scope is a "specific*" value | `list(object)` | `[]` | no |
-| expiration | `{ type, duration_days, end_date_time }` — expiration pattern for assignments | `object` | `{ type = "noExpiration" }` | no |
-| requestor_settings | Self-service/on-behalf-of request toggles and on-behalf-of requestors | `object` | `{}` | no |
-| request_approval_settings | Approval requirement flags and escalating approval stages | `object` | `{}` | no |
-| questions | Questions posed to the requestor: `{ text, is_required, is_answer_editable, sequence, type, localizations, is_single_line_question, regex_pattern, is_multiple_selection_allowed, choices }`, with `type` `text_input` (default) or `multiple_choice`; see [Requestor questions](#requestor-questions) | `list(object)` | `[]` | no |
-| review_settings | Recurring access reviews of the policy's assignments: `{ is_enabled, expiration_behavior, is_recommendation_enabled, is_reviewer_justification_required, is_self_review, primary_reviewers, fallback_reviewers, schedule }`; null leaves `reviewSettings` out of the body; see [Access reviews](#access-reviews) | `object` | `null` | no |
-| custom_extension_stage_settings | `{ stage, extension_id, extension_type }` per stage: the catalog custom extensions that run at that stage. Always sent; an empty list removes the bindings | `list(object)` | `[]` | no |
-| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| access_package_id | ID of the access package this policy applies to; a change replaces the policy | `string` | n/a | yes | replaces `msgraph_resource.assignment_policy` |
+| display_name | Display name of the policy (1-90 characters) | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| description | Description of the policy | `string` | `null` | no | in place |
+| allowed_target_scope | Who can be assigned via this policy (see `accessPackageAssignmentPolicy.allowedTargetScope` values) | `string` | `"notSpecified"` | no | in place |
+| specific_allowed_targets | Principals allowed when allowed_target_scope is a "specific*" value | `list(object)` | `[]` | no | in place |
+| expiration | `{ type, duration_days, end_date_time }` — expiration pattern for assignments | `object` | `{ type = "noExpiration" }` | no | in place |
+| requestor_settings | Self-service/on-behalf-of request toggles and on-behalf-of requestors | `object` | `{}` | no | in place |
+| request_approval_settings | Approval requirement flags and escalating approval stages | `object` | `{}` | no | in place |
+| questions | Questions posed to the requestor: `{ text, is_required, is_answer_editable, sequence, type, localizations, is_single_line_question, regex_pattern, is_multiple_selection_allowed, choices }`, with `type` `text_input` (default) or `multiple_choice`; see [Requestor questions](#requestor-questions) | `list(object)` | `[]` | no | in place |
+| review_settings | Recurring access reviews of the policy's assignments: `{ is_enabled, expiration_behavior, is_recommendation_enabled, is_reviewer_justification_required, is_self_review, primary_reviewers, fallback_reviewers, schedule }`; null leaves `reviewSettings` out of the body; see [Access reviews](#access-reviews) | `object` | `null` | no | in place |
+| custom_extension_stage_settings | `{ stage, extension_id, extension_type }` per stage: the catalog custom extensions that run at that stage. Always sent; an empty list removes the bindings | `list(object)` | `[]` | no | in place |
+| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no | in place |
 
 Approver/requestor/target objects share the shape `{ type, id, description, membership_rule }`,
 where `type` is one of Microsoft Graph's `subjectSet` subtypes (`singleUser`, `groupMembers`,
@@ -250,12 +260,12 @@ where `type` is one of Microsoft Graph's `subjectSet` subtypes (`singleUser`, `g
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The ID of the assignment policy |
-| display_name | The display name of the assignment policy |
-| access_package_id | The ID of the parent access package |
-| custom_extension_stage_settings | The bindings Microsoft Graph returned on the last read, as `{ stage, extension_id }`; `null` when the read returned none of them |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The ID of the assignment policy | yes |
+| display_name | The display name of the assignment policy | no |
+| access_package_id | The ID of the parent access package | yes |
+| custom_extension_stage_settings | The bindings Microsoft Graph returned on the last read, as `{ stage, extension_id }`; `null` when the read returned none of them | no |
 
 ## Requestor questions
 

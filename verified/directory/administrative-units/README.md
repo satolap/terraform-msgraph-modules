@@ -1,5 +1,27 @@
 # directory/administrative-units
 
+<!-- state-protection:start -->
+## State and plan protection
+
+This module's state and saved plans retain these declared values:
+
+Potential personal-data inputs: `member_ids`, `scoped_role_members`.
+
+Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
+
+See [Terraform sensitive state guidance](https://developer.hashicorp.com/terraform/language/state/sensitive-data). These are exposure indicators, not a complete data classification; unmarked fields and provider responses also need protection.
+<!-- state-protection:end -->
+
+<!-- uses-beta:start -->
+Uses beta: **no**. This module and its local child modules do not select beta.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Manages one Microsoft Entra **administrative unit** (`directory/administrativeUnits`) and,
 optionally, its members via the `microsoft/msgraph` Terraform provider. An administrative
 unit holds users, groups and devices, and limits the scope of the Microsoft Entra roles that
@@ -350,31 +372,31 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| display_name | Display name; not empty, at most 256 characters | `string` | n/a | yes |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
-| description | Description; always sent, as `null` when unset | `string` | `null` | no |
-| visibility | `null` (public) or `HiddenMembership`; always sent, as `null` when unset | `string` | `null` | no |
-| is_member_management_restricted | Restricted management unit; a change replaces the unit | `bool` | `false` | no |
-| membership_type | `Assigned` or `Dynamic` | `string` | `"Assigned"` | no |
-| membership_rule | Dynamic membership rule; required for `Dynamic`, rejected for `Assigned` | `string` | `null` | no |
-| membership_rule_processing_state | `On` or `Paused`; null sends `On` for `Dynamic`; rejected for `Assigned` | `string` | `null` | no |
-| member_ids | Object IDs of users, groups and devices (a device by its object ID, not its deviceId); null leaves the members unmanaged, a list is authoritative; GUIDs, each once; rejected for `Dynamic` | `list(string)` | `null` | no |
-| scoped_role_members | Entra role assignments limited to the unit, map of `{ role_id, member_id }` entries under keys you choose; `role_id` is the activated directoryRole object ID, not the role template or definition ID; additive; GUIDs, each pair once; `null` counts as `{}` | `map(object)` | `{}` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| display_name | Display name; not empty, at most 256 characters | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| description | Description; always sent, as `null` when unset | `string` | `null` | no | in place |
+| visibility | `null` (public) or `HiddenMembership`; always sent, as `null` when unset | `string` | `null` | no | in place |
+| is_member_management_restricted | Restricted management unit; a change replaces the unit | `bool` | `false` | no | replaces `msgraph_resource.this` |
+| membership_type | `Assigned` or `Dynamic` | `string` | `"Assigned"` | no | in place |
+| membership_rule | Dynamic membership rule; required for `Dynamic`, rejected for `Assigned` | `string` | `null` | no | in place |
+| membership_rule_processing_state | `On` or `Paused`; null sends `On` for `Dynamic`; rejected for `Assigned` | `string` | `null` | no | in place |
+| member_ids | Object IDs of users, groups and devices (a device by its object ID, not its deviceId); null leaves the members unmanaged, a list is authoritative; GUIDs, each once; rejected for `Dynamic` | `list(string)` | `null` | no | adds or removes relationships of `msgraph_resource_collection.members` |
+| scoped_role_members | Entra role assignments limited to the unit, map of `{ role_id, member_id }` entries under keys you choose; `role_id` is the activated directoryRole object ID, not the role template or definition ID; additive; GUIDs, each pair once; `null` counts as `{}` | `map(object)` | `{}` | no | replaces `msgraph_resource.scoped_role_member` when `role_id`, `member_id` changes; creates or deletes `msgraph_resource.scoped_role_member` instances |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The object ID of the unit; it changes when `is_member_management_restricted` changes |
-| directory_scope_id | `/administrativeUnits/{id}`, the `directoryScopeId` of a role assignment over the unit |
-| display_name | The configured display name |
-| is_member_management_restricted | Whether the unit is a restricted management unit |
-| membership_type | `Assigned` or `Dynamic` |
-| visibility | `null` or `HiddenMembership` |
-| member_ids | The managed member IDs in lower case, read from the member resource; `null` when the members are not managed |
-| scoped_role_member_ids | scopedRoleMembership IDs, keyed like `scoped_role_members`; empty when none are managed |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The object ID of the unit; it changes when `is_member_management_restricted` changes | yes |
+| directory_scope_id | `/administrativeUnits/{id}`, the `directoryScopeId` of a role assignment over the unit | yes |
+| display_name | The configured display name | yes |
+| is_member_management_restricted | Whether the unit is a restricted management unit | yes |
+| membership_type | `Assigned` or `Dynamic` | yes |
+| visibility | `null` or `HiddenMembership` | yes |
+| member_ids | The managed member IDs in lower case, read from the member resource; `null` when the members are not managed | no |
+| scoped_role_member_ids | scopedRoleMembership IDs, keyed like `scoped_role_members`; empty when none are managed | no |
 
 ## Tests
 

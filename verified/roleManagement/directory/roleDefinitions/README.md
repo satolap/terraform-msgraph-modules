@@ -1,5 +1,15 @@
 # Custom Microsoft Entra directory role definitions
 
+<!-- uses-beta:start -->
+Uses beta: **no**. This module and its local child modules do not select beta.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Create a new custom role definition at the Microsoft Graph v1.0
 `/roleManagement/directory/roleDefinitions` endpoint. Inputs and folder names keep
 Graph's original case. This module creates no role assignment and grants nobody
@@ -180,17 +190,18 @@ Sources: [Create custom role definition](https://learn.microsoft.com/en-us/graph
 
 ## Inputs
 
-| Name | Description | Type | Default |
-| --- | --- | --- | --- |
-| displayName | Nonempty custom-role display name | `string` | required |
-| rolePermissions | Nonempty list of maps whose sole key is `allowedResourceActions`, with a nonempty list of action strings | `list(map(list(string)))` | required |
-| description | Description; null omits without clearing | `string` | `null` |
-| isEnabled | Whether the definition is available for assignment | `bool` | `true` |
-| templateId | Stable custom template GUID; a different GUID replaces the definition, a case-only change does not | `string` | `null` |
+| Name | Description | Type | Default | On change |
+| --- | --- | --- | --- | --- |
+| displayName | Nonempty custom-role display name | `string` | required | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that displayName must match, or the plan fails; null accepts any name | `string` | `null` | no object change (validation or timing only) |
+| rolePermissions | Nonempty list of maps whose sole key is `allowedResourceActions`, with a nonempty list of action strings | `list(map(list(string)))` | required | in place |
+| description | Description; null omits without clearing | `string` | `null` | in place |
+| isEnabled | Whether the definition is available for assignment | `bool` | `true` | in place |
+| templateId | Stable custom template GUID; a different GUID replaces the definition, a case-only change does not | `string` | `null` | replaces `msgraph_resource.roleDefinition` when `var.templateId == null ? null : lower(var.templateId)` changes |
 
 ## Outputs
 
-| Name | Description |
-| --- | --- |
-| id | Custom definition object ID, for a separate assignment |
-| templateId | Template identifier read back from Graph |
+| Name | Description | Known in plan after an update |
+| --- | --- | --- |
+| id | Custom definition object ID, for a separate assignment | yes |
+| templateId | Template identifier read back from Graph | no |

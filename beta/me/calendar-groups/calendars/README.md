@@ -2,11 +2,15 @@
 
 Create Calendar
 
-[Catalog](../../../README.md) · [Calendars](../../../README.md#calendars) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/calendar?view=graph-rest-beta&preserve-view=true)
+[Catalog](../../../README.md) Â· [Calendars](../../../README.md#calendars) Â· [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/calendar?view=graph-rest-beta&preserve-view=true)
 
 Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /me/calendarGroups/{calendarGroup-id}/calendars`, `GET/PATCH/DELETE /me/calendarGroups/{calendarGroup-id}/calendars/{calendar-id}`.
+
+Assurance: **generated (offline contract)**. Schema-derived request construction and mock tests do not prove live service behavior.
+
+> **Beta preview:** Microsoft Graph beta APIs may change without notice. Pin the module release version and provider version, and read `interface-changes.json` in the release before upgrading. Offline tests and live acceptance do not make a beta API production-supported.
 
 ## Usage
 
@@ -21,29 +25,63 @@ module "graph_resource" {
 
 Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
+## Read-back and drift
+
+`select_response` defaults to `false`. Default reads keep `ignore_missing_property = true` and the full default GET response, including default-returned fields that were not configured. This preserves existing read behavior and response consumers, but can hide missing, null or empty reads. It does not prove a successful write or clear.
+
+Strict read-back is not offered as a module input. Every generated body carries `@odata.type`, which ordinary GET responses omit; strict provider refresh would remove it and cause perpetual drift. Offering strict read-back requires annotation-aware comparison or a provider change, plus live proof.
+
+Enabling `select_response` can plan an in-place resource update even when body values are unchanged. Whether an option-only change sends a write request is unverified; inspect the plan before opting in.
+
+Only with `select_response = true`, the item GET selects `id`, `appId` when exposed as an output, and configured readable body keys (including additional properties). Annotations, known navigation properties and top-level write-only/omitted keys are excluded. This deliberately narrows the sensitive `response` output: an expression such as `module.group.response.mail` can stop working if mail was not selected. Use the default for existing consumers. Selection does not make provider refresh strict or prove a successful write.
+
+No select-only inputs are identified by this metadata and contract; classification is incomplete.
+
+Classification remains incomplete, especially for nested null-unless-selected values, permission-hidden properties and beta descriptions. Unclassified omissions can still be hidden by lenient refresh. Provider-refresh characterization tests are offline evidence, not proof of Graph behavior. Before offering strict read-back or changing the selection default, live independent GETs and repeated no-op plans must pass on users, groups, applications and servicePrincipals, including nested credentials and relationship cases.
+
+## Timeouts and replication retries
+
+The optional `timeouts` input (`create`, `read`, `update`, `delete`) is passed to the `msgraph_resource`. Every value defaults to null, which keeps the provider defaults and sends no timeouts block, so adding it changes no existing plan. Durations are whole hours, minutes or seconds greater than zero, such as `30m` or `1h30m`, and `create`, `update` and `delete` must be at least `15s`. Setting `read` plans an in-place update of every deployed object, because the provider's default read timeout is then replaced. The provider already retries 408, 429, 500, 502, 503 and 504 by itself.
+
+This module has no reviewed replication retry.
+
 ## Inputs
 
-| Input | Graph property | Type | Required | Sensitive |
-| --- | --- | --- | --- | --- |
-| `calendar_group_id` | URL parameter `calendarGroup-id` | `string` | yes | no |
-| `allowed_online_meeting_providers` | `allowedOnlineMeetingProviders` | `list(string)` | no | no |
-| `calendar_group_id_2` | `calendarGroupId` | `string` | no | no |
-| `calendar_permissions` | `calendarPermissions` | `list(object({       odata_type = optional(string, "#microsoft.graph.calendarPermission")       allowedRoles = optional(list(string))       isInsideOrganization = optional(bool)       isRemovable = optional(bool)       role = optional(string)     }))` | no | no |
-| `color` | `color` | `string` | no | no |
-| `default_online_meeting_provider` | `defaultOnlineMeetingProvider` | `string` | no | no |
-| `hex_color` | `hexColor` | `string` | no | no |
-| `is_default_calendar` | `isDefaultCalendar` | `bool` | no | no |
-| `is_removable` | `isRemovable` | `bool` | no | no |
-| `is_tallying_responses` | `isTallyingResponses` | `bool` | no | no |
-| `name` | `name` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
-| `additional_properties` | Additional writable API properties | `any` | no | yes |
+**On change** says what changing an input does to the Graph object; [declaration.json](declaration.json) declares the same for tools, with the outputs. A nested object attribute behaves like the input that holds it.
+
+| Input | Graph property | Type | Required | Sensitive | On change |
+| --- | --- | --- | --- | --- | --- |
+| `calendar_group_id` | URL parameter `calendarGroup-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `allowed_online_meeting_providers` | `allowedOnlineMeetingProviders` | `list(string)` | no | no | in place |
+| `calendar_group_id_2` | `calendarGroupId` | `string` | no | no | in place |
+| `calendar_permissions` | `calendarPermissions` | `list(object({       odata_type = optional(string, "#microsoft.graph.calendarPermission")       allowedRoles = optional(list(string))       isInsideOrganization = optional(bool)       isRemovable = optional(bool)       role = optional(string)     }))` | no | no | in place |
+| `color` | `color` | `string` | no | no | in place |
+| `default_online_meeting_provider` | `defaultOnlineMeetingProvider` | `string` | no | no | in place |
+| `hex_color` | `hexColor` | `string` | no | no | in place |
+| `is_default_calendar` | `isDefaultCalendar` | `bool` | no | no | in place |
+| `is_removable` | `isRemovable` | `bool` | no | no | in place |
+| `is_tallying_responses` | `isTallyingResponses` | `bool` | no | no | in place |
+| `name` | `name` | `string` | no | no | in place |
+| `odata_type` | `@odata.type` | `string` | no | no | in place |
+| `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
 
 Sensitive inputs, `additional_properties`, and the `response` output are redacted in normal Terraform presentation. Their values still exist in saved plans and state: restrict access to those files and the state backend. Sensitivity is not encryption or a substitute for state access controls.
 
-Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
+## Outputs
+
+**Known in plan after an update** is whether a plan still knows the value when it updates the object in place; a value read from the Graph response is known only after apply then.
+
+| Output | Provides | Sensitive | Known in plan after an update |
+| --- | --- | --- | --- |
+| `id` | Graph object ID | no | yes |
+| `resource_url` | Graph URL of the object | no | yes |
+| `response` | the Graph object as returned | yes | no |
+
+Server-assigned properties in `response`: `calendarView`, `canEdit`, `canShare`, `canViewPrivateItems`, `changeKey`, `events`, `id`, `isShared`, `isSharedWithMe`, `multiValueExtendedProperties`, `owner`, `singleValueExtendedProperties`.
+
+Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
 ## Permissions and limitations
 

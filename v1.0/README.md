@@ -1,6 +1,6 @@
 # Microsoft Graph v1.0 module catalog
 
-**319 generated modules**, organized by the [Microsoft Graph API reference](https://github.com/microsoftgraph/microsoft-graph-docs-contrib/blob/98a98cc88051a857c119a2e1bb61587633585284/api-reference/v1.0/toc.yml).
+**320 generated modules**, organized by the [Microsoft Graph API reference](https://github.com/microsoftgraph/microsoft-graph-docs-contrib/blob/4b7867afe88f98d2415ac2f0219debe86fcb5652/api-reference/v1.0/toc.yml).
 
 Only collections with documented POST and item GET, PATCH/PUT, and DELETE operations are generated. Counts describe this supported CRUD subset; they do not imply coverage of every API in a category. Categories with no generated module are retained for browsing.
 
@@ -12,17 +12,18 @@ Example: [applications](applications/README.md). This is one module from this ca
 
 ```text
 v1.0/
-├── README.md
-├── LICENSING-REVIEW.md
-├── manifest.json
-└── applications/
-    ├── README.md
-    ├── main.tf
-    ├── variables.tf
-    ├── outputs.tf
-    ├── versions.tf
-    └── tests/
-        └── module.tftest.hcl
+â”œâ”€â”€ README.md
+â”œâ”€â”€ LICENSING-REVIEW.md
+â”œâ”€â”€ manifest.json
+â””â”€â”€ applications/
+    â”œâ”€â”€ README.md
+    â”œâ”€â”€ declaration.json
+    â”œâ”€â”€ main.tf
+    â”œâ”€â”€ variables.tf
+    â”œâ”€â”€ outputs.tf
+    â”œâ”€â”€ versions.tf
+    â””â”€â”€ tests/
+        â””â”€â”€ module.tftest.hcl
 ```
 
 ## Browse categories
@@ -45,7 +46,7 @@ v1.0/
 | [Extensions](#extensions) | 13 | [Documentation](https://learn.microsoft.com/en-us/graph/extensibility-overview?view=graph-rest-1.0&preserve-view=true) |
 | [External data connections](#external-data-connections) | 3 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/connectors-api-overview?view=graph-rest-1.0&preserve-view=true) |
 | [Files](#files) | 6 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/onedrive?view=graph-rest-1.0&preserve-view=true) |
-| [Identity and access](#identity-and-access) | 55 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/identity-network-access-overview?view=graph-rest-1.0&preserve-view=true) |
+| [Identity and access](#identity-and-access) | 56 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/identity-network-access-overview?view=graph-rest-1.0&preserve-view=true) |
 | [Mail](#mail) | 10 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/mail-api-overview?view=graph-rest-1.0&preserve-view=true) |
 | [Mailbox import and export](#mailbox-import-and-export) | 0 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/mailbox-import-export-api-overview?view=graph-rest-1.0&preserve-view=true) |
 | [Notes](#notes) | 4 | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/onenote-api-overview?view=graph-rest-1.0&preserve-view=true) |
@@ -66,52 +67,52 @@ Each endpoint has one physical module. Resource types and service routes resolve
 
 Open a category below, then an endpoint README for inputs, permissions guidance, import notes, and credential-free tests. Exact Graph URLs remain in every module and in [manifest.json](manifest.json).
 
-License requirements are reviewed for 11 of 319 modules; every other module carries an explicit unknown licensing record in its README and manifest entry.
+License requirements are reviewed for 12 of 320 modules; every other module carries an explicit unknown licensing record in its README and manifest entry.
 
-10920 Graph paths are not generated as modules. Each is recorded under `exclusions` in [manifest.json](manifest.json) with its reason and reason code. A request wrapper is never presented as management of the object it creates.
+10942 Graph paths are not generated as modules. Each is recorded under `exclusions` in [manifest.json](manifest.json) with its reason and reason code. A request wrapper is never presented as management of the object it creates.
 
 | Reason code | Paths | Meaning |
 | --- | ---: | --- |
-| `action_or_function` | 1611 | OData action or function. |
+| `action_or_function` | 1612 | OData action or function. |
 | `cast` | 756 | OData type-cast segment. |
 | `if_match_required` | 3 | Update or delete needs an If-Match ETag header that `msgraph_resource` cannot send. |
 | `item_requires_input` | 2 | An item operation needs a header or query parameter, such as If-Match. |
-| `no_item_lifecycle` | 1824 | No single item path with GET, PATCH or PUT, and DELETE. |
-| `no_post` | 4957 | Any other path without a POST the generator evaluates: read-only collections, items without a generated collection, `$count`, `$value`, alternate keys and unsupported segment syntax. |
+| `no_item_lifecycle` | 1839 | No single item path with GET, PATCH or PUT, and DELETE. |
+| `no_post` | 4964 | Any other path without a POST the generator evaluates: read-only collections, items without a generated collection, `$count`, `$value`, alternate keys and unsupported segment syntax. |
 | `no_response_id` | 2 | POST response has no id to track the created object. |
 | `ref_relationship` | 101 | Relationship written through `$ref` operations. |
 | `ref_singleton` | 20 | Reference with GET, PUT and DELETE in the supplied metadata; requires a separate assignment lifecycle. |
 | `singleton` | 530 | Singleton with GET and PATCH but no POST; updated in place, not created. |
-| `undocumented_lifecycle` | 1111 | The pinned API-specific Microsoft Learn index lacks a collection POST or member DELETE for this lifecycle. |
+| `undocumented_lifecycle` | 1110 | The pinned API-specific Microsoft Learn index lacks a collection POST or member DELETE for this lifecycle. |
 | `update_only` | 3 | Microsoft Learn documents reading and updating service-owned objects, without an ordinary create/delete lifecycle. |
 
 Catalog scope: **Full catalog from pinned API sources**. Full-catalog licensing mapping checks run against the selected API version; partial runs do not claim mapping coverage.
 
-Reviewed generated mapping coverage: 11 generated, 21 explicitly excluded, 0 missing. A mapped endpoint absent from both generated output and explicit exclusions fails full-catalog validation.
+Reviewed generated mapping coverage: 12 generated, 21 explicitly excluded, 0 missing. A mapped endpoint absent from both generated output and explicit exclusions fails full-catalog validation.
 
 Mapped endpoints explicitly excluded from generation:
 
-- `/identityGovernance/lifecycleWorkflows/deletedItems/workflows/{workflow-id}/tasks`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /identityGovernance/lifecycleWorkflows/deletedItems/workflows/{workflow-id}/tasks, DELETE /identityGovernance/lifecycleWorkflows/deletedItems/workflows/{workflow-id}/tasks/{id}
-- `/identityGovernance/lifecycleWorkflows/deletedItems/workflows/{workflow-id}/versions/{workflowVersion-versionNumber}/tasks`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /identityGovernance/lifecycleWorkflows/deletedItems/workflows/{workflow-id}/versions/{workflowVersion-versionNumber}/tasks, DELETE /identityGovernance/lifecycleWorkflows/deletedItems/workflows/{workflow-id}/versions/{workflowVersion-versionNumber}/tasks/{id}
-- `/identityGovernance/lifecycleWorkflows/workflows/{workflow-id}/tasks`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /identityGovernance/lifecycleWorkflows/workflows/{workflow-id}/tasks, DELETE /identityGovernance/lifecycleWorkflows/workflows/{workflow-id}/tasks/{id}
-- `/identityGovernance/lifecycleWorkflows/workflows/{workflow-id}/versions/{workflowVersion-versionNumber}/tasks`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /identityGovernance/lifecycleWorkflows/workflows/{workflow-id}/versions/{workflowVersion-versionNumber}/tasks, DELETE /identityGovernance/lifecycleWorkflows/workflows/{workflow-id}/versions/{workflowVersion-versionNumber}/tasks/{id}
-- `/identityGovernance/privilegedAccess/group/assignmentApprovals`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /identityGovernance/privilegedAccess/group/assignmentApprovals, DELETE /identityGovernance/privilegedAccess/group/assignmentApprovals/{id}
-- `/identityGovernance/privilegedAccess/group/assignmentScheduleInstances`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /identityGovernance/privilegedAccess/group/assignmentScheduleInstances, DELETE /identityGovernance/privilegedAccess/group/assignmentScheduleInstances/{id}
-- `/identityGovernance/privilegedAccess/group/assignmentScheduleRequests`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks DELETE /identityGovernance/privilegedAccess/group/assignmentScheduleRequests/{id}
-- `/identityGovernance/privilegedAccess/group/assignmentSchedules`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /identityGovernance/privilegedAccess/group/assignmentSchedules, DELETE /identityGovernance/privilegedAccess/group/assignmentSchedules/{id}
-- `/identityGovernance/privilegedAccess/group/eligibilityScheduleInstances`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /identityGovernance/privilegedAccess/group/eligibilityScheduleInstances, DELETE /identityGovernance/privilegedAccess/group/eligibilityScheduleInstances/{id}
-- `/identityGovernance/privilegedAccess/group/eligibilityScheduleRequests`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks DELETE /identityGovernance/privilegedAccess/group/eligibilityScheduleRequests/{id}
-- `/identityGovernance/privilegedAccess/group/eligibilitySchedules`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /identityGovernance/privilegedAccess/group/eligibilitySchedules, DELETE /identityGovernance/privilegedAccess/group/eligibilitySchedules/{id}
-- `/policies/roleManagementPolicies`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /policies/roleManagementPolicies, DELETE /policies/roleManagementPolicies/{id}
-- `/policies/roleManagementPolicies/{unifiedRoleManagementPolicy-id}/effectiveRules`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /policies/roleManagementPolicies/{unifiedRoleManagementPolicy-id}/effectiveRules, DELETE /policies/roleManagementPolicies/{unifiedRoleManagementPolicy-id}/effectiveRules/{id}
-- `/policies/roleManagementPolicies/{unifiedRoleManagementPolicy-id}/rules`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /policies/roleManagementPolicies/{unifiedRoleManagementPolicy-id}/rules, DELETE /policies/roleManagementPolicies/{unifiedRoleManagementPolicy-id}/rules/{id}
-- `/policies/roleManagementPolicyAssignments`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /policies/roleManagementPolicyAssignments, DELETE /policies/roleManagementPolicyAssignments/{id}
-- `/roleManagement/directory/roleAssignmentScheduleInstances`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /roleManagement/directory/roleAssignmentScheduleInstances, DELETE /roleManagement/directory/roleAssignmentScheduleInstances/{id}
-- `/roleManagement/directory/roleAssignmentScheduleRequests`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks DELETE /roleManagement/directory/roleAssignmentScheduleRequests/{id}
-- `/roleManagement/directory/roleAssignmentSchedules`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /roleManagement/directory/roleAssignmentSchedules, DELETE /roleManagement/directory/roleAssignmentSchedules/{id}
-- `/roleManagement/directory/roleEligibilityScheduleInstances`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /roleManagement/directory/roleEligibilityScheduleInstances, DELETE /roleManagement/directory/roleEligibilityScheduleInstances/{id}
-- `/roleManagement/directory/roleEligibilityScheduleRequests`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks DELETE /roleManagement/directory/roleEligibilityScheduleRequests/{id}
-- `/roleManagement/directory/roleEligibilitySchedules`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@98a98cc88051a857c119a2e1bb61587633585284 lacks POST /roleManagement/directory/roleEligibilitySchedules, DELETE /roleManagement/directory/roleEligibilitySchedules/{id}
+- `/identityGovernance/lifecycleWorkflows/deletedItems/workflows/{workflow-id}/tasks`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /identityGovernance/lifecycleWorkflows/deletedItems/workflows/{workflow-id}/tasks, DELETE /identityGovernance/lifecycleWorkflows/deletedItems/workflows/{workflow-id}/tasks/{id}
+- `/identityGovernance/lifecycleWorkflows/deletedItems/workflows/{workflow-id}/versions/{workflowVersion-versionNumber}/tasks`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /identityGovernance/lifecycleWorkflows/deletedItems/workflows/{workflow-id}/versions/{workflowVersion-versionNumber}/tasks, DELETE /identityGovernance/lifecycleWorkflows/deletedItems/workflows/{workflow-id}/versions/{workflowVersion-versionNumber}/tasks/{id}
+- `/identityGovernance/lifecycleWorkflows/workflows/{workflow-id}/tasks`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /identityGovernance/lifecycleWorkflows/workflows/{workflow-id}/tasks, DELETE /identityGovernance/lifecycleWorkflows/workflows/{workflow-id}/tasks/{id}
+- `/identityGovernance/lifecycleWorkflows/workflows/{workflow-id}/versions/{workflowVersion-versionNumber}/tasks`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /identityGovernance/lifecycleWorkflows/workflows/{workflow-id}/versions/{workflowVersion-versionNumber}/tasks, DELETE /identityGovernance/lifecycleWorkflows/workflows/{workflow-id}/versions/{workflowVersion-versionNumber}/tasks/{id}
+- `/identityGovernance/privilegedAccess/group/assignmentApprovals`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /identityGovernance/privilegedAccess/group/assignmentApprovals, DELETE /identityGovernance/privilegedAccess/group/assignmentApprovals/{id}
+- `/identityGovernance/privilegedAccess/group/assignmentScheduleInstances`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /identityGovernance/privilegedAccess/group/assignmentScheduleInstances, DELETE /identityGovernance/privilegedAccess/group/assignmentScheduleInstances/{id}
+- `/identityGovernance/privilegedAccess/group/assignmentScheduleRequests`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks DELETE /identityGovernance/privilegedAccess/group/assignmentScheduleRequests/{id}
+- `/identityGovernance/privilegedAccess/group/assignmentSchedules`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /identityGovernance/privilegedAccess/group/assignmentSchedules, DELETE /identityGovernance/privilegedAccess/group/assignmentSchedules/{id}
+- `/identityGovernance/privilegedAccess/group/eligibilityScheduleInstances`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /identityGovernance/privilegedAccess/group/eligibilityScheduleInstances, DELETE /identityGovernance/privilegedAccess/group/eligibilityScheduleInstances/{id}
+- `/identityGovernance/privilegedAccess/group/eligibilityScheduleRequests`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks DELETE /identityGovernance/privilegedAccess/group/eligibilityScheduleRequests/{id}
+- `/identityGovernance/privilegedAccess/group/eligibilitySchedules`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /identityGovernance/privilegedAccess/group/eligibilitySchedules, DELETE /identityGovernance/privilegedAccess/group/eligibilitySchedules/{id}
+- `/policies/roleManagementPolicies`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /policies/roleManagementPolicies, DELETE /policies/roleManagementPolicies/{id}
+- `/policies/roleManagementPolicies/{unifiedRoleManagementPolicy-id}/effectiveRules`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /policies/roleManagementPolicies/{unifiedRoleManagementPolicy-id}/effectiveRules, DELETE /policies/roleManagementPolicies/{unifiedRoleManagementPolicy-id}/effectiveRules/{id}
+- `/policies/roleManagementPolicies/{unifiedRoleManagementPolicy-id}/rules`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /policies/roleManagementPolicies/{unifiedRoleManagementPolicy-id}/rules, DELETE /policies/roleManagementPolicies/{unifiedRoleManagementPolicy-id}/rules/{id}
+- `/policies/roleManagementPolicyAssignments`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /policies/roleManagementPolicyAssignments, DELETE /policies/roleManagementPolicyAssignments/{id}
+- `/roleManagement/directory/roleAssignmentScheduleInstances`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /roleManagement/directory/roleAssignmentScheduleInstances, DELETE /roleManagement/directory/roleAssignmentScheduleInstances/{id}
+- `/roleManagement/directory/roleAssignmentScheduleRequests`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks DELETE /roleManagement/directory/roleAssignmentScheduleRequests/{id}
+- `/roleManagement/directory/roleAssignmentSchedules`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /roleManagement/directory/roleAssignmentSchedules, DELETE /roleManagement/directory/roleAssignmentSchedules/{id}
+- `/roleManagement/directory/roleEligibilityScheduleInstances`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /roleManagement/directory/roleEligibilityScheduleInstances, DELETE /roleManagement/directory/roleEligibilityScheduleInstances/{id}
+- `/roleManagement/directory/roleEligibilityScheduleRequests`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks DELETE /roleManagement/directory/roleEligibilityScheduleRequests/{id}
+- `/roleManagement/directory/roleEligibilitySchedules`: Microsoft Learn index microsoftgraph/microsoft-graph-docs-contrib@4b7867afe88f98d2415ac2f0219debe86fcb5652 lacks POST /roleManagement/directory/roleEligibilitySchedules, DELETE /roleManagement/directory/roleEligibilitySchedules/{id}
 
 ## Unknown licensing review queue
 
@@ -147,7 +148,7 @@ Mapped endpoints explicitly excluded from generation:
 
 ## Users
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-1.0&preserve-view=true) · **3 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/users?view=graph-rest-1.0&preserve-view=true) Â· **3 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -157,7 +158,7 @@ Mapped endpoints explicitly excluded from generation:
 
 ## Groups
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/groups-overview?view=graph-rest-1.0&preserve-view=true) · **4 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/groups-overview?view=graph-rest-1.0&preserve-view=true) Â· **4 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -168,7 +169,7 @@ Mapped endpoints explicitly excluded from generation:
 
 ## Applications
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/applications-api-overview?view=graph-rest-1.0&preserve-view=true) · **11 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/applications-api-overview?view=graph-rest-1.0&preserve-view=true) Â· **11 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -186,13 +187,13 @@ Mapped endpoints explicitly excluded from generation:
 
 ## Agents
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/agentid-platform-overview?view=graph-rest-1.0&preserve-view=true) · **0 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/agentid-platform-overview?view=graph-rest-1.0&preserve-view=true) Â· **0 generated modules**.
 
 No supported CRUD collection was generated in this category from the selected inputs. APIs may still exist here as read-only endpoints, actions, unsupported lifecycles, or endpoints outside an explicit include filter.
 
 ## Backup and recovery
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/tenants-backup-recovery-overview?view=graph-rest-1.0&preserve-view=true) · **4 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/tenants-backup-recovery-overview?view=graph-rest-1.0&preserve-view=true) Â· **4 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -203,7 +204,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Calendars
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/calendar-overview?view=graph-rest-1.0&preserve-view=true) · **22 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/calendar-overview?view=graph-rest-1.0&preserve-view=true) Â· **22 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -232,7 +233,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Change notifications
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/change-notifications-api-overview?view=graph-rest-1.0&preserve-view=true) · **1 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/change-notifications-api-overview?view=graph-rest-1.0&preserve-view=true) Â· **1 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -240,19 +241,19 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Compliance
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/complianceapioverview?view=graph-rest-1.0&preserve-view=true) · **0 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/complianceapioverview?view=graph-rest-1.0&preserve-view=true) Â· **0 generated modules**.
 
 No supported CRUD collection was generated in this category from the selected inputs. APIs may still exist here as read-only endpoints, actions, unsupported lifecycles, or endpoints outside an explicit include filter.
 
 ## Cross-device experiences
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/project-rome-overview?view=graph-rest-1.0&preserve-view=true) · **0 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/project-rome-overview?view=graph-rest-1.0&preserve-view=true) Â· **0 generated modules**.
 
 No supported CRUD collection was generated in this category from the selected inputs. APIs may still exist here as read-only endpoints, actions, unsupported lifecycles, or endpoints outside an explicit include filter.
 
 ## Customer booking
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/booking-api-overview?view=graph-rest-1.0&preserve-view=true) · **6 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/booking-api-overview?view=graph-rest-1.0&preserve-view=true) Â· **6 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -265,7 +266,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Device and app management
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0&preserve-view=true) · **82 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0&preserve-view=true) Â· **82 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -354,7 +355,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Education
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/education-overview?view=graph-rest-1.0&preserve-view=true) · **12 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/education-overview?view=graph-rest-1.0&preserve-view=true) Â· **12 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -373,7 +374,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Employee experience
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0&preserve-view=true) · **1 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0&preserve-view=true) Â· **1 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -381,7 +382,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Extensions
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/extensibility-overview?view=graph-rest-1.0&preserve-view=true) · **13 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/extensibility-overview?view=graph-rest-1.0&preserve-view=true) Â· **13 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -401,7 +402,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## External data connections
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/connectors-api-overview?view=graph-rest-1.0&preserve-view=true) · **3 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/connectors-api-overview?view=graph-rest-1.0&preserve-view=true) Â· **3 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -411,7 +412,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Files
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/onedrive?view=graph-rest-1.0&preserve-view=true) · **6 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/onedrive?view=graph-rest-1.0&preserve-view=true) Â· **6 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -424,7 +425,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Identity and access
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/identity-network-access-overview?view=graph-rest-1.0&preserve-view=true) · **55 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/identity-network-access-overview?view=graph-rest-1.0&preserve-view=true) Â· **56 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -464,6 +465,7 @@ No supported CRUD collection was generated in this category from the selected in
 | [`/identityGovernance/entitlementManagement/externalOriginResourceConnectors`](identity-governance/entitlement-management/external-origin-resource-connectors/README.md) | `microsoft.graph.externalOriginResourceConnector` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/externaloriginresourceconnector?view=graph-rest-1.0&preserve-view=true) |
 | [`/identityGovernance/lifecycleWorkflows/customTaskExtensions`](identity-governance/lifecycle-workflows/custom-task-extensions/README.md) | `microsoft.graph.identityGovernance.customTaskExtension` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/identitygovernance-customtaskextension?view=graph-rest-1.0&preserve-view=true) |
 | [`/identityGovernance/lifecycleWorkflows/workflows`](identity-governance/lifecycle-workflows/workflows/README.md) | `microsoft.graph.identityGovernance.workflow` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/identitygovernance-workflow?view=graph-rest-1.0&preserve-view=true) |
+| [`/identityGovernance/privilegedAccess/customExtensions`](identity-governance/privileged-access/custom-extensions/README.md) | `microsoft.graph.roleManagementCustomCalloutExtension` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/rolemanagementcustomcalloutextension?view=graph-rest-1.0&preserve-view=true) |
 | [`/identityGovernance/termsOfUse/agreements`](identity-governance/terms-of-use/agreements/README.md) | `microsoft.graph.agreement` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/agreement?view=graph-rest-1.0&preserve-view=true) |
 | [`/identityProviders`](identity-providers/README.md) | `microsoft.graph.identityProvider` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/identityprovider?view=graph-rest-1.0&preserve-view=true) |
 | [`/oauth2PermissionGrants`](oauth2-permission-grants/README.md) | `microsoft.graph.oAuth2PermissionGrant` | [Documentation](https://learn.microsoft.com/en-us/graph/api/resources/oauth2permissiongrant?view=graph-rest-1.0&preserve-view=true) |
@@ -486,7 +488,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Mail
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/mail-api-overview?view=graph-rest-1.0&preserve-view=true) · **10 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/mail-api-overview?view=graph-rest-1.0&preserve-view=true) Â· **10 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -503,13 +505,13 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Mailbox import and export
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/mailbox-import-export-api-overview?view=graph-rest-1.0&preserve-view=true) · **0 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/mailbox-import-export-api-overview?view=graph-rest-1.0&preserve-view=true) Â· **0 generated modules**.
 
 No supported CRUD collection was generated in this category from the selected inputs. APIs may still exist here as read-only endpoints, actions, unsupported lifecycles, or endpoints outside an explicit include filter.
 
 ## Notes
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/onenote-api-overview?view=graph-rest-1.0&preserve-view=true) · **4 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/onenote-api-overview?view=graph-rest-1.0&preserve-view=true) Â· **4 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -520,7 +522,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## People and workplace intelligence
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/social-overview?view=graph-rest-1.0&preserve-view=true) · **2 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/social-overview?view=graph-rest-1.0&preserve-view=true) Â· **2 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -529,7 +531,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Personal contacts
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0&preserve-view=true) · **6 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0&preserve-view=true) Â· **6 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -542,7 +544,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Reports
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0&preserve-view=true) · **1 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0&preserve-view=true) Â· **1 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -550,13 +552,13 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Partner billing reports
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/partners-billing-api-overview?view=graph-rest-1.0&preserve-view=true) · **0 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/partners-billing-api-overview?view=graph-rest-1.0&preserve-view=true) Â· **0 generated modules**.
 
 No supported CRUD collection was generated in this category from the selected inputs. APIs may still exist here as read-only endpoints, actions, unsupported lifecycles, or endpoints outside an explicit include filter.
 
 ## Search
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0&preserve-view=true) · **3 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0&preserve-view=true) Â· **3 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -566,7 +568,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Security
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/security-api-overview?view=graph-rest-1.0&preserve-view=true) · **11 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/security-api-overview?view=graph-rest-1.0&preserve-view=true) Â· **11 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -584,7 +586,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Sites and lists
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/sharepoint?view=graph-rest-1.0&preserve-view=true) · **13 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/sharepoint?view=graph-rest-1.0&preserve-view=true) Â· **13 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -604,13 +606,13 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Tasks and plans
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/planner-overview?view=graph-rest-1.0&preserve-view=true) · **0 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/planner-overview?view=graph-rest-1.0&preserve-view=true) Â· **0 generated modules**.
 
 No supported CRUD collection was generated in this category from the selected inputs. APIs may still exist here as read-only endpoints, actions, unsupported lifecycles, or endpoints outside an explicit include filter.
 
 ## Teamwork and communications
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview?view=graph-rest-1.0&preserve-view=true) · **33 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview?view=graph-rest-1.0&preserve-view=true) Â· **33 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -650,7 +652,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Tenants
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/tenants-overview?view=graph-rest-1.0&preserve-view=true) · **5 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/tenants-overview?view=graph-rest-1.0&preserve-view=true) Â· **5 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -662,7 +664,7 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## To-do tasks
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/todo-overview?view=graph-rest-1.0&preserve-view=true) · **8 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/todo-overview?view=graph-rest-1.0&preserve-view=true) Â· **8 generated modules**.
 
 | Graph collection | Resource type | Microsoft reference |
 | --- | --- | --- |
@@ -677,6 +679,6 @@ No supported CRUD collection was generated in this category from the selected in
 
 ## Workbooks and charts
 
-[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/excel?view=graph-rest-1.0&preserve-view=true) · **0 generated modules**.
+[Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/excel?view=graph-rest-1.0&preserve-view=true) Â· **0 generated modules**.
 
 No supported CRUD collection was generated in this category from the selected inputs. APIs may still exist here as read-only endpoints, actions, unsupported lifecycles, or endpoints outside an explicit include filter.

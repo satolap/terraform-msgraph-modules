@@ -34,6 +34,11 @@ variable "federation_configuration" {
   }))
   default   = null
   sensitive = true
+
+  validation {
+    condition     = (var.federation_configuration == null ? true : alltrue([alltrue([for input0 in var.federation_configuration : (input0 == null ? true : alltrue([(input0["federatedIdpMfaBehavior"] == null ? true : alltrue([(input0["federatedIdpMfaBehavior"] == null ? true : contains(["acceptIfMfaDoneByFederatedIdp", "enforceMfaByFederatedIdp", "rejectMfaByFederatedIdp"], input0["federatedIdpMfaBehavior"]))])), (input0["preferredAuthenticationProtocol"] == null ? true : alltrue([(input0["preferredAuthenticationProtocol"] == null ? true : contains(["wsFed", "saml"], input0["preferredAuthenticationProtocol"]))])), (input0["promptLoginBehavior"] == null ? true : alltrue([(input0["promptLoginBehavior"] == null ? true : contains(["translateToFreshPasswordAuthentication", "nativeSupport", "disabled"], input0["promptLoginBehavior"]))])), (input0["systemBrowserEnabledOn"] == null ? true : alltrue([(input0["systemBrowserEnabledOn"] == null ? true : try(alltrue([for value in split(",", input0["systemBrowserEnabledOn"]) : contains(["none", "ios", "android", "mac", "linux"], lower(trimspace(value)))]), false))]))]))])]))
+    error_message = "federation_configuration: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "is_admin_managed" {
@@ -114,6 +119,41 @@ variable "supported_services" {
   description = "The capabilities assigned to the domain. Can include 0, 1 or more of following values: Email, Sharepoint, EmailInternalRelayOnly, OfficeCommunicationsOnline, SharePointDefaultDomain, FullRedelegation, SharePointPublic, OrgIdAuthentication, Yammer, Intune. The values that you can add or remove using the API include: Email, OfficeCommunicationsOnline, Yammer. Not nullable."
   type        = list(string)
   default     = null
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

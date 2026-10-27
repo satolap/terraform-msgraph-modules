@@ -57,7 +57,7 @@ locals {
 # request supports neither PATCH nor DELETE, so managing it as a CRUD resource
 # would make the destroy fail on DELETE. msgraph_resource_action posts once at
 # create and is forgotten on destroy; the assignment is removed by
-# null_resource.remove_on_destroy below, with an adminRemove request.
+# msgraph_resource_action.remove below, with an adminRemove request.
 #
 # PIM role settings (the rules of the role's management policy, such as a
 # maximum eligibility duration, required justification or a ban on permanent
@@ -79,6 +79,7 @@ resource "msgraph_resource_action" "assign" {
   # Never add create_before_destroy: the new adminAssign would fail, and the
   # destroy-time adminRemove would then remove the new assignment.
   lifecycle {
+    ignore_changes       = all
     replace_triggered_by = [terraform_data.assignment]
 
     precondition {
@@ -124,7 +125,7 @@ resource "terraform_data" "assignment" {
 # PIM provisions the schedule asynchronously; wait before reading it back. A new
 # request waits again (and reads at apply time rather than plan time).
 resource "time_sleep" "wait_for_delivery" {
-  depends_on      = [msgraph_resource_action.assign, null_resource.remove_on_destroy]
+  depends_on      = [msgraph_resource_action.assign, msgraph_resource_action.remove]
   create_duration = "${var.verification_delay_seconds}s"
 
   lifecycle {
@@ -184,23 +185,47 @@ resource "terraform_data" "verification_gate" {
   depends_on = [data.msgraph_resource.verify]
 }
 
-# Removal on destroy: a schedule request cannot be deleted, only countered by an
-# adminRemove request. This uses the ambient Azure CLI session to submit it when
-# the assignment is destroyed. Before requesting a token it requires
-# ARM_TENANT_ID (the tenant variable the msgraph provider reads) to match
-# `az account show`, so the request cannot go to another tenant. curl reads the
-# Authorization header from a config on stdin, so the token never appears in a
-# process argv. Values are passed as environment variables, never interpolated
-# into shell code.
-# An assignment that has expired or was removed already makes Graph answer that
-# it does not exist (HTTP 404, or HTTP 400 with a DoesNotExist or NotFound
-# error); that counts as removed. Learn documents no error code for this, so the
-# match is on the words. 409, 429 and 5xx answers are retried for about two
-# minutes; other refusals, such as a role setting that blocks the removal, stop
-# the destroy. Each refusal prints Graph's error body, with control characters
-# removed.
-# Keep `triggers` complete: a change to any request input replaces this resource,
-# which removes the old assignment before the new one is requested.
+# Verify the exact created request, not a possibly absent future schedule or
+# another schedule found by tuple. Only completed creation permits registration.
+data "msgraph_resource" "verify_request" {
+  count = var.enable_destroy_cleanup ? 1 : 0
+
+  url                    = "${msgraph_resource_action.assign.resource_url}/${coalesce(try(msgraph_resource_action.assign.output.request_id, null), "missing-created-request-id")}"
+  api_version            = var.api_version
+  response_export_values = { request = "@" }
+  retry = {
+    error_message_regex = ["(?i)\"error\"\\s*:\\s*\\{[^}]*\"code\"\\s*:\\s*\"(404|NotFound|Request_ResourceNotFound)\"", "(?i)^(HTTP|status|statuscode)\\s*[:=]?\\s*404\\b"]
+  }
+  timeouts {
+    read = "2m"
+  }
+
+  lifecycle {
+    precondition {
+      condition = alltrue([
+        can(regex("^[A-Za-z0-9_-]{1,512}$", try(msgraph_resource_action.assign.output.request_id, ""))),
+        var.api_version == null ? false : contains(["v1.0", "beta"], var.api_version),
+      ])
+      error_message = "Refusing request verification: a safe captured request ID and API version are required."
+    }
+    postcondition {
+      condition = try(alltrue([
+        self.output.request.id == msgraph_resource_action.assign.output.request_id,
+        self.output.request.action == "adminAssign",
+        lower(self.output.request.principalId) == lower(msgraph_resource_action.assign.body.principalId),
+        lower(self.output.request.roleDefinitionId) == lower(msgraph_resource_action.assign.body.roleDefinitionId),
+        lower(self.output.request.directoryScopeId) == lower(msgraph_resource_action.assign.body.directoryScopeId),
+        try(self.output.request.appScopeId, null) == null,
+        self.output.request.isValidationOnly == false,
+        self.output.request.status == null ? false : contains(["Provisioned", "ScheduleCreated", "Granted"], self.output.request.status),
+      ]), false)
+      error_message = "Independent GET must verify the created adminAssign request, identity and completed status before removal registration. Preserve the request and retry unchanged apply; never replay POST or destroy to recover verification."
+    }
+  }
+}
+
+# Keep legacy triggers and address without the shell provisioner. Register the
+# counter-request before the later schedule read/gate can fail.
 resource "null_resource" "remove_on_destroy" {
   count = var.enable_destroy_cleanup ? 1 : 0
 
@@ -213,65 +238,43 @@ resource "null_resource" "remove_on_destroy" {
     request            = sha256(jsonencode(local.assign_body))
   }
 
-  # Record the hook after a confirmed assignment, before any fallible read-back.
-  # Do not register removal for a request that Graph rejected.
-  depends_on = [msgraph_resource_action.assign]
+  depends_on = [data.msgraph_resource.verify_request]
 
-  provisioner "local-exec" {
-    when        = destroy
-    interpreter = ["bash", "-c"]
-    environment = {
-      GRAPH_PRINCIPAL_ID        = self.triggers.principal_id
-      GRAPH_ROLE_DEFINITION_ID  = self.triggers.role_definition_id
-      GRAPH_DIRECTORY_SCOPE_ID  = self.triggers.directory_scope_id
-      GRAPH_API_VERSION         = self.triggers.api_version
-      GRAPH_REQUESTS_COLLECTION = self.triggers.assignment_type == "eligible" ? "roleEligibilityScheduleRequests" : "roleAssignmentScheduleRequests"
-      GRAPH_REMOVE_BODY = jsonencode({
-        action           = "adminRemove"
-        principalId      = self.triggers.principal_id
-        roleDefinitionId = self.triggers.role_definition_id
-        directoryScopeId = self.triggers.directory_scope_id
-      })
+  lifecycle {
+    replace_triggered_by = [msgraph_resource_action.assign]
+  }
+}
+
+resource "msgraph_resource_action" "remove" {
+  count = var.enable_destroy_cleanup ? 1 : 0
+
+  resource_url = null_resource.remove_on_destroy[0].triggers.assignment_type == "eligible" ? "roleManagement/directory/roleEligibilityScheduleRequests" : "roleManagement/directory/roleAssignmentScheduleRequests"
+  api_version  = null_resource.remove_on_destroy[0].triggers.api_version
+  method       = "POST"
+  when         = "destroy"
+  body = {
+    action           = "adminRemove"
+    principalId      = null_resource.remove_on_destroy[0].triggers.principal_id
+    roleDefinitionId = null_resource.remove_on_destroy[0].triggers.role_definition_id
+    directoryScopeId = null_resource.remove_on_destroy[0].triggers.directory_scope_id
+  }
+
+  lifecycle {
+    ignore_changes       = all
+    replace_triggered_by = [null_resource.remove_on_destroy]
+
+    precondition {
+      condition = alltrue([
+        can(regex("(?i)^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$", null_resource.remove_on_destroy[0].triggers.principal_id)),
+        can(regex("(?i)^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$", null_resource.remove_on_destroy[0].triggers.role_definition_id)),
+        can(regex("(?i)^/((administrativeUnits/)?[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12})?$", null_resource.remove_on_destroy[0].triggers.directory_scope_id)),
+        null_resource.remove_on_destroy[0].triggers.assignment_type == null ? false : contains(["eligible", "active"], null_resource.remove_on_destroy[0].triggers.assignment_type),
+        null_resource.remove_on_destroy[0].triggers.api_version == null ? false : contains(["v1.0", "beta"], null_resource.remove_on_destroy[0].triggers.api_version),
+        null_resource.remove_on_destroy[0].triggers.principal_id == msgraph_resource_action.assign.body.principalId,
+        null_resource.remove_on_destroy[0].triggers.role_definition_id == msgraph_resource_action.assign.body.roleDefinitionId,
+        null_resource.remove_on_destroy[0].triggers.directory_scope_id == msgraph_resource_action.assign.body.directoryScopeId,
+      ])
+      error_message = "Refusing removal registration: saved type, API and assignment identity must be safe and match the independently verified request."
     }
-    command = <<-EOT
-      set -euo pipefail
-      set +ax
-      test -n "$GRAPH_PRINCIPAL_ID" && test -n "$GRAPH_ROLE_DEFINITION_ID" && test -n "$GRAPH_DIRECTORY_SCOPE_ID" || { echo "ERROR: the principal, role definition or scope was not captured; remove the assignment in PIM before destroying." >&2; exit 1; }
-      expected_tenant=$(printf '%s' "$${ARM_TENANT_ID:-}" | tr '[:upper:]' '[:lower:]')
-      test -n "$expected_tenant" || { echo "ERROR: ARM_TENANT_ID is not set. Set it to the tenant ID the msgraph provider uses; destroy cleanup refuses to guess the tenant." >&2; exit 1; }
-      cli_tenant=$(az account show --query tenantId -o tsv | tr '[:upper:]' '[:lower:]')
-      test "$cli_tenant" = "$expected_tenant" || { echo "ERROR: the Azure CLI tenant ($cli_tenant) does not match ARM_TENANT_ID ($expected_tenant). Run 'az login --tenant $expected_tenant' or correct ARM_TENANT_ID, then retry destroy." >&2; exit 1; }
-      unset TOKEN
-      TOKEN=$(az account get-access-token --resource https://graph.microsoft.com --query accessToken -o tsv)
-      case "$TOKEN" in "" | *[!A-Za-z0-9._~+/=-]*) echo "ERROR: the Azure CLI returned no usable Microsoft Graph access token." >&2; exit 1 ;; esac
-      attempts=6
-      attempt=1
-      absent=0
-      while :; do
-        response=$(printf 'header = "Authorization: Bearer %s"\n' "$TOKEN" | curl --config - --silent --show-error --connect-timeout 30 --max-time 120 \
-          -w '\n%%{http_code}' \
-          -X POST "https://graph.microsoft.com/$GRAPH_API_VERSION/roleManagement/directory/$GRAPH_REQUESTS_COLLECTION" \
-          -H "Content-Type: application/json" \
-          --data "$GRAPH_REMOVE_BODY")
-        status=$${response##*$'\n'}
-        case "$status" in 2??) break ;; esac
-        body=$${response%$'\n'*}
-        body=$(printf '%s' "$${body:0:2000}" | tr -c '[:print:]' ' ')
-        echo "Graph answered HTTP $status to adminRemove for principal $GRAPH_PRINCIPAL_ID, role $GRAPH_ROLE_DEFINITION_ID, scope $GRAPH_DIRECTORY_SCOPE_ID (attempt $attempt of $attempts): $body" >&2
-        lowered=$(printf '%s' "$body" | tr '[:upper:]' '[:lower:]')
-        case "$status:$lowered" in
-          404:* | 400:*doesnotexist* | 400:*"does not exist"* | 400:*notfound* | 400:*"not found"*) absent=1; break ;;
-        esac
-        case "$status" in 409 | 429 | 5??) ;; *) exit 1 ;; esac
-        test "$attempt" -lt "$attempts" || { echo "ERROR: adminRemove still fails after $attempts attempts. Remove the assignment in PIM, then retry destroy." >&2; exit 1; }
-        attempt=$((attempt + 1))
-        sleep 20
-      done
-      if test "$absent" = 1; then
-        echo "The assignment of role $GRAPH_ROLE_DEFINITION_ID to $GRAPH_PRINCIPAL_ID at $GRAPH_DIRECTORY_SCOPE_ID no longer exists; nothing to remove."
-      else
-        echo "Submitted adminRemove for principal $GRAPH_PRINCIPAL_ID, role $GRAPH_ROLE_DEFINITION_ID, scope $GRAPH_DIRECTORY_SCOPE_ID. Verify removal in Privileged Identity Management."
-      fi
-    EOT
   }
 }

@@ -7,6 +7,11 @@ variable "audio_routing_groups" {
     sources     = optional(list(string))
   }))
   default = null
+
+  validation {
+    condition     = (var.audio_routing_groups == null ? true : alltrue([alltrue([for input0 in var.audio_routing_groups : (input0 == null ? true : alltrue([(input0["routingMode"] == null ? true : alltrue([(input0["routingMode"] == null ? true : contains(["oneToOne", "multicast"], input0["routingMode"]))]))]))])]))
+    error_message = "audio_routing_groups: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "call_chain_id" {
@@ -132,12 +137,22 @@ variable "participants" {
     rosterSequenceNumber = optional(number)
   }))
   default = null
+
+  validation {
+    condition     = (var.participants == null ? true : alltrue([alltrue([for input0 in var.participants : (input0 == null ? true : alltrue([(input0["mediaStreams"] == null ? true : alltrue([alltrue([for input2 in input0["mediaStreams"] : (input2 == null ? true : alltrue([(input2["direction"] == null ? true : alltrue([(input2["direction"] == null ? true : contains(["inactive", "sendOnly", "receiveOnly", "sendReceive"], input2["direction"]))])), (input2["mediaType"] == null ? true : alltrue([(input2["mediaType"] == null ? true : contains(["audio", "video", "videoBasedScreenSharing", "data"], input2["mediaType"]))]))]))])])), (input0["recordingInfo"] == null ? true : alltrue([(input0["recordingInfo"]["recordingStatus"] == null ? true : alltrue([(input0["recordingInfo"]["recordingStatus"] == null ? true : contains(["unknown", "notRecording", "recording", "failed"], input0["recordingInfo"]["recordingStatus"]))]))])), (input0["restrictedExperience"] == null ? true : alltrue([(input0["restrictedExperience"]["contentSharingDisabled"] == null ? true : alltrue([(input0["restrictedExperience"]["contentSharingDisabled"] == null ? true : try(alltrue([for value in split(",", input0["restrictedExperience"]["contentSharingDisabled"]) : contains(["watermarkprotection"], lower(trimspace(value)))]), false))])), (input0["restrictedExperience"]["videoDisabled"] == null ? true : alltrue([(input0["restrictedExperience"]["videoDisabled"] == null ? true : try(alltrue([for value in split(",", input0["restrictedExperience"]["videoDisabled"]) : contains(["watermarkprotection"], lower(trimspace(value)))]), false))]))]))]))])]))
+    error_message = "participants: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "requested_modalities" {
   description = "The list of requested modalities. The possible values are: unknown, audio, video, videoBasedScreenSharing, data."
   type        = list(string)
   default     = null
+
+  validation {
+    condition     = (var.requested_modalities == null ? true : alltrue([alltrue([for input0 in var.requested_modalities : (input0 == null ? true : alltrue([(input0 == null ? true : contains(["audio", "video", "videoBasedScreenSharing", "data"], input0))]))])]))
+    error_message = "requested_modalities: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "subject" {
@@ -173,6 +188,46 @@ variable "tone_info" {
     tone       = optional(string)
   })
   default = null
+
+  validation {
+    condition     = (var.tone_info == null ? true : alltrue([(var.tone_info["tone"] == null ? true : alltrue([(var.tone_info["tone"] == null ? true : contains(["tone0", "tone1", "tone2", "tone3", "tone4", "tone5", "tone6", "tone7", "tone8", "tone9", "star", "pound", "a", "b", "c", "d", "flash"], var.tone_info["tone"]))]))]))
+    error_message = "tone_info: nested required attributes must be non-null and enum values must be supported input members."
+  }
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

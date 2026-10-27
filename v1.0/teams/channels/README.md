@@ -2,11 +2,13 @@
 
 Create channel
 
-[Catalog](../../README.md) · [Teamwork and communications](../../README.md#teamwork-and-communications) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/channel?view=graph-rest-1.0&preserve-view=true)
+[Catalog](../../README.md) Â· [Teamwork and communications](../../README.md#teamwork-and-communications) Â· [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/channel?view=graph-rest-1.0&preserve-view=true)
 
 Generated from Microsoft Graph **v1.0** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /teams/{team-id}/channels`, `GET/PATCH/DELETE /teams/{team-id}/channels/{channel-id}`.
+
+Assurance: **generated (offline contract)**. Schema-derived request construction and mock tests do not prove live service behavior.
 
 ## Usage
 
@@ -21,35 +23,69 @@ module "graph_resource" {
 
 Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
+## Read-back and drift
+
+`select_response` defaults to `false`. Default reads keep `ignore_missing_property = true` and the full default GET response, including default-returned fields that were not configured. This preserves existing read behavior and response consumers, but can hide missing, null or empty reads. It does not prove a successful write or clear.
+
+Strict read-back is not offered as a module input. Every generated body carries `@odata.type`, which ordinary GET responses omit; strict provider refresh would remove it and cause perpetual drift. Offering strict read-back requires annotation-aware comparison or a provider change, plus live proof.
+
+Enabling `select_response` can plan an in-place resource update even when body values are unchanged. Whether an option-only change sends a write request is unverified; inspect the plan before opting in.
+
+Only with `select_response = true`, the item GET selects `id`, `appId` when exposed as an output, and configured readable body keys (including additional properties). Annotations, known navigation properties and top-level write-only/omitted keys are excluded. This deliberately narrows the sensitive `response` output: an expression such as `module.group.response.mail` can stop working if mail was not selected. Use the default for existing consumers. Selection does not make provider refresh strict or prove a successful write.
+
+No select-only inputs are identified by this metadata and contract; classification is incomplete.
+
+Classification remains incomplete, especially for nested null-unless-selected values, permission-hidden properties and beta descriptions. Unclassified omissions can still be hidden by lenient refresh. Provider-refresh characterization tests are offline evidence, not proof of Graph behavior. Before offering strict read-back or changing the selection default, live independent GETs and repeated no-op plans must pass on users, groups, applications and servicePrincipals, including nested credentials and relationship cases.
+
+## Timeouts and replication retries
+
+The optional `timeouts` input (`create`, `read`, `update`, `delete`) is passed to the `msgraph_resource`. Every value defaults to null, which keeps the provider defaults and sends no timeouts block, so adding it changes no existing plan. Durations are whole hours, minutes or seconds greater than zero, such as `30m` or `1h30m`, and `create`, `update` and `delete` must be at least `15s`. Setting `read` plans an in-place update of every deployed object, because the provider's default read timeout is then replaced. The provider already retries 408, 429, 500, 502, 503 and 504 by itself.
+
+This module has no reviewed replication retry.
+
 ## Inputs
 
-| Input | Graph property | Type | Required | Sensitive |
-| --- | --- | --- | --- | --- |
-| `team_id` | URL parameter `team-id` | `string` | yes | no |
-| `all_members` | `allMembers` | `any` | no | no |
-| `description` | `description` | `string` | no | no |
-| `display_name` | `displayName` | `string` | no | no |
-| `enabled_apps` | `enabledApps` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsApp")       appDefinitions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsAppDefinition")       authorization = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsAppAuthorization")       clientAppId = optional(string)       requiredPermissionSet = optional(any)     }))       bot = optional(any)       createdBy = optional(any)       description = optional(string)       displayName = optional(string)       lastModifiedDateTime = optional(string)       publishingState = optional(string)       shortDescription = optional(string)       teamsAppId = optional(string)       version = optional(string)     })))       displayName = optional(string)       externalId = optional(string)     }))` | no | no |
-| `files_folder` | `filesFolder` | `any` | no | no |
-| `is_favorite_by_default` | `isFavoriteByDefault` | `bool` | no | no |
-| `layout_type` | `layoutType` | `string` | no | no |
-| `members` | `members` | `any` | no | no |
-| `membership_type` | `membershipType` | `string` | no | no |
-| `messages` | `messages` | `any` | no | no |
-| `migration_mode` | `migrationMode` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
-| `original_created_date_time` | `originalCreatedDateTime` | `string` | no | no |
-| `shared_with_teams` | `sharedWithTeams` | `list(object({       odata_type = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")       allowedMembers = optional(any)       displayName = optional(string)       isHostTeam = optional(bool)       team = optional(any)       tenantId = optional(string)     }))` | no | no |
-| `summary` | `summary` | `object({       odata_type = optional(string, "#microsoft.graph.channelSummary")       guestsCount = optional(number)       hasMembersFromOtherTenants = optional(bool)       membersCount = optional(number)       ownersCount = optional(number)     })` | no | no |
-| `tabs` | `tabs` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsTab")       configuration = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsTabConfiguration")       contentUrl = optional(string)       entityId = optional(string)       removeUrl = optional(string)       websiteUrl = optional(string)     }))       displayName = optional(string)       teamsApp = optional(any)     }))` | no | no |
-| `tenant_id` | `tenantId` | `string` | no | no |
-| `additional_properties` | Additional writable API properties | `any` | no | yes |
+**On change** says what changing an input does to the Graph object; [declaration.json](declaration.json) declares the same for tools, with the outputs. A nested object attribute behaves like the input that holds it.
+
+| Input | Graph property | Type | Required | Sensitive | On change |
+| --- | --- | --- | --- | --- | --- |
+| `team_id` | URL parameter `team-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `all_members` | `allMembers` | `any` | no | no | in place |
+| `description` | `description` | `string` | no | no | in place |
+| `display_name` | `displayName` | `string` | no | no | in place |
+| `enabled_apps` | `enabledApps` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsApp")       appDefinitions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsAppDefinition")       authorization = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsAppAuthorization")       clientAppId = optional(string)       requiredPermissionSet = optional(any)     }))       bot = optional(any)       createdBy = optional(any)       description = optional(string)       displayName = optional(string)       lastModifiedDateTime = optional(string)       publishingState = optional(string)       shortDescription = optional(string)       teamsAppId = optional(string)       version = optional(string)     })))       displayName = optional(string)       externalId = optional(string)     }))` | no | no | in place |
+| `files_folder` | `filesFolder` | `any` | no | no | in place |
+| `is_favorite_by_default` | `isFavoriteByDefault` | `bool` | no | no | in place |
+| `layout_type` | `layoutType` | `string` | no | no | in place |
+| `members` | `members` | `any` | no | no | in place |
+| `membership_type` | `membershipType` | `string` | no | no | in place |
+| `messages` | `messages` | `any` | no | no | in place |
+| `migration_mode` | `migrationMode` | `string` | no | no | in place |
+| `odata_type` | `@odata.type` | `string` | no | no | in place |
+| `original_created_date_time` | `originalCreatedDateTime` | `string` | no | no | in place |
+| `shared_with_teams` | `sharedWithTeams` | `list(object({       odata_type = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")       allowedMembers = optional(any)       displayName = optional(string)       isHostTeam = optional(bool)       team = optional(any)       tenantId = optional(string)     }))` | no | no | in place |
+| `summary` | `summary` | `object({       odata_type = optional(string, "#microsoft.graph.channelSummary")       guestsCount = optional(number)       hasMembersFromOtherTenants = optional(bool)       membersCount = optional(number)       ownersCount = optional(number)     })` | no | no | in place |
+| `tabs` | `tabs` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsTab")       configuration = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsTabConfiguration")       contentUrl = optional(string)       entityId = optional(string)       removeUrl = optional(string)       websiteUrl = optional(string)     }))       displayName = optional(string)       teamsApp = optional(any)     }))` | no | no | in place |
+| `tenant_id` | `tenantId` | `string` | no | no | in place |
+| `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
 
 Sensitive inputs, `additional_properties`, and the `response` output are redacted in normal Terraform presentation. Their values still exist in saved plans and state: restrict access to those files and the state backend. Sensitivity is not encryption or a substitute for state access controls.
 
-Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
+## Outputs
+
+**Known in plan after an update** is whether a plan still knows the value when it updates the object in place; a value read from the Graph response is known only after apply then.
+
+| Output | Provides | Sensitive | Known in plan after an update |
+| --- | --- | --- | --- |
+| `id` | Graph object ID | no | yes |
+| `resource_url` | Graph URL of the object | no | yes |
+| `response` | the Graph object as returned | yes | no |
+
+Server-assigned properties in `response`: `createdDateTime`, `email`, `id`, `isArchived`, `webUrl`.
+
+Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
 ## Permissions and limitations
 
@@ -67,6 +103,7 @@ Generation notes:
 - enabledApps[].appDefinitions[].createdBy: polymorphic schema; accepts an untyped value
 - filesFolder: navigation property; accepts an untyped value
 - members[]: polymorphic schema; accepts an untyped value
+- membershipType: enum members after unknownFutureValue require Prefer: include-unknown-enum-members on refresh and a live probe before use: shared; excluded from typed input validation
 - messages[]: polymorphic schema; accepts an untyped value
 - sharedWithTeams[].allowedMembers[]: polymorphic schema; accepts an untyped value
 - sharedWithTeams[].team: navigation property; accepts an untyped value

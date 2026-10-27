@@ -39,7 +39,7 @@ variable "allow_live_share" {
   default     = null
 
   validation {
-    condition     = var.allow_live_share == null ? true : contains(["enabled", "disabled", "unknownFutureValue"], var.allow_live_share)
+    condition     = var.allow_live_share == null ? true : contains(["enabled", "disabled"], var.allow_live_share)
     error_message = "allow_live_share must be one of the documented enum values."
   }
 }
@@ -50,7 +50,7 @@ variable "allow_meeting_chat" {
   default     = null
 
   validation {
-    condition     = var.allow_meeting_chat == null ? true : contains(["enabled", "disabled", "limited", "unknownFutureValue"], var.allow_meeting_chat)
+    condition     = var.allow_meeting_chat == null ? true : contains(["enabled", "disabled", "limited"], var.allow_meeting_chat)
     error_message = "allow_meeting_chat must be one of the documented enum values."
   }
 }
@@ -97,7 +97,7 @@ variable "allowed_lobby_admitters" {
   default     = null
 
   validation {
-    condition     = var.allowed_lobby_admitters == null ? true : contains(["organizerAndCoOrganizersAndPresenters", "organizerAndCoOrganizers", "unknownFutureValue"], var.allowed_lobby_admitters)
+    condition     = var.allowed_lobby_admitters == null ? true : contains(["organizerAndCoOrganizersAndPresenters", "organizerAndCoOrganizers"], var.allowed_lobby_admitters)
     error_message = "allowed_lobby_admitters must be one of the documented enum values."
   }
 }
@@ -108,7 +108,7 @@ variable "allowed_presenters" {
   default     = null
 
   validation {
-    condition     = var.allowed_presenters == null ? true : contains(["everyone", "organization", "roleIsPresenter", "organizer", "unknownFutureValue"], var.allowed_presenters)
+    condition     = var.allowed_presenters == null ? true : contains(["everyone", "organization", "roleIsPresenter", "organizer"], var.allowed_presenters)
     error_message = "allowed_presenters must be one of the documented enum values."
   }
 }
@@ -117,6 +117,11 @@ variable "anonymize_identity_for_roles" {
   description = "Specifies whose identity is anonymized in the meeting. The possible values are: attendee. The attendee value can't be removed through a PATCH operation once added."
   type        = list(string)
   default     = null
+
+  validation {
+    condition     = (var.anonymize_identity_for_roles == null ? true : alltrue([alltrue([for input0 in var.anonymize_identity_for_roles : (input0 == null ? true : alltrue([(input0 == null ? true : contains(["attendee", "presenter", "producer"], input0))]))])]))
+    error_message = "anonymize_identity_for_roles: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "broadcast_recording" {
@@ -142,12 +147,22 @@ variable "broadcast_settings" {
     isVideoOnDemandEnabled     = optional(bool)
   })
   default = null
+
+  validation {
+    condition     = (var.broadcast_settings == null ? true : alltrue([(var.broadcast_settings["allowedAudience"] == null ? true : alltrue([(var.broadcast_settings["allowedAudience"] == null ? true : contains(["roleIsAttendee", "organization", "everyone"], var.broadcast_settings["allowedAudience"]))]))]))
+    error_message = "broadcast_settings: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "capabilities" {
   description = "The list of meeting capabilities. The possible values are: questionAndAnswer,unknownFutureValue."
   type        = list(string)
   default     = null
+
+  validation {
+    condition     = (var.capabilities == null ? true : alltrue([alltrue([for input0 in var.capabilities : (input0 == null ? true : alltrue([(input0 == null ? true : contains(["questionAndAnswer"], input0))]))])]))
+    error_message = "capabilities: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "chat_info" {
@@ -229,6 +244,11 @@ variable "lobby_bypass_settings" {
     scope                 = optional(string)
   })
   default = null
+
+  validation {
+    condition     = (var.lobby_bypass_settings == null ? true : alltrue([(var.lobby_bypass_settings["scope"] == null ? true : alltrue([(var.lobby_bypass_settings["scope"] == null ? true : contains(["organizer", "organization", "organizationAndFederated", "everyone"], var.lobby_bypass_settings["scope"]))]))]))
+    error_message = "lobby_bypass_settings: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "meeting_options_web_url" {
@@ -295,7 +315,7 @@ variable "share_meeting_chat_history_default" {
   default     = null
 
   validation {
-    condition     = var.share_meeting_chat_history_default == null ? true : contains(["none", "all", "unknownFutureValue"], var.share_meeting_chat_history_default)
+    condition     = var.share_meeting_chat_history_default == null ? true : contains(["none", "all"], var.share_meeting_chat_history_default)
     error_message = "share_meeting_chat_history_default must be one of the documented enum values."
   }
 }
@@ -320,6 +340,41 @@ variable "watermark_protection" {
     isEnabledForVideo          = optional(bool)
   })
   default = null
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

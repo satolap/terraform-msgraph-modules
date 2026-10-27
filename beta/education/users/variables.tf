@@ -47,6 +47,11 @@ variable "assignments" {
     rubric = optional(any)
   }))
   default = null
+
+  validation {
+    condition     = (var.assignments == null ? true : alltrue([alltrue([for input0 in var.assignments : (input0 == null ? true : alltrue([(input0["addToCalendarAction"] == null ? true : alltrue([(input0["addToCalendarAction"] == null ? true : contains(["none", "studentsAndPublisher", "studentsAndTeamOwners"], input0["addToCalendarAction"]))])), (input0["addedStudentAction"] == null ? true : alltrue([(input0["addedStudentAction"] == null ? true : contains(["none", "assignIfOpen"], input0["addedStudentAction"]))])), (input0["instructions"] == null ? true : alltrue([(input0["instructions"]["contentType"] == null ? true : alltrue([(input0["instructions"]["contentType"] == null ? true : contains(["text", "html"], input0["instructions"]["contentType"]))]))]))]))])]))
+    error_message = "assignments: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "business_phones" {
@@ -309,6 +314,11 @@ variable "classes" {
   }))
   default   = null
   sensitive = true
+
+  validation {
+    condition     = (var.classes == null ? true : alltrue([alltrue([for input0 in var.classes : (input0 == null ? true : alltrue([(input0["assignments"] == null ? true : alltrue([alltrue([for input2 in input0["assignments"] : (input2 == null ? true : alltrue([(input2["addToCalendarAction"] == null ? true : alltrue([(input2["addToCalendarAction"] == null ? true : contains(["none", "studentsAndPublisher", "studentsAndTeamOwners"], input2["addToCalendarAction"]))])), (input2["addedStudentAction"] == null ? true : alltrue([(input2["addedStudentAction"] == null ? true : contains(["none", "assignIfOpen"], input2["addedStudentAction"]))])), (input2["instructions"] == null ? true : alltrue([(input2["instructions"]["contentType"] == null ? true : alltrue([(input2["instructions"]["contentType"] == null ? true : contains(["text", "html"], input2["instructions"]["contentType"]))]))]))]))])])), (input0["externalSource"] == null ? true : alltrue([(input0["externalSource"] == null ? true : contains(["sis", "manual"], input0["externalSource"]))])), (input0["members"] == null ? true : alltrue([alltrue([for input2 in input0["members"] : (input2 == null ? true : alltrue([(input2["externalSource"] == null ? true : alltrue([(input2["externalSource"] == null ? true : contains(["sis", "manual"], input2["externalSource"]))])), (input2["mailingAddress"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["mailingAddress"]["type"]))]))])), (input2["primaryRole"] == null ? true : alltrue([(input2["primaryRole"] == null ? true : contains(["student", "teacher", "none"], input2["primaryRole"]))])), (input2["residenceAddress"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["residenceAddress"]["type"]))]))])), (input2["student"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : contains(["female", "male", "other"], input2["student"]["gender"]))]))]))]))])])), (input0["schools"] == null ? true : alltrue([alltrue([for input2 in input0["schools"] : (input2 == null ? true : alltrue([(input2["address"] == null ? true : alltrue([(input2["address"]["type"] == null ? true : alltrue([(input2["address"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["address"]["type"]))]))])), (input2["externalSource"] == null ? true : alltrue([(input2["externalSource"] == null ? true : contains(["sis", "manual"], input2["externalSource"]))]))]))])])), (input0["teachers"] == null ? true : alltrue([alltrue([for input2 in input0["teachers"] : (input2 == null ? true : alltrue([(input2["externalSource"] == null ? true : alltrue([(input2["externalSource"] == null ? true : contains(["sis", "manual"], input2["externalSource"]))])), (input2["mailingAddress"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["mailingAddress"]["type"]))]))])), (input2["primaryRole"] == null ? true : alltrue([(input2["primaryRole"] == null ? true : contains(["student", "teacher", "none"], input2["primaryRole"]))])), (input2["residenceAddress"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["residenceAddress"]["type"]))]))])), (input2["student"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : contains(["female", "male", "other"], input2["student"]["gender"]))]))]))]))])]))]))])]))
+    error_message = "classes: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "created_by" {
@@ -335,7 +345,7 @@ variable "external_source" {
   default     = null
 
   validation {
-    condition     = var.external_source == null ? true : contains(["sis", "manual", "unknownFutureValue", "lms"], var.external_source)
+    condition     = var.external_source == null ? true : contains(["sis", "manual"], var.external_source)
     error_message = "external_source must be one of the documented enum values."
   }
 }
@@ -371,6 +381,11 @@ variable "mailing_address" {
     type            = optional(string)
   })
   default = null
+
+  validation {
+    condition     = (var.mailing_address == null ? true : alltrue([(var.mailing_address["type"] == null ? true : alltrue([(var.mailing_address["type"] == null ? true : contains(["unknown", "home", "business", "other"], var.mailing_address["type"]))]))]))
+    error_message = "mailing_address: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "middle_name" {
@@ -438,7 +453,7 @@ variable "primary_role" {
   default     = null
 
   validation {
-    condition     = var.primary_role == null ? true : contains(["student", "teacher", "none", "unknownFutureValue", "faculty"], var.primary_role)
+    condition     = var.primary_role == null ? true : contains(["student", "teacher", "none"], var.primary_role)
     error_message = "primary_role must be one of the documented enum values."
   }
 }
@@ -462,6 +477,11 @@ variable "related_contacts" {
     relationship  = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.related_contacts == null ? true : alltrue([alltrue([for input0 in var.related_contacts : (input0 == null ? true : alltrue([(input0["relationship"] == null ? true : alltrue([(input0["relationship"] == null ? true : contains(["parent", "relative", "aide", "doctor", "guardian", "child", "other"], input0["relationship"]))]))]))])]))
+    error_message = "related_contacts: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "residence_address" {
@@ -477,6 +497,11 @@ variable "residence_address" {
     type            = optional(string)
   })
   default = null
+
+  validation {
+    condition     = (var.residence_address == null ? true : alltrue([(var.residence_address["type"] == null ? true : alltrue([(var.residence_address["type"] == null ? true : contains(["unknown", "home", "business", "other"], var.residence_address["type"]))]))]))
+    error_message = "residence_address: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "rubrics" {
@@ -515,6 +540,11 @@ variable "rubrics" {
     })))
   }))
   default = null
+
+  validation {
+    condition     = (var.rubrics == null ? true : alltrue([alltrue([for input0 in var.rubrics : (input0 == null ? true : alltrue([(input0["description"] == null ? true : alltrue([(input0["description"]["contentType"] == null ? true : alltrue([(input0["description"]["contentType"] == null ? true : contains(["text", "html"], input0["description"]["contentType"]))]))])), (input0["levels"] == null ? true : alltrue([alltrue([for input2 in input0["levels"] : (input2 == null ? true : alltrue([(input2["description"] == null ? true : alltrue([(input2["description"]["contentType"] == null ? true : alltrue([(input2["description"]["contentType"] == null ? true : contains(["text", "html"], input2["description"]["contentType"]))]))]))]))])])), (input0["qualities"] == null ? true : alltrue([alltrue([for input2 in input0["qualities"] : (input2 == null ? true : alltrue([(input2["description"] == null ? true : alltrue([(input2["description"]["contentType"] == null ? true : alltrue([(input2["description"]["contentType"] == null ? true : contains(["text", "html"], input2["description"]["contentType"]))]))]))]))])]))]))])]))
+    error_message = "rubrics: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "schools" {
@@ -662,6 +692,11 @@ variable "schools" {
   }))
   default   = null
   sensitive = true
+
+  validation {
+    condition     = (var.schools == null ? true : alltrue([alltrue([for input0 in var.schools : (input0 == null ? true : alltrue([(input0["address"] == null ? true : alltrue([(input0["address"]["type"] == null ? true : alltrue([(input0["address"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input0["address"]["type"]))]))])), (input0["classes"] == null ? true : alltrue([alltrue([for input2 in input0["classes"] : (input2 == null ? true : alltrue([(input2["externalSource"] == null ? true : alltrue([(input2["externalSource"] == null ? true : contains(["sis", "manual"], input2["externalSource"]))]))]))])])), (input0["externalSource"] == null ? true : alltrue([(input0["externalSource"] == null ? true : contains(["sis", "manual"], input0["externalSource"]))])), (input0["users"] == null ? true : alltrue([alltrue([for input2 in input0["users"] : (input2 == null ? true : alltrue([(input2["externalSource"] == null ? true : alltrue([(input2["externalSource"] == null ? true : contains(["sis", "manual"], input2["externalSource"]))])), (input2["mailingAddress"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["mailingAddress"]["type"]))]))])), (input2["primaryRole"] == null ? true : alltrue([(input2["primaryRole"] == null ? true : contains(["student", "teacher", "none"], input2["primaryRole"]))])), (input2["residenceAddress"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["residenceAddress"]["type"]))]))])), (input2["student"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : contains(["female", "male", "other"], input2["student"]["gender"]))]))]))]))])]))]))])]))
+    error_message = "schools: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "show_in_address_list" {
@@ -682,6 +717,11 @@ variable "student" {
     studentNumber  = optional(string)
   })
   default = null
+
+  validation {
+    condition     = (var.student == null ? true : alltrue([(var.student["gender"] == null ? true : alltrue([(var.student["gender"] == null ? true : contains(["female", "male", "other"], var.student["gender"]))]))]))
+    error_message = "student: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "surname" {
@@ -944,6 +984,11 @@ variable "taught_classes" {
   }))
   default   = null
   sensitive = true
+
+  validation {
+    condition     = (var.taught_classes == null ? true : alltrue([alltrue([for input0 in var.taught_classes : (input0 == null ? true : alltrue([(input0["assignments"] == null ? true : alltrue([alltrue([for input2 in input0["assignments"] : (input2 == null ? true : alltrue([(input2["addToCalendarAction"] == null ? true : alltrue([(input2["addToCalendarAction"] == null ? true : contains(["none", "studentsAndPublisher", "studentsAndTeamOwners"], input2["addToCalendarAction"]))])), (input2["addedStudentAction"] == null ? true : alltrue([(input2["addedStudentAction"] == null ? true : contains(["none", "assignIfOpen"], input2["addedStudentAction"]))])), (input2["instructions"] == null ? true : alltrue([(input2["instructions"]["contentType"] == null ? true : alltrue([(input2["instructions"]["contentType"] == null ? true : contains(["text", "html"], input2["instructions"]["contentType"]))]))]))]))])])), (input0["externalSource"] == null ? true : alltrue([(input0["externalSource"] == null ? true : contains(["sis", "manual"], input0["externalSource"]))])), (input0["members"] == null ? true : alltrue([alltrue([for input2 in input0["members"] : (input2 == null ? true : alltrue([(input2["externalSource"] == null ? true : alltrue([(input2["externalSource"] == null ? true : contains(["sis", "manual"], input2["externalSource"]))])), (input2["mailingAddress"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["mailingAddress"]["type"]))]))])), (input2["primaryRole"] == null ? true : alltrue([(input2["primaryRole"] == null ? true : contains(["student", "teacher", "none"], input2["primaryRole"]))])), (input2["residenceAddress"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["residenceAddress"]["type"]))]))])), (input2["student"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : contains(["female", "male", "other"], input2["student"]["gender"]))]))]))]))])])), (input0["schools"] == null ? true : alltrue([alltrue([for input2 in input0["schools"] : (input2 == null ? true : alltrue([(input2["address"] == null ? true : alltrue([(input2["address"]["type"] == null ? true : alltrue([(input2["address"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["address"]["type"]))]))])), (input2["externalSource"] == null ? true : alltrue([(input2["externalSource"] == null ? true : contains(["sis", "manual"], input2["externalSource"]))]))]))])])), (input0["teachers"] == null ? true : alltrue([alltrue([for input2 in input0["teachers"] : (input2 == null ? true : alltrue([(input2["externalSource"] == null ? true : alltrue([(input2["externalSource"] == null ? true : contains(["sis", "manual"], input2["externalSource"]))])), (input2["mailingAddress"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["mailingAddress"]["type"]))]))])), (input2["primaryRole"] == null ? true : alltrue([(input2["primaryRole"] == null ? true : contains(["student", "teacher", "none"], input2["primaryRole"]))])), (input2["residenceAddress"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["residenceAddress"]["type"]))]))])), (input2["student"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : contains(["female", "male", "other"], input2["student"]["gender"]))]))]))]))])]))]))])]))
+    error_message = "taught_classes: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "teacher" {
@@ -978,6 +1023,41 @@ variable "user_type" {
   description = "A string value that can be used to classify user types in your directory, such as 'Member' and 'Guest'. Supports /$filter."
   type        = string
   default     = null
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

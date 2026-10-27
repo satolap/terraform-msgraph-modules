@@ -33,6 +33,11 @@ variable "definitions" {
     version                   = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.definitions == null ? true : alltrue([alltrue([for input0 in var.definitions : (input0 == null ? true : alltrue([(input0["classType"] == null ? true : alltrue([(input0["classType"] == null ? true : contains(["user", "machine"], input0["classType"]))])), (input0["policyType"] == null ? true : alltrue([(input0["policyType"] == null ? true : contains(["admxBacked", "admxIngested"], input0["policyType"]))]))]))])]))
+    error_message = "definitions: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "description" {
@@ -63,6 +68,11 @@ variable "group_policy_operations" {
     statusDetails        = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.group_policy_operations == null ? true : alltrue([alltrue([for input0 in var.group_policy_operations : (input0 == null ? true : alltrue([(input0["operationStatus"] == null ? true : alltrue([(input0["operationStatus"] == null ? true : contains(["unknown", "inProgress", "success", "failed"], input0["operationStatus"]))])), (input0["operationType"] == null ? true : alltrue([(input0["operationType"] == null ? true : contains(["none", "upload", "uploadNewVersion", "addLanguageFiles", "removeLanguageFiles", "updateLanguageFiles", "remove"], input0["operationType"]))]))]))])]))
+    error_message = "group_policy_operations: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "group_policy_uploaded_language_files" {
@@ -141,6 +151,41 @@ variable "upload_date_time" {
   description = "The uploaded time of the uploaded ADMX file."
   type        = string
   default     = null
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

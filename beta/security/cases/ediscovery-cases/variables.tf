@@ -7,6 +7,11 @@ variable "case_members" {
     smtpAddress   = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.case_members == null ? true : alltrue([alltrue([for input0 in var.case_members : (input0 == null ? true : alltrue([(input0["recipientType"] == null ? true : alltrue([(input0["recipientType"] == null ? true : try(alltrue([for value in split(",", input0["recipientType"]) : contains(["user", "rolegroup"], lower(trimspace(value)))]), false))]))]))])]))
+    error_message = "case_members: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "closed_by" {
@@ -158,6 +163,11 @@ variable "custodians" {
     })))
   }))
   default = null
+
+  validation {
+    condition     = (var.custodians == null ? true : alltrue([alltrue([for input0 in var.custodians : (input0 == null ? true : alltrue([(input0["holdStatus"] == null ? true : alltrue([(input0["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input0["holdStatus"]))])), (input0["siteSources"] == null ? true : alltrue([alltrue([for input2 in input0["siteSources"] : (input2 == null ? true : alltrue([(input2["holdStatus"] == null ? true : alltrue([(input2["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input2["holdStatus"]))])), (input2["site"] == null ? true : alltrue([(input2["site"]["lockState"] == null ? true : alltrue([(input2["site"]["lockState"] == null ? true : contains(["unlocked", "lockedReadOnly", "lockedNoAccess", "lockedNoAdditions"], input2["site"]["lockState"]))])), (input2["site"]["template"] == null ? true : alltrue([(input2["site"]["template"] == null ? true : contains(["sitepagepublishing", "sts"], input2["site"]["template"]))]))]))]))])])), (input0["status"] == null ? true : alltrue([(input0["status"] == null ? true : contains(["active", "released"], input0["status"]))])), (input0["unifiedGroupSources"] == null ? true : alltrue([alltrue([for input2 in input0["unifiedGroupSources"] : (input2 == null ? true : alltrue([(input2["group"] == null ? true : alltrue([(input2["group"]["accessType"] == null ? true : alltrue([(input2["group"]["accessType"] == null ? true : contains(["none", "private", "secret", "public"], input2["group"]["accessType"]))]))])), (input2["holdStatus"] == null ? true : alltrue([(input2["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input2["holdStatus"]))])), (input2["includedSources"] == null ? true : alltrue([(input2["includedSources"] == null ? true : try(alltrue([for value in split(",", input2["includedSources"]) : contains(["mailbox", "site"], lower(trimspace(value)))]), false))]))]))])])), (input0["userSources"] == null ? true : alltrue([alltrue([for input2 in input0["userSources"] : (input2 == null ? true : alltrue([(input2["holdStatus"] == null ? true : alltrue([(input2["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input2["holdStatus"]))])), (input2["includedSources"] == null ? true : alltrue([(input2["includedSources"] == null ? true : try(alltrue([for value in split(",", input2["includedSources"]) : contains(["mailbox", "site"], lower(trimspace(value)))]), false))]))]))])]))]))])]))
+    error_message = "custodians: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "description" {
@@ -257,6 +267,11 @@ variable "legal_holds" {
     })))
   }))
   default = null
+
+  validation {
+    condition     = (var.legal_holds == null ? true : alltrue([alltrue([for input0 in var.legal_holds : (input0 == null ? true : alltrue([(input0["siteSources"] == null ? true : alltrue([alltrue([for input2 in input0["siteSources"] : (input2 == null ? true : alltrue([(input2["holdStatus"] == null ? true : alltrue([(input2["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input2["holdStatus"]))])), (input2["site"] == null ? true : alltrue([(input2["site"]["lockState"] == null ? true : alltrue([(input2["site"]["lockState"] == null ? true : contains(["unlocked", "lockedReadOnly", "lockedNoAccess", "lockedNoAdditions"], input2["site"]["lockState"]))])), (input2["site"]["template"] == null ? true : alltrue([(input2["site"]["template"] == null ? true : contains(["sitepagepublishing", "sts"], input2["site"]["template"]))]))]))]))])])), (input0["status"] == null ? true : alltrue([(input0["status"] == null ? true : contains(["pending", "error", "success"], input0["status"]))])), (input0["userSources"] == null ? true : alltrue([alltrue([for input2 in input0["userSources"] : (input2 == null ? true : alltrue([(input2["holdStatus"] == null ? true : alltrue([(input2["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input2["holdStatus"]))])), (input2["includedSources"] == null ? true : alltrue([(input2["includedSources"] == null ? true : try(alltrue([for value in split(",", input2["includedSources"]) : contains(["mailbox", "site"], lower(trimspace(value)))]), false))]))]))])]))]))])]))
+    error_message = "legal_holds: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "noncustodial_data_sources" {
@@ -273,6 +288,11 @@ variable "noncustodial_data_sources" {
     status               = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.noncustodial_data_sources == null ? true : alltrue([alltrue([for input0 in var.noncustodial_data_sources : (input0 == null ? true : alltrue([(input0["holdStatus"] == null ? true : alltrue([(input0["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input0["holdStatus"]))])), (input0["status"] == null ? true : alltrue([(input0["status"] == null ? true : contains(["active", "released"], input0["status"]))]))]))])]))
+    error_message = "noncustodial_data_sources: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "odata_type" {
@@ -323,6 +343,11 @@ variable "review_sets" {
     })))
   }))
   default = null
+
+  validation {
+    condition     = (var.review_sets == null ? true : alltrue([alltrue([for input0 in var.review_sets : (input0 == null ? true : alltrue([(input0["files"] == null ? true : alltrue([alltrue([for input2 in input0["files"] : (input2 == null ? true : alltrue([(input2["processingStatus"] == null ? true : alltrue([(input2["processingStatus"] == null ? true : contains(["success", "internalError", "unknownError", "processingTimeout", "invalidFileId", "fileSizeIsZero", "fileSizeIsTooLarge", "fileDepthLimitExceeded", "fileBodyIsTooLong", "fileTypeIsUnknown", "fileTypeIsNotSupported", "malformedFile", "protectedFile", "poisonFile", "noReviewSetSummaryGenerated", "extractionException", "ocrProcessingTimeout", "ocrFileSizeExceedsLimit"], input2["processingStatus"]))])), (input2["sourceType"] == null ? true : alltrue([(input2["sourceType"] == null ? true : try(alltrue([for value in split(",", input2["sourceType"]) : contains(["mailbox", "site"], lower(trimspace(value)))]), false))]))]))])]))]))])]))
+    error_message = "review_sets: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "searches" {
@@ -354,6 +379,11 @@ variable "searches" {
     })))
   }))
   default = null
+
+  validation {
+    condition     = (var.searches == null ? true : alltrue([alltrue([for input0 in var.searches : (input0 == null ? true : alltrue([(input0["dataSourceScopes"] == null ? true : alltrue([(input0["dataSourceScopes"] == null ? true : try(alltrue([for value in split(",", input0["dataSourceScopes"]) : contains(["none", "alltenantmailboxes", "alltenantsites", "allcasecustodians", "allcasenoncustodialdatasources"], lower(trimspace(value)))]), false))])), (input0["noncustodialSources"] == null ? true : alltrue([alltrue([for input2 in input0["noncustodialSources"] : (input2 == null ? true : alltrue([(input2["holdStatus"] == null ? true : alltrue([(input2["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input2["holdStatus"]))])), (input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["active", "released"], input2["status"]))]))]))])]))]))])]))
+    error_message = "searches: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "settings" {
@@ -368,7 +398,7 @@ variable "status" {
   default     = null
 
   validation {
-    condition     = var.status == null ? true : contains(["unknown", "active", "pendingDelete", "closing", "closed", "closedWithError", "unknownFutureValue"], var.status)
+    condition     = var.status == null ? true : contains(["unknown", "active", "pendingDelete", "closing", "closed", "closedWithError"], var.status)
     error_message = "status must be one of the documented enum values."
   }
 }
@@ -386,6 +416,46 @@ variable "tags" {
     parent               = optional(any)
   }))
   default = null
+
+  validation {
+    condition     = (var.tags == null ? true : alltrue([alltrue([for input0 in var.tags : (input0 == null ? true : alltrue([(input0["childSelectability"] == null ? true : alltrue([(input0["childSelectability"] == null ? true : contains(["One", "Many"], input0["childSelectability"]))]))]))])]))
+    error_message = "tags: nested required attributes must be non-null and enum values must be supported input members."
+  }
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

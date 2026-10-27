@@ -2,11 +2,13 @@
 
 Create new navigation property to messages for users
 
-[Catalog](../../README.md) · [Mail](../../README.md#mail) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/message?view=graph-rest-1.0&preserve-view=true)
+[Catalog](../../README.md) Â· [Mail](../../README.md#mail) Â· [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/message?view=graph-rest-1.0&preserve-view=true)
 
 Generated from Microsoft Graph **v1.0** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /users/{user-id}/messages`, `GET/PATCH/DELETE /users/{user-id}/messages/{message-id}`.
+
+Assurance: **generated (offline contract)**. Schema-derived request construction and mock tests do not prove live service behavior.
 
 ## Usage
 
@@ -21,51 +23,85 @@ module "graph_resource" {
 
 Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
+## Read-back and drift
+
+`select_response` defaults to `false`. Default reads keep `ignore_missing_property = true` and the full default GET response, including default-returned fields that were not configured. This preserves existing read behavior and response consumers, but can hide missing, null or empty reads. It does not prove a successful write or clear.
+
+Strict read-back is not offered as a module input. Every generated body carries `@odata.type`, which ordinary GET responses omit; strict provider refresh would remove it and cause perpetual drift. Offering strict read-back requires annotation-aware comparison or a provider change, plus live proof.
+
+Enabling `select_response` can plan an in-place resource update even when body values are unchanged. Whether an option-only change sends a write request is unverified; inspect the plan before opting in.
+
+Only with `select_response = true`, the item GET selects `id`, `appId` when exposed as an output, and configured readable body keys (including additional properties). Annotations, known navigation properties and top-level write-only/omitted keys are excluded. This deliberately narrows the sensitive `response` output: an expression such as `module.group.response.mail` can stop working if mail was not selected. Use the default for existing consumers. Selection does not make provider refresh strict or prove a successful write.
+
+Select-only inputs: `uniqueBody`.
+
+Classification remains incomplete, especially for nested null-unless-selected values, permission-hidden properties and beta descriptions. Unclassified omissions can still be hidden by lenient refresh. Provider-refresh characterization tests are offline evidence, not proof of Graph behavior. Before offering strict read-back or changing the selection default, live independent GETs and repeated no-op plans must pass on users, groups, applications and servicePrincipals, including nested credentials and relationship cases.
+
+## Timeouts and replication retries
+
+The optional `timeouts` input (`create`, `read`, `update`, `delete`) is passed to the `msgraph_resource`. Every value defaults to null, which keeps the provider defaults and sends no timeouts block, so adding it changes no existing plan. Durations are whole hours, minutes or seconds greater than zero, such as `30m` or `1h30m`, and `create`, `update` and `delete` must be at least `15s`. Setting `read` plans an in-place update of every deployed object, because the provider's default read timeout is then replaced. The provider already retries 408, 429, 500, 502, 503 and 504 by itself.
+
+This module has no reviewed replication retry.
+
 ## Inputs
 
-| Input | Graph property | Type | Required | Sensitive |
-| --- | --- | --- | --- | --- |
-| `user_id` | URL parameter `user-id` | `string` | yes | no |
-| `attachments` | `attachments` | `any` | no | no |
-| `bcc_recipients` | `bccRecipients` | `any` | no | no |
-| `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no |
-| `body_preview` | `bodyPreview` | `string` | no | no |
-| `categories` | `categories` | `list(string)` | no | no |
-| `cc_recipients` | `ccRecipients` | `any` | no | no |
-| `conversation_id` | `conversationId` | `string` | no | no |
-| `conversation_index` | `conversationIndex` | `string` | no | no |
-| `created_date_time` | `createdDateTime` | `string` | no | no |
-| `extensions` | `extensions` | `any` | no | no |
-| `flag` | `flag` | `object({       odata_type = optional(string, "#microsoft.graph.followupFlag")       completedDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       dueDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       flagStatus = optional(string)       startDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))     })` | no | no |
-| `from` | `from` | `any` | no | no |
-| `has_attachments` | `hasAttachments` | `bool` | no | no |
-| `importance` | `importance` | `string` | no | no |
-| `inference_classification` | `inferenceClassification` | `string` | no | no |
-| `internet_message_id` | `internetMessageId` | `string` | no | no |
-| `is_delivery_receipt_requested` | `isDeliveryReceiptRequested` | `bool` | no | no |
-| `is_draft` | `isDraft` | `bool` | no | no |
-| `is_read` | `isRead` | `bool` | no | no |
-| `is_read_receipt_requested` | `isReadReceiptRequested` | `bool` | no | no |
-| `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no |
-| `multi_value_extended_properties` | `multiValueExtendedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.multiValueLegacyExtendedProperty")       value = optional(list(string))     }))` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
-| `parent_folder_id` | `parentFolderId` | `string` | no | no |
-| `received_date_time` | `receivedDateTime` | `string` | no | no |
-| `reply_to` | `replyTo` | `any` | no | no |
-| `sender` | `sender` | `any` | no | no |
-| `sent_date_time` | `sentDateTime` | `string` | no | no |
-| `single_value_extended_properties` | `singleValueExtendedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.singleValueLegacyExtendedProperty")       value = optional(string)     }))` | no | no |
-| `subject` | `subject` | `string` | no | no |
-| `to_recipients` | `toRecipients` | `any` | no | no |
-| `unique_body` | `uniqueBody` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no |
-| `web_link` | `webLink` | `string` | no | no |
-| `additional_properties` | Additional writable API properties | `any` | no | yes |
+**On change** says what changing an input does to the Graph object; [declaration.json](declaration.json) declares the same for tools, with the outputs. A nested object attribute behaves like the input that holds it.
+
+| Input | Graph property | Type | Required | Sensitive | On change |
+| --- | --- | --- | --- | --- | --- |
+| `user_id` | URL parameter `user-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `attachments` | `attachments` | `any` | no | no | in place |
+| `bcc_recipients` | `bccRecipients` | `any` | no | no | in place |
+| `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no | in place |
+| `body_preview` | `bodyPreview` | `string` | no | no | in place |
+| `categories` | `categories` | `list(string)` | no | no | in place |
+| `cc_recipients` | `ccRecipients` | `any` | no | no | in place |
+| `conversation_id` | `conversationId` | `string` | no | no | in place |
+| `conversation_index` | `conversationIndex` | `string` | no | no | in place |
+| `created_date_time` | `createdDateTime` | `string` | no | no | in place |
+| `extensions` | `extensions` | `any` | no | no | in place |
+| `flag` | `flag` | `object({       odata_type = optional(string, "#microsoft.graph.followupFlag")       completedDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       dueDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       flagStatus = optional(string)       startDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))     })` | no | no | in place |
+| `from` | `from` | `any` | no | no | in place |
+| `has_attachments` | `hasAttachments` | `bool` | no | no | in place |
+| `importance` | `importance` | `string` | no | no | in place |
+| `inference_classification` | `inferenceClassification` | `string` | no | no | in place |
+| `internet_message_id` | `internetMessageId` | `string` | no | no | in place |
+| `is_delivery_receipt_requested` | `isDeliveryReceiptRequested` | `bool` | no | no | in place |
+| `is_draft` | `isDraft` | `bool` | no | no | in place |
+| `is_read` | `isRead` | `bool` | no | no | in place |
+| `is_read_receipt_requested` | `isReadReceiptRequested` | `bool` | no | no | in place |
+| `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no | in place |
+| `multi_value_extended_properties` | `multiValueExtendedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.multiValueLegacyExtendedProperty")       value = optional(list(string))     }))` | no | no | in place |
+| `odata_type` | `@odata.type` | `string` | no | no | in place |
+| `parent_folder_id` | `parentFolderId` | `string` | no | no | in place |
+| `received_date_time` | `receivedDateTime` | `string` | no | no | in place |
+| `reply_to` | `replyTo` | `any` | no | no | in place |
+| `sender` | `sender` | `any` | no | no | in place |
+| `sent_date_time` | `sentDateTime` | `string` | no | no | in place |
+| `single_value_extended_properties` | `singleValueExtendedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.singleValueLegacyExtendedProperty")       value = optional(string)     }))` | no | no | in place |
+| `subject` | `subject` | `string` | no | no | in place |
+| `to_recipients` | `toRecipients` | `any` | no | no | in place |
+| `unique_body` | `uniqueBody` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no | in place |
+| `web_link` | `webLink` | `string` | no | no | in place |
+| `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
 
 Sensitive inputs, `additional_properties`, and the `response` output are redacted in normal Terraform presentation. Their values still exist in saved plans and state: restrict access to those files and the state backend. Sensitivity is not encryption or a substitute for state access controls.
 
-Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
+## Outputs
+
+**Known in plan after an update** is whether a plan still knows the value when it updates the object in place; a value read from the Graph response is known only after apply then.
+
+| Output | Provides | Sensitive | Known in plan after an update |
+| --- | --- | --- | --- |
+| `id` | Graph object ID | no | yes |
+| `resource_url` | Graph URL of the object | no | yes |
+| `response` | the Graph object as returned | yes | no |
+
+Server-assigned properties in `response`: `changeKey`, `id`, `internetMessageHeaders`.
+
+Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
 ## Permissions and limitations
 

@@ -9,6 +9,19 @@ variable "displayName" {
   }
 }
 
+# A control of this module, not a Graph property, so it keeps the snake_case name
+# that every verified module uses for it.
+variable "name_pattern" {
+  description = "Regular expression (RE2 syntax, not anchored unless it says so) that displayName must match, such as the pattern of a naming convention. When it is set and displayName does not match, the plan fails. Null, the default, accepts any displayName."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.name_pattern == null || can(regexall(var.name_pattern, ""))
+    error_message = "name_pattern must be a valid regular expression (RE2 syntax)."
+  }
+}
+
 variable "description" {
   description = "Description of the custom role. Null omits the property and does not request clearing an existing description."
   type        = string

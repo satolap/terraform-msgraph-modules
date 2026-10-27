@@ -471,6 +471,11 @@ variable "group" {
     }))
   })
   default = null
+
+  validation {
+    condition     = (var.group == null ? true : alltrue([(var.group["accessType"] == null ? true : alltrue([(var.group["accessType"] == null ? true : contains(["none", "private", "secret", "public"], var.group["accessType"]))])), (var.group["events"] == null ? true : alltrue([alltrue([for input1 in var.group["events"] : (input1 == null ? true : alltrue([(input1["attendees"] == null ? true : alltrue([alltrue([for input3 in input1["attendees"] : (input3 == null ? true : alltrue([(input3["type"] == null ? true : alltrue([(input3["type"] == null ? true : contains(["required", "optional", "resource"], input3["type"]))]))]))])])), (input1["body"] == null ? true : alltrue([(input1["body"]["contentType"] == null ? true : alltrue([(input1["body"]["contentType"] == null ? true : contains(["text", "html"], input1["body"]["contentType"]))]))])), (input1["importance"] == null ? true : alltrue([(input1["importance"] == null ? true : contains(["low", "normal", "high"], input1["importance"]))])), (input1["onlineMeetingProvider"] == null ? true : alltrue([(input1["onlineMeetingProvider"] == null ? true : contains(["unknown", "skypeForBusiness", "skypeForConsumer", "teamsForBusiness"], input1["onlineMeetingProvider"]))])), (input1["recurrence"] == null ? true : alltrue([(input1["recurrence"]["pattern"] == null ? true : alltrue([(input1["recurrence"]["pattern"]["firstDayOfWeek"] == null ? true : alltrue([(input1["recurrence"]["pattern"]["firstDayOfWeek"] == null ? true : contains(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"], input1["recurrence"]["pattern"]["firstDayOfWeek"]))])), (input1["recurrence"]["pattern"]["index"] == null ? true : alltrue([(input1["recurrence"]["pattern"]["index"] == null ? true : contains(["first", "second", "third", "fourth", "last"], input1["recurrence"]["pattern"]["index"]))])), (input1["recurrence"]["pattern"]["type"] == null ? true : alltrue([(input1["recurrence"]["pattern"]["type"] == null ? true : contains(["daily", "weekly", "absoluteMonthly", "relativeMonthly", "absoluteYearly", "relativeYearly"], input1["recurrence"]["pattern"]["type"]))]))])), (input1["recurrence"]["range"] == null ? true : alltrue([(input1["recurrence"]["range"]["type"] == null ? true : alltrue([(input1["recurrence"]["range"]["type"] == null ? true : contains(["endDate", "noEnd", "numbered"], input1["recurrence"]["range"]["type"]))]))]))])), (input1["responseStatus"] == null ? true : alltrue([(input1["responseStatus"]["response"] == null ? true : alltrue([(input1["responseStatus"]["response"] == null ? true : contains(["none", "organizer", "tentativelyAccepted", "accepted", "declined", "notResponded"], input1["responseStatus"]["response"]))]))])), (input1["sensitivity"] == null ? true : alltrue([(input1["sensitivity"] == null ? true : contains(["normal", "personal", "private", "confidential"], input1["sensitivity"]))])), (input1["showAs"] == null ? true : alltrue([(input1["showAs"] == null ? true : contains(["unknown", "free", "tentative", "busy", "oof", "workingElsewhere"], input1["showAs"]))]))]))])])), (var.group["sites"] == null ? true : alltrue([alltrue([for input1 in var.group["sites"] : (input1 == null ? true : alltrue([(input1["contentModels"] == null ? true : alltrue([alltrue([for input3 in input1["contentModels"] : (input3 == null ? true : alltrue([(input3["modelType"] == null ? true : alltrue([(input3["modelType"] == null ? true : contains(["teachingMethod", "layoutMethod", "freeformSelectionMethod", "prebuiltContractModel", "prebuiltInvoiceModel", "prebuiltReceiptModel"], input3["modelType"]))]))]))])])), (input1["documentProcessingJobs"] == null ? true : alltrue([alltrue([for input3 in input1["documentProcessingJobs"] : (input3 == null ? true : alltrue([(input3["jobType"] == null ? true : alltrue([(input3["jobType"] == null ? true : contains(["file", "folder"], input3["jobType"]))])), (input3["status"] == null ? true : alltrue([(input3["status"] == null ? true : contains(["inProgress", "completed", "failed"], input3["status"]))]))]))])])), (input1["lockState"] == null ? true : alltrue([(input1["lockState"] == null ? true : contains(["unlocked", "lockedReadOnly", "lockedNoAccess", "lockedNoAdditions"], input1["lockState"]))])), (input1["operations"] == null ? true : alltrue([alltrue([for input3 in input1["operations"] : (input3 == null ? true : alltrue([(input3["status"] == null ? true : alltrue([(input3["status"] == null ? true : contains(["notStarted", "running", "succeeded", "failed"], input3["status"]))]))]))])])), (input1["pageTemplates"] == null ? true : alltrue([alltrue([for input3 in input1["pageTemplates"] : (input3 == null ? true : alltrue([(input3["pageLayout"] == null ? true : alltrue([(input3["pageLayout"] == null ? true : contains(["microsoftReserved", "article", "home"], input3["pageLayout"]))]))]))])])), (input1["template"] == null ? true : alltrue([(input1["template"] == null ? true : contains(["sitepagepublishing", "sts"], input1["template"]))]))]))])])), (var.group["threads"] == null ? true : alltrue([alltrue([for input1 in var.group["threads"] : (input1 == null ? true : alltrue([(input1["posts"] == null ? true : alltrue([alltrue([for input3 in input1["posts"] : (input3 == null ? true : alltrue([(input3["importance"] == null ? true : alltrue([(input3["importance"] == null ? true : contains(["low", "normal", "high"], input3["importance"]))]))]))])]))]))])]))]))
+    error_message = "group: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "hold_status" {
@@ -479,7 +484,7 @@ variable "hold_status" {
   default     = null
 
   validation {
-    condition     = var.hold_status == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial", "unknownFutureValue"], var.hold_status)
+    condition     = var.hold_status == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], var.hold_status)
     error_message = "hold_status must be one of the documented enum values."
   }
 }
@@ -499,6 +504,41 @@ variable "odata_type" {
   description = "Microsoft Graph @odata.type property."
   type        = string
   default     = "#microsoft.graph.ediscovery.unifiedGroupSource"
+  nullable    = false
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
   nullable    = false
 }
 

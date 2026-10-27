@@ -215,6 +215,46 @@ variable "restrictions" {
   })
   default   = null
   sensitive = true
+
+  validation {
+    condition     = (var.restrictions == null ? true : alltrue([(var.restrictions["applicationRestrictions"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["audiences"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["audiences"]["azureAdMultipleOrgs"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["audiences"]["azureAdMultipleOrgs"]["state"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["audiences"]["azureAdMultipleOrgs"]["state"] == null ? true : contains(["enabled", "disabled"], var.restrictions["applicationRestrictions"]["audiences"]["azureAdMultipleOrgs"]["state"]))]))]))])), (var.restrictions["applicationRestrictions"]["identifierUris"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["identifierUris"]["nonDefaultUriAddition"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["identifierUris"]["nonDefaultUriAddition"]["state"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["identifierUris"]["nonDefaultUriAddition"]["state"] == null ? true : contains(["enabled", "disabled"], var.restrictions["applicationRestrictions"]["identifierUris"]["nonDefaultUriAddition"]["state"]))]))])), (var.restrictions["applicationRestrictions"]["identifierUris"]["uriAdditionWithoutUniqueTenantIdentifier"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["identifierUris"]["uriAdditionWithoutUniqueTenantIdentifier"]["state"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["identifierUris"]["uriAdditionWithoutUniqueTenantIdentifier"]["state"] == null ? true : contains(["enabled", "disabled"], var.restrictions["applicationRestrictions"]["identifierUris"]["uriAdditionWithoutUniqueTenantIdentifier"]["state"]))]))]))])), (var.restrictions["applicationRestrictions"]["redirectUris"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithBlockedDomain"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithBlockedDomain"]["state"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithBlockedDomain"]["state"] == null ? true : contains(["enabled", "disabled"], var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithBlockedDomain"]["state"]))]))])), (var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithBlockedScheme"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithBlockedScheme"]["state"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithBlockedScheme"]["state"] == null ? true : contains(["enabled", "disabled"], var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithBlockedScheme"]["state"]))]))])), (var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithWildcard"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithWildcard"]["state"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithWildcard"]["state"] == null ? true : contains(["enabled", "disabled"], var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithWildcard"]["state"]))]))])), (var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithoutAllowedDomain"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithoutAllowedDomain"]["state"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithoutAllowedDomain"]["state"] == null ? true : contains(["enabled", "disabled"], var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithoutAllowedDomain"]["state"]))]))])), (var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithoutAllowedScheme"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithoutAllowedScheme"]["state"] == null ? true : alltrue([(var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithoutAllowedScheme"]["state"] == null ? true : contains(["enabled", "disabled"], var.restrictions["applicationRestrictions"]["redirectUris"]["uriWithoutAllowedScheme"]["state"]))]))]))]))])), (var.restrictions["keyCredentials"] == null ? true : alltrue([alltrue([for input1 in var.restrictions["keyCredentials"] : (input1 == null ? true : alltrue([(input1["restrictionType"] == null ? true : alltrue([(input1["restrictionType"] == null ? true : contains(["asymmetricKeyLifetime", "trustedCertificateAuthority"], input1["restrictionType"]))])), (input1["state"] == null ? true : alltrue([(input1["state"] == null ? true : contains(["enabled", "disabled"], input1["state"]))]))]))])])), (var.restrictions["passwordCredentials"] == null ? true : alltrue([alltrue([for input1 in var.restrictions["passwordCredentials"] : (input1 == null ? true : alltrue([(input1["restrictionType"] == null ? true : alltrue([(input1["restrictionType"] == null ? true : contains(["passwordAddition", "passwordLifetime", "symmetricKeyAddition", "symmetricKeyLifetime", "customPasswordAddition"], input1["restrictionType"]))])), (input1["state"] == null ? true : alltrue([(input1["state"] == null ? true : contains(["enabled", "disabled"], input1["state"]))]))]))])]))]))
+    error_message = "restrictions: nested required attributes must be non-null and enum values must be supported input members."
+  }
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

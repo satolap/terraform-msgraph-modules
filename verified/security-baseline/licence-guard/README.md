@@ -1,5 +1,27 @@
 # licence-guard
 
+<!-- state-protection:start -->
+## State and plan protection
+
+This module's state and saved plans retain these declared values:
+
+Sensitive outputs: `licensed_skus`.
+
+Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
+
+See [Terraform sensitive state guidance](https://developer.hashicorp.com/terraform/language/state/sensitive-data). These are exposure indicators, not a complete data classification; unmarked fields and provider responses also need protection.
+<!-- state-protection:end -->
+
+<!-- uses-beta:start -->
+Uses beta: **no**. This module and its local child modules do not select beta.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Plan-time licence check shared by the [security baseline](../README.md) modules. The
 calling module declares the tier it needs; the guard fails the plan when the tenant has no
 usable subscription for that tier. It creates no resources and sends no Graph writes.
@@ -105,14 +127,14 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| tier | Tier the calling module needs: `free`, `p1` or `p2` | `string` | n/a | yes |
-| allowed_tiers | Tiers the calling module supports | `set(string)` | `["free", "p1", "p2"]` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| tier | Tier the calling module needs: `free`, `p1` or `p2` | `string` | n/a | yes | no object change (validation or timing only) |
+| allowed_tiers | Tiers the calling module supports | `set(string)` | `["free", "p1", "p2"]` | no | no object change (validation or timing only) |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| tier | The tier, once the allowed-tier and licence checks pass |
-| licensed_skus | SKUs that license the tier: `sku_id`, `sku_part_number`, `capability_status` and `prepaid_units`; empty for `free` |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| tier | The tier, once the allowed-tier and licence checks pass | yes |
+| licensed_skus | SKUs that license the tier: `sku_id`, `sku_part_number`, `capability_status` and `prepaid_units`; empty for `free` | no |

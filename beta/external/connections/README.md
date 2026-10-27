@@ -2,11 +2,15 @@
 
 Create connection
 
-[Catalog](../../README.md) · [External data connections](../../README.md#external-data-connections) · [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/externalconnectors-externalconnection?view=graph-rest-beta&preserve-view=true)
+[Catalog](../../README.md) Â· [External data connections](../../README.md#external-data-connections) Â· [Microsoft Graph reference](https://learn.microsoft.com/en-us/graph/api/resources/externalconnectors-externalconnection?view=graph-rest-beta&preserve-view=true)
 
 Generated from Microsoft Graph **beta** OpenAPI and optional EDMX metadata.
 
 Lifecycle: `POST /external/connections`, `GET/PATCH/DELETE /external/connections/{externalConnection-id}`.
+
+Assurance: **generated (offline contract)**. Schema-derived request construction and mock tests do not prove live service behavior.
+
+> **Beta preview:** Microsoft Graph beta APIs may change without notice. Pin the module release version and provider version, and read `interface-changes.json` in the release before upgrading. Offline tests and live acceptance do not make a beta API production-supported.
 
 ## Usage
 
@@ -20,33 +24,67 @@ module "graph_resource" {
 
 Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
+## Read-back and drift
+
+`select_response` defaults to `false`. Default reads keep `ignore_missing_property = true` and the full default GET response, including default-returned fields that were not configured. This preserves existing read behavior and response consumers, but can hide missing, null or empty reads. It does not prove a successful write or clear.
+
+Strict read-back is not offered as a module input. Every generated body carries `@odata.type`, which ordinary GET responses omit; strict provider refresh would remove it and cause perpetual drift. Offering strict read-back requires annotation-aware comparison or a provider change, plus live proof.
+
+Enabling `select_response` can plan an in-place resource update even when body values are unchanged. Whether an option-only change sends a write request is unverified; inspect the plan before opting in.
+
+Only with `select_response = true`, the item GET selects `id`, `appId` when exposed as an output, and configured readable body keys (including additional properties). Annotations, known navigation properties and top-level write-only/omitted keys are excluded. This deliberately narrows the sensitive `response` output: an expression such as `module.group.response.mail` can stop working if mail was not selected. Use the default for existing consumers. Selection does not make provider refresh strict or prove a successful write.
+
+No select-only inputs are identified by this metadata and contract; classification is incomplete.
+
+Classification remains incomplete, especially for nested null-unless-selected values, permission-hidden properties and beta descriptions. Unclassified omissions can still be hidden by lenient refresh. Provider-refresh characterization tests are offline evidence, not proof of Graph behavior. Before offering strict read-back or changing the selection default, live independent GETs and repeated no-op plans must pass on users, groups, applications and servicePrincipals, including nested credentials and relationship cases.
+
+## Timeouts and replication retries
+
+The optional `timeouts` input (`create`, `read`, `update`, `delete`) is passed to the `msgraph_resource`. Every value defaults to null, which keeps the provider defaults and sends no timeouts block, so adding it changes no existing plan. Durations are whole hours, minutes or seconds greater than zero, such as `30m` or `1h30m`, and `create`, `update` and `delete` must be at least `15s`. Setting `read` plans an in-place update of every deployed object, because the provider's default read timeout is then replaced. The provider already retries 408, 429, 500, 502, 503 and 504 by itself.
+
+This module has no reviewed replication retry.
+
 ## Inputs
 
-| Input | Graph property | Type | Required | Sensitive |
-| --- | --- | --- | --- | --- |
-| `activity_settings` | `activitySettings` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.activitySettings")       urlToItemResolvers = optional(any)     })` | no | no |
-| `compliance_settings` | `complianceSettings` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.complianceSettings")       eDiscoveryResultTemplates = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.displayTemplate")       id = optional(string)       layout = optional(any)       priority = optional(number)       rules = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.propertyRule")       operation = optional(string)       property = optional(string)       values = optional(any)       valuesJoinedBy = optional(string)     })))     })))     })` | no | no |
-| `configuration` | `configuration` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.configuration")       authorizedAppIds = optional(list(string))     })` | no | no |
-| `connector_id` | `connectorId` | `string` | no | no |
-| `content_category` | `contentCategory` | `string` | no | no |
-| `description` | `description` | `string` | no | no |
-| `enabled_content_experiences` | `enabledContentExperiences` | `string` | no | no |
-| `groups` | `groups` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalGroup")       description = optional(string)       displayName = optional(string)       members = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.identity")       type = optional(string)     })))     }))` | no | no |
-| `ingested_items_count` | `ingestedItemsCount` | `number` | no | no |
-| `items` | `items` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItem")       acl = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.acl")       accessType = optional(string)       identitySource = optional(string)       type = optional(string)       value = optional(string)     })))       activities = optional(any)       content = optional(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItemContent")       type = optional(string)       value = optional(string)     }))       informationProtectionLabel = optional(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItemInformationProtectionLabel")       sensitivityLabelId = optional(string)     }))       properties = optional(any)     }))` | no | no |
-| `name` | `name` | `string` | no | no |
-| `odata_type` | `@odata.type` | `string` | no | no |
-| `operations` | `operations` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.connectionOperation")       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(any)       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       status = optional(string)     }))` | no | no |
-| `quota` | `quota` | `any` | no | no |
-| `schema` | `schema` | `any` | no | no |
-| `search_settings` | `searchSettings` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.searchSettings")       searchResultTemplates = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.displayTemplate")       id = optional(string)       layout = optional(any)       priority = optional(number)       rules = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.propertyRule")       operation = optional(string)       property = optional(string)       values = optional(any)       valuesJoinedBy = optional(string)     })))     })))     })` | no | no |
-| `additional_properties` | Additional writable API properties | `any` | no | yes |
+**On change** says what changing an input does to the Graph object; [declaration.json](declaration.json) declares the same for tools, with the outputs. A nested object attribute behaves like the input that holds it.
+
+| Input | Graph property | Type | Required | Sensitive | On change |
+| --- | --- | --- | --- | --- | --- |
+| `activity_settings` | `activitySettings` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.activitySettings")       urlToItemResolvers = optional(any)     })` | no | no | in place |
+| `compliance_settings` | `complianceSettings` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.complianceSettings")       eDiscoveryResultTemplates = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.displayTemplate")       id = optional(string)       layout = optional(any)       priority = optional(number)       rules = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.propertyRule")       operation = optional(string)       property = optional(string)       values = optional(any)       valuesJoinedBy = optional(string)     })))     })))     })` | no | no | in place |
+| `configuration` | `configuration` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.configuration")       authorizedAppIds = optional(list(string))     })` | no | no | in place |
+| `connector_id` | `connectorId` | `string` | no | no | in place |
+| `content_category` | `contentCategory` | `string` | no | no | in place |
+| `description` | `description` | `string` | no | no | in place |
+| `enabled_content_experiences` | `enabledContentExperiences` | `string` | no | no | in place |
+| `groups` | `groups` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalGroup")       description = optional(string)       displayName = optional(string)       members = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.identity")       type = optional(string)     })))     }))` | no | no | in place |
+| `ingested_items_count` | `ingestedItemsCount` | `number` | no | no | in place |
+| `items` | `items` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItem")       acl = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.acl")       accessType = optional(string)       identitySource = optional(string)       type = optional(string)       value = optional(string)     })))       activities = optional(any)       content = optional(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItemContent")       type = optional(string)       value = optional(string)     }))       informationProtectionLabel = optional(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItemInformationProtectionLabel")       sensitivityLabelId = optional(string)     }))       properties = optional(any)     }))` | no | no | in place |
+| `name` | `name` | `string` | no | no | in place |
+| `odata_type` | `@odata.type` | `string` | no | no | in place |
+| `operations` | `operations` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.connectionOperation")       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(any)       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       status = optional(string)     }))` | no | no | in place |
+| `quota` | `quota` | `any` | no | no | in place |
+| `schema` | `schema` | `any` | no | no | in place |
+| `search_settings` | `searchSettings` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.searchSettings")       searchResultTemplates = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.displayTemplate")       id = optional(string)       layout = optional(any)       priority = optional(number)       rules = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.propertyRule")       operation = optional(string)       property = optional(string)       values = optional(any)       valuesJoinedBy = optional(string)     })))     })))     })` | no | no | in place |
+| `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
 
 Sensitive inputs, `additional_properties`, and the `response` output are redacted in normal Terraform presentation. Their values still exist in saved plans and state: restrict access to those files and the state backend. Sensitivity is not encryption or a substitute for state access controls.
 
-Outputs: `id`, `resource_url`, and sensitive `response` (the Graph object, including service-specific IDs when returned). Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
+## Outputs
+
+**Known in plan after an update** is whether a plan still knows the value when it updates the object in place; a value read from the Graph response is known only after apply then.
+
+| Output | Provides | Sensitive | Known in plan after an update |
+| --- | --- | --- | --- |
+| `id` | Graph object ID | no | yes |
+| `resource_url` | Graph URL of the object | no | yes |
+| `response` | the Graph object as returned | yes | no |
+
+Server-assigned properties in `response`: `id`, `state`.
+
+Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
 ## Permissions and limitations
 

@@ -1,6 +1,6 @@
 # Microsoft Graph beta licensing review queue
 
-[Catalog](README.md) · [manifest.json](manifest.json)
+[Catalog](README.md) Â· [manifest.json](manifest.json)
 
 621 generated endpoints carry an unknown licensing record. Each path links to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
 
@@ -429,7 +429,7 @@
 
 ## Identity and access (`identity-and-access`)
 
-88 unknown endpoints.
+87 unknown endpoints.
 
 - [`/accessReviews`](access-reviews/README.md)
 - [`/accessReviews/{accessReview-id}/reviewers`](access-reviews/reviewers/README.md)
@@ -466,7 +466,6 @@
 - [`/identity/verifiedId/profiles`](identity/verified-id/profiles/README.md)
 - [`/identityGovernance/accessReviews/definitions`](identity-governance/access-reviews/definitions/README.md)
 - [`/identityGovernance/catalogs/{accessPackageCatalog-id}/accessPackageResources/{accessPackageResource-id}/uploadSessions`](identity-governance/catalogs/access-package-resources/upload-sessions/README.md)
-- [`/identityGovernance/entitlementManagement/accessPackageAssignmentRequests`](identity-governance/entitlement-management/access-package-assignment-requests/README.md)
 - [`/identityGovernance/entitlementManagement/accessPackageCatalogs/{accessPackageCatalog-id}/customAccessPackageWorkflowExtensions`](identity-governance/entitlement-management/access-package-catalogs/custom-access-package-workflow-extensions/README.md)
 - [`/identityGovernance/entitlementManagement/accessPackages/{accessPackage-id}/accessPackageResourceRoleScopes`](identity-governance/entitlement-management/access-packages/access-package-resource-role-scopes/README.md)
 - [`/identityGovernance/entitlementManagement/assignmentRequests`](identity-governance/entitlement-management/assignment-requests/README.md)
@@ -629,7 +628,7 @@
 
 ## Security (`security`)
 
-27 unknown endpoints.
+28 unknown endpoints.
 
 - [`/security/attackSimulation/simulations`](security/attack-simulation/simulations/README.md)
 - [`/security/caseManagement/cases`](security/case-management/cases/README.md)
@@ -657,6 +656,7 @@
 - [`/security/threatSubmission/emailThreatSubmissionPolicies`](security/threat-submission/email-threat-submission-policies/README.md)
 - [`/security/tiIndicators`](security/ti-indicators/README.md)
 - [`/security/triggers/retentionEvents`](security/triggers/retention-events/README.md)
+- [`/security/workbooks`](security/workbooks/README.md)
 - [`/security/zones`](security/zones/README.md)
 
 ## Sites and lists (`sites-and-lists`)

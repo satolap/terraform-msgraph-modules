@@ -156,7 +156,7 @@ locals {
 # provisioning" and polls until the create timeout: the apply hangs on
 # "Still creating..." forever. DELETE .../resourceRoleScopes/{id} *is*
 # supported (verified against v1.0), so removal is handled by
-# null_resource.remove_on_destroy below.
+# msgraph_resource_action.remove below.
 resource "msgraph_resource_action" "resource_role_scope" {
   resource_url = "identityGovernance/entitlementManagement/accessPackages/${var.access_package_id}/resourceRoleScopes"
   method       = "POST"
@@ -168,6 +168,9 @@ resource "msgraph_resource_action" "resource_role_scope" {
   }
 
   lifecycle {
+    ignore_changes       = all
+    replace_triggered_by = [terraform_data.identity]
+
     precondition {
       condition     = local.is_azure || local.role_found
       error_message = "Expected exactly one matching role for catalog resource '${var.catalog_resource_id}'; found ${length(local.matched_roles)}. Inspect available_roles and set role_origin_id to disambiguate duplicate display names."
@@ -195,16 +198,62 @@ resource "msgraph_resource_action" "resource_role_scope" {
   }
 }
 
-# Deletes the role scope on destroy. Same pattern as the catalogs/resources
-# module: the one-shot action above is simply forgotten on destroy, so the
-# actual DELETE goes through the ambient Azure CLI session. Before requesting
-# a token it requires ARM_TENANT_ID (the tenant variable the msgraph provider
-# reads) to match `az account show`, and curl reads the Authorization header
-# from a config on stdin, so the token never appears in a process argv.
-# 404 is tolerated only after that tenant check: the role scope disappears
-# with its access package if that was destroyed first. Any other failure
-# prints Graph's error body, with control characters removed.
-# Keep `triggers` unchanged: a change replaces this resource and runs the cleanup.
+# Creation inputs replace destroy-first; never replay the POST in place.
+resource "terraform_data" "identity" {
+  input = {
+    access_package_id = var.access_package_id
+    api_version       = var.api_version
+    body              = local.body
+  }
+}
+
+# The item GET is unsupported (GB-azure-rbac-508). Read the package's expanded
+# collection and require the exact created ID and role/scope identity instead.
+data "msgraph_resource" "verify_scope" {
+  count = var.enable_destroy_cleanup ? 1 : 0
+
+  url                    = "identityGovernance/entitlementManagement/accessPackages/${var.access_package_id}"
+  api_version            = var.api_version
+  query_parameters       = { "$expand" = ["resourceRoleScopes($expand=role,scope)"] }
+  response_export_values = { package = "@" }
+  retry = {
+    error_message_regex = ["(?i)\"error\"\\s*:\\s*\\{[^}]*\"code\"\\s*:\\s*\"(404|NotFound|Request_ResourceNotFound)\"", "(?i)^(HTTP|status|statuscode)\\s*[:=]?\\s*404\\b"]
+  }
+  timeouts {
+    read = "2m"
+  }
+
+  lifecycle {
+    precondition {
+      condition = alltrue([
+        can(regex("(?i)^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$", var.access_package_id)),
+        can(regex("^[A-Za-z0-9_-]{1,512}$", try(msgraph_resource_action.resource_role_scope.output.id, ""))),
+        var.api_version == null ? false : contains(["v1.0", "beta"], var.api_version),
+      ])
+      error_message = "Refusing verification: the package GUID, created scope ID and API version must form a safe URL."
+    }
+    postcondition {
+      condition = try(alltrue([
+        lower(self.output.package.id) == lower(var.access_package_id),
+        try(self.output.package["resourceRoleScopes@odata.nextLink"], null) == null,
+        try(self.output.package["@odata.nextLink"], null) == null,
+        length([for scope in self.output.package.resourceRoleScopes : scope if scope.id == msgraph_resource_action.resource_role_scope.output.id]) == 1,
+        alltrue([for scope in self.output.package.resourceRoleScopes : alltrue([
+          lower(scope.role.originId) == lower(msgraph_resource_action.resource_role_scope.body.role.originId),
+          scope.role.originSystem == msgraph_resource_action.resource_role_scope.body.role.originSystem,
+          lower(scope.scope.originId) == lower(msgraph_resource_action.resource_role_scope.body.scope.originId),
+          scope.scope.originSystem == msgraph_resource_action.resource_role_scope.body.scope.originSystem,
+          scope.scope.isRootScope == msgraph_resource_action.resource_role_scope.body.scope.isRootScope,
+          local.is_azure ? scope.scope.id == msgraph_resource_action.resource_role_scope.body.scope.id : true,
+        ]) if scope.id == msgraph_resource_action.resource_role_scope.output.id]),
+      ]), false)
+      error_message = "Independent GET must prove exactly the created role-scope ID and its role and scope identity (role id/originId/originSystem and scope originId/originSystem/isRootScope as documented) in a complete collection. Reconcile the saved POST; do not replay it."
+    }
+  }
+}
+
+# Retain the legacy address and byte-identical triggers, without its provisioner.
+# Its saved old ID remains the removal target during replacement.
 resource "null_resource" "remove_on_destroy" {
   count = var.enable_destroy_cleanup ? 1 : 0
 
@@ -214,38 +263,31 @@ resource "null_resource" "remove_on_destroy" {
     api_version       = var.api_version
   }
 
-  provisioner "local-exec" {
-    when        = destroy
-    interpreter = ["bash", "-c"]
-    environment = {
-      GRAPH_ACCESS_PACKAGE_ID = self.triggers.access_package_id
-      GRAPH_ROLE_SCOPE_ID     = self.triggers.role_scope_id
-      GRAPH_API_VERSION       = self.triggers.api_version
+  depends_on = [data.msgraph_resource.verify_scope]
+}
+
+resource "msgraph_resource_action" "remove" {
+  count = var.enable_destroy_cleanup ? 1 : 0
+
+  resource_url = "identityGovernance/entitlementManagement/accessPackages/${null_resource.remove_on_destroy[0].triggers.access_package_id}/resourceRoleScopes/${null_resource.remove_on_destroy[0].triggers.role_scope_id}"
+  api_version  = null_resource.remove_on_destroy[0].triggers.api_version
+  method       = "DELETE"
+  when         = "destroy"
+
+  lifecycle {
+    ignore_changes       = all
+    replace_triggered_by = [null_resource.remove_on_destroy]
+
+    precondition {
+      condition = alltrue([
+        can(regex("(?i)^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$", null_resource.remove_on_destroy[0].triggers.access_package_id)),
+        can(regex("^[A-Za-z0-9_-]{1,512}$", null_resource.remove_on_destroy[0].triggers.role_scope_id)),
+        null_resource.remove_on_destroy[0].triggers.api_version == null ? false : contains(["v1.0", "beta"], null_resource.remove_on_destroy[0].triggers.api_version),
+        null_resource.remove_on_destroy[0].triggers.role_scope_id == msgraph_resource_action.resource_role_scope.output.id,
+        null_resource.remove_on_destroy[0].triggers.access_package_id == var.access_package_id,
+      ])
+      error_message = "Refusing removal registration: saved URL segments must be safe and match the independently verified created scope."
     }
-    command = <<-EOT
-      set -euo pipefail
-      set +ax
-      test -n "$GRAPH_ROLE_SCOPE_ID" || { echo "ERROR: no role scope ID was captured; reconcile the access package before destroying." >&2; exit 1; }
-      expected_tenant=$(printf '%s' "$${ARM_TENANT_ID:-}" | tr '[:upper:]' '[:lower:]')
-      test -n "$expected_tenant" || { echo "ERROR: ARM_TENANT_ID is not set. Set it to the tenant ID the msgraph provider uses; destroy cleanup refuses to guess the tenant." >&2; exit 1; }
-      cli_tenant=$(az account show --query tenantId -o tsv | tr '[:upper:]' '[:lower:]')
-      test "$cli_tenant" = "$expected_tenant" || { echo "ERROR: the Azure CLI tenant ($cli_tenant) does not match ARM_TENANT_ID ($expected_tenant). Run 'az login --tenant $expected_tenant' or correct ARM_TENANT_ID, then retry destroy." >&2; exit 1; }
-      unset TOKEN
-      TOKEN=$(az account get-access-token --resource https://graph.microsoft.com --query accessToken -o tsv)
-      case "$TOKEN" in "" | *[!A-Za-z0-9._~+/=-]*) echo "ERROR: the Azure CLI returned no usable Microsoft Graph access token." >&2; exit 1 ;; esac
-      response=$(printf 'header = "Authorization: Bearer %s"\n' "$TOKEN" | curl --config - --silent --show-error --connect-timeout 30 --max-time 120 -w '\n%%{http_code}' -X DELETE \
-        "https://graph.microsoft.com/$GRAPH_API_VERSION/identityGovernance/entitlementManagement/accessPackages/$GRAPH_ACCESS_PACKAGE_ID/resourceRoleScopes/$GRAPH_ROLE_SCOPE_ID")
-      status=$${response##*$'\n'}
-      case "$status" in
-        200|204|404) echo "Removed role scope $GRAPH_ROLE_SCOPE_ID from access package $GRAPH_ACCESS_PACKAGE_ID (HTTP $status)" ;;
-        *)
-          body=$${response%$'\n'*}
-          body=$(printf '%s' "$${body:0:2000}" | tr -c '[:print:]' ' ')
-          echo "ERROR: DELETE of role scope $GRAPH_ROLE_SCOPE_ID returned HTTP $status: $body" >&2
-          exit 1
-          ;;
-      esac
-    EOT
   }
 }
 

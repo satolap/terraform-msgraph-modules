@@ -5,6 +5,8 @@ mock_provider "msgraph" {
       output = {
         display_name = "Engineering"
         mail         = null
+        mail_enabled = false
+        group_types  = []
       }
     }
   }
@@ -170,7 +172,8 @@ run "rejects_hidden_membership_on_a_security_group" {
 }
 
 run "accepts_a_private_role_assignable_microsoft_365_group" {
-  command = plan
+  command   = plan
+  state_key = "plan_only"
   variables {
     group_types           = ["Unified"]
     mail_enabled          = true
@@ -184,7 +187,8 @@ run "accepts_a_private_role_assignable_microsoft_365_group" {
 }
 
 run "creates_unified_group" {
-  command = plan
+  command   = plan
+  state_key = "plan_only"
   variables {
     group_types  = ["Unified"]
     mail_enabled = true
@@ -302,7 +306,7 @@ run "false_role_assignability_keeps_the_group" {
     target = msgraph_resource.group
     values = {
       id     = "33333333-3333-3333-3333-000000000001"
-      output = { display_name = "Engineering", mail = null }
+      output = { display_name = "Engineering", mail = null, mail_enabled = false, group_types = [] }
     }
   }
 
@@ -328,7 +332,7 @@ run "role_assignability_replaces_the_group" {
     target = msgraph_resource.group
     values = {
       id     = "33333333-3333-3333-3333-000000000002"
-      output = { display_name = "Engineering", mail = null }
+      output = { display_name = "Engineering", mail = null, mail_enabled = false, group_types = [] }
     }
   }
 
@@ -355,7 +359,7 @@ run "other_changes_keep_a_role_assignable_group" {
     target = msgraph_resource.group
     values = {
       id     = "33333333-3333-3333-3333-000000000003"
-      output = { display_name = "Engineering", mail = null }
+      output = { display_name = "Engineering", mail = null, mail_enabled = false, group_types = [] }
     }
   }
 
@@ -372,7 +376,7 @@ run "dropping_role_assignability_replaces_the_group" {
     target = msgraph_resource.group
     values = {
       id     = "33333333-3333-3333-3333-000000000004"
-      output = { display_name = "Engineering", mail = null }
+      output = { display_name = "Engineering", mail = null, mail_enabled = false, group_types = [] }
     }
   }
 
@@ -382,8 +386,115 @@ run "dropping_role_assignability_replaces_the_group" {
   }
 }
 
-run "private_microsoft_365_group" {
+# Adding or removing "DynamicMembership" is documented as an update of an
+# existing group, so it must not replace it.
+run "adding_dynamic_membership_updates_in_place" {
   command = apply
+
+  variables {
+    group_types     = ["DynamicMembership"]
+    membership_rule = "user.department -eq \"Engineering\""
+  }
+
+  assert {
+    condition     = output.id == "33333333-3333-3333-3333-000000000004"
+    error_message = "Adding DynamicMembership to a security group must update it in place."
+  }
+
+  assert {
+    condition     = msgraph_resource.group.body.membershipRuleProcessingState == "On"
+    error_message = "The rule must be switched on with the type."
+  }
+}
+
+run "removing_dynamic_membership_updates_in_place" {
+  command = apply
+
+  assert {
+    condition     = output.id == "33333333-3333-3333-3333-000000000004"
+    error_message = "Removing DynamicMembership must update the group in place."
+  }
+}
+
+run "refuses_converting_a_security_group_to_microsoft_365" {
+  command = plan
+
+  variables {
+    group_types  = ["Unified"]
+    mail_enabled = true
+  }
+
+  expect_failures = [msgraph_resource.group]
+}
+
+# A mail_enabled change on a security group without "Unified" is refused by the
+# mail/security precondition (see rejects_mail_enabled_security_group), which
+# fires before the mail_enabled snapshot precondition; the latter is defence in
+# depth and cannot be isolated by a test today.
+
+# A conversion that Graph ignored (the read-back differs from the configuration)
+# or a read-back without the values must fail the apply, not stay silent. These
+# runs create fresh groups under their own state.
+run "fails_when_graph_ignores_mail_enabled" {
+  command   = apply
+  state_key = "ignored_mail"
+
+  variables {
+    group_types  = ["Unified"]
+    mail_enabled = true
+  }
+
+  override_resource {
+    target = msgraph_resource.group
+    values = {
+      id     = "33333333-3333-3333-3333-333333333333"
+      output = { display_name = "Engineering", mail = null, mail_enabled = false, group_types = ["Unified"] }
+    }
+  }
+
+  expect_failures = [msgraph_resource.group]
+}
+
+run "fails_when_graph_ignores_unified" {
+  command   = apply
+  state_key = "ignored_unified"
+
+  variables {
+    group_types  = ["Unified"]
+    mail_enabled = true
+  }
+
+  override_resource {
+    target = msgraph_resource.group
+    values = {
+      id     = "33333333-3333-3333-3333-333333333333"
+      output = { display_name = "Engineering", mail = null, mail_enabled = true, group_types = [] }
+    }
+  }
+
+  expect_failures = [msgraph_resource.group]
+}
+
+run "fails_closed_without_a_read_back" {
+  command   = apply
+  state_key = "no_read_back"
+
+  override_resource {
+    target = msgraph_resource.group
+    values = {
+      id     = "33333333-3333-3333-3333-333333333333"
+      output = { display_name = "Engineering", mail = null }
+    }
+  }
+
+  expect_failures = [msgraph_resource.group]
+}
+
+# mail_enabled and "Unified" cannot change on an existing group, so the Microsoft
+# 365 group runs below use their own state and start from a create.
+run "private_microsoft_365_group" {
+  command   = apply
+  state_key = "microsoft_365"
 
   variables {
     group_types  = ["Unified"]
@@ -391,14 +502,47 @@ run "private_microsoft_365_group" {
     visibility   = "Private"
   }
 
+  override_resource {
+    target = msgraph_resource.group
+    values = {
+      id     = "33333333-3333-3333-3333-333333333333"
+      output = { display_name = "Engineering", mail = null, mail_enabled = true, group_types = ["Unified"] }
+    }
+  }
+
   assert {
-    condition     = output.id == "33333333-3333-3333-3333-000000000004"
+    condition     = msgraph_resource.group.body.visibility == "Private"
+    error_message = "The group must be created Private."
+  }
+}
+
+run "private_to_public_updates_in_place" {
+  command   = apply
+  state_key = "microsoft_365"
+
+  variables {
+    group_types  = ["Unified"]
+    mail_enabled = true
+    visibility   = "Public"
+  }
+
+  override_resource {
+    target = msgraph_resource.group
+    values = {
+      id     = "33333333-3333-3333-3333-333333333333"
+      output = { display_name = "Engineering", mail = null, mail_enabled = true, group_types = ["Unified"] }
+    }
+  }
+
+  assert {
+    condition     = output.id == "33333333-3333-3333-3333-333333333333"
     error_message = "Public and Private visibility are updatable, so the group must be updated in place."
   }
 }
 
 run "hidden_membership_replaces_the_group" {
-  command = apply
+  command   = apply
+  state_key = "microsoft_365"
 
   variables {
     group_types  = ["Unified"]
@@ -410,7 +554,7 @@ run "hidden_membership_replaces_the_group" {
     target = msgraph_resource.group
     values = {
       id     = "33333333-3333-3333-3333-000000000005"
-      output = { display_name = "Engineering", mail = null }
+      output = { display_name = "Engineering", mail = null, mail_enabled = true, group_types = ["Unified"] }
     }
   }
 
@@ -426,7 +570,8 @@ run "hidden_membership_replaces_the_group" {
 }
 
 run "leaving_hidden_membership_replaces_the_group" {
-  command = apply
+  command   = apply
+  state_key = "microsoft_365"
 
   variables {
     group_types  = ["Unified"]
@@ -438,12 +583,38 @@ run "leaving_hidden_membership_replaces_the_group" {
     target = msgraph_resource.group
     values = {
       id     = "33333333-3333-3333-3333-000000000006"
-      output = { display_name = "Engineering", mail = null }
+      output = { display_name = "Engineering", mail = null, mail_enabled = true, group_types = ["Unified"] }
     }
   }
 
   assert {
     condition     = output.id == "33333333-3333-3333-3333-000000000006"
     error_message = "A change from HiddenMembership to another visibility must replace the group."
+  }
+}
+
+# A replacement creates the group again, so its creation-time mail settings may
+# differ from the group it replaces.
+run "replacement_may_carry_new_mail_settings" {
+  command = apply
+
+  variables {
+    group_types           = ["Unified"]
+    mail_enabled          = true
+    visibility            = "Private"
+    is_assignable_to_role = true
+  }
+
+  override_resource {
+    target = msgraph_resource.group
+    values = {
+      id     = "33333333-3333-3333-3333-000000000007"
+      output = { display_name = "Engineering", mail = null, mail_enabled = true, group_types = ["Unified"] }
+    }
+  }
+
+  assert {
+    condition     = output.id == "33333333-3333-3333-3333-000000000007"
+    error_message = "A change of is_assignable_to_role must replace the group even when it also changes the mail settings."
   }
 }

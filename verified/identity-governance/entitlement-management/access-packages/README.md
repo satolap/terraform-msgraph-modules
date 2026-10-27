@@ -1,5 +1,15 @@
 # identity-governance/entitlement-management/access-packages
 
+<!-- uses-beta:start -->
+Uses beta: **optional**. Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified live-accepted** (2026-10-24, commit `344ecc7e`). Acceptance covers the recorded run and configuration.
+
+![live Dev: passed 2026-10-24](https://img.shields.io/badge/live%20Dev-passed%202026--10--24-brightgreen)
+<!-- live-status:end -->
+
 Manages a Microsoft Entra ID Governance Entitlement Management **access package**
 (`identityGovernance/entitlementManagement/accessPackages`) via the `microsoft/msgraph`
 Terraform provider.
@@ -75,19 +85,19 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| catalog_id | ID of the catalog this access package belongs to; a change replaces the access package | `string` | n/a | yes |
-| display_name | Display name of the access package (1-90 characters) | `string` | n/a | yes |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
-| description | Description of the access package | `string` | `null` | no |
-| is_hidden | Whether the access package is hidden from requestors | `bool` | `false` | no |
-| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| catalog_id | ID of the catalog this access package belongs to; a change replaces the access package | `string` | n/a | yes | replaces `msgraph_resource.access_package` |
+| display_name | Display name of the access package (1-90 characters) | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| description | Description of the access package | `string` | `null` | no | in place |
+| is_hidden | Whether the access package is hidden from requestors | `bool` | `false` | no | in place |
+| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no | in place |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The ID of the access package |
-| display_name | The display name of the access package |
-| catalog_id | The ID of the parent catalog |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The ID of the access package | yes |
+| display_name | The display name of the access package | no |
+| catalog_id | The ID of the parent catalog | yes |

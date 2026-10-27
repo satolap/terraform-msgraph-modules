@@ -2,6 +2,11 @@ variable "allowed_online_meeting_providers" {
   description = "Represent the online meeting service providers that can be used to create online meetings in this calendar. The possible values are: unknown, skypeForBusiness, skypeForConsumer, teamsForBusiness."
   type        = list(string)
   default     = null
+
+  validation {
+    condition     = (var.allowed_online_meeting_providers == null ? true : alltrue([alltrue([for input0 in var.allowed_online_meeting_providers : (input0 == null ? true : alltrue([(input0 == null ? true : contains(["unknown", "skypeForBusiness", "skypeForConsumer", "teamsForBusiness"], input0))]))])]))
+    error_message = "allowed_online_meeting_providers: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "calendar_group_id" {
@@ -20,6 +25,11 @@ variable "calendar_permissions" {
     role                 = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.calendar_permissions == null ? true : alltrue([alltrue([for input0 in var.calendar_permissions : (input0 == null ? true : alltrue([(input0["allowedRoles"] == null ? true : alltrue([alltrue([for input2 in input0["allowedRoles"] : (input2 == null ? true : alltrue([(input2 == null ? true : contains(["none", "freeBusyRead", "limitedRead", "read", "write", "delegateWithoutPrivateEventAccess", "delegateWithPrivateEventAccess", "custom"], input2))]))])])), (input0["role"] == null ? true : alltrue([(input0["role"] == null ? true : contains(["none", "freeBusyRead", "limitedRead", "read", "write", "delegateWithoutPrivateEventAccess", "delegateWithPrivateEventAccess", "custom"], input0["role"]))]))]))])]))
+    error_message = "calendar_permissions: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "color" {
@@ -78,6 +88,41 @@ variable "odata_type" {
   description = "Microsoft Graph @odata.type property."
   type        = string
   default     = "#microsoft.graph.calendar"
+  nullable    = false
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
   nullable    = false
 }
 

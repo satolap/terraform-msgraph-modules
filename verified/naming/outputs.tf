@@ -47,3 +47,8 @@ output "names" {
     error_message = "Rendered names do not match their pattern: ${join("; ", local.pattern_mismatches)}."
   }
 }
+
+output "patterns" {
+  description = "Per template, keyed like templates, an anchored regular expression in RE2 syntax that every name the convention can render matches: literal text as written, an optional segment as an optional group, and each placeholder as one of its token's allowed_values after its filters, or as a run of the characters that its filters leave. Pass it to the name_pattern or mail_nickname_pattern input of a verified module. The patterns depend on the templates, token_rules and transliterations only, so they are known during the plan even when a token value is not."
+  value       = local.patterns
+}

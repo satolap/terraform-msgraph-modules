@@ -45,6 +45,31 @@ resource "terraform_data" "immutable" {
   }
 }
 
+# Microsoft Learn's update group page does not list mailEnabled or groupTypes
+# "Unified" as updatable, and Graph documents no conversion between a security
+# group and a Microsoft 365 group. Only the "DynamicMembership" value of
+# groupTypes is documented as changeable on an existing group (static to dynamic
+# and back). This resource keeps the two creation-time values, because
+# ignore_changes keeps the stored input, and the preconditions below refuse a
+# change before any PATCH is sent. It is replaced together with the group when
+# terraform_data.immutable replaces it, so a replacement may also carry a new
+# mail setting. Read the snapshot through `input`, which is known in the plan;
+# the output is not. For a group that exists from before this resource, or that
+# was imported, the snapshot is taken from the first plan, so upgrade with
+# unchanged mail_enabled and group_types first; the postconditions on the group
+# catch a conversion that Graph ignored in that window.
+resource "terraform_data" "created" {
+  input = {
+    mail_enabled = var.mail_enabled
+    unified      = contains(var.group_types, "Unified")
+  }
+  triggers_replace = terraform_data.immutable.input
+
+  lifecycle {
+    ignore_changes = [input]
+  }
+}
+
 resource "msgraph_resource" "group" {
   url         = "groups"
   api_version = var.api_version
@@ -53,10 +78,17 @@ resource "msgraph_resource" "group" {
   response_export_values = {
     display_name = "displayName"
     mail         = "mail"
+    # Read back so that a mail setting or group type that Graph ignored fails
+    # the postconditions below.
+    mail_enabled = "mailEnabled"
+    group_types  = "groupTypes"
   }
 
   lifecycle {
-    replace_triggered_by = [terraform_data.immutable]
+    # terraform_data.created is replaced only together with terraform_data.immutable,
+    # so naming it adds no replacement. It lets the declaration say that mail_enabled
+    # and group_types are kept from creation: a change is refused.
+    replace_triggered_by = [terraform_data.immutable, terraform_data.created]
 
     precondition {
       condition     = !local.is_dynamic || try(length(trimspace(var.membership_rule)) > 0, false)
@@ -65,6 +97,16 @@ resource "msgraph_resource" "group" {
     precondition {
       condition     = contains(var.group_types, "Unified") ? var.mail_enabled : (!var.mail_enabled && var.security_enabled)
       error_message = "Microsoft Graph can create mail-enabled Unified groups or non-mail-enabled security groups; distribution and mail-enabled security groups are read-only."
+    }
+    precondition {
+      # Defence in depth: today the mail/security precondition above already refuses
+      # a mail_enabled change that is not paired with Unified.
+      condition     = var.mail_enabled == terraform_data.created.input.mail_enabled
+      error_message = "mail_enabled cannot be changed on an existing group: Microsoft Learn's update group page does not list mailEnabled as updatable. Create a new group with the other setting and migrate its members and references."
+    }
+    precondition {
+      condition     = contains(var.group_types, "Unified") == terraform_data.created.input.unified
+      error_message = "\"Unified\" cannot be added to or removed from group_types of an existing group: Microsoft Graph documents no conversion between a security group and a Microsoft 365 group. Create a new group and migrate its members and references. Adding or removing \"DynamicMembership\" is allowed."
     }
     precondition {
       condition     = !local.is_dynamic || length(var.member_ids) == 0
@@ -91,6 +133,21 @@ resource "msgraph_resource" "group" {
     precondition {
       condition     = var.mail_nickname_pattern == null || can(regex(var.mail_nickname_pattern, var.mail_nickname))
       error_message = "mail_nickname \"${var.mail_nickname}\" does not match mail_nickname_pattern \"${var.mail_nickname_pattern == null ? "" : var.mail_nickname_pattern}\". Set mail_nickname to a value that matches, or change mail_nickname_pattern."
+    }
+
+    # terraform_data.created is seeded from the configuration, so the first plan
+    # after an upgrade, or after an import, cannot refuse a conversion made in that
+    # same plan. These postconditions compare what Graph returned with the
+    # configuration, so a conversion that Graph ignored fails at apply. The
+    # provider plans output as unknown in an update (GB-msgraph-provider-614), so
+    # they are decided after apply; a missing or null read-back fails closed.
+    postcondition {
+      condition     = try(self.output.mail_enabled == var.mail_enabled, false)
+      error_message = "Microsoft Graph returned a mailEnabled value that differs from mail_enabled, or none. mailEnabled is not updatable on an existing group; the group was not changed to the configured setting."
+    }
+    postcondition {
+      condition     = try(contains(self.output.group_types, "Unified") == contains(var.group_types, "Unified"), false)
+      error_message = "Microsoft Graph returned a groupTypes value whose Unified entry differs from group_types, or none. Unified is not updatable on an existing group; the group was not converted."
     }
   }
 }

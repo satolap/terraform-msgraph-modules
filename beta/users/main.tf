@@ -117,15 +117,31 @@ locals {
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }
 
+locals {
+  timeouts_set = anytrue([var.timeouts.create != null, var.timeouts.read != null, var.timeouts.update != null, var.timeouts.delete != null])
+}
+
 resource "msgraph_resource" "this" {
   url                     = "users"
   api_version             = "beta"
   update_method           = "PATCH"
   body                    = local.body
   ignore_missing_property = true
+  read_query_parameters   = var.select_response ? { "$select" = [join(",", sort(distinct(concat(["id"], [for name in keys(local.body) : name if alltrue([!startswith(name, "@"), !can(regex("@odata\\.", name)), !contains(["analytics", "appConsentRequestsForApproval", "appRoleAssignedResources", "appRoleAssignments", "approvals", "authentication", "chats", "cloudClipboard", "communications", "deviceEnrollmentConfigurations", "deviceManagementTroubleshootingEvents", "devices", "extensions", "followedSites", "inferenceClassification", "informationProtection", "invitedBy", "joinedGroups", "licenseDetails", "managedAppLogCollectionRequests", "managedAppRegistrations", "managedDevices", "mobileAppIntentAndStates", "mobileAppTroubleshootingEvents", "notifications", "oauth2PermissionGrants", "onPremisesSyncBehavior", "onenote", "onlineMeetings", "pendingAccessReviewInstances", "permissionGrants", "presence", "profile", "security", "settings", "sponsors", "todo", "transitiveMemberOf", "usageRights", "virtualEvents", "windowsInformationProtectionDeviceRegistrations"], name)])]))))] } : null
 
   response_export_values = {
     response = "@"
+  }
+
+  dynamic "timeouts" {
+    for_each = local.timeouts_set ? [var.timeouts] : []
+
+    content {
+      create = timeouts.value.create
+      read   = timeouts.value.read
+      update = timeouts.value.update
+      delete = timeouts.value.delete
+    }
   }
 
   lifecycle {
@@ -136,5 +152,43 @@ resource "msgraph_resource" "this" {
       ])
       error_message = "Provide one complete creation profile through typed inputs or additional_properties: standard (accountEnabled, displayName, mailNickname, passwordProfile, userPrincipalName); identities (identities)."
     }
+
+    precondition {
+      condition     = alltrue([for name in var.clear_properties : !contains(keys(local.body), name)])
+      error_message = "A property listed in clear_properties is owned by the clearing request: leave its typed input and its additional_properties key unset."
+    }
   }
+}
+
+# Clears the reviewed properties named in clear_properties. msgraph_resource drops a value changed to null from its
+# update, so the null is sent by this update-only resource instead. Destroying it sends no request and restores nothing.
+# The ownership check of a listed name is a precondition of msgraph_resource.this, so it runs before that write.
+resource "msgraph_update_resource" "clear" {
+  count = length(var.clear_properties) > 0 ? 1 : 0
+
+  url                     = "users/${msgraph_resource.this.id}"
+  api_version             = "beta"
+  update_method           = "PATCH"
+  body                    = { for name in var.clear_properties : name => null }
+  ignore_missing_property = false
+  read_query_parameters   = { "$select" = [join(",", concat(["id"], var.clear_properties))] }
+
+  lifecycle {
+    replace_triggered_by = [msgraph_resource.this]
+  }
+}
+
+# While a name is listed the response output is read after both writers, because the read of msgraph_resource.this
+# precedes the clearing PATCH; otherwise the output keeps reading msgraph_resource.this as before.
+data "msgraph_resource" "after_writes" {
+  count = length(var.clear_properties) > 0 ? 1 : 0
+
+  url              = "users/${msgraph_resource.this.id}"
+  api_version      = "beta"
+  query_parameters = var.select_response ? { "$select" = [join(",", sort(distinct(concat(["id"], [for name in keys(local.body) : name if alltrue([!startswith(name, "@"), !can(regex("@odata\\.", name)), !contains(["analytics", "appConsentRequestsForApproval", "appRoleAssignedResources", "appRoleAssignments", "approvals", "authentication", "chats", "cloudClipboard", "communications", "deviceEnrollmentConfigurations", "deviceManagementTroubleshootingEvents", "devices", "extensions", "followedSites", "inferenceClassification", "informationProtection", "invitedBy", "joinedGroups", "licenseDetails", "managedAppLogCollectionRequests", "managedAppRegistrations", "managedDevices", "mobileAppIntentAndStates", "mobileAppTroubleshootingEvents", "notifications", "oauth2PermissionGrants", "onPremisesSyncBehavior", "onenote", "onlineMeetings", "pendingAccessReviewInstances", "permissionGrants", "presence", "profile", "security", "settings", "sponsors", "todo", "transitiveMemberOf", "usageRights", "virtualEvents", "windowsInformationProtectionDeviceRegistrations"], name)])], var.clear_properties))))] } : null
+  response_export_values = {
+    response = "@"
+  }
+
+  depends_on = [msgraph_resource.this, msgraph_update_resource.clear]
 }

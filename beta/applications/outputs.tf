@@ -15,6 +15,6 @@ output "response" {
 }
 
 output "app_id" {
-  description = "Application client identifier returned by Microsoft Graph."
-  value       = try(msgraph_resource.this.output.response.appId, null)
+  description = "Application client identifier returned by Microsoft Graph. It stays known in plans that update the object in place."
+  value       = terraform_data.app_id.input
 }

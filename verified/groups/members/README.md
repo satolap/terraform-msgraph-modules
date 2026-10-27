@@ -1,5 +1,27 @@
 # groups/members
 
+<!-- state-protection:start -->
+## State and plan protection
+
+This module's state and saved plans retain these declared values:
+
+Potential personal-data inputs: `member_ids`.
+
+Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
+
+See [Terraform sensitive state guidance](https://developer.hashicorp.com/terraform/language/state/sensitive-data). These are exposure indicators, not a complete data classification; unmarked fields and provider responses also need protection.
+<!-- state-protection:end -->
+
+<!-- uses-beta:start -->
+Uses beta: **optional**. v1.0 omits service principal members; select beta before the first apply when any may exist (GB-relationships-ref-504). Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Manages the **direct members** of one existing Microsoft Entra group
 (`groups/{id}/members`) via the `microsoft/msgraph` Terraform provider's
 `msgraph_resource_collection`. The folder sits under the [groups](../README.md) module, which
@@ -239,20 +261,20 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| group_id | Object ID of the existing group; a change replaces the collection, a change of case alone does not | `string` | n/a | yes |
-| member_ids | Object IDs of every direct member; authoritative, may be empty, not null; GUIDs, each named once (case-insensitive) | `list(string)` | n/a | yes |
-| api_version | `v1.0` or `beta`; use `beta` when a member can be a service principal | `string` | `"v1.0"` | no |
-| timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; null keeps the provider's default; the replication delay retry counts against them | `object` | `{}` (provider defaults) | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| group_id | Object ID of the existing group; a change replaces the collection, a change of case alone does not | `string` | n/a | yes | replaces `msgraph_resource_collection.this` |
+| member_ids | Object IDs of every direct member; authoritative, may be empty, not null; GUIDs, each named once (case-insensitive) | `list(string)` | n/a | yes | adds or removes relationships of `msgraph_resource_collection.this` |
+| api_version | `v1.0` or `beta`; use `beta` when a member can be a service principal | `string` | `"v1.0"` | no | replaces `msgraph_resource_collection.this` |
+| timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; null keeps the provider's default; the replication delay retry counts against them | `object` | `{}` (provider defaults) | no | no object change (validation or timing only) |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The provider's ID of the collection, `groups/{group_id}/members`; a reference waits until the membership is applied |
-| group_id | The object ID of the group, in lower case |
-| member_ids | The member IDs the module manages, in lower case; a reference waits until the membership is applied |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The provider's ID of the collection, `groups/{group_id}/members`; a reference waits until the membership is applied | yes |
+| group_id | The object ID of the group, in lower case | yes |
+| member_ids | The member IDs the module manages, in lower case; a reference waits until the membership is applied | no |
 
 ## Tests
 

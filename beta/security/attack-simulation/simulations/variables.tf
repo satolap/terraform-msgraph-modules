@@ -4,7 +4,7 @@ variable "attack_technique" {
   default     = null
 
   validation {
-    condition     = var.attack_technique == null ? true : contains(["unknown", "credentialHarvesting", "attachmentMalware", "driveByUrl", "linkInAttachment", "linkToMalwareFile", "unknownFutureValue", "oAuthConsentGrant", "phishTraining"], var.attack_technique)
+    condition     = var.attack_technique == null ? true : contains(["unknown", "credentialHarvesting", "attachmentMalware", "driveByUrl", "linkInAttachment", "linkToMalwareFile"], var.attack_technique)
     error_message = "attack_technique must be one of the documented enum values."
   }
 }
@@ -15,7 +15,7 @@ variable "attack_type" {
   default     = null
 
   validation {
-    condition     = var.attack_type == null ? true : contains(["unknown", "social", "cloud", "endpoint", "unknownFutureValue"], var.attack_type)
+    condition     = var.attack_type == null ? true : contains(["unknown", "social", "cloud", "endpoint"], var.attack_type)
     error_message = "attack_type must be one of the documented enum values."
   }
 }
@@ -135,6 +135,11 @@ variable "o_auth_consent_app_detail" {
     displayName = optional(string)
   })
   default = null
+
+  validation {
+    condition     = (var.o_auth_consent_app_detail == null ? true : alltrue([(var.o_auth_consent_app_detail["appScope"] == null ? true : alltrue([(var.o_auth_consent_app_detail["appScope"] == null ? true : contains(["unknown", "readCalendar", "readContact", "readMail", "readAllChat", "readAllFile", "readAndWriteMail", "sendMail"], var.o_auth_consent_app_detail["appScope"]))]))]))
+    error_message = "o_auth_consent_app_detail: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "odata_type" {
@@ -156,7 +161,7 @@ variable "payload_delivery_platform" {
   default     = null
 
   validation {
-    condition     = var.payload_delivery_platform == null ? true : contains(["unknown", "sms", "email", "teams", "unknownFutureValue"], var.payload_delivery_platform)
+    condition     = var.payload_delivery_platform == null ? true : contains(["unknown", "sms", "email", "teams"], var.payload_delivery_platform)
     error_message = "payload_delivery_platform must be one of the documented enum values."
   }
 }
@@ -230,6 +235,11 @@ variable "report" {
     })))
   })
   default = null
+
+  validation {
+    condition     = (var.report == null ? true : alltrue([(var.report["simulationUsers"] == null ? true : alltrue([alltrue([for input1 in var.report["simulationUsers"] : (input1 == null ? true : alltrue([(input1["simulationEvents"] == null ? true : alltrue([alltrue([for input3 in input1["simulationEvents"] : (input3 == null ? true : alltrue([(input3["clickSource"] == null ? true : alltrue([(input3["clickSource"] == null ? true : contains(["unknown", "qrCode", "phishingUrl"], input3["clickSource"]))]))]))])])), (input1["trainingEvents"] == null ? true : alltrue([alltrue([for input3 in input1["trainingEvents"] : (input3 == null ? true : alltrue([(input3["latestTrainingStatus"] == null ? true : alltrue([(input3["latestTrainingStatus"] == null ? true : contains(["unknown", "assigned", "inProgress", "completed", "overdue"], input3["latestTrainingStatus"]))]))]))])]))]))])]))]))
+    error_message = "report: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "status" {
@@ -238,7 +248,7 @@ variable "status" {
   default     = null
 
   validation {
-    condition     = var.status == null ? true : contains(["unknown", "draft", "running", "scheduled", "succeeded", "failed", "cancelled", "excluded", "unknownFutureValue"], var.status)
+    condition     = var.status == null ? true : contains(["unknown", "draft", "running", "scheduled", "succeeded", "failed", "cancelled", "excluded"], var.status)
     error_message = "status must be one of the documented enum values."
   }
 }
@@ -247,6 +257,41 @@ variable "training_setting" {
   description = "Details about the training settings for a simulation."
   type        = any
   default     = null
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

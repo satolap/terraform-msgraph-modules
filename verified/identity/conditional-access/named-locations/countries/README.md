@@ -1,5 +1,15 @@
 # Conditional Access country named locations
 
+<!-- uses-beta:start -->
+Uses beta: **no**. This module and its local child modules do not select beta.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified live-accepted** (2026-10-24, commit `344ecc7e`). Acceptance covers the recorded run and configuration.
+
+![live Dev: passed 2026-10-24](https://img.shields.io/badge/live%20Dev-passed%202026--10--24-brightgreen)
+<!-- live-status:end -->
+
 Creates a Microsoft Entra country named location (`#microsoft.graph.countryNamedLocation` at
 `identity/conditionalAccess/namedLocations`) via the `microsoft/msgraph` Terraform provider.
 Conditional Access policies reference the location's `id` in their location condition.
@@ -125,22 +135,22 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| display_name | Display name of the location | `string` | n/a | yes |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
-| countries_and_regions | Two-letter upper-case codes, at least one | `set(string)` | n/a | yes |
-| include_unknown_countries_and_regions | Also match addresses without a country or region | `bool` | `false` | no |
-| country_lookup_method | `clientIpAddress` or `authenticatorAppGps`; a change replaces the location | `string` | `"clientIpAddress"` | no |
-| api_version | Graph API version; only `v1.0` is supported | `string` | `"v1.0"` | no |
-| timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; create, update and delete at least `15s`; retries count against them | `object` | `{}` (`10m` for create, update and delete; the provider default for read) | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| display_name | Display name of the location | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| countries_and_regions | Two-letter upper-case codes, at least one | `set(string)` | n/a | yes | in place |
+| include_unknown_countries_and_regions | Also match addresses without a country or region | `bool` | `false` | no | in place |
+| country_lookup_method | `clientIpAddress` or `authenticatorAppGps`; a change replaces the location | `string` | `"clientIpAddress"` | no | replaces `msgraph_resource.named_location` |
+| api_version | Graph API version; only `v1.0` is supported | `string` | `"v1.0"` | no | in place |
+| timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; create, update and delete at least `15s`; retries count against them | `object` | `{}` (`10m` for create, update and delete; the provider default for read) | no | no object change (validation or timing only) |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The ID of the named location, for a policy's location condition |
-| display_name | The display name Microsoft Graph returned on the last read |
-| countries_and_regions | The codes Microsoft Graph returned on the last read, sorted |
-| include_unknown_countries_and_regions | The unknown-countries flag Microsoft Graph returned on the last read |
-| country_lookup_method | The lookup method Microsoft Graph returned on the last read |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The ID of the named location, for a policy's location condition | yes |
+| display_name | The display name Microsoft Graph returned on the last read | no |
+| countries_and_regions | The codes Microsoft Graph returned on the last read, sorted | no |
+| include_unknown_countries_and_regions | The unknown-countries flag Microsoft Graph returned on the last read | no |
+| country_lookup_method | The lookup method Microsoft Graph returned on the last read | no |

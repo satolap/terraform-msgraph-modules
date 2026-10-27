@@ -224,6 +224,14 @@ locals {
     local.campaign_method_include_group == "all_users" || local.campaign_method_include_group == var.campaign_include_group_id
   )
 
+  # A passkey campaign whose own target group is excluded from passkeys prompts users who are
+  # denied the method. Excluded users cannot register, so the guard fails (not applicable when
+  # the policy is restored from the snapshot).
+  campaign_group_excluded_from_fido2 = (
+    var.campaign_method == "fido2" && !contains(var.restore_previous_state, "policy") &&
+    contains(var.fido2_exclude_group_ids, var.campaign_include_group_id)
+  )
+
   fido2_reaches_break_glass = var.fido2_include_group_id == "all_users" || contains(local.break_glass_group_ids, var.fido2_include_group_id)
 }
 
@@ -285,6 +293,11 @@ resource "terraform_data" "guard" {
     precondition {
       condition     = local.campaign_group_has_method
       error_message = "The campaign targets group ${var.campaign_include_group_id} for ${var.campaign_method}, but that method is not enabled for the same group: set campaign_include_group_id equal to the method's include group, or enable the method for all_users."
+    }
+
+    precondition {
+      condition     = !local.campaign_group_excluded_from_fido2
+      error_message = "The campaign targets group ${var.campaign_include_group_id} for fido2, but that group is in fido2_exclude_group_ids: excluded users are denied passkeys, so every campaign target would be blocked. Remove the group from fido2_exclude_group_ids or target another group."
     }
 
     precondition {

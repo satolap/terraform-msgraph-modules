@@ -1,5 +1,15 @@
 # service-principals
 
+<!-- uses-beta:start -->
+Uses beta: **optional**. Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified live-accepted** (2026-10-24, commit `344ecc7e`). Acceptance covers the recorded run and configuration.
+
+![live Dev: passed 2026-10-24](https://img.shields.io/badge/live%20Dev-passed%202026--10--24-brightgreen)
+<!-- live-status:end -->
+
 Creates a Microsoft Entra ID service principal (`servicePrincipals`) for an existing
 application, via the `microsoft/msgraph` Terraform provider.
 
@@ -100,22 +110,24 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| app_id | Application (client) ID (GUID); a change replaces the service principal | `string` | n/a | yes |
-| account_enabled | Whether the service principal is enabled | `bool` | `true` | no |
-| app_role_assignment_required | Require app role assignment before sign-in/token | `bool` | `false` | no |
-| description | Free-text description | `string` | `null` | no |
-| notes | Management notes | `string` | `null` | no |
-| tags | Categorization tags | `list(string)` | `null` | no |
-| login_url | SSO landing page URL | `string` | `null` | no |
-| preferred_single_sign_on_mode | `password`/`saml`/`notSupported`/`oidc` | `string` | `null` | no |
-| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| app_id | Application (client) ID (GUID); a change replaces the service principal | `string` | n/a | yes | replaces `msgraph_resource.service_principal` |
+| account_enabled | Whether the service principal is enabled | `bool` | `true` | no | in place |
+| app_role_assignment_required | Require app role assignment before sign-in/token | `bool` | `false` | no | in place |
+| description | Free-text description | `string` | `null` | no | in place |
+| notes | Management notes | `string` | `null` | no | in place |
+| tags | Categorization tags | `list(string)` | `null` | no | in place |
+| login_url | SSO landing page URL | `string` | `null` | no | in place |
+| preferred_single_sign_on_mode | `password`/`saml`/`notSupported`/`oidc` | `string` | `null` | no | in place |
+| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no | in place |
+
+Unique values, inferred from the pinned metadata (declaration.json gives each source): `app_id` within `/servicePrincipals`. Graph refuses a value already used in that scope.
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The object ID of the service principal (use as `resource_origin_id` for `AadApplication`) |
-| app_id | The application (client) ID |
-| display_name | The display name exposed by the associated application |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The object ID of the service principal (use as `resource_origin_id` for `AadApplication`) | yes |
+| app_id | The application (client) ID | no |
+| display_name | The display name exposed by the associated application | no |

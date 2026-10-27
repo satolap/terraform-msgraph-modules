@@ -10,7 +10,7 @@ variable "category" {
   default     = null
 
   validation {
-    condition     = var.category == null ? true : contains(["joiner", "leaver", "unknownFutureValue", "mover", "extensibility"], var.category)
+    condition     = var.category == null ? true : contains(["joiner", "leaver"], var.category)
     error_message = "category must be one of the documented enum values."
   }
 }
@@ -492,6 +492,11 @@ variable "execution_scope" {
     condition     = (var.execution_scope == null ? true : alltrue([for item0 in var.execution_scope : (item0 == null ? true : alltrue([(item0["subject"] == null ? true : alltrue([(item0["subject"]["managedAppRegistrations"] == null ? true : alltrue([for item3 in item0["subject"]["managedAppRegistrations"] : (item3 == null ? true : alltrue([(item3["odata_type"] == null ? false : contains(["#microsoft.graph.androidManagedAppRegistration", "#microsoft.graph.iosManagedAppRegistration"], item3["odata_type"]))]))]))]))]))]))
     error_message = "execution_scope: every nested odata_type of an abstract Graph type must name a concrete type."
   }
+
+  validation {
+    condition     = (var.execution_scope == null ? true : alltrue([alltrue([for input0 in var.execution_scope : (input0 == null ? true : alltrue([(input0["processingStatus"] == null ? true : alltrue([(input0["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input0["processingStatus"]))])), (input0["reprocessedRuns"] == null ? true : alltrue([alltrue([for input2 in input0["reprocessedRuns"] : (input2 == null ? true : alltrue([(input2["processingStatus"] == null ? true : alltrue([(input2["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input2["processingStatus"]))])), (input2["workflowExecutionType"] == null ? true : alltrue([(input2["workflowExecutionType"] == null ? true : contains(["scheduled", "onDemand"], input2["workflowExecutionType"]))]))]))])])), (input0["subject"] == null ? true : alltrue([(input0["subject"]["chats"] == null ? true : alltrue([alltrue([for input3 in input0["subject"]["chats"] : (input3 == null ? true : alltrue([(input3["chatType"] == null ? true : alltrue([(input3["chatType"] == null ? true : contains(["oneOnOne", "group", "meeting"], input3["chatType"]))])), (input3["migrationMode"] == null ? true : alltrue([(input3["migrationMode"] == null ? true : contains(["inProgress", "completed"], input3["migrationMode"]))]))]))])])), (input0["subject"]["joinedTeams"] == null ? true : alltrue([alltrue([for input3 in input0["subject"]["joinedTeams"] : (input3 == null ? true : alltrue([(input3["specialization"] == null ? true : alltrue([(input3["specialization"] == null ? true : contains(["none", "educationStandard", "educationClass", "educationProfessionalLearningCommunity", "educationStaff", "healthcareStandard", "healthcareCareCoordination"], input3["specialization"]))])), (input3["visibility"] == null ? true : alltrue([(input3["visibility"] == null ? true : contains(["private", "public", "hiddenMembership"], input3["visibility"]))]))]))])])), (input0["subject"]["mailboxSettings"] == null ? true : alltrue([(input0["subject"]["mailboxSettings"]["automaticRepliesSetting"] == null ? true : alltrue([(input0["subject"]["mailboxSettings"]["automaticRepliesSetting"]["externalAudience"] == null ? true : alltrue([(input0["subject"]["mailboxSettings"]["automaticRepliesSetting"]["externalAudience"] == null ? true : contains(["none", "contactsOnly", "all"], input0["subject"]["mailboxSettings"]["automaticRepliesSetting"]["externalAudience"]))])), (input0["subject"]["mailboxSettings"]["automaticRepliesSetting"]["status"] == null ? true : alltrue([(input0["subject"]["mailboxSettings"]["automaticRepliesSetting"]["status"] == null ? true : contains(["disabled", "alwaysEnabled", "scheduled"], input0["subject"]["mailboxSettings"]["automaticRepliesSetting"]["status"]))]))])), (input0["subject"]["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"] == null ? true : alltrue([(input0["subject"]["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"] == null ? true : contains(["sendToDelegateAndInformationToPrincipal", "sendToDelegateAndPrincipal", "sendToDelegateOnly"], input0["subject"]["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"]))]))])), (input0["subject"]["managedAppRegistrations"] == null ? true : alltrue([alltrue([for input3 in input0["subject"]["managedAppRegistrations"] : (input3 == null ? true : alltrue([(input3["odata_type"] == null ? true : alltrue([(input3["odata_type"] == null ? true : contains(["#microsoft.graph.androidManagedAppRegistration", "#microsoft.graph.iosManagedAppRegistration"], input3["odata_type"]))]))]))])])), (input0["subject"]["managedDevices"] == null ? true : alltrue([alltrue([for input3 in input0["subject"]["managedDevices"] : (input3 == null ? true : alltrue([(input3["managedDeviceOwnerType"] == null ? true : alltrue([(input3["managedDeviceOwnerType"] == null ? true : contains(["unknown", "company", "personal"], input3["managedDeviceOwnerType"]))]))]))])])), (input0["subject"]["onlineMeetings"] == null ? true : alltrue([alltrue([for input3 in input0["subject"]["onlineMeetings"] : (input3 == null ? true : alltrue([(input3["allowLiveShare"] == null ? true : alltrue([(input3["allowLiveShare"] == null ? true : contains(["enabled", "disabled"], input3["allowLiveShare"]))])), (input3["allowMeetingChat"] == null ? true : alltrue([(input3["allowMeetingChat"] == null ? true : contains(["enabled", "disabled", "limited"], input3["allowMeetingChat"]))])), (input3["allowedLobbyAdmitters"] == null ? true : alltrue([(input3["allowedLobbyAdmitters"] == null ? true : contains(["organizerAndCoOrganizersAndPresenters", "organizerAndCoOrganizers"], input3["allowedLobbyAdmitters"]))])), (input3["allowedPresenters"] == null ? true : alltrue([(input3["allowedPresenters"] == null ? true : contains(["everyone", "organization", "roleIsPresenter", "organizer"], input3["allowedPresenters"]))])), (input3["shareMeetingChatHistoryDefault"] == null ? true : alltrue([(input3["shareMeetingChatHistoryDefault"] == null ? true : contains(["none", "all"], input3["shareMeetingChatHistoryDefault"]))]))]))])]))])), (input0["taskProcessingResults"] == null ? true : alltrue([alltrue([for input2 in input0["taskProcessingResults"] : (input2 == null ? true : alltrue([(input2["processingStatus"] == null ? true : alltrue([(input2["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input2["processingStatus"]))])), (input2["task"] == null ? true : alltrue([(input2["task"]["category"] == null ? true : alltrue([(input2["task"]["category"] == null ? true : try(alltrue([for value in split(",", input2["task"]["category"]) : contains(["joiner", "leaver"], lower(trimspace(value)))]), false))]))]))]))])])), (input0["workflowExecutionType"] == null ? true : alltrue([(input0["workflowExecutionType"] == null ? true : contains(["scheduled", "onDemand"], input0["workflowExecutionType"]))]))]))])]))
+    error_message = "execution_scope: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "graph_version" {
@@ -558,6 +563,11 @@ variable "quarantine_details" {
     quarantinedDateTime = optional(string)
   })
   default = null
+
+  validation {
+    condition     = (var.quarantine_details == null ? true : alltrue([(var.quarantine_details["quarantineType"] == null ? true : alltrue([(var.quarantine_details["quarantineType"] == null ? true : contains(["notQuarantined", "countBasedThresholdExceeded", "percentageBasedThresholdExceeded", "multipleConditionsExceeded"], var.quarantine_details["quarantineType"]))]))]))
+    error_message = "quarantine_details: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "runs" {
@@ -793,6 +803,11 @@ variable "runs" {
   }))
   default   = null
   sensitive = true
+
+  validation {
+    condition     = (var.runs == null ? true : alltrue([alltrue([for input0 in var.runs : (input0 == null ? true : alltrue([(input0["processingStatus"] == null ? true : alltrue([(input0["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input0["processingStatus"]))])), (input0["subjectProcessingResults"] == null ? true : alltrue([alltrue([for input2 in input0["subjectProcessingResults"] : (input2 == null ? true : alltrue([(input2["processingStatus"] == null ? true : alltrue([(input2["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input2["processingStatus"]))])), (input2["subjectType"] == null ? true : alltrue([(input2["subjectType"] == null ? true : try(alltrue([for value in split(",", input2["subjectType"]) : contains(["user"], lower(trimspace(value)))]), false))])), (input2["workflowExecutionType"] == null ? true : alltrue([(input2["workflowExecutionType"] == null ? true : contains(["scheduled", "onDemand"], input2["workflowExecutionType"]))]))]))])])), (input0["taskProcessingResults"] == null ? true : alltrue([alltrue([for input2 in input0["taskProcessingResults"] : (input2 == null ? true : alltrue([(input2["processingStatus"] == null ? true : alltrue([(input2["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input2["processingStatus"]))])), (input2["task"] == null ? true : alltrue([(input2["task"]["category"] == null ? true : alltrue([(input2["task"]["category"] == null ? true : try(alltrue([for value in split(",", input2["task"]["category"]) : contains(["joiner", "leaver"], lower(trimspace(value)))]), false))]))]))]))])])), (input0["userProcessingResults"] == null ? true : alltrue([alltrue([for input2 in input0["userProcessingResults"] : (input2 == null ? true : alltrue([(input2["processingStatus"] == null ? true : alltrue([(input2["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input2["processingStatus"]))])), (input2["workflowExecutionType"] == null ? true : alltrue([(input2["workflowExecutionType"] == null ? true : contains(["scheduled", "onDemand"], input2["workflowExecutionType"]))]))]))])])), (input0["workflowExecutionType"] == null ? true : alltrue([(input0["workflowExecutionType"] == null ? true : contains(["scheduled", "onDemand"], input0["workflowExecutionType"]))]))]))])]))
+    error_message = "runs: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "settings" {
@@ -806,6 +821,11 @@ variable "settings" {
     }))
   })
   default = null
+
+  validation {
+    condition     = (var.settings == null ? true : alltrue([(var.settings["quarantineConfiguration"] == null ? true : alltrue([(var.settings["quarantineConfiguration"]["matchMode"] == null ? true : alltrue([(var.settings["quarantineConfiguration"]["matchMode"] == null ? true : contains(["any", "all"], var.settings["quarantineConfiguration"]["matchMode"]))]))]))]))
+    error_message = "settings: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "subject_processing_results" {
@@ -838,6 +858,11 @@ variable "subject_processing_results" {
     workflowExecutionType = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.subject_processing_results == null ? true : alltrue([alltrue([for input0 in var.subject_processing_results : (input0 == null ? true : alltrue([(input0["processingStatus"] == null ? true : alltrue([(input0["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input0["processingStatus"]))])), (input0["reprocessedRuns"] == null ? true : alltrue([alltrue([for input2 in input0["reprocessedRuns"] : (input2 == null ? true : alltrue([(input2["processingStatus"] == null ? true : alltrue([(input2["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input2["processingStatus"]))])), (input2["workflowExecutionType"] == null ? true : alltrue([(input2["workflowExecutionType"] == null ? true : contains(["scheduled", "onDemand"], input2["workflowExecutionType"]))]))]))])])), (input0["subjectType"] == null ? true : alltrue([(input0["subjectType"] == null ? true : try(alltrue([for value in split(",", input0["subjectType"]) : contains(["user"], lower(trimspace(value)))]), false))])), (input0["workflowExecutionType"] == null ? true : alltrue([(input0["workflowExecutionType"] == null ? true : contains(["scheduled", "onDemand"], input0["workflowExecutionType"]))]))]))])]))
+    error_message = "subject_processing_results: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "target_subject_type" {
@@ -846,7 +871,7 @@ variable "target_subject_type" {
   default     = null
 
   validation {
-    condition     = var.target_subject_type == null ? true : try(alltrue([for value in split(",", var.target_subject_type) : contains(["user", "unknownfuturevalue", "provisioningobject"], lower(trimspace(value)))]), false)
+    condition     = var.target_subject_type == null ? true : try(alltrue([for value in split(",", var.target_subject_type) : contains(["user"], lower(trimspace(value)))]), false)
     error_message = "target_subject_type must be one or more of the documented enum values, separated by commas."
   }
 }
@@ -1014,6 +1039,11 @@ variable "task_reports" {
   }))
   default   = null
   sensitive = true
+
+  validation {
+    condition     = (var.task_reports == null ? true : alltrue([alltrue([for input0 in var.task_reports : (input0 == null ? true : alltrue([(input0["processingStatus"] == null ? true : alltrue([(input0["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input0["processingStatus"]))])), (input0["task"] == null ? true : alltrue([(input0["task"]["category"] == null ? true : alltrue([(input0["task"]["category"] == null ? true : try(alltrue([for value in split(",", input0["task"]["category"]) : contains(["joiner", "leaver"], lower(trimspace(value)))]), false))])), (input0["task"]["taskProcessingResults"] == null ? true : alltrue([alltrue([for input3 in input0["task"]["taskProcessingResults"] : (input3 == null ? true : alltrue([(input3["processingStatus"] == null ? true : alltrue([(input3["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input3["processingStatus"]))]))]))])]))])), (input0["taskDefinition"] == null ? true : alltrue([(input0["taskDefinition"]["category"] == null ? true : alltrue([(input0["taskDefinition"]["category"] == null ? true : try(alltrue([for value in split(",", input0["taskDefinition"]["category"]) : contains(["joiner", "leaver"], lower(trimspace(value)))]), false))])), (input0["taskDefinition"]["parameters"] == null ? true : alltrue([alltrue([for input3 in input0["taskDefinition"]["parameters"] : (input3 == null ? true : alltrue([(input3["valueType"] == null ? true : alltrue([(input3["valueType"] == null ? true : contains(["enum", "string", "int", "bool"], input3["valueType"]))]))]))])]))])), (input0["taskProcessingResults"] == null ? true : alltrue([alltrue([for input2 in input0["taskProcessingResults"] : (input2 == null ? true : alltrue([(input2["processingStatus"] == null ? true : alltrue([(input2["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input2["processingStatus"]))])), (input2["task"] == null ? true : alltrue([(input2["task"]["category"] == null ? true : alltrue([(input2["task"]["category"] == null ? true : try(alltrue([for value in split(",", input2["task"]["category"]) : contains(["joiner", "leaver"], lower(trimspace(value)))]), false))]))]))]))])]))]))])]))
+    error_message = "task_reports: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "tasks" {
@@ -1130,6 +1160,11 @@ variable "tasks" {
   }))
   default   = null
   sensitive = true
+
+  validation {
+    condition     = (var.tasks == null ? true : alltrue([alltrue([for input0 in var.tasks : (input0 == null ? true : alltrue([(input0["category"] == null ? true : alltrue([(input0["category"] == null ? true : try(alltrue([for value in split(",", input0["category"]) : contains(["joiner", "leaver"], lower(trimspace(value)))]), false))])), (input0["taskProcessingResults"] == null ? true : alltrue([alltrue([for input2 in input0["taskProcessingResults"] : (input2 == null ? true : alltrue([(input2["processingStatus"] == null ? true : alltrue([(input2["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input2["processingStatus"]))]))]))])]))]))])]))
+    error_message = "tasks: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "user_processing_results" {
@@ -1573,6 +1608,11 @@ variable "user_processing_results" {
     condition     = (var.user_processing_results == null ? true : alltrue([for item0 in var.user_processing_results : (item0 == null ? true : alltrue([(item0["subject"] == null ? true : alltrue([(item0["subject"]["managedAppRegistrations"] == null ? true : alltrue([for item3 in item0["subject"]["managedAppRegistrations"] : (item3 == null ? true : alltrue([(item3["odata_type"] == null ? false : contains(["#microsoft.graph.androidManagedAppRegistration", "#microsoft.graph.iosManagedAppRegistration"], item3["odata_type"]))]))]))]))]))]))
     error_message = "user_processing_results: every nested odata_type of an abstract Graph type must name a concrete type."
   }
+
+  validation {
+    condition     = (var.user_processing_results == null ? true : alltrue([alltrue([for input0 in var.user_processing_results : (input0 == null ? true : alltrue([(input0["processingStatus"] == null ? true : alltrue([(input0["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input0["processingStatus"]))])), (input0["reprocessedRuns"] == null ? true : alltrue([alltrue([for input2 in input0["reprocessedRuns"] : (input2 == null ? true : alltrue([(input2["processingStatus"] == null ? true : alltrue([(input2["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input2["processingStatus"]))])), (input2["workflowExecutionType"] == null ? true : alltrue([(input2["workflowExecutionType"] == null ? true : contains(["scheduled", "onDemand"], input2["workflowExecutionType"]))]))]))])])), (input0["subject"] == null ? true : alltrue([(input0["subject"]["chats"] == null ? true : alltrue([alltrue([for input3 in input0["subject"]["chats"] : (input3 == null ? true : alltrue([(input3["chatType"] == null ? true : alltrue([(input3["chatType"] == null ? true : contains(["oneOnOne", "group", "meeting"], input3["chatType"]))])), (input3["migrationMode"] == null ? true : alltrue([(input3["migrationMode"] == null ? true : contains(["inProgress", "completed"], input3["migrationMode"]))]))]))])])), (input0["subject"]["joinedTeams"] == null ? true : alltrue([alltrue([for input3 in input0["subject"]["joinedTeams"] : (input3 == null ? true : alltrue([(input3["specialization"] == null ? true : alltrue([(input3["specialization"] == null ? true : contains(["none", "educationStandard", "educationClass", "educationProfessionalLearningCommunity", "educationStaff", "healthcareStandard", "healthcareCareCoordination"], input3["specialization"]))])), (input3["visibility"] == null ? true : alltrue([(input3["visibility"] == null ? true : contains(["private", "public", "hiddenMembership"], input3["visibility"]))]))]))])])), (input0["subject"]["mailboxSettings"] == null ? true : alltrue([(input0["subject"]["mailboxSettings"]["automaticRepliesSetting"] == null ? true : alltrue([(input0["subject"]["mailboxSettings"]["automaticRepliesSetting"]["externalAudience"] == null ? true : alltrue([(input0["subject"]["mailboxSettings"]["automaticRepliesSetting"]["externalAudience"] == null ? true : contains(["none", "contactsOnly", "all"], input0["subject"]["mailboxSettings"]["automaticRepliesSetting"]["externalAudience"]))])), (input0["subject"]["mailboxSettings"]["automaticRepliesSetting"]["status"] == null ? true : alltrue([(input0["subject"]["mailboxSettings"]["automaticRepliesSetting"]["status"] == null ? true : contains(["disabled", "alwaysEnabled", "scheduled"], input0["subject"]["mailboxSettings"]["automaticRepliesSetting"]["status"]))]))])), (input0["subject"]["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"] == null ? true : alltrue([(input0["subject"]["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"] == null ? true : contains(["sendToDelegateAndInformationToPrincipal", "sendToDelegateAndPrincipal", "sendToDelegateOnly"], input0["subject"]["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"]))]))])), (input0["subject"]["managedAppRegistrations"] == null ? true : alltrue([alltrue([for input3 in input0["subject"]["managedAppRegistrations"] : (input3 == null ? true : alltrue([(input3["odata_type"] == null ? true : alltrue([(input3["odata_type"] == null ? true : contains(["#microsoft.graph.androidManagedAppRegistration", "#microsoft.graph.iosManagedAppRegistration"], input3["odata_type"]))]))]))])])), (input0["subject"]["managedDevices"] == null ? true : alltrue([alltrue([for input3 in input0["subject"]["managedDevices"] : (input3 == null ? true : alltrue([(input3["managedDeviceOwnerType"] == null ? true : alltrue([(input3["managedDeviceOwnerType"] == null ? true : contains(["unknown", "company", "personal"], input3["managedDeviceOwnerType"]))]))]))])])), (input0["subject"]["onlineMeetings"] == null ? true : alltrue([alltrue([for input3 in input0["subject"]["onlineMeetings"] : (input3 == null ? true : alltrue([(input3["allowLiveShare"] == null ? true : alltrue([(input3["allowLiveShare"] == null ? true : contains(["enabled", "disabled"], input3["allowLiveShare"]))])), (input3["allowMeetingChat"] == null ? true : alltrue([(input3["allowMeetingChat"] == null ? true : contains(["enabled", "disabled", "limited"], input3["allowMeetingChat"]))])), (input3["allowedLobbyAdmitters"] == null ? true : alltrue([(input3["allowedLobbyAdmitters"] == null ? true : contains(["organizerAndCoOrganizersAndPresenters", "organizerAndCoOrganizers"], input3["allowedLobbyAdmitters"]))])), (input3["allowedPresenters"] == null ? true : alltrue([(input3["allowedPresenters"] == null ? true : contains(["everyone", "organization", "roleIsPresenter", "organizer"], input3["allowedPresenters"]))])), (input3["shareMeetingChatHistoryDefault"] == null ? true : alltrue([(input3["shareMeetingChatHistoryDefault"] == null ? true : contains(["none", "all"], input3["shareMeetingChatHistoryDefault"]))]))]))])]))])), (input0["taskProcessingResults"] == null ? true : alltrue([alltrue([for input2 in input0["taskProcessingResults"] : (input2 == null ? true : alltrue([(input2["processingStatus"] == null ? true : alltrue([(input2["processingStatus"] == null ? true : contains(["queued", "inProgress", "completed", "completedWithErrors", "canceled", "failed"], input2["processingStatus"]))])), (input2["task"] == null ? true : alltrue([(input2["task"]["category"] == null ? true : alltrue([(input2["task"]["category"] == null ? true : try(alltrue([for value in split(",", input2["task"]["category"]) : contains(["joiner", "leaver"], lower(trimspace(value)))]), false))]))]))]))])])), (input0["workflowExecutionType"] == null ? true : alltrue([(input0["workflowExecutionType"] == null ? true : contains(["scheduled", "onDemand"], input0["workflowExecutionType"]))]))]))])]))
+    error_message = "user_processing_results: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "versions" {
@@ -1614,6 +1654,46 @@ variable "versions" {
     versionNumber = optional(number)
   }))
   default = null
+
+  validation {
+    condition     = (var.versions == null ? true : alltrue([alltrue([for input0 in var.versions : (input0 == null ? true : alltrue([(input0["category"] == null ? true : alltrue([(input0["category"] == null ? true : contains(["joiner", "leaver"], input0["category"]))])), (input0["settings"] == null ? true : alltrue([(input0["settings"]["quarantineConfiguration"] == null ? true : alltrue([(input0["settings"]["quarantineConfiguration"]["matchMode"] == null ? true : alltrue([(input0["settings"]["quarantineConfiguration"]["matchMode"] == null ? true : contains(["any", "all"], input0["settings"]["quarantineConfiguration"]["matchMode"]))]))]))])), (input0["targetSubjectType"] == null ? true : alltrue([(input0["targetSubjectType"] == null ? true : try(alltrue([for value in split(",", input0["targetSubjectType"]) : contains(["user"], lower(trimspace(value)))]), false))])), (input0["tasks"] == null ? true : alltrue([alltrue([for input2 in input0["tasks"] : (input2 == null ? true : alltrue([(input2["category"] == null ? true : alltrue([(input2["category"] == null ? true : try(alltrue([for value in split(",", input2["category"]) : contains(["joiner", "leaver"], lower(trimspace(value)))]), false))]))]))])]))]))])]))
+    error_message = "versions: nested required attributes must be non-null and enum values must be supported input members."
+  }
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

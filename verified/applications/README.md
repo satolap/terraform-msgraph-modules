@@ -1,5 +1,15 @@
 # applications
 
+<!-- uses-beta:start -->
+Uses beta: **optional**. Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified live-accepted** (2026-10-24, commit `344ecc7e`). Acceptance covers the recorded run and configuration.
+
+![live Dev: passed 2026-10-24](https://img.shields.io/badge/live%20Dev-passed%202026--10--24-brightgreen)
+<!-- live-status:end -->
+
 Creates a Microsoft Entra ID application registration (`applications`) via the
 `microsoft/msgraph` Terraform provider.
 
@@ -95,25 +105,36 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| display_name | Display name (1-120 characters) | `string` | n/a | yes |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
-| sign_in_audience | Supported account types | `string` | `"AzureADMyOrg"` | no |
-| description | Free-text description | `string` | `null` | no |
-| notes | Management notes | `string` | `null` | no |
-| tags | Categorization tags | `list(string)` | `null` | no |
-| web_redirect_uris | Web platform redirect URIs | `list(string)` | `null` | no |
-| spa_redirect_uris | SPA platform redirect URIs | `list(string)` | `null` | no |
-| public_client_redirect_uris | Mobile/desktop redirect URIs | `list(string)` | `null` | no |
-| app_roles | App roles exposed by the app (each `id` is a GUID → `role_origin_id`) | `list(object)` | `null` | no |
-| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| display_name | Display name (1-120 characters) | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| sign_in_audience | Supported account types | `string` | `"AzureADMyOrg"` | no | in place |
+| description | Free-text description | `string` | `null` | no | in place |
+| notes | Management notes | `string` | `null` | no | in place |
+| tags | Categorization tags | `list(string)` | `null` | no | in place |
+| web_redirect_uris | Web platform redirect URIs | `list(string)` | `null` | no | in place |
+| spa_redirect_uris | SPA platform redirect URIs | `list(string)` | `null` | no | in place |
+| public_client_redirect_uris | Mobile/desktop redirect URIs | `list(string)` | `null` | no | in place |
+| app_roles | App roles exposed by the app (each `id` is a GUID → `role_origin_id`) | `list(object)` | `null` | no | in place |
+| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no | in place |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The object ID of the application registration |
-| app_id | The application (client) ID — feed to `service-principals` |
-| display_name | The display name of the application |
-| app_role_ids | Map of app role `value` → `id` (GUID), for `role_origin_id` |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The object ID of the application registration | yes |
+| app_id | The application (client) ID — feed to `service-principals` | yes |
+| display_name | The display name of the application | no |
+| app_role_ids | Map of app role `value` → `id` (GUID), for `role_origin_id` | yes |
+
+`app_id` is pinned at creation in `terraform_data.app_id`, so it stays known when an
+in-place update, such as a rename, plans the provider's read-back as unknown. A
+`service-principals` module fed from it is therefore not replaced by a rename. The
+value is refreshed whenever the application's object ID changes: when it is
+replaced, and when it is created afresh after leaving the state. Upgrading adds that
+one Terraform-only resource to the plan and changes nothing in Entra ID, provided the
+upgrade apply carries no other change to the application. In the same plan as a rename
+or drift, the new resource still reads an unknown `app_id`, and a fed service principal
+is replaced as before. Apply the upgrade on its own, or check that the plan replaces
+no service principal.

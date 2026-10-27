@@ -1,5 +1,27 @@
 # conditional-access-p1
 
+<!-- state-protection:start -->
+## State and plan protection
+
+This module's state and saved plans retain these declared values:
+
+Sensitive outputs: `licensed_skus`.
+
+Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
+
+See [Terraform sensitive state guidance](https://developer.hashicorp.com/terraform/language/state/sensitive-data). These are exposure indicators, not a complete data classification; unmarked fields and provider responses also need protection.
+<!-- state-protection:end -->
+
+<!-- uses-beta:start -->
+Uses beta: **conditional**. Local module `../emergency-access-guard`: When groups are configured, the guard reads members through beta because v1.0 omits service principals and cannot prove that all direct members are users (GB-security-baseline-509). Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Four Microsoft Entra Conditional Access policies that replace
 [security defaults](https://learn.microsoft.com/entra/fundamentals/security-defaults) on a
 Microsoft Entra ID P1 or P2 tenant, as part of the [security baseline](../README.md). They are the four
@@ -37,27 +59,27 @@ sign-in logs, then set `enforce = true` and apply again.
 
 ## Inputs
 
-| Input | Type | Default | Notes |
-| --- | --- | --- | --- |
-| `tier` | `string` | required | `p1` or `p2`. `free` fails validation and points to the free-tier modules, which keep security defaults on. There is no `auto`. |
-| `break_glass_user_ids` | `set(string)` | required | At least one lowercase GUID, at most 15, each must exist. A `check` warns when fewer than two accounts are excluded. A group alone is not enough, because its membership can change outside Terraform. |
-| `break_glass_group_ids` | `set(string)` | `[]` | Optional emergency access security groups. They are validated by the emergency access guard and their direct user members are added to the exclusions as users. The group IDs are never sent as `excludeGroups` (see below). |
-| `enforce` | `bool` | `false` | `false` is report-only (`enabledForReportingButNotEnforced`). `true` sets `enabled`, after turning security defaults off if they were on. |
-| `decommission` | `bool` | `false` | Deletes the four policies, then restores security defaults if they were on before the module. Run before `terraform destroy`. |
-| `display_name_prefix` | `string` | `"Security baseline - "` | Prefixed to the policy names. The enforce check finds the existing baseline by these names. |
-| `additional_admin_role_template_ids` | `list(string)` | `[]` | Add-only. The 16 default roles cannot be removed. |
-| `exclude_directory_sync_accounts` | `bool` | `true` | Excludes the Directory Synchronization Accounts role from the all-users policy, as Microsoft advises for hybrid tenants. Security defaults exclude it too. |
+| Input | Type | Default | Notes | On change |
+| --- | --- | --- | --- | --- |
+| `tier` | `string` | required | `p1` or `p2`. `free` fails validation and points to the free-tier modules, which keep security defaults on. There is no `auto`. | changes `module.licence_guard`; see the module notes; changes `module.emergency_access`; see the module notes |
+| `break_glass_user_ids` | `set(string)` | required | At least one lowercase GUID, at most 15, each must exist. A `check` warns when fewer than two accounts are excluded. A group alone is not enough, because its membership can change outside Terraform. | changes `module.emergency_access`; see the module notes |
+| `break_glass_group_ids` | `set(string)` | `[]` | Optional emergency access security groups. They are validated by the emergency access guard and their direct user members are added to the exclusions as users. The group IDs are never sent as `excludeGroups` (see below). | changes `module.emergency_access`; see the module notes |
+| `enforce` | `bool` | `false` | `false` is report-only (`enabledForReportingButNotEnforced`). `true` sets `enabled`, after turning security defaults off if they were on. | creates or deletes `msgraph_update_resource.security_defaults_off` instances |
+| `decommission` | `bool` | `false` | Deletes the four policies, then restores security defaults if they were on before the module. Run before `terraform destroy`. | creates or deletes `msgraph_update_resource.security_defaults_off` instances; creates or deletes `msgraph_resource.policy` instances; creates or deletes `msgraph_update_resource.security_defaults_restore` instances; changes `module.licence_guard`; see the module notes; changes `module.emergency_access`; see the module notes |
+| `display_name_prefix` | `string` | `"Security baseline - "` | Prefixed to the policy names. The enforce check finds the existing baseline by these names. | in place |
+| `additional_admin_role_template_ids` | `list(string)` | `[]` | Add-only. The 16 default roles cannot be removed. | in place |
+| `exclude_directory_sync_accounts` | `bool` | `true` | Excludes the Directory Synchronization Accounts role from the all-users policy, as Microsoft advises for hybrid tenants. Security defaults exclude it too. | in place |
 
 ## Outputs
 
-| Output | Description |
-| --- | --- |
-| `policy_ids` | Policy object IDs by key |
-| `policy_states` | Policy `state` by key as Graph returned it |
-| `security_defaults_prior_enabled` | Whether security defaults were on when the module first applied; never overwritten |
-| `security_defaults_turned_off_by_module` | Whether this module turned security defaults off and has not restored them |
-| `licensed_skus` | Sensitive; SKUs that license the tier (empty during decommission) |
-| `tier` | The tier after the licence guard and the plan-time checks passed |
+| Output | Description | Known in plan after an update |
+| --- | --- | --- |
+| `policy_ids` | Policy object IDs by key | no |
+| `policy_states` | Policy `state` by key as Graph returned it | no |
+| `security_defaults_prior_enabled` | Whether security defaults were on when the module first applied; never overwritten | yes |
+| `security_defaults_turned_off_by_module` | Whether this module turned security defaults off and has not restored them | no |
+| `licensed_skus` | Sensitive; SKUs that license the tier (empty during decommission) | no |
+| `tier` | The tier after the licence guard and the plan-time checks passed | no |
 
 ## Policy bodies
 

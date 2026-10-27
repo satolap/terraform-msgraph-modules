@@ -25,6 +25,11 @@ variable "cross_region_disaster_recovery_setting" {
     userInitiatedDisasterRecoveryAllowed   = optional(bool)
   })
   default = null
+
+  validation {
+    condition     = (var.cross_region_disaster_recovery_setting == null ? true : alltrue([(var.cross_region_disaster_recovery_setting["disasterRecoveryType"] == null ? true : alltrue([(var.cross_region_disaster_recovery_setting["disasterRecoveryType"] == null ? true : contains(["notConfigured", "crossRegion", "premium"], var.cross_region_disaster_recovery_setting["disasterRecoveryType"]))]))]))
+    error_message = "cross_region_disaster_recovery_setting: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "display_name" {
@@ -67,7 +72,7 @@ variable "provisioning_source_type" {
   default     = null
 
   validation {
-    condition     = var.provisioning_source_type == null ? true : contains(["image", "snapshot", "unknownFutureValue"], var.provisioning_source_type)
+    condition     = var.provisioning_source_type == null ? true : contains(["image", "snapshot"], var.provisioning_source_type)
     error_message = "provisioning_source_type must be one of the documented enum values."
   }
 }
@@ -87,12 +92,52 @@ variable "restore_point_setting" {
     userRestoreEnabled = optional(bool)
   })
   default = null
+
+  validation {
+    condition     = (var.restore_point_setting == null ? true : alltrue([(var.restore_point_setting["frequencyType"] == null ? true : alltrue([(var.restore_point_setting["frequencyType"] == null ? true : contains(["default", "fourHours", "sixHours", "twelveHours", "sixteenHours", "twentyFourHours"], var.restore_point_setting["frequencyType"]))]))]))
+    error_message = "restore_point_setting: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "self_service_enabled" {
   description = "Indicates whether the self-service option is enabled. Default value is false. To enable the self-service option, change the setting to true. If the self-service option is enabled, the end user is allowed to perform some self-service operations, such as upgrading the Cloud PC through the end user portal. The selfServiceEnabled property is deprecated and stopped returning data on December 1, 2023."
   type        = bool
   default     = null
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

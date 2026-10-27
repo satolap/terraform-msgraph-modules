@@ -1,5 +1,28 @@
 # users
 
+<!-- state-protection:start -->
+## State and plan protection
+
+This module's state and saved plans retain these declared values:
+
+Sensitive inputs: `password`.
+Potential personal-data inputs: `given_name`, `surname`, `user_principal_name`.
+
+Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
+
+See [Terraform sensitive state guidance](https://developer.hashicorp.com/terraform/language/state/sensitive-data). These are exposure indicators, not a complete data classification; unmarked fields and provider responses also need protection.
+<!-- state-protection:end -->
+
+<!-- uses-beta:start -->
+Uses beta: **optional**. Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Creates a Microsoft Entra ID user (`users`) via the `microsoft/msgraph` Terraform provider.
 
 ## Users and entitlement management
@@ -70,28 +93,30 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| user_principal_name | UPN (alias@verified-domain) | `string` | n/a | yes |
-| display_name | Display name (1-256 characters) | `string` | n/a | yes |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
-| mail_nickname | Mail alias | `string` | n/a | yes |
-| mail_nickname_pattern | Regular expression (RE2, not anchored unless it says so) that mail_nickname must match, or the plan fails; null accepts any alias | `string` | `null` | no |
-| password | Initial password (sensitive) | `string` | n/a | yes |
-| force_change_password_next_sign_in | Force password change on next sign-in | `bool` | `true` | no |
-| account_enabled | Whether the account is enabled | `bool` | `true` | no |
-| given_name | First name | `string` | `null` | no |
-| surname | Last name | `string` | `null` | no |
-| job_title | Job title | `string` | `null` | no |
-| department | Department | `string` | `null` | no |
-| usage_location | Two-letter ISO 3166 country code | `string` | `null` | no |
-| additional_properties | Other writable user properties; cannot override explicit module inputs | `any` (object) | `{}` | no |
-| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| user_principal_name | UPN (alias@verified-domain) | `string` | n/a | yes | in place |
+| display_name | Display name (1-256 characters) | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| mail_nickname | Mail alias | `string` | n/a | yes | in place |
+| mail_nickname_pattern | Regular expression (RE2, not anchored unless it says so) that mail_nickname must match, or the plan fails; null accepts any alias | `string` | `null` | no | no object change (validation or timing only) |
+| password | Initial password (sensitive) | `string` | n/a | yes | in place |
+| force_change_password_next_sign_in | Force password change on next sign-in | `bool` | `true` | no | in place |
+| account_enabled | Whether the account is enabled | `bool` | `true` | no | in place |
+| given_name | First name | `string` | `null` | no | in place |
+| surname | Last name | `string` | `null` | no | in place |
+| job_title | Job title | `string` | `null` | no | in place |
+| department | Department | `string` | `null` | no | in place |
+| usage_location | Two-letter ISO 3166 country code | `string` | `null` | no | in place |
+| additional_properties | Other writable user properties; cannot override explicit module inputs | `any` (object) | `{}` | no | in place |
+| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no | in place |
+
+Unique values, inferred from the pinned metadata (declaration.json gives each source): `user_principal_name` within `/users`. Graph refuses a value already used in that scope.
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The object ID of the user |
-| user_principal_name | The UPN of the user |
-| display_name | The display name of the user |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The object ID of the user | yes |
+| user_principal_name | The UPN of the user | no |
+| display_name | The display name of the user | no |

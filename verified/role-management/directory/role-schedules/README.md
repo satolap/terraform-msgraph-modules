@@ -1,5 +1,27 @@
 # role-management/directory/role-schedules
 
+<!-- state-protection:start -->
+## State and plan protection
+
+This module's state and saved plans retain these declared values:
+
+Potential personal-data inputs: `principal_id`.
+
+Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
+
+See [Terraform sensitive state guidance](https://developer.hashicorp.com/terraform/language/state/sensitive-data). These are exposure indicators, not a complete data classification; unmarked fields and provider responses also need protection.
+<!-- state-protection:end -->
+
+<!-- uses-beta:start -->
+Uses beta: **optional**. Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Assigns a Microsoft Entra role (built-in or custom) to a user, role-assignable group or
 service principal through Privileged Identity Management (PIM), via the `microsoft/msgraph`
 Terraform provider. `assignment_type = "eligible"` makes the principal eligible to activate
@@ -8,64 +30,100 @@ folder mirrors the Graph collection it manages: `roleManagement/directory`. Serv
 are supported only for time-limited active assignments; eligible and permanent service-principal
 assignments are outside this module's contract.
 
-## Why this module looks different from the others
+## Native request lifecycle
 
-PIM has no CRUD object for an assignment. An administrator submits a **schedule request**
-(`POST roleManagement/directory/roleEligibilityScheduleRequests` for eligible assignments,
-`POST roleManagement/directory/roleAssignmentScheduleRequests` for active ones) with
-`action: "adminAssign"` to create the assignment and `action: "adminRemove"` to end it. The request
-object supports neither PATCH nor DELETE, so this module:
+PIM uses adminAssign/adminRemove POSTs to roleEligibilityScheduleRequests or
+roleAssignmentScheduleRequests; never DELETE the request itself. The creation
+action ignores all in-place changes and replaces destroy-first through the
+existing assignment input record. An independent GET of its exact saved request
+ID requires matching principal, role and directory scope, adminAssign action,
+no app scope, isValidationOnly=false and a completed status (Provisioned,
+ScheduleCreated or Granted). This allowlist is module policy; pending, denied,
+unknown or missing status fails closed. Future starts can register removal from
+a verified ScheduleCreated request without requiring a listed schedule.
+The GET alone retries 404 / NotFound / Request_ResourceNotFound for at most two
+minutes. No POST is retried for replication.
 
-1. Submits the `adminAssign` request as a one-shot **action**
-   (`msgraph_resource_action.assign`), with the principal, the role definition, the scope, the
-   justification and a `scheduleInfo` of an optional `startDateTime` and an `expiration` of type
-   `noExpiration`, `afterDateTime` (with `endDateTime`) or `afterDuration` (with an ISO 8601
-   `duration`) ([Create roleEligibilityScheduleRequest](https://learn.microsoft.com/en-us/graph/api/rbacapplication-post-roleeligibilityschedulerequests?view=graph-rest-1.0),
-   [Create roleAssignmentScheduleRequests](https://learn.microsoft.com/en-us/graph/api/rbacapplication-post-roleassignmentschedulerequests?view=graph-rest-1.0),
-   [requestSchedule](https://learn.microsoft.com/en-us/graph/api/resources/requestschedule?view=graph-rest-1.0),
-   [expirationPattern](https://learn.microsoft.com/en-us/graph/api/resources/expirationpattern?view=graph-rest-1.0)).
-   The action is forgotten on destroy.
-2. Records the destroy cleanup holder after the confirmed `adminAssign`, then waits
-   `verification_delay_seconds` (`time_sleep.wait_for_delivery`). A subsequent read or gate
-   failure leaves that holder in state so a later destroy still runs `adminRemove`. A rejected
-   POST never registers a removal hook. An accepted request whose response is lost remains
-   an uncertain result requiring operator reconciliation; no live retry guarantee is claimed.
-3. Reads the schedule back (`roleEligibilitySchedules` or `roleAssignmentSchedules`), filtered on
-   `principalId`, `roleDefinitionId` and `directoryScopeId`, which Learn lists as `$filter`-capable on
-   both collections, and matches them again case-insensitively. For an active assignment it
-   ignores a schedule that is an activation of an eligibility (`assignmentType` other than
-   `Assigned`), and for both it ignores one inherited through a group (`memberType` other than
-   `Direct`). The schedule's `id` becomes the `schedule_id` output.
-4. Gates `apply` on that read (`fail_on_verification_mismatch`). A `start_date_time` in the future
-   never fails the gate, because Learn does not say whether a schedule that has not started is
-   listed; `verified` is then simply false if it is not.
-   The read and the gate also run in later plans, not only in the apply that created the
-   assignment. Microsoft Learn does not document whether PIM keeps listing a time-bound
-   schedule after it expires, and this has not been checked against a tenant. If an expired
-   schedule is no longer listed, later plans fail the gate for an assignment that has ended; set
-   `fail_on_verification_mismatch = false` (then inspect `verified`). Deleting the module block from
-   the configuration does not run step 5, because a destroy-time provisioner runs only while its
-   block is still configured, so it sends no `adminRemove` and leaves any assignment in place. To
-   remove the assignment with the module, run a targeted destroy of the module while its block is
-   still configured, and only when nobody has assigned the same principal, role and scope again in
-   PIM: that `adminRemove` removes any assignment of this `assignment_type` for them.
-5. On destroy, submits an `adminRemove` request from a destroy-time `local-exec` provisioner.
-   `adminRemove` needs only the principal, role definition and scope.
+The legacy `null_resource.remove_on_destroy[0]` keeps its exact triggers as an
+inert identity record. `msgraph_resource_action.remove[0]` registers after that
+independent request verification, before the delay and fallible schedule gate.
+It sends adminRemove only at destroy/replacement, using saved principal, role,
+scope, assignment type and API version with provider credentials. Registration
+sends no write. Bash, Azure CLI and curl are no longer needed. Changing an input
+removes the old assignment before requesting its replacement; no
+create_before_destroy is enabled. Cleanup survives a subsequent schedule-gate
+failure, but a failed independent request GET leaves it unregistered.
 
-**Because of step 5, the machine running the destroy needs Bash, the Azure CLI (`az`) logged in
-with `az login`, `curl`, and `ARM_TENANT_ID` set to the tenant ID the `msgraph` provider uses.**
-The hook targets the public cloud (`graph.microsoft.com`). Before it requests a token, it
-compares `ARM_TENANT_ID` with `az account show --query tenantId` and stops if the variable is
-unset or the tenants differ, so the request cannot reach another tenant. The token reaches `curl`
-through a config on stdin, never on the command line. Destroy cleanup is unsupported on Windows.
+Accepted limitation: adminRemove addresses a type/principal/role/scope tuple,
+not a unique schedule generation. Another writer's identical re-assignment
+cannot be distinguished and would be removed. Coordinate a single writer and
+reconcile intervention before cleanup. No destroy-time identity re-check or
+removal-delivery polling is performed. Native errors retain state for retry; the
+old shell's absent-message suppression and broad retry loop are not reproduced.
+In particular, after natural expiry with afterDateTime or afterDuration, Graph
+can answer 404 or 400 DoesNotExist / NotFound to adminRemove; the native action
+fails destroy where the old script treated that as removed. The pinned schema
+has no safe successful-error override. This migration limitation requires owner
+acceptance: independently confirm the original owned schedule has ended/expired
+or is absent, exclude another writer's replacement, then use the state-rm
+recovery below. A merely past configured expiry or a 400 message alone is not
+proof of revocation. Independently confirm removal; acceptance is not delivery
+proof.
 
-An assignment that has already expired or was removed outside Terraform makes Graph answer that
-it does not exist. The hook counts HTTP 404, and HTTP 400 whose error text contains "does not exist",
-"DoesNotExist" or "NotFound", as removed. Learn documents no error code for `adminRemove` of an
-absent assignment, so this match is on the wording and is **not verified live**. HTTP 409, 429 and
-5xx answers are retried six times, 20 seconds apart; any other refusal, such as a PIM role
-setting or the rule that keeps the last Global Administrator, stops the destroy and prints
-Graph's error body, so state is retained for a retry.
+Verification remains a data source, not a one-time check. Every refresh-enabled
+plan or apply runs the verification GET again, even after removal registration.
+A later 404, missing or mismatched identity, or a request status outside the
+completed allowlist can therefore fail routine plans. Failure does not revoke
+access or unregister an existing remove action. Reconcile the saved identity;
+never taint or replay the successful POST to repair a read. For cleanup after
+independently confirmed absence, use the state-rm recovery below and finish
+`terraform destroy -refresh=false`; this skips failing refresh reads and does
+not establish ownership or revoke access by itself.
+
+## Upgrade and recovery
+
+Back up state privately and run an **unchanged apply before destroy, input
+changes or replacement**. Confirm the adminAssign and legacy null record IDs
+are unchanged and native removal holds the old type/principal/role/scope.
+Merely updating configuration does not register removal: destroy can orphan
+privileged access with nothing in state to delete it. This sequencing is not
+enforced by a state-presence check.
+
+After POST succeeds but independent verification fails, **re-run apply with
+unchanged inputs; never use destroy as recovery**. Keep the successful request
+state; pending approval needs owner reconciliation and later unchanged apply,
+never a second adminAssign. Do not bypass verification or force replacement.
+An ambiguous POST or a denied/revoked/expired legacy request needs private
+owner investigation before proceeding.
+
+For manual recovery, read the exact captured adminAssign request in the provider
+tenant and prove its ID and original tuple. Independently inspect schedules for
+that type and tuple, refuse ambiguous ownership, and only then submit adminRemove
+for the captured tuple. Poll until the exact owned schedule is gone/ended and
+check no replacement by another writer exists. Never select a substitute role
+or principal. If a registered removal fails because the owned schedule is
+already absent or independently proven ended/expired, confirm the exact
+absence or ended state with independent schedule/instance evidence and
+exclude an external replacement before using
+`terraform state rm 'module.schedule.msgraph_resource_action.remove[0]'` and
+finish `terraform destroy -refresh=false`. Do not re-apply between state removal
+and completing destroy. Denied/incomplete reads and a just-created replica 404
+do not prove absence. State removal revokes no access.
+
+Saved identity and URL guards protect registration; this is not a destroy-time
+state integrity check. Do not edit saved action bodies/URLs. Disable cleanup
+only before first apply for externally owned removal; disabling an already
+registered action runs adminRemove.
+
+Owner-dispatched live acceptance: verify destroy-only capability per platform;
+create disposable eligible and time-limited active requests; independently GET
+their saved IDs and tuple; test future starts, completed status casing, pending
+approval/denial and replication/permission failures; retry unchanged apply
+without POST replay. Prove legacy unchanged upgrade and schedule-gate failure
+retain registered cleanup. Replace each input destroy-first, confirm adminRemove
+uses the old collection and tuple before new adminAssign, poll removal delivery
+and verify unrelated schedules unchanged. Probe expired/absent errors and
+confirmed-absence recovery. Keep only sanitized evidence; no live run is claimed.
 
 ## Any change replaces the assignment
 
@@ -75,7 +133,7 @@ recorded in `terraform_data.assignment`; a change replaces the request, the slee
 hook, so Terraform removes the old assignment first (`adminRemove`) and then assigns again.
 The module deliberately does **not** use `create_before_destroy`: the new `adminAssign` would fail
 because the assignment exists, and the old assignment's destroy-time `adminRemove` would then
-remove the new one. Destroy-then-create leaves a short gap with no assignment. Graph may process `adminRemove` asynchronously, so the replacement's `adminAssign` can briefly be refused as a duplicate; applying again resolves it. With
+remove the new one. Destroy-then-create leaves a short gap with no assignment. Graph may process `adminRemove` asynchronously, so the replacement's `adminAssign` can briefly be refused as a duplicate; independently confirm old removal before retrying a refused create, and reconcile ambiguous outcomes first. With
 `enable_destroy_cleanup = false` nothing removes the old assignment, so remove it yourself before
 you change an input. Changing `assignment_type` removes the assignment of the old kind and creates one of
 the new kind.
@@ -152,10 +210,9 @@ module "helpdesk_temporary_access" {
 | Name | Version |
 |------|---------|
 | terraform | >= 1.11.0 |
-| msgraph | >= 0.3.0 |
+| msgraph | >= 0.6.0, < 0.7.0 |
 | time | >= 0.9.0 |
 | null | >= 3.2.0 |
-| Bash, Azure CLI (`az`), `curl` and `ARM_TENANT_ID` | Required on the machine running the destroy; Windows is unsupported for destroy cleanup |
 
 Microsoft Graph permissions (application or delegated). Learn lists these as the least privileged
 permissions for the create calls; `RoleManagement.ReadWrite.Directory` also works but grants more.
@@ -192,33 +249,33 @@ Sources: [Microsoft Entra ID Governance licensing fundamentals: Privileged Ident
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| assignment_type | `eligible` or `active` | `string` | n/a | yes |
-| principal_id | Object ID of the user or role-assignable group; service principals only for time-limited active assignments (see above) | `string` | n/a | yes |
-| role_definition_id | Role definition ID (GUID); set exactly one of this and `role_display_name` | `string` | `null` | no |
-| role_display_name | Role display name resolved by a read-only lookup that must match one role | `string` | `null` | no |
-| directory_scope_id | `/`, `/administrativeUnits/<ID>` or `/<directory object ID>` | `string` | `"/"` | no |
-| justification | Justification sent with the request; must not be empty | `string` | `"Managed by Terraform"` | no |
-| start_date_time | RFC 3339 start; null starts when Graph processes the request | `string` | `null` | no |
-| expiration_type | `noExpiration`, `afterDateTime` or `afterDuration` | `string` | `"noExpiration"` | no |
-| end_date_time | RFC 3339 end; required with `afterDateTime`, refused otherwise | `string` | `null` | no |
-| duration | ISO 8601 duration such as `PT8H` or `P30D`; required with `afterDuration`, refused otherwise | `string` | `null` | no |
-| verification_delay_seconds | Seconds to wait before reading the schedule back | `number` | `15` | no |
-| fail_on_verification_mismatch | Fail apply if the read-back finds no single matching schedule; a future `start_date_time` never fails | `bool` | `true` | no |
-| enable_destroy_cleanup | Create the Azure CLI removal hook; disable only before first apply for tests or externally managed cleanup | `bool` | `true` | no |
-| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| assignment_type | `eligible` or `active` | `string` | n/a | yes | replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes |
+| principal_id | Object ID of the user or role-assignable group; service principals only for time-limited active assignments (see above) | `string` | n/a | yes | replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes |
+| role_definition_id | Role definition ID (GUID); set exactly one of this and `role_display_name` | `string` | `null` | no | replaces `msgraph_resource_action.assign` when its effect on `local.role_definition_id` changes; changes `null_resource.remove_on_destroy`; see the module notes |
+| role_display_name | Role display name resolved by a read-only lookup that must match one role | `string` | `null` | no | replaces `msgraph_resource_action.assign` when its effect on `local.role_definition_id` changes; changes `null_resource.remove_on_destroy`; see the module notes |
+| directory_scope_id | `/`, `/administrativeUnits/<ID>` or `/<directory object ID>` | `string` | `"/"` | no | replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes |
+| justification | Justification sent with the request; must not be empty | `string` | `"Managed by Terraform"` | no | replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes |
+| start_date_time | RFC 3339 start; null starts when Graph processes the request | `string` | `null` | no | replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes |
+| expiration_type | `noExpiration`, `afterDateTime` or `afterDuration` | `string` | `"noExpiration"` | no | replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes |
+| end_date_time | RFC 3339 end; required with `afterDateTime`, refused otherwise | `string` | `null` | no | replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes |
+| duration | ISO 8601 duration such as `PT8H` or `P30D`; required with `afterDuration`, refused otherwise | `string` | `null` | no | replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes |
+| verification_delay_seconds | Seconds to wait before reading the schedule back | `number` | `15` | no | no object change (validation or timing only) |
+| fail_on_verification_mismatch | Fail apply if the read-back finds no single matching schedule; a future `start_date_time` never fails | `bool` | `true` | no | no object change (validation or timing only) |
+| enable_destroy_cleanup | Register provider-native removal after independent verification; disable only before first apply for externally owned cleanup | `bool` | `true` | no | changes `null_resource.remove_on_destroy`; see the module notes; creates or deletes `msgraph_resource_action.remove` instances |
+| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no | replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| request_id | The ID of the adminAssign schedule request |
-| status | The status Graph returned for the request |
-| role_definition_id | The assigned role definition ID, as given or resolved from the display name |
-| directory_scope_id | The scope of the assignment |
-| schedule_id | The ID of the schedule found by the read-back; null if not found |
-| verified | Whether the read-back found exactly one matching schedule |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| request_id | The ID of the adminAssign schedule request | no |
+| status | The status Graph returned for the request | no |
+| role_definition_id | The assigned role definition ID, as given or resolved from the display name | no |
+| directory_scope_id | The scope of the assignment | yes |
+| schedule_id | The ID of the schedule found by the read-back; null if not found | no |
+| verified | Whether the read-back found exactly one matching schedule | no |
 
 ## Tests
 
@@ -227,6 +284,7 @@ providers and disable the destroy hook. They assert the request URL and body of 
 expiration type and each refusal, the optional start time, the scope forms, the display-name
 lookup with no, one and several matches, the rule that exactly one role reference is set, the
 verification read and its gate (including a future start), and that every input replaces the
-request. `tests/test_destroy_cleanup.py` runs the hook with stub `az` and `curl`. Terraform
-mocking does not suppress provisioners by itself. Tests require Terraform 1.11 or later. Nothing
+request. `tests/native_cleanup.tftest.hcl` verifies native registration, failed request
+proof, active/eligible counter-request routing and cleanup before a failed
+schedule gate. `tests/upgrade.tftest.hcl` proves unchanged legacy-state upgrade. Tests require Terraform 1.11 or later. Nothing
 here has been run against a tenant.

@@ -1,5 +1,6 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
+  create_only_defaults = { "isAssignableToRole" = false }
   typed_body = { for key, value in {
     "displayName"                   = var.display_name
     "mailEnabled"                   = var.mail_enabled
@@ -48,7 +49,11 @@ locals {
     "welcomeMessageEnabled"         = var.welcome_message_enabled
     "writebackConfiguration"        = (var.writeback_configuration == null ? null : { for key0, value0 in { "@odata.type" = var.writeback_configuration["odata_type"], "isEnabled" = var.writeback_configuration["isEnabled"], "onPremisesGroupType" = var.writeback_configuration["onPremisesGroupType"] } : key0 => value0 if value0 != null })
   } : key => value if value != null }
-  body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
+  body = { for key, value in merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body) : key => value if try(value != local.create_only_defaults[key], true) }
+}
+
+locals {
+  timeouts_set = anytrue([var.timeouts.create != null, var.timeouts.read != null, var.timeouts.update != null, var.timeouts.delete != null])
 }
 
 resource "msgraph_resource" "this" {
@@ -57,8 +62,46 @@ resource "msgraph_resource" "this" {
   update_method           = "PATCH"
   body                    = local.body
   ignore_missing_property = true
+  read_query_parameters   = var.select_response ? { "$select" = [join(",", sort(distinct(concat(["id"], [for name in keys(local.body) : name if alltrue([!startswith(name, "@"), !can(regex("@odata\\.", name)), !contains(["acceptedSenders", "appRoleAssignments", "conversations", "events", "members", "onPremisesSyncBehavior", "onenote", "owners", "permissionGrants", "photo", "rejectedSenders", "settings", "sites", "team", "threads", "transitiveMemberOf", "transitiveMembers"], name)])]))))] } : null
 
   response_export_values = {
     response = "@"
+  }
+
+  dynamic "timeouts" {
+    for_each = local.timeouts_set ? [var.timeouts] : []
+
+    content {
+      create = timeouts.value.create
+      read   = timeouts.value.read
+      update = timeouts.value.update
+      delete = timeouts.value.delete
+    }
+  }
+
+  lifecycle {
+    replace_triggered_by = [terraform_data.immutable]
+
+    precondition {
+      condition     = try(local.body["isAssignableToRole"], null) == true ? (try(local.body["visibility"], null) == null ? true : contains(["Private"], local.body["visibility"])) : true
+      error_message = "A role-assignable group must have visibility Private or leave it unset; Microsoft Graph refuses the replacement after the old group is deleted."
+    }
+
+    precondition {
+      condition     = try(local.body["isAssignableToRole"], null) == true ? (try(local.body["securityEnabled"], null) == true) : true
+      error_message = "A role-assignable group must have security_enabled = true."
+    }
+
+    precondition {
+      condition     = try(local.body["isAssignableToRole"], null) == true ? (try(!contains(local.body["groupTypes"], "DynamicMembership"), true)) : true
+      error_message = "A role-assignable group cannot have dynamic membership."
+    }
+  }
+}
+
+# Inputs that Microsoft Graph cannot update in place; a change replaces msgraph_resource.this. Makes no API call.
+resource "terraform_data" "immutable" {
+  input = {
+    "isAssignableToRole" = var.is_assignable_to_role != null ? var.is_assignable_to_role : try(coalesce(lookup(var.additional_properties, "isAssignableToRole", null), false), false)
   }
 }

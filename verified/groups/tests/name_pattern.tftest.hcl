@@ -5,6 +5,8 @@ mock_provider "msgraph" {
       output = {
         display_name = "Engineering"
         mail         = null
+        mail_enabled = false
+        group_types  = []
       }
     }
   }

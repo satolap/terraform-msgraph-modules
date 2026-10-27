@@ -1,59 +1,52 @@
 # identity-governance/entitlement-management/catalogs/resources
 
+<!-- uses-beta:start -->
+Uses beta: **optional**. Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Adds an Entra ID group, application (service principal), SharePoint Online site, or Azure
 subscription or management group to an entitlement management catalog, via the
 `microsoft/msgraph` Terraform provider. The folder mirrors the Graph collection it manages:
 `identityGovernance/entitlementManagement/catalogs/{id}/resources`.
 
-## Why this module looks different from the others
+## Native request lifecycle
 
-Microsoft Graph has no stable REST object for "a resource that belongs to a catalog" — it's
-managed entirely through **action-style** `accessPackageResourceRequest` calls
-(`POST identityGovernance/entitlementManagement/resourceRequests`): `requestType: "adminAdd"`
-to add a resource, `"adminRemove"` to remove one. The request object supports neither PATCH
-nor DELETE, so it can't be mapped onto standard Terraform create/read/update/delete, and
-provisioning is asynchronous (a SharePoint Online site in particular can take a while to
-appear). To handle this within a generic `msgraph`-provider-based module, this module:
+Graph changes catalog resources with `resourceRequests` adminAdd/adminRemove
+POSTs; the request itself supports no DELETE. `add_request` sends adminAdd once
+with `ignore_changes = all`. Identity changes replace destroy-first through
+`add_target`; display-name-only edits no longer replay adminAdd. After the
+configured delay, an independent filtered catalog GET requires exactly one
+URL-safe resource ID, matching originId/originSystem and no pagination before
+registering cleanup. The GET alone retries 404 / NotFound /
+Request_ResourceNotFound for at most two minutes. Empty or mismatched results
+fail closed when cleanup is enabled even if fail_on_verification_mismatch is
+false. No existing-resource discovery or adoption guarantee is added: this is
+the original adminAdd plus unique-origin ownership contract, with one writer.
 
-1. Submits the `adminAdd` request as a one-shot **action**
-   (`msgraph_resource_action.add_request`) rather than a CRUD-managed `msgraph_resource` —
-   a CRUD-managed request would make `terraform destroy` fail when the provider attempts the
-   unsupported `DELETE resourceRequests/{id}`.
-2. Waits `verification_delay_seconds` (`time_sleep.wait_for_delivery`). A change of
-   `catalog_id`, `resource_origin_id`, `resource_origin_system` or `api_version` submits a new
-   `adminAdd` and replaces the sleep (`terraform_data.add_target`), so the next step waits again
-   and reads the catalog during apply instead of during plan. A change of
-   `resource_display_name` alone runs the action again for a resource that is already in the
-   catalog and keeps the sleep, so the captured resource `id` stays known and the destroy hook
-   is not replaced.
-3. Reads the catalog's resources back, filtered by `originId` via `query_parameters`
-   (`data.msgraph_resource.verify`), to confirm the add landed **and** to capture the
-   resource's catalog-internal `id` (different from `resource_origin_id`) that role scopes
-   and a later removal need.
-4. Gates `apply` on that verification via a `precondition` (`fail_on_verification_mismatch`).
-5. On `terraform destroy`, submits an `adminRemove` request from a destroy-time
-   `local-exec` provisioner, using the internal resource `id` captured in step 3 (the
-   provider's own resource lifecycle has no concept of "run a different request on destroy").
-
-**Because of step 5, the machine running `terraform destroy` needs Bash, the Azure CLI (`az`)
-logged in with `az login`, `curl`, and `ARM_TENANT_ID` set to the tenant ID the
-`msgraph` provider uses.** The hook targets the public cloud (`graph.microsoft.com`). Before it
-requests a token, it compares `ARM_TENANT_ID` with `az account show --query tenantId` and stops
-if the variable is unset or the tenants differ, so the request cannot reach another tenant.
-The token reaches `curl` through a config on stdin, never on the command line, so it does not
-appear in the process list. Missing IDs, credentials, a tenant mismatch and HTTP failures
-cause destroy to fail so state can be retained for retry. Request delivery is asynchronous;
-verify removal in the Microsoft Entra admin center afterward. Destroy cleanup is unsupported
-on Windows.
-
-**Destroy the access packages that use the resource first.** Graph removes a resource from a
-catalog only when no access package in the catalog uses it
-([Remove resources from a catalog](https://learn.microsoft.com/entra/id-governance/entitlement-management-catalog-create#remove-resources-from-a-catalog)).
-Terraform orders destroy by references, and a role scope's reference to `resource_id` does not
-order the access package itself, so give the access package module a `depends_on` on the
-catalog resource modules, as the usage example below does. Graph can keep refusing the removal briefly after the access package is gone, so the hook
-retries HTTP 400, 409, 429 and 5xx answers six times, 20 seconds apart, and prints Graph's
-error body each time.
+The legacy `null_resource.remove_on_destroy[0]` retains its exact triggers as an
+inert identity record. `msgraph_resource_action.remove[0]` saves the catalog and
+internal resource ID, and sends **POST adminRemove**, never DELETE, only during
+destroy/replacement with provider credentials. Bash, Azure CLI and curl are no
+longer required. Registration sends no write. Removal is asynchronous; acceptance
+does not prove completion. There is no destroy-time identity re-check or
+absence proof. Remove access packages that use this resource first, with an
+explicit depends_on on these resource modules; Graph can refuse removal while
+packages remain or replication settles. Errors retain the action for another
+destroy after reconciliation. The native remove action retries error-envelope
+codes / explicit HTTP status diagnostics for 400, 409, 429 and 5xx (including
+BadRequest, Conflict and standard transient Graph code names), bounded by
+`timeouts.delete = "2m"`. The provider also retries its built-in transient set.
+This replaces the old six-attempt, 20-second shell cadence; it does not retry
+401, 403 or 404, suppress absence errors, or retry accepted responses. Unknown
+error shapes may not match; a refusal lasting beyond the timeout needs owner
+reconciliation and another destroy after the package is gone. Do not blindly
+replay an ambiguous accepted adminRemove; confirm delivery first.
 
 ## Azure subscriptions and management groups
 
@@ -80,30 +73,51 @@ Grant the roles with the `access-packages/resource-role-scopes` module.
 - **Licensing:** Azure resource roles need Microsoft Entra ID Governance or Microsoft Entra
   Suite, not Microsoft Entra ID P2 alone; see the licensing section below.
 
-## Upgrade note: destroy cleanup requires `ARM_TENANT_ID`
+Verification remains a data source, not a one-time check. Every refresh-enabled
+plan or apply runs the verification GET again, even after removal registration.
+A later 404, missing or mismatched identity can therefore fail routine plans.
+Failure does not revoke access or unregister an existing remove action.
+Reconcile the saved identity; never taint or replay the successful POST to
+repair a read. For cleanup after independently confirmed absence, use the state-
+rm recovery below and finish `terraform destroy -refresh=false`; this skips
+failing refresh reads and does not establish ownership or revoke access by
+itself.
 
-`terraform destroy` now stops before removing the catalog resource unless `ARM_TENANT_ID` is
-set on the machine running Terraform and equals the Azure CLI tenant
-(`az account show --query tenantId -o tsv`; letter case is ignored). Earlier versions sent the
-`adminRemove` request to whichever tenant the Azure CLI was logged in to and passed the bearer
-token to `curl` as a command-line argument.
+## Upgrade and recovery
 
-- **Why:** the hook authenticates with the Azure CLI, not with the provider's credentials, so
-  the two can point at different tenants. A destroy-time hook can read only its own stored
-  values, and a new module input would change them and replace the hook, which runs the
-  cleanup. The hook therefore reads the expected tenant from `ARM_TENANT_ID`, the environment
-  variable the `msgraph` provider reads for `tenant_id`
-  ([provider source, v0.5.0](https://github.com/microsoft/terraform-provider-msgraph/blob/v0.5.0/internal/provider/provider.go#L303-L306),
-  [provider documentation](https://registry.terraform.io/providers/microsoft/msgraph/0.5.0/docs)).
-- **What to do:** export `ARM_TENANT_ID=<tenant GUID>` wherever `terraform destroy` runs,
-  including CI, and log the Azure CLI in to that tenant (`az login --tenant <tenant GUID>`). If
-  the `provider "msgraph"` block sets `tenant_id`, use the same value.
-- **Still required:** Bash, the Azure CLI and `curl` on the machine running destroy. Destroy
-  cleanup is unsupported on Windows.
-- **Existing deployments:** only the hook's command changed, not its `triggers`, so upgrading
-  plans no change to `null_resource.remove_on_destroy` and removes nothing. If destroy stops on
-  the tenant check, the resource stays in the catalog and in state; fix the variable or the
-  login and run destroy again.
+Back up state privately and run an **unchanged apply before destroy or identity
+replacement**. Verify the adminAdd and legacy null resource IDs are unchanged,
+and the native remove action holds the existing catalog/resource IDs. Merely
+updating configuration does not register cleanup; destroy can leave a catalog
+resource with nothing in state to delete it. This sequencing is not enforced
+by a state-presence check.
+
+After successful adminAdd but failed verification, **re-run apply with unchanged
+inputs; never use destroy as recovery**. Keep the saved request and retry GET
+without POST replay. An ambiguous POST requires owner investigation first.
+For manual cleanup, read that catalog's resources independently, require the
+exact previously captured internal ID plus originId and originSystem, and send
+adminRemove only for that catalog/resource pair. Never select by display name.
+Confirm absence from a complete catalog listing, polling privately for delivery;
+denied, incomplete or newly replicated reads do not prove absence. For a failed
+registered removal of an independently confirmed absent resource only, use
+`terraform state rm 'module.resource.msgraph_resource_action.remove[0]'` then
+finish `terraform destroy -refresh=false`. Do not re-apply between state removal
+and completing destroy. State removal itself revokes no access.
+
+URL/identity guards protect registration; this is not a destroy-time state
+integrity check. Keep state private and do not edit action URLs or bodies.
+`enable_destroy_cleanup = false` is for externally owned cleanup before first
+apply; disabling an already registered action runs removal.
+
+Owner-dispatched live acceptance: confirm destroy-only provider capability on
+each platform; create disposable group/application catalog resources, verify
+independent origin and ID, unchanged apply and legacy upgrade without POST
+replay; exercise denied/replication reads and unchanged retry; replace identity
+destroy-first; remove packages before catalog resources; inspect adminRemove
+delivery, independently prove exact-ID absence and unrelated resources unchanged.
+Probe absent-resource errors and confirmed-absence state cleanup. Retain only
+sanitized evidence. Offline mocks do not prove transport or delivery timing.
 
 ## Usage
 
@@ -167,10 +181,9 @@ module "landing_zones_resource" {
 | Name | Version |
 |------|---------|
 | terraform | >= 1.11.0 |
-| msgraph | >= 0.3.0 |
+| msgraph | >= 0.6.0, < 0.7.0 |
 | time | >= 0.9.0 |
 | null | >= 3.2.0 |
-| Bash, Azure CLI (`az`), `curl` and `ARM_TENANT_ID` | Required on the machine running `terraform destroy`; Windows is unsupported for destroy cleanup |
 
 Permissions needed (application or delegated, in addition to
 `EntitlementManagement.ReadWrite.All`), depending on `resource_origin_system`:
@@ -204,25 +217,25 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| catalog_id | ID of the catalog to add the resource to | `string` | n/a | yes |
-| resource_origin_system | `AadGroup`, `AadApplication`, `SharePointOnline`, or `AzureResources` | `string` | n/a | yes |
-| resource_origin_id | Group object ID / service principal object ID / SharePoint site URL / Azure subscription or management group resource ID | `string` | n/a | yes |
-| resource_display_name | Optional display name for the resource request | `string` | `null` | no |
-| verification_delay_seconds | Seconds to wait before verifying the add landed | `number` | `30` | no |
-| fail_on_verification_mismatch | Fail apply if verification doesn't find the resource | `bool` | `true` | no |
-| enable_destroy_cleanup | Create the Azure CLI removal hook; disable only before first apply for tests or externally managed cleanup | `bool` | `true` | no |
-| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| catalog_id | ID of the catalog to add the resource to | `string` | n/a | yes | replaces `msgraph_resource_action.add_request`; changes `null_resource.remove_on_destroy`; see the module notes |
+| resource_origin_system | `AadGroup`, `AadApplication`, `SharePointOnline`, or `AzureResources` | `string` | n/a | yes | replaces `msgraph_resource_action.add_request`; changes `null_resource.remove_on_destroy`; see the module notes |
+| resource_origin_id | Group object ID / service principal object ID / SharePoint site URL / Azure subscription or management group resource ID | `string` | n/a | yes | replaces `msgraph_resource_action.add_request`; changes `null_resource.remove_on_destroy`; see the module notes |
+| resource_display_name | Optional display name for the resource request | `string` | `null` | no | kept from creation: a change is refused or ignored (see notes) |
+| verification_delay_seconds | Seconds to wait before verifying the add landed | `number` | `30` | no | no object change (validation or timing only) |
+| fail_on_verification_mismatch | Disable only the optional gate when false; enabled cleanup still requires strict identity verification | `bool` | `true` | no | no object change (validation or timing only) |
+| enable_destroy_cleanup | Register provider-native removal after independent verification; disable only before first apply for externally owned cleanup | `bool` | `true` | no | changes `null_resource.remove_on_destroy`; see the module notes; creates or deletes `msgraph_resource_action.remove` instances |
+| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no | replaces `msgraph_resource_action.add_request`; changes `null_resource.remove_on_destroy`; see the module notes |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| request_id | The ID of the accessPackageResourceRequest |
-| resource_id | The catalog-internal accessPackageResource ID — pass this as `catalog_resource_id` to the `access-packages/resource-role-scopes` module |
-| resource_origin_id | The origin ID of the resource, as passed in |
-| verified | Whether the post-add verification read found the resource |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| request_id | The ID of the accessPackageResourceRequest | no |
+| resource_id | The catalog-internal accessPackageResource ID — pass this as `catalog_resource_id` to the `access-packages/resource-role-scopes` module | no |
+| resource_origin_id | The origin ID of the resource, as passed in | yes |
+| verified | Whether the post-add verification read found the resource | no |
 
 ## Tests
 
@@ -230,7 +243,7 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 providers and disable the destroy hook. They assert the adminAdd body, escaped OData
 filter, captured ID, missing/ambiguous verification failures, which input changes
 wait again before verifying, the Azure subscription and management group `resourceType`, and
-the refusal of other Azure IDs. Terraform mocking does
-not suppress provisioners by itself. Tests require Terraform 1.11 or later.
+the refusal of other Azure IDs. Native cleanup and legacy-state upgrade suites
+run with cleanup enabled. Tests require Terraform 1.11 or later.
 
 See [live test setup and lifecycle limits](../../../../../docs/test-tenant-setup.md).

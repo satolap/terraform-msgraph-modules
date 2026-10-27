@@ -146,6 +146,11 @@ variable "chats" {
     }))
   }))
   default = null
+
+  validation {
+    condition     = (var.chats == null ? true : alltrue([alltrue([for input0 in var.chats : (input0 == null ? true : alltrue([(input0["chatType"] == null ? true : alltrue([(input0["chatType"] == null ? true : contains(["oneOnOne", "group", "meeting"], input0["chatType"]))])), (input0["migrationMode"] == null ? true : alltrue([(input0["migrationMode"] == null ? true : contains(["inProgress", "completed"], input0["migrationMode"]))])), (input0["targetedMessages"] == null ? true : alltrue([alltrue([for input2 in input0["targetedMessages"] : (input2 == null ? true : alltrue([(input2["body"] == null ? true : alltrue([(input2["body"]["contentType"] == null ? true : alltrue([(input2["body"]["contentType"] == null ? true : contains(["text", "html"], input2["body"]["contentType"]))]))])), (input2["importance"] == null ? true : alltrue([(input2["importance"] == null ? true : contains(["normal", "high", "urgent"], input2["importance"]))])), (input2["messageType"] == null ? true : alltrue([(input2["messageType"] == null ? true : contains(["message", "chatEvent", "typing"], input2["messageType"]))])), (input2["policyViolation"] == null ? true : alltrue([(input2["policyViolation"]["dlpAction"] == null ? true : alltrue([(input2["policyViolation"]["dlpAction"] == null ? true : try(alltrue([for value in split(",", input2["policyViolation"]["dlpAction"]) : contains(["none", "notifysender", "blockaccess", "blockaccessexternal"], lower(trimspace(value)))]), false))])), (input2["policyViolation"]["userAction"] == null ? true : alltrue([(input2["policyViolation"]["userAction"] == null ? true : try(alltrue([for value in split(",", input2["policyViolation"]["userAction"]) : contains(["none", "override", "reportfalsepositive"], lower(trimspace(value)))]), false))])), (input2["policyViolation"]["verdictDetails"] == null ? true : alltrue([(input2["policyViolation"]["verdictDetails"] == null ? true : try(alltrue([for value in split(",", input2["policyViolation"]["verdictDetails"]) : contains(["none", "allowfalsepositiveoverride", "allowoverridewithoutjustification", "allowoverridewithjustification"], lower(trimspace(value)))]), false))]))]))]))])]))]))])]))
+    error_message = "chats: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "city" {
@@ -618,6 +623,11 @@ variable "followed_sites" {
     })))
   }))
   default = null
+
+  validation {
+    condition     = (var.followed_sites == null ? true : alltrue([alltrue([for input0 in var.followed_sites : (input0 == null ? true : alltrue([(input0["operations"] == null ? true : alltrue([alltrue([for input2 in input0["operations"] : (input2 == null ? true : alltrue([(input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["notStarted", "running", "succeeded", "failed"], input2["status"]))]))]))])]))]))])]))
+    error_message = "followed_sites: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "given_name" {
@@ -834,6 +844,11 @@ variable "joined_teams" {
     webUrl     = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.joined_teams == null ? true : alltrue([alltrue([for input0 in var.joined_teams : (input0 == null ? true : alltrue([(input0["allChannels"] == null ? true : alltrue([alltrue([for input2 in input0["allChannels"] : (input2 == null ? true : alltrue([(input2["layoutType"] == null ? true : alltrue([(input2["layoutType"] == null ? true : contains(["post", "chat"], input2["layoutType"]))])), (input2["membershipType"] == null ? true : alltrue([(input2["membershipType"] == null ? true : contains(["standard", "private"], input2["membershipType"]))])), (input2["migrationMode"] == null ? true : alltrue([(input2["migrationMode"] == null ? true : contains(["inProgress", "completed"], input2["migrationMode"]))]))]))])])), (input0["channels"] == null ? true : alltrue([alltrue([for input2 in input0["channels"] : (input2 == null ? true : alltrue([(input2["layoutType"] == null ? true : alltrue([(input2["layoutType"] == null ? true : contains(["post", "chat"], input2["layoutType"]))])), (input2["membershipType"] == null ? true : alltrue([(input2["membershipType"] == null ? true : contains(["standard", "private"], input2["membershipType"]))])), (input2["migrationMode"] == null ? true : alltrue([(input2["migrationMode"] == null ? true : contains(["inProgress", "completed"], input2["migrationMode"]))]))]))])])), (input0["funSettings"] == null ? true : alltrue([(input0["funSettings"]["giphyContentRating"] == null ? true : alltrue([(input0["funSettings"]["giphyContentRating"] == null ? true : contains(["strict", "moderate"], input0["funSettings"]["giphyContentRating"]))]))])), (input0["incomingChannels"] == null ? true : alltrue([alltrue([for input2 in input0["incomingChannels"] : (input2 == null ? true : alltrue([(input2["layoutType"] == null ? true : alltrue([(input2["layoutType"] == null ? true : contains(["post", "chat"], input2["layoutType"]))])), (input2["membershipType"] == null ? true : alltrue([(input2["membershipType"] == null ? true : contains(["standard", "private"], input2["membershipType"]))])), (input2["migrationMode"] == null ? true : alltrue([(input2["migrationMode"] == null ? true : contains(["inProgress", "completed"], input2["migrationMode"]))]))]))])])), (input0["operations"] == null ? true : alltrue([alltrue([for input2 in input0["operations"] : (input2 == null ? true : alltrue([(input2["operationType"] == null ? true : alltrue([(input2["operationType"] == null ? true : contains(["invalid", "cloneTeam", "archiveTeam", "unarchiveTeam", "createTeam"], input2["operationType"]))])), (input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["invalid", "notStarted", "inProgress", "succeeded", "failed"], input2["status"]))]))]))])])), (input0["specialization"] == null ? true : alltrue([(input0["specialization"] == null ? true : contains(["none", "educationStandard", "educationClass", "educationProfessionalLearningCommunity", "educationStaff", "healthcareStandard", "healthcareCareCoordination"], input0["specialization"]))])), (input0["tags"] == null ? true : alltrue([alltrue([for input2 in input0["tags"] : (input2 == null ? true : alltrue([(input2["tagType"] == null ? true : alltrue([(input2["tagType"] == null ? true : contains(["standard"], input2["tagType"]))]))]))])])), (input0["visibility"] == null ? true : alltrue([(input0["visibility"] == null ? true : contains(["private", "public", "hiddenMembership"], input0["visibility"]))]))]))])]))
+    error_message = "joined_teams: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "last_password_change_date_time" {
@@ -895,6 +910,11 @@ variable "mailbox_settings" {
     }))
   })
   default = null
+
+  validation {
+    condition     = (var.mailbox_settings == null ? true : alltrue([(var.mailbox_settings["automaticRepliesSetting"] == null ? true : alltrue([(var.mailbox_settings["automaticRepliesSetting"]["externalAudience"] == null ? true : alltrue([(var.mailbox_settings["automaticRepliesSetting"]["externalAudience"] == null ? true : contains(["none", "contactsOnly", "all"], var.mailbox_settings["automaticRepliesSetting"]["externalAudience"]))])), (var.mailbox_settings["automaticRepliesSetting"]["status"] == null ? true : alltrue([(var.mailbox_settings["automaticRepliesSetting"]["status"] == null ? true : contains(["disabled", "alwaysEnabled", "scheduled"], var.mailbox_settings["automaticRepliesSetting"]["status"]))]))])), (var.mailbox_settings["delegateMeetingMessageDeliveryOptions"] == null ? true : alltrue([(var.mailbox_settings["delegateMeetingMessageDeliveryOptions"] == null ? true : contains(["sendToDelegateAndInformationToPrincipal", "sendToDelegateAndPrincipal", "sendToDelegateOnly"], var.mailbox_settings["delegateMeetingMessageDeliveryOptions"]))])), (var.mailbox_settings["workingHours"] == null ? true : alltrue([(var.mailbox_settings["workingHours"]["daysOfWeek"] == null ? true : alltrue([alltrue([for input2 in var.mailbox_settings["workingHours"]["daysOfWeek"] : (input2 == null ? true : alltrue([(input2 == null ? true : contains(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"], input2))]))])]))]))]))
+    error_message = "mailbox_settings: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "managed_app_registrations" {
@@ -928,6 +948,11 @@ variable "managed_app_registrations" {
   validation {
     condition     = (var.managed_app_registrations == null ? true : alltrue([for item0 in var.managed_app_registrations : (item0 == null ? true : alltrue([(item0["odata_type"] == null ? false : contains(["#microsoft.graph.androidManagedAppRegistration", "#microsoft.graph.iosManagedAppRegistration"], item0["odata_type"]))]))]))
     error_message = "managed_app_registrations: every nested odata_type of an abstract Graph type must name a concrete type."
+  }
+
+  validation {
+    condition     = (var.managed_app_registrations == null ? true : alltrue([alltrue([for input0 in var.managed_app_registrations : (input0 == null ? true : alltrue([(input0["odata_type"] == null ? true : alltrue([(input0["odata_type"] == null ? true : contains(["#microsoft.graph.androidManagedAppRegistration", "#microsoft.graph.iosManagedAppRegistration"], input0["odata_type"]))])), (input0["flaggedReasons"] == null ? true : alltrue([alltrue([for input2 in input0["flaggedReasons"] : (input2 == null ? true : alltrue([(input2 == null ? true : contains(["none", "rootedDevice"], input2))]))])]))]))])]))
+    error_message = "managed_app_registrations: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
@@ -1080,6 +1105,11 @@ variable "managed_devices" {
   }))
   default   = null
   sensitive = true
+
+  validation {
+    condition     = (var.managed_devices == null ? true : alltrue([alltrue([for input0 in var.managed_devices : (input0 == null ? true : alltrue([(input0["deviceCompliancePolicyStates"] == null ? true : alltrue([alltrue([for input2 in input0["deviceCompliancePolicyStates"] : (input2 == null ? true : alltrue([(input2["platformType"] == null ? true : alltrue([(input2["platformType"] == null ? true : contains(["android", "androidForWork", "iOS", "macOS", "windowsPhone81", "windows81AndLater", "windows10AndLater", "all"], input2["platformType"]))])), (input2["state"] == null ? true : alltrue([(input2["state"] == null ? true : contains(["unknown", "notApplicable", "compliant", "remediated", "nonCompliant", "error", "conflict", "notAssigned"], input2["state"]))]))]))])])), (input0["deviceConfigurationStates"] == null ? true : alltrue([alltrue([for input2 in input0["deviceConfigurationStates"] : (input2 == null ? true : alltrue([(input2["platformType"] == null ? true : alltrue([(input2["platformType"] == null ? true : contains(["android", "androidForWork", "iOS", "macOS", "windowsPhone81", "windows81AndLater", "windows10AndLater", "all"], input2["platformType"]))])), (input2["state"] == null ? true : alltrue([(input2["state"] == null ? true : contains(["unknown", "notApplicable", "compliant", "remediated", "nonCompliant", "error", "conflict", "notAssigned"], input2["state"]))]))]))])])), (input0["logCollectionRequests"] == null ? true : alltrue([alltrue([for input2 in input0["logCollectionRequests"] : (input2 == null ? true : alltrue([(input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["pending", "completed", "failed"], input2["status"]))]))]))])])), (input0["managedDeviceOwnerType"] == null ? true : alltrue([(input0["managedDeviceOwnerType"] == null ? true : contains(["unknown", "company", "personal"], input0["managedDeviceOwnerType"]))])), (input0["users"] == null ? true : alltrue([alltrue([for input2 in input0["users"] : (input2 == null ? true : alltrue([(input2["mailboxSettings"] == null ? true : alltrue([(input2["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"] == null ? true : alltrue([(input2["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"] == null ? true : contains(["sendToDelegateAndInformationToPrincipal", "sendToDelegateAndPrincipal", "sendToDelegateOnly"], input2["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"]))]))]))]))])]))]))])]))
+    error_message = "managed_devices: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "mobile_phone" {
@@ -1253,6 +1283,11 @@ variable "online_meetings" {
     }))
   }))
   default = null
+
+  validation {
+    condition     = (var.online_meetings == null ? true : alltrue([alltrue([for input0 in var.online_meetings : (input0 == null ? true : alltrue([(input0["allowLiveShare"] == null ? true : alltrue([(input0["allowLiveShare"] == null ? true : contains(["enabled", "disabled"], input0["allowLiveShare"]))])), (input0["allowMeetingChat"] == null ? true : alltrue([(input0["allowMeetingChat"] == null ? true : contains(["enabled", "disabled", "limited"], input0["allowMeetingChat"]))])), (input0["allowedLobbyAdmitters"] == null ? true : alltrue([(input0["allowedLobbyAdmitters"] == null ? true : contains(["organizerAndCoOrganizersAndPresenters", "organizerAndCoOrganizers"], input0["allowedLobbyAdmitters"]))])), (input0["allowedPresenters"] == null ? true : alltrue([(input0["allowedPresenters"] == null ? true : contains(["everyone", "organization", "roleIsPresenter", "organizer"], input0["allowedPresenters"]))])), (input0["broadcastSettings"] == null ? true : alltrue([(input0["broadcastSettings"]["allowedAudience"] == null ? true : alltrue([(input0["broadcastSettings"]["allowedAudience"] == null ? true : contains(["roleIsAttendee", "organization", "everyone"], input0["broadcastSettings"]["allowedAudience"]))]))])), (input0["lobbyBypassSettings"] == null ? true : alltrue([(input0["lobbyBypassSettings"]["scope"] == null ? true : alltrue([(input0["lobbyBypassSettings"]["scope"] == null ? true : contains(["organizer", "organization", "organizationAndFederated", "everyone"], input0["lobbyBypassSettings"]["scope"]))]))])), (input0["shareMeetingChatHistoryDefault"] == null ? true : alltrue([(input0["shareMeetingChatHistoryDefault"] == null ? true : contains(["none", "all"], input0["shareMeetingChatHistoryDefault"]))]))]))])]))
+    error_message = "online_meetings: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "other_mails" {
@@ -1577,6 +1612,11 @@ variable "print" {
   })
   default   = null
   sensitive = true
+
+  validation {
+    condition     = (var.print == null ? true : alltrue([(var.print["recentPrinterShares"] == null ? true : alltrue([alltrue([for input1 in var.print["recentPrinterShares"] : (input1 == null ? true : alltrue([(input1["allowedGroups"] == null ? true : alltrue([alltrue([for input3 in input1["allowedGroups"] : (input3 == null ? true : alltrue([(input3["accessType"] == null ? true : alltrue([(input3["accessType"] == null ? true : contains(["none", "private", "secret", "public"], input3["accessType"]))]))]))])])), (input1["capabilities"] == null ? true : alltrue([(input1["capabilities"]["colorModes"] == null ? true : alltrue([alltrue([for input4 in input1["capabilities"]["colorModes"] : (input4 == null ? true : alltrue([(input4 == null ? true : contains(["blackAndWhite", "grayscale", "color", "auto"], input4))]))])])), (input1["capabilities"]["duplexModes"] == null ? true : alltrue([alltrue([for input4 in input1["capabilities"]["duplexModes"] : (input4 == null ? true : alltrue([(input4 == null ? true : contains(["flipOnLongEdge", "flipOnShortEdge", "oneSided"], input4))]))])])), (input1["capabilities"]["feedOrientations"] == null ? true : alltrue([alltrue([for input4 in input1["capabilities"]["feedOrientations"] : (input4 == null ? true : alltrue([(input4 == null ? true : contains(["longEdgeFirst", "shortEdgeFirst"], input4))]))])])), (input1["capabilities"]["finishings"] == null ? true : alltrue([alltrue([for input4 in input1["capabilities"]["finishings"] : (input4 == null ? true : alltrue([(input4 == null ? true : contains(["none", "staple", "punch", "cover", "bind", "saddleStitch", "stitchEdge", "stapleTopLeft", "stapleBottomLeft", "stapleTopRight", "stapleBottomRight", "stitchLeftEdge", "stitchTopEdge", "stitchRightEdge", "stitchBottomEdge", "stapleDualLeft", "stapleDualTop", "stapleDualRight", "stapleDualBottom"], input4))]))])])), (input1["capabilities"]["multipageLayouts"] == null ? true : alltrue([alltrue([for input4 in input1["capabilities"]["multipageLayouts"] : (input4 == null ? true : alltrue([(input4 == null ? true : contains(["clockwiseFromTopLeft", "counterclockwiseFromTopLeft", "counterclockwiseFromTopRight", "clockwiseFromTopRight", "counterclockwiseFromBottomLeft", "clockwiseFromBottomLeft", "counterclockwiseFromBottomRight", "clockwiseFromBottomRight"], input4))]))])])), (input1["capabilities"]["orientations"] == null ? true : alltrue([alltrue([for input4 in input1["capabilities"]["orientations"] : (input4 == null ? true : alltrue([(input4 == null ? true : contains(["portrait", "landscape", "reverseLandscape", "reversePortrait"], input4))]))])])), (input1["capabilities"]["qualities"] == null ? true : alltrue([alltrue([for input4 in input1["capabilities"]["qualities"] : (input4 == null ? true : alltrue([(input4 == null ? true : contains(["low", "medium", "high"], input4))]))])])), (input1["capabilities"]["scalings"] == null ? true : alltrue([alltrue([for input4 in input1["capabilities"]["scalings"] : (input4 == null ? true : alltrue([(input4 == null ? true : contains(["auto", "shrinkToFit", "fill", "fit", "none"], input4))]))])]))])), (input1["defaults"] == null ? true : alltrue([(input1["defaults"]["colorMode"] == null ? true : alltrue([(input1["defaults"]["colorMode"] == null ? true : contains(["blackAndWhite", "grayscale", "color", "auto"], input1["defaults"]["colorMode"]))])), (input1["defaults"]["duplexMode"] == null ? true : alltrue([(input1["defaults"]["duplexMode"] == null ? true : contains(["flipOnLongEdge", "flipOnShortEdge", "oneSided"], input1["defaults"]["duplexMode"]))])), (input1["defaults"]["finishings"] == null ? true : alltrue([alltrue([for input4 in input1["defaults"]["finishings"] : (input4 == null ? true : alltrue([(input4 == null ? true : contains(["none", "staple", "punch", "cover", "bind", "saddleStitch", "stitchEdge", "stapleTopLeft", "stapleBottomLeft", "stapleTopRight", "stapleBottomRight", "stitchLeftEdge", "stitchTopEdge", "stitchRightEdge", "stitchBottomEdge", "stapleDualLeft", "stapleDualTop", "stapleDualRight", "stapleDualBottom"], input4))]))])])), (input1["defaults"]["multipageLayout"] == null ? true : alltrue([(input1["defaults"]["multipageLayout"] == null ? true : contains(["clockwiseFromTopLeft", "counterclockwiseFromTopLeft", "counterclockwiseFromTopRight", "clockwiseFromTopRight", "counterclockwiseFromBottomLeft", "clockwiseFromBottomLeft", "counterclockwiseFromBottomRight", "clockwiseFromBottomRight"], input1["defaults"]["multipageLayout"]))])), (input1["defaults"]["orientation"] == null ? true : alltrue([(input1["defaults"]["orientation"] == null ? true : contains(["portrait", "landscape", "reverseLandscape", "reversePortrait"], input1["defaults"]["orientation"]))])), (input1["defaults"]["quality"] == null ? true : alltrue([(input1["defaults"]["quality"] == null ? true : contains(["low", "medium", "high"], input1["defaults"]["quality"]))])), (input1["defaults"]["scaling"] == null ? true : alltrue([(input1["defaults"]["scaling"] == null ? true : contains(["auto", "shrinkToFit", "fill", "fit", "none"], input1["defaults"]["scaling"]))]))])), (input1["status"] == null ? true : alltrue([(input1["status"]["state"] == null ? true : alltrue([(input1["status"]["state"] == null ? true : contains(["unknown", "idle", "processing", "stopped"], input1["status"]["state"]))]))]))]))])]))]))
+    error_message = "print: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "responsibilities" {
@@ -1680,6 +1720,41 @@ variable "user_type" {
   default     = null
 }
 
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
+}
+
 variable "additional_properties" {
   description = "Additional writable Graph properties using API field names. Explicit typed inputs take precedence. Null top-level values are omitted; callers must omit nested nulls in untyped values."
   type        = any
@@ -1690,5 +1765,27 @@ variable "additional_properties" {
   validation {
     condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["activities", "adhocCalls", "agreementAcceptances", "assignedPlans", "calendar", "calendarGroups", "calendarView", "calendars", "cloudPCs", "contactFolders", "contacts", "createdDateTime", "createdObjects", "creationType", "dataSecurityAndGovernance", "directReports", "drive", "drives", "events", "extensions", "id", "imAddresses", "insights", "isManagementRestricted", "legalAgeGroupClassification", "licenseAssignmentStates", "licenseDetails", "mailFolders", "manager", "memberOf", "messages", "notes", "onPremisesDistinguishedName", "onPremisesDomainName", "onPremisesLastSyncDateTime", "onPremisesSamAccountName", "onPremisesSecurityIdentifier", "onPremisesSyncEnabled", "onPremisesUserPrincipalName", "ownedDevices", "ownedObjects", "people", "photo", "photos", "planner", "provisionedPlans", "proxyAddresses", "registeredDevices", "securityIdentifier", "signInActivity", "signInSessionsValidFromDateTime", "solutions", "sponsorOf", "teamwork"], key)]) : false
     error_message = "additional_properties must be an object without documented read-only properties."
+  }
+}
+
+variable "clear_properties" {
+  description = "Reviewed Graph properties to clear, by API field name: ageGroup, consentProvidedForMinor. Each is sent as JSON null by a separate msgraph_update_resource, because the provider drops a null from the update of the main resource. Leave the typed input and the additional_properties key of a listed property unset. Removing a name does not restore the value."
+  type        = list(string)
+  default     = []
+  nullable    = false
+
+  validation {
+    condition     = alltrue([for name in var.clear_properties : name != null])
+    error_message = "clear_properties must not contain null."
+  }
+
+  validation {
+    condition     = alltrue([for name in var.clear_properties : name == null ? false : contains(["ageGroup", "consentProvidedForMinor"], name)])
+    error_message = "clear_properties accepts only the reviewed properties: ageGroup, consentProvidedForMinor."
+  }
+
+  validation {
+    condition     = length(var.clear_properties) == length(distinct(var.clear_properties))
+    error_message = "clear_properties must not repeat a name."
   }
 }

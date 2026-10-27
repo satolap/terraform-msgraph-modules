@@ -1,5 +1,5 @@
 variable "enable_destroy_cleanup" {
-  description = "Create the Azure CLI destroy hook. Keep true for real deployments. Set false only before the first apply when an external owner handles removal, or in offline tests. Changing true to false runs the existing cleanup hook."
+  description = "Register provider-native destroy cleanup after independent verification. Keep true for real deployments. Set false only before the first apply when an external owner handles removal, or in offline tests. Changing true to false removes the owned scope."
   type        = bool
   default     = true
 }

@@ -40,6 +40,11 @@ variable "body" {
     contentType = optional(string)
   })
   default = null
+
+  validation {
+    condition     = (var.body == null ? true : alltrue([(var.body["contentType"] == null ? true : alltrue([(var.body["contentType"] == null ? true : contains(["text", "html"], var.body["contentType"]))]))]))
+    error_message = "body: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "body_preview" {
@@ -106,6 +111,11 @@ variable "flag" {
     }))
   })
   default = null
+
+  validation {
+    condition     = (var.flag == null ? true : alltrue([(var.flag["flagStatus"] == null ? true : alltrue([(var.flag["flagStatus"] == null ? true : contains(["notFlagged", "complete", "flagged"], var.flag["flagStatus"]))]))]))
+    error_message = "flag: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "from" {
@@ -253,12 +263,52 @@ variable "unique_body" {
     contentType = optional(string)
   })
   default = null
+
+  validation {
+    condition     = (var.unique_body == null ? true : alltrue([(var.unique_body["contentType"] == null ? true : alltrue([(var.unique_body["contentType"] == null ? true : contains(["text", "html"], var.unique_body["contentType"]))]))]))
+    error_message = "unique_body: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "web_link" {
   description = "The URL to open the message in Outlook on the web.You can append an ispopout argument to the end of the URL to change how the message is displayed. If ispopout is not present or if it is set to 1, then the message is shown in a popout window. If ispopout is set to 0, the browser shows the message in the Outlook on the web review pane.The message opens in the browser if you are signed in to your mailbox via Outlook on the web. You are prompted to sign in if you are not already signed in with the browser.This URL cannot be accessed from within an iFrame.NOTE: When using this URL to access a message from a mailbox with delegate permissions, both the signed-in user and the target mailbox must be in the same database region. For example, an error is returned when a user with a mailbox in the EUR (Europe) region attempts to access messages from a mailbox in the NAM (North America) region."
   type        = string
   default     = null
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

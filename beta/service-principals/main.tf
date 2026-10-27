@@ -1,7 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "appId"                               = var.app_id
+    "appId"                               = var.app_id == null ? null : lower(var.app_id)
     "accountEnabled"                      = var.account_enabled
     "addIns"                              = (var.add_ins == null ? null : [for item0 in var.add_ins : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "id" = item0["id"], "properties" = (item0["properties"] == null ? null : [for item2 in item0["properties"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"], "key" = item2["key"], "value" = item2["value"] } : key3 => value3 if value3 != null }) if item2 != null]), "type" = item0["type"] } : key1 => value1 if value1 != null }) if item0 != null])
     "alternativeNames"                    = (var.alternative_names == null ? null : [for item0 in var.alternative_names : item0 if item0 != null])
@@ -24,6 +24,7 @@ locals {
     "endpoints"                           = (var.endpoints == null ? null : [for item0 in var.endpoints : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "deletedDateTime" = item0["deletedDateTime"] } : key1 => value1 if value1 != null }) if item0 != null])
     "errorUrl"                            = var.error_url
     "federatedIdentityCredentials"        = (var.federated_identity_credentials == null ? null : [for item0 in var.federated_identity_credentials : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "audiences" = (item0["audiences"] == null ? null : [for item2 in item0["audiences"] : item2 if item2 != null]), "claimsMatchingExpression" = (item0["claimsMatchingExpression"] == null ? null : { for key2, value2 in { "@odata.type" = item0["claimsMatchingExpression"]["odata_type"], "languageVersion" = item0["claimsMatchingExpression"]["languageVersion"], "value" = item0["claimsMatchingExpression"]["value"] } : key2 => value2 if value2 != null }), "description" = item0["description"], "issuer" = item0["issuer"], "name" = item0["name"], "subject" = item0["subject"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "lifecycle"                           = var.graph_lifecycle
     "homeRealmDiscoveryPolicies"          = (var.home_realm_discovery_policies == null ? null : [for item0 in var.home_realm_discovery_policies : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "appliesTo" = (item0["appliesTo"] == null ? null : [for item2 in item0["appliesTo"] : item2 if item2 != null]), "definition" = (item0["definition"] == null ? null : [for item2 in item0["definition"] : item2 if item2 != null]), "deletedDateTime" = item0["deletedDateTime"], "description" = item0["description"], "displayName" = item0["displayName"], "isOrganizationDefault" = item0["isOrganizationDefault"] } : key1 => value1 if value1 != null }) if item0 != null])
     "homepage"                            = var.homepage
     "info"                                = (var.info == null ? null : { for key0, value0 in { "@odata.type" = var.info["odata_type"], "marketingUrl" = var.info["marketingUrl"], "privacyStatementUrl" = var.info["privacyStatementUrl"], "supportUrl" = var.info["supportUrl"], "termsOfServiceUrl" = var.info["termsOfServiceUrl"] } : key0 => value0 if value0 != null })
@@ -60,14 +61,52 @@ locals {
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }
 
+locals {
+  timeouts_set = anytrue([var.timeouts.create != null, var.timeouts.read != null, var.timeouts.update != null, var.timeouts.delete != null])
+}
+
 resource "msgraph_resource" "this" {
   url                     = "servicePrincipals"
   api_version             = "beta"
   update_method           = "PATCH"
   body                    = local.body
   ignore_missing_property = true
+  read_query_parameters   = var.select_response ? { "$select" = [join(",", sort(distinct(concat(["id", "appId"], [for name in keys(local.body) : name if alltrue([!startswith(name, "@"), !can(regex("@odata\\.", name)), !contains(["appManagementPolicies", "appRoleAssignedTo", "appRoleAssignments", "claimsMappingPolicies", "claimsPolicy", "delegatedPermissionClassifications", "endpoints", "federatedIdentityCredentials", "homeRealmDiscoveryPolicies", "licenseDetails", "lifecycle", "owners", "permissionGrantPreApprovalPolicies", "remoteDesktopSecurityConfiguration", "synchronization", "tokenIssuancePolicies", "tokenLifetimePolicies", "transitiveMemberOf"], name)])]))))] } : null
 
   response_export_values = {
     response = "@"
+  }
+
+  dynamic "timeouts" {
+    for_each = local.timeouts_set ? [var.timeouts] : []
+
+    content {
+      create = timeouts.value.create
+      read   = timeouts.value.read
+      update = timeouts.value.update
+      delete = timeouts.value.delete
+    }
+  }
+
+  lifecycle {
+    replace_triggered_by = [terraform_data.immutable]
+  }
+}
+
+# Inputs that Microsoft Graph cannot update in place; a change replaces msgraph_resource.this. Makes no API call.
+resource "terraform_data" "immutable" {
+  input = {
+    "appId" = var.app_id != null ? lower(var.app_id) : try(lower(lookup(var.additional_properties, "appId", null)), null)
+  }
+}
+
+# The application (client) ID, held from creation so that it stays known in plans that
+# update the object in place. Makes no API call.
+resource "terraform_data" "app_id" {
+  input            = try(msgraph_resource.this.output.response.appId, null)
+  triggers_replace = msgraph_resource.this.id
+
+  lifecycle {
+    ignore_changes = [input]
   }
 }

@@ -1,5 +1,15 @@
 # identity-governance/entitlement-management/access-packages/resource-role-scopes
 
+<!-- uses-beta:start -->
+Uses beta: **optional**. Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Grants an access package a specific role/scope on a catalog resource, via the
 `microsoft/msgraph` Terraform provider. The folder mirrors the Graph collection it manages:
 `identityGovernance/entitlementManagement/accessPackages/{id}/resourceRoleScopes`.
@@ -135,59 +145,81 @@ module "platform_reader_eligible" {
 }
 ```
 
-## How create and destroy work (list-only entity)
+## Native create, destroy and recovery
 
-Microsoft Graph exposes `resourceRoleScopes` as a **list-only** relationship of the access
-package: the POST create works and the entry shows up in
-`GET accessPackages/{id}/resourceRoleScopes`, but `GET .../resourceRoleScopes/{id}` returns
-404 — while `DELETE .../resourceRoleScopes/{id}` works. A CRUD-managed `msgraph_resource`
-would hang on "Still creating..." forever (its post-create read-back polls that 404 as if
-the resource were still provisioning), so this module creates the role scope with a one-shot
-`msgraph_resource_action` and deletes it on destroy through the ambient Azure CLI session
-(`az account get-access-token` + `curl`), the same pattern as the `catalogs/resources`
-module. The machine running `terraform destroy` needs Bash, the Azure CLI logged in with
-`az login`, `curl`, and `ARM_TENANT_ID` set to the tenant ID the `msgraph` provider uses. The
-hook targets the public cloud (`graph.microsoft.com`). Before it requests a token, it compares
-`ARM_TENANT_ID` with `az account show --query tenantId` and stops if the variable is unset or
-the tenants differ. The token reaches `curl` through a config on stdin, never on the command
-line, so it does not appear in the process list. Missing IDs, credentials, a tenant mismatch
-and unsuccessful HTTP responses fail destroy. HTTP 404 is accepted for an already absent scope
-only after the tenant check passes, so a 404 from another tenant cannot hide a remaining
-scope. Destroy cleanup is unsupported on Windows.
+The ignore-all POST creates once; changing its creation inputs replaces it
+destroy-first. The provider cannot GET a role scope by ID. An independent GET
+of the access package expands `resourceRoleScopes($expand=role,scope)` and
+requires exactly the returned created ID, matching role and scope identity as returned by the documented expansion (the role's resource is not expanded)
+and no pagination before registering `msgraph_resource_action.remove[0]`.
+The GET alone retries 404 / NotFound / Request_ResourceNotFound for at most two
+minutes; an empty collection fails closed and needs another unchanged apply.
+`enable_destroy_cleanup = false` leaves verification and removal to an external
+owner. It is intended only before first apply; disabling registered cleanup
+runs its removal. The old `null_resource.remove_on_destroy[0]` remains as an
+inert saved-identity record with unchanged triggers, so upgrades retain its ID.
 
-## Upgrade note: destroy cleanup requires `ARM_TENANT_ID`
+The destroy-only action sends DELETE to the saved role-scope ID using provider
+credentials. No Bash, Azure CLI or curl is needed. Registration sends no write.
+Accepted limitation: no destroy-time identity re-check or absence proof; guard
+state and coordinate a single writer. Registration validates URL segments; it is
+not a destroy-time state integrity check. Direct edits to action state are
+unsupported. Unlike the old script, native DELETE does not tolerate 404 when an
+out-of-band deletion has already removed the parent access package. The pinned
+provider has no ignore-404 or successful-error override; retrying that 404 does
+not turn it into success. This migration limitation requires owner acceptance:
+independently confirm exact parent-package GET 404 (or complete expanded scope
+absence on an existing package), then use the confirmed-absence state-rm
+recovery below. A denied read or replication 404 immediately after create is not
+proof that the parent was removed.
 
-`terraform destroy` now stops before deleting the role scope unless `ARM_TENANT_ID` is set on
-the machine running Terraform and equals the Azure CLI tenant
-(`az account show --query tenantId -o tsv`; letter case is ignored). Earlier versions sent the
-`DELETE` to whichever tenant the Azure CLI was logged in to, treated a 404 from that tenant as
-success, and passed the bearer token to `curl` as a command-line argument.
+Verification remains a data source, not a one-time check. Every refresh-enabled
+plan or apply runs the verification GET again, even after removal registration.
+A later 404, missing or mismatched identity can therefore fail routine plans.
+Failure does not revoke access or unregister an existing remove action.
+Reconcile the saved identity; never taint or replay the successful POST to
+repair a read. For cleanup after independently confirmed absence, use the state-
+rm recovery below and finish `terraform destroy -refresh=false`; this skips
+failing refresh reads and does not establish ownership or revoke access by
+itself.
 
-- **Why:** the hook authenticates with the Azure CLI, not with the provider's credentials, so
-  the two can point at different tenants. A destroy-time hook can read only its own stored
-  values, and a new module input would change them and replace the hook, which runs the
-  cleanup. The hook therefore reads the expected tenant from `ARM_TENANT_ID`, the environment
-  variable the `msgraph` provider reads for `tenant_id`
-  ([provider source, v0.5.0](https://github.com/microsoft/terraform-provider-msgraph/blob/v0.5.0/internal/provider/provider.go#L303-L306),
-  [provider documentation](https://registry.terraform.io/providers/microsoft/msgraph/0.5.0/docs)).
-- **What to do:** export `ARM_TENANT_ID=<tenant GUID>` wherever `terraform destroy` runs,
-  including CI, and log the Azure CLI in to that tenant (`az login --tenant <tenant GUID>`). If
-  the `provider "msgraph"` block sets `tenant_id`, use the same value.
-- **Still required:** Bash, the Azure CLI and `curl` on the machine running destroy. Destroy
-  cleanup is unsupported on Windows.
-- **Existing deployments:** only the hook's command changed, not its `triggers`, so upgrading
-  plans no change to `null_resource.remove_on_destroy` and removes nothing. If destroy stops on
-  the tenant check, the role scope stays on the access package and in state; fix the variable
-  or the login and run destroy again.
+Back up state privately. **Upgrade with an unchanged apply before any destroy,
+identity change or replacement**, confirming the POST and legacy record retain
+their IDs and the native remove action stores the existing item URL. Merely
+updating configuration does not register removal. Destroy before registration
+can orphan the scope with nothing in state to delete it. This sequencing is
+not enforced by a state-presence check.
+
+If verification fails after POST, **re-run apply with unchanged inputs; never
+use destroy as recovery**. Preserve the successful POST state and retry the GET
+without replaying POST. An ambiguous POST requires owner investigation first.
+For manual recovery, independently GET the saved package with the same expand,
+require the exact captured scope ID and matching role and scope (the role's resource is not expanded),
+then DELETE only that saved scope route. Never select a substitute by label.
+Confirm absence from a complete expanded collection before retrying creation.
+If registered DELETE fails for an absent scope, first independently confirm
+that exact ID is absent from a complete collection, or its parent package
+is independently confirmed absent, in the provider tenant;
+then `terraform state rm 'module.scope.msgraph_resource_action.remove[0]'`
+and finish `terraform destroy -refresh=false`. Do not re-apply between state
+removal and completing destroy. Denied or incomplete reads prove no absence.
+
+Owner-dispatched live acceptance: verify the selected provider's destroy-only
+schema on each platform; create a disposable scope, inspect independent
+expanded identity, confirm unchanged apply and legacy upgrade are no-ops;
+exercise replication/denied reads and retry apply without a second POST;
+replace role/package/scope and confirm old removal precedes new creation;
+destroy and independently confirm exact-ID absence and unrelated scopes
+unchanged. Exercise already absent DELETE and the confirmed-absence recovery.
+Retain only sanitized evidence. Offline mocks do not prove HTTP transport.
 
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | terraform | >= 1.11.0 |
-| msgraph | >= 0.3.0 |
+| msgraph | >= 0.6.0, < 0.7.0 |
 | null | >= 3.2.0 |
-| Bash, Azure CLI (`az`), `curl` and `ARM_TENANT_ID` | Required on the machine running `terraform destroy`; Windows is unsupported for destroy cleanup |
 
 The configuring identity/application needs the `EntitlementManagement.ReadWrite.All`
 Microsoft Graph permission. For Azure roles, Microsoft also lists Azure RBAC
@@ -215,31 +247,31 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| access_package_id | ID of the access package to attach this role scope to | `string` | n/a | yes |
-| catalog_id | ID of the catalog containing the access package and resource | `string` | n/a | yes |
-| catalog_resource_id | Catalog-internal accessPackageResource ID (`resource_id` output of `catalogs/resources`) | `string` | n/a | yes |
-| resource_origin_system | `AadGroup`, `AadApplication`, `SharePointOnline`, or `AzureResources` | `string` | n/a | yes |
-| role_display_name | Display name of the role to grant (matched case-insensitively; sent as given for Azure roles) | `string` | n/a | yes |
-| role_origin_id | Optional exact originId to match instead of the display name; for Azure roles, the full role definition ID sent verbatim | `string` | `null` | no |
-| role_definition_id | Azure roles only: the role definition GUID (set this or `role_origin_id`) | `string` | `null` | no |
-| role_type | Azure roles only, required there: `active` or `eligible` | `string` | `null` | no |
-| scope_origin_id | Origin ID of the scope; defaults to the resource's root scope. For Azure roles, a listed resource group of the subscription | `string` | `null` | no |
-| scope_display_name | Display name of the scope; defaults to `"Root"`, or for Azure roles to the name Graph lists | `string` | `null` | no |
-| enable_destroy_cleanup | Create the Azure CLI removal hook; disable only before first apply for tests or externally managed cleanup | `bool` | `true` | no |
-| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| access_package_id | ID of the access package to attach this role scope to | `string` | n/a | yes | replaces `msgraph_resource_action.resource_role_scope`; changes `null_resource.remove_on_destroy`; see the module notes |
+| catalog_id | ID of the catalog containing the access package and resource | `string` | n/a | yes | replaces `msgraph_resource_action.resource_role_scope` when its effect on `local.body` changes |
+| catalog_resource_id | Catalog-internal accessPackageResource ID (`resource_id` output of `catalogs/resources`) | `string` | n/a | yes | replaces `msgraph_resource_action.resource_role_scope` when its effect on `local.body` changes |
+| resource_origin_system | `AadGroup`, `AadApplication`, `SharePointOnline`, or `AzureResources` | `string` | n/a | yes | replaces `msgraph_resource_action.resource_role_scope` when its effect on `local.body` changes; changes `null_resource.remove_on_destroy`; see the module notes |
+| role_display_name | Display name of the role to grant (matched case-insensitively; sent as given for Azure roles) | `string` | n/a | yes | replaces `msgraph_resource_action.resource_role_scope` when its effect on `local.body` changes |
+| role_origin_id | Optional exact originId to match instead of the display name; for Azure roles, the full role definition ID sent verbatim | `string` | `null` | no | replaces `msgraph_resource_action.resource_role_scope` when its effect on `local.body` changes |
+| role_definition_id | Azure roles only: the role definition GUID (set this or `role_origin_id`) | `string` | `null` | no | replaces `msgraph_resource_action.resource_role_scope` when its effect on `local.body` changes |
+| role_type | Azure roles only, required there: `active` or `eligible` | `string` | `null` | no | replaces `msgraph_resource_action.resource_role_scope` when its effect on `local.body` changes |
+| scope_origin_id | Origin ID of the scope; defaults to the resource's root scope. For Azure roles, a listed resource group of the subscription | `string` | `null` | no | replaces `msgraph_resource_action.resource_role_scope` when its effect on `local.body` changes |
+| scope_display_name | Display name of the scope; defaults to `"Root"`, or for Azure roles to the name Graph lists | `string` | `null` | no | replaces `msgraph_resource_action.resource_role_scope` when its effect on `local.body` changes |
+| enable_destroy_cleanup | Register provider-native removal after independent verification; disable only before first apply for externally owned cleanup | `bool` | `true` | no | changes `null_resource.remove_on_destroy`; see the module notes; creates or deletes `msgraph_resource_action.remove` instances |
+| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no | replaces `msgraph_resource_action.resource_role_scope`; changes `null_resource.remove_on_destroy`; see the module notes |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The ID of the resource role scope |
-| access_package_id | The ID of the parent access package |
-| role_origin_id | The resolved origin ID of the granted role |
-| resource_origin_id | The resource's origin ID, from the catalog's resourceRoles list |
-| available_roles | All roles Graph reported for the resource (for diagnosing a failed match); empty for Azure roles |
-| available_scopes | Azure roles only: the scopes Graph lists for the catalog resource (for diagnosing a failed scope match) |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The ID of the resource role scope | no |
+| access_package_id | The ID of the parent access package | yes |
+| role_origin_id | The resolved origin ID of the granted role | no |
+| resource_origin_id | The resource's origin ID, from the catalog's resourceRoles list | no |
+| available_roles | All roles Graph reported for the resource (for diagnosing a failed match); empty for Azure roles | no |
+| available_scopes | Azure roles only: the scopes Graph lists for the catalog resource (for diagnosing a failed scope match) | no |
 
 ## Tests
 
@@ -251,6 +283,6 @@ earlier fields. `tests/azure_role_scope.tftest.hcl` asserts Azure roles: the rol
 origin ID for a subscription and a management group, active and eligible role types, root
 and resource group scopes, and the refusals of missing or conflicting inputs and unlisted
 scopes. Tests require Terraform 1.11 or later and
-set `enable_destroy_cleanup=false`: provider mocks do not suppress provisioners.
+use mocked Graph transport. Native cleanup and legacy upgrade suites also run with cleanup enabled.
 
 See [live test setup and lifecycle limits](../../../../../docs/test-tenant-setup.md).

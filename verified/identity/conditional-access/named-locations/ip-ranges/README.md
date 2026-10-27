@@ -1,5 +1,27 @@
 # Conditional Access IP named locations
 
+<!-- state-protection:start -->
+## State and plan protection
+
+This module's state and saved plans retain these declared values:
+
+Potential personal-data inputs: `ip_ranges`.
+
+Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
+
+See [Terraform sensitive state guidance](https://developer.hashicorp.com/terraform/language/state/sensitive-data). These are exposure indicators, not a complete data classification; unmarked fields and provider responses also need protection.
+<!-- state-protection:end -->
+
+<!-- uses-beta:start -->
+Uses beta: **no**. This module and its local child modules do not select beta.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified live-accepted** (2026-10-24, commit `344ecc7e`). Acceptance covers the recorded run and configuration.
+
+![live Dev: passed 2026-10-24](https://img.shields.io/badge/live%20Dev-passed%202026--10--24-brightgreen)
+<!-- live-status:end -->
+
 Creates a Microsoft Entra IP named location (`#microsoft.graph.ipNamedLocation` at
 `identity/conditionalAccess/namedLocations`) via the `microsoft/msgraph` Terraform provider.
 Conditional Access policies reference the location's `id` in their location condition.
@@ -140,20 +162,20 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| display_name | Display name of the location | `string` | n/a | yes |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
-| ip_ranges | 1 to 2000 canonical IPv4 or IPv6 CIDR ranges, each longer than /8 | `set(string)` | n/a | yes |
-| is_trusted | Mark the location as trusted; set false before destroy | `bool` | `false` | no |
-| api_version | Graph API version; only `v1.0` is supported | `string` | `"v1.0"` | no |
-| timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; create, update and delete at least `15s`; retries count against them | `object` | `{}` (`10m` for create, update and delete; the provider default for read) | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| display_name | Display name of the location | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| ip_ranges | 1 to 2000 canonical IPv4 or IPv6 CIDR ranges, each longer than /8 | `set(string)` | n/a | yes | in place |
+| is_trusted | Mark the location as trusted; set false before destroy | `bool` | `false` | no | in place |
+| api_version | Graph API version; only `v1.0` is supported | `string` | `"v1.0"` | no | in place |
+| timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; create, update and delete at least `15s`; retries count against them | `object` | `{}` (`10m` for create, update and delete; the provider default for read) | no | no object change (validation or timing only) |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The ID of the named location, for a policy's location condition |
-| display_name | The display name Microsoft Graph returned on the last read |
-| is_trusted | The trusted flag Microsoft Graph returned on the last read |
-| ip_ranges | The CIDR ranges Microsoft Graph returned on the last read, sorted |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The ID of the named location, for a policy's location condition | yes |
+| display_name | The display name Microsoft Graph returned on the last read | no |
+| is_trusted | The trusted flag Microsoft Graph returned on the last read | no |
+| ip_ranges | The CIDR ranges Microsoft Graph returned on the last read, sorted | no |

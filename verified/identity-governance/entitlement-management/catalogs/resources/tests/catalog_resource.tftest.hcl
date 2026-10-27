@@ -341,8 +341,7 @@ run "a_new_api_version_waits_again_before_verifying" {
   }
 }
 
-# A new display name alone runs the action again for a resource that is
-# already in the catalog. The sleep is kept, so verification reads at plan time
+# A display name alone never replays the one-shot add request. The sleep is kept, so verification reads at plan time
 # and the captured resource id, which the destroy hook holds, stays known.
 run "a_new_display_name_keeps_the_sleep" {
   command = apply
@@ -367,7 +366,7 @@ run "a_new_display_name_keeps_the_sleep" {
   }
 
   assert {
-    condition     = msgraph_resource_action.add_request.body.resource.displayName == "Engineering (renamed)"
-    error_message = "The add request must carry the new display name."
+    condition     = msgraph_resource_action.add_request.body.resource.displayName == "Engineering"
+    error_message = "The one-shot add request must keep its captured display name without replay."
   }
 }

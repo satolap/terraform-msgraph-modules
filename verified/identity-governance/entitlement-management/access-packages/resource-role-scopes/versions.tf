@@ -4,7 +4,7 @@ terraform {
   required_providers {
     msgraph = {
       source  = "microsoft/msgraph"
-      version = ">= 0.3.0"
+      version = ">= 0.6.0, < 0.7.0"
     }
     null = {
       source  = "hashicorp/null"

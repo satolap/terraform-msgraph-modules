@@ -1,5 +1,27 @@
 # admin-consent-workflow
 
+<!-- state-protection:start -->
+## State and plan protection
+
+This module's state and saved plans retain these declared values:
+
+Potential personal-data inputs: `reviewer_group_ids`, `reviewer_user_ids`.
+
+Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
+
+See [Terraform sensitive state guidance](https://developer.hashicorp.com/terraform/language/state/sensitive-data). These are exposure indicators, not a complete data classification; unmarked fields and provider responses also need protection.
+<!-- state-protection:end -->
+
+<!-- uses-beta:start -->
+Uses beta: **no**. This module and its local child modules do not select beta.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Turns on the Microsoft Entra admin consent workflow by managing the
 [`adminConsentRequestPolicy`](https://learn.microsoft.com/en-us/graph/api/resources/adminconsentrequestpolicy?view=graph-rest-1.0)
 tenant singleton of the [security baseline](../README.md). The module enables the workflow, names
@@ -33,16 +55,16 @@ module "admin_consent_workflow" {
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| tier | `free`, `p1` or `p2`. Changes no setting; `free` reads no licences, `p1` and `p2` run the shared [licence guard](../licence-guard/README.md) | `string` | n/a | yes |
-| enabled | Turn the workflow on (`isEnabled`) | `bool` | `true` | no |
-| reviewer_user_ids | Reviewer user object IDs, lowercase GUIDs without duplicates | `list(string)` | `[]` | no |
-| reviewer_group_ids | Reviewer group object IDs, lowercase GUIDs without duplicates; the members of each group review | `list(string)` | `[]` | no |
-| notify_reviewers | Email reviewers about new requests (`notifyReviewers`) | `bool` | `true` | no |
-| reminders_enabled | Email reviewers reminders (`remindersEnabled`) | `bool` | `true` | no |
-| request_duration_in_days | Days before an undecided request expires (`requestDurationInDays`), a whole number from 1 to 30 | `number` | `30` | no |
-| restore_previous_state | PUT the snapshot taken at the first apply instead of the other inputs | `bool` | `false` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| tier | `free`, `p1` or `p2`. Changes no setting; `free` reads no licences, `p1` and `p2` run the shared [licence guard](../licence-guard/README.md) | `string` | n/a | yes | changes `module.licence_guard`; see the module notes |
+| enabled | Turn the workflow on (`isEnabled`) | `bool` | `true` | no | in place |
+| reviewer_user_ids | Reviewer user object IDs, lowercase GUIDs without duplicates | `list(string)` | `[]` | no | in place |
+| reviewer_group_ids | Reviewer group object IDs, lowercase GUIDs without duplicates; the members of each group review | `list(string)` | `[]` | no | in place |
+| notify_reviewers | Email reviewers about new requests (`notifyReviewers`) | `bool` | `true` | no | in place |
+| reminders_enabled | Email reviewers reminders (`remindersEnabled`) | `bool` | `true` | no | in place |
+| request_duration_in_days | Days before an undecided request expires (`requestDurationInDays`), a whole number from 1 to 30 | `number` | `30` | no | in place |
+| restore_previous_state | PUT the snapshot taken at the first apply instead of the other inputs | `bool` | `false` | no | in place |
 
 - When `enabled` is true, at least one reviewer is required across `reviewer_user_ids` and
   `reviewer_group_ids`, unless `restore_previous_state` is true. There are no default reviewers.
@@ -54,12 +76,12 @@ module "admin_consent_workflow" {
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| policy | The policy as read back after the apply, including the read-only `version` |
-| previous_state | The snapshot: the policy before the module first wrote it, reduced to the five writable properties |
-| reviewers | The reviewer objects rendered from the inputs |
-| tier | The tier, once the licence guard passes |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| policy | The policy as read back after the apply, including the read-only `version` | no |
+| previous_state | The snapshot: the policy before the module first wrote it, reduced to the five writable properties | no |
+| reviewers | The reviewer objects rendered from the inputs | yes |
+| tier | The tier, once the licence guard passes | no |
 
 ## Graph requests and permissions
 

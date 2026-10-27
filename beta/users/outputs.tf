@@ -10,6 +10,6 @@ output "resource_url" {
 
 output "response" {
   description = "Graph response object, including service-specific IDs such as appId when available. May contain secrets."
-  value       = msgraph_resource.this.output.response
+  value       = length(data.msgraph_resource.after_writes) > 0 ? data.msgraph_resource.after_writes[0].output.response : msgraph_resource.this.output.response
   sensitive   = true
 }

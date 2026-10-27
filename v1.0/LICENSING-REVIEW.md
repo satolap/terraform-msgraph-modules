@@ -1,6 +1,6 @@
 # Microsoft Graph v1.0 licensing review queue
 
-[Catalog](README.md) · [manifest.json](manifest.json)
+[Catalog](README.md) Â· [manifest.json](manifest.json)
 
 308 generated endpoints carry an unknown licensing record. Each path links to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
 
@@ -254,11 +254,11 @@
 - [`/identity/verifiedId/profiles`](identity/verified-id/profiles/README.md)
 - [`/identityGovernance/accessReviews/definitions`](identity-governance/access-reviews/definitions/README.md)
 - [`/identityGovernance/entitlementManagement/accessPackages/{accessPackage-id}/resourceRoleScopes`](identity-governance/entitlement-management/access-packages/resource-role-scopes/README.md)
-- [`/identityGovernance/entitlementManagement/assignmentRequests`](identity-governance/entitlement-management/assignment-requests/README.md)
 - [`/identityGovernance/entitlementManagement/catalogs/{accessPackageCatalog-id}/customWorkflowExtensions`](identity-governance/entitlement-management/catalogs/custom-workflow-extensions/README.md)
 - [`/identityGovernance/entitlementManagement/catalogs/{accessPackageCatalog-id}/resources/{accessPackageResource-id}/uploadSessions`](identity-governance/entitlement-management/catalogs/resources/upload-sessions/README.md)
 - [`/identityGovernance/entitlementManagement/connectedOrganizations`](identity-governance/entitlement-management/connected-organizations/README.md)
 - [`/identityGovernance/entitlementManagement/externalOriginResourceConnectors`](identity-governance/entitlement-management/external-origin-resource-connectors/README.md)
+- [`/identityGovernance/privilegedAccess/customExtensions`](identity-governance/privileged-access/custom-extensions/README.md)
 - [`/identityGovernance/termsOfUse/agreements`](identity-governance/terms-of-use/agreements/README.md)
 - [`/identityProviders`](identity-providers/README.md)
 - [`/oauth2PermissionGrants`](oauth2-permission-grants/README.md)

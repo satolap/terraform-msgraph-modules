@@ -1,5 +1,5 @@
 variable "enable_destroy_cleanup" {
-  description = "Create the Azure CLI destroy hook. Keep true for real deployments. Set false only before the first apply when an external owner handles removal, or in offline tests. Changing true to false runs the existing cleanup hook."
+  description = "Create the provider-native destroy cleanup. Keep true for real deployments. Set false only before the first apply when an external owner handles removal, or in offline tests. Changing true to false runs the registered removal action."
   type        = bool
   default     = true
 }
@@ -49,7 +49,7 @@ variable "verification_delay_seconds" {
 }
 
 variable "fail_on_verification_mismatch" {
-  description = "If true, fail apply unless verification finds exactly one resource. If false, inspect the verified output; destruction still requires a captured resource ID."
+  description = "If true, fail apply unless verification finds exactly one resource. If false, the optional verification gate is disabled only; enable_destroy_cleanup = true still requires strict independent identity verification and fails apply on a mismatch. With cleanup disabled too, inspect the verified output and arrange external removal."
   type        = bool
   default     = true
 }

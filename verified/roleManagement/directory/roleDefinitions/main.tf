@@ -43,5 +43,10 @@ resource "msgraph_resource" "roleDefinition" {
       condition     = var.templateId == null ? true : try(lower(self.output.templateId) == lower(var.templateId), false)
       error_message = "Microsoft Graph returned a templateId that differs from the configured templateId, or none. The module does not adopt the returned value. Find out why the definition changed before acting; changing templateId replaces the definition and removing it from state leaves the remote definition in place."
     }
+
+    precondition {
+      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.displayName))
+      error_message = "displayName \"${var.displayName}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set displayName to a value that matches, or change name_pattern."
+    }
   }
 }

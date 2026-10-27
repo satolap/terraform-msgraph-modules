@@ -1,5 +1,15 @@
 # authorization-policy
 
+<!-- uses-beta:start -->
+Uses beta: **no**. This module and its local child modules do not select beta.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Free-tier tenant settings of the [security baseline](../README.md), applied to the tenant
 [authorizationPolicy](https://learn.microsoft.com/en-us/graph/api/resources/authorizationpolicy?view=graph-rest-1.0)
 singleton:
@@ -209,25 +219,25 @@ Sources: [Restrict guest access permissions](https://learn.microsoft.com/en-us/e
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| tier | `free`, `p1` or `p2`; `free` plans no licence read, the tier changes no setting | `string` | n/a | yes |
-| user_consent_policy_id | Bare ID of the one app consent policy; `null` disables user consent; the legacy policy is rejected | `string` | `"microsoft-user-default-low"` | no |
-| allow_invites_from | `none`, `adminsAndGuestInviters`, `adminsGuestInvitersAndAllMembers` or `everyone` | `string` | `"adminsAndGuestInviters"` | no |
-| guest_access | `restricted` or `limited` | `string` | `"restricted"` | no |
-| allow_users_to_create_apps | Whether users can register applications; `null` leaves it unchanged | `bool` | `null` | no |
-| allow_users_to_create_tenants | Whether non-admin users can create tenants; `null` leaves it unchanged | `bool` | `null` | no |
-| restore_prior_values | PATCH the snapshot back; step 1 of removal | `bool` | `false` | no |
-| restore_over_changes | Restore even over values changed after the apply | `bool` | `false` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| tier | `free`, `p1` or `p2`; `free` plans no licence read, the tier changes no setting | `string` | n/a | yes | changes `module.licence_guard`; see the module notes |
+| user_consent_policy_id | Bare ID of the one app consent policy; `null` disables user consent; the legacy policy is rejected | `string` | `"microsoft-user-default-low"` | no | in place |
+| allow_invites_from | `none`, `adminsAndGuestInviters`, `adminsGuestInvitersAndAllMembers` or `everyone` | `string` | `"adminsAndGuestInviters"` | no | in place |
+| guest_access | `restricted` or `limited` | `string` | `"restricted"` | no | in place |
+| allow_users_to_create_apps | Whether users can register applications; `null` leaves it unchanged | `bool` | `null` | no | in place |
+| allow_users_to_create_tenants | Whether non-admin users can create tenants; `null` leaves it unchanged | `bool` | `null` | no | in place |
+| restore_prior_values | PATCH the snapshot back; step 1 of removal | `bool` | `false` | no | in place |
+| restore_over_changes | Restore even over values changed after the apply | `bool` | `false` | no | no object change (validation or timing only) |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| prior_values | The snapshot captured before the first apply, keyed by Graph property path |
-| target_values | The values the module sets: the baseline, or the snapshot when restoring |
-| planned_changes | Each property whose current value differs from the target: `property`, `current`, `target` as JSON text |
-| tier | The tier once the licence guard passed and the policy update is done |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| prior_values | The snapshot captured before the first apply, keyed by Graph property path | no |
+| target_values | The values the module sets: the baseline, or the snapshot when restoring | no |
+| planned_changes | Each property whose current value differs from the target: `property`, `current`, `target` as JSON text | no |
+| tier | The tier once the licence guard passed and the policy update is done | no |
 
 ## Requirements
 

@@ -1,5 +1,27 @@
 # groups
 
+<!-- state-protection:start -->
+## State and plan protection
+
+This module's state and saved plans retain these declared values:
+
+Potential personal-data inputs: `member_ids`, `owner_ids`.
+
+Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
+
+See [Terraform sensitive state guidance](https://developer.hashicorp.com/terraform/language/state/sensitive-data). These are exposure indicators, not a complete data classification; unmarked fields and provider responses also need protection.
+<!-- state-protection:end -->
+
+<!-- uses-beta:start -->
+Uses beta: **optional**. Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified live-accepted** (2026-10-24, commit `344ecc7e`). Acceptance covers the recorded run and configuration.
+
+![live Dev: passed 2026-10-24](https://img.shields.io/badge/live%20Dev-passed%202026--10--24-brightgreen)
+<!-- live-status:end -->
+
 Creates a Microsoft Entra ID group (`groups`) via the `microsoft/msgraph` Terraform provider.
 
 The module validates Graph's supported creation types: Microsoft 365 (`Unified`,
@@ -82,6 +104,23 @@ or `"Private"`, and `"HiddenMembership"` on a group whose `group_types` lacks `"
 release without it plans only its creation and no change to the group. Terraform does not
 replace in the apply that creates it, so make a change to these inputs in a later apply.
 
+### Mail settings and the Microsoft 365 group type are fixed at creation
+
+Microsoft Learn's update group page does not list `mailEnabled` among the updatable properties,
+and Microsoft Graph documents no conversion between a security group and a Microsoft 365 group.
+A change of `mail_enabled`, or adding or removing `"Unified"` in `group_types`, therefore fails
+the plan instead of sending a PATCH that Graph may refuse or ignore. Create a new group with the
+other setting and move its members and references. Adding or removing `"DynamicMembership"`
+(with `membership_rule`) is documented as a change of an existing group and updates it in place.
+`terraform_data.created` keeps the creation-time values, makes no API call and is replaced with
+`terraform_data.immutable`, so a replacement of the group may carry new mail settings. A group
+that exists from before this resource, or that was imported, takes its snapshot from the first
+plan, which therefore cannot refuse a conversion made in that same plan: upgrade first with
+unchanged `mail_enabled` and `group_types`. Two postconditions compare the `mailEnabled` and
+`groupTypes` values that Graph returns with the configuration, so a conversion that Graph ignored
+fails the apply, and a missing read-back fails it too.
+This is documentation-based; a live run records what Graph does (GB-directory-objects-519, -520).
+
 ## Requirements
 
 | Name | Version |
@@ -113,27 +152,29 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| display_name | Display name of the group | `string` | n/a | yes |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
-| mail_nickname | Mail alias, at most 64 ASCII characters; see [Mail nickname](#mail-nickname) | `string` | n/a | yes |
-| mail_nickname_pattern | Regular expression (RE2, not anchored unless it says so) that mail_nickname must match, or the plan fails; null accepts any alias | `string` | `null` | no |
-| description | Description of the group | `string` | `null` | no |
-| security_enabled | Whether the group is a security group | `bool` | `true` | no |
-| mail_enabled | Whether the group is mail-enabled | `bool` | `false` | no |
-| group_types | `["Unified"]` for M365, `[]` for security; add `"DynamicMembership"` for dynamic | `list(string)` | `[]` | no |
-| visibility | `Public`/`Private`/`HiddenMembership` (M365 groups only); a change to or from `HiddenMembership` replaces the group | `string` | `null` | no |
-| is_assignable_to_role | Allow Entra role assignment to the group; a change replaces the group | `bool` | `null` | no |
-| membership_rule | Dynamic membership rule (required with `DynamicMembership`) | `string` | `null` | no |
-| owner_ids | Directory object IDs to set as owners | `list(string)` | `[]` | no |
-| member_ids | Directory object IDs to set as members | `list(string)` | `[]` | no |
-| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| display_name | Display name of the group | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| mail_nickname | Mail alias, at most 64 ASCII characters; see [Mail nickname](#mail-nickname) | `string` | n/a | yes | in place |
+| mail_nickname_pattern | Regular expression (RE2, not anchored unless it says so) that mail_nickname must match, or the plan fails; null accepts any alias | `string` | `null` | no | no object change (validation or timing only) |
+| description | Description of the group | `string` | `null` | no | in place |
+| security_enabled | Whether the group is a security group | `bool` | `true` | no | in place |
+| mail_enabled | Whether the group is mail-enabled | `bool` | `false` | no | kept from creation: a change is refused or ignored (see notes) |
+| group_types | `["Unified"]` for M365, `[]` for security; add `"DynamicMembership"` for dynamic | `list(string)` | `[]` | no | kept from creation: a change is refused or ignored (see notes) |
+| visibility | `Public`/`Private`/`HiddenMembership` (M365 groups only); a change to or from `HiddenMembership` replaces the group | `string` | `null` | no | replaces `msgraph_resource.group` when `var.visibility == "HiddenMembership"` changes |
+| is_assignable_to_role | Allow Entra role assignment to the group; a change replaces the group | `bool` | `null` | no | replaces `msgraph_resource.group` when `var.is_assignable_to_role == true` changes |
+| membership_rule | Dynamic membership rule (required with `DynamicMembership`) | `string` | `null` | no | in place |
+| owner_ids | Directory object IDs to set as owners | `list(string)` | `[]` | no | changes `msgraph_resource.group`; see the module notes |
+| member_ids | Directory object IDs to set as members | `list(string)` | `[]` | no | changes `msgraph_resource.group`; see the module notes |
+| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no | in place |
+
+Unique values, inferred from the pinned metadata (declaration.json gives each source): `mail_nickname` within the tenant, among Microsoft 365 groups. Graph refuses a value already used in that scope.
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The object ID of the group (use as `resource_origin_id` for catalog/role-scope modules) |
-| display_name | The display name of the group |
-| mail | The SMTP address, if mail-enabled |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The object ID of the group (use as `resource_origin_id` for catalog/role-scope modules) | yes |
+| display_name | The display name of the group | no |
+| mail | The SMTP address, if mail-enabled | no |

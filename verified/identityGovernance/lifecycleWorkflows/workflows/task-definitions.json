@@ -1,0 +1,615 @@
+{
+  "add_user_to_groups": {
+    "id": "22085229-5809-45e8-97fd-270d28d66910",
+    "display_name": "Add user to groups",
+    "categories": [
+      "joiner",
+      "leaver",
+      "mover"
+    ],
+    "dangerous": false,
+    "danger_reason": null,
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "groupID",
+        "type": "string",
+        "values": []
+      }
+    ]
+  },
+  "add_user_to_teams": {
+    "id": "e440ed8d-25a1-4618-84ce-091ed5be5594",
+    "display_name": "Add user to Teams",
+    "categories": [
+      "joiner",
+      "leaver",
+      "mover"
+    ],
+    "dangerous": false,
+    "danger_reason": null,
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "teamID",
+        "type": "string",
+        "values": []
+      }
+    ]
+  },
+  "assign_licenses_to_user": {
+    "id": "683c87a4-2ad4-420b-97d4-220d90afcd24",
+    "display_name": "Assign licenses to user",
+    "categories": [
+      "joiner",
+      "mover"
+    ],
+    "dangerous": false,
+    "danger_reason": null,
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "licenses",
+        "type": "string",
+        "values": []
+      }
+    ]
+  },
+  "cancel_pending_access_package_assignment_requests_for_user": {
+    "id": "498770d9-bab7-4e4c-b73d-5ded82a1d0b3",
+    "display_name": "Cancel pending access package assignment requests for user",
+    "categories": [
+      "leaver",
+      "mover"
+    ],
+    "dangerous": false,
+    "danger_reason": null,
+    "selectable": true,
+    "parameters": []
+  },
+  "delete_user_account": {
+    "id": "8d18588d-9ad3-4c0f-99d0-ec215f0e3dff",
+    "display_name": "Delete user account",
+    "categories": [
+      "leaver"
+    ],
+    "dangerous": true,
+    "danger_reason": "deletes the user's directory account",
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "deleteOnPremisesAccount",
+        "type": "enum",
+        "values": [
+          "true",
+          "false"
+        ]
+      }
+    ]
+  },
+  "disable_user_account": {
+    "id": "1dfdfcc7-52fa-4c2e-bf3a-e3919cc12950",
+    "display_name": "Disable user account",
+    "categories": [
+      "joiner",
+      "leaver"
+    ],
+    "dangerous": true,
+    "danger_reason": "disables the user's directory account",
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "disableOnPremisesAccount",
+        "type": "enum",
+        "values": [
+          "true",
+          "false"
+        ]
+      }
+    ]
+  },
+  "enable_user_account": {
+    "id": "6fc52c9d-398b-4305-9763-15f42c1676fc",
+    "display_name": "Enable user account",
+    "categories": [
+      "joiner",
+      "leaver"
+    ],
+    "dangerous": false,
+    "danger_reason": null,
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "enableOnPremisesAccount",
+        "type": "enum",
+        "values": [
+          "true",
+          "false"
+        ]
+      }
+    ]
+  },
+  "generate_tap_and_send_email": {
+    "id": "1b555e50-7f65-41d5-b514-5894a026d10d",
+    "display_name": "Generate TAP and send email",
+    "categories": [
+      "joiner"
+    ],
+    "dangerous": false,
+    "danger_reason": null,
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "tapLifetimeMinutes",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "tapIsUsableOnce",
+        "type": "enum",
+        "values": [
+          "true",
+          "false"
+        ]
+      },
+      {
+        "name": "cc",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "customSubject",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "customBody",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "locale",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "to",
+        "type": "string",
+        "values": [
+          "User",
+          "Manager",
+          "Sponsors",
+          "{UserId}",
+          "User/otherMails",
+          "User/customSecurityAttributes/{attributeSet}/{attributeName}",
+          "User/{directoryExtensionAttribute}",
+          "User/onPremisesExtensionAttributes/{extensionAttribute[1-15]}"
+        ]
+      }
+    ]
+  },
+  "remove_access_package_assignment_for_user": {
+    "id": "4a0b64f2-c7ec-46ba-b117-18f262946c50",
+    "display_name": "Remove access package assignment for user",
+    "categories": [
+      "leaver",
+      "mover"
+    ],
+    "dangerous": true,
+    "danger_reason": "removes access granted through a selected access package",
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "accessPackageId",
+        "type": "string",
+        "values": []
+      }
+    ]
+  },
+  "remove_all_access_package_assignments_for_user": {
+    "id": "42ae2956-193d-4f39-be06-691b8ac4fa1d",
+    "display_name": "Remove all access package assignments for user",
+    "categories": [
+      "leaver"
+    ],
+    "dangerous": true,
+    "danger_reason": "removes access granted through all access packages",
+    "selectable": true,
+    "parameters": []
+  },
+  "remove_all_licenses_for_user": {
+    "id": "8fa97d28-3e52-4985-b3a9-a1126f9b8b4e",
+    "display_name": "Remove all licenses for user",
+    "categories": [
+      "leaver"
+    ],
+    "dangerous": true,
+    "danger_reason": "removes all assigned licenses",
+    "selectable": true,
+    "parameters": []
+  },
+  "remove_licenses_from_user": {
+    "id": "5fc402a8-daaf-4b7b-9203-da868b05fc5f",
+    "display_name": "Remove licenses from user",
+    "categories": [
+      "leaver",
+      "mover"
+    ],
+    "dangerous": true,
+    "danger_reason": "removes selected assigned licenses",
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "licenses",
+        "type": "string",
+        "values": []
+      }
+    ]
+  },
+  "remove_user_from_all_groups": {
+    "id": "b3a31406-2a15-4c9a-b25b-a658fa5f07fc",
+    "display_name": "Remove user from all groups",
+    "categories": [
+      "leaver"
+    ],
+    "dangerous": true,
+    "danger_reason": "removes access granted through all group memberships",
+    "selectable": true,
+    "parameters": []
+  },
+  "remove_user_from_all_teams": {
+    "id": "81f7b200-2816-4b3b-8c5d-dc556f07b024",
+    "display_name": "Remove user from all Teams",
+    "categories": [
+      "leaver"
+    ],
+    "dangerous": true,
+    "danger_reason": "removes access to all Teams",
+    "selectable": true,
+    "parameters": []
+  },
+  "remove_user_from_selected_groups": {
+    "id": "1953a66c-751c-45e5-8bfe-01462c70da3c",
+    "display_name": "Remove user from selected groups",
+    "categories": [
+      "joiner",
+      "leaver",
+      "mover"
+    ],
+    "dangerous": true,
+    "danger_reason": "removes access granted through selected group membership",
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "groupID",
+        "type": "string",
+        "values": []
+      }
+    ]
+  },
+  "remove_user_from_selected_teams": {
+    "id": "06aa7acb-01af-4824-8899-b14e5ed788d6",
+    "display_name": "Remove user from selected Teams",
+    "categories": [
+      "joiner",
+      "leaver",
+      "mover"
+    ],
+    "dangerous": true,
+    "danger_reason": "removes access to selected Teams",
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "teamID",
+        "type": "string",
+        "values": []
+      }
+    ]
+  },
+  "request_user_access_package_assignment": {
+    "id": "c1ec1e76-f374-4375-aaa6-0bb6bd4c60be",
+    "display_name": "Request user access package assignment",
+    "categories": [
+      "joiner",
+      "mover"
+    ],
+    "dangerous": false,
+    "danger_reason": null,
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "assignmentPolicyId",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "accessPackageId",
+        "type": "string",
+        "values": []
+      }
+    ]
+  },
+  "revoke_all_refresh_tokens_for_user": {
+    "id": "509589a4-0466-4471-829e-49c5e502bdee",
+    "display_name": "Revoke all refresh tokens for user",
+    "categories": [
+      "leaver",
+      "mover"
+    ],
+    "dangerous": true,
+    "danger_reason": "immediately invalidates existing sessions/tokens",
+    "selectable": true,
+    "parameters": []
+  },
+  "run_a_custom_task_extension": {
+    "id": "4262b724-8dba-4fad-afc3-43fcbb497a0e",
+    "display_name": "Run a Custom Task Extension",
+    "categories": [
+      "joiner",
+      "leaver",
+      "mover"
+    ],
+    "dangerous": false,
+    "danger_reason": null,
+    "selectable": false,
+    "parameters": [
+      {
+        "name": "customTaskExtensionID",
+        "type": "string",
+        "values": []
+      }
+    ]
+  },
+  "send_email_after_users_last_day": {
+    "id": "6f22ddd4-b3a5-47a4-a846-0d7c201a49ce",
+    "display_name": "Send email after user\u2019s last day",
+    "categories": [
+      "leaver"
+    ],
+    "dangerous": false,
+    "danger_reason": null,
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "cc",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "customSubject",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "customBody",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "locale",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "to",
+        "type": "string",
+        "values": [
+          "User",
+          "Manager",
+          "Sponsors",
+          "{UserId}"
+        ]
+      }
+    ]
+  },
+  "send_email_before_users_last_day": {
+    "id": "52853a3e-f4e5-4eb8-bb24-1ac09a1da935",
+    "display_name": "Send email before user\u2019s last day",
+    "categories": [
+      "leaver"
+    ],
+    "dangerous": false,
+    "danger_reason": null,
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "cc",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "customSubject",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "customBody",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "locale",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "to",
+        "type": "string",
+        "values": [
+          "User",
+          "Manager",
+          "Sponsors",
+          "{UserId}"
+        ]
+      }
+    ]
+  },
+  "send_email_on_users_last_day": {
+    "id": "9c0a1eaf-5bda-4392-9d9e-6e155bb57411",
+    "display_name": "Send email on user\u2019s last day",
+    "categories": [
+      "leaver"
+    ],
+    "dangerous": false,
+    "danger_reason": null,
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "cc",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "customSubject",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "customBody",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "locale",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "to",
+        "type": "string",
+        "values": [
+          "User",
+          "Manager",
+          "Sponsors",
+          "{UserId}"
+        ]
+      }
+    ]
+  },
+  "send_email_to_notify_manager_of_user_move": {
+    "id": "aab41899-9972-422a-9d97-f626014578b7",
+    "display_name": "Send email to notify manager of user move",
+    "categories": [
+      "mover"
+    ],
+    "dangerous": false,
+    "danger_reason": null,
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "cc",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "customSubject",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "customBody",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "locale",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "to",
+        "type": "string",
+        "values": [
+          "User",
+          "Manager",
+          "Sponsors",
+          "{UserId}"
+        ]
+      }
+    ]
+  },
+  "send_onboarding_reminder_email": {
+    "id": "3c860712-2d37-42a4-928f-5c93935d26a1",
+    "display_name": "Send onboarding reminder email",
+    "categories": [
+      "joiner"
+    ],
+    "dangerous": false,
+    "danger_reason": null,
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "cc",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "customSubject",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "customBody",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "locale",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "to",
+        "type": "string",
+        "values": [
+          "User",
+          "Manager",
+          "Sponsors",
+          "{UserId}"
+        ]
+      }
+    ]
+  },
+  "send_welcome_email": {
+    "id": "70b29d51-b59a-4773-9280-8841dfd3f2ea",
+    "display_name": "Send welcome email",
+    "categories": [
+      "joiner"
+    ],
+    "dangerous": false,
+    "danger_reason": null,
+    "selectable": true,
+    "parameters": [
+      {
+        "name": "cc",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "customSubject",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "customBody",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "locale",
+        "type": "string",
+        "values": []
+      },
+      {
+        "name": "to",
+        "type": "string",
+        "values": [
+          "User",
+          "Manager",
+          "Sponsors",
+          "{UserId}"
+        ]
+      }
+    ]
+  }
+}

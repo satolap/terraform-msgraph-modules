@@ -42,7 +42,7 @@ variable "app_role_assignments" {
 }
 
 variable "assigned_labels" {
-  description = "The list of sensitivity label pairs (label ID, label name) associated with a Microsoft 365 group or a cloud security group. Requires a Microsoft Entra ID P1 license. Requires $select to retrieve. This property can be specified during group creation or update. However, for cloud security groups, it's immutable once set. This property can be updated only in delegated scenarios where the caller requires both the Microsoft Graph permission and a supported administrator role. See Key differences from Microsoft 365 group labeling to learn more about managing this property for Microsoft 365 vs. cloud security groups."
+  description = "The list of sensitivity label pairs (label ID, label name) associated with a Microsoft 365 group or a cloud security group. Requires a Microsoft Entra ID P1 license. Requires $select to retrieve. This property can be specified during group creation or update. However, for cloud security groups, it's immutable once set. This property can be updated only in delegated scenarios where the caller requires both the Microsoft Graph permission and a supported administrator role. To learn more about managing this property for Microsoft 365 vs. cloud security groups, see Key differences from Microsoft 365 group labeling."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.assignedLabel")
     labelId    = optional(string)
@@ -179,6 +179,11 @@ variable "events" {
     webLink       = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.events == null ? true : alltrue([alltrue([for input0 in var.events : (input0 == null ? true : alltrue([(input0["attendees"] == null ? true : alltrue([alltrue([for input2 in input0["attendees"] : (input2 == null ? true : alltrue([(input2["status"] == null ? true : alltrue([(input2["status"]["response"] == null ? true : alltrue([(input2["status"]["response"] == null ? true : contains(["none", "organizer", "tentativelyAccepted", "accepted", "declined", "notResponded"], input2["status"]["response"]))]))])), (input2["type"] == null ? true : alltrue([(input2["type"] == null ? true : contains(["required", "optional", "resource"], input2["type"]))]))]))])])), (input0["body"] == null ? true : alltrue([(input0["body"]["contentType"] == null ? true : alltrue([(input0["body"]["contentType"] == null ? true : contains(["text", "html"], input0["body"]["contentType"]))]))])), (input0["importance"] == null ? true : alltrue([(input0["importance"] == null ? true : contains(["low", "normal", "high"], input0["importance"]))])), (input0["onlineMeetingProvider"] == null ? true : alltrue([(input0["onlineMeetingProvider"] == null ? true : contains(["unknown", "skypeForBusiness", "skypeForConsumer", "teamsForBusiness"], input0["onlineMeetingProvider"]))])), (input0["recurrence"] == null ? true : alltrue([(input0["recurrence"]["pattern"] == null ? true : alltrue([(input0["recurrence"]["pattern"]["daysOfWeek"] == null ? true : alltrue([alltrue([for input4 in input0["recurrence"]["pattern"]["daysOfWeek"] : (input4 == null ? true : alltrue([(input4 == null ? true : contains(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"], input4))]))])])), (input0["recurrence"]["pattern"]["firstDayOfWeek"] == null ? true : alltrue([(input0["recurrence"]["pattern"]["firstDayOfWeek"] == null ? true : contains(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"], input0["recurrence"]["pattern"]["firstDayOfWeek"]))])), (input0["recurrence"]["pattern"]["index"] == null ? true : alltrue([(input0["recurrence"]["pattern"]["index"] == null ? true : contains(["first", "second", "third", "fourth", "last"], input0["recurrence"]["pattern"]["index"]))])), (input0["recurrence"]["pattern"]["type"] == null ? true : alltrue([(input0["recurrence"]["pattern"]["type"] == null ? true : contains(["daily", "weekly", "absoluteMonthly", "relativeMonthly", "absoluteYearly", "relativeYearly"], input0["recurrence"]["pattern"]["type"]))]))])), (input0["recurrence"]["range"] == null ? true : alltrue([(input0["recurrence"]["range"]["type"] == null ? true : alltrue([(input0["recurrence"]["range"]["type"] == null ? true : contains(["endDate", "noEnd", "numbered"], input0["recurrence"]["range"]["type"]))]))]))])), (input0["responseStatus"] == null ? true : alltrue([(input0["responseStatus"]["response"] == null ? true : alltrue([(input0["responseStatus"]["response"] == null ? true : contains(["none", "organizer", "tentativelyAccepted", "accepted", "declined", "notResponded"], input0["responseStatus"]["response"]))]))])), (input0["sensitivity"] == null ? true : alltrue([(input0["sensitivity"] == null ? true : contains(["normal", "personal", "private", "confidential"], input0["sensitivity"]))])), (input0["showAs"] == null ? true : alltrue([(input0["showAs"] == null ? true : contains(["unknown", "free", "tentative", "busy", "oof", "workingElsewhere"], input0["showAs"]))]))]))])]))
+    error_message = "events: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "group_types" {
@@ -706,6 +711,11 @@ variable "sites" {
     })))
   }))
   default = null
+
+  validation {
+    condition     = (var.sites == null ? true : alltrue([alltrue([for input0 in var.sites : (input0 == null ? true : alltrue([(input0["operations"] == null ? true : alltrue([alltrue([for input2 in input0["operations"] : (input2 == null ? true : alltrue([(input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["notStarted", "running", "succeeded", "failed"], input2["status"]))]))]))])]))]))])]))
+    error_message = "sites: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "team" {
@@ -750,6 +760,11 @@ variable "threads" {
     uniqueSenders = optional(list(string))
   }))
   default = null
+
+  validation {
+    condition     = (var.threads == null ? true : alltrue([alltrue([for input0 in var.threads : (input0 == null ? true : alltrue([(input0["posts"] == null ? true : alltrue([alltrue([for input2 in input0["posts"] : (input2 == null ? true : alltrue([(input2["body"] == null ? true : alltrue([(input2["body"]["contentType"] == null ? true : alltrue([(input2["body"]["contentType"] == null ? true : contains(["text", "html"], input2["body"]["contentType"]))]))]))]))])]))]))])]))
+    error_message = "threads: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "transitive_member_of" {
@@ -774,6 +789,41 @@ variable "welcome_message_enabled" {
   description = "Microsoft Graph welcomeMessageEnabled property."
   type        = bool
   default     = null
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

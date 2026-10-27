@@ -430,6 +430,11 @@ variable "owners" {
     condition     = (var.owners == null ? true : alltrue([for item0 in var.owners : (item0 == null ? true : alltrue([(item0["managedAppRegistrations"] == null ? true : alltrue([for item2 in item0["managedAppRegistrations"] : (item2 == null ? true : alltrue([(item2["odata_type"] == null ? false : contains(["#microsoft.graph.androidManagedAppRegistration", "#microsoft.graph.iosManagedAppRegistration"], item2["odata_type"]))]))]))]))]))
     error_message = "owners: every nested odata_type of an abstract Graph type must name a concrete type."
   }
+
+  validation {
+    condition     = (var.owners == null ? true : alltrue([alltrue([for input0 in var.owners : (input0 == null ? true : alltrue([(input0["chats"] == null ? true : alltrue([alltrue([for input2 in input0["chats"] : (input2 == null ? true : alltrue([(input2["chatType"] == null ? true : alltrue([(input2["chatType"] == null ? true : contains(["oneOnOne", "group", "meeting"], input2["chatType"]))])), (input2["migrationMode"] == null ? true : alltrue([(input2["migrationMode"] == null ? true : contains(["inProgress", "completed"], input2["migrationMode"]))]))]))])])), (input0["joinedTeams"] == null ? true : alltrue([alltrue([for input2 in input0["joinedTeams"] : (input2 == null ? true : alltrue([(input2["funSettings"] == null ? true : alltrue([(input2["funSettings"]["giphyContentRating"] == null ? true : alltrue([(input2["funSettings"]["giphyContentRating"] == null ? true : contains(["strict", "moderate"], input2["funSettings"]["giphyContentRating"]))]))])), (input2["specialization"] == null ? true : alltrue([(input2["specialization"] == null ? true : contains(["none", "educationStandard", "educationClass", "educationProfessionalLearningCommunity", "educationStaff", "healthcareStandard", "healthcareCareCoordination"], input2["specialization"]))])), (input2["visibility"] == null ? true : alltrue([(input2["visibility"] == null ? true : contains(["private", "public", "hiddenMembership"], input2["visibility"]))]))]))])])), (input0["mailboxSettings"] == null ? true : alltrue([(input0["mailboxSettings"]["automaticRepliesSetting"] == null ? true : alltrue([(input0["mailboxSettings"]["automaticRepliesSetting"]["externalAudience"] == null ? true : alltrue([(input0["mailboxSettings"]["automaticRepliesSetting"]["externalAudience"] == null ? true : contains(["none", "contactsOnly", "all"], input0["mailboxSettings"]["automaticRepliesSetting"]["externalAudience"]))])), (input0["mailboxSettings"]["automaticRepliesSetting"]["status"] == null ? true : alltrue([(input0["mailboxSettings"]["automaticRepliesSetting"]["status"] == null ? true : contains(["disabled", "alwaysEnabled", "scheduled"], input0["mailboxSettings"]["automaticRepliesSetting"]["status"]))]))])), (input0["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"] == null ? true : alltrue([(input0["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"] == null ? true : contains(["sendToDelegateAndInformationToPrincipal", "sendToDelegateAndPrincipal", "sendToDelegateOnly"], input0["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"]))])), (input0["mailboxSettings"]["workingHours"] == null ? true : alltrue([(input0["mailboxSettings"]["workingHours"]["daysOfWeek"] == null ? true : alltrue([alltrue([for input4 in input0["mailboxSettings"]["workingHours"]["daysOfWeek"] : (input4 == null ? true : alltrue([(input4 == null ? true : contains(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"], input4))]))])]))]))])), (input0["managedAppRegistrations"] == null ? true : alltrue([alltrue([for input2 in input0["managedAppRegistrations"] : (input2 == null ? true : alltrue([(input2["odata_type"] == null ? true : alltrue([(input2["odata_type"] == null ? true : contains(["#microsoft.graph.androidManagedAppRegistration", "#microsoft.graph.iosManagedAppRegistration"], input2["odata_type"]))])), (input2["flaggedReasons"] == null ? true : alltrue([alltrue([for input4 in input2["flaggedReasons"] : (input4 == null ? true : alltrue([(input4 == null ? true : contains(["none", "rootedDevice"], input4))]))])]))]))])])), (input0["managedDevices"] == null ? true : alltrue([alltrue([for input2 in input0["managedDevices"] : (input2 == null ? true : alltrue([(input2["managedDeviceOwnerType"] == null ? true : alltrue([(input2["managedDeviceOwnerType"] == null ? true : contains(["unknown", "company", "personal"], input2["managedDeviceOwnerType"]))]))]))])])), (input0["onlineMeetings"] == null ? true : alltrue([alltrue([for input2 in input0["onlineMeetings"] : (input2 == null ? true : alltrue([(input2["allowLiveShare"] == null ? true : alltrue([(input2["allowLiveShare"] == null ? true : contains(["enabled", "disabled"], input2["allowLiveShare"]))])), (input2["allowMeetingChat"] == null ? true : alltrue([(input2["allowMeetingChat"] == null ? true : contains(["enabled", "disabled", "limited"], input2["allowMeetingChat"]))])), (input2["allowedLobbyAdmitters"] == null ? true : alltrue([(input2["allowedLobbyAdmitters"] == null ? true : contains(["organizerAndCoOrganizersAndPresenters", "organizerAndCoOrganizers"], input2["allowedLobbyAdmitters"]))])), (input2["allowedPresenters"] == null ? true : alltrue([(input2["allowedPresenters"] == null ? true : contains(["everyone", "organization", "roleIsPresenter", "organizer"], input2["allowedPresenters"]))])), (input2["broadcastSettings"] == null ? true : alltrue([(input2["broadcastSettings"]["allowedAudience"] == null ? true : alltrue([(input2["broadcastSettings"]["allowedAudience"] == null ? true : contains(["roleIsAttendee", "organization", "everyone"], input2["broadcastSettings"]["allowedAudience"]))]))])), (input2["lobbyBypassSettings"] == null ? true : alltrue([(input2["lobbyBypassSettings"]["scope"] == null ? true : alltrue([(input2["lobbyBypassSettings"]["scope"] == null ? true : contains(["organizer", "organization", "organizationAndFederated", "everyone"], input2["lobbyBypassSettings"]["scope"]))]))])), (input2["shareMeetingChatHistoryDefault"] == null ? true : alltrue([(input2["shareMeetingChatHistoryDefault"] == null ? true : contains(["none", "all"], input2["shareMeetingChatHistoryDefault"]))]))]))])]))]))])]))
+    error_message = "owners: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "privacy" {
@@ -438,9 +443,44 @@ variable "privacy" {
   default     = null
 
   validation {
-    condition     = var.privacy == null ? true : contains(["public", "private", "unknownFutureValue"], var.privacy)
+    condition     = var.privacy == null ? true : contains(["public", "private"], var.privacy)
     error_message = "privacy must be one of the documented enum values."
   }
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

@@ -1,5 +1,27 @@
 # verify
 
+<!-- state-protection:start -->
+## State and plan protection
+
+This module's state and saved plans retain these declared values:
+
+Sensitive outputs: `verified_policy_ids`.
+
+Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
+
+See [Terraform sensitive state guidance](https://developer.hashicorp.com/terraform/language/state/sensitive-data). These are exposure indicators, not a complete data classification; unmarked fields and provider responses also need protection.
+<!-- state-protection:end -->
+
+<!-- uses-beta:start -->
+Uses beta: **no**. This module and its local child modules do not select beta.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
+
+![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+<!-- live-status:end -->
+
 Read-back check for the [emergency access guard](../README.md). The submodule reads the
 tenant's Conditional Access policies and fails when a checked policy does not exclude every
 emergency access user and group that the guard resolved. It creates, changes and deletes
@@ -139,16 +161,16 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| tier | `free`, `p1` or `p2` | `string` | n/a | yes |
-| exclusions | The guard's `conditional_access_users_exclusions` output | `object({ excludeUsers = set(string), excludeGroups = set(string) })` | n/a | yes |
-| baseline_policy_ids | IDs of the Conditional Access baseline policies | `set(string)` | n/a | yes |
-| scope | `baseline`, or `tenant` to also check every enabled policy | `string` | `"baseline"` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| tier | `free`, `p1` or `p2` | `string` | n/a | yes | no object change (validation or timing only) |
+| exclusions | The guard's `conditional_access_users_exclusions` output | `object({ excludeUsers = set(string), excludeGroups = set(string) })` | n/a | yes | no object change (validation or timing only) |
+| baseline_policy_ids | IDs of the Conditional Access baseline policies | `set(string)` | n/a | yes | no object change (validation or timing only) |
+| scope | `baseline`, or `tenant` to also check every enabled policy | `string` | `"baseline"` | no | no object change (validation or timing only) |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| verified | True when at least one policy was checked and all exclusions passed; false for `free` or an empty tenant-scope population |
-| verified_policy_ids | IDs of the checked policies: the baseline policies, plus every enabled policy in `tenant` scope |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| verified | True when at least one policy was checked and all exclusions passed; false for `free` or an empty tenant-scope population | no |
+| verified_policy_ids | IDs of the checked policies: the baseline policies, plus every enabled policy in `tenant` scope | no |

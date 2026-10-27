@@ -106,6 +106,31 @@ variable "constraints" {
   }
 }
 
+variable "kinds" {
+  description = "The kind of object name that each template renders, keyed like templates: one of the built-in kinds, such as group, group_mail_nickname or catalog, that the README lists with the limits of the verified module or Microsoft Learn behind each. A rendered name that is blank, longer than its kind allows or holds characters that its kind does not allow fails the plan. A template without a kind is checked by constraints only."
+  type        = map(string)
+  default     = {}
+  nullable    = false
+
+  validation {
+    condition     = alltrue([for name in keys(var.kinds) : contains(keys(var.templates), name)])
+    error_message = "kinds names templates that do not exist: ${join(", ", sort([for name in keys(var.kinds) : name if !contains(keys(var.templates), name)]))}."
+  }
+
+  validation {
+    condition     = alltrue([for kind in values(var.kinds) : contains(keys(local.builtin_kinds), kind)])
+    error_message = "kinds values must be built-in kinds: ${join(", ", sort(keys(local.builtin_kinds)))}."
+  }
+
+  # The rendered names are checked here, where their rules come from, rather
+  # than on the names output: the error points at kinds, and the names output
+  # keeps its preconditions unchanged.
+  validation {
+    condition     = alltrue([for name, kind in var.kinds : length(try(local.kind_findings[name][kind], [])) == 0])
+    error_message = "Rendered names break the rules of their kind: ${join("; ", sort(flatten([for name, kind in var.kinds : try(local.kind_findings[name][kind], [])])))}."
+  }
+}
+
 variable "transliterations" {
   description = "Changes to the character table of the ascii filter: a map from one character (one Unicode code point) to its replacement, which is printable ASCII or empty to drop the character. It is merged over the built-in table, which maps the Latin letters with diacritics of Latin-1 Supplement and Latin Extended-A, and Ș and Ț, to their base letters, and spells out ß, æ, œ, þ and ĳ (ss, ae, oe, th, ij). For example, { \"ä\" = \"ae\", \"ö\" = \"oe\", \"ü\" = \"ue\" } spells umlauts with an e."
   type        = map(string)

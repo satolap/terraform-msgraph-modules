@@ -67,6 +67,11 @@ variable "email_addresses" {
     type       = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.email_addresses == null ? true : alltrue([alltrue([for input0 in var.email_addresses : (input0 == null ? true : alltrue([(input0["type"] == null ? true : alltrue([(input0["type"] == null ? true : contains(["unknown", "work", "personal", "main", "other"], input0["type"]))]))]))])]))
+    error_message = "email_addresses: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "extensions" {
@@ -103,6 +108,11 @@ variable "flag" {
     }))
   })
   default = null
+
+  validation {
+    condition     = (var.flag == null ? true : alltrue([(var.flag["flagStatus"] == null ? true : alltrue([(var.flag["flagStatus"] == null ? true : contains(["notFlagged", "complete", "flagged"], var.flag["flagStatus"]))]))]))
+    error_message = "flag: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "gender" {
@@ -204,6 +214,11 @@ variable "phones" {
     type       = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.phones == null ? true : alltrue([alltrue([for input0 in var.phones : (input0 == null ? true : alltrue([(input0["type"] == null ? true : alltrue([(input0["type"] == null ? true : contains(["home", "business", "mobile", "other", "assistant", "homeFax", "businessFax", "otherFax", "pager", "radio"], input0["type"]))]))]))])]))
+    error_message = "phones: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "photo" {
@@ -225,6 +240,11 @@ variable "postal_addresses" {
     type            = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.postal_addresses == null ? true : alltrue([alltrue([for input0 in var.postal_addresses : (input0 == null ? true : alltrue([(input0["type"] == null ? true : alltrue([(input0["type"] == null ? true : contains(["unknown", "home", "business", "other"], input0["type"]))]))]))])]))
+    error_message = "postal_addresses: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "primary_email_address" {
@@ -278,6 +298,11 @@ variable "websites" {
     type        = optional(string)
   }))
   default = null
+
+  validation {
+    condition     = (var.websites == null ? true : alltrue([alltrue([for input0 in var.websites : (input0 == null ? true : alltrue([(input0["type"] == null ? true : alltrue([(input0["type"] == null ? true : contains(["other", "home", "work", "blog", "profile"], input0["type"]))]))]))])]))
+    error_message = "websites: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "wedding_anniversary" {
@@ -302,6 +327,41 @@ variable "yomi_surname" {
   description = "The phonetic Japanese surname (last name)  of the contact."
   type        = string
   default     = null
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

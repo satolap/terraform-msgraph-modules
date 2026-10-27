@@ -39,13 +39,13 @@ variable "security_enabled" {
 }
 
 variable "mail_enabled" {
-  description = "Whether the group is mail-enabled. Mail-enabled security groups and Microsoft 365 groups have additional constraints; a plain security group should leave this false."
+  description = "Whether the group is mail-enabled. Mail-enabled security groups and Microsoft 365 groups have additional constraints; a plain security group should leave this false. Microsoft Graph does not list mailEnabled as updatable, so changing it on an existing group fails the plan."
   type        = bool
   default     = false
 }
 
 variable "group_types" {
-  description = "The group type. Use [\"Unified\"] for a Microsoft 365 group, or [] for a security group. Dynamic membership adds \"DynamicMembership\"."
+  description = "The group type. Use [\"Unified\"] for a Microsoft 365 group, or [] for a security group. Dynamic membership adds \"DynamicMembership\". Adding or removing \"DynamicMembership\" updates an existing group in place; adding or removing \"Unified\" on an existing group fails the plan."
   type        = list(string)
   default     = []
 

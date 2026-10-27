@@ -8,12 +8,22 @@ variable "allowed_data_ingestion_locations" {
   description = "Data storage locations where a user may store managed data."
   type        = list(string)
   default     = null
+
+  validation {
+    condition     = (var.allowed_data_ingestion_locations == null ? true : alltrue([alltrue([for input0 in var.allowed_data_ingestion_locations : (input0 == null ? true : alltrue([(input0 == null ? true : contains(["oneDriveForBusiness", "sharePoint", "camera", "photoLibrary"], input0))]))])]))
+    error_message = "allowed_data_ingestion_locations: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "allowed_data_storage_locations" {
   description = "Data storage locations where a user may store managed data."
   type        = list(string)
   default     = null
+
+  validation {
+    condition     = (var.allowed_data_storage_locations == null ? true : alltrue([alltrue([for input0 in var.allowed_data_storage_locations : (input0 == null ? true : alltrue([(input0 == null ? true : contains(["oneDriveForBusiness", "sharePoint", "box", "localStorage", "photoLibrary", "iManage", "egnyte"], input0))]))])]))
+    error_message = "allowed_data_storage_locations: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "allowed_inbound_data_transfer_sources" {
@@ -157,6 +167,11 @@ variable "assignments" {
     target     = optional(any)
   }))
   default = null
+
+  validation {
+    condition     = (var.assignments == null ? true : alltrue([alltrue([for input0 in var.assignments : (input0 == null ? true : alltrue([(input0["source"] == null ? true : alltrue([(input0["source"] == null ? true : contains(["direct", "policySets"], input0["source"]))]))]))])]))
+    error_message = "assignments: nested required attributes must be non-null and enum values must be supported input members."
+  }
 }
 
 variable "block_data_ingestion_into_organization_documents" {
@@ -288,7 +303,7 @@ variable "genmoji_configuration_state" {
   default     = null
 
   validation {
-    condition     = var.genmoji_configuration_state == null ? true : contains(["notBlocked", "blocked", "unknownFutureValue"], var.genmoji_configuration_state)
+    condition     = var.genmoji_configuration_state == null ? true : contains(["notBlocked", "blocked"], var.genmoji_configuration_state)
     error_message = "genmoji_configuration_state must be one of the documented enum values."
   }
 }
@@ -447,7 +462,7 @@ variable "mobile_threat_defense_partner_priority" {
   default     = null
 
   validation {
-    condition     = var.mobile_threat_defense_partner_priority == null ? true : contains(["defenderOverThirdPartyPartner", "thirdPartyPartnerOverDefender", "unknownFutureValue"], var.mobile_threat_defense_partner_priority)
+    condition     = var.mobile_threat_defense_partner_priority == null ? true : contains(["defenderOverThirdPartyPartner", "thirdPartyPartnerOverDefender"], var.mobile_threat_defense_partner_priority)
     error_message = "mobile_threat_defense_partner_priority must be one of the documented enum values."
   }
 }
@@ -570,7 +585,7 @@ variable "purview_content_evaluation_required" {
   default     = null
 
   validation {
-    condition     = var.purview_content_evaluation_required == null ? true : contains(["notRequired", "requiredWhenOnline", "required", "unknownFutureValue"], var.purview_content_evaluation_required)
+    condition     = var.purview_content_evaluation_required == null ? true : contains(["notRequired", "requiredWhenOnline", "required"], var.purview_content_evaluation_required)
     error_message = "purview_content_evaluation_required must be one of the documented enum values."
   }
 }
@@ -593,7 +608,7 @@ variable "screen_capture_configuration_state" {
   default     = null
 
   validation {
-    condition     = var.screen_capture_configuration_state == null ? true : contains(["notBlocked", "blocked", "unknownFutureValue"], var.screen_capture_configuration_state)
+    condition     = var.screen_capture_configuration_state == null ? true : contains(["notBlocked", "blocked"], var.screen_capture_configuration_state)
     error_message = "screen_capture_configuration_state must be one of the documented enum values."
   }
 }
@@ -610,7 +625,7 @@ variable "targeted_app_management_levels" {
   default     = null
 
   validation {
-    condition     = var.targeted_app_management_levels == null ? true : try(alltrue([for value in split(",", var.targeted_app_management_levels) : contains(["unspecified", "unmanaged", "mdm", "androidenterprise", "androidenterprisededicateddeviceswithazureadsharedmode", "androidopensourceprojectuserassociated", "androidopensourceprojectuserless", "unknownfuturevalue"], lower(trimspace(value)))]), false)
+    condition     = var.targeted_app_management_levels == null ? true : try(alltrue([for value in split(",", var.targeted_app_management_levels) : contains(["unspecified", "unmanaged", "mdm", "androidenterprise", "androidenterprisededicateddeviceswithazureadsharedmode", "androidopensourceprojectuserassociated", "androidopensourceprojectuserless"], lower(trimspace(value)))]), false)
     error_message = "targeted_app_management_levels must be one or more of the documented enum values, separated by commas."
   }
 }
@@ -627,9 +642,44 @@ variable "writing_tools_configuration_state" {
   default     = null
 
   validation {
-    condition     = var.writing_tools_configuration_state == null ? true : contains(["notBlocked", "blocked", "unknownFutureValue"], var.writing_tools_configuration_state)
+    condition     = var.writing_tools_configuration_state == null ? true : contains(["notBlocked", "blocked"], var.writing_tools_configuration_state)
     error_message = "writing_tools_configuration_state must be one of the documented enum values."
   }
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "additional_properties" {

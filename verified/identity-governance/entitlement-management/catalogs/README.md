@@ -1,5 +1,15 @@
 # identity-governance/entitlement-management/catalogs
 
+<!-- uses-beta:start -->
+Uses beta: **optional**. Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified live-accepted** (2026-10-24, commit `344ecc7e`). Acceptance covers the recorded run and configuration.
+
+![live Dev: passed 2026-10-24](https://img.shields.io/badge/live%20Dev-passed%202026--10--24-brightgreen)
+<!-- live-status:end -->
+
 Manages a Microsoft Entra ID Governance Entitlement Management **catalog**
 (`identityGovernance/entitlementManagement/catalogs`) via the `microsoft/msgraph`
 Terraform provider.
@@ -88,22 +98,22 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| display_name | Display name of the catalog (1-90 characters) | `string` | n/a | yes |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no |
-| description | Description of the catalog | `string` | `null` | no |
-| is_externally_visible | Whether users of connected organizations can request the catalog's access packages; `null` leaves it to Microsoft Graph | `bool` | `null` | no |
-| state | `unpublished` or `published` | `string` | `"unpublished"` | no |
-| catalog_type | Deprecated and ignored; accepts only `userManaged`. Remove it | `string` | `"userManaged"` | no |
-| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| display_name | Display name of the catalog (1-90 characters) | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| description | Description of the catalog | `string` | `null` | no | in place |
+| is_externally_visible | Whether users of connected organizations can request the catalog's access packages; `null` leaves it to Microsoft Graph | `bool` | `null` | no | in place |
+| state | `unpublished` or `published` | `string` | `"unpublished"` | no | in place |
+| catalog_type | Deprecated and ignored; accepts only `userManaged`. Remove it | `string` | `"userManaged"` | no | no object change (validation or timing only) |
+| api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no | in place |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The ID of the catalog |
-| display_name | The display name of the catalog |
-| state | The published state of the catalog |
-| catalog_type | The type of the catalog, as Microsoft Graph returns it |
-| is_externally_visible | The configured `is_externally_visible`, or `null` when not set |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The ID of the catalog | yes |
+| display_name | The display name of the catalog | no |
+| state | The published state of the catalog | no |
+| catalog_type | The type of the catalog, as Microsoft Graph returns it | no |
+| is_externally_visible | The configured `is_externally_visible`, or `null` when not set | yes |

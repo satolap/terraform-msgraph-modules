@@ -1,5 +1,15 @@
 # identity-governance/entitlement-management/catalogs/custom-extensions
 
+<!-- uses-beta:start -->
+Uses beta: **no**. This module and its local child modules do not select beta.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified live-accepted** (2026-10-25, commit `9c5263bf`). Acceptance covers the recorded run and configuration.
+
+![live Dev: passed 2026-10-25](https://img.shields.io/badge/live%20Dev-passed%202026--10--25-brightgreen)
+<!-- live-status:end -->
+
 Manages one Microsoft Entra ID Governance entitlement management **custom workflow
 extension** in a catalog
 (`identityGovernance/entitlementManagement/catalogs/{catalog}/customWorkflowExtensions`) via
@@ -133,8 +143,15 @@ The Logic App must exist before the extension is created, and the module does no
   authorized with the Microsoft Entra ID access token scheme, recommends disabling shared
   access signatures, and describes the claims to check in
   [Best practices for securing the custom extension extensibility to Azure Logic Apps](https://learn.microsoft.com/en-us/entra/id-governance/custom-extension-security).
-  Whether Graph checks the trigger or the policy when the extension is created is not
-  verified.
+  **Graph checks it when the extension is created** (live, 2026-10-25): it calls the Logic
+  App, and without such a policy the create fails with `400 WorkFlowExtensionValidationError`
+  whose inner error is `OAuthAccessPolicyNotFound` ("The OAuth authentication policy is not
+  enabled for the workflow"). The policy that worked is of type `AADPOP` with the claims
+  `iss` = `https://sts.windows.net/<tenant-id>/` (with the trailing slash), `aud` =
+  `https://management.azure.com`, `appid` = the application ID of the tenant's
+  "Azure AD Identity Governance - Entitlement Management" service principal, `m` = `POST`,
+  `u` = `management.azure.com` and `p` = the Logic App's resource ID path. A Logic App created
+  from the admin center gets this policy automatically.
 
 ## Policy stages, expiry and guests
 
@@ -189,7 +206,9 @@ The Logic App must exist before the extension is created, and the module does no
   that the plan read still holds the old extension.
   `logic_app_id_length` warns when the Logic App resource ID is longer than 150 characters;
   Learn states that limit for a Logic App created in the admin center and does not say whether
-  it applies to an existing one.
+  it applies to an existing one. Graph accepted an existing Logic App with a 151-character
+  resource ID (live, 2026-10-25), so the warning is cautious; as a failed `check` it still
+  fails a `terraform test` run.
 - **Naming.** `name_pattern` is a regular expression (RE2 syntax, unanchored) that the
   effective display name must match, or the plan fails. It applies to the default display name
   too.
@@ -212,9 +231,13 @@ The Logic App must exist before the extension is created, and the module does no
 
 ## Live test status
 
-Live test status: not verified in a licensed tenant. The module is tested with a mock provider
-only. These checks are pending, and each needs a licensed tenant, an Azure Logic App and
-credentials:
+Live test status: partly verified in a licensed tenant (Dev, 2026-10-25). As an application
+with `EntitlementManagement.ReadWrite.All`, the live suite created a request workflow extension
+with `trigger_url` against a Logic App that has the policy above, updated its description in
+place (the id stayed) and replaced it by changing the type (a new id). The governance identity
+held only a narrow custom role on the Logic App's resource group (workflow read and write, no
+callback URL listing); whether Graph needs any Azure role from the caller was not isolated.
+These checks are still pending:
 
 1. Create both extension types as an application, with and without `trigger_url`, and read the
    `url` that Graph returns (a rewritten url would show as drift). Record whether create
@@ -259,27 +282,27 @@ Sources: [Microsoft Entra features by license](https://learn.microsoft.com/en-us
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| catalog_id | ID of the catalog that holds the extension; a change replaces the extension, a change of case alone does not | `string` | n/a | yes |
-| extension_type | `request_workflow` or `assignment_workflow`; a change replaces the extension | `string` | n/a | yes |
-| logic_app | The existing Consumption Logic App: `subscription_id`, `resource_group_name`, `workflow_name` and optionally `trigger_url` (https, contains `/triggers/`, no `sig`, `sp` or `sv` parameter) | `object` | n/a | yes |
-| display_name | Display name; null uses `logic_app.workflow_name` | `string` | `null` | no |
-| description | Description; always sent, as `null` when unset | `string` | `null` | no |
-| name_pattern | Regular expression that the effective display name must match, or the plan fails | `string` | `null` | no |
-| timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; create, update and delete at least `15s`; retries count against them | `object` | `{}` (`10m` for create, update and delete; the provider default for read) | no |
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| catalog_id | ID of the catalog that holds the extension; a change replaces the extension, a change of case alone does not | `string` | n/a | yes | replaces `msgraph_resource.this` when its effect on `local.catalog_id` changes; not replaced or moved: the update targets the existing object; recreate it to move it |
+| extension_type | `request_workflow` or `assignment_workflow`; a change replaces the extension | `string` | n/a | yes | replaces `msgraph_resource.this` |
+| logic_app | The existing Consumption Logic App: `subscription_id`, `resource_group_name`, `workflow_name` and optionally `trigger_url` (https, contains `/triggers/`, no `sig`, `sp` or `sv` parameter) | `object` | n/a | yes | in place |
+| display_name | Display name; null uses `logic_app.workflow_name` | `string` | `null` | no | in place |
+| description | Description; always sent, as `null` when unset | `string` | `null` | no | in place |
+| name_pattern | Regular expression that the effective display name must match, or the plan fails | `string` | `null` | no | no object change (validation or timing only) |
+| timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; create, update and delete at least `15s`; retries count against them | `object` | `{}` (`10m` for create, update and delete; the provider default for read) | no | no object change (validation or timing only) |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The ID of the extension; it changes when `extension_type` or `catalog_id` changes |
-| catalog_id | The ID of the catalog that holds the extension, in lower case |
-| extension_type | `request_workflow` or `assignment_workflow` |
-| odata_type | The concrete `@odata.type` of the extension |
-| display_name | The effective display name |
-| logic_app_resource_id | The Azure resource ID of the Logic App; the trigger URL is never an output |
-| binding | `{ extension_id, extension_type }`, to merge with a `stage` into a policy's `custom_extension_stage_settings` |
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The ID of the extension; it changes when `extension_type` or `catalog_id` changes | yes |
+| catalog_id | The ID of the catalog that holds the extension, in lower case | yes |
+| extension_type | `request_workflow` or `assignment_workflow` | yes |
+| odata_type | The concrete `@odata.type` of the extension | yes |
+| display_name | The effective display name | yes |
+| logic_app_resource_id | The Azure resource ID of the Logic App; the trigger URL is never an output | yes |
+| binding | `{ extension_id, extension_type }`, to merge with a `stage` into a policy's `custom_extension_stage_settings` | yes |
 
 ## Tests
 
@@ -289,5 +312,8 @@ shapes, the request, update method and drift settings, the replacement of the ex
 the type or catalog changes, the description sent as `null`, the outputs and the `binding`
 merge, each check, `name_pattern`, and every validation. A mock provider evaluates none of the
 read-back expressions, so a Python test (`tests/test_custom_extensions.py`) ties them to the
-mapping that consumes them and checks the validation messages. There is no live suite yet; see
-[Live test status](#live-test-status).
+mapping that consumes them and checks the validation messages. The live suite in
+`tests/integration` runs in a licensed tenant; see [Live test status](#live-test-status). Its
+`callback_probe.tftest.hcl` creates a launch and wait extension directly, with the duration
+named `durationBeforeTimeout` as in Learn's entitlement management examples, and reads it
+back: it settles which name Graph keeps before this module sends a callback.

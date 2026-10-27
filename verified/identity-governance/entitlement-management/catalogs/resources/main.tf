@@ -23,7 +23,7 @@ locals {
     )
   }
 
-  matched_resources   = try(data.msgraph_resource.verify.output.resources, [])
+  matched_resources   = try(concat(data.msgraph_resource.verify.output.resources, []), [])
   matched_resource_id = try(local.matched_resources[0].id, null)
   verified            = length(local.matched_resources) == 1
 }
@@ -37,7 +37,7 @@ locals {
 # it as a full CRUD resource would make `terraform destroy` fail when the
 # provider attempts DELETE resourceRequests/{id}. The action resource performs
 # the POST once at create and is simply forgotten on destroy; the actual
-# removal from the catalog is handled by null_resource.remove_on_destroy below.
+# removal from the catalog is handled by msgraph_resource_action.remove below.
 resource "msgraph_resource_action" "add_request" {
   resource_url = "identityGovernance/entitlementManagement/resourceRequests"
   method       = "POST"
@@ -50,6 +50,9 @@ resource "msgraph_resource_action" "add_request" {
   }
 
   lifecycle {
+    ignore_changes       = all
+    replace_triggered_by = [terraform_data.add_target]
+
     precondition {
       condition     = var.resource_origin_system != "AzureResources" || local.azure_resource_type != null
       error_message = "For AzureResources, resource_origin_id must be a subscription (/subscriptions/<subscription GUID>) or a management group (/providers/Microsoft.Management/managementGroups/<management group ID>). A resource group cannot be added to a catalog: add its subscription, then scope the role to the resource group in access-packages/resource-role-scopes."
@@ -58,9 +61,8 @@ resource "msgraph_resource_action" "add_request" {
 }
 
 # The values that name the catalog, the resource and the endpoint of the
-# adminAdd request. A change to one of them submits a new adminAdd: a new
-# api_version replaces add_request, and a new catalog or resource updates it,
-# which the provider does by running the action again.
+# adminAdd request. Changing one replaces add_request destroy-first; it never
+# replays the POST as an in-place update. Display name stays captured at create.
 resource "terraform_data" "add_target" {
   input = {
     catalog_id             = var.catalog_id
@@ -77,10 +79,10 @@ resource "terraform_data" "add_target" {
 # defers the verification read to apply, after the new delay. Before this
 # trigger, the sleep was created once, so the read ran at plan time against the
 # new catalog or resource, before the new request was even submitted. The
-# trigger leaves out resource_display_name: a change to it alone runs the
-# action again for a resource that is already in the catalog, and replacing the
-# sleep would leave resource_id unknown until apply, which replaces the destroy
-# hook and removes the resource. The first apply of a module version that adds
+# trigger leaves out resource_display_name: that value is captured by the
+# ignore-all action and changing it alone sends no request. Replacing the sleep
+# would leave resource_id unknown until apply and unnecessarily replace saved
+# cleanup. The first apply of a module version that adds
 # add_target only creates it, so upgrading does not replace the sleep.
 resource "time_sleep" "wait_for_delivery" {
   depends_on      = [msgraph_resource_action.add_request]
@@ -105,9 +107,36 @@ data "msgraph_resource" "verify" {
 
   response_export_values = {
     resources = "value"
+    next_link = "\"@odata.nextLink\""
   }
 
   depends_on = [time_sleep.wait_for_delivery]
+  retry = {
+    error_message_regex = ["(?i)\"error\"\\s*:\\s*\\{[^}]*\"code\"\\s*:\\s*\"(404|NotFound|Request_ResourceNotFound)\"", "(?i)^(HTTP|status|statuscode)\\s*[:=]?\\s*404\\b"]
+  }
+  timeouts {
+    read = "2m"
+  }
+
+  lifecycle {
+    precondition {
+      condition = var.enable_destroy_cleanup ? alltrue([
+        can(regex("(?i)^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$", var.catalog_id)),
+        var.api_version == null ? false : contains(["v1.0", "beta"], var.api_version),
+      ]) : true
+      error_message = "Refusing verification: catalog GUID and API version must form a safe URL."
+    }
+    postcondition {
+      condition = var.enable_destroy_cleanup ? try(alltrue([
+        length(self.output.resources) == 1,
+        try(self.output.next_link, null) == null,
+        can(regex("^[A-Za-z0-9_-]{1,512}$", self.output.resources[0].id)),
+        lower(self.output.resources[0].originId) == lower(msgraph_resource_action.add_request.body.resource.originId),
+        self.output.resources[0].originSystem == msgraph_resource_action.add_request.body.resource.originSystem,
+      ]), false) : true
+      error_message = "Independent GET must prove one URL-safe catalog resource ID with matching origin identity and no pagination. Preserve the saved adminAdd and retry unchanged apply, never replay POST."
+    }
+  }
 }
 
 # Hard-fails apply when fail_on_verification_mismatch is true and the
@@ -125,19 +154,7 @@ resource "terraform_data" "verification_gate" {
   depends_on = [data.msgraph_resource.verify]
 }
 
-# Removal on destroy: Graph has no DELETE for a catalog resource
-# association, only an adminRemove accessPackageResourceRequest. This uses
-# the ambient Azure CLI session to submit that request when the resource is
-# destroyed. Before requesting a token it requires ARM_TENANT_ID (the tenant
-# variable the msgraph provider reads) to match `az account show`, so the
-# request cannot go to another tenant. curl reads the Authorization header
-# from a config on stdin, so the token never appears in a process argv.
-# Values are passed as environment variables, never interpolated into shell code.
-# Graph refuses the removal while an access package in the catalog still uses
-# the resource, and can keep refusing it briefly after the access package is
-# deleted, so 400, 409, 429 and 5xx answers are retried for about two minutes.
-# Each refusal prints Graph's error body, with control characters removed.
-# Keep `triggers` unchanged: a change replaces this resource and runs the cleanup.
+# Keep the legacy address and triggers as an inert saved-identity record.
 resource "null_resource" "remove_on_destroy" {
   count = var.enable_destroy_cleanup ? 1 : 0
 
@@ -149,51 +166,46 @@ resource "null_resource" "remove_on_destroy" {
   }
 
   depends_on = [terraform_data.verification_gate]
+}
 
-  provisioner "local-exec" {
-    when        = destroy
-    interpreter = ["bash", "-c"]
-    environment = {
-      GRAPH_CATALOG_ID  = self.triggers.catalog_id
-      GRAPH_RESOURCE_ID = self.triggers.resource_id
-      GRAPH_API_VERSION = self.triggers.api_version
-      GRAPH_REMOVE_BODY = jsonencode({
-        requestType = "adminRemove"
-        catalog     = { id = self.triggers.catalog_id }
-        resource    = { id = self.triggers.resource_id }
-      })
+# There is no DELETE for this association: remove exactly the verified catalog
+# resource with a counter-request. Registration sends no POST.
+resource "msgraph_resource_action" "remove" {
+  count = var.enable_destroy_cleanup ? 1 : 0
+
+  resource_url = "identityGovernance/entitlementManagement/resourceRequests"
+  api_version  = null_resource.remove_on_destroy[0].triggers.api_version
+  method       = "POST"
+  when         = "destroy"
+  body = {
+    requestType = "adminRemove"
+    catalog     = { id = null_resource.remove_on_destroy[0].triggers.catalog_id }
+    resource    = { id = null_resource.remove_on_destroy[0].triggers.resource_id }
+  }
+
+  # Graph can still report the resource in use after its package was removed.
+  # Match error envelopes/status diagnostics only, never an accepted response.
+  retry = {
+    error_message_regex = ["(?i)^\\s*\\{\\s*\"error\"\\s*:\\s*\\{[^}]*\"code\"\\s*:\\s*\"(400|409|429|5[0-9]{2}|BadRequest|Request_BadRequest|Conflict|Request_Conflict|TooManyRequests|InternalServerError|NotImplemented|BadGateway|ServiceUnavailable|GatewayTimeout|HttpVersionNotSupported)\"", "(?i)^(HTTP|status|statuscode)\\s*[:=]?\\s*(400|409|429|5[0-9]{2})\\b"]
+  }
+  timeouts {
+    delete = "2m"
+  }
+
+  lifecycle {
+    ignore_changes       = all
+    replace_triggered_by = [null_resource.remove_on_destroy]
+
+    precondition {
+      condition = alltrue([
+        can(regex("(?i)^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$", null_resource.remove_on_destroy[0].triggers.catalog_id)),
+        can(regex("^[A-Za-z0-9_-]{1,512}$", null_resource.remove_on_destroy[0].triggers.resource_id)),
+        null_resource.remove_on_destroy[0].triggers.api_version == null ? false : contains(["v1.0", "beta"], null_resource.remove_on_destroy[0].triggers.api_version),
+        null_resource.remove_on_destroy[0].triggers.resource_id == local.matched_resource_id,
+        null_resource.remove_on_destroy[0].triggers.catalog_id == var.catalog_id,
+      ])
+      error_message = "Refusing removal registration: saved catalog/resource identity must be safe and independently verified."
     }
-    command = <<-EOT
-      set -euo pipefail
-      set +ax
-      test -n "$GRAPH_RESOURCE_ID" || { echo "ERROR: no catalog resource ID was captured; reconcile the catalog before destroying." >&2; exit 1; }
-      expected_tenant=$(printf '%s' "$${ARM_TENANT_ID:-}" | tr '[:upper:]' '[:lower:]')
-      test -n "$expected_tenant" || { echo "ERROR: ARM_TENANT_ID is not set. Set it to the tenant ID the msgraph provider uses; destroy cleanup refuses to guess the tenant." >&2; exit 1; }
-      cli_tenant=$(az account show --query tenantId -o tsv | tr '[:upper:]' '[:lower:]')
-      test "$cli_tenant" = "$expected_tenant" || { echo "ERROR: the Azure CLI tenant ($cli_tenant) does not match ARM_TENANT_ID ($expected_tenant). Run 'az login --tenant $expected_tenant' or correct ARM_TENANT_ID, then retry destroy." >&2; exit 1; }
-      unset TOKEN
-      TOKEN=$(az account get-access-token --resource https://graph.microsoft.com --query accessToken -o tsv)
-      case "$TOKEN" in "" | *[!A-Za-z0-9._~+/=-]*) echo "ERROR: the Azure CLI returned no usable Microsoft Graph access token." >&2; exit 1 ;; esac
-      attempts=6
-      attempt=1
-      while :; do
-        response=$(printf 'header = "Authorization: Bearer %s"\n' "$TOKEN" | curl --config - --silent --show-error --connect-timeout 30 --max-time 120 \
-          -w '\n%%{http_code}' \
-          -X POST "https://graph.microsoft.com/$GRAPH_API_VERSION/identityGovernance/entitlementManagement/resourceRequests" \
-          -H "Content-Type: application/json" \
-          --data "$GRAPH_REMOVE_BODY")
-        status=$${response##*$'\n'}
-        case "$status" in 2??) break ;; esac
-        body=$${response%$'\n'*}
-        body=$(printf '%s' "$${body:0:2000}" | tr -c '[:print:]' ' ')
-        echo "Graph answered HTTP $status to adminRemove for resource $GRAPH_RESOURCE_ID (attempt $attempt of $attempts): $body" >&2
-        case "$status" in 400 | 409 | 429 | 5??) ;; *) exit 1 ;; esac
-        test "$attempt" -lt "$attempts" || { echo "ERROR: adminRemove still fails after $attempts attempts. Delete the access packages that use resource $GRAPH_RESOURCE_ID, then retry destroy." >&2; exit 1; }
-        attempt=$((attempt + 1))
-        sleep 20
-      done
-      echo "Submitted adminRemove for resource $GRAPH_RESOURCE_ID in catalog $GRAPH_CATALOG_ID. Delivery is asynchronous; verify removal in Graph."
-    EOT
   }
 }
 

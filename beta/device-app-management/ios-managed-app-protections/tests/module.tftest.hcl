@@ -13,6 +13,29 @@ run "minimal_request" {
     condition     = alltrue([for key in ["allowWidgetContentSync", "allowedDataIngestionLocations", "allowedDataStorageLocations", "allowedInboundDataTransferSources", "allowedIosDeviceModels", "allowedOutboundClipboardSharingExceptionLength", "allowedOutboundClipboardSharingLevel", "allowedOutboundDataTransferDestinations", "appActionIfAccountIsClockedOut", "appActionIfDeviceComplianceRequired", "appActionIfIosDeviceModelNotAllowed", "appActionIfMaximumPinRetriesExceeded", "appActionIfUnableToAuthenticateUser", "appDataEncryptionType", "appGroupType", "apps", "assignments", "blockDataIngestionIntoOrganizationDocuments", "contactSyncBlocked", "createdDateTime", "customBrowserProtocol", "customDialerAppProtocol", "dataBackupBlocked", "deployedAppCount", "deploymentSummary", "description", "deviceComplianceRequired", "dialerRestrictionLevel", "disableAppPinIfDevicePinIsSet", "disableProtectionOfManagedOutboundOpenInData", "displayName", "exemptedAppProtocols", "exemptedUniversalLinks", "faceIdBlocked", "filterOpenInToOnlyManagedApps", "fingerprintBlocked", "genmojiConfigurationState", "gracePeriodToBlockAppsDuringOffClockHours", "version", "isAssigned", "lastModifiedDateTime", "managedBrowser", "managedBrowserToOpenLinksRequired", "managedUniversalLinks", "maximumAllowedDeviceThreatLevel", "maximumPinRetries", "maximumRequiredOsVersion", "maximumWarningOsVersion", "maximumWipeOsVersion", "messagingRedirectAppUrlScheme", "minimumPinLength", "minimumRequiredAppVersion", "minimumRequiredOsVersion", "minimumRequiredSdkVersion", "minimumWarningAppVersion", "minimumWarningOsVersion", "minimumWarningSdkVersion", "minimumWipeAppVersion", "minimumWipeOsVersion", "minimumWipeSdkVersion", "mobileThreatDefensePartnerPriority", "mobileThreatDefenseRemediationAction", "notificationRestriction", "organizationalCredentialsRequired", "periodBeforePinReset", "periodOfflineBeforeAccessCheck", "periodOfflineBeforeWipeIsEnforced", "periodOnlineBeforeAccessCheck", "pinCharacterSet", "pinRequired", "pinRequiredInsteadOfBiometricTimeout", "previousPinBlockCount", "printBlocked", "protectInboundDataFromUnknownSources", "protectedMessagingRedirectAppType", "purviewContentEvaluationRequired", "roleScopeTagIds", "saveAsBlocked", "screenCaptureConfigurationState", "simplePinBlocked", "targetedAppManagementLevels", "thirdPartyKeyboardsBlocked", "writingToolsConfigurationState"] : !contains(keys(msgraph_resource.this.body), key)])
     error_message = "Unset optional inputs must be omitted from the Graph request."
   }
+
+  assert {
+    condition     = msgraph_resource.this.ignore_missing_property == true
+    error_message = "Default reads must retain the provider missing-property suppression."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.read_query_parameters == null
+    error_message = "Default reads must keep the full default GET response."
+  }
+}
+
+run "selected_response_is_opt_in" {
+  command = plan
+
+  variables {
+    select_response = true
+  }
+
+  assert {
+    condition     = msgraph_resource.this.read_query_parameters["$select"][0] == join(",", sort(distinct(concat(["id"], [for name in keys(local.body) : name if alltrue([!startswith(name, "@"), !can(regex("@odata\\.", name)), !contains(["apps", "assignments", "deploymentSummary"], name)])]))))
+    error_message = "Only the explicit selection opt-in may narrow the response."
+  }
 }
 
 run "typed_request" {
@@ -83,4 +106,56 @@ run "invalid_flags_member" {
   }
 
   expect_failures = [var.managed_browser]
+}
+
+run "timeouts_unset_sends_no_block" {
+  command = plan
+
+  assert {
+    condition     = msgraph_resource.this.timeouts == null
+    error_message = "Unset timeouts must send no timeouts block."
+  }
+}
+
+run "timeouts_are_passed_through" {
+  command = plan
+
+  variables {
+    timeouts = { create = "45m", update = "20m", read = "7m" }
+  }
+
+  assert {
+    condition     = alltrue([msgraph_resource.this.timeouts.create == "45m", msgraph_resource.this.timeouts.update == "20m", msgraph_resource.this.timeouts.read == "7m", msgraph_resource.this.timeouts.delete == null])
+    error_message = "Timeouts must reach the provider resource unchanged."
+  }
+}
+
+run "timeouts_below_the_minimum" {
+  command = plan
+
+  variables {
+    timeouts = { create = "10s" }
+  }
+
+  expect_failures = [var.timeouts]
+}
+
+run "timeouts_with_an_invalid_duration" {
+  command = plan
+
+  variables {
+    timeouts = { update = "soon" }
+  }
+
+  expect_failures = [var.timeouts]
+}
+
+run "timeouts_of_zero" {
+  command = plan
+
+  variables {
+    timeouts = { delete = "0s" }
+  }
+
+  expect_failures = [var.timeouts]
 }
