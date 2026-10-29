@@ -22,6 +22,12 @@ from urllib.request import Request, urlopen
 # The publisher checks for this line before it publishes the flat layout.
 PUBLIC_MANIFEST = "release-manifest.json"
 CATALOGS = ("v1.0", "beta", "verified")
+# Optional release assets committed under .release/. The casing migration inventory is present
+# only in the release that carries the Graph casing decision; the publisher checks this
+# script for the ".release/casing-migration" paths before it publishes them.
+CASING_ASSETS = (".release/casing-migration.json", ".release/casing-migration.md")
+CASING_NAMES = tuple(Path(a).name for a in CASING_ASSETS)
+OPTIONAL_ASSETS = (".release/interface-changes.json", *CASING_ASSETS)
 
 
 def git(*args: str) -> str:
@@ -84,16 +90,20 @@ def build(tag: str, directory: Path) -> tuple[str, list[Path]]:
         manifest_file = directory / "release-manifest.json"
         manifest_file.write_bytes(provenance)
         assets.append(manifest_file)
-        # Optional: releases published before this asset existed do not have it.
-        changes = checkout / ".release/interface-changes.json"
-        if changes.is_symlink():
-            raise ValueError("Publication contains a symlink")
-        if changes.is_file():
-            changes_file = directory / changes.name
-            changes_file.write_bytes(changes.read_bytes())
-            assets.append(changes_file)
-        elif changes.exists():
-            raise ValueError("Publication .release/interface-changes.json is not a regular file")
+        # Optional: releases published before these assets existed do not have them.
+        for relative in OPTIONAL_ASSETS:
+            optional = checkout / relative
+            if optional.is_symlink():
+                raise ValueError("Publication contains a symlink")
+            if optional.is_file():
+                optional_file = directory / optional.name
+                optional_file.write_bytes(optional.read_bytes())
+                assets.append(optional_file)
+            elif optional.exists():
+                raise ValueError(f"Publication {relative} is not a regular file")
+        # A release that carries the Graph casing decision attaches both casing assets.
+        if 0 < sum(p.name in CASING_NAMES for p in assets) < len(CASING_NAMES):
+            raise ValueError("Publication must carry both casing-migration assets or neither")
         expected = (checkout / ".release/SHA256SUMS").read_bytes()
         actual = "".join(
             f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}\n" for p in sorted(assets)

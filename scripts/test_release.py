@@ -286,6 +286,76 @@ class BuildTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "is not a regular file"):
             self.build()
 
+    def commit_casing(self, names=("casing-migration.json", "casing-migration.md"), listed=True):
+        """Commit casing assets under .release/ and list them in SHA256SUMS."""
+        sums = dict(self.sums)
+        for name in names:
+            content = f"casing {name}\n".encode()
+            (self.source / ".release" / name).write_bytes(content)
+            if listed:
+                sums[name] = digest(content)
+        checksums = "".join(f"{h}  {n}\n" for n, h in sorted(sums.items())).encode()
+        (self.source / ".release/SHA256SUMS").write_bytes(checksums)
+        return checksums
+
+    def test_publishes_committed_casing_migration_assets(self):
+        checksums = self.commit_casing()
+        _, assets = self.build()
+        self.assertEqual(
+            [p.name for p in assets],
+            [*ASSETS, "casing-migration.json", "casing-migration.md", "SHA256SUMS"],
+        )
+        self.assertEqual(
+            (self.output / "casing-migration.md").read_bytes(), b"casing casing-migration.md\n"
+        )
+        self.assertEqual((self.output / "SHA256SUMS").read_bytes(), checksums)
+
+    def test_publishes_casing_migration_with_interface_changes(self):
+        self.commit(changes=CHANGES, listed=CHANGES)
+        (self.source / ".release/casing-migration.json").write_bytes(b"{}\n")
+        (self.source / ".release/casing-migration.md").write_bytes(b"# casing\n")
+        sums = dict(self.sums)
+        sums["interface-changes.json"] = digest(CHANGES)
+        sums["casing-migration.json"] = digest(b"{}\n")
+        sums["casing-migration.md"] = digest(b"# casing\n")
+        (self.source / ".release/SHA256SUMS").write_bytes(
+            "".join(f"{h}  {n}\n" for n, h in sorted(sums.items())).encode()
+        )
+        _, assets = self.build()
+        self.assertEqual(
+            [p.name for p in assets],
+            [
+                *ASSETS,
+                "interface-changes.json",
+                "casing-migration.json",
+                "casing-migration.md",
+                "SHA256SUMS",
+            ],
+        )
+
+    def test_rejects_changed_casing_migration_asset(self):
+        self.commit_casing()
+        (self.source / ".release/casing-migration.md").write_bytes(b"changed\n")
+        with self.assertRaisesRegex(ValueError, "do not reproduce the tested SHA256SUMS"):
+            self.build()
+
+    def test_rejects_casing_migration_asset_missing_from_sha256sums(self):
+        self.commit_casing(listed=False)
+        with self.assertRaisesRegex(ValueError, "do not reproduce the tested SHA256SUMS"):
+            self.build()
+
+    def test_rejects_listed_casing_migration_asset_missing_from_the_publication(self):
+        self.commit_casing()
+        (self.source / ".release/casing-migration.md").unlink()
+        with self.assertRaisesRegex(ValueError, "both casing-migration assets or neither"):
+            self.build()
+
+    def test_rejects_symlinked_casing_migration_asset(self):
+        self.commit_casing(names=("casing-migration.md",))
+        (self.source / ".release/casing-migration.json").symlink_to("../release-manifest.json")
+        with self.assertRaisesRegex(ValueError, "Publication contains a symlink"):
+            self.build()
+
     def test_verify_assets_requires_the_published_interface_changes(self):
         self.commit(changes=CHANGES, listed=CHANGES)
         sha, assets = self.build()
