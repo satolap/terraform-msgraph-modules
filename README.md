@@ -1,8 +1,8 @@
-# GraphModules
+# terraform-msgraph-modules
 
 [![Release modules](https://github.com/satolap/terraform-msgraph-modules/actions/workflows/release.yml/badge.svg)](https://github.com/satolap/terraform-msgraph-modules/actions/workflows/release.yml)
 
-GraphModules is a public catalog of tested, versioned **Terraform modules for
+terraform-msgraph-modules is a public catalog of tested, versioned **Terraform modules for
 Microsoft Graph**. It helps manage **Microsoft Entra ID (formerly Azure Active
 Directory, or Azure AD)** and **Microsoft 365** resources—including users,
 groups, applications, service principals, and entitlement management—with
@@ -230,7 +230,7 @@ tag is created:
    construction, typed request bodies, omission of null optional properties,
    validation failures, and verified relationship behavior without contacting a
    Microsoft Graph tenant.
-5. The GraphModules release workflow rebuilds the v1.0, beta, and verified archives
+5. The terraform-msgraph-modules release workflow rebuilds the v1.0, beta, and verified archives
    from the tagged commit and requires their byte-level SHA-256 checksums to match
    the already tested artifacts before publishing the GitHub Release.
 

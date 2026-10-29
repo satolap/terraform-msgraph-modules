@@ -1,4 +1,4 @@
-"""Reconstruct and verify release assets from a GraphModules publication."""
+"""Reconstruct and verify release assets from a terraform-msgraph-modules publication."""
 
 from __future__ import annotations
 
@@ -50,7 +50,7 @@ def archive(path: Path, files: dict[str, bytes]) -> None:
 
 def build(tag: str, directory: Path) -> tuple[str, list[Path]]:
     if not RELEASE_TAG.fullmatch(tag):
-        raise ValueError("Invalid GraphModules release tag")
+        raise ValueError("Invalid terraform-msgraph-modules release tag")
     sha = git("rev-parse", f"refs/tags/{tag}^{{commit}}")
     git("merge-base", "--is-ancestor", sha, "origin/main")
     # A separate worktree avoids running scripts from the publication tag.
@@ -114,7 +114,7 @@ def build(tag: str, directory: Path) -> tuple[str, list[Path]]:
         checksums.write_bytes(expected)
         notes = (checkout / ".release/release-notes.md").read_text(encoding="utf-8")
         (directory / "release-notes.md").write_text(
-            notes + f"\nGraphModules publication: `{sha}`.\n", encoding="utf-8"
+            notes + f"\nterraform-msgraph-modules publication: `{sha}`.\n", encoding="utf-8"
         )
         return sha, [*assets, checksums]
     finally:
@@ -124,7 +124,7 @@ def build(tag: str, directory: Path) -> tuple[str, list[Path]]:
 def request_json(repository: str, suffix: str):
     headers = {
         "Accept": "application/vnd.github+json",
-        "User-Agent": "GraphModules-release",
+        "User-Agent": "terraform-msgraph-modules-release",
     }
     # Published releases of this public repository can be verified without a token.
     if os.environ.get("GH_TOKEN"):
@@ -277,7 +277,7 @@ def release(repository: str, tag: str, sha: str, assets: list[Path], directory: 
             "--target",
             sha,
             "--title",
-            f"GraphModules {tag}",
+            f"terraform-msgraph-modules {tag}",
             "--notes-file",
             notes,
         )

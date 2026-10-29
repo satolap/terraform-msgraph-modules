@@ -1,6 +1,6 @@
-# Contributing to GraphModules
+# Contributing to terraform-msgraph-modules
 
-Thank you for helping improve GraphModules.
+Thank you for helping improve terraform-msgraph-modules.
 
 ## Report a problem or request a module
 
