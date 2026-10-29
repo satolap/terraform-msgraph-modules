@@ -591,7 +591,7 @@ class ReleaseTagTest(unittest.TestCase):
         for tag in ("1.0.0", "v1.0", "v01.0.0", "v1.0.0-rc.1", "graphmodules-067c9d13832914ce38d2"):
             with self.subTest(tag=tag):
                 self.assertIsNone(release.RELEASE_TAG.fullmatch(tag))
-                with self.assertRaisesRegex(ValueError, "Invalid GraphModules release tag"):
+                with self.assertRaisesRegex(ValueError, "Invalid terraform-msgraph-modules release tag"):
                     release.build(tag, Path("unused"))
 
 
