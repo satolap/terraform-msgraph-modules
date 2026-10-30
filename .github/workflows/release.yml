@@ -90,6 +90,9 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: write
+      # Only for the build provenance attestation of the release assets.
+      id-token: write
+      attestations: write
     steps:
       - name: Check out the trusted release tooling from main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -101,11 +104,12 @@ jobs:
         with:
           python-version: '3.12'
       - name: Reconstruct and verify the tested archives before releasing
+        id: assets
         env:
-          GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ inputs.tag }}
           PUBLICATION_COMMIT: ${{ github.sha }}
+          ASSETS: ${{ runner.temp }}/release-assets
         shell: python {0}
         run: |
           import json
@@ -119,7 +123,32 @@ jobs:
               revision = os.environ["PUBLICATION_COMMIT"] + ":release-manifest.json"
               manifest = subprocess.check_output(["git", "show", revision], text=True)
               tag = json.loads(manifest)["tag"]
+          # release.py rejects a malformed tag before it reaches the step output.
           subprocess.run([
               sys.executable, "scripts/release.py", "--tag", tag,
+              "--repository", os.environ["GH_REPO"], "--verify-only",
+              "--output-dir", os.environ["ASSETS"],
+          ], check=True)
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"tag={tag}\n")
+      # Every asset digest is fixed by the tagged SHA256SUMS, so the publish step uploads
+      # byte-identical files. Attesting first means no published asset lacks provenance.
+      - name: Attest build provenance of the release assets
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: ${{ runner.temp }}/release-assets/*
+      - name: Publish the attested release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ steps.assets.outputs.tag }}
+        shell: python {0}
+        run: |
+          import os
+          import subprocess
+          import sys
+
+          subprocess.run([
+              sys.executable, "scripts/release.py", "--tag", os.environ["RELEASE_TAG"],
               "--repository", os.environ["GH_REPO"],
           ], check=True)

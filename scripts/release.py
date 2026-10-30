@@ -305,16 +305,32 @@ def release(repository: str, tag: str, sha: str, assets: list[Path], directory: 
     update_latest_branch_or_warn(repository, tag, sha)
 
 
+def copy_assets(assets: list[Path], output: Path) -> None:
+    """Copy exactly the release assets, so that a later step can attest or check them."""
+    output.mkdir(parents=True, exist_ok=True)
+    if any(output.iterdir()):
+        raise ValueError("Asset output directory must be empty")
+    for asset in assets:
+        (output / asset.name).write_bytes(asset.read_bytes())
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--tag", required=True)
     parser.add_argument("--repository", required=True)
     parser.add_argument("--verify-only", action="store_true")
     parser.add_argument("--verify-assets", action="store_true")
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        help="copy the reconstructed release assets to this empty directory",
+    )
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix="graphmodules-") as temporary:
         directory = Path(temporary)
         sha, assets = build(args.tag, directory)
+        if args.output_dir:
+            copy_assets(assets, args.output_dir)
         if args.verify_assets:
             verify_assets(args.repository, args.tag, sha, assets)
         elif not args.verify_only:

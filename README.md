@@ -232,11 +232,14 @@ tag is created:
    Microsoft Graph tenant.
 5. The terraform-msgraph-modules release workflow rebuilds the v1.0, beta, and verified archives
    from the tagged commit and requires their byte-level SHA-256 checksums to match
-   the already tested artifacts before publishing the GitHub Release.
+   the already tested artifacts before publishing the GitHub Release. It then
+   creates a build provenance attestation for every release asset before the
+   release is published.
 
 A daily scheduled workflow rebuilds every published release the same way and fails
 if its tag commit or any asset's SHA-256 digest no longer matches the GitHub Release,
-or if the `latest` branch points anywhere other than the GitHub Latest release.
+if an asset of a release newer than v4.0.0 has no valid attestation from the release
+workflow, or if the `latest` branch points anywhere other than the GitHub Latest release.
 
 Mock tests and schema validation do not prove that a caller has the required
 Microsoft Graph permissions, license, or tenant configuration. Endpoint READMEs
@@ -257,6 +260,20 @@ contains:
 `interface-changes.json` lists the exact interface changes that each release
 decision accepted, while the release notes summarize them with counts per kind.
 Verify it with the other downloads using `sha256sum -c SHA256SUMS`.
+
+Releases after v4.0.0 also carry a
+[build provenance attestation](https://docs.github.com/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds)
+for every asset listed above, created by the release workflow in this repository.
+With the [GitHub CLI](https://cli.github.com/), verify each downloaded file:
+
+```sh
+gh attestation verify graphmodules-v1.0-modules.tar.gz --repo satolap/terraform-msgraph-modules
+```
+
+To also require that the attestation came from the release workflow on `main`, add
+`--signer-workflow satolap/terraform-msgraph-modules/.github/workflows/release.yml --source-ref refs/heads/main`.
+Releases up to v4.0.0 were published before attestations and have none; verify
+them with `SHA256SUMS`.
 
 ## Public documentation
 
