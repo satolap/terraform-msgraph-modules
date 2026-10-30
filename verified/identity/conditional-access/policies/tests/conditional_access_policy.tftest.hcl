@@ -1985,7 +1985,7 @@ run "named_location_reference_retries_the_replication_error" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.policy.retry) == jsonencode({ error_message_regex = ["NamedLocation with id [0-9A-Fa-f-]+ does not exist in the directory"] })
+    condition     = jsonencode(msgraph_resource.policy.retry) == jsonencode({ error_message_regex = ["^\\s*\\{\\s*\"error\"\\s*:\\s*\\{\\s*\"code\"\\s*:\\s*\"BadRequest\"\\s*,\\s*\"message\"\\s*:\\s*\"1040: NamedLocation with id [0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12} does not exist in the directory\\.\"\\s*[,}]"] })
     error_message = "A policy that names a location must retry the not-yet-replicated named location error, and nothing else."
   }
 
@@ -2008,6 +2008,20 @@ run "named_location_reference_retries_the_replication_error" {
   assert {
     condition     = msgraph_resource.policy.timeouts.create == "10m" && msgraph_resource.policy.timeouts.update == "10m"
     error_message = "The retry is bounded by the create and update timeouts, which default to 10m."
+  }
+
+  assert {
+    condition = alltrue(flatten([
+      for re in msgraph_resource.policy.retry.error_message_regex : [
+        for response in [
+          jsonencode({ id = "77777777-7777-7777-7777-777777777777", displayName = "1040: NamedLocation with id 77777777-7777-7777-7777-777777777777 does not exist in the directory." }),
+          jsonencode({ error = { code = "Forbidden", message = "1040: NamedLocation with id 77777777-7777-7777-7777-777777777777 does not exist in the directory." } }),
+          jsonencode({ error = { code = "BadRequest", message = "1177: NamedLocation with id 77777777-7777-7777-7777-777777777777 does not exist in the directory." } }),
+          jsonencode({ error = { code = "BadRequest", message = "1040: NamedLocation with id --- does not exist in the directory." } }),
+        ] : !can(regex(re, response))
+      ]
+    ]))
+    error_message = "Successful responses, other error codes and malformed IDs must never trigger the replication retry."
   }
 }
 

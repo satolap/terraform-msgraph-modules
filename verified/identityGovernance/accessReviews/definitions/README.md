@@ -19,7 +19,7 @@ Uses beta: **no**. This module and its local child modules do not select beta.
 <!-- live-status:start -->
 Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
 
-![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+![live: not yet run](https://img.shields.io/badge/live-not%20yet%20run-lightgrey)
 <!-- live-status:end -->
 
 Manages one Microsoft Entra
@@ -46,7 +46,7 @@ are outside the definition.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "team_access_review" {
@@ -172,6 +172,8 @@ and role. Live acceptance stays open under #258.
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | AR-GROUP-REVIEWS | The stricter reading is applied: Microsoft Entra ID Governance or Microsoft Entra Suite. The prerequisites page for access reviews of groups and applications names those licenses, while the features-by-license table lists the access review capabilities previously generally available in Microsoft Entra ID P2 under P2 as well, so P2 alone may suffice for basic group reviews. This rule applies to the basic review of one owned static group's members; it is separate from EM-ACCESS-REVIEWS, and inactive-user, PIM for Groups, catalog and machine-learning reviews are not modelled. Any of: Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). | Every member user who reviews and every member user whose group membership is reviewed | group_based / per_user | inferred |
@@ -213,3 +215,30 @@ Sources: [Create an access review of groups and applications: prerequisites](htt
 | scope_query | The scope query sent | yes |
 | reviewer_user_ids | The primary reviewer IDs sent, in lower case | yes |
 | status | The definition's status as read back, or null | no |
+
+## Prepared governance suite
+
+The optional `tests/integration` suite has not been run against a tenant. See
+[governance live acceptance](../../../../../docs/governance-live-acceptance.md) for its
+prerequisites, bounded assertions and the acceptance that remains outstanding.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `display_name`: in place.
+- `name_pattern`: no object change (validation or timing only).
+- `description_for_admins`: in place.
+- `description_for_reviewers`: in place.
+- `group_id`: replaces `msgraph_resource.this` when its effect on `local.scope_query` changes.
+- `membership_scope`: replaces `msgraph_resource.this` when its effect on `local.scope_query` changes.
+- `reviewer_user_ids`: in place.
+- `fallback_reviewer_user_ids`: in place.
+- `start_date`: in place.
+- `recurrence`: in place.
+- `instance_duration_in_days`: in place.
+- `recommendations_enabled`: in place.
+- `justification_required_on_approval`: in place.
+- `timeouts`: no object change (validation or timing only).
+<!-- drift:end -->

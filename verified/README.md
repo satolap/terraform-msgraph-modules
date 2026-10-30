@@ -2,8 +2,9 @@
 
 These modules provide task-focused Terraform inputs and outputs for Microsoft
 Entra users, groups and their members, applications, service principals,
-administrative units, entitlement management, Lifecycle Workflows (with custom task extensions), Terms of Use agreements, Privileged Identity Management role assignments and Conditional Access, and a naming module
-that renders object names from a naming convention.
+administrative units, entitlement management, Lifecycle Workflows (with custom task extensions), Terms of Use agreements, Privileged Identity Management role assignments and Conditional Access, a naming module
+that renders object names from a naming convention, and composite modules that combine
+them for a task.
 Start with the module README for configuration, permissions, license requirements
 and lifecycle limitations.
 
@@ -95,6 +96,8 @@ verified/
 ├── applications/
 │   ├── federatedIdentityCredentials/
 │   └── passwordCredentials/
+├── compositions/
+│   └── connected-organization-access/
 ├── directory/
 │   └── administrative-units/
 ├── groups/
@@ -128,6 +131,8 @@ verified/
 │           └── eligibilityScheduleRequests/
 ├── naming/
 ├── oauth2PermissionGrants/
+├── policies/
+│   └── authenticationStrengthPolicies/
 ├── role-management/
 │   ├── directory/
 │   │   └── role-schedules/
@@ -153,10 +158,12 @@ verified/
 ```
 
 `groups/`, `access-packages/` and `catalogs/` are modules themselves; their child
-folders provide separate relationship modules. `directory/`, `identity/`,
-`conditional-access/`, `named-locations/` and `role-management/` only group modules. A Terraform module
-source points to the
-specific module folder, rather than this index or a grouping folder.
+folders provide separate relationship modules. `compositions/`, `directory/`,
+`identity/`, `conditional-access/`, `named-locations/` and `role-management/` only group
+modules. A Terraform module source points to the specific module folder, rather than this
+index or a grouping folder. A module under `compositions/` calls other verified modules with
+relative sources, so it needs the whole `verified/` tree, which the registry package
+provides.
 
 ## Browse modules
 
@@ -174,8 +181,8 @@ specific module folder, rather than this index or a grouping folder.
 | [Users](users/README.md) | Microsoft Entra user accounts |
 | [Administrative units](directory/administrative-units/README.md) | Administrative units, restricted management or dynamic, and their members |
 | [Catalogs](identity-governance/entitlement-management/catalogs/README.md) | Entitlement management resource catalogs |
-| [Catalog resources](identity-governance/entitlement-management/catalogs/resources/README.md) | Resource associations within a catalog |
-| [Catalog custom extensions](identity-governance/entitlement-management/catalogs/custom-extensions/README.md) | Logic App custom workflow extensions that assignment policies call |
+| [Catalog resources](identity-governance/entitlement-management/catalogs/resources/README.md) | Resource associations within a catalog; DirectoryRole preview onboarding only |
+| [Catalog custom extensions](identity-governance/entitlement-management/catalogs/custom-extensions/README.md) | Logic App custom workflow extensions, launch and continue or launch and wait, that assignment policies call |
 | [Access packages](identity-governance/entitlement-management/access-packages/README.md) | Packages of access to catalog resources |
 | [Resource role scopes](identity-governance/entitlement-management/access-packages/resource-role-scopes/README.md) | Resource roles and scopes attached to an access package |
 | [Assignment policies](identity-governance/entitlement-management/assignment-policies/README.md) | Access-package request and assignment policies, with approval stages, requestor questions and access reviews |
@@ -192,6 +199,7 @@ specific module folder, rather than this index or a grouping folder.
 | [Custom directory role definitions](roleManagement/directory/roleDefinitions/README.md) | New custom Microsoft Entra directory roles; makes no assignment |
 | [PIM for Groups eligibility requests](identityGovernance/privilegedAccess/group/eligibilityScheduleRequests/README.md) | One bounded administrative eligibility request for group membership or ownership, with schedule and instance correlation; no activation or removal |
 | [PIM for Groups active assignment requests](identityGovernance/privilegedAccess/group/assignmentScheduleRequests/README.md) | One bounded administrative active membership or ownership request, with schedule and instance correlation; no revocation or policy change |
+| [Authentication strength policies](policies/authenticationStrengthPolicies/README.md) | Custom authentication strengths and combination configurations (`/policies/authenticationStrengthPolicies`) |
 | [Conditional Access policies](identity/conditional-access/policies/README.md) | Conditional Access policies, report-only by default, with mandatory break-glass exclusions |
 | [IP named locations](identity/conditional-access/named-locations/ip-ranges/README.md) | IPv4 and IPv6 named locations for Conditional Access |
 | [Country named locations](identity/conditional-access/named-locations/countries/README.md) | Country and region named locations for Conditional Access |
@@ -203,6 +211,25 @@ specific module folder, rather than this index or a grouping folder.
 | [Admin consent workflow](security-baseline/admin-consent-workflow/README.md) | The admin consent request policy singleton: enable the workflow, name reviewers, with a snapshot and restore |
 | [Licence guard](security-baseline/licence-guard/README.md) | Explicit tier and tenant subscription-capacity checks |
 | [Naming](naming/README.md) | Names rendered from a naming convention of templates and tokens, checked against the limits of each object, with a pattern per name for the modules' `name_pattern`; makes no Graph request |
+| [Connected organization access](compositions/connected-organization-access/README.md) | Composite: a connected organization with its catalog, access package, sponsor groups, administrative unit, policies, custom extensions and sponsor invitations |
+
+## Using a verified module
+
+Published verified modules use `satolap/modules/msgraph//verified/<module-path>` with a
+version from [GraphModules Releases](https://github.com/satolap/terraform-msgraph-modules/releases),
+where `<module-path>` is the folder path under `verified/` shown in the tree above;
+generated modules use `satolap/modules/msgraph//<api-version>/<graph-route>`.
+Modules inherit the provider configuration from the calling root. Use Azure CLI
+authentication locally or workload identity federation in CI, following the provider
+documentation. Relation cleanup additionally requires Bash, Azure CLI, and
+curl; see the catalog-resource and role-scope READMEs before using them.
+
+## Licensing and prerequisites
+
+Every verified README carries a **Licensing and prerequisites** section rendered from one
+feature-level registry. It lists the Microsoft feature rule that applies always, the rules
+that specific inputs switch on, who needs coverage, the review confidence and official
+sources. A successful API call never counts as license evidence.
 
 ## Naming conventions
 
@@ -217,6 +244,8 @@ output, and its `kinds` input checks each name against the limits of the module 
 it. See its README for a convention with placeholder values and for pipeline policy-as-code,
 which also catches configurations that bypass these modules.
 
-For the broader generated endpoint catalogs, browse [v1.0](../generated/v1.0/README.md)
-or [beta](../generated/beta/README.md). Module availability and offline tests do not
-by themselves establish live lifecycle support; consult each module's guidance.
+For the broader generated endpoint catalogs, browse
+[v1.0](https://github.com/satolap/terraform-msgraph-modules/blob/main/v1.0/README.md)
+or [beta](https://github.com/satolap/terraform-msgraph-modules/blob/main/beta/README.md).
+Module availability and offline tests do not by themselves establish live lifecycle
+support; consult each module's guidance.

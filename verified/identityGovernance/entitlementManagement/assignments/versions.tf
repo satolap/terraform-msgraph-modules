@@ -4,15 +4,15 @@ terraform {
   required_providers {
     msgraph = {
       source  = "microsoft/msgraph"
-      version = ">= 0.3.0"
+      version = ">= 0.3.0, < 0.7.0"
     }
     time = {
       source  = "hashicorp/time"
-      version = ">= 0.9.0"
+      version = ">= 0.9.0, < 1.0.0"
     }
     null = {
       source  = "hashicorp/null"
-      version = ">= 3.2.0"
+      version = ">= 3.2.0, < 4.0.0"
     }
   }
 }

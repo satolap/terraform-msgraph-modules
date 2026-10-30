@@ -19,7 +19,7 @@ Uses beta: **no**. This module and its local child modules do not select beta.
 <!-- live-status:start -->
 Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
 
-![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+![live: not yet run](https://img.shields.io/badge/live-not%20yet%20run-lightgrey)
 <!-- live-status:end -->
 
 Create one Microsoft Graph v1.0 `oauth2PermissionGrants` delegated permission
@@ -30,7 +30,7 @@ It creates no application, service principal, user or application permission.
 For a published release containing this module, replace `<version>` with the
 release version. Availability in this source tree does not mean that an
 existing release already includes the module. See the
-[GraphModules installation guide](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry).
+[terraform-msgraph-modules installation guide](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry).
 
 ```hcl
 module "delegated_reader" {
@@ -148,8 +148,14 @@ after DELETE. Create-time verification is the ownership control. Out-of-band
 changes after verification are outside this contract. Coordinate with other
 writers, protect state, and independently verify exact-ID absence after destroy.
 An already absent item might succeed or error according to provider/Graph
-behavior; this remains a live acceptance probe. `-refresh=false` skips failing
-reads but still sends DELETE to the saved ID with provider credentials.
+behavior; this remains a separate live acceptance probe. The governance
+`tests/integration/grant.tftest.hcl` run `destroy_grant` checks collection absence
+after normal registered deletion; it does not exercise DELETE of an already
+absent item. That probe requires an out-of-band exact-ID deletion and recovery
+of a potentially failed destroy action, so it is not added to the automatic
+suite until the runner can preserve and classify either provider outcome.
+`-refresh=false` skips failing reads but still sends DELETE to the saved ID with
+provider credentials.
 
 ### Failed verification after create
 
@@ -250,6 +256,8 @@ consent policy. API authorization is separate from licensing.
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | DIRECTORY-BASIC | The reviewed create APIs for users, assigned security groups, applications and service principals specify no additional premium license. This covers the object operation only; features built on these objects can require licenses. No additional license specified. | No per-user entitlement for the object operation itself | direct / per_tenant | documented |
@@ -266,10 +274,10 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 | Name | Description | Type | Default | On change |
 | --- | --- | --- | --- | --- |
-| clientId | Client service principal object GUID | `string` | required | replaces `msgraph_resource_action.grant` when its effect on `local.identity` changes; kept from creation: a change is refused or ignored (see notes) |
-| resourceId | Resource API service principal object GUID | `string` | required | replaces `msgraph_resource_action.grant` when its effect on `local.identity` changes; kept from creation: a change is refused or ignored (see notes) |
-| consentType | Explicit Principal or AllPrincipals | `string` | required | replaces `msgraph_resource_action.grant` when its effect on `local.identity` changes; kept from creation: a change is refused or ignored (see notes) |
-| principalId | User object GUID for Principal; null for AllPrincipals | `string` | `null` | replaces `msgraph_resource_action.grant` when its effect on `local.identity` changes; kept from creation: a change is refused or ignored (see notes) |
+| clientId | Client service principal object GUID | `string` | required | replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.grant` when its effect on `local.identity` changes |
+| resourceId | Resource API service principal object GUID | `string` | required | replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.grant` when its effect on `local.identity` changes |
+| consentType | Explicit Principal or AllPrincipals | `string` | required | replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.grant` when its effect on `local.identity` changes |
+| principalId | User object GUID for Principal; null for AllPrincipals | `string` | `null` | replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.grant` when its effect on `local.identity` changes |
 | acknowledge_all_principals | Explicit tenant-wide admin consent acknowledgement | `bool` | `false` | no object change (validation or timing only) |
 | scopes | Complete nonempty set of delegated scope names | `set(string)` | required | kept from creation in `msgraph_resource_action.grant`; updates `msgraph_update_resource.scope` in place |
 
@@ -323,3 +331,16 @@ apply without POST replay, legacy-state unchanged upgrade, and confirmed-absence
 state removal after DELETE 404. Never use destroy to recover failed verification.
 
 Retain sanitized evidence without tenant identifiers, raw tokens or responses.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `clientId`: replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.grant` when its effect on `local.identity` changes.
+- `resourceId`: replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.grant` when its effect on `local.identity` changes.
+- `consentType`: replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.grant` when its effect on `local.identity` changes.
+- `principalId`: replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.grant` when its effect on `local.identity` changes.
+- `acknowledge_all_principals`: no object change (validation or timing only).
+- `scopes`: kept from creation in `msgraph_resource_action.grant`; updates `msgraph_update_resource.scope` in place.
+<!-- drift:end -->

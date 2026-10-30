@@ -44,7 +44,7 @@ What the module does, and what it does not:
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "partner_names" {
@@ -354,6 +354,8 @@ later.
 
 Reviewed on 2026-09-18. No licensing feature rule applies to this module: it makes no Microsoft Graph request and creates no object.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 Notes:
 
 - The module renders names from templates inside Terraform. It declares no provider, no resource and no data source, so it calls no API and needs no tenant.
@@ -391,3 +393,16 @@ and custom transliteration, each checked against the names it renders. A Python 
 in the validation, the module and this README, the transliteration table, that every kind
 matches the validation of its verified module and this README, and that the module stays
 free of providers and resources.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `templates`: no object change (validation or timing only).
+- `tokens`: no object change (validation or timing only).
+- `token_rules`: no object change (validation or timing only).
+- `constraints`: no object change (validation or timing only).
+- `kinds`: no object change (validation or timing only).
+- `transliterations`: no object change (validation or timing only).
+<!-- drift:end -->

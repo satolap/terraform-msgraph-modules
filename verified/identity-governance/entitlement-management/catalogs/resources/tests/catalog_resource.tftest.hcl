@@ -370,3 +370,70 @@ run "a_new_display_name_keeps_the_sleep" {
     error_message = "The one-shot add request must keep its captured display name without replay."
   }
 }
+
+run "directory_role_requires_preview_acknowledgement" {
+  command = plan
+  variables { resource_origin_system = "DirectoryRole" }
+  expect_failures = [var.acknowledge_directory_role_preview]
+}
+
+run "directory_role_rejects_null_acknowledgement" {
+  command = plan
+  variables {
+    resource_origin_system             = "DirectoryRole"
+    acknowledge_directory_role_preview = null
+  }
+  expect_failures = [var.acknowledge_directory_role_preview]
+}
+
+run "directory_role_rejects_non_guid_origin" {
+  command = plan
+  variables {
+    resource_origin_system             = "DirectoryRole"
+    acknowledge_directory_role_preview = true
+    resource_origin_id                 = "Directory Readers"
+  }
+  expect_failures = [var.resource_origin_id]
+}
+
+run "directory_role_rejects_null_origin" {
+  command = plan
+  variables {
+    resource_origin_system             = "DirectoryRole"
+    acknowledge_directory_role_preview = true
+    resource_origin_id                 = null
+  }
+  expect_failures = [var.resource_origin_id]
+}
+
+run "directory_role_add_body" {
+  command = plan
+  variables {
+    resource_origin_system             = "DirectoryRole"
+    acknowledge_directory_role_preview = true
+  }
+  assert {
+    condition = msgraph_resource_action.add_request.body.resource == {
+      originSystem = "DirectoryRole"
+      originId     = "33333333-3333-3333-3333-333333333333"
+      displayName  = "Engineering"
+    }
+    error_message = "DirectoryRole onboarding must send the role definition GUID without grant or Azure resourceType fields."
+  }
+}
+
+run "sharepoint_keeps_url_origin_without_preview_acknowledgement" {
+  command = plan
+  variables {
+    resource_origin_system = "SharePointOnline"
+    resource_origin_id     = "https://contoso.sharepoint.com/sites/engineering"
+  }
+  assert {
+    condition = msgraph_resource_action.add_request.body.resource == {
+      originSystem = "SharePointOnline"
+      originId     = "https://contoso.sharepoint.com/sites/engineering"
+      displayName  = "Engineering"
+    }
+    error_message = "Existing origins must keep their body shape and accept non-GUID origin IDs."
+  }
+}

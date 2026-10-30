@@ -1,3 +1,12 @@
+# Opt-in licence check. The shared guard reads subscribedSkus only for tier p1; the free tier
+# reads nothing and needs no permission. The tier depends only on the licence_check input.
+module "licence_guard" {
+  source = "../../../security-baseline/licence-guard"
+
+  tier          = var.licence_check ? "p1" : "free"
+  allowed_tiers = ["free", "p1"]
+}
+
 locals {
   guid = "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$"
 
@@ -135,13 +144,14 @@ locals {
   # when its message matches one of these expressions, and the retries count
   # against timeouts.create and timeouts.update, which bound the wait. The
   # retry is set whenever the policy has a locations condition and not at all
-  # otherwise, so a policy without the condition sends no retrying request. It
+  # otherwise. The expression anchors the BadRequest envelope and exact 1040
+  # message so successful responses echoing the message cannot resend a POST. It
   # does not depend on the IDs themselves, because a location created in the
   # same apply has an ID that is unknown at plan time. A retry never sleeps
   # unless Graph returned one of these errors, so All and AllTrusted wait for
   # nothing either.
   named_location_replication_errors = [
-    "NamedLocation with id [0-9A-Fa-f-]+ does not exist in the directory",
+    "^\\s*\\{\\s*\"error\"\\s*:\\s*\\{\\s*\"code\"\\s*:\\s*\"BadRequest\"\\s*,\\s*\"message\"\\s*:\\s*\"1040: NamedLocation with id [0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12} does not exist in the directory\\.\"\\s*[,}]",
   ]
 
   # Every ID any include list names, for the break-glass conflict checks.

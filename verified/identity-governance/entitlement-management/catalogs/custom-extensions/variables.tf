@@ -78,6 +78,29 @@ variable "description" {
   default     = null
 }
 
+variable "callback" {
+  description = "Launch and wait. Sends callbackConfiguration with only timeoutDuration, without a callback @odata.type. Null, the default, leaves the callback out of the request body, so a new extension is launch and continue: entitlement management calls the Logic App and goes on. { timeout = \"PT1H\" } makes the extension launch and wait: entitlement management pauses the request at each stage that the extension is bound to until the resume action is called on the request, and treats the stage as failed when no resume arrives within timeout. timeout is an ISO 8601 duration in whole days, hours and minutes, in normal form (no part zero or with a leading zero, at most 23 hours and 59 minutes), from \"PT5M\" to \"P14D\", such as \"PT1H\", \"P1DT12H\" or \"P14D\". Only extension_type \"request_workflow\" supports it. Setting callback back to null does not end launch and wait, because an update keeps the callback that its body omits; replace the extension to remove it."
+  type = object({
+    timeout = string
+  })
+  default = null
+
+  validation {
+    condition     = var.callback == null || try(can(regex("^P([1-9][0-9]*D)?(T([1-9][0-9]*H)?([1-9][0-9]*M)?)?$", var.callback.timeout)) && !contains(["P", "PT"], var.callback.timeout) && !endswith(var.callback.timeout, "T"), false)
+    error_message = "callback.timeout must be an ISO 8601 duration in whole days, hours and minutes, such as \"PT1H\", \"P1DT12H\" or \"P14D\": P, then the days, then T and the hours and minutes, each part a number greater than zero without a leading zero. Weeks, months, years, seconds and fractions are not accepted."
+  }
+
+  validation {
+    condition     = var.callback == null || try(alltrue([for m in regexall("([0-9]+)([HM])", var.callback.timeout) : tonumber(m[0]) < lookup({ H = 24, M = 60 }, m[1])]), true)
+    error_message = "callback.timeout must be in normal form, with at most 23 hours and 59 minutes, such as \"P1DT1H\" rather than \"PT25H\" and \"PT1H30M\" rather than \"PT90M\". Microsoft Graph may return a duration in normal form, and a different form would show as drift."
+  }
+
+  validation {
+    condition     = var.callback == null || try(!can(regex("^P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?)?$", var.callback.timeout)) || alltrue([for minutes in [sum([for m in regexall("([0-9]+)([DHM])", var.callback.timeout) : tonumber(m[0]) * lookup({ D = 1440, H = 60, M = 1 }, m[1])])] : minutes >= 5 && minutes <= 20160]), true)
+    error_message = "callback.timeout must be from 5 minutes (\"PT5M\") to 14 days (\"P14D\"), the range that Microsoft Learn documents for custom extensions in entitlement management."
+  }
+}
+
 variable "name_pattern" {
   description = "Regular expression (RE2 syntax, not anchored unless it says so) that the effective display name must match. When set and the name does not match, the plan fails. Null accepts any name."
   type        = string

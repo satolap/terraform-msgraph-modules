@@ -63,8 +63,8 @@ What the module manages, and what it does not:
 
 ## When to use this module instead of a generated one
 
-As published when this module was written, the generated module for the same collection
-(`modules/generated/v1.0/identity-and-access/directory/administrative-units`) takes every
+As published when this module was written, the
+[generated module for the same collection](https://github.com/satolap/terraform-msgraph-modules/tree/main/v1.0/identity-and-access/directory/administrative-units) takes every
 property as an optional string or boolean, without validating the visibility or the
 membership values or requiring a display name, next to an untyped `additional_properties`
 input; sends a change of `is_member_management_restricted` as an update, which Learn does not
@@ -76,7 +76,7 @@ restriction changes, and it manages the members as one authoritative collection.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 An administrative unit that holds three security groups created in the same configuration:
 
@@ -353,6 +353,8 @@ only. These checks are pending, and each needs a tenant and credentials:
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | DIRECTORY-BASIC | The reviewed create APIs for users, assigned security groups, applications and service principals specify no additional premium license. This covers the object operation only; features built on these objects can require licenses. No additional license specified. | No per-user entitlement for the object operation itself | direct / per_tenant | documented |
@@ -412,3 +414,20 @@ provider sends no request, so a Python test (`tests/test_administrative_units.py
 validation and precondition messages, the body keys, the lifecycle settings and the
 provider attributes that the module must not use. There is no live suite yet; see
 [Live test status](#live-test-status).
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `display_name`: in place.
+- `description`: in place.
+- `visibility`: in place.
+- `is_member_management_restricted`: replaces `msgraph_resource.this`.
+- `membership_type`: in place.
+- `membership_rule`: in place.
+- `membership_rule_processing_state`: in place.
+- `member_ids`: adds or removes relationships of `msgraph_resource_collection.members`.
+- `scoped_role_members`: replaces `msgraph_resource.scoped_role_member` when `role_id`, `member_id` changes; creates or deletes `msgraph_resource.scoped_role_member` instances.
+- `name_pattern`: no object change (validation or timing only).
+<!-- drift:end -->

@@ -1,16 +1,12 @@
-# Integration-test helper: waits, then reads the named location back with a
-# fresh GET and returns it in a normalised form (ranges sorted by address).
-# A new run_label replaces the wait, so every verify run reads after its own
-# delay instead of reusing an earlier read.
+# Independent bounded GET verification; a new run_label schedules a fresh read.
+# Poll (bounded by the read timeout) until the response shows the expected
+# trust flag, name and range count, and stop at once when it already does
+# (GB-conditional-access-505: stale reads can carry the old name, trust or ranges).
 terraform {
   required_providers {
     msgraph = {
       source  = "microsoft/msgraph"
       version = ">= 0.5.0"
-    }
-    time = {
-      source  = "hashicorp/time"
-      version = ">= 0.9.0"
     }
   }
 }
@@ -23,18 +19,45 @@ variable "run_label" {
   type = string
 }
 
-variable "delay_seconds" {
-  type    = number
-  default = 30
+variable "expected_display_name" {
+  type = string
 }
 
-resource "time_sleep" "settle" {
-  create_duration = "${var.delay_seconds}s"
+variable "expected_is_trusted" {
+  type = bool
+}
 
-  triggers = {
-    named_location_id = var.named_location_id
-    run_label         = var.run_label
-  }
+variable "expected_ip_ranges" {
+  type = list(string)
+}
+
+# Optional pre-update values: a response that still shows one is stale.
+variable "previous_display_name" {
+  type    = string
+  default = null
+}
+
+variable "previous_ip_ranges" {
+  type    = list(string)
+  default = []
+}
+
+locals {
+  expected_count = length(var.expected_ip_ranges)
+  stale_cidrs    = [for c in var.previous_ip_ranges : c if !contains(var.expected_ip_ranges, c)]
+  # RE2 has no negative lookahead, so stale responses are matched by what they
+  # show: the opposite trust flag, the previous name, a previous-only range, or
+  # an ipRanges array with fewer entries than expected (range objects are flat).
+  stale_patterns = concat(
+    [var.expected_is_trusted ? "\"isTrusted\"\\s*:\\s*false\\b" : "\"isTrusted\"\\s*:\\s*true\\b"],
+    var.previous_display_name == null ? [] : ["\"displayName\"\\s*:\\s*\"${replace(var.previous_display_name, ".", "\\.")}\""],
+    [for c in local.stale_cidrs : "\"cidrAddress\"\\s*:\\s*\"${replace(c, ".", "\\.")}\""],
+    local.expected_count < 1 ? [] : ["\"ipRanges\"\\s*:\\s*\\[(\\s*\\{[^{}]*\\}\\s*,?){0,${local.expected_count - 1}}\\s*\\]"],
+  )
+}
+
+resource "terraform_data" "read_generation" {
+  input = { named_location_id = var.named_location_id, run_label = var.run_label }
 }
 
 data "msgraph_resource" "named_location" {
@@ -45,7 +68,21 @@ data "msgraph_resource" "named_location" {
     all = "@"
   }
 
-  depends_on = [time_sleep.settle]
+  retry = { error_message_regex = ["\"isTrusted\"\\s*:\\s*true\\b"] }
+  timeouts { read = "2m" }
+  depends_on = [terraform_data.read_generation]
+
+  lifecycle {
+    postcondition {
+      condition = try(alltrue([
+        self.output.all.id == var.named_location_id,
+        self.output.all.isTrusted == var.expected_is_trusted,
+        self.output.all.displayName == var.expected_display_name,
+        sort([for r in self.output.all.ipRanges : r.cidrAddress]) == sort(var.expected_ip_ranges),
+      ]), false)
+      error_message = "Independent GET did not converge to the expected name, trust flag and ranges within two minutes; preserve ownership evidence for #208 recovery."
+    }
+  }
 }
 
 locals {

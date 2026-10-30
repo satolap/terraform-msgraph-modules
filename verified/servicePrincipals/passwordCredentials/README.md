@@ -43,7 +43,7 @@ and service-principal certificates remain outside this delivery (#382). Applicat
 [`applications/passwordCredentials`](../../applications/passwordCredentials/README.md).
 
 For a published release containing this module, replace `<version>` with that
-release version. The [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry)
+release version. The [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry)
 explains registry installation. Source availability does not establish published
 availability.
 
@@ -240,6 +240,8 @@ validation:
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | DIRECTORY-BASIC | The reviewed create APIs for users, assigned security groups, applications and service principals specify no additional premium license. This covers the object operation only; features built on these objects can require licenses. No additional license specified. | No per-user entitlement for the object operation itself | direct / per_tenant | documented |
@@ -270,3 +272,16 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 | secretText | One-time password; sensitive, stored in state | no |
 | startDateTime | Graph-returned validity start | no |
 | endDateTime | Graph-returned expiration | no |
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `service_principal_id`: replaces `msgraph_resource_action.remove`; replaces `msgraph_resource_action.add`.
+- `displayName`: replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes.
+- `startDateTime`: replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes.
+- `endDateTime`: replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes.
+- `rotation_trigger`: replaces `msgraph_resource_action.remove`; replaces `msgraph_resource_action.add`.
+- `acknowledge_secret_in_plan_output`: no object change (validation or timing only).
+<!-- drift:end -->

@@ -123,7 +123,7 @@ run "body_containing_the_error_is_rejected_named_location_not_replicated" {
   command = plan
 
   variables {
-    additional_properties = { "note" = "NamedLocation with id 11111111-2222-3333-4444-555555555555 does not exist in the directory" }
+    additional_properties = { "note" = "1040: NamedLocation with id 11111111-2222-3333-4444-555555555555 does not exist in the directory" }
   }
 
   expect_failures = [msgraph_resource.this]
@@ -137,7 +137,7 @@ run "retry_set_for_named_location_not_replicated" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.this.retry.error_message_regex) == jsonencode(["NamedLocation with id [0-9A-Fa-f-]+ does not exist in the directory"])
+    condition     = jsonencode(msgraph_resource.this.retry.error_message_regex) == jsonencode(["^\\s*\\{\\s*\"error\"\\s*:\\s*\\{\\s*\"code\"\\s*:\\s*\"BadRequest\"\\s*,\\s*\"message\"\\s*:\\s*\"1040: NamedLocation with id [0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12} does not exist in the directory\\.\"\\s*[,}]"])
     error_message = "A request that references another object must retry only the reviewed replication error."
   }
 }

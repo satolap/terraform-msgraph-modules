@@ -7,7 +7,7 @@ Uses beta: **no**. This module and its local child modules do not select beta.
 <!-- live-status:start -->
 Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
 
-![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+![live: not yet run](https://img.shields.io/badge/live-not%20yet%20run-lightgrey)
 <!-- live-status:end -->
 
 Manages one Microsoft Entra ID Governance **Lifecycle Workflows custom task extension**
@@ -28,7 +28,7 @@ holds no secret; the request body holds only identifiers.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "manager_access" {
@@ -169,6 +169,8 @@ documented, so assume the apply may touch the Logic App's authorization configur
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | LIFECYCLE-WORKFLOWS | Lifecycle workflows, including their custom task extensions, require Microsoft Entra ID Governance or Microsoft Entra Suite for the organization's member users. Microsoft Entra ID P2 alone is not sufficient. Agent sponsorship tasks need Microsoft Agent 365, and some capabilities involve guest billing. Any of: Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). | Every member user a workflow processes, and the Lifecycle Workflows administrator | direct / per_user | documented |
@@ -242,3 +244,24 @@ repository:
 
 Each result belongs in `docs/graph-behavior/lifecycle-workflows.md` (the entries named above) as
 confirmed-live, with a link to the run.
+
+## Prepared governance suite
+
+The optional `tests/integration` suite has not been run against a tenant. See
+[governance live acceptance](../../../../../docs/governance-live-acceptance.md) for its
+prerequisites, bounded assertions and the acceptance that remains outstanding.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `display_name`: in place.
+- `description`: in place.
+- `logic_app`: in place.
+- `authentication_resource_id`: in place.
+- `timeout_in_milliseconds`: in place.
+- `maximum_retries`: in place.
+- `callback_timeout_duration`: in place.
+- `name_pattern`: no object change (validation or timing only).
+<!-- drift:end -->

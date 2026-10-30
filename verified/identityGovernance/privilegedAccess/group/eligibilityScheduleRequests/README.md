@@ -31,7 +31,7 @@ Inputs and folder names keep Graph's original case. This is PIM for Groups
 and from ordinary group membership or ownership resources.
 
 For a published release containing this module, replace `<version>` with that
-release version. The [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry)
+release version. The [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry)
 explains registry installation. Availability in this source tree does not mean
 that an existing release already includes the module.
 
@@ -145,6 +145,8 @@ before any live use. Mock tests do not establish live verification.
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | PIM-GROUPS | Microsoft Graph documents PIM for Groups as part of Microsoft Entra ID Governance. This registry applies the same P2, ID Governance or Entra Suite coverage as PIM for Microsoft Entra roles; the group-specific population and product list were not independently confirmed from a pinned page. Any of: Microsoft Entra ID P2 (`AAD_PREMIUM_P2`); Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). | Each principal with an eligible or time-bound membership or ownership of a PIM-governed group, and each user who approves activation requests for it; confirm the exact bounded population before any live use | direct / per_user | inferred |
@@ -194,3 +196,18 @@ the identity of a replaceable grant. They prove the contract against supplied
 snapshots only. Later owner-dispatched live probes must separately establish
 effective access, expiry and narrow revocation with PIM-for-Groups-specific
 permissions, licensing and an explicit, bounded principal and group population.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `principal_id`: kept from creation: a change is refused or ignored (see notes).
+- `group_id`: kept from creation: a change is refused or ignored (see notes).
+- `access_id`: kept from creation: a change is refused or ignored (see notes).
+- `justification`: kept from creation: a change is refused or ignored (see notes).
+- `start_date_time`: kept from creation: a change is refused or ignored (see notes).
+- `end_date_time`: kept from creation: a change is refused or ignored (see notes).
+- `verification_delay_seconds`: no object change (validation or timing only).
+- `fail_on_verification_mismatch`: no object change (validation or timing only).
+<!-- drift:end -->

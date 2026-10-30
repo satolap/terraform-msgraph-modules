@@ -117,3 +117,45 @@ run "removal_retry_is_bounded_and_destroy_only" {
     error_message = "Retry must be bounded on destroy and never run adminRemove during registration."
   }
 }
+
+run "directory_role_registers_verified_counter_request" {
+  state_key = "directory_role"
+  command   = apply
+  variables {
+    resource_origin_system             = "DirectoryRole"
+    acknowledge_directory_role_preview = true
+  }
+  override_data {
+    target = data.msgraph_resource.verify
+    values = { output = { resources = [{ id = "directory_role_resource", originId = "33333333-3333-3333-3333-333333333333", originSystem = "DirectoryRole" }] } }
+  }
+  assert {
+    condition     = output.verified && output.resource_id == "directory_role_resource"
+    error_message = "Catalog onboarding must independently verify the DirectoryRole resource."
+  }
+  assert {
+    condition = msgraph_resource_action.remove[0].body == {
+      requestType = "adminRemove"
+      catalog     = { id = "11111111-1111-1111-1111-111111111111" }
+      resource    = { id = "directory_role_resource" }
+    }
+    error_message = "Removal must name only the saved catalog resource ID, never the role definition."
+  }
+}
+
+run "directory_role_unchanged_plan_preserves_request" {
+  state_key = "directory_role"
+  command   = plan
+  variables {
+    resource_origin_system             = "DirectoryRole"
+    acknowledge_directory_role_preview = true
+  }
+  override_data {
+    target = data.msgraph_resource.verify
+    values = { output = { resources = [{ id = "directory_role_resource", originId = "33333333-3333-3333-3333-333333333333", originSystem = "DirectoryRole" }] } }
+  }
+  assert {
+    condition     = output.request_id == run.directory_role_registers_verified_counter_request.request_id && output.resource_id == run.directory_role_registers_verified_counter_request.resource_id
+    error_message = "An unchanged plan must retain the request and verified resource identities."
+  }
+}

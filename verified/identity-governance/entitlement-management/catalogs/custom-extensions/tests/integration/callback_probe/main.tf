@@ -1,10 +1,10 @@
 # Integration-test helper for the launch and wait callback probe
 # (GB-entitlement-management-519). The module sends no callback yet, so this helper
 # creates a request workflow extension directly: the body the module sends, plus the
-# callbackConfiguration that a launch and wait extension carries, with the duration
-# named durationBeforeTimeout as in Microsoft Learn's entitlement management
-# examples. It then waits and reads the extension back with a fresh GET, so the
-# test sees which name and form Graph keeps. Nothing here invokes the Logic App.
+# callbackConfiguration that a launch and wait extension carries. The caller picks
+# the name of the duration and whether the callback names its @odata.type. Each
+# change restarts the wait, so the fresh GET after it reads what Graph kept from that
+# create or update. Nothing here invokes the Logic App.
 terraform {
   required_providers {
     msgraph = {
@@ -41,6 +41,16 @@ variable "timeout" {
   default = "PT1H"
 }
 
+variable "duration_name" {
+  type    = string
+  default = "timeoutDuration"
+}
+
+variable "with_odata_type" {
+  type    = bool
+  default = true
+}
+
 resource "msgraph_resource" "extension" {
   url           = "identityGovernance/entitlementManagement/catalogs/${lower(var.catalog_id)}/customWorkflowExtensions"
   api_version   = "v1.0"
@@ -62,10 +72,10 @@ resource "msgraph_resource" "extension" {
     authenticationConfiguration = {
       "@odata.type" = "#microsoft.graph.azureAdPopTokenAuthentication"
     }
-    callbackConfiguration = {
-      "@odata.type"         = "#microsoft.graph.customExtensionCallbackConfiguration"
-      durationBeforeTimeout = var.timeout
-    }
+    callbackConfiguration = merge(
+      var.with_odata_type ? { "@odata.type" = "#microsoft.graph.customExtensionCallbackConfiguration" } : {},
+      { (var.duration_name) = var.timeout },
+    )
   }
 
   response_export_values = {
@@ -77,7 +87,10 @@ resource "time_sleep" "settle" {
   create_duration = "15s"
 
   triggers = {
-    extension_id = msgraph_resource.extension.id
+    extension_id    = msgraph_resource.extension.id
+    timeout         = var.timeout
+    duration_name   = var.duration_name
+    with_odata_type = tostring(var.with_odata_type)
   }
 }
 

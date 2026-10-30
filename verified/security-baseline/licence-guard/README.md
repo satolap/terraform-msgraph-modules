@@ -85,7 +85,9 @@ resources after the check when the read can only happen during apply.
 | Name | Version |
 |------|---------|
 | terraform | >= 1.11.0 |
-| msgraph | >= 0.6.0, < 0.7.0 |
+| msgraph | >= 0.5.0, < 0.7.0 |
+
+The complete mock suite passes with msgraph 0.5.0 on Terraform 1.11.4 and 1.16.2.
 
 Terraform 1.11 or later is required, including for the offline mock suites.
 
@@ -114,6 +116,8 @@ Directory Readers. The `free` tier needs no permission.
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | DIRECTORY-BASIC | The reviewed create APIs for users, assigned security groups, applications and service principals specify no additional premium license. This covers the object operation only; features built on these objects can require licenses. No additional license specified. | No per-user entitlement for the object operation itself | direct / per_tenant | documented |
@@ -138,3 +142,12 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 |------|-------------| --- |
 | tier | The tier, once the allowed-tier and licence checks pass | yes |
 | licensed_skus | SKUs that license the tier: `sku_id`, `sku_part_number`, `capability_status` and `prepaid_units`; empty for `free` | no |
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `tier`: no object change (validation or timing only).
+- `allowed_tiers`: no object change (validation or timing only).
+<!-- drift:end -->

@@ -23,6 +23,11 @@ output "display_name" {
   value       = local.display_name
 }
 
+output "launch_and_wait" {
+  description = "true when callback is set, so the extension pauses each request at its bound stages until the resume action is called; false for launch and continue. It follows the configuration: a callback set outside Terraform while callback is null is reported by the unmanaged_properties check, not here."
+  value       = local.launch_and_wait
+}
+
 output "logic_app_resource_id" {
   description = "The Azure resource ID of the Logic App: /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Logic/workflows/{workflow}. The HTTP trigger URL is never an output."
   value       = local.logic_app_resource_id

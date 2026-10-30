@@ -3,8 +3,8 @@
     "requirements-dev.txt": "d6fa6874e6d467867d3166789b7cbaa9a56c1a561b6998b46a20a756861712b2",
     "requirements.txt": "ad488d53a098f26ddcb1303c16b81fb8d444c232d7ac067718650f04d6dfe29b"
   },
-  "fingerprint": "050fac47c401bcbd7f824d244acdfee4f4b851660d3d91a6b90efdb931cf06ff",
-  "generator_commit": "d84f6624bc4e884b9c5fc0b72f00ab61c1bc7430",
+  "fingerprint": "9274690b81e31aed08903a6b74f62f0713541c2e308b9f57cad5fade9311afae",
+  "generator_commit": "0cc91229d28e04b984d94410a74fad4427c97e7e",
   "providers": {
     "hashicorp/null": "3.3.2",
     "hashicorp/random": "3.9.1",
@@ -320,6 +320,12 @@
         }
       }
     },
+    "permissions": {
+      "commit": "56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9",
+      "repository": "microsoftgraph/microsoft-graph-devx-content",
+      "sha256": "4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514",
+      "url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json"
+    },
     "provider": {
       "source": "microsoft/msgraph",
       "version": "0.6.0"
@@ -327,5 +333,5 @@
     "repository": "microsoftgraph/msgraph-metadata",
     "schema_version": 1
   },
-  "tag": "v4.0.0"
+  "tag": "v5.0.0"
 }

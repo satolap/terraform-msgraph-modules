@@ -7,7 +7,7 @@ Uses beta: **no**. This module and its local child modules do not select beta.
 <!-- live-status:start -->
 Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
 
-![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+![live: not yet run](https://img.shields.io/badge/live-not%20yet%20run-lightgrey)
 <!-- live-status:end -->
 
 Creates one **custom authentication strength policy** using Microsoft Graph v1.0
@@ -18,7 +18,7 @@ as `custom` before metadata updates or deletion registration can proceed.
 No Conditional Access policy or authentication method policy is changed here.
 
 For a release containing this module, replace `<version>` with its version. The
-[GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry)
+[terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry)
 explains registry installation; presence in this tree does not establish that a
 published release contains it.
 
@@ -244,10 +244,31 @@ privilege. Delegated callers additionally need Conditional Access administrator,
 Security Administrator or an appropriate custom role. Personal accounts are
 unsupported. Authorization does not establish license entitlement.
 
+## Licence check (opt-in)
+
+`licence_check` is `false` by default. Then the module reads nothing extra and needs no
+extra permission. Set it to `true` to make the plan fail early when the tenant has no
+usable Microsoft Entra ID P1 subscription (a P2 subscription also lists the P1 service
+plan). The shared [licence guard](../../security-baseline/licence-guard/README.md) reads `GET /subscribedSkus` and fails the plan
+unless a subscribed SKU in the `Enabled` state with enabled prepaid units lists the
+registry's P1 service plan. The plan IDs come from the licensing registry, not from this
+module. The error names the SKUs that list the plan but do not qualify.
+
+- Permission, only while the check is on: `Organization.Read.All` or
+  `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+- The check compares tenant subscriptions and their enabled units. It does not count
+  per-user assignments or consumed units, and it is not a licence-compliance assessment.
+- No resource depends on licence data, so the check can fail a plan but never adds or
+  removes resources. The check is a precondition of the `licence_guard` module output, which
+  the `licence_tier` output re-exports, so every plan evaluates it.
+- Turn it off again to apply after a licence lapse, for example to delete objects.
+
 <!-- licensing:begin -->
 ## Licensing and prerequisites
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
+
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
 
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
@@ -258,6 +279,7 @@ Notes:
 - Authentication strength use through Conditional Access requires the Conditional Access P1 entitlement for each covered user; this configuration-only module creates no CA policy and does not establish a separate license counting rule for an unused definition.
 - Policy.ReadWrite.ConditionalAccess (or the documented higher Policy.ReadWrite.AuthenticationMethod) and an appropriate administrator role for delegated access are authorization requirements, not license entitlement.
 - Pinned Graph API contracts and offline mock tests do not establish licensed-tenant acceptance. Creation, action updates, CA reference deletion refusal and child cascade/404 handling remain owner-dispatched live acceptance items.
+- The opt-in `licence_check` input (default false) fails the plan unless a usable Microsoft Entra ID P1 subscription exists; it reads GET /subscribedSkus only when true and then needs Organization.Read.All or LicenseAssignment.Read.All. It checks tenant subscriptions and enabled units, not per-user assignments.
 
 Sources: [Conditional Access license requirements](https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview#license-requirements), [Microsoft Entra Conditional Access licensing](https://learn.microsoft.com/en-us/entra/fundamentals/licensing#microsoft-entra-conditional-access).
 <!-- licensing:end -->
@@ -268,9 +290,10 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 | --- | --- | --- | --- | --- | --- |
 | displayName | New custom strength name | `string` | n/a | yes | kept from creation in `msgraph_resource_action.policy`; updates `msgraph_update_resource.metadata` in place |
 | name_pattern | Regular expression (RE2, not anchored unless it says so) that displayName must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| licence_check | Opt-in plan-time check that a usable Microsoft Entra ID P1 subscription exists; reads `GET /subscribedSkus` only when `true` | `bool` | `false` | no | changes `module.licence_guard`; see the module notes |
 | detached_maintenance | Initial restriction creation or detached maintenance; true requires empty CA usage; false rejects planned child/signature replacement | `bool` | `false` | no | no object change (validation or timing only) |
 | description | Non-null description; null does not clear | `string` | `null` | no | kept from creation in `msgraph_resource_action.policy`; updates `msgraph_update_resource.metadata` in place |
-| allowedCombinations | Complete canonical combination set | `set(string)` | n/a | yes | replaces `msgraph_resource_action.combinations` when its effect on `local.combinations` changes; kept from creation: a change is refused or ignored (see notes) |
+| allowedCombinations | Complete canonical combination set | `set(string)` | n/a | yes | replaces `msgraph_resource_action.combinations` when its effect on `local.combinations` changes; ignored in `msgraph_resource_action.policy` |
 | allowedAAGUIDs | FIDO2 authenticator restrictions | `set(string)` | `null` | no | replaces `msgraph_resource.configuration` when `each.value` changes; creates or deletes `msgraph_resource.configuration` instances |
 | x509CertificateCombinationConfigurations | Certificate restrictions by combination | `map(map(set(string)))` | `{}` | no | replaces `msgraph_resource.configuration` when `each.value` changes; creates or deletes `msgraph_resource.configuration` instances |
 
@@ -281,6 +304,7 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 | id | Verified created custom policy ID | yes |
 | combinationConfigurationIds | Child IDs by combination | no |
 | combinationUpdateResult | Graph setter result and impact warnings | no |
+| licence_tier | The licence tier that was checked: `p1` when `licence_check` is true, otherwise `free` | no |
 
 ## Live status and acceptance runbook
 
@@ -324,3 +348,18 @@ idempotent `module.strength.msgraph_resource_action.combinations` setter with
 `terraform apply -replace=module.strength.msgraph_resource_action.combinations`.
 Never target/replace the policy POST or ownership/deletion helpers. This recovery
 retains the policy ID; read back and require a clean plan afterwards.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `displayName`: kept from creation in `msgraph_resource_action.policy`; updates `msgraph_update_resource.metadata` in place.
+- `name_pattern`: no object change (validation or timing only).
+- `detached_maintenance`: no object change (validation or timing only).
+- `description`: kept from creation in `msgraph_resource_action.policy`; updates `msgraph_update_resource.metadata` in place.
+- `allowedCombinations`: replaces `msgraph_resource_action.combinations` when its effect on `local.combinations` changes; ignored in `msgraph_resource_action.policy`.
+- `allowedAAGUIDs`: replaces `msgraph_resource.configuration` when `each.value` changes; creates or deletes `msgraph_resource.configuration` instances.
+- `x509CertificateCombinationConfigurations`: replaces `msgraph_resource.configuration` when `each.value` changes; creates or deletes `msgraph_resource.configuration` instances.
+- `licence_check`: changes `module.licence_guard`; see the module notes.
+<!-- drift:end -->

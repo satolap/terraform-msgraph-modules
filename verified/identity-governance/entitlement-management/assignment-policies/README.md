@@ -34,7 +34,7 @@ policy that has bindings.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "engineering_policy" {
@@ -204,6 +204,8 @@ nothing either when that read returns no stage settings, whether Graph omits the
 ## Licensing and prerequisites
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
+
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
 
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
@@ -617,3 +619,23 @@ A mock provider does not read the error messages, so
 Python tests (`tests/test_assignment_policy_custom_extensions.py` and
 `tests/test_assignment_policy_reviews_questions.py`) check the wording of every validation.
 `tests/integration` holds the live suite, which does not cover questions or reviews yet.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `access_package_id`: replaces `msgraph_resource.assignment_policy`.
+- `display_name`: in place.
+- `description`: in place.
+- `allowed_target_scope`: in place.
+- `specific_allowed_targets`: in place.
+- `expiration`: in place.
+- `requestor_settings`: in place.
+- `request_approval_settings`: in place.
+- `questions`: in place.
+- `review_settings`: in place.
+- `custom_extension_stage_settings`: in place.
+- `api_version`: in place.
+- `name_pattern`: no object change (validation or timing only).
+<!-- drift:end -->

@@ -19,7 +19,7 @@ locals {
   # Reviewed replication errors (GB-consistency-and-errors-500): a fixed message, never caller input, and only
   # when the request references another object. The provider already retries 408, 429, 500, 502, 503 and 504.
   replication_retry_errors = concat(
-    try(local.body["conditions"]["locations"] != null, false) ? ["NamedLocation with id [0-9A-Fa-f-]+ does not exist in the directory"] : [],
+    try(local.body["conditions"]["locations"] != null, false) ? ["^\\s*\\{\\s*\"error\"\\s*:\\s*\\{\\s*\"code\"\\s*:\\s*\"BadRequest\"\\s*,\\s*\"message\"\\s*:\\s*\"1040: NamedLocation with id [0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12} does not exist in the directory\\.\"\\s*[,}]"] : [],
   )
 }
 

@@ -20,7 +20,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -79,6 +79,28 @@ Server-assigned properties in `response`: `id`.
 Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
 ## Permissions and limitations
+
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires |
+| --- | --- | --- | --- |
+| `POST /deviceManagement/deviceManagementPartners` | DelegatedWork | `DeviceManagementServiceConfig.ReadWrite.All` | — |
+| `POST /deviceManagement/deviceManagementPartners` | DelegatedPersonal | Unknown / not annotated | — |
+| `POST /deviceManagement/deviceManagementPartners` | Application | `DeviceManagementServiceConfig.ReadWrite.All` | — |
+| `GET /deviceManagement/deviceManagementPartners/{deviceManagementPartner-id}` | DelegatedWork | `DeviceManagementServiceConfig.Read.All` | — |
+| `GET /deviceManagement/deviceManagementPartners/{deviceManagementPartner-id}` | DelegatedWork | `DeviceManagementServiceConfig.ReadWrite.All` | — |
+| `GET /deviceManagement/deviceManagementPartners/{deviceManagementPartner-id}` | DelegatedPersonal | Unknown / not annotated | — |
+| `GET /deviceManagement/deviceManagementPartners/{deviceManagementPartner-id}` | Application | `DeviceManagementServiceConfig.Read.All` | — |
+| `GET /deviceManagement/deviceManagementPartners/{deviceManagementPartner-id}` | Application | `DeviceManagementServiceConfig.ReadWrite.All` | — |
+| `PATCH /deviceManagement/deviceManagementPartners/{deviceManagementPartner-id}` | DelegatedWork | `DeviceManagementServiceConfig.ReadWrite.All` | — |
+| `PATCH /deviceManagement/deviceManagementPartners/{deviceManagementPartner-id}` | DelegatedPersonal | Unknown / not annotated | — |
+| `PATCH /deviceManagement/deviceManagementPartners/{deviceManagementPartner-id}` | Application | `DeviceManagementServiceConfig.ReadWrite.All` | — |
+| `DELETE /deviceManagement/deviceManagementPartners/{deviceManagementPartner-id}` | DelegatedWork | `DeviceManagementServiceConfig.ReadWrite.All` | — |
+| `DELETE /deviceManagement/deviceManagementPartners/{deviceManagementPartner-id}` | DelegatedPersonal | Unknown / not annotated | — |
+| `DELETE /deviceManagement/deviceManagementPartners/{deviceManagementPartner-id}` | Application | `DeviceManagementServiceConfig.ReadWrite.All` | — |
 
 Review the Microsoft Graph API documentation for this endpoint's application/delegated permissions, required create fields, licensing, and tenant restrictions. Required inputs come from the request schema and explicit reviewed corrections, not from EDMX response nullability. The generated module is schema-derived; its lifecycle has not been tested against a live tenant.
 

@@ -16,12 +16,16 @@ locals {
 
   logic_app_resource_id = "/subscriptions/${var.logic_app.subscription_id}/resourceGroups/${var.logic_app.resource_group_name}/providers/Microsoft.Logic/workflows/${var.logic_app.workflow_name}"
 
+  # Launch and wait when callback is set, launch and continue otherwise.
+  launch_and_wait  = var.callback != null
+  callback_timeout = try(var.callback.timeout, null)
+
   # Every managed key is in the body, on create and on update. An update is a
   # PUT, and Microsoft Graph keeps the properties that its body omits, so a
   # description that is no longer configured is sent as null rather than left
   # out. The body never holds a property this module does not manage; the
   # unmanaged_properties check reports those.
-  body = {
+  base_body = {
     "@odata.type" = local.odata_type
     displayName   = local.display_name
     description   = var.description
@@ -39,6 +43,22 @@ locals {
     }
   }
 
+  # Graph accepts and returns timeoutDuration without a callback discriminator.
+  callback_configuration = {
+    timeoutDuration = local.callback_timeout
+  }
+
+  # callbackConfiguration is in the body only while callback is set, so a
+  # caller without callback sends the same body as before the input existed.
+  # The callback is therefore managed only while callback is set: setting it
+  # back to null sends a body without it, the update keeps the callback on the
+  # server, and the unmanaged_properties check reports it. Only a replacement
+  # removes it.
+  body = merge(
+    local.base_body,
+    local.launch_and_wait ? { callbackConfiguration = local.callback_configuration } : {},
+  )
+
   # The extensions of the catalog as of the last read of the listing, without
   # their endpoint configuration.
   extensions_in_catalog = try(data.msgraph_resource.catalog_extensions.output.extensions, [])
@@ -54,10 +74,11 @@ locals {
   # The properties this module does not manage that Microsoft Graph returned
   # set on the last read; empty when no read has exported them. An update keeps
   # them and a replacement creates the extension from the configuration only,
-  # so they are lost.
+  # so they are lost. The callback is managed only while callback is set: then
+  # the body holds it and the plan shows its drift, so it is not reported here.
   server_unmanaged = try(msgraph_resource.this.output.unmanaged_properties, null)
   unmanaged_set = sort(compact([
-    try(local.server_unmanaged.callback_configuration == true, false) ? "callbackConfiguration" : "",
+    !local.launch_and_wait && try(local.server_unmanaged.callback_configuration == true, false) ? "callbackConfiguration" : "",
     try(local.server_unmanaged.client_configuration == true, false) ? "clientConfiguration" : "",
     try(local.server_unmanaged.behavior_on_error == true, false) ? "behaviorOnError" : "",
     try(local.server_unmanaged.other_authentication == true, false) ? "authenticationConfiguration" : "",
@@ -105,7 +126,8 @@ resource "msgraph_resource" "this" {
 
   response_export_values = {
     # Which properties that this module does not manage are set on the server,
-    # for the unmanaged_properties check. No function or ! operator: an
+    # for the unmanaged_properties check. The callback is read back too, and
+    # reported only while callback is null. No function or ! operator: an
     # evaluation error drops the key from the provider's output.
     unmanaged_properties = "{callback_configuration: callbackConfiguration != `null`, client_configuration: clientConfiguration != `null`, behavior_on_error: behaviorOnError != `null`, other_authentication: authenticationConfiguration.\"@odata.type\" != `null` && authenticationConfiguration.\"@odata.type\" != '#microsoft.graph.azureAdPopTokenAuthentication'}"
   }
@@ -124,6 +146,15 @@ resource "msgraph_resource" "this" {
     precondition {
       condition     = var.name_pattern == null || can(regex(var.name_pattern, local.display_name))
       error_message = "The extension display name \"${local.display_name}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set display_name to a name that matches, or change name_pattern."
+    }
+
+    # Microsoft Learn states that the pre-expiration extension type does not
+    # support launch and wait, and documents the callback on create for the
+    # request workflow type only. A variable validation cannot read
+    # extension_type before Terraform 1.9, so this is a precondition.
+    precondition {
+      condition     = !local.launch_and_wait || var.extension_type == "request_workflow"
+      error_message = "callback (launch and wait) is supported only for extension_type \"request_workflow\". Microsoft Learn states that the pre-expiration extension type, \"assignment_workflow\", does not support launch and wait. Set callback to null, or use a request_workflow extension."
     }
   }
 }

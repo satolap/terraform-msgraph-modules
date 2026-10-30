@@ -1,4 +1,13 @@
 mock_provider "msgraph" {
+  mock_data "msgraph_resource" {
+    defaults = {
+      output = { location = {
+        id            = "44444444-4444-4444-4444-444444444444"
+        "@odata.type" = "#microsoft.graph.ipNamedLocation"
+        isTrusted     = false
+      } }
+    }
+  }
   mock_resource "msgraph_resource" {
     defaults = {
       id = "44444444-4444-4444-4444-444444444444"

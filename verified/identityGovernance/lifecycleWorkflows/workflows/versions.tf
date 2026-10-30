@@ -7,7 +7,7 @@ terraform {
     # not return (the tasks of a workflow are not part of its read).
     msgraph = {
       source  = "microsoft/msgraph"
-      version = ">= 0.5.0"
+      version = ">= 0.5.0, < 0.7.0"
     }
   }
 }

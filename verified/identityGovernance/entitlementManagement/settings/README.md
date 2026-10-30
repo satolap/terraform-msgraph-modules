@@ -7,7 +7,7 @@ Uses beta: **no**. This module and its local child modules do not select beta.
 <!-- live-status:start -->
 Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
 
-![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+![live: not yet run](https://img.shields.io/badge/live-not%20yet%20run-lightgrey)
 <!-- live-status:end -->
 
 Manages the tenant-wide
@@ -58,6 +58,8 @@ module "entitlement_management_settings" {
 ## Licensing and prerequisites
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
+
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
 
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
@@ -213,3 +215,21 @@ omission, drift and no-op results, each input and its validation, the response v
 snapshot, the restore, its owned-only scope, the fail-closed deletion acknowledgement and the
 guard against overwriting outside changes. They pass with Terraform 1.16.2. Python contract tests assert that the module has
 no resource or provisioner that can delete the singleton.
+
+## Prepared governance suite
+
+The optional `tests/integration` suite has not been run against a tenant. See
+[governance live acceptance](../../../../../docs/governance-live-acceptance.md) for its
+prerequisites, bounded assertions and the acceptance that remains outstanding.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `external_user_lifecycle_action`: in place.
+- `duration_until_external_user_deleted_after_blocked`: in place.
+- `allow_external_user_deletion`: no object change (validation or timing only).
+- `restore_previous_state`: in place.
+- `restore_over_changes`: no object change (validation or timing only).
+<!-- drift:end -->

@@ -11,9 +11,33 @@ Assurance: **verified offline-only**. No current live acceptance is recorded for
 <!-- live-status:end -->
 
 Adds an Entra ID group, application (service principal), SharePoint Online site, or Azure
-subscription or management group to an entitlement management catalog, via the
+subscription or management group, or an Entra directory role (preview), to an entitlement management catalog, via the
 `microsoft/msgraph` Terraform provider. The folder mirrors the Graph collection it manages:
 `identityGovernance/entitlementManagement/catalogs/{id}/resources`.
+
+## DirectoryRole preview: catalog onboarding only
+
+Set `resource_origin_system = "DirectoryRole"`, `resource_origin_id` to the Entra
+role definition GUID and `acknowledge_directory_role_preview = true`. The GUID
+check is a module policy; it does not prove that the role exists or is supported
+by entitlement management. The acknowledgement is required for every plan and
+apply, including an unchanged apply; it is excluded from replacement identity.
+
+The onboarding caller needs Global Administrator or Privileged Role Administrator
+plus catalog owner. `EntitlementManagement.ReadWrite.All` alone is insufficient.
+Use a separately authorized onboarding identity; this module adds no permissions
+or consent to the routine governance runner. Entra ID Governance or Suite is
+required; P2 alone does not cover this feature.
+
+This slice adds and verifies a catalog resource only. It does not itself assign the role and does
+not classify roles as privileged or non-privileged. The resource-role-scopes
+module still rejects DirectoryRole. Before package grants are implemented, the remaining package-role implementation
+must settle the current preview restriction toward non-privileged roles and the
+active/eligible role identity contract. Live acceptance must establish delivery and revocation
+proof. No DirectoryRole live acceptance is claimed.
+
+See [Microsoft Entra roles in entitlement management](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-roles)
+and GB-directory-roles-509.
 
 ## Native request lifecycle
 
@@ -121,7 +145,7 @@ sanitized evidence. Offline mocks do not prove transport or delivery timing.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "engineering_group_resource" {
@@ -200,19 +224,23 @@ Permissions needed (application or delegated, in addition to
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | EM-CORE | Catalogs, access packages with group, application and SharePoint resources, standard approval stages, requestor questions and expiration are included in Microsoft Entra ID P2, Microsoft Entra ID Governance and Microsoft Entra Suite. Evaluate the exact feature combination; not every accepted policy option is core. Any of: Microsoft Entra ID P2 (`AAD_PREMIUM_P2`); Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). | Every user who can request or receive an access package assignment, including everyone covered by an all-member policy scope; guest scenarios can involve billing | direct / per_user | documented |
 | `resource_origin_system` is `"SharePointOnline"` | SHAREPOINT | Internal users who access a SharePoint Online site need an assigned license that includes SharePoint Online. Entitlement management licensing does not supply the workload entitlement, and the site must already exist. All of: SharePoint Online (any plan) (`SHAREPOINTENTERPRISE`). | Internal users who will access the site | direct / per_user | documented |
 | `resource_origin_system` is `"AzureResources"` | EM-AZURE-ROLES | Granting active or eligible Azure RBAC roles at a management group, subscription or resource group through entitlement management requires Microsoft Entra ID Governance or Microsoft Entra Suite. Microsoft Entra ID P2 alone is not sufficient. The Azure subscription or management group must already exist, and its Azure costs are separate. Any of: Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). | Every user who can request or receive an access package assignment that grants the Azure role; eligible roles are activated through Privileged Identity Management, whose users need the same coverage | group_based / per_user | documented |
+| `resource_origin_system` is `"DirectoryRole"` | EM-DIRECTORY-ROLES | Microsoft Entra roles in access packages require Microsoft Entra ID Governance or Microsoft Entra Suite; P2 alone is insufficient. Catalog onboarding does not itself assign a role and does not prove that a supported package grant or beneficiary license exists. Any of: Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). | Every user who can request or receive an access package assignment that grants the Entra role | group_based / per_user | inferred |
 
 Notes:
 
 - Agent, API-permission or other advanced resource types need a separate reviewed rule; the module's acceptance of an origin system does not establish support.
 - Adding an Azure subscription or management group also needs Azure RBAC permission to manage role assignments at that scope (Microsoft.Authorization/roleAssignments/read, write and delete); that is an Azure authorization requirement, not a license. See [Assign Azure RBAC roles](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-azure-role-assignments#azure-rbac-requirements-for-catalog-onboarding).
 - The Azure resource role rules were reviewed against Microsoft Learn on 2026-10-12, which is later than the review date stated above.
+- DirectoryRole catalog onboarding is preview and needs Global Administrator or Privileged Role Administrator plus catalog owner; EntitlementManagement.ReadWrite.All alone is insufficient. Onboarding lets catalog owners and access package managers include this role in access packages; onboard only roles you would delegate to them, and avoid privileged roles. Package grants, preview role restrictions and effective access need separate acceptance before use. Microsoft Entra ID Governance or Suite is required; P2 alone is insufficient. See https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-roles.
 
-Sources: [Entitlement management license requirements](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-overview#license-requirements), [Microsoft Entra features by license](https://learn.microsoft.com/en-us/entra/fundamentals/licensing#features-by-license), [SharePoint Online service description](https://learn.microsoft.com/en-us/office365/servicedescriptions/sharepoint-online-service-description/sharepoint-online-service-description), [Assign Azure role-based access control (RBAC) roles with entitlement management](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-azure-role-assignments#prerequisites), [Microsoft Entra ID Governance licensing fundamentals: Privileged Identity Management](https://learn.microsoft.com/en-us/entra/id-governance/licensing-fundamentals#privileged-identity-management).
+Sources: [Entitlement management license requirements](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-overview#license-requirements), [Microsoft Entra features by license](https://learn.microsoft.com/en-us/entra/fundamentals/licensing#features-by-license), [SharePoint Online service description](https://learn.microsoft.com/en-us/office365/servicedescriptions/sharepoint-online-service-description/sharepoint-online-service-description), [Assign Azure role-based access control (RBAC) roles with entitlement management](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-azure-role-assignments#prerequisites), [Microsoft Entra ID Governance licensing fundamentals: Privileged Identity Management](https://learn.microsoft.com/en-us/entra/id-governance/licensing-fundamentals#privileged-identity-management), [Assign Microsoft Entra roles with entitlement management](https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-roles).
 <!-- licensing:end -->
 
 ## Inputs
@@ -233,7 +261,7 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 | Name | Description | Known in plan after an update |
 |------|-------------| --- |
 | request_id | The ID of the accessPackageResourceRequest | no |
-| resource_id | The catalog-internal accessPackageResource ID — pass this as `catalog_resource_id` to the `access-packages/resource-role-scopes` module | no |
+| resource_id | The catalog-internal accessPackageResource ID â€” pass this as `catalog_resource_id` to the `access-packages/resource-role-scopes` module | no |
 | resource_origin_id | The origin ID of the resource, as passed in | yes |
 | verified | Whether the post-add verification read found the resource | no |
 
@@ -247,3 +275,19 @@ the refusal of other Azure IDs. Native cleanup and legacy-state upgrade suites
 run with cleanup enabled. Tests require Terraform 1.11 or later.
 
 See [live test setup and lifecycle limits](../../../../../docs/test-tenant-setup.md).
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `enable_destroy_cleanup`: changes `null_resource.remove_on_destroy`; see the module notes; creates or deletes `msgraph_resource_action.remove` instances.
+- `catalog_id`: replaces `msgraph_resource_action.add_request`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `resource_origin_system`: replaces `msgraph_resource_action.add_request`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `acknowledge_directory_role_preview`: no object change (validation or timing only).
+- `resource_origin_id`: replaces `msgraph_resource_action.add_request`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `resource_display_name`: kept from creation: a change is refused or ignored (see notes).
+- `verification_delay_seconds`: no object change (validation or timing only).
+- `fail_on_verification_mismatch`: no object change (validation or timing only).
+- `api_version`: replaces `msgraph_resource_action.add_request`; changes `null_resource.remove_on_destroy`; see the module notes.
+<!-- drift:end -->

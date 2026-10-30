@@ -44,7 +44,7 @@ assigned by this module.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 # A group owns a catalog created by the verified catalogs module
@@ -144,6 +144,8 @@ reading one also accepts `EntitlementManagement.Read.All`
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | EM-CORE | Catalogs, access packages with group, application and SharePoint resources, standard approval stages, requestor questions and expiration are included in Microsoft Entra ID P2, Microsoft Entra ID Governance and Microsoft Entra Suite. Evaluate the exact feature combination; not every accepted policy option is core. Any of: Microsoft Entra ID P2 (`AAD_PREMIUM_P2`); Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). | Every user who can request or receive an access package assignment, including everyone covered by an all-member policy scope; guest scenarios can involve billing | direct / per_user | documented |
@@ -185,3 +187,15 @@ without a catalog, `catalog_creator` with a catalog, and malformed or unknown in
 require Terraform 1.11 or later. Nothing here is verified against a live tenant.
 
 See [live test setup and lifecycle limits](../../../../../docs/test-tenant-setup.md).
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `principal_id`: replaces `msgraph_resource.assignment` when its effect on `local.principal_id` changes.
+- `role`: replaces `msgraph_resource.assignment` when its effect on `local.role_definition_id`, `local.app_scope_id`, `local.directory_scope_id` changes.
+- `role_definition_id`: replaces `msgraph_resource.assignment` when its effect on `local.role_definition_id` changes.
+- `catalog_id`: replaces `msgraph_resource.assignment` when its effect on `local.app_scope_id`, `local.directory_scope_id` changes.
+- `api_version`: replaces `msgraph_resource.assignment`.
+<!-- drift:end -->

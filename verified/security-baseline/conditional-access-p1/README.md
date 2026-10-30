@@ -141,6 +141,8 @@ and at least Conditional Access Administrator for security defaults
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | CONDITIONAL-ACCESS | Conditional Access requires Microsoft Entra ID P1. Risk-based policies (sign-in risk and user risk) also need Microsoft Entra ID Protection, a Microsoft Entra ID P2 feature, which is a separate rule. When the licenses expire, existing policies are not disabled or deleted; they can be viewed and deleted but no longer updated. Any of: Microsoft Entra ID P1 (`AAD_PREMIUM`). | Users in scope of the policies; the reviewed pages state the tenant requirement without a per-user counting rule, so review coverage against the product terms | direct / per_tenant | documented |
@@ -263,3 +265,18 @@ break-glass lookup case runs the emergency access guard, as the root module with
 wiring. Not covered, and tracked in #37 and #39: whether Graph accepts report-only policies while security defaults are
 on and rejects `enabled` while they are on, apply ordering of the restore, and the Secure Score deltas. Only mocked
 tests cover the module; it has not run against a licensed tenant.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `tier`: changes `module.licence_guard`; see the module notes; changes `module.emergency_access`; see the module notes.
+- `break_glass_user_ids`: changes `module.emergency_access`; see the module notes.
+- `break_glass_group_ids`: changes `module.emergency_access`; see the module notes.
+- `enforce`: creates or deletes `msgraph_update_resource.security_defaults_off` instances.
+- `decommission`: creates or deletes `msgraph_update_resource.security_defaults_off` instances; creates or deletes `msgraph_resource.policy` instances; creates or deletes `msgraph_update_resource.security_defaults_restore` instances; changes `module.licence_guard`; see the module notes; changes `module.emergency_access`; see the module notes.
+- `display_name_prefix`: in place.
+- `additional_admin_role_template_ids`: in place.
+- `exclude_directory_sync_accounts`: in place.
+<!-- drift:end -->

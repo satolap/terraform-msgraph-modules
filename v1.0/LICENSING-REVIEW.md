@@ -2,7 +2,7 @@
 
 [Catalog](README.md) Â· [manifest.json](manifest.json)
 
-308 generated endpoints carry an unknown licensing record. Each path links to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
+299 generated endpoints carry an unknown licensing record. Each path links to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
 
 ## Applications (`applications`)
 
@@ -228,7 +228,7 @@
 
 ## Identity and access (`identity-and-access`)
 
-48 unknown endpoints.
+46 unknown endpoints.
 
 - [`/devices`](devices/README.md)
 - [`/directory/publicKeyInfrastructure/certificateBasedAuthConfigurations`](directory/public-key-infrastructure/certificate-based-auth-configurations/README.md)
@@ -244,7 +244,6 @@
 - [`/identity/b2xUserFlows`](identity/b2x-user-flows/README.md)
 - [`/identity/b2xUserFlows/{b2xIdentityUserFlow-id}/userAttributeAssignments`](identity/b2x-user-flows/user-attribute-assignments/README.md)
 - [`/identity/conditionalAccess/authenticationStrength/policies/{authenticationStrengthPolicy-id}/combinationConfigurations`](identity/conditional-access/authentication-strength/policies/combination-configurations/README.md)
-- [`/identity/conditionalAccess/namedLocations`](identity/conditional-access/named-locations/README.md)
 - [`/identity/conditionalAccess/policies`](identity/conditional-access/policies/README.md)
 - [`/identity/customAuthenticationExtensions`](identity/custom-authentication-extensions/README.md)
 - [`/identity/identityProviders`](identity/identity-providers/README.md)
@@ -254,7 +253,6 @@
 - [`/identity/verifiedId/profiles`](identity/verified-id/profiles/README.md)
 - [`/identityGovernance/accessReviews/definitions`](identity-governance/access-reviews/definitions/README.md)
 - [`/identityGovernance/entitlementManagement/accessPackages/{accessPackage-id}/resourceRoleScopes`](identity-governance/entitlement-management/access-packages/resource-role-scopes/README.md)
-- [`/identityGovernance/entitlementManagement/catalogs/{accessPackageCatalog-id}/customWorkflowExtensions`](identity-governance/entitlement-management/catalogs/custom-workflow-extensions/README.md)
 - [`/identityGovernance/entitlementManagement/catalogs/{accessPackageCatalog-id}/resources/{accessPackageResource-id}/uploadSessions`](identity-governance/entitlement-management/catalogs/resources/upload-sessions/README.md)
 - [`/identityGovernance/entitlementManagement/connectedOrganizations`](identity-governance/entitlement-management/connected-organizations/README.md)
 - [`/identityGovernance/entitlementManagement/externalOriginResourceConnectors`](identity-governance/entitlement-management/external-origin-resource-connectors/README.md)
@@ -371,7 +369,7 @@
 
 ## Teamwork and communications (`teamwork-and-communications`)
 
-33 unknown endpoints.
+26 unknown endpoints.
 
 - [`/appCatalogs/teamsApps`](app-catalogs/teams-apps/README.md)
 - [`/appCatalogs/teamsApps/{teamsApp-id}/appDefinitions`](app-catalogs/teams-apps/app-definitions/README.md)
@@ -393,14 +391,7 @@
 - [`/teams/{team-id}/channels/{channel-id}/tabs`](teams/channels/tabs/README.md)
 - [`/teams/{team-id}/installedApps`](teams/installed-apps/README.md)
 - [`/teams/{team-id}/members`](teams/members/README.md)
-- [`/teams/{team-id}/schedule/dayNotes`](teams/schedule/day-notes/README.md)
-- [`/teams/{team-id}/schedule/openShifts`](teams/schedule/open-shifts/README.md)
-- [`/teams/{team-id}/schedule/schedulingGroups`](teams/schedule/scheduling-groups/README.md)
-- [`/teams/{team-id}/schedule/shifts`](teams/schedule/shifts/README.md)
-- [`/teams/{team-id}/schedule/timeCards`](teams/schedule/time-cards/README.md)
-- [`/teams/{team-id}/schedule/timeOffReasons`](teams/schedule/time-off-reasons/README.md)
 - [`/teams/{team-id}/schedule/timeOffRequests`](teams/schedule/time-off-requests/README.md)
-- [`/teams/{team-id}/schedule/timesOff`](teams/schedule/times-off/README.md)
 - [`/teams/{team-id}/tags`](teams/tags/README.md)
 - [`/teams/{team-id}/tags/{teamworkTag-id}/members`](teams/tags/members/README.md)
 - [`/teamwork/workforceIntegrations`](teamwork/workforce-integrations/README.md)

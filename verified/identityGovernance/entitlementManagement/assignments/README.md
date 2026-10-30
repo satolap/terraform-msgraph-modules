@@ -7,7 +7,7 @@ Uses beta: **no**. This module and its local child modules do not select beta.
 <!-- live-status:start -->
 Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
 
-![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+![live: not yet run](https://img.shields.io/badge/live-not%20yet%20run-lightgrey)
 <!-- live-status:end -->
 
 Grants one user an access package and revokes it again, through the `microsoft/msgraph`
@@ -197,7 +197,7 @@ place. Use it only when something else owns removal.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 An employee, taking the package and policy from the modules that create them:
 
@@ -312,6 +312,20 @@ confirmed-revocation guarantees. This module therefore remains in the exact
 publication provisioner allowlist. Bash, Azure CLI and the existing tenant
 checks remain required; this is not a provider-native cleanup conversion.
 
+The same saved request can be pending at apply and delivered at destroy. A
+destroy-only cancel action registered during apply would then target a request
+that needs assignment removal instead. Registering both cancel and adminRemove
+does not solve this: neither action can choose its operation from a fresh GET
+at destroy, and an accepted adminRemove still needs delivery confirmation.
+Provider retries repeat a failed request; they do not poll a successful removal
+request until the assignment is expired or absent.
+
+The native modules' "apply once before destroy after upgrading" migration does
+not apply here: no native remove action replaces `null_resource.remove_on_destroy`,
+and this hook must remain active. Do not make it inert or remove its state as
+part of upgrading the other modules. Inputs, provider requirements and destroy
+semantics are unchanged by this exception assessment.
+
 Owner-dispatched live acceptance remains: exercise pending cancellation,
 delivering refusal, delivered removal and delivery polling, adopted opt-out,
 identity mismatch and retry after a failed cleanup. Confirm exact assignment
@@ -322,6 +336,8 @@ evidence. Existing offline stubs verify protocol decisions, not live delivery.
 ## Licensing and prerequisites
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
+
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
 
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
@@ -337,10 +353,11 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 
 ## Live acceptance (owner dispatched)
 
-Prepared, not executed. Nothing in this repository runs it, and it needs feature-specific readiness (#37) in a
-licensed test tenant and the composition of the package, policy and resource roles from #141. No
-`tests/integration` suite is checked in on purpose: the integration runner discovers those suites and could
-start one without this scenario's preconditions.
+Prepared, not executed. The governance profile now includes a bounded administrator-assignment and
+revocation suite under `tests/integration`, using only a disabled disposable user and a disposable group.
+See [governance live acceptance](../../../../../docs/governance-live-acceptance.md) for prerequisites and
+the narrower coverage. The broader runbook below remains outstanding and needs feature-specific
+readiness (#37) in a licensed test tenant and the composition from #141.
 
 Preconditions, all explicit and disposable:
 
@@ -418,3 +435,22 @@ Until a run succeeds, `runtime_evidence` stays `not_verified`.
 `tests/test_access_package_assignments.py` in the repository root runs the destroy hook's shell against stub
 `az`, `curl` and `sleep`, and binds the module to the pinned contract fixtures. The mocks and the stub scenarios
 are this repository's own model of Graph's answers; they do not verify live behavior.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `enable_destroy_cleanup`: changes `null_resource.remove_on_destroy`; see the module notes.
+- `target_id`: replaces `msgraph_resource_action.update`; replaces `msgraph_resource_action.add`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `access_package_id`: replaces `msgraph_resource_action.update`; replaces `msgraph_resource_action.add`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `assignment_policy_id`: replaces `msgraph_resource_action.update`; replaces `msgraph_resource_action.add`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `justification`: kept from creation: a change is refused or ignored (see notes).
+- `schedule`: kept from creation: a change is refused or ignored (see notes).
+- `schedule_update`: replaces `msgraph_resource_action.update`; creates or deletes `msgraph_resource_action.update` instances.
+- `adopt_assignment_id`: replaces `msgraph_resource_action.update`; replaces `msgraph_resource_action.add`; creates or deletes `msgraph_resource_action.add` instances; changes `null_resource.remove_on_destroy`; see the module notes.
+- `revoke_adopted_assignment_on_destroy`: changes `null_resource.remove_on_destroy`; see the module notes.
+- `replacement_token`: replaces `msgraph_resource_action.update`; replaces `msgraph_resource_action.add`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `verification_delay_seconds`: no object change (validation or timing only).
+- `require_delivery`: no object change (validation or timing only).
+<!-- drift:end -->

@@ -35,7 +35,7 @@ Safety defaults:
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "office_egress" {
@@ -324,7 +324,9 @@ Report-only policies don't block users or prompt for MFA, but they are not free 
 - **Named location replication delay.** A location created moments before can be missing
   from the replica that serves the policy request, and Graph answers `400 BadRequest`,
   error 1040, "NamedLocation with id ... does not exist in the directory." With `locations` set,
-  the module sets the provider's `retry` to that message, so the create or update is retried
+  the module anchors the provider's `retry` to the `BadRequest` error envelope, code 1040
+  and a complete location GUID. A successful response echoing that text in a display name
+  does not match. The create or update is retried
   until `timeouts.create` or `timeouts.update` (10 minutes by default) runs out; shorten or
   extend the wait there. Without `locations` no retry is set, and nothing sleeps unless Graph
   returns the error. Adding the `retry` argument to an existing policy may show as an in-place
@@ -337,10 +339,31 @@ Report-only policies don't block users or prompt for MFA, but they are not free 
   the state (inference from the provider code). The provider already retries status codes
   408, 429, 500, 502, 503 and 504 by itself, and those retries count against the timeouts.
 
+## Licence check (opt-in)
+
+`licence_check` is `false` by default. Then the module reads nothing extra and needs no
+extra permission. Set it to `true` to make the plan fail early when the tenant has no
+usable Microsoft Entra ID P1 subscription (a P2 subscription also lists the P1 service
+plan). The shared [licence guard](../../../security-baseline/licence-guard/README.md) reads `GET /subscribedSkus` and fails the plan
+unless a subscribed SKU in the `Enabled` state with enabled prepaid units lists the
+registry's P1 service plan. The plan IDs come from the licensing registry, not from this
+module. The error names the SKUs that list the plan but do not qualify.
+
+- Permission, only while the check is on: `Organization.Read.All` or
+  `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+- The check compares tenant subscriptions and their enabled units. It does not count
+  per-user assignments or consumed units, and it is not a licence-compliance assessment.
+- No resource depends on licence data, so the check can fail a plan but never adds or
+  removes resources. The check is a precondition of the `licence_guard` module output, which
+  the `licence_tier` output re-exports, so every plan evaluates it.
+- Turn it off again to apply after a licence lapse, for example to delete objects.
+
 <!-- licensing:begin -->
 ## Licensing and prerequisites
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
+
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
 
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
@@ -352,6 +375,7 @@ Notes:
 
 - Grant and session controls that depend on other products, such as Microsoft Intune device compliance or Microsoft Defender for Cloud Apps, need those products' own licence review; the module does not check them.
 - The Conditional Access rules were reviewed against Microsoft Learn on 2026-09-29, which is later than the review date stated above.
+- The opt-in `licence_check` input (default false) fails the plan unless a usable Microsoft Entra ID P1 subscription exists; it reads GET /subscribedSkus only when true and then needs Organization.Read.All or LicenseAssignment.Read.All. It checks tenant subscriptions and enabled units, not per-user assignments.
 
 Sources: [Conditional Access license requirements](https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview#license-requirements), [Microsoft Entra Conditional Access licensing](https://learn.microsoft.com/en-us/entra/fundamentals/licensing#microsoft-entra-conditional-access).
 <!-- licensing:end -->
@@ -362,6 +386,7 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 |------|-------------|------|---------|----------| --- |
 | display_name | Display name of the policy | `string` | n/a | yes | in place |
 | name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| licence_check | Opt-in plan-time check that a usable Microsoft Entra ID P1 subscription exists; reads `GET /subscribedSkus` only when `true` | `bool` | `false` | no | changes `module.licence_guard`; see the module notes |
 | state | `disabled`, `enabledForReportingButNotEnforced` or `enabled` | `string` | `"enabledForReportingButNotEnforced"` | no | in place |
 | break_glass_user_ids | Emergency access user IDs (lowercase GUIDs), always excluded | `set(string)` | n/a | yes | in place |
 | break_glass_group_ids | Emergency access group IDs (lowercase GUIDs), always excluded | `set(string)` | `[]` | no | in place |
@@ -389,3 +414,29 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 | excluded_group_ids | `excludeGroups` as returned on the last read, including the break-glass groups | no |
 | optional_parts_not_in_configuration | Optional parts Microsoft Graph returned on the last read that the configuration does not set; an apply cannot remove them | no |
 | unmanaged_properties_set | Properties the module does not manage that Microsoft Graph returned set on the last read; a replacement loses them | no |
+| licence_tier | The licence tier that was checked: `p1` when `licence_check` is true, otherwise `free` | no |
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `display_name`: in place.
+- `state`: in place.
+- `break_glass_user_ids`: in place.
+- `break_glass_group_ids`: in place.
+- `users`: in place.
+- `applications`: in place.
+- `client_app_types`: in place.
+- `sign_in_risk_levels`: in place.
+- `user_risk_levels`: in place.
+- `locations`: replaces `msgraph_resource.policy` when its effect on `local.presence` changes.
+- `platforms`: replaces `msgraph_resource.policy` when its effect on `local.presence` changes.
+- `device_filter`: replaces `msgraph_resource.policy` when its effect on `local.presence` changes.
+- `grant_controls`: replaces `msgraph_resource.policy` when its effect on `local.presence` changes.
+- `session_controls`: replaces `msgraph_resource.policy` when its effect on `local.presence` changes.
+- `api_version`: in place.
+- `timeouts`: no object change (validation or timing only).
+- `name_pattern`: no object change (validation or timing only).
+- `licence_check`: changes `module.licence_guard`; see the module notes.
+<!-- drift:end -->

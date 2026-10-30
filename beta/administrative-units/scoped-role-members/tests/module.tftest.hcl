@@ -116,3 +116,41 @@ run "timeouts_of_zero" {
 
   expect_failures = [var.timeouts]
 }
+
+run "body_containing_the_error_is_rejected_scoped_role_member_source_not_replicated" {
+  command = plan
+
+  variables {
+    administrative_unit_id = "test-parent-id"
+    additional_properties  = { "note" = "The source resource object or one of the objects being referenced don't exist" }
+  }
+
+  expect_failures = [msgraph_resource.this]
+}
+
+run "retry_set_for_scoped_role_member_source_not_replicated" {
+  command = plan
+
+  variables {
+    administrative_unit_id = "test-parent-id"
+    role_member_info       = {}
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.retry.error_message_regex) == jsonencode(["^\\s*\\{\\s*\"error\"\\s*:\\s*\\{\\s*\"code\"\\s*:\\s*\"(?:Request_)?BadRequest\"\\s*,\\s*\"message\"\\s*:\\s*\"The source resource object or one of the objects being referenced don(?:'|\\\\u0027)t exist\\.\"\\s*[,}]"])
+    error_message = "A request that references another object must retry only the reviewed replication error."
+  }
+}
+
+run "no_retry_without_scoped_role_member_source_not_replicated" {
+  command = plan
+
+  variables {
+    administrative_unit_id = "test-parent-id"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.retry == null
+    error_message = "A request without the referencing input must set no retry."
+  }
+}

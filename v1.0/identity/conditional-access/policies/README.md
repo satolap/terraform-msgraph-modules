@@ -24,7 +24,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -44,9 +44,9 @@ Classification remains incomplete, especially for nested null-unless-selected va
 
 The optional `timeouts` input (`create`, `read`, `update`, `delete`) is passed to the `msgraph_resource`. Every value defaults to null, which keeps the provider defaults and sends no timeouts block, so adding it changes no existing plan. Durations are whole hours, minutes or seconds greater than zero, such as `30m` or `1h30m`, and `create`, `update` and `delete` must be at least `15s`. Setting `read` plans an in-place update of every deployed object, because the provider's default read timeout is then replaced. The provider already retries 408, 429, 500, 502, 503 and 504 by itself.
 
-A request that references another object can fail until Microsoft Graph has replicated that object. For the reviewed cases below the module sets the provider retry to one fixed literal error message (unanchored on purpose: the provider matches it anywhere in the response) and to nothing otherwise. The message cannot occur in a Graph-generated success body, and a plan-time precondition rejects any request body that contains it, so a value echoed back by Graph cannot turn a successful create into a retry loop. Retries count against the `timeouts`: a request that keeps failing, such as one with a genuinely wrong object id, fails only when the create or update timeout runs out (30 minutes by default), so set a shorter `timeouts.create` and `timeouts.update` for faster feedback. There is no input to supply a retry expression, because the provider matches such expressions against successful responses as well.
+A request that references another object can fail until Microsoft Graph has replicated that object. For the reviewed cases below the module sets the provider retry to one reviewed message anchored to the Graph error envelope, with the error code each pattern below names, and to nothing otherwise. The message cannot occur in a Graph-generated success body, and a plan-time precondition rejects any request body that contains it, so a value echoed back by Graph cannot turn a successful create into a retry loop. Retries count against the `timeouts`: a request that keeps failing, such as one with a genuinely wrong object id, fails only when the create or update timeout runs out (30 minutes by default), so set a shorter `timeouts.create` and `timeouts.update` for faster feedback. There is no input to supply a retry expression, because the provider matches such expressions against successful responses as well.
 
-- When `conditions.locations` is set: `NamedLocation with id [0-9A-Fa-f-]+ does not exist in the directory` (GB-consistency-and-errors-500).
+- When `conditions.locations` is set: `1040: NamedLocation with id [0-9A-Fa-f-]+ does not exist in the directory` (GB-consistency-and-errors-500).
 
 ## Inputs
 
@@ -84,6 +84,28 @@ Server-assigned properties in `response`: `createdDateTime`, `id`, `modifiedDate
 Import the resource at `module.graph_resource.msgraph_resource.this` using its Graph resource path.
 
 ## Permissions and limitations
+
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires |
+| --- | --- | --- | --- |
+| `POST /identity/conditionalAccess/policies` | DelegatedWork | `Application.Read.All` | — |
+| `POST /identity/conditionalAccess/policies` | DelegatedWork | `Policy.Read.All` | — |
+| `POST /identity/conditionalAccess/policies` | DelegatedPersonal | Unknown / not annotated | — |
+| `POST /identity/conditionalAccess/policies` | Application | `Policy.Read.All` | — |
+| `GET /identity/conditionalAccess/policies/{conditionalAccessPolicy-id}` | DelegatedWork | `Policy.Read.All` | — |
+| `GET /identity/conditionalAccess/policies/{conditionalAccessPolicy-id}` | DelegatedPersonal | Unknown / not annotated | — |
+| `GET /identity/conditionalAccess/policies/{conditionalAccessPolicy-id}` | Application | `Policy.Read.All` | — |
+| `PATCH /identity/conditionalAccess/policies/{conditionalAccessPolicy-id}` | DelegatedWork | `Application.Read.All` | — |
+| `PATCH /identity/conditionalAccess/policies/{conditionalAccessPolicy-id}` | DelegatedWork | `Policy.Read.All` | — |
+| `PATCH /identity/conditionalAccess/policies/{conditionalAccessPolicy-id}` | DelegatedPersonal | Unknown / not annotated | — |
+| `PATCH /identity/conditionalAccess/policies/{conditionalAccessPolicy-id}` | Application | `Policy.Read.All` | — |
+| `DELETE /identity/conditionalAccess/policies/{conditionalAccessPolicy-id}` | DelegatedWork | `Policy.Read.All` | — |
+| `DELETE /identity/conditionalAccess/policies/{conditionalAccessPolicy-id}` | DelegatedPersonal | Unknown / not annotated | — |
+| `DELETE /identity/conditionalAccess/policies/{conditionalAccessPolicy-id}` | Application | `Policy.Read.All` | — |
 
 Review the Microsoft Graph API documentation for this endpoint's application/delegated permissions, required create fields, licensing, and tenant restrictions. Required inputs come from the request schema and explicit reviewed corrections, not from EDMX response nullability. The generated module is schema-derived; its lifecycle has not been tested against a live tenant.
 

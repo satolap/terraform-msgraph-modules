@@ -174,7 +174,7 @@ names that a future module for permanent active directory role assignments (trac
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "security_reader_eligibility" {
@@ -233,6 +233,8 @@ Privileged Role Administrator role or a custom role with the same rights.
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | PIM-ENTRA-ROLES | Using Privileged Identity Management requires Microsoft Entra ID P2 or Microsoft Entra ID Governance (Microsoft Entra Suite includes it). Learn lists the users who need a license: users with eligible or time-bound assignments to Microsoft Entra roles managed with PIM, users who can approve or reject activation requests in PIM, and users assigned to or performing access reviews. When the license expires, eligible assignments are removed and time-bound active assignments become permanent. Any of: Microsoft Entra ID P2 (`AAD_PREMIUM_P2`); Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). | Each principal with an eligible or time-bound assignment to a Microsoft Entra role, and each user who approves or rejects activation requests for the role | direct / per_user | documented |
@@ -288,3 +290,24 @@ request. `tests/native_cleanup.tftest.hcl` verifies native registration, failed 
 proof, active/eligible counter-request routing and cleanup before a failed
 schedule gate. `tests/upgrade.tftest.hcl` proves unchanged legacy-state upgrade. Tests require Terraform 1.11 or later. Nothing
 here has been run against a tenant.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `enable_destroy_cleanup`: changes `null_resource.remove_on_destroy`; see the module notes; creates or deletes `msgraph_resource_action.remove` instances.
+- `assignment_type`: replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `principal_id`: replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `role_definition_id`: replaces `msgraph_resource_action.assign` when its effect on `local.role_definition_id` changes; changes `null_resource.remove_on_destroy`; see the module notes.
+- `role_display_name`: replaces `msgraph_resource_action.assign` when its effect on `local.role_definition_id` changes; changes `null_resource.remove_on_destroy`; see the module notes.
+- `directory_scope_id`: replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `justification`: replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `start_date_time`: replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `expiration_type`: replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `end_date_time`: replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `duration`: replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes.
+- `verification_delay_seconds`: no object change (validation or timing only).
+- `fail_on_verification_mismatch`: no object change (validation or timing only).
+- `api_version`: replaces `msgraph_resource_action.assign`; changes `null_resource.remove_on_destroy`; see the module notes.
+<!-- drift:end -->

@@ -94,3 +94,10 @@ variable "x509CertificateCombinationConfigurations" {
     error_message = "Certificate configuration keys must be x509CertificateSingleFactor or x509CertificateMultiFactor, containing only nonempty allowedIssuerSkis/allowedPolicyOIDs sets without null or blank entries."
   }
 }
+
+variable "licence_check" {
+  description = "Opt-in plan-time licence check. When true, the plan reads the tenant's subscribedSkus (GET /subscribedSkus) and fails unless a subscription with enabled prepaid units lists Microsoft Entra ID P1 (a P2 subscription also qualifies). It needs Organization.Read.All or LicenseAssignment.Read.All, only while it is true. When false, the default, nothing is read and no extra permission is needed."
+  type        = bool
+  default     = false
+  nullable    = false
+}

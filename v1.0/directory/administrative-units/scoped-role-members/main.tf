@@ -11,6 +11,11 @@ locals {
 
 locals {
   timeouts_set = anytrue([var.timeouts.create != null, var.timeouts.read != null, var.timeouts.update != null, var.timeouts.delete != null])
+  # Reviewed replication errors (GB-consistency-and-errors-502): a fixed message, never caller input, and only
+  # when the request references another object. The provider already retries 408, 429, 500, 502, 503 and 504.
+  replication_retry_errors = concat(
+    try(local.body["roleMemberInfo"] != null, false) ? ["^\\s*\\{\\s*\"error\"\\s*:\\s*\\{\\s*\"code\"\\s*:\\s*\"(?:Request_)?BadRequest\"\\s*,\\s*\"message\"\\s*:\\s*\"The source resource object or one of the objects being referenced don(?:'|\\\\u0027)t exist\\.\"\\s*[,}]"] : [],
+  )
 }
 
 resource "msgraph_resource" "this" {
@@ -33,6 +38,17 @@ resource "msgraph_resource" "this" {
       read   = timeouts.value.read
       update = timeouts.value.update
       delete = timeouts.value.delete
+    }
+  }
+
+  retry = length(local.replication_retry_errors) == 0 ? null : {
+    error_message_regex = local.replication_retry_errors
+  }
+
+  lifecycle {
+    precondition {
+      condition     = !can(regex("The source resource object or one of the objects being referenced don't exist", jsonencode(local.body)))
+      error_message = "No request value may contain the text of the reviewed replication error (scoped-role-member-source-not-replicated): the provider would retry a successful response that echoes it."
     }
   }
 }

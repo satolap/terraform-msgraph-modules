@@ -28,7 +28,7 @@ Terraform state. Read them with the owner-dispatched probe in the
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "guest_terms" {
@@ -241,10 +241,31 @@ Graph is documented not to accept.
   `AgreementAcceptance.Read.All`, also delegated only.
 - Supported clouds: Learn marks the Terms of Use pages as available in all national clouds.
 
+## Licence check (opt-in)
+
+`licence_check` is `false` by default. Then the module reads nothing extra and needs no
+extra permission. Set it to `true` to make the plan fail early when the tenant has no
+usable Microsoft Entra ID P1 subscription (a P2 subscription also lists the P1 service
+plan). The shared [licence guard](../../../security-baseline/licence-guard/README.md) reads `GET /subscribedSkus` and fails the plan
+unless a subscribed SKU in the `Enabled` state with enabled prepaid units lists the
+registry's P1 service plan. The plan IDs come from the licensing registry, not from this
+module. The error names the SKUs that list the plan but do not qualify.
+
+- Permission, only while the check is on: `Organization.Read.All` or
+  `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+- The check compares tenant subscriptions and their enabled units. It does not count
+  per-user assignments or consumed units, and it is not a licence-compliance assessment.
+- No resource depends on licence data, so the check can fail a plan but never adds or
+  removes resources. The check is a precondition of the `licence_guard` module output, which
+  the `licence_tier` output re-exports, so every plan evaluates it.
+- Turn it off again to apply after a licence lapse, for example to delete objects.
+
 <!-- licensing:begin -->
 ## Licensing and prerequisites
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
+
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
 
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
@@ -256,6 +277,7 @@ Notes:
 - The module manages tenant configuration only and enforces nothing; enforcement is the Conditional Access policies module. Administrators who create or modify terms of use need at least the Conditional Access Administrator role, and reading them at least Security Reader.
 - Every Terms of Use operation that Microsoft Learn documents for agreements and their files is available to delegated work or school accounts only; application permissions are not supported, so no application identity can satisfy a licence or role requirement. See [Microsoft Entra terms of use: prerequisites](https://learn.microsoft.com/en-us/entra/identity/conditional-access/terms-of-use#prerequisites).
 - The Terms of Use rules for this module were reviewed against Microsoft Learn on 2026-10-25, which is later than the review date stated above.
+- The opt-in `licence_check` input (default false) fails the plan unless a usable Microsoft Entra ID P1 subscription exists; it reads GET /subscribedSkus only when true and then needs Organization.Read.All or LicenseAssignment.Read.All. It checks tenant subscriptions and enabled units, not per-user assignments.
 
 Sources: [Conditional Access license requirements](https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview#license-requirements), [Microsoft Entra Conditional Access licensing](https://learn.microsoft.com/en-us/entra/fundamentals/licensing#microsoft-entra-conditional-access).
 <!-- licensing:end -->
@@ -269,6 +291,7 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 | is_viewing_before_acceptance_required | Whether a user has to expand the agreement before accepting; updated in place | `bool` | `false` | no | in place |
 | additional_files | Further localized PDFs by key, each posted once; a key can be added, but a changed or removed entry is refused or forgotten | `map(object)` | `{}` | no | creates or deletes `msgraph_resource_action.file` instances; kept from creation: a change is refused or ignored (see notes) |
 | name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| licence_check | Opt-in plan-time check that a usable Microsoft Entra ID P1 subscription exists; reads `GET /subscribedSkus` only when `true` | `bool` | `false` | no | changes `module.licence_guard`; see the module notes |
 
 ## Outputs
 
@@ -281,6 +304,7 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 | additional_file_ids | The ID of each added file by key, as the create call returned it | no |
 | content_sha256 | SHA-256 of each PDF's base64 text by language; a fingerprint of the input, not of what Graph holds | yes |
 | request_summary | The create request without PDF content | yes |
+| licence_tier | The licence tier that was checked: `p1` when `licence_check` is true, otherwise `free` | no |
 
 ## Live acceptance runbook
 
@@ -315,6 +339,8 @@ Add a language file with `is_major_version = true` and a replacement agreement, 
 the user is asked again. Never create, approve or delete an acceptance, and keep the user
 identifiers, names and the document out of public artifacts.
 
+The acceptance probe above is automated by `.github/workflows/live-terms-of-use.yml` with a runner-cached test user; the owner setup is in `docs/terms-of-use-live-runner.md`.
+
 Import of an existing agreement has not been verified.
 
 ## Related Graph behavior
@@ -322,3 +348,16 @@ Import of an existing agreement has not been verified.
 `docs/graph-behavior/terms-of-use.md` records the Graph behavior this module relies on
 (GB-terms-of-use-501 to 509), and `docs/graph-behavior/write-semantics.md` records the
 change-guard pattern (GB-write-semantics-515).
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `display_name`: in place.
+- `is_viewing_before_acceptance_required`: in place.
+- `default_file`: kept from creation: a change is refused or ignored (see notes).
+- `additional_files`: creates or deletes `msgraph_resource_action.file` instances; kept from creation: a change is refused or ignored (see notes).
+- `name_pattern`: no object change (validation or timing only).
+- `licence_check`: changes `module.licence_guard`; see the module notes.
+<!-- drift:end -->

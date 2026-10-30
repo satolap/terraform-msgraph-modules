@@ -7,7 +7,7 @@ Uses beta: **no**. This module and its local child modules do not select beta.
 <!-- live-status:start -->
 Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
 
-![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+![live: not yet run](https://img.shields.io/badge/live-not%20yet%20run-lightgrey)
 <!-- live-status:end -->
 
 Manages one Microsoft Entra ID Governance **Lifecycle Workflows workflow**
@@ -25,7 +25,7 @@ that does not belong to the workflow's category all fail the plan.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "onboard_marketing" {
@@ -251,6 +251,8 @@ to them.
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | LIFECYCLE-WORKFLOWS | Lifecycle workflows, including their custom task extensions, require Microsoft Entra ID Governance or Microsoft Entra Suite for the organization's member users. Microsoft Entra ID P2 alone is not sufficient. Agent sponsorship tasks need Microsoft Agent 365, and some capabilities involve guest billing. Any of: Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). | Every member user a workflow processes, and the Lifecycle Workflows administrator | direct / per_user | documented |
@@ -299,10 +301,34 @@ Sources: [Lifecycle workflows license requirements](https://learn.microsoft.com/
 Offline mock tests establish the request body, the guards and the replacement behaviour. They
 do not establish what a tenant accepts: no live run has been made. A bounded, owner-dispatched
 sandbox probe that creates a disabled workflow, runs it on demand for a test user and recovers is
-still to be prepared and run.
+still outstanding. The prepared configuration-only suite does not execute the workflow.
 
 The custom task extension binding is covered the same way: the mock tests build the request body
 and the guards, and contract tests tie the task to the pinned definition. No workflow has run a
 custom task extension, so the identity of the call, the behavior of a task whose extension is
 missing or deleted, and the response or timeout of the Logic App are unobserved. The bounded probe
 is in the [customTaskExtensions README](../customTaskExtensions/README.md#live-status-and-acceptance-runbook).
+
+## Prepared governance suite
+
+The optional `tests/integration` suite has not been run against a tenant. See
+[governance live acceptance](../../../../../docs/governance-live-acceptance.md) for its
+prerequisites, bounded assertions and the acceptance that remains outstanding.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `display_name`: in place.
+- `description`: in place.
+- `category`: replaces `msgraph_resource.workflow`.
+- `execution_conditions`: replaces `msgraph_resource.workflow` when its effect on `local.execution_conditions_body` changes.
+- `tasks`: replaces `msgraph_resource.workflow` when its effect on `local.tasks_body` changes.
+- `is_enabled`: in place.
+- `is_scheduling_enabled`: in place.
+- `activation_opt_in`: no object change (validation or timing only).
+- `acknowledge_dangerous_tasks`: no object change (validation or timing only).
+- `acknowledged_custom_task_extension_ids`: no object change (validation or timing only).
+- `name_pattern`: no object change (validation or timing only).
+<!-- drift:end -->

@@ -191,6 +191,8 @@ outstanding and no fixture, grant or live workflow is created by this change.
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | ADMIN-CONSENT-WORKFLOW | The Microsoft Graph Get and Update references for the admin consent request policy and the configuration guide for the admin consent workflow name no premium license. No Microsoft Learn page found states outright that the feature is included in Microsoft Entra ID Free, so the free tier is inferred from the absence of a license requirement. The Secure Score action that measures it is listed for tenants with an active Microsoft Defender for Cloud Apps license and the Office 365 connector turned on; that affects measurement only, not the workflow. No additional license specified. | No per-user entitlement named for the workflow itself | direct / per_tenant | inferred |
@@ -201,3 +203,18 @@ Notes:
 
 Sources: [Get adminConsentRequestPolicy](https://learn.microsoft.com/en-us/graph/api/adminconsentrequestpolicy-get?view=graph-rest-1.0), [Update adminConsentRequestPolicy](https://learn.microsoft.com/en-us/graph/api/adminconsentrequestpolicy-update?view=graph-rest-1.0), [Configure the admin consent workflow](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/configure-admin-consent-workflow).
 <!-- licensing:end -->
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `tier`: changes `module.licence_guard`; see the module notes.
+- `enabled`: in place.
+- `reviewer_user_ids`: in place.
+- `reviewer_group_ids`: in place.
+- `notify_reviewers`: in place.
+- `reminders_enabled`: in place.
+- `request_duration_in_days`: in place.
+- `restore_previous_state`: in place.
+<!-- drift:end -->

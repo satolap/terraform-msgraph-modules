@@ -55,8 +55,8 @@ What the module manages, and what it does not:
 
 ## When to use this module instead of a generated one
 
-As published when this module was written, the generated module for the same collection
-(`modules/generated/v1.0/identity-and-access/identity-governance/entitlement-management/connected-organizations`)
+As published when this module was written, the
+[generated module for the same collection](https://github.com/satolap/terraform-msgraph-modules/tree/main/v1.0/identity-and-access/identity-governance/entitlement-management/connected-organizations)
 types each element of `identity_sources` as an object with only `odata_type`. A Terraform
 object keeps only its declared attributes, so the `tenantId`, `domainName` and `displayName`
 of an identity source are dropped, and the generated module cannot say which tenant or domain
@@ -70,7 +70,7 @@ organizations.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "fabrikam" {
@@ -309,6 +309,8 @@ only. These checks are pending, and each needs a licensed tenant and credentials
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | EM-CORE | Catalogs, access packages with group, application and SharePoint resources, standard approval stages, requestor questions and expiration are included in Microsoft Entra ID P2, Microsoft Entra ID Governance and Microsoft Entra Suite. Evaluate the exact feature combination; not every accepted policy option is core. Any of: Microsoft Entra ID P2 (`AAD_PREMIUM_P2`); Microsoft Entra ID Governance (`Entra_Identity_Governance`); Microsoft Entra Suite (`Entra_Identity_Governance`). | Every user who can request or receive an access package assignment, including everyone covered by an all-member policy scope; guest scenarios can involve billing | direct / per_user | documented |
@@ -362,3 +364,17 @@ none of the read-back expressions and has no `collection_type` default before pr
 Python test (`tests/test_connected_organizations.py`) ties the exported keys to the expressions
 that consume them, checks that the module leaves `collection_type` unset, and checks the
 validation messages. There is no live suite yet; see [Live test status](#live-test-status).
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `display_name`: in place.
+- `description`: in place.
+- `state`: in place.
+- `identity_sources`: in place.
+- `internal_sponsor_ids`: adds or removes relationships of `msgraph_resource_collection.internal_sponsors`.
+- `external_sponsor_ids`: adds or removes relationships of `msgraph_resource_collection.external_sponsors`.
+- `name_pattern`: no object change (validation or timing only).
+<!-- drift:end -->

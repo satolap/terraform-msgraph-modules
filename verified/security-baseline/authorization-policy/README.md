@@ -205,6 +205,8 @@ test tenant, and CIS Microsoft 365 Foundations and CISA SCuBA references are not
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | AUTHORIZATION-POLICY | The reviewed pages list no license requirement for the user consent, guest access and default user permission settings of the tenant authorization policy: restricted guest access states no new licensing requirements, and the consent pages list roles only. The module reads and updates only the authorizationPolicy singleton and the app consent policy list. No additional license specified. | No per-user entitlement; Privileged Role Administrator is the least privileged role for delegated updates | direct / per_tenant | inferred |
@@ -245,3 +247,18 @@ Sources: [Restrict guest access permissions](https://learn.microsoft.com/en-us/e
 |------|---------|
 | terraform | >= 1.11.0 |
 | msgraph | >= 0.6.0, < 0.7.0 |
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `tier`: changes `module.licence_guard`; see the module notes.
+- `user_consent_policy_id`: in place.
+- `allow_invites_from`: in place.
+- `guest_access`: in place.
+- `allow_users_to_create_apps`: in place.
+- `allow_users_to_create_tenants`: in place.
+- `restore_prior_values`: in place.
+- `restore_over_changes`: no object change (validation or timing only).
+<!-- drift:end -->

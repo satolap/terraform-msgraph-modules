@@ -13,3 +13,8 @@ output "combinationUpdateResult" {
   description = "Graph action result, including any conditionalAccessReferences and additionalInformation security impact warning."
   value       = msgraph_resource_action.combinations.output.result
 }
+
+output "licence_tier" {
+  description = "The licence tier that was checked: p1 when licence_check is true, otherwise free (nothing is read). Reference this output to order resources after the check."
+  value       = module.licence_guard.tier
+}

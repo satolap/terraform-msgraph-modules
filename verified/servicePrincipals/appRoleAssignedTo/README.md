@@ -19,7 +19,7 @@ Uses beta: **no**. This module and its local child modules do not select beta.
 <!-- live-status:start -->
 Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
 
-![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+![live: not yet run](https://img.shields.io/badge/live-not%20yet%20run-lightgrey)
 <!-- live-status:end -->
 
 Create one app role assignment for a user, group or client service principal at
@@ -31,7 +31,7 @@ API access. It creates no application, principal, app role or delegated consent
 grant. Delegated `oauth2PermissionGrants` are outside this module's scope.
 
 For a published release containing this module, replace `<version>` with the
-release version. The [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry)
+release version. The [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry)
 explains registry installation. Availability in this source tree does not mean
 that an existing release already includes the module.
 
@@ -242,6 +242,8 @@ privileged supported role. Do not infer authorization from license entitlement.
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | DIRECTORY-BASIC | The reviewed create APIs for users, assigned security groups, applications and service principals specify no additional premium license. This covers the object operation only; features built on these objects can require licenses. No additional license specified. | No per-user entitlement for the object operation itself | direct / per_tenant | documented |
@@ -259,10 +261,10 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 | Name | Description | Type | Default | On change |
 | --- | --- | --- | --- | --- |
-| resourceId | Resource service principal object GUID | `string` | required | replaces `msgraph_resource_action.assignment`; kept from creation: a change is refused or ignored (see notes) |
-| principalId | User, group or client service principal object GUID | `string` | required | replaces `msgraph_resource_action.assignment`; kept from creation: a change is refused or ignored (see notes) |
-| appRoleId | Explicit app role GUID; all-zero requires a resource read proving no appRoles | `string` | `null` | replaces `msgraph_resource_action.assignment` when its effect on `local.app_role_id` changes; kept from creation: a change is refused or ignored (see notes) |
-| appRoleValue | Exact value resolved by a read-only lookup; exclusive with appRoleId | `string` | `null` | replaces `msgraph_resource_action.assignment`; kept from creation: a change is refused or ignored (see notes) |
+| resourceId | Resource service principal object GUID | `string` | required | replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.assignment` |
+| principalId | User, group or client service principal object GUID | `string` | required | replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.assignment` |
+| appRoleId | Explicit app role GUID; all-zero requires a resource read proving no appRoles | `string` | `null` | replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.assignment` when its effect on `local.app_role_id` changes |
+| appRoleValue | Exact value resolved by a read-only lookup; exclusive with appRoleId | `string` | `null` | replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.assignment` |
 
 ## Outputs
 
@@ -312,3 +314,14 @@ unchanged upgrade, and confirmed-absence state removal after DELETE 404.
 Retain sanitized run evidence for the request, independent read-back, replacement
 order and cleanup outcome without tenant identifiers or tokens. Delayed effective
 access/token revocation and relationship replication remain live acceptance questions.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `resourceId`: replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.assignment`.
+- `principalId`: replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.assignment`.
+- `appRoleId`: replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.assignment` when its effect on `local.app_role_id` changes.
+- `appRoleValue`: replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.assignment`.
+<!-- drift:end -->

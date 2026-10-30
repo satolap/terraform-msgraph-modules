@@ -77,6 +77,8 @@ a manual fallback only.
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | AUTHN-METHODS-POLICY | No Microsoft Entra ID P1 or P2 licence is required for the settings the authentication methods baseline manages. Microsoft Authenticator (mobile app as a second factor) is included in every edition, passkeys (FIDO2) are available in all editions including Microsoft Entra ID Free, and the SMS and voice settings are free as settings (the second-factor methods themselves are included for Office 365, P1 and P2, and for Free with SMS limited to Global Administrators). A registration campaign states no licence requirement. Voice custom greeting and caller ID need P1 and are not managed. No additional license specified. | No per-user entitlement stated for the managed settings; Microsoft Authenticator, SMS and voice sign-in availability per edition follows the Microsoft Entra licensing table | direct / per_tenant | inferred |
@@ -252,3 +254,28 @@ P1 only for `p2`, `Suspended` or `Warning` SKUs) are tested in
    Authenticator feature settings unchanged, and whether restoring only those two is faithful.
 9. Passkey profiles: whether FIDO2 `includeTargets` need `allowedPasskeyProfiles` in tenants that
    enabled passkey profiles; the module neither reads nor restores profiles.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `tier`: changes `module.licence_guard`; see the module notes.
+- `break_glass_user_ids`: in place.
+- `break_glass_group_ids`: in place.
+- `authenticator_include_group_id`: in place.
+- `authenticator_mode`: in place.
+- `authenticator_show_app_name`: in place.
+- `authenticator_show_location`: in place.
+- `fido2_include_group_id`: in place.
+- `fido2_exclude_group_ids`: in place.
+- `fido2_self_service_registration`: in place.
+- `campaign_state`: in place.
+- `campaign_method`: in place.
+- `campaign_include_group_id`: in place.
+- `campaign_snooze_days`: in place.
+- `campaign_require_after_snoozes`: in place.
+- `phone_methods`: creates or deletes `msgraph_update_resource.object` instances; not replaced or moved: the update targets the existing object; recreate it to move it.
+- `phone_methods_group_id`: in place.
+- `restore_previous_state`: creates or deletes `msgraph_update_resource.object` instances; not replaced or moved: the update targets the existing object; recreate it to move it.
+<!-- drift:end -->

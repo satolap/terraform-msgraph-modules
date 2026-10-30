@@ -50,6 +50,54 @@ run "update_description_in_place" {
   }
 }
 
+# Module-level regression for the live-confirmed callback shape.
+run "launch_and_wait_keeps_the_callback_duration" {
+  command = apply
+
+  module {
+    source = "./tests/integration/launch_and_wait"
+  }
+
+  variables {
+    catalog_id   = run.setup.catalog_id
+    display_name = "tftest-extension-${run.setup.suffix}-wait"
+  }
+
+  assert {
+    condition     = output.launch_and_wait
+    error_message = "The module must report launch and wait when callback is set."
+  }
+
+  assert {
+    condition     = try(output.callback.timeoutDuration, null) == "PT1H" && !contains(keys(output.callback), "@odata.type")
+    error_message = "Graph must return timeoutDuration = PT1H without a callback discriminator. Returned: ${jsonencode(output.callback)}."
+  }
+}
+
+run "launch_and_wait_updates_the_callback_duration" {
+  command = apply
+
+  module {
+    source = "./tests/integration/launch_and_wait"
+  }
+
+  variables {
+    catalog_id   = run.setup.catalog_id
+    display_name = "tftest-extension-${run.setup.suffix}-wait"
+    timeout      = "PT2H"
+  }
+
+  assert {
+    condition     = output.id == run.launch_and_wait_keeps_the_callback_duration.id
+    error_message = "A callback update must keep the extension id."
+  }
+
+  assert {
+    condition     = try(output.callback.timeoutDuration, null) == "PT2H" && !contains(keys(output.callback), "@odata.type")
+    error_message = "Graph must return timeoutDuration = PT2H without a callback discriminator after update. Returned: ${jsonencode(output.callback)}."
+  }
+}
+
 # The type cannot be updated, so the module replaces the extension.
 run "replace_with_assignment_workflow_extension" {
   command = apply

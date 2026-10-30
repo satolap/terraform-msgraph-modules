@@ -36,7 +36,7 @@ is replaced as a whole.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "office_egress" {
@@ -57,18 +57,10 @@ module "office_egress" {
 | Name | Version |
 |------|---------|
 | terraform | >= 1.11.0 |
-| msgraph | >= 0.5.0 |
+| msgraph | >= 0.6.0, < 0.7.0 |
 
-`microsoft/msgraph` 0.5.0 is the first release that sends a changed nested object in full on
-update; earlier releases are not supported by this module.
-
-The module sets minimum versions only. Azure Verified Modules also require a maximum major
-version (TFNFR25, TFNFR26); this module follows HashiCorp's guidance for reusable modules
-instead, which is to "constrain only their minimum allowed versions of Terraform and
-providers"
-([Version constraints](https://developer.hashicorp.com/terraform/language/expressions/version-constraints)).
-The provider is 0.x, so a minor release can break the module; the release manifest records
-the provider version it was tested with. Set upper bounds in your root module.
+`microsoft/msgraph` 0.6.0 is required for the typed trust action. The supported
+range is below 0.7.0; the release manifest records the tested provider version.
 
 Only the Microsoft Graph v1.0 API is supported: `api_version = "beta"` fails at plan, because
 Microsoft does not support beta APIs in production applications. Switching an existing named
@@ -130,6 +122,73 @@ scopes in their token.
   codes 408, 429, 500, 502, 503 and 504 by itself, and those retries count against the
   timeouts.
 
+## Trust verification and teardown
+
+Before destroy or removing the module from configuration, set `is_trusted = false`
+and complete a separate apply. The module sends a dedicated provider-native PATCH
+with exactly `@odata.type = "#microsoft.graph.ipNamedLocation"` and the requested
+`isTrusted` value. Trust changes replace only the PATCH action registration, never
+the named location. The action's destroy sends no request. Other updates finish
+before the trust PATCH; an independent GET then confirms the saved ID, derived type
+and requested trust value. Only this GET polls a stale trust boolean or a replication 404 for the new ID (an anchored
+Graph not-found envelope or leading 404 status; GB-msgraph-provider-611), for at most
+two minutes, without a fixed sleep or replay of a successful create/PATCH. This
+implements GB-conditional-access-501, GB-conditional-access-503/504 and
+GB-delete-and-recovery-501.
+
+A failed verification is a failed preparation, not permission to delete. Re-apply
+unchanged inputs to retry the GET. If trust still has not changed, replace only
+`msgraph_resource_action.trust` in the module with a reviewed apply to resend the
+minimal PATCH, then require verification again. Preserve state and the live run's
+ownership journal for #208 recovery; never recover an object based on its name alone
+(GB-live-cleanup-504/505). Do not publish raw TF_LOG output or tenant identifiers.
+The original request-body/timing cause in #226 remains unproven until a protected
+provider trace is captured by the orchestrator's live run.
+
+After successful preparation, destroy deletes the original CRUD resource. Destroy
+alone does not perform this preparation and Terraform does not evaluate apply-time
+GET postconditions during destroy. A direct destroy of a trusted object still fails
+with Graph error 1177; do not retry that DELETE blindly. Check enabled policies
+using `AllTrusted` before untrusting, since that changes their effect immediately.
+No replacement ordering is needed for the location: trust changes keep its ID.
+
+After a failed first apply, re-apply rather than destroy. For legacy state, first
+complete one unchanged apply to register the action and verify the existing ID;
+change trust in a later apply. If the exact saved-ID GET independently returns 404,
+the location is absent: the CRUD resource refresh removes it from state, and the
+PATCH action can be removed without an HTTP call. There is no destroy-only removal
+action to remove from state. A 403, missing journal, or expired timeout is not absence.
+
+Live acceptance must demonstrate trusted, independently untrusted, then exact-ID
+404 after teardown, including repeated preparation and a delayed read. Protected
+tracing must compare the actual update/untrust PATCH bodies and request order;
+offline mocks prove neither transport nor convergence in Graph.
+
+## Upgrading from v4.0.0 and drift behaviour
+
+- **Provider.** Roots whose lock file pins `microsoft/msgraph` 0.5.x must run
+  `terraform init -upgrade` first; this module requires `>= 0.6.0, < 0.7.0`.
+- **First upgraded apply.** Run one unchanged apply. Terraform registers the new
+  `msgraph_resource_action.trust` without replacing the named location (the state saved by
+  v4.0.0 has no action; `tests/upgrade.tftest.hcl` covers this). That registration is a
+  PATCH carrying the configured `is_trusted`. It overwrites any trust change made outside
+  Terraform and takes effect at once for every Conditional Access policy that uses
+  `AllTrusted`. Review that plan, and the enabled `AllTrusted` policies, before applying.
+- **Drift is no longer corrected in place.** v4.0.0 corrected out-of-band trust drift with an
+  in-place update. Now `msgraph_resource.named_location` ignores `body.isTrusted` and the
+  trust action ignores all changes, so a refresh does not propose a change. Instead the
+  independent GET (`data.msgraph_resource.verify_trust`) is read on every plan and apply. If
+  the live trust value differs from `is_trusted`, each plan polls for up to two minutes and
+  then fails on the postcondition; it does not fix the value. Reconcile it with a reviewed
+  apply that replaces only the trust action, which resends the typed PATCH:
+
+  ```sh
+  terraform apply -replace='module.<name>.msgraph_resource_action.trust'
+  ```
+
+  `<name>` is the label of this module call in your configuration. Check the enabled
+  `AllTrusted` policies first, because the PATCH changes their effect immediately.
+
 ## Independent checks
 
 No [Maester](https://maester.dev/) test reads an IP named location's ranges.
@@ -147,6 +206,8 @@ beta-only property is a finding to investigate, not a module failure.
 ## Licensing and prerequisites
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
+
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
 
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
@@ -167,8 +228,8 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 | display_name | Display name of the location | `string` | n/a | yes | in place |
 | name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
 | ip_ranges | 1 to 2000 canonical IPv4 or IPv6 CIDR ranges, each longer than /8 | `set(string)` | n/a | yes | in place |
-| is_trusted | Mark the location as trusted; set false before destroy | `bool` | `false` | no | in place |
-| api_version | Graph API version; only `v1.0` is supported | `string` | `"v1.0"` | no | in place |
+| is_trusted | Mark the location as trusted; set false before destroy | `bool` | `false` | no | replaces `msgraph_resource_action.trust`; ignored in `msgraph_resource.named_location` |
+| api_version | Graph API version; only `v1.0` is supported | `string` | `"v1.0"` | no | kept from creation in `msgraph_resource_action.trust`; updates `msgraph_resource.named_location` in place |
 | timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; create, update and delete at least `15s`; retries count against them | `object` | `{}` (`10m` for create, update and delete; the provider default for read) | no | no object change (validation or timing only) |
 
 ## Outputs
@@ -179,3 +240,16 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 | display_name | The display name Microsoft Graph returned on the last read | no |
 | is_trusted | The trusted flag Microsoft Graph returned on the last read | no |
 | ip_ranges | The CIDR ranges Microsoft Graph returned on the last read, sorted | no |
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `display_name`: in place.
+- `ip_ranges`: in place.
+- `is_trusted`: replaces `msgraph_resource_action.trust`; ignored in `msgraph_resource.named_location`.
+- `api_version`: kept from creation in `msgraph_resource_action.trust`; updates `msgraph_resource.named_location` in place.
+- `timeouts`: no object change (validation or timing only).
+- `name_pattern`: no object change (validation or timing only).
+<!-- drift:end -->

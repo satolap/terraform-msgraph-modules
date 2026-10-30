@@ -271,6 +271,8 @@ List groups and List group members, so the guard needs only that permission for 
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | DIRECTORY-BASIC | The reviewed create APIs for users, assigned security groups, applications and service principals specify no additional premium license. This covers the object operation only; features built on these objects can require licenses. No additional license specified. | No per-user entitlement for the object operation itself | direct / per_tenant | documented |
@@ -317,3 +319,17 @@ sensitivity. Store them privately. Provider errors and debug logging can also di
 and IDs; do not paste raw diagnostics into public issues. Collection exports must be present,
 well-shaped and complete, including an explicit null paging marker. Missing exports,
 unknown member kinds and malformed required property values fail closed.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `tier`: changes `module.licence_guard`; see the module notes.
+- `break_glass_user_ids`: no object change (validation or timing only).
+- `break_glass_group_ids`: no object change (validation or timing only).
+- `minimum_accounts`: no object change (validation or timing only).
+- `require_onmicrosoft_upn`: no object change (validation or timing only).
+- `expected_group_member_ids`: no object change (validation or timing only).
+- `require_role_assignable_group`: no object change (validation or timing only).
+<!-- drift:end -->

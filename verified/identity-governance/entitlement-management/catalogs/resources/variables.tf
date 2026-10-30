@@ -10,12 +10,24 @@ variable "catalog_id" {
 }
 
 variable "resource_origin_system" {
-  description = "The origin system of the resource being added. One of \"AadGroup\", \"AadApplication\", \"SharePointOnline\", or \"AzureResources\" (an Azure subscription or management group, whose Azure RBAC roles access packages can then grant)."
+  description = "The origin system of the resource being added. One of \"AadGroup\", \"AadApplication\", \"SharePointOnline\", \"AzureResources\", or \"DirectoryRole\" (preview catalog onboarding only; AzureResources is an Azure subscription or management group, whose Azure RBAC roles access packages can then grant)."
   type        = string
 
   validation {
-    condition     = contains(["AadGroup", "AadApplication", "SharePointOnline", "AzureResources"], var.resource_origin_system)
-    error_message = "resource_origin_system must be one of \"AadGroup\", \"AadApplication\", \"SharePointOnline\", or \"AzureResources\"."
+    condition     = contains(["AadGroup", "AadApplication", "SharePointOnline", "AzureResources", "DirectoryRole"], var.resource_origin_system)
+    error_message = "resource_origin_system must be one of \"AadGroup\", \"AadApplication\", \"SharePointOnline\", \"AzureResources\", or \"DirectoryRole\"."
+  }
+}
+
+variable "acknowledge_directory_role_preview" {
+  description = "Explicitly acknowledge DirectoryRole preview catalog onboarding, its privileged caller requirements and that onboarding lets catalog owners and access package managers include this role in access packages; onboard only roles you would delegate to them, and avoid privileged roles. Package role scopes and preview restrictions need separate acceptance before granting access."
+  type        = bool
+  default     = false
+  nullable    = false
+
+  validation {
+    condition     = var.resource_origin_system == "DirectoryRole" ? var.acknowledge_directory_role_preview : true
+    error_message = "DirectoryRole onboarding requires acknowledge_directory_role_preview = true. This adds a catalog resource only; it does not itself assign an Entra role or establish support for a package role scope."
   }
 }
 
@@ -24,11 +36,17 @@ variable "resource_origin_id" {
     The origin ID of the resource being added to the catalog:
       - AadGroup:         the Entra group's object ID
       - AadApplication:   the application's service principal object ID
+      - DirectoryRole:    the Entra role definition ID (GUID), not a role assignment or template name
       - SharePointOnline: the SharePoint Online site URL
       - AzureResources:   the Azure resource ID of a subscription (/subscriptions/<subscription GUID>)
                           or a management group (/providers/Microsoft.Management/managementGroups/<ID>)
   EOT
   type        = string
+
+  validation {
+    condition     = var.resource_origin_system == "DirectoryRole" ? can(regex("(?i)^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.resource_origin_id)) : true
+    error_message = "For DirectoryRole, resource_origin_id must be an Entra role definition ID in GUID form."
+  }
 }
 
 variable "resource_display_name" {

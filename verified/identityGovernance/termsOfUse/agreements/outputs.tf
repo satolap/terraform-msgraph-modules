@@ -54,3 +54,8 @@ output "request_summary" {
     )
   }
 }
+
+output "licence_tier" {
+  description = "The licence tier that was checked: p1 when licence_check is true, otherwise free (nothing is read). Reference this output to order resources after the check."
+  value       = module.licence_guard.tier
+}

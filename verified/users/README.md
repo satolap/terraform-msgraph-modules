@@ -40,7 +40,7 @@ management as:
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "developer" {
@@ -79,6 +79,8 @@ as `passwordProfile` or `accountEnabled`. Set the corresponding module variable 
 ## Licensing and prerequisites
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
+
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
 
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
@@ -120,3 +122,52 @@ Unique values, inferred from the pinned metadata (declaration.json gives each so
 | id | The object ID of the user | yes |
 | user_principal_name | The UPN of the user | no |
 | display_name | The display name of the user | no |
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `user_principal_name`: in place.
+- `display_name`: in place.
+- `mail_nickname`: in place.
+- `password`: in place.
+- `force_change_password_next_sign_in`: in place.
+- `account_enabled`: in place.
+- `given_name`: in place.
+- `surname`: in place.
+- `job_title`: in place.
+- `department`: in place.
+- `usage_location`: in place.
+- `additional_properties`: in place.
+- `api_version`: in place.
+- `name_pattern`: no object change (validation or timing only).
+- `mail_nickname_pattern`: no object change (validation or timing only).
+<!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires |
+| --- | --- | --- | --- |
+| `POST /users` | DelegatedWork | `User.ReadWrite.All` | — |
+| `POST /users` | DelegatedPersonal | Unknown / not annotated | — |
+| `POST /users` | Application | `User.ReadWrite.All` | — |
+| `GET /users/{id}` | DelegatedWork | `User.ReadBasic.All` | — |
+| `GET /users/{id}` | DelegatedWork | `User.ReadWrite.All` | — |
+| `GET /users/{id}` | DelegatedPersonal | `User.Read` | — |
+| `GET /users/{id}` | DelegatedPersonal | `User.ReadWrite` | — |
+| `GET /users/{id}` | Application | `User.ReadBasic.All` | — |
+| `GET /users/{id}` | Application | `User.ReadWrite.All` | — |
+| `PATCH /users/{id}` | DelegatedWork | `User.ReadWrite.All` | — |
+| `PATCH /users/{id}` | DelegatedPersonal | `User.ReadWrite` | — |
+| `PATCH /users/{id}` | Application | `User.ReadWrite.All` | — |
+| `DELETE /users/{id}` | DelegatedWork | `User.DeleteRestore.All` | — |
+| `DELETE /users/{id}` | DelegatedWork | `User.ReadWrite.All` | — |
+| `DELETE /users/{id}` | DelegatedPersonal | Unknown / not annotated | — |
+| `DELETE /users/{id}` | Application | `User.DeleteRestore.All` | — |
+| `DELETE /users/{id}` | Application | `User.ReadWrite.All` | — |
+<!-- permissions:end -->

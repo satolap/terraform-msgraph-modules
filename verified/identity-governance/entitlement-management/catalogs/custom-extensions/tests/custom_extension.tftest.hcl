@@ -73,6 +73,15 @@ run "request_workflow_renders_the_full_body" {
     error_message = "The body must carry the request workflow type, the Logic App workflow name as the default display name, a null description, the endpoint without url and proof-of-possession authentication."
   }
 
+  # The body above is the body this module sent before the callback input
+  # existed. A caller that does not set callback must keep sending it unchanged,
+  # without a callbackConfiguration key, so its first plan after an upgrade
+  # updates nothing.
+  assert {
+    condition     = !contains(keys(msgraph_resource.this.body), "callbackConfiguration") && output.launch_and_wait == false
+    error_message = "Without callback the body must not contain callbackConfiguration and launch_and_wait must be false."
+  }
+
   assert {
     condition     = data.msgraph_resource.catalog_extensions.url == "identityGovernance/entitlementManagement/catalogs/11111111-1111-1111-1111-111111111111/customWorkflowExtensions" && data.msgraph_resource.catalog_extensions.api_version == "v1.0"
     error_message = "The catalog's extensions must be listed from the same collection on v1.0."
@@ -224,6 +233,172 @@ run "trigger_url_is_left_out_when_removed" {
   assert {
     condition     = output.id == "22222222-2222-2222-2222-222222222222"
     error_message = "Removing the url must update the extension in place and keep its id."
+  }
+}
+
+# Launch and wait. Adding the callback, changing its timeout and removing it are
+# in-place updates of the same extension; none of them replaces it.
+run "launch_and_wait_sends_the_callback_and_updates_in_place" {
+  command = apply
+
+  variables {
+    display_name = "Notify owner"
+    callback     = { timeout = "PT1H" }
+  }
+
+  # A new object would take this id; an in-place update keeps the old one.
+  override_resource {
+    target = msgraph_resource.this
+    values = {
+      id = "22222222-2222-2222-2222-000000000005"
+      output = {
+        unmanaged_properties = {
+          callback_configuration = false
+          client_configuration   = false
+          behavior_on_error      = false
+          other_authentication   = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "22222222-2222-2222-2222-222222222222"
+    error_message = "Adding the callback must update the extension in place and keep its id."
+  }
+
+  assert {
+    condition = jsonencode(msgraph_resource.this.body) == jsonencode({
+      "@odata.type" = "#microsoft.graph.accessPackageAssignmentRequestWorkflowExtension"
+      displayName   = "Notify owner"
+      description   = null
+      endpointConfiguration = {
+        "@odata.type"        = "#microsoft.graph.logicAppTriggerEndpointConfiguration"
+        subscriptionId       = "33333333-3333-3333-3333-333333333333"
+        resourceGroupName    = "rg-example"
+        logicAppWorkflowName = "logic-example"
+      }
+      authenticationConfiguration = {
+        "@odata.type" = "#microsoft.graph.azureAdPopTokenAuthentication"
+      }
+      callbackConfiguration = {
+        timeoutDuration = "PT1H"
+      }
+    })
+    error_message = "With callback the body must add callbackConfiguration with only timeoutDuration to the same managed keys."
+  }
+
+  assert {
+    condition     = output.launch_and_wait == true
+    error_message = "launch_and_wait must be true when callback is set."
+  }
+
+  assert {
+    condition     = jsonencode(output.binding) == jsonencode({ extension_id = "22222222-2222-2222-2222-222222222222", extension_type = "request_workflow" })
+    error_message = "The binding must not change with the callback: a policy binds a launch and wait extension like any other request workflow extension."
+  }
+
+  assert {
+    condition     = jsonencode(terraform_data.identity.input) == jsonencode({ catalog_id = "11111111-1111-1111-1111-111111111111", extension_type = "request_workflow" })
+    error_message = "The callback must not be part of the replace trigger."
+  }
+}
+
+run "changing_the_callback_timeout_updates_in_place" {
+  command = apply
+
+  variables {
+    display_name = "Notify owner"
+    callback     = { timeout = "P14D" }
+  }
+
+  override_resource {
+    target = msgraph_resource.this
+    values = {
+      id = "22222222-2222-2222-2222-000000000006"
+      output = {
+        unmanaged_properties = {
+          callback_configuration = false
+          client_configuration   = false
+          behavior_on_error      = false
+          other_authentication   = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "22222222-2222-2222-2222-222222222222"
+    error_message = "A new timeout must update the extension in place and keep its id."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body.callbackConfiguration) == jsonencode({ timeoutDuration = "P14D" })
+    error_message = "The new timeout must be sent; 14 days is the documented maximum."
+  }
+}
+
+# The documented minimum, and the largest value in normal form below the maximum.
+run "accepts_a_5_minute_callback_timeout" {
+  command = apply
+
+  variables {
+    display_name = "Notify owner"
+    callback     = { timeout = "PT5M" }
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body.callbackConfiguration.timeoutDuration == "PT5M"
+    error_message = "5 minutes is the documented minimum and must be accepted."
+  }
+}
+
+run "accepts_days_hours_and_minutes_in_one_timeout" {
+  command = apply
+
+  variables {
+    display_name = "Notify owner"
+    callback     = { timeout = "P13DT23H59M" }
+  }
+
+  assert {
+    condition     = msgraph_resource.this.body.callbackConfiguration.timeoutDuration == "P13DT23H59M"
+    error_message = "A timeout with days, hours and minutes in normal form within the range must be accepted."
+  }
+}
+
+# Graph keeps a property that a PUT body omits, so the extension stays launch
+# and wait on the server; the unmanaged_properties runs below cover the warning.
+run "removing_the_callback_leaves_it_out_of_the_body_and_updates_in_place" {
+  command = apply
+
+  variables {
+    display_name = "Notify owner"
+  }
+
+  override_resource {
+    target = msgraph_resource.this
+    values = {
+      id = "22222222-2222-2222-2222-000000000007"
+      output = {
+        unmanaged_properties = {
+          callback_configuration = false
+          client_configuration   = false
+          behavior_on_error      = false
+          other_authentication   = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "22222222-2222-2222-2222-222222222222"
+    error_message = "Removing the callback must not replace the extension."
+  }
+
+  assert {
+    condition     = !contains(keys(msgraph_resource.this.body), "callbackConfiguration") && output.launch_and_wait == false
+    error_message = "Without callback the body must not contain callbackConfiguration and launch_and_wait must be false."
   }
 }
 
@@ -447,6 +622,67 @@ run "reports_every_unmanaged_property_that_graph_returns_set" {
   assert {
     condition     = jsonencode(local.unmanaged_set) == jsonencode(["authenticationConfiguration", "behaviorOnError", "callbackConfiguration", "clientConfiguration"])
     error_message = "Every unmanaged property that Graph returned set must be reported by its name, sorted."
+  }
+}
+
+# While callback is set the body holds the callback and the plan shows its
+# drift, so a callback that Graph returns is not reported. Changing the type
+# back to request_workflow replaces the extension, so the override's read-back
+# is used.
+run "does_not_report_a_callback_that_the_configuration_sets" {
+  command = apply
+
+  variables {
+    callback = { timeout = "PT1H" }
+  }
+
+  override_resource {
+    target = msgraph_resource.this
+    values = {
+      id = "22222222-2222-2222-2222-000000000008"
+      output = {
+        unmanaged_properties = {
+          callback_configuration = true
+          client_configuration   = false
+          behavior_on_error      = false
+          other_authentication   = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "22222222-2222-2222-2222-000000000008"
+    error_message = "A new extension type must replace the extension, so the new object's read-back is used."
+  }
+
+  assert {
+    condition     = length(local.unmanaged_set) == 0
+    error_message = "A callback that the configuration sets is managed and must not be reported."
+  }
+}
+
+# Setting callback back to null leaves the callback out of the body. Graph keeps
+# it, as a mock in-place update keeps the last read-back, so the check reports
+# it; the extension is not replaced and stays launch and wait until it is.
+run "reports_a_callback_left_on_the_server_after_callback_is_removed" {
+  command = apply
+
+  expect_failures = [check.unmanaged_properties]
+
+  assert {
+    condition     = output.id == "22222222-2222-2222-2222-000000000008" && output.launch_and_wait == false
+    error_message = "Removing callback must update the extension in place, and launch_and_wait must follow the configuration."
+  }
+
+  assert {
+    condition     = !contains(keys(msgraph_resource.this.body), "callbackConfiguration")
+    error_message = "Without callback the body must not contain callbackConfiguration."
+  }
+
+  assert {
+    condition     = jsonencode(local.unmanaged_set) == jsonencode(["callbackConfiguration"])
+    error_message = "A callback that Graph still returns while callback is null must be reported."
   }
 }
 
@@ -759,6 +995,148 @@ run "rejects_a_trigger_url_with_a_sas_version" {
   }
 
   expect_failures = [var.logic_app]
+}
+
+run "rejects_a_callback_for_an_assignment_workflow_extension" {
+  command = plan
+
+  variables {
+    extension_type = "assignment_workflow"
+    callback       = { timeout = "PT1H" }
+  }
+
+  expect_failures = [msgraph_resource.this]
+}
+
+run "rejects_a_callback_timeout_that_is_not_a_duration" {
+  command = plan
+
+  variables {
+    callback = { timeout = "1h" }
+  }
+
+  expect_failures = [var.callback]
+}
+
+run "rejects_a_null_callback_timeout" {
+  command = plan
+
+  variables {
+    callback = { timeout = null }
+  }
+
+  expect_failures = [var.callback]
+}
+
+# P1M is one month, not one minute.
+run "rejects_a_callback_timeout_in_months" {
+  command = plan
+
+  variables {
+    callback = { timeout = "P1M" }
+  }
+
+  expect_failures = [var.callback]
+}
+
+run "rejects_a_callback_timeout_in_weeks" {
+  command = plan
+
+  variables {
+    callback = { timeout = "P1W" }
+  }
+
+  expect_failures = [var.callback]
+}
+
+run "rejects_a_callback_timeout_in_seconds" {
+  command = plan
+
+  variables {
+    callback = { timeout = "PT300S" }
+  }
+
+  expect_failures = [var.callback]
+}
+
+run "rejects_a_callback_timeout_without_a_part" {
+  command = plan
+
+  variables {
+    callback = { timeout = "PT" }
+  }
+
+  expect_failures = [var.callback]
+}
+
+run "rejects_a_callback_timeout_with_a_trailing_t" {
+  command = plan
+
+  variables {
+    callback = { timeout = "P1DT" }
+  }
+
+  expect_failures = [var.callback]
+}
+
+run "rejects_a_callback_timeout_with_a_zero_part" {
+  command = plan
+
+  variables {
+    callback = { timeout = "P1DT0H" }
+  }
+
+  expect_failures = [var.callback]
+}
+
+run "rejects_a_callback_timeout_with_a_leading_zero" {
+  command = plan
+
+  variables {
+    callback = { timeout = "PT05M" }
+  }
+
+  expect_failures = [var.callback]
+}
+
+run "rejects_minutes_that_are_not_in_normal_form" {
+  command = plan
+
+  variables {
+    callback = { timeout = "PT90M" }
+  }
+
+  expect_failures = [var.callback]
+}
+
+run "rejects_hours_that_are_not_in_normal_form" {
+  command = plan
+
+  variables {
+    callback = { timeout = "PT25H" }
+  }
+
+  expect_failures = [var.callback]
+}
+
+run "rejects_a_callback_timeout_below_5_minutes" {
+  command = plan
+
+  variables {
+    callback = { timeout = "PT4M" }
+  }
+
+  expect_failures = [var.callback]
+}
+
+run "rejects_a_callback_timeout_over_14_days" {
+  command = plan
+
+  variables {
+    callback = { timeout = "P14DT1M" }
+  }
+
+  expect_failures = [var.callback]
 }
 
 run "rejects_an_empty_display_name" {

@@ -7,7 +7,7 @@ Uses beta: **no**. This module and its local child modules do not select beta.
 <!-- live-status:start -->
 Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
 
-![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+![live: not yet run](https://img.shields.io/badge/live-not%20yet%20run-lightgrey)
 <!-- live-status:end -->
 
 Create a new custom role definition at the Microsoft Graph v1.0
@@ -16,7 +16,7 @@ Graph's original case. This module creates no role assignment and grants nobody
 the permissions in the definition.
 
 For a published release containing this module, replace `<version>` with that
-release version. The [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry)
+release version. The [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry)
 explains registry installation. Availability in this source tree does not mean
 that an existing release already includes the module.
 
@@ -175,6 +175,8 @@ least privilege or license entitlement.
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | DIRECTORY-CUSTOM-ROLES | Microsoft Graph documents Microsoft Entra ID P1 or P2 for creating and updating custom directory roles. This module creates only a definition, with no assignments or license provisioning. Any of: Microsoft Entra ID P1 (`AAD_PREMIUM`); Microsoft Entra ID P2 (`AAD_PREMIUM_P2`). | Tenant using custom roles; confirm administrator and eventual assignee entitlements before making assignments | direct / per_tenant | inferred |
@@ -205,3 +207,16 @@ Sources: [Create custom role definition](https://learn.microsoft.com/en-us/graph
 | --- | --- | --- |
 | id | Custom definition object ID, for a separate assignment | yes |
 | templateId | Template identifier read back from Graph | no |
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `displayName`: in place.
+- `name_pattern`: no object change (validation or timing only).
+- `description`: in place.
+- `isEnabled`: in place.
+- `rolePermissions`: in place.
+- `templateId`: replaces `msgraph_resource.roleDefinition` when `var.templateId == null ? null : lower(var.templateId)` changes.
+<!-- drift:end -->

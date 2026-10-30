@@ -48,6 +48,10 @@ run "verify_created" {
   variables {
     named_location_id = run.create_location.id
     run_label         = "created"
+
+    expected_display_name = "tftest-ca-ip-${run.setup.suffix}"
+    expected_is_trusted   = false
+    expected_ip_ranges    = ["192.0.2.0/24", "2001:db8::/48"]
   }
 
   assert {
@@ -86,7 +90,7 @@ run "refresh_created" {
 }
 
 # PATCH: rename, add a range, trust the location. The trusted flag is checked
-# from this run's own read-back, so that the untrust run can follow immediately.
+# by the module's bounded independent GET, before the untrust run follows.
 run "update_location" {
   command = apply
 
@@ -102,13 +106,8 @@ run "update_location" {
   }
 
   assert {
-    condition     = output.display_name == "tftest-ca-ip-${run.setup.suffix}-updated" && output.is_trusted == true
-    error_message = "The update read-back must carry the new name and the trusted flag."
-  }
-
-  assert {
-    condition     = jsonencode(output.ip_ranges) == jsonencode(["192.0.2.0/24", "198.51.100.0/24", "2001:db8::/48"])
-    error_message = "The update read-back must carry the full, replaced range list."
+    condition     = output.is_trusted == true
+    error_message = "An independent bounded GET must confirm the trusted flag before untrusting."
   }
 }
 
@@ -124,10 +123,24 @@ run "untrust_before_destroy" {
   }
 
   # Graph's read-back right after the PATCH can still report the old trust value;
-  # verify_updated checks it with a fresh GET after a delay instead.
+  # the module confirms it through a bounded independent GET before this run ends.
   assert {
-    condition     = output.id == run.create_location.id
-    error_message = "Dropping trust must update the location in place."
+    condition     = output.id == run.create_location.id && output.is_trusted == false
+    error_message = "Dropping trust must keep the ID and independently confirm false before destroy."
+  }
+}
+
+# Repeated preparation must keep the same identity and confirm false again.
+run "untrust_again" {
+  command = apply
+  variables {
+    display_name = "tftest-ca-ip-${run.setup.suffix}-updated"
+    ip_ranges    = ["192.0.2.0/24", "198.51.100.0/24", "2001:db8::/48"]
+    is_trusted   = false
+  }
+  assert {
+    condition     = output.id == run.create_location.id && output.is_trusted == false
+    error_message = "Repeated untrust preparation must retain identity and independently confirm false."
   }
 }
 
@@ -139,6 +152,12 @@ run "verify_updated" {
   variables {
     named_location_id = run.untrust_before_destroy.id
     run_label         = "updated"
+
+    expected_display_name = "tftest-ca-ip-${run.setup.suffix}-updated"
+    expected_is_trusted   = false
+    expected_ip_ranges    = ["192.0.2.0/24", "198.51.100.0/24", "2001:db8::/48"]
+    previous_display_name = "tftest-ca-ip-${run.setup.suffix}"
+    previous_ip_ranges    = ["192.0.2.0/24", "2001:db8::/48"]
   }
 
   assert {

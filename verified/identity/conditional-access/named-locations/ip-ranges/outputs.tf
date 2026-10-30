@@ -10,7 +10,7 @@ output "display_name" {
 
 output "is_trusted" {
   description = "Whether Microsoft Graph reported the location as trusted on the last read."
-  value       = msgraph_resource.named_location.output.is_trusted
+  value       = data.msgraph_resource.verify_trust.output.location.isTrusted
 }
 
 output "ip_ranges" {

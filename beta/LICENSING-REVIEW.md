@@ -2,7 +2,7 @@
 
 [Catalog](README.md) Â· [manifest.json](manifest.json)
 
-621 generated endpoints carry an unknown licensing record. Each path links to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
+611 generated endpoints carry an unknown licensing record. Each path links to its generated module README; review the endpoint's Microsoft Graph documentation and Microsoft Entra licensing before relying on it. No license entitlement is inferred from API behavior.
 
 ## Agents (`agents`)
 
@@ -429,7 +429,7 @@
 
 ## Identity and access (`identity-and-access`)
 
-87 unknown endpoints.
+84 unknown endpoints.
 
 - [`/accessReviews`](access-reviews/README.md)
 - [`/accessReviews/{accessReview-id}/reviewers`](access-reviews/reviewers/README.md)
@@ -455,7 +455,6 @@
 - [`/identity/b2xUserFlows/{b2xIdentityUserFlow-id}/userAttributeAssignments`](identity/b2x-user-flows/user-attribute-assignments/README.md)
 - [`/identity/conditionalAccess/authenticationContextClassReferences`](identity/conditional-access/authentication-context-class-references/README.md)
 - [`/identity/conditionalAccess/authenticationStrength/policies/{authenticationStrengthPolicy-id}/combinationConfigurations`](identity/conditional-access/authentication-strength/policies/combination-configurations/README.md)
-- [`/identity/conditionalAccess/namedLocations`](identity/conditional-access/named-locations/README.md)
 - [`/identity/conditionalAccess/policies`](identity/conditional-access/policies/README.md)
 - [`/identity/customAuthenticationExtensions`](identity/custom-authentication-extensions/README.md)
 - [`/identity/identityProviders`](identity/identity-providers/README.md)
@@ -466,7 +465,6 @@
 - [`/identity/verifiedId/profiles`](identity/verified-id/profiles/README.md)
 - [`/identityGovernance/accessReviews/definitions`](identity-governance/access-reviews/definitions/README.md)
 - [`/identityGovernance/catalogs/{accessPackageCatalog-id}/accessPackageResources/{accessPackageResource-id}/uploadSessions`](identity-governance/catalogs/access-package-resources/upload-sessions/README.md)
-- [`/identityGovernance/entitlementManagement/accessPackageCatalogs/{accessPackageCatalog-id}/customAccessPackageWorkflowExtensions`](identity-governance/entitlement-management/access-package-catalogs/custom-access-package-workflow-extensions/README.md)
 - [`/identityGovernance/entitlementManagement/accessPackages/{accessPackage-id}/accessPackageResourceRoleScopes`](identity-governance/entitlement-management/access-packages/access-package-resource-role-scopes/README.md)
 - [`/identityGovernance/entitlementManagement/assignmentRequests`](identity-governance/entitlement-management/assignment-requests/README.md)
 - [`/identityGovernance/entitlementManagement/connectedOrganizations`](identity-governance/entitlement-management/connected-organizations/README.md)
@@ -513,7 +511,6 @@
 - [`/servicePrincipals/{servicePrincipal-id}/appRoleAssignedTo`](service-principals/app-role-assigned-to/README.md)
 - [`/servicePrincipals/{servicePrincipal-id}/appRoleAssignments`](service-principals/app-role-assignments/README.md)
 - [`/settings`](settings/README.md)
-- [`/trustFramework/keySets`](trust-framework/key-sets/README.md)
 - [`/trustFramework/policies`](trust-framework/policies/README.md)
 - [`/users/{user-id}/appRoleAssignments`](users/app-role-assignments/README.md)
 - [`/users/{user-id}/authentication/emailMethods`](users/authentication/email-methods/README.md)
@@ -689,7 +686,7 @@
 
 ## Teamwork and communications (`teamwork-and-communications`)
 
-37 unknown endpoints.
+30 unknown endpoints.
 
 - [`/app/calls`](app/calls/README.md)
 - [`/app/calls/{call-id}/audioRoutingGroups`](app/calls/audio-routing-groups/README.md)
@@ -714,14 +711,7 @@
 - [`/teams/{team-id}/channels/{channel-id}/tabs`](teams/channels/tabs/README.md)
 - [`/teams/{team-id}/installedApps`](teams/installed-apps/README.md)
 - [`/teams/{team-id}/members`](teams/members/README.md)
-- [`/teams/{team-id}/schedule/dayNotes`](teams/schedule/day-notes/README.md)
-- [`/teams/{team-id}/schedule/openShifts`](teams/schedule/open-shifts/README.md)
-- [`/teams/{team-id}/schedule/schedulingGroups`](teams/schedule/scheduling-groups/README.md)
-- [`/teams/{team-id}/schedule/shifts`](teams/schedule/shifts/README.md)
-- [`/teams/{team-id}/schedule/timeCards`](teams/schedule/time-cards/README.md)
-- [`/teams/{team-id}/schedule/timeOffReasons`](teams/schedule/time-off-reasons/README.md)
 - [`/teams/{team-id}/schedule/timeOffRequests`](teams/schedule/time-off-requests/README.md)
-- [`/teams/{team-id}/schedule/timesOff`](teams/schedule/times-off/README.md)
 - [`/teams/{team-id}/tags`](teams/tags/README.md)
 - [`/teams/{team-id}/tags/{teamworkTag-id}/members`](teams/tags/members/README.md)
 - [`/teamwork/workforceIntegrations`](teamwork/workforce-integrations/README.md)

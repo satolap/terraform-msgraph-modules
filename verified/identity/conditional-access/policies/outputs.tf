@@ -32,3 +32,8 @@ output "unmanaged_properties_set" {
   description = "Properties this module does not manage (for example conditions.users.excludeGuestsOrExternalUsers) that Microsoft Graph returned set on the last read, as JSON paths, sorted. A replacement creates the policy from the configuration only and loses their values. Empty when none is set."
   value       = local.unmanaged_set
 }
+
+output "licence_tier" {
+  description = "The licence tier that was checked: p1 when licence_check is true, otherwise free (nothing is read). Reference this output to order resources after the check."
+  value       = module.licence_guard.tier
+}

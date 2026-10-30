@@ -1,3 +1,12 @@
+# Opt-in licence check. The shared guard reads subscribedSkus only for tier p1; the free tier
+# reads nothing and needs no permission. The tier depends only on the licence_check input.
+module "licence_guard" {
+  source = "../../../security-baseline/licence-guard"
+
+  tier          = var.licence_check ? "p1" : "free"
+  allowed_tiers = ["free", "p1"]
+}
+
 locals {
   default_language = lower(var.default_file.language)
   all_languages    = concat([local.default_language], [for key in sort(keys(var.additional_files)) : lower(var.additional_files[key].language)])

@@ -1,4 +1,13 @@
 mock_provider "msgraph" {
+  mock_data "msgraph_resource" {
+    defaults = {
+      output = { location = {
+        id            = "44444444-4444-4444-4444-444444444444"
+        "@odata.type" = "#microsoft.graph.ipNamedLocation"
+        isTrusted     = false
+      } }
+    }
+  }
   mock_resource "msgraph_resource" {
     defaults = {
       id = "44444444-4444-4444-4444-444444444444"
@@ -54,6 +63,14 @@ run "creates_typed_sorted_ranges" {
 }
 
 run "updates_ranges_and_trust_in_place" {
+  override_data {
+    target = data.msgraph_resource.verify_trust
+    values = { output = { location = {
+      id            = "44444444-4444-4444-4444-444444444444"
+      "@odata.type" = "#microsoft.graph.ipNamedLocation"
+      isTrusted     = true
+    } } }
+  }
   command = apply
 
   variables {
@@ -73,12 +90,20 @@ run "updates_ranges_and_trust_in_place" {
   }
 
   assert {
-    condition     = msgraph_resource.named_location.body.isTrusted == true && msgraph_resource.named_location.body.displayName == "Office egress renamed"
+    condition     = msgraph_resource_action.trust.body.isTrusted == true && msgraph_resource.named_location.body.displayName == "Office egress renamed"
     error_message = "The update body must carry the new trust flag and name."
   }
 }
 
 run "refresh_only_keeps_body_equal_to_configuration" {
+  override_data {
+    target = data.msgraph_resource.verify_trust
+    values = { output = { location = {
+      id            = "44444444-4444-4444-4444-444444444444"
+      "@odata.type" = "#microsoft.graph.ipNamedLocation"
+      isTrusted     = true
+    } } }
+  }
   command = apply
 
   plan_options {
@@ -92,7 +117,7 @@ run "refresh_only_keeps_body_equal_to_configuration" {
   }
 
   assert {
-    condition     = jsonencode(msgraph_resource.named_location.body) == jsonencode(local.body)
+    condition     = jsonencode(merge(msgraph_resource.named_location.body, { isTrusted = output.is_trusted })) == jsonencode(local.body)
     error_message = "A refresh-only run must be able to compare the refreshed body with local.body."
   }
 }
@@ -292,4 +317,114 @@ run "accepts_15_second_timeouts" {
     condition     = jsonencode(msgraph_resource.named_location.timeouts) == jsonencode({ create = "15s", delete = "15s", read = null, update = "15s" })
     error_message = "15s is the documented minimum for create, update and delete and must be accepted."
   }
+}
+
+run "untrust_is_a_typed_patch_confirmed_by_get" {
+  command = apply
+  variables { is_trusted = false }
+  assert {
+    condition = jsonencode(msgraph_resource_action.trust.body) == jsonencode({
+      "@odata.type" = "#microsoft.graph.ipNamedLocation"
+      isTrusted     = false
+    })
+    error_message = "Untrust must send exactly the manual-probe body, including the unchanged type."
+  }
+  assert {
+    condition     = msgraph_resource_action.trust.method == "PATCH" && output.is_trusted == false
+    error_message = "Untrust uses PATCH and exports independent GET evidence."
+  }
+}
+
+run "stale_trusted_read_blocks_untrust" {
+  command = plan
+  override_data {
+    target = data.msgraph_resource.verify_trust
+    values = { output = { location = {
+      id            = "44444444-4444-4444-4444-444444444444"
+      "@odata.type" = "#microsoft.graph.ipNamedLocation"
+      isTrusted     = true
+    } } }
+  }
+  expect_failures = [data.msgraph_resource.verify_trust]
+}
+
+run "verification_retries_without_replaying_patch" {
+  command = apply
+  assert {
+    condition     = output.is_trusted == false
+    error_message = "An unchanged apply must recover verification from a delayed read."
+  }
+}
+
+run "wrong_identity_is_not_untrust_proof" {
+  command = plan
+  override_data {
+    target = data.msgraph_resource.verify_trust
+    values = { output = { location = {
+      id            = "55555555-5555-5555-5555-555555555555"
+      "@odata.type" = "#microsoft.graph.ipNamedLocation"
+      isTrusted     = false
+    } } }
+  }
+  expect_failures = [data.msgraph_resource.verify_trust]
+}
+
+# A replica may answer 404 for the just-created location. The mock provider
+# cannot raise HTTP errors, so the test pins the retry contract: the GET retries
+# the stale trust boolean and anchored 404 patterns (GB-msgraph-provider-611),
+# within the two-minute read window, and never retries a write.
+run "verification_get_retries_a_replication_404" {
+  command = apply
+
+  assert {
+    condition     = length(data.msgraph_resource.verify_trust.retry.error_message_regex) == 3
+    error_message = "The verification GET must retry the stale trust boolean and the two anchored 404 patterns."
+  }
+
+  assert {
+    condition = alltrue([
+      can(regex(data.msgraph_resource.verify_trust.retry.error_message_regex[1], "{\"error\":{\"code\":\"Request_ResourceNotFound\",\"message\":\"Resource does not exist\"}}")),
+      can(regex(data.msgraph_resource.verify_trust.retry.error_message_regex[1], "{\"error\":{\"code\":\"NotFound\"}}")),
+      can(regex(data.msgraph_resource.verify_trust.retry.error_message_regex[2], "HTTP 404")),
+      !can(regex(data.msgraph_resource.verify_trust.retry.error_message_regex[1], "{\"error\":{\"code\":\"Forbidden\",\"message\":\"id 404\"}}")),
+      !can(regex(data.msgraph_resource.verify_trust.retry.error_message_regex[2], "request 404 ids")),
+    ])
+    error_message = "The 404 retry patterns must match a Graph not-found envelope or a leading 404 status and nothing broader."
+  }
+
+  assert {
+    condition     = data.msgraph_resource.verify_trust.timeouts.read == "2m"
+    error_message = "The retry must stay bounded by the two-minute read window."
+  }
+
+  assert {
+    condition     = msgraph_resource_action.trust.retry == null && msgraph_resource.named_location.retry == null
+    error_message = "Only the verification GET may retry; the create and PATCH must not."
+  }
+}
+
+# Retrying the 404 must not weaken the postcondition: a read that settles on the
+# wrong trust value (here the mock keeps false for a requested true) still fails.
+run "persistent_trust_mismatch_still_fails" {
+  command = apply
+
+  variables {
+    is_trusted = true
+  }
+
+  expect_failures = [data.msgraph_resource.verify_trust]
+}
+
+run "persistent_identity_mismatch_still_fails" {
+  override_data {
+    target = data.msgraph_resource.verify_trust
+    values = { output = { location = {
+      id            = "55555555-5555-5555-5555-555555555555"
+      "@odata.type" = "#microsoft.graph.ipNamedLocation"
+      isTrusted     = false
+    } } }
+  }
+  command = apply
+
+  expect_failures = [data.msgraph_resource.verify_trust]
 }

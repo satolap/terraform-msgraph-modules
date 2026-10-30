@@ -19,7 +19,7 @@ Uses beta: **no**. This module and its local child modules do not select beta.
 <!-- live-status:start -->
 Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
 
-![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+![live: not yet run](https://img.shields.io/badge/live-not%20yet%20run-lightgrey)
 <!-- live-status:end -->
 
 Creates one **permanent active, direct** assignment through
@@ -29,7 +29,7 @@ which use schedule requests, eligibility, activation and PIM policy/licensing.
 This module creates neither a principal nor a role definition and never writes
 to either. Built-in definitions remain read-only references.
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 Availability in this source tree does not mean an existing release already
 includes the module.
 
@@ -149,8 +149,23 @@ premature deletion. The read-only guards therefore remain in the exact
 publication provisioner allowlist; no cleanup conversion or removal of the
 existing Python/Azure CLI requirements is claimed for this module.
 
-Owner-dispatched live acceptance still needs duplicate pagination, mismatched
-tenant/identity refusal, exact-ID absence, destroy-first replacement and the
+There are two provisioners, but only `terraform_data.ownership` runs at destroy;
+`terraform_data.preflight` runs at create. A destroy-only GET action cannot feed
+fresh identity evidence into a later DELETE's saved configuration or Terraform
+precondition. A GET at apply verifies only that earlier read, so a later denied
+or mismatched read would no longer block deletion. Action retries do not supply
+that conditional ownership gate.
+
+The native modules' "apply once before destroy after upgrading" migration does
+not apply here. Both read-only guards remain active, and the assignment retains
+its existing CRUD state type. Do not make `terraform_data.ownership` inert or
+register a second DELETE action. Inputs, provider requirements and destroy
+semantics are unchanged by this exception assessment.
+
+The governance suite `tests/integration/assignment.tftest.hcl` now includes
+`duplicate_pagination`, `mismatched_tenant`, `mismatched_identity`,
+`exact_id_absence` and `destroy_first_replacement`. These await the next dev
+dispatch; the remaining manual acceptance includes the
 coordinated deterministic-ID re-creation probe described below. Verify that
 unrelated assignments survive and retain only sanitized evidence.
 
@@ -192,6 +207,8 @@ before any stronger ownership guarantee is claimed.
 ## Licensing and prerequisites
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
+
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
 
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
@@ -240,7 +257,22 @@ ownership and failure paths. Offline contract checks bind the request and scope
 shapes to hash-pinned Microsoft Learn examples. These do not prove Graph
 acceptance, replacement ordering or effective privilege. Live proof stays in #248.
 
-The owner-dispatched sandbox run must:
+The governance integration suite uses only a `tftest-` service principal,
+Directory Readers and a test-created custom role limited to application standard
+read. Its read-only probes run the shipped guard against real Graph reads:
+`duplicate_pagination` follows every Graph-issued `@odata.nextLink` and refuses
+a tuple on a later page when Graph supplies multiple pages. A single-page
+response records "pagination not exercised" as skipped/inconclusive, allowing
+subsequent acceptance probes to run; it does not prove pagination. The probe uses
+no undocumented page-size option. The mismatch runs prove refusal while the captured assignment remains
+readable; `exact_id_absence` requires a saved-ID GET 404 after destroy.
+`destroy_first_replacement` changes the selector to the same role ID: the
+preflight duplicate guard can permit the replacement only after the old tuple
+has been removed, including when Graph returns the same deterministic ID.
+No probe performs an out-of-band write. Custom-role licensing still applies.
+These owner-dispatched runs do not cover other scopes, effective privilege,
+transient failures or identical out-of-band re-creation. The remaining sandbox
+run must:
 
 1. Review the requested privilege, same-tenant provider/CLI identity, target and
    licensing: free built-in tenant assignment, P1/P2 custom role assignee, and P1
@@ -272,3 +304,18 @@ The owner-dispatched sandbox run must:
    distinguish it. Only with approval to remove that re-created sandbox grant,
    demonstrate that destroy/replacement deletes it. Record the ownership limit
    and any usable marker evidence without committing tenant data.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `tenant_id`: replaces `msgraph_resource.assignment`.
+- `principal_id`: replaces `msgraph_resource.assignment` when its effect on `local.request_body` changes.
+- `role_definition_id`: replaces `msgraph_resource.assignment` when `local.request_body`, `var.role_definition_id == null ? null : lower(var.role_definition_id)` changes.
+- `template_id`: replaces `msgraph_resource.assignment` when `local.request_body`, `var.template_id == null ? null : lower(var.template_id)` changes.
+- `role_display_name`: replaces `msgraph_resource.assignment`.
+- `role_type`: replaces `msgraph_resource.assignment`.
+- `directory_scope_id`: replaces `msgraph_resource.assignment` when its effect on `local.request_body` changes.
+- `scope_type`: replaces `msgraph_resource.assignment`.
+<!-- drift:end -->

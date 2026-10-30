@@ -24,7 +24,7 @@ package: each role's `id` (a GUID) is the `role_origin_id` consumed by the
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "internal_app" {
@@ -92,6 +92,8 @@ Requires the `Application.ReadWrite.All` Microsoft Graph permission.
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | DIRECTORY-BASIC | The reviewed create APIs for users, assigned security groups, applications and service principals specify no additional premium license. This covers the object operation only; features built on these objects can require licenses. No additional license specified. | No per-user entitlement for the object operation itself | direct / per_tenant | documented |
@@ -138,3 +140,48 @@ upgrade apply carries no other change to the application. In the same plan as a 
 or drift, the new resource still reads an unknown `app_id`, and a fed service principal
 is replaced as before. Apply the upgrade on its own, or check that the plan replaces
 no service principal.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `display_name`: in place.
+- `sign_in_audience`: in place.
+- `description`: in place.
+- `notes`: in place.
+- `tags`: in place.
+- `web_redirect_uris`: in place.
+- `spa_redirect_uris`: in place.
+- `public_client_redirect_uris`: in place.
+- `app_roles`: in place.
+- `api_version`: in place.
+- `name_pattern`: no object change (validation or timing only).
+<!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires |
+| --- | --- | --- | --- |
+| `POST /applications` | DelegatedWork | `AppRegistration.Create` | — |
+| `POST /applications` | DelegatedWork | `Application.ReadWrite.All` | — |
+| `POST /applications` | DelegatedPersonal | `Application.ReadWrite.All` | — |
+| `POST /applications` | Application | `AppRegistration.Create` | — |
+| `POST /applications` | Application | `Application.ReadWrite.OwnedBy` | — |
+| `GET /applications/{id}` | DelegatedWork | `Application.Read.All` | — |
+| `GET /applications/{id}` | DelegatedWork | `Application.ReadWrite.All` | — |
+| `GET /applications/{id}` | DelegatedPersonal | `Application.Read.All` | — |
+| `GET /applications/{id}` | DelegatedPersonal | `Application.ReadWrite.All` | — |
+| `GET /applications/{id}` | Application | `Application.Read.All` | — |
+| `GET /applications/{id}` | Application | `Application.ReadWrite.OwnedBy` | — |
+| `PATCH /applications/{id}` | DelegatedWork | `Application.ReadWrite.All` | — |
+| `PATCH /applications/{id}` | DelegatedPersonal | `Application.ReadWrite.All` | — |
+| `PATCH /applications/{id}` | Application | `Application.ReadWrite.OwnedBy` | — |
+| `DELETE /applications/{id}` | DelegatedWork | `Application.ReadWrite.All` | — |
+| `DELETE /applications/{id}` | DelegatedPersonal | `Application.ReadWrite.All` | — |
+| `DELETE /applications/{id}` | Application | `Application.ReadWrite.OwnedBy` | — |
+<!-- permissions:end -->

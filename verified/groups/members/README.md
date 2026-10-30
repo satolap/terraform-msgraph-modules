@@ -62,7 +62,7 @@ What the module manages, and what it does not:
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [GraphModules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "fabrikam_sponsors" {
@@ -245,6 +245,8 @@ only. These checks are pending:
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | DIRECTORY-BASIC | The reviewed create APIs for users, assigned security groups, applications and service principals specify no additional premium license. This covers the object operation only; features built on these objects can require licenses. No additional license specified. | No per-user entitlement for the object operation itself | direct / per_tenant | documented |
@@ -288,3 +290,14 @@ provider's documented and coded behaviour, not tested here. A Python test
 (`tests/test_group_members.py`) checks the validation messages, the arguments the module leaves
 to the provider (`collection_type`, `skip_destroy`, query parameters) and this README's rules.
 There is no live suite yet; see [Live test status](#live-test-status).
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `group_id`: replaces `msgraph_resource_collection.this`.
+- `member_ids`: adds or removes relationships of `msgraph_resource_collection.this`.
+- `api_version`: replaces `msgraph_resource_collection.this`.
+- `timeouts`: no object change (validation or timing only).
+<!-- drift:end -->

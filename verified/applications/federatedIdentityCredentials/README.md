@@ -7,7 +7,7 @@ Uses beta: **no**. This module and its local child modules do not select beta.
 <!-- live-status:start -->
 Assurance: **verified offline-only**. No current live acceptance is recorded for this module.
 
-![live: offline only](https://img.shields.io/badge/live-offline%20only-lightgrey)
+![live: not yet run](https://img.shields.io/badge/live-not%20yet%20run-lightgrey)
 <!-- live-status:end -->
 
 Manage one federated identity credential on an **existing application object** at
@@ -22,7 +22,7 @@ Protect trust subjects in state and plans as described in the
 
 For a published release containing this module, replace `<version>` with that release
 version. Source-tree availability does not establish publication. See the
-[GraphModules installation guide](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry).
+[terraform-msgraph-modules installation guide](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry).
 
 ```hcl
 module "github_main" {
@@ -176,6 +176,8 @@ custom role. These are authorization requirements, not permission grants made by
 
 Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
 
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | DIRECTORY-BASIC | The reviewed create APIs for users, assigned security groups, applications and service principals specify no additional premium license. This covers the object operation only; features built on these objects can require licenses. No additional license specified. | No per-user entitlement for the object operation itself | direct / per_tenant | documented |
@@ -237,3 +239,16 @@ the live probe must establish the actual response shape before acceptance.
    and the removed trust cannot exchange a newly issued external token after propagation.
    Remove the separately created sibling controls and disposable applications explicitly.
    Retain sanitized acceptance results and a run link in the deployment's operator documentation.
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `application_id`: replaces `msgraph_resource.credential`.
+- `name`: replaces `msgraph_resource.credential`.
+- `issuer`: in place.
+- `subject`: in place.
+- `audiences`: in place.
+- `description`: in place.
+<!-- drift:end -->
