@@ -425,6 +425,33 @@ class MainTest(unittest.TestCase):
         self.assertEqual(github.commands, [])
         self.assertEqual(set(github.reads), {f"releases/tags/{TAG}"})
 
+    def test_output_dir_receives_exactly_the_release_assets(self):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        built = Path(directory.name) / "built"
+        built.mkdir()
+        (built / "release-notes.md").write_text("notes\n", encoding="utf-8")
+        assets = []
+        for name, data in (("SHA256SUMS", b"sums\n"), ("release-manifest.json", b"{}\n")):
+            (built / name).write_bytes(data)
+            assets.append(built / name)
+        output = Path(directory.name) / "attest" / "assets"
+        argv = ["release.py", "--tag", TAG, "--repository", REPOSITORY, "--verify-only",
+                "--output-dir", str(output)]
+        with (
+            mock.patch.object(sys, "argv", argv),
+            mock.patch.object(release, "build", return_value=(SHA, assets)),
+            mock.patch.object(release, "release") as publish,
+            contextlib.redirect_stdout(io.StringIO()),
+        ):
+            release.main()
+            self.assertFalse(publish.called)
+            copied = {p.name: p.read_bytes() for p in output.iterdir()}
+            self.assertEqual(copied, {"SHA256SUMS": b"sums\n", "release-manifest.json": b"{}\n"})
+            # A leftover file would be attested as if it were a release asset.
+            with self.assertRaisesRegex(ValueError, "must be empty"):
+                release.main()
+
 
 class UpdateLatestBranchTest(unittest.TestCase):
     def setUp(self):
@@ -761,26 +788,59 @@ class ReleaseWorkflowTest(unittest.TestCase):
         self.assertEqual(scalar(outputs["changed"]), CHANGED_OUTPUT)
         for number, step in enumerate(steps):
             self.assertNotIn("scripts/release.py", "\n".join(step.get("run", [])), number)
-        _, publish = find_step(self.steps["release"], run="scripts/release.py")
-        # The job-level if decides; a step-level if could only drift from it.
-        self.assertNotIn("if", publish)
+        releasing = [s for s in self.steps["release"] if "scripts/release.py" in "\n".join(s.get("run", []))]
+        self.assertEqual(len(releasing), 2)
+        for step in releasing:
+            # The job-level if decides; a step-level if could only drift from it.
+            self.assertNotIn("if", step)
+
+    def test_assets_are_attested_before_they_are_published(self):
+        steps = self.steps["release"]
+        build, built = find_step(steps, id="assets")
+        attest, attestation = find_step(steps, uses="actions/attest-build-provenance@")
+        publish, published = find_step(steps, name="Publish the attested release assets")
+        self.assertLess(build, attest)
+        self.assertLess(attest, publish)
+        self.assertEqual(len(steps), publish + 1)
+        build_script = run_script(built)
+        self.assertIn('"--verify-only"', build_script)
+        self.assertIn('"--output-dir", os.environ["ASSETS"]', build_script)
+        self.assertLess(build_script.index("check=True"), build_script.index("GITHUB_OUTPUT"))
+        build_env = mapping(built["env"][1:], 10)
+        # Reconstruction needs no API token; only the publish step writes to the release.
+        self.assertNotIn("GH_TOKEN", build_env)
+        self.assertEqual(scalar(build_env["ASSETS"]), "${{ runner.temp }}/release-assets")
+        self.assertEqual(
+            mapping(attestation["with"][1:], 10),
+            {"subject-path": ["${{ runner.temp }}/release-assets/*"]},
+        )
+        self.assertNotIn("if", attestation)
+        publish_env = mapping(published["env"][1:], 10)
+        self.assertEqual(scalar(publish_env["RELEASE_TAG"]), "${{ steps.assets.outputs.tag }}")
+        self.assertNotIn("--verify-only", run_script(published))
+        self.assertNotIn("--output-dir", run_script(published))
 
     def test_run_scripts_read_event_values_from_env(self):
         # Script-injection hygiene: expressions go through env, never into the script text.
         scripts = [run_script(step) for steps in self.steps.values() for step in steps if "run" in step]
-        self.assertEqual(len(scripts), 2)
+        self.assertEqual(len(scripts), 3)
         for script in scripts:
             self.assertNotIn("${{", script)
 
     def test_actions_and_permissions_are_pinned(self):
         for name, steps in self.steps.items():
             uses = [scalar(step["uses"]) for step in steps if "uses" in step]
-            self.assertEqual(len(uses), 2, name)
+            self.assertEqual(len(uses), {"manifest": 2, "release": 3}[name], name)
             for action in uses:
                 self.assertRegex(action, r"^[\w-]+/[\w-]+@[0-9a-f]{40} # v\d+\.\d+\.\d+$")
         self.assertEqual(content(self.top["permissions"]), ["  contents: read"])
         self.assertNotIn("permissions", self.manifest)
-        self.assertEqual(content(self.release["permissions"]), ["      contents: write"])
+        # Only the attesting release job can request an OIDC token or write attestations.
+        permissions = [p for p in content(self.release["permissions"]) if not p.strip().startswith("#")]
+        self.assertEqual(
+            permissions,
+            ["      contents: write", "      id-token: write", "      attestations: write"],
+        )
 
     def test_only_runs_that_will_release_share_the_concurrency_group(self):
         # "By default, any existing pending job or workflow in the same concurrency group will
@@ -907,23 +967,93 @@ class VerifyReleasesSelectionTest(unittest.TestCase):
         for tag in ("v0.9.9", "v1.0.0", "v1.99.99"):
             self.assertFalse(supported(tag), tag)
 
-    def test_skipped_releases_are_reported_not_failed(self):
-        outputs = iter(["v1.0.0 v2.0.0 v3.0.0", "v1.0.0 v2.0.0 v3.0.0 v4.0.0"])
+    def test_only_releases_after_attestations_began_require_them(self):
+        required = self.namespace["attestation_required"]
+        for tag in ("v4.0.1", "v4.1.0", "v5.0.0", "v10.0.0"):
+            self.assertTrue(required(tag), tag)
+        for tag in ("v2.0.0", "v3.9.9", "v4.0.0"):
+            self.assertFalse(required(tag), tag)
+
+    def verify(self, released: str, attested=lambda tag, name: True, rebuild_fails=()):
+        """Run the step with a fake gh and release.py; returns (exit, runs, stdout, summary)."""
+        outputs = iter([released, "v1.0.0 v2.0.0 v3.0.0 v4.0.0 v5.0.0"])
         summary = Path(tempfile.mkdtemp()) / "summary.md"
         self.addCleanup(shutil.rmtree, summary.parent, True)
+        runs = []
+        current = {}
+
+        def run(command, *args, **kwargs):
+            runs.append(command)
+            if command[1] == "scripts/release.py":
+                current["tag"] = command[3]
+                if command[3] in rebuild_fails:
+                    return mock.Mock(returncode=1)
+                output = Path(command[command.index("--output-dir") + 1])
+                output.mkdir(parents=True)
+                for name in ("SHA256SUMS", "graphmodules-v1.0-modules.tar.gz"):
+                    (output / name).write_text(name, encoding="utf-8")
+                return mock.Mock(returncode=0)
+            self.assertEqual(command[:3], ["gh", "attestation", "verify"])
+            name = Path(command[3]).name
+            return mock.Mock(returncode=0 if attested(current["tag"], name) else 1)
+
         env = {"GH_REPO": "owner/repo", "GITHUB_STEP_SUMMARY": str(summary)}
         stdout = io.StringIO()
-        with mock.patch.dict(os.environ, env),                 mock.patch("subprocess.check_output", side_effect=lambda *a, **k: next(outputs)),                 mock.patch("subprocess.run", return_value=mock.Mock(returncode=0)) as run,                 contextlib.redirect_stdout(stdout):
-            exec(self.script, {})
-        rebuilt = [call.args[0][3] for call in run.call_args_list]
+        code = None
+        with (
+            mock.patch.dict(os.environ, env),
+            mock.patch("subprocess.check_output", side_effect=lambda *a, **k: next(outputs)),
+            mock.patch("subprocess.run", side_effect=run),
+            contextlib.redirect_stdout(stdout),
+        ):
+            try:
+                exec(self.script, {})
+            except SystemExit as error:
+                code = error.code
+        return code, runs, stdout.getvalue(), summary.read_text(encoding="utf-8").splitlines()
+
+    def test_skipped_releases_are_reported_not_failed(self):
+        code, runs, stdout, lines = self.verify("v1.0.0 v2.0.0 v3.0.0")
+        self.assertIsNone(code)
+        rebuilt = [command[3] for command in runs if command[1] == "scripts/release.py"]
         self.assertEqual(rebuilt, ["v2.0.0", "v3.0.0"])
-        self.assertIn("::notice::Skipped v1.0.0: unsupported, below v2.0.0", stdout.getvalue())
-        lines = summary.read_text(encoding="utf-8").splitlines()
+        self.assertIn("::notice::Skipped v1.0.0: unsupported, below v2.0.0", stdout)
         self.assertIn("- Skipped (unsupported, below v2.0.0): `v1.0.0`", lines)
-        self.assertIn("- Verified: `v2.0.0`", lines)
-        self.assertIn("- Verified: `v3.0.0`", lines)
+        self.assertIn("- Verified and attested: `v2.0.0`", lines)
+        self.assertIn("- Verified and attested: `v3.0.0`", lines)
         self.assertIn("- Warning: tag `v4.0.0` has no published release", lines)
         self.assertFalse([line for line in lines if "Failed" in line])
+
+    def test_each_rebuilt_asset_is_verified_against_the_release_workflow(self):
+        _, runs, _, _ = self.verify("v5.0.0")
+        checks = [command for command in runs if command[0] == "gh"]
+        self.assertEqual(
+            sorted(Path(command[3]).name for command in checks),
+            ["SHA256SUMS", "graphmodules-v1.0-modules.tar.gz"],
+        )
+        for command in checks:
+            self.assertEqual(command[4:], [
+                "--repo", "owner/repo",
+                "--signer-workflow", "owner/repo/.github/workflows/release.yml",
+                "--source-ref", "refs/heads/main",
+            ])
+
+    def test_missing_attestation_fails_only_new_releases(self):
+        code, _, stdout, lines = self.verify(
+            "v3.0.0 v4.0.0 v5.0.0",
+            attested=lambda tag, name: tag not in ("v3.0.0", "v4.0.0") and name != "SHA256SUMS",
+        )
+        self.assertEqual(code, "Release verification failed: v5.0.0")
+        self.assertIn("::notice::v3.0.0 predates release attestations", stdout)
+        self.assertIn("- Verified (published before attestations): `v4.0.0`", lines)
+        self.assertIn("::error::v5.0.0 assets lack a valid attestation: SHA256SUMS", stdout)
+        self.assertIn("- Failed (no valid attestation): `v5.0.0`: SHA256SUMS", lines)
+
+    def test_failed_rebuild_is_not_checked_for_attestations(self):
+        code, runs, _, lines = self.verify("v5.0.0", rebuild_fails=("v5.0.0",))
+        self.assertEqual(code, "Release verification failed: v5.0.0")
+        self.assertFalse([command for command in runs if command[0] == "gh"])
+        self.assertIn("- Failed: `v5.0.0`", lines)
 
 
 if __name__ == "__main__":

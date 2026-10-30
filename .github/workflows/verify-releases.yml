@@ -13,6 +13,9 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    permissions:
+      contents: read
+      attestations: read
     steps:
       - name: Check out the trusted release tooling and all tags from main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -24,7 +27,7 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
-      - name: Rebuild every published release and compare its target and asset digests
+      - name: Rebuild every published release and compare its target, asset digests and attestations
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
@@ -34,15 +37,36 @@ jobs:
           import re
           import subprocess
           import sys
+          import tempfile
+          from pathlib import Path
 
           repository = os.environ["GH_REPO"]
           tag_pattern = re.compile(r"v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)")
           # Releases below this version are not rebuilt: v1 has no verified module catalog.
           MINIMUM_VERIFIED = (2, 0, 0)
+          # Releases up to this version were published before the release workflow attested
+          # its assets, so a missing attestation fails only releases after it.
+          LAST_UNATTESTED = (4, 0, 0)
+
+
+          def version(tag):
+              return tuple(map(int, tag[1:].split(".")))
 
 
           def supported(tag):
-              return tuple(map(int, tag[1:].split("."))) >= MINIMUM_VERIFIED
+              return version(tag) >= MINIMUM_VERIFIED
+
+
+          def attestation_required(tag):
+              return version(tag) > LAST_UNATTESTED
+
+
+          def attested(path):
+              return subprocess.run([
+                  "gh", "attestation", "verify", str(path), "--repo", repository,
+                  "--signer-workflow", f"{repository}/.github/workflows/release.yml",
+                  "--source-ref", "refs/heads/main",
+              ]).returncode == 0
 
 
           minimum_tag = "v" + ".".join(map(str, MINIMUM_VERIFIED))
@@ -58,13 +82,29 @@ jobs:
                   print(f"::notice::Skipped {tag}: unsupported, below {minimum_tag}")
                   summary.append(f"- Skipped (unsupported, below {minimum_tag}): `{tag}`")
                   continue
-              result = subprocess.run([
-                  sys.executable, "scripts/release.py", "--tag", tag,
-                  "--repository", repository, "--verify-only", "--verify-assets",
-              ])
+              with tempfile.TemporaryDirectory() as temporary:
+                  assets = Path(temporary) / "assets"
+                  result = subprocess.run([
+                      sys.executable, "scripts/release.py", "--tag", tag,
+                      "--repository", repository, "--verify-only", "--verify-assets",
+                      "--output-dir", str(assets),
+                  ])
+                  # The rebuilt assets have the published digests, so they stand in for them.
+                  unattested = [] if result.returncode else [
+                      p.name for p in sorted(assets.iterdir()) if not attested(p)
+                  ]
               if result.returncode:
                   failed.append(tag)
-              summary.append(f"- {'Failed' if result.returncode else 'Verified'}: `{tag}`")
+                  summary.append(f"- Failed: `{tag}`")
+              elif unattested and attestation_required(tag):
+                  print(f"::error::{tag} assets lack a valid attestation: {', '.join(unattested)}")
+                  failed.append(tag)
+                  summary.append(f"- Failed (no valid attestation): `{tag}`: {', '.join(unattested)}")
+              elif unattested:
+                  print(f"::notice::{tag} predates release attestations")
+                  summary.append(f"- Verified (published before attestations): `{tag}`")
+              else:
+                  summary.append(f"- Verified and attested: `{tag}`")
           for tag in sorted(set(filter(tag_pattern.fullmatch, tags)) - set(released)):
               print(f"::warning::Tag {tag} has no published release")
               summary.append(f"- Warning: tag `{tag}` has no published release")
