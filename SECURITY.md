@@ -9,9 +9,9 @@ upgrade to the latest release after a fix is published.
 ## Reporting a vulnerability
 
 Please do not disclose a suspected vulnerability in a public issue, discussion,
-pull request, or log. Open an issue titled `Security contact request` without
-technical details or sensitive data and ask a maintainer to arrange a private
-reporting channel.
+pull request, or log. Report it privately through GitHub's private vulnerability
+reporting: [Report a vulnerability](https://github.com/satolap/terraform-msgraph-modules/security/advisories/new)
+(Security > Report a vulnerability).
 
 Include the affected release tag and module path, the potential impact, reproduction
 steps, and any suggested mitigation in the private report. Remove credentials,

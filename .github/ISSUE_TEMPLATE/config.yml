@@ -3,3 +3,6 @@ contact_links:
   - name: Microsoft Graph or provider issue
     url: https://github.com/microsoft/terraform-provider-msgraph/issues
     about: Problems in the microsoft/msgraph provider or the Microsoft Graph API itself belong upstream.
+  - name: Report a security vulnerability
+    url: https://github.com/satolap/terraform-msgraph-modules/security/advisories/new
+    about: Report vulnerabilities privately. Do not open a public issue.
