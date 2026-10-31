@@ -1,22 +1,22 @@
-variable "site_id" {
+variable "site-id" {
   description = "The unique identifier of site"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.site_id)) > 0
-    error_message = "site_id must not be empty."
+    condition     = length(trimspace(var.site-id)) > 0
+    error_message = "site-id must not be empty."
   }
 }
 
-variable "list_id" {
+variable "list-id" {
   description = "The unique identifier of list"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.list_id)) > 0
-    error_message = "list_id must not be empty."
+    condition     = length(trimspace(var.list-id)) > 0
+    error_message = "list-id must not be empty."
   }
 }
 
@@ -82,7 +82,7 @@ variable "analytics" {
   default     = null
 }
 
-variable "content_type" {
+variable "contentType" {
   description = "The content type of this list item"
   type = object({
     odata_type = optional(string, "#microsoft.graph.contentTypeInfo")
@@ -92,7 +92,7 @@ variable "content_type" {
   default = null
 }
 
-variable "created_by_user" {
+variable "createdByUser" {
   description = "Microsoft Graph createdByUser property."
   type        = any
   default     = null
@@ -113,7 +113,7 @@ variable "description" {
   default     = null
 }
 
-variable "document_set_versions" {
+variable "documentSetVersions" {
   description = "Version information for a document set version created by a user."
   type = list(object({
     odata_type      = optional(string, "#microsoft.graph.documentSetVersion")
@@ -132,7 +132,7 @@ variable "document_set_versions" {
   default = null
 }
 
-variable "drive_item" {
+variable "driveItem" {
   description = "For document libraries, the driveItem relationship exposes the listItem as a driveItem"
   type        = any
   default     = null
@@ -144,7 +144,7 @@ variable "fields" {
   default     = null
 }
 
-variable "last_modified_by_user" {
+variable "lastModifiedByUser" {
   description = "Microsoft Graph lastModifiedByUser property."
   type        = any
   default     = null
@@ -163,7 +163,7 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "parent_reference" {
+variable "parentReference" {
   description = "Parent information, if the item has a parent. Read-write."
   type = object({
     odata_type = optional(string, "#microsoft.graph.itemReference")

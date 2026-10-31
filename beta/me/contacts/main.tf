@@ -1,48 +1,48 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "assistantName"         = var.assistant_name
+    "assistantName"         = var.assistantName
     "birthday"              = var.birthday
     "categories"            = (var.categories == null ? null : [for item0 in var.categories : item0 if item0 != null])
     "children"              = (var.children == null ? null : [for item0 in var.children : item0 if item0 != null])
-    "companyName"           = var.company_name
-    "createdDateTime"       = var.created_date_time
+    "companyName"           = var.companyName
+    "createdDateTime"       = var.createdDateTime
     "department"            = var.department
-    "displayName"           = var.display_name
-    "emailAddresses"        = (var.email_addresses == null ? null : [for item0 in var.email_addresses : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "address" = item0["address"], "name" = item0["name"], "otherLabel" = item0["otherLabel"], "type" = item0["type"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "displayName"           = var.displayName
+    "emailAddresses"        = (var.emailAddresses == null ? null : [for item0 in var.emailAddresses : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "address" = item0["address"], "name" = item0["name"], "otherLabel" = item0["otherLabel"], "type" = item0["type"] } : key1 => value1 if value1 != null }) if item0 != null])
     "extensions"            = (var.extensions == null ? null : [for item0 in var.extensions : item0 if item0 != null])
-    "fileAs"                = var.file_as
+    "fileAs"                = var.fileAs
     "flag"                  = (var.flag == null ? null : { for key0, value0 in { "@odata.type" = var.flag["odata_type"], "completedDateTime" = (var.flag["completedDateTime"] == null ? null : { for key1, value1 in { "@odata.type" = var.flag["completedDateTime"]["odata_type"], "dateTime" = var.flag["completedDateTime"]["dateTime"], "timeZone" = var.flag["completedDateTime"]["timeZone"] } : key1 => value1 if value1 != null }), "dueDateTime" = (var.flag["dueDateTime"] == null ? null : { for key1, value1 in { "@odata.type" = var.flag["dueDateTime"]["odata_type"], "dateTime" = var.flag["dueDateTime"]["dateTime"], "timeZone" = var.flag["dueDateTime"]["timeZone"] } : key1 => value1 if value1 != null }), "flagStatus" = var.flag["flagStatus"], "startDateTime" = (var.flag["startDateTime"] == null ? null : { for key1, value1 in { "@odata.type" = var.flag["startDateTime"]["odata_type"], "dateTime" = var.flag["startDateTime"]["dateTime"], "timeZone" = var.flag["startDateTime"]["timeZone"] } : key1 => value1 if value1 != null }) } : key0 => value0 if value0 != null })
     "gender"                = var.gender
     "generation"            = var.generation
-    "givenName"             = var.given_name
-    "imAddresses"           = (var.im_addresses == null ? null : [for item0 in var.im_addresses : item0 if item0 != null])
+    "givenName"             = var.givenName
+    "imAddresses"           = (var.imAddresses == null ? null : [for item0 in var.imAddresses : item0 if item0 != null])
     "initials"              = var.initials
-    "isFavorite"            = var.is_favorite
-    "jobTitle"              = var.job_title
-    "lastModifiedDateTime"  = var.last_modified_date_time
+    "isFavorite"            = var.isFavorite
+    "jobTitle"              = var.jobTitle
+    "lastModifiedDateTime"  = var.lastModifiedDateTime
     "manager"               = var.manager
-    "middleName"            = var.middle_name
-    "nickName"              = var.nick_name
+    "middleName"            = var.middleName
+    "nickName"              = var.nickName
     "@odata.type"           = var.odata_type
-    "officeLocation"        = var.office_location
-    "parentFolderId"        = var.parent_folder_id
-    "personalNotes"         = var.personal_notes
+    "officeLocation"        = var.officeLocation
+    "parentFolderId"        = var.parentFolderId
+    "personalNotes"         = var.personalNotes
     "phones"                = (var.phones == null ? null : [for item0 in var.phones : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "number" = item0["number"], "type" = item0["type"] } : key1 => value1 if value1 != null }) if item0 != null])
     "photo"                 = var.photo
-    "postalAddresses"       = (var.postal_addresses == null ? null : [for item0 in var.postal_addresses : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "city" = item0["city"], "countryOrRegion" = item0["countryOrRegion"], "postOfficeBox" = item0["postOfficeBox"], "postalCode" = item0["postalCode"], "state" = item0["state"], "street" = item0["street"], "type" = item0["type"] } : key1 => value1 if value1 != null }) if item0 != null])
-    "primaryEmailAddress"   = var.primary_email_address
+    "postalAddresses"       = (var.postalAddresses == null ? null : [for item0 in var.postalAddresses : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "city" = item0["city"], "countryOrRegion" = item0["countryOrRegion"], "postOfficeBox" = item0["postOfficeBox"], "postalCode" = item0["postalCode"], "state" = item0["state"], "street" = item0["street"], "type" = item0["type"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "primaryEmailAddress"   = var.primaryEmailAddress
     "profession"            = var.profession
-    "secondaryEmailAddress" = var.secondary_email_address
-    "spouseName"            = var.spouse_name
+    "secondaryEmailAddress" = var.secondaryEmailAddress
+    "spouseName"            = var.spouseName
     "surname"               = var.surname
-    "tertiaryEmailAddress"  = var.tertiary_email_address
+    "tertiaryEmailAddress"  = var.tertiaryEmailAddress
     "title"                 = var.title
     "websites"              = (var.websites == null ? null : [for item0 in var.websites : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "address" = item0["address"], "displayName" = item0["displayName"], "type" = item0["type"] } : key1 => value1 if value1 != null }) if item0 != null])
-    "weddingAnniversary"    = var.wedding_anniversary
-    "yomiCompanyName"       = var.yomi_company_name
-    "yomiGivenName"         = var.yomi_given_name
-    "yomiSurname"           = var.yomi_surname
+    "weddingAnniversary"    = var.weddingAnniversary
+    "yomiCompanyName"       = var.yomiCompanyName
+    "yomiGivenName"         = var.yomiGivenName
+    "yomiSurname"           = var.yomiSurname
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

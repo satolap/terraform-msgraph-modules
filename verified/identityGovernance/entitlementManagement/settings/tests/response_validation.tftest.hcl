@@ -14,7 +14,7 @@ mock_provider "msgraph" {
 }
 
 variables {
-  external_user_lifecycle_action = "none"
+  externalUserLifecycleAction = "none"
 }
 
 run "rejects_a_missing_action" {

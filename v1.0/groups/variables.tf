@@ -1,34 +1,34 @@
-variable "display_name" {
+variable "displayName" {
   description = "The display name for the group. This property is required when a group is created and can't be cleared during updates. Maximum length is 256 characters. Returned by default. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values), $search, and $orderby."
   type        = string
   nullable    = false
 }
 
-variable "mail_enabled" {
+variable "mailEnabled" {
   description = "Specifies whether the group is mail-enabled. Required. Returned by default. Supports $filter (eq, ne, not)."
   type        = bool
   nullable    = false
 }
 
-variable "mail_nickname" {
+variable "mailNickname" {
   description = "The mail alias for the group, unique for Microsoft 365 groups in the organization. Maximum length is 64 characters. This property can contain only characters in the ASCII character set 0 - 127 except the following characters: @ () / [] ' ; : <> , SPACE. Required. Returned by default. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values)."
   type        = string
   nullable    = false
 }
 
-variable "security_enabled" {
+variable "securityEnabled" {
   description = "Specifies whether the group is a security group. Required. Returned by default. Supports $filter (eq, ne, not, in)."
   type        = bool
   nullable    = false
 }
 
-variable "accepted_senders" {
+variable "acceptedSenders" {
   description = "The list of users or groups allowed to create posts or calendar events in this group. If this list is nonempty, then only users or groups listed here are allowed to post."
   type        = any
   default     = null
 }
 
-variable "app_role_assignments" {
+variable "appRoleAssignments" {
   description = "Represents the app roles granted to a group for an application. Supports $expand."
   type = list(object({
     odata_type          = optional(string, "#microsoft.graph.appRoleAssignment")
@@ -41,7 +41,7 @@ variable "app_role_assignments" {
   default = null
 }
 
-variable "assigned_labels" {
+variable "assignedLabels" {
   description = "The list of sensitivity label pairs (label ID, label name) associated with a Microsoft 365 group or a cloud security group. Requires a Microsoft Entra ID P1 license. Requires $select to retrieve. This property can be specified during group creation or update. However, for cloud security groups, it's immutable once set. This property can be updated only in delegated scenarios where the caller requires both the Microsoft Graph permission and a supported administrator role. To learn more about managing this property for Microsoft 365 vs. cloud security groups, see Key differences from Microsoft 365 group labeling."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.assignedLabel")
@@ -69,7 +69,7 @@ variable "conversations" {
   default = null
 }
 
-variable "deleted_date_time" {
+variable "deletedDateTime" {
   description = "Date and time when this object was deleted. Always null when the object hasn't been deleted."
   type        = string
   default     = null
@@ -186,25 +186,25 @@ variable "events" {
   }
 }
 
-variable "group_types" {
+variable "groupTypes" {
   description = "Specifies the group type and its membership. If the collection contains Unified, the group is a Microsoft 365 group; otherwise, it's either a security group or a distribution group. For details, see groups overview.If the collection includes DynamicMembership, the group has dynamic membership; otherwise, membership is static. Returned by default. Supports $filter (eq, not)."
   type        = list(string)
   default     = null
 }
 
-variable "has_members_with_license_errors" {
+variable "hasMembersWithLicenseErrors" {
   description = "Indicates whether there are members in this group that have license errors from its group-based license assignment. This property is never returned on a GET operation. You can use it as a $filter argument to get groups that have members with license errors (that is, filter for this property being true). See an example. Supports $filter (eq)."
   type        = bool
   default     = null
 }
 
-variable "info_catalogs" {
+variable "infoCatalogs" {
   description = "Microsoft Graph infoCatalogs property."
   type        = list(string)
   default     = null
 }
 
-variable "is_assignable_to_role" {
+variable "isAssignableToRole" {
   description = "Indicates whether this group can be assigned to a Microsoft Entra role. Optional. This property can only be set while creating the group and is immutable. If set to true, the securityEnabled property must also be set to true, visibility must be Hidden, and the group can't be a dynamic group (that is, groupTypes can't contain DynamicMembership). Only callers with at least the Privileged Role Administrator role can set this property. The caller must also be assigned the RoleManagement.ReadWrite.Directory permission to set this property or update the membership of such groups. For more, see Using a group to manage Microsoft Entra role assignmentsUsing this feature requires a Microsoft Entra ID P1 license. Returned by default. Supports $filter (eq, ne, not)."
   type        = bool
   default     = null
@@ -216,13 +216,13 @@ variable "members" {
   default     = null
 }
 
-variable "membership_rule" {
+variable "membershipRule" {
   description = "The rule that determines members for this group if the group is a dynamic group (groupTypes contains DynamicMembership). For more information about the syntax of the membership rule, see Membership Rules syntax. Returned by default. Supports $filter (eq, ne, not, ge, le, startsWith)."
   type        = string
   default     = null
 }
 
-variable "membership_rule_processing_state" {
+variable "membershipRuleProcessingState" {
   description = "Indicates whether the dynamic membership processing is on or paused. Possible values are On or Paused. Returned by default. Supports $filter (eq, ne, not, in)."
   type        = string
   default     = null
@@ -235,7 +235,7 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "on_premises_extension_attributes" {
+variable "onPremisesExtensionAttributes" {
   description = "Complex type containing extension attributes 1-15 for the group, synchronized from on-premises Active Directory. Returned only on $select. Supports $filter (eq, ne, not, in)."
   type = object({
     odata_type           = optional(string, "#microsoft.graph.onPremisesExtensionAttributes")
@@ -258,7 +258,7 @@ variable "on_premises_extension_attributes" {
   default = null
 }
 
-variable "on_premises_provisioning_errors" {
+variable "onPremisesProvisioningErrors" {
   description = "Errors when using Microsoft synchronization product during provisioning. Returned by default. Supports $filter (eq, not)."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.onPremisesProvisioningError")
@@ -270,7 +270,7 @@ variable "on_premises_provisioning_errors" {
   default = null
 }
 
-variable "on_premises_sync_behavior" {
+variable "onPremisesSyncBehavior" {
   description = "Microsoft Graph onPremisesSyncBehavior property."
   type        = any
   default     = null
@@ -282,7 +282,7 @@ variable "onenote" {
   default     = null
 }
 
-variable "organization_id" {
+variable "organizationId" {
   description = "Microsoft Graph organizationId property."
   type        = string
   default     = null
@@ -294,7 +294,7 @@ variable "owners" {
   default     = null
 }
 
-variable "permission_grants" {
+variable "permissionGrants" {
   description = "Microsoft Graph permissionGrants property."
   type = list(object({
     odata_type      = optional(string, "#microsoft.graph.resourceSpecificPermissionGrant")
@@ -315,37 +315,37 @@ variable "planner" {
   default     = null
 }
 
-variable "preferred_data_location" {
+variable "preferredDataLocation" {
   description = "The preferred data location for the Microsoft 365 group. By default, the group inherits the group creator's preferred data location. To set this property, the calling app must be granted the Directory.ReadWrite.All permission and the user be assigned at least one of the following Microsoft Entra roles: User Account Administrator Directory Writer  Exchange Administrator  SharePoint Administrator  For more information about this property, see OneDrive Online Multi-Geo. Nullable. Returned by default."
   type        = string
   default     = null
 }
 
-variable "preferred_language" {
+variable "preferredLanguage" {
   description = "The preferred language for a Microsoft 365 group. Should follow ISO 639-1 Code; for example, en-US. Returned by default. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "rejected_senders" {
+variable "rejectedSenders" {
   description = "The list of users or groups not allowed to create posts or calendar events in this group. Nullable"
   type        = any
   default     = null
 }
 
-variable "resource_behavior_options" {
+variable "resourceBehaviorOptions" {
   description = "Specifies the group behaviors that can be set for a Microsoft 365 group during creation. This property can be set only as part of creation (POST). For the list of possible values, see Microsoft 365 group behaviors and provisioning options."
   type        = list(string)
   default     = null
 }
 
-variable "resource_provisioning_options" {
+variable "resourceProvisioningOptions" {
   description = "Specifies the group resources that are associated with the Microsoft 365 group. The possible value is Team. For more information, see Microsoft 365 group behaviors and provisioning options. Returned by default. Supports $filter (eq, not, startsWith)."
   type        = list(string)
   default     = null
 }
 
-variable "service_provisioning_errors" {
+variable "serviceProvisioningErrors" {
   description = "Errors published by a federated service describing a nontransient, service-specific error regarding the properties or link from a group object.  Supports $filter (eq, not, for isResolved and serviceInstance)."
   type        = any
   default     = null
@@ -767,13 +767,13 @@ variable "threads" {
   }
 }
 
-variable "transitive_member_of" {
+variable "transitiveMemberOf" {
   description = "The groups that a group is a member of, either directly or through nested membership. Nullable."
   type        = any
   default     = null
 }
 
-variable "transitive_members" {
+variable "transitiveMembers" {
   description = "The direct and transitive members of a group. Nullable."
   type        = any
   default     = null
@@ -785,7 +785,7 @@ variable "visibility" {
   default     = null
 }
 
-variable "welcome_message_enabled" {
+variable "welcomeMessageEnabled" {
   description = "Microsoft Graph welcomeMessageEnabled property."
   type        = bool
   default     = null

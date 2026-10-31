@@ -17,13 +17,13 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//v1.0/users/messages/extensions"
   version = "<version>"
 
-  user_id = "parent-object-id"
-  message_id = "parent-object-id"
+  user-id = "parent-object-id"
+  message-id = "parent-object-id"
   odata_type = "#microsoft.graph.openTypeExtension"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -51,8 +51,8 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `user_id` | URL parameter `user-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `message_id` | URL parameter `message-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `user-id` | URL parameter `user-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `message-id` | URL parameter `message-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
 | `odata_type` | `@odata.type` | `string` | yes | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 

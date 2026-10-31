@@ -34,18 +34,18 @@ resource "terraform_data" "suffix" {
   }
 }
 module "workflow" {
-  source                = "../../.."
-  count                 = var.enabled ? 1 : 0
-  display_name          = "tftest-workflow-${terraform_data.suffix.output}"
-  description           = var.description
-  category              = "joiner"
-  execution_conditions  = { type = "on_demand" }
-  is_enabled            = false
-  is_scheduling_enabled = false
+  source               = "../../.."
+  count                = var.enabled ? 1 : 0
+  displayName          = "tftest-workflow-${terraform_data.suffix.output}"
+  description          = var.description
+  category             = "joiner"
+  execution_conditions = { type = "on_demand" }
+  isEnabled            = false
+  isSchedulingEnabled  = false
   tasks = [{
-    task         = "enable_user_account"
-    display_name = "tftest-disabled-task"
-    is_enabled   = false
+    task        = "enable_user_account"
+    displayName = "tftest-disabled-task"
+    isEnabled   = false
   }]
 }
 # Independent GET, separate from the module's create/refresh response.

@@ -5,7 +5,7 @@ run "minimal_request" {
   command = plan
 
   variables {
-    planner_roster_id = "test-parent-id"
+    plannerRoster-id = "test-parent-id"
   }
 
   assert {
@@ -33,8 +33,8 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    planner_roster_id = "test-parent-id"
-    select_response   = true
+    plannerRoster-id = "test-parent-id"
+    select_response  = true
   }
 
   assert {
@@ -47,9 +47,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    planner_roster_id = "test-parent-id"
-    tenant_id         = "example"
-    roles             = ["example"]
+    plannerRoster-id = "test-parent-id"
+    tenantId         = "example"
+    roles            = ["example"]
   }
 
   assert {
@@ -67,7 +67,7 @@ run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    planner_roster_id = "test-parent-id"
+    plannerRoster-id = "test-parent-id"
   }
 
   assert {
@@ -80,8 +80,8 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    planner_roster_id = "test-parent-id"
-    timeouts          = { create = "45m", update = "20m", read = "7m" }
+    plannerRoster-id = "test-parent-id"
+    timeouts         = { create = "45m", update = "20m", read = "7m" }
   }
 
   assert {
@@ -94,8 +94,8 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    planner_roster_id = "test-parent-id"
-    timeouts          = { create = "10s" }
+    plannerRoster-id = "test-parent-id"
+    timeouts         = { create = "10s" }
   }
 
   expect_failures = [var.timeouts]
@@ -105,8 +105,8 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    planner_roster_id = "test-parent-id"
-    timeouts          = { update = "soon" }
+    plannerRoster-id = "test-parent-id"
+    timeouts         = { update = "soon" }
   }
 
   expect_failures = [var.timeouts]
@@ -116,8 +116,8 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    planner_roster_id = "test-parent-id"
-    timeouts          = { delete = "0s" }
+    plannerRoster-id = "test-parent-id"
+    timeouts         = { delete = "0s" }
   }
 
   expect_failures = [var.timeouts]

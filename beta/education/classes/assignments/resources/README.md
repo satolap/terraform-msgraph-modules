@@ -19,12 +19,12 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//beta/education/classes/assignments/resources"
   version = "<version>"
 
-  education_class_id = "parent-object-id"
-  education_assignment_id = "parent-object-id"
+  educationClass-id = "parent-object-id"
+  educationAssignment-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -52,10 +52,10 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `education_class_id` | URL parameter `educationClass-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `education_assignment_id` | URL parameter `educationAssignment-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `dependent_resources` | `dependentResources` | `list(object({       odata_type = optional(string, "#microsoft.graph.educationAssignmentResource")       dependentResources = optional(any)       distributeForStudentWork = optional(bool)       resource = optional(any)     }))` | no | no | in place |
-| `distribute_for_student_work` | `distributeForStudentWork` | `bool` | no | no | in place |
+| `educationClass-id` | URL parameter `educationClass-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `educationAssignment-id` | URL parameter `educationAssignment-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `dependentResources` | `dependentResources` | `list(object({       odata_type = optional(string, "#microsoft.graph.educationAssignmentResource")       dependentResources = optional(any)       distributeForStudentWork = optional(bool)       resource = optional(any)     }))` | no | no | in place |
+| `distributeForStudentWork` | `distributeForStudentWork` | `bool` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
 | `resource` | `resource` | `any` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |

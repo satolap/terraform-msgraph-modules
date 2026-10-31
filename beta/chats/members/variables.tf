@@ -1,11 +1,11 @@
-variable "chat_id" {
+variable "chat-id" {
   description = "The unique identifier of chat"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.chat_id)) > 0
-    error_message = "chat_id must not be empty."
+    condition     = length(trimspace(var.chat-id)) > 0
+    error_message = "chat-id must not be empty."
   }
 }
 
@@ -20,7 +20,7 @@ variable "odata_type" {
   }
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The display name of the user."
   type        = string
   default     = null
@@ -32,7 +32,7 @@ variable "roles" {
   default     = null
 }
 
-variable "visible_history_start_date_time" {
+variable "visibleHistoryStartDateTime" {
   description = "The timestamp denoting how far back a conversation's history is shared with the conversation member. This property is settable only for members of a chat."
   type        = string
   default     = null

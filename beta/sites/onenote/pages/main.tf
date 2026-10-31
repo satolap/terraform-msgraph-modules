@@ -2,11 +2,11 @@
 locals {
   typed_body = { for key, value in {
     "content"         = var.content
-    "createdDateTime" = var.created_date_time
+    "createdDateTime" = var.createdDateTime
     "@odata.type"     = var.odata_type
     "self"            = var.self
     "title"           = var.title
-    "userTags"        = (var.user_tags == null ? null : [for item0 in var.user_tags : item0 if item0 != null])
+    "userTags"        = (var.userTags == null ? null : [for item0 in var.userTags : item0 if item0 != null])
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }
@@ -16,7 +16,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "sites/${urlencode(var.site_id)}/onenote/pages"
+  url                     = "sites/${urlencode(var.site-id)}/onenote/pages"
   api_version             = "beta"
   update_method           = "PATCH"
   body                    = local.body

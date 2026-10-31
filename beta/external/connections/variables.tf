@@ -1,4 +1,4 @@
-variable "activity_settings" {
+variable "activitySettings" {
   description = "Collects configurable settings related to activities involving connector content."
   type = object({
     odata_type         = optional(string, "#microsoft.graph.externalConnectors.activitySettings")
@@ -7,7 +7,7 @@ variable "activity_settings" {
   default = null
 }
 
-variable "compliance_settings" {
+variable "complianceSettings" {
   description = "Microsoft Graph complianceSettings property."
   type = object({
     odata_type = optional(string, "#microsoft.graph.externalConnectors.complianceSettings")
@@ -28,8 +28,8 @@ variable "compliance_settings" {
   default = null
 
   validation {
-    condition     = (var.compliance_settings == null ? true : alltrue([(var.compliance_settings["eDiscoveryResultTemplates"] == null ? true : alltrue([alltrue([for input1 in var.compliance_settings["eDiscoveryResultTemplates"] : (input1 == null ? true : alltrue([(input1["rules"] == null ? true : alltrue([alltrue([for input3 in input1["rules"] : (input3 == null ? true : alltrue([(input3["operation"] == null ? true : alltrue([(input3["operation"] == null ? true : contains(["null", "equals", "notEquals", "contains", "notContains", "lessThan", "greaterThan", "startsWith"], input3["operation"]))])), (input3["valuesJoinedBy"] == null ? true : alltrue([(input3["valuesJoinedBy"] == null ? true : contains(["or", "and"], input3["valuesJoinedBy"]))]))]))])]))]))])]))]))
-    error_message = "compliance_settings: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.complianceSettings == null ? true : alltrue([(var.complianceSettings["eDiscoveryResultTemplates"] == null ? true : alltrue([alltrue([for input1 in var.complianceSettings["eDiscoveryResultTemplates"] : (input1 == null ? true : alltrue([(input1["rules"] == null ? true : alltrue([alltrue([for input3 in input1["rules"] : (input3 == null ? true : alltrue([(input3["operation"] == null ? true : alltrue([(input3["operation"] == null ? true : contains(["null", "equals", "notEquals", "contains", "notContains", "lessThan", "greaterThan", "startsWith"], input3["operation"]))])), (input3["valuesJoinedBy"] == null ? true : alltrue([(input3["valuesJoinedBy"] == null ? true : contains(["or", "and"], input3["valuesJoinedBy"]))]))]))])]))]))])]))]))
+    error_message = "complianceSettings: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
@@ -42,20 +42,20 @@ variable "configuration" {
   default = null
 }
 
-variable "connector_id" {
+variable "connectorId" {
   description = "The Teams App ID. Optional."
   type        = string
   default     = null
 }
 
-variable "content_category" {
+variable "contentCategory" {
   description = "Microsoft Graph contentCategory property."
   type        = string
   default     = null
 
   validation {
-    condition     = var.content_category == null ? true : contains(["uncategorized", "knowledgeBase", "wikis", "fileRepository", "qna", "crm", "dashboard", "people", "media", "email", "messaging", "meetingTranscripts", "taskManagement", "learningManagement"], var.content_category)
-    error_message = "content_category must be one of the documented enum values."
+    condition     = var.contentCategory == null ? true : contains(["uncategorized", "knowledgeBase", "wikis", "fileRepository", "qna", "crm", "dashboard", "people", "media", "email", "messaging", "meetingTranscripts", "taskManagement", "learningManagement"], var.contentCategory)
+    error_message = "contentCategory must be one of the documented enum values."
   }
 }
 
@@ -65,14 +65,14 @@ variable "description" {
   default     = null
 }
 
-variable "enabled_content_experiences" {
+variable "enabledContentExperiences" {
   description = "The list of content experiences the connection will participate in. Possible values are search."
   type        = string
   default     = null
 
   validation {
-    condition     = var.enabled_content_experiences == null ? true : try(alltrue([for value in split(",", var.enabled_content_experiences) : contains(["search", "compliance"], lower(trimspace(value)))]), false)
-    error_message = "enabled_content_experiences must be one or more of the documented enum values, separated by commas."
+    condition     = var.enabledContentExperiences == null ? true : try(alltrue([for value in split(",", var.enabledContentExperiences) : contains(["search", "compliance"], lower(trimspace(value)))]), false)
+    error_message = "enabledContentExperiences must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -95,7 +95,7 @@ variable "groups" {
   }
 }
 
-variable "ingested_items_count" {
+variable "ingestedItemsCount" {
   description = "The number of items ingested into a connection. This value is refreshed every 15 minutes. If the connection state is draft, then ingestedItemsCount will be null."
   type        = number
   default     = null
@@ -190,7 +190,7 @@ variable "schema" {
   default     = null
 }
 
-variable "search_settings" {
+variable "searchSettings" {
   description = "The settings configuring the search experience for content in this connection, such as the display templates for search results."
   type = object({
     odata_type = optional(string, "#microsoft.graph.externalConnectors.searchSettings")
@@ -211,8 +211,8 @@ variable "search_settings" {
   default = null
 
   validation {
-    condition     = (var.search_settings == null ? true : alltrue([(var.search_settings["searchResultTemplates"] == null ? true : alltrue([alltrue([for input1 in var.search_settings["searchResultTemplates"] : (input1 == null ? true : alltrue([(input1["rules"] == null ? true : alltrue([alltrue([for input3 in input1["rules"] : (input3 == null ? true : alltrue([(input3["operation"] == null ? true : alltrue([(input3["operation"] == null ? true : contains(["null", "equals", "notEquals", "contains", "notContains", "lessThan", "greaterThan", "startsWith"], input3["operation"]))])), (input3["valuesJoinedBy"] == null ? true : alltrue([(input3["valuesJoinedBy"] == null ? true : contains(["or", "and"], input3["valuesJoinedBy"]))]))]))])]))]))])]))]))
-    error_message = "search_settings: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.searchSettings == null ? true : alltrue([(var.searchSettings["searchResultTemplates"] == null ? true : alltrue([alltrue([for input1 in var.searchSettings["searchResultTemplates"] : (input1 == null ? true : alltrue([(input1["rules"] == null ? true : alltrue([alltrue([for input3 in input1["rules"] : (input3 == null ? true : alltrue([(input3["operation"] == null ? true : alltrue([(input3["operation"] == null ? true : contains(["null", "equals", "notEquals", "contains", "notContains", "lessThan", "greaterThan", "startsWith"], input3["operation"]))])), (input3["valuesJoinedBy"] == null ? true : alltrue([(input3["valuesJoinedBy"] == null ? true : contains(["or", "and"], input3["valuesJoinedBy"]))]))]))])]))]))])]))]))
+    error_message = "searchSettings: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 

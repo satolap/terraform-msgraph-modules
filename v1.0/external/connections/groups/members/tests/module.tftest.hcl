@@ -5,8 +5,8 @@ run "minimal_request" {
   command = plan
 
   variables {
-    external_connection_id = "test-parent-id"
-    external_group_id      = "test-parent-id"
+    externalConnection-id = "test-parent-id"
+    externalGroup-id      = "test-parent-id"
   }
 
   assert {
@@ -34,9 +34,9 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    external_connection_id = "test-parent-id"
-    external_group_id      = "test-parent-id"
-    select_response        = true
+    externalConnection-id = "test-parent-id"
+    externalGroup-id      = "test-parent-id"
+    select_response       = true
   }
 
   assert {
@@ -49,9 +49,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    external_connection_id = "test-parent-id"
-    external_group_id      = "test-parent-id"
-    type                   = "user"
+    externalConnection-id = "test-parent-id"
+    externalGroup-id      = "test-parent-id"
+    type                  = "user"
   }
 
   assert {
@@ -64,9 +64,9 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    external_connection_id = "test-parent-id"
-    external_group_id      = "test-parent-id"
-    type                   = "__graphmodules_invalid_enum__"
+    externalConnection-id = "test-parent-id"
+    externalGroup-id      = "test-parent-id"
+    type                  = "__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.type]
@@ -76,8 +76,8 @@ run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    external_connection_id = "test-parent-id"
-    external_group_id      = "test-parent-id"
+    externalConnection-id = "test-parent-id"
+    externalGroup-id      = "test-parent-id"
   }
 
   assert {
@@ -90,9 +90,9 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    external_connection_id = "test-parent-id"
-    external_group_id      = "test-parent-id"
-    timeouts               = { create = "45m", update = "20m", read = "7m" }
+    externalConnection-id = "test-parent-id"
+    externalGroup-id      = "test-parent-id"
+    timeouts              = { create = "45m", update = "20m", read = "7m" }
   }
 
   assert {
@@ -105,9 +105,9 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    external_connection_id = "test-parent-id"
-    external_group_id      = "test-parent-id"
-    timeouts               = { create = "10s" }
+    externalConnection-id = "test-parent-id"
+    externalGroup-id      = "test-parent-id"
+    timeouts              = { create = "10s" }
   }
 
   expect_failures = [var.timeouts]
@@ -117,9 +117,9 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    external_connection_id = "test-parent-id"
-    external_group_id      = "test-parent-id"
-    timeouts               = { update = "soon" }
+    externalConnection-id = "test-parent-id"
+    externalGroup-id      = "test-parent-id"
+    timeouts              = { update = "soon" }
   }
 
   expect_failures = [var.timeouts]
@@ -129,9 +129,9 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    external_connection_id = "test-parent-id"
-    external_group_id      = "test-parent-id"
-    timeouts               = { delete = "0s" }
+    externalConnection-id = "test-parent-id"
+    externalGroup-id      = "test-parent-id"
+    timeouts              = { delete = "0s" }
   }
 
   expect_failures = [var.timeouts]

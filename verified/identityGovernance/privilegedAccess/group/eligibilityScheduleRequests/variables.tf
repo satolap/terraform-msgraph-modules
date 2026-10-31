@@ -1,30 +1,30 @@
-variable "principal_id" {
+variable "principalId" {
   description = "Object ID of the user or group that receives eligibility for membership or ownership of the group. Lowercase GUID. The caller must establish the principal type; this module does not look it up."
   type        = string
 
   validation {
-    condition     = can(regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.principal_id))
-    error_message = "principal_id must be a lowercase object ID (GUID)."
+    condition     = can(regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.principalId))
+    error_message = "principalId must be a lowercase object ID (GUID)."
   }
 }
 
-variable "group_id" {
+variable "groupId" {
   description = "Object ID of the group governed by PIM for Groups whose membership or ownership is made eligible. Lowercase GUID. The module never creates, changes or deletes the group."
   type        = string
 
   validation {
-    condition     = can(regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.group_id))
-    error_message = "group_id must be a lowercase group object ID (GUID)."
+    condition     = can(regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.groupId))
+    error_message = "groupId must be a lowercase group object ID (GUID)."
   }
 }
 
-variable "access_id" {
+variable "accessId" {
   description = "Which relationship to the group: \"member\" or \"owner\". There is no default so that ownership is never granted by omission."
   type        = string
 
   validation {
-    condition     = contains(["member", "owner"], var.access_id)
-    error_message = "access_id must be \"member\" or \"owner\"."
+    condition     = contains(["member", "owner"], var.accessId)
+    error_message = "accessId must be \"member\" or \"owner\"."
   }
 }
 

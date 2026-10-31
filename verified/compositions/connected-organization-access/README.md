@@ -13,7 +13,7 @@ See [Terraform sensitive state guidance](https://developer.hashicorp.com/terrafo
 <!-- state-protection:end -->
 
 <!-- uses-beta:start -->
-Uses beta: **optional**. Local module `../../groups`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../groups`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../groups`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../groups/members`: v1.0 omits service principal members; select beta before the first apply when any may exist (GB-relationships-ref-504). Local module `../../groups/members`: v1.0 omits service principal members; select beta before the first apply when any may exist (GB-relationships-ref-504). Local module `../../identity-governance/entitlement-management/catalogs`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../identity-governance/entitlement-management/access-packages`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../identity-governance/entitlement-management/catalogs/resources`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../identity-governance/entitlement-management/access-packages/resource-role-scopes`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../identity-governance/entitlement-management/assignment-policies`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../identity-governance/entitlement-management/assignment-policies`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
+Uses beta: **optional**. Local module `../../groups`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../groups`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../groups`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../groups/members`: v1.0 omits service principal members; select beta before the first apply when any may exist (GB-relationships-ref-504). Local module `../../groups/members`: v1.0 omits service principal members; select beta before the first apply when any may exist (GB-relationships-ref-504). Local module `../../identityGovernance/entitlementManagement/catalogs`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../identityGovernance/entitlementManagement/accessPackages`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../identityGovernance/entitlementManagement/catalogs/resources`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../identityGovernance/entitlementManagement/accessPackages/resourceRoleScopes`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../identityGovernance/entitlementManagement/assignmentPolicies`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Local module `../../identityGovernance/entitlementManagement/assignmentPolicies`: Beta is an optional api_version selection for compatibility; no beta-only capability is required by this module's contract. Prefer v1.0. Beta is preview and may change without notice. Pin module and provider versions; read `interface-changes.json` before upgrading.
 <!-- uses-beta:end -->
 
 <!-- live-status:start -->
@@ -53,14 +53,14 @@ administrative unit (optional) ── guests group, external and internal sponso
 
 | Object | Module | Default name |
 | --- | --- | --- |
-| Connected organization | [connected-organizations](../../identity-governance/entitlement-management/connected-organizations/README.md) | `display_name` |
-| Catalog, published and enabled for external users | [catalogs](../../identity-governance/entitlement-management/catalogs/README.md) | `{organization}` |
-| Access package | [access-packages](../../identity-governance/entitlement-management/access-packages/README.md) | `{organization} guest access` |
-| Guests group in the catalog, with its Member role in the access package | [groups](../../groups/README.md), [catalogs/resources](../../identity-governance/entitlement-management/catalogs/resources/README.md), [resource-role-scopes](../../identity-governance/entitlement-management/access-packages/resource-role-scopes/README.md) | `{organization\|ascii\|alnum}-guests` |
+| Connected organization | [connected-organizations](../../identityGovernance/entitlementManagement/connectedOrganizations/README.md) | `display_name` |
+| Catalog, published and enabled for external users | [catalogs](../../identityGovernance/entitlementManagement/catalogs/README.md) | `{organization}` |
+| Access package | [access-packages](../../identityGovernance/entitlementManagement/accessPackages/README.md) | `{organization} guest access` |
+| Guests group in the catalog, with its Member role in the access package | [groups](../../groups/README.md), [catalogs/resources](../../identityGovernance/entitlementManagement/catalogs/resources/README.md), [resource-role-scopes](../../identityGovernance/entitlementManagement/accessPackages/resourceRoleScopes/README.md) | `{organization\|ascii\|alnum}-guests` |
 | External and internal sponsors groups and their members | [groups](../../groups/README.md), [groups/members](../../groups/members/README.md) | `{organization\|ascii\|alnum}-external-sponsors`, `-internal-sponsors` |
-| Administrative unit holding the three groups (optional) | [administrative-units](../../directory/administrative-units/README.md) | `{organization} connected organization` |
-| Requests policy and external sponsor policy | [assignment-policies](../../identity-governance/entitlement-management/assignment-policies/README.md) | `Connected organization requests`, `External sponsor access` |
-| Custom extensions (optional) | [catalogs/custom-extensions](../../identity-governance/entitlement-management/catalogs/custom-extensions/README.md) | the map key |
+| Administrative unit holding the three groups (optional) | [administrative-units](../../directory/administrativeUnits/README.md) | `{organization} connected organization` |
+| Requests policy and external sponsor policy | [assignment-policies](../../identityGovernance/entitlementManagement/assignmentPolicies/README.md) | `Connected organization requests`, `External sponsor access` |
+| Custom extensions (optional) | [catalogs/customWorkflowExtensions](../../identityGovernance/entitlementManagement/catalogs/customWorkflowExtensions/README.md) | the map key |
 | Names and descriptions | [naming](../../naming/README.md) | see [Naming convention](#naming-convention) |
 | Guest invitations for external sponsors (optional) | this module, `POST /invitations` | n/a |
 
@@ -82,7 +82,7 @@ administrative unit (optional) ── guests group, external and internal sponso
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "fabrikam" {
@@ -381,7 +381,7 @@ Before deployment, check the requirements of the features you enable and the use
 
 Notes:
 
-- The composite calls the verified groups, groups/members, administrative-units, connected-organizations, catalogs, catalogs/resources, catalogs/custom-extensions, access-packages, access-packages/resource-role-scopes, assignment-policies and naming modules, and every rule and note of those modules applies to it; this entry repeats their baselines and the conditions that its own inputs control.
+- The composite calls the verified groups, groups/members, administrative-units, connected-organizations, catalogs, catalogs/resources, catalogs/customWorkflowExtensions, access-packages, access-packages/resource-role-scopes, assignment-policies and naming modules, and every rule and note of those modules applies to it; this entry repeats their baselines and the conditions that its own inputs control.
 - Creating the administrative unit and managing its members needs only Microsoft Entra ID Free. The composite assigns no role scoped to the unit; the ADMIN-UNITS rule, Microsoft Entra ID P1 for each administrator assigned such a role, applies to the configuration that assigns one.
 - The users of the connected organization become guests when their requests are approved. Microsoft Entra ID Governance features that guests use are billed per monthly active user to a linked Azure subscription, and guests who sign in count as monthly active users of Microsoft Entra External ID; see the connected-organizations module for the details and for what is not verified.
 - The composite rules were reviewed against Microsoft Learn on 2026-10-07, which is later than the review date stated above.
@@ -469,3 +469,244 @@ Terraform plans compare configuration and refreshed provider state. A plan that 
 - `naming`: changes `module.names`; see the module notes.
 - `enable_destroy_cleanup`: changes `module.guests_group_resource`; see the module notes; changes `module.guests_role_scope`; see the module notes.
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /invitations` | DelegatedWork | `User.Invite.All` | - | - |
+| `POST /invitations` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /invitations` | Application | `User.Invite.All` | - | - |
+| `POST /groups` | DelegatedWork | `Group.ReadWrite.All` | - | - |
+| `POST /groups` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /groups` | Application | `Group.Create` | - | - |
+| `GET /groups/{id}` | DelegatedWork | `Group-NestingSupport.ReadWrite.All` | - | - |
+| `GET /groups/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /groups/{id}` | Application | `Group-NestingSupport.ReadWrite.All` | - | - |
+| `DELETE /groups/{id}` | DelegatedWork | `Group.ReadWrite.All` | - | - |
+| `DELETE /groups/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /groups/{id}` | Application | `Group.ReadWrite.All` | - | - |
+| `PATCH /groups/{id}` | DelegatedWork | `Group-NestingSupport.ReadWrite.All` | - | - |
+| `PATCH /groups/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /groups/{id}` | Application | `Group-NestingSupport.ReadWrite.All` | - | - |
+| `GET /groups/{id}/members` | DelegatedWork | `GroupMember.ReadBasic.All` | - | - |
+| `GET /groups/{id}/members` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /groups/{id}/members` | Application | `GroupMember.ReadBasic.All` | - | - |
+| `POST /groups/{id}/members/$ref` | DelegatedWork | Unknown / not annotated | - | The pin has GET and DELETE membership entries but no POST under either members or members/$ref. Do not treat the group's property-specific nesting annotation as a general membership grant. |
+| `POST /groups/{id}/members/$ref` | DelegatedPersonal | Unknown / not annotated | - | The pin has GET and DELETE membership entries but no POST under either members or members/$ref. Do not treat the group's property-specific nesting annotation as a general membership grant. |
+| `POST /groups/{id}/members/$ref` | Application | Unknown / not annotated | - | The pin has GET and DELETE membership entries but no POST under either members or members/$ref. Do not treat the group's property-specific nesting annotation as a general membership grant. |
+| `DELETE /groups/{id}/members/{id}/$ref` | DelegatedWork | `GroupMember.ReadWrite.All` | - | - |
+| `DELETE /groups/{id}/members/{id}/$ref` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /groups/{id}/members/{id}/$ref` | Application | `GroupMember.ReadWrite.All` | - | - |
+| `POST /directory/administrativeUnits` | DelegatedWork | `AdministrativeUnit.ReadWrite.All` | - | - |
+| `POST /directory/administrativeUnits` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /directory/administrativeUnits` | Application | Unknown / not annotated | - | The pinned DevX entry lists permissions but marks none least privileged for this scheme. |
+| `GET /directory/administrativeUnits/{id}` | DelegatedWork | `AdministrativeUnit.Read.All` | - | - |
+| `GET /directory/administrativeUnits/{id}` | DelegatedWork | `AdministrativeUnit.ReadWrite.All` | - | - |
+| `GET /directory/administrativeUnits/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /directory/administrativeUnits/{id}` | Application | Unknown / not annotated | - | The pinned DevX entry lists permissions but marks none least privileged for this scheme. |
+| `DELETE /directory/administrativeUnits/{id}` | DelegatedWork | `AdministrativeUnit.ReadWrite.All` | - | - |
+| `DELETE /directory/administrativeUnits/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /directory/administrativeUnits/{id}` | Application | `AdministrativeUnit.ReadWrite.All` | - | - |
+| `PATCH /directory/administrativeUnits/{id}` | DelegatedWork | `AdministrativeUnit.ReadWrite.All` | - | - |
+| `PATCH /directory/administrativeUnits/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /directory/administrativeUnits/{id}` | Application | Unknown / not annotated | - | The pinned DevX entry lists permissions but marks none least privileged for this scheme. |
+| `GET /directory/administrativeUnits/{id}/members` | DelegatedWork | `AdministrativeUnit.Read.All` | - | - |
+| `GET /directory/administrativeUnits/{id}/members` | DelegatedWork | `AdministrativeUnit.ReadWrite.All` | - | - |
+| `GET /directory/administrativeUnits/{id}/members` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /directory/administrativeUnits/{id}/members` | Application | `AdministrativeUnit.Read.All` | - | - |
+| `POST /directory/administrativeUnits/{id}/members/$ref` | DelegatedWork | `AdministrativeUnit.ReadWrite.All` | - | - |
+| `POST /directory/administrativeUnits/{id}/members/$ref` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /directory/administrativeUnits/{id}/members/$ref` | Application | Unknown / not annotated | - | The pinned DevX entry lists permissions but marks none least privileged for this scheme. |
+| `DELETE /directory/administrativeUnits/{id}/members/{id}/$ref` | DelegatedWork | `AdministrativeUnit.ReadWrite.All` | - | - |
+| `DELETE /directory/administrativeUnits/{id}/members/{id}/$ref` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /directory/administrativeUnits/{id}/members/{id}/$ref` | Application | Unknown / not annotated | - | The pinned DevX entry lists permissions but marks none least privileged for this scheme. |
+| `POST /directory/administrativeUnits/{id}/scopedRoleMembers` | DelegatedWork | `RoleManagement.ReadWrite.Directory` | - | - |
+| `POST /directory/administrativeUnits/{id}/scopedRoleMembers` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /directory/administrativeUnits/{id}/scopedRoleMembers` | Application | `RoleManagement.ReadWrite.Directory` | - | - |
+| `GET /directory/administrativeUnits/{id}/scopedRoleMembers/{id}` | DelegatedWork | `RoleManagement.Read.Directory` | - | - |
+| `GET /directory/administrativeUnits/{id}/scopedRoleMembers/{id}` | DelegatedWork | `RoleManagement.ReadWrite.Directory` | - | - |
+| `GET /directory/administrativeUnits/{id}/scopedRoleMembers/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /directory/administrativeUnits/{id}/scopedRoleMembers/{id}` | Application | `RoleManagement.Read.Directory` | - | - |
+| `GET /directory/administrativeUnits/{id}/scopedRoleMembers/{id}` | Application | `RoleManagement.ReadWrite.Directory` | - | - |
+| `DELETE /directory/administrativeUnits/{id}/scopedRoleMembers/{id}` | DelegatedWork | `RoleManagement.ReadWrite.Directory` | - | - |
+| `DELETE /directory/administrativeUnits/{id}/scopedRoleMembers/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /directory/administrativeUnits/{id}/scopedRoleMembers/{id}` | Application | `RoleManagement.ReadWrite.Directory` | - | - |
+| `PATCH /directory/administrativeUnits/{id}/scopedRoleMembers/{id}` | DelegatedWork | Unknown / not annotated | - | The provider's generic CRUD primitive can attempt PATCH, but the pin has only create/read/delete for scopedRoleMembers. An inventoried provider capability does not establish Graph support. |
+| `PATCH /directory/administrativeUnits/{id}/scopedRoleMembers/{id}` | DelegatedPersonal | Unknown / not annotated | - | The provider's generic CRUD primitive can attempt PATCH, but the pin has only create/read/delete for scopedRoleMembers. An inventoried provider capability does not establish Graph support. |
+| `PATCH /directory/administrativeUnits/{id}/scopedRoleMembers/{id}` | Application | Unknown / not annotated | - | The provider's generic CRUD primitive can attempt PATCH, but the pin has only create/read/delete for scopedRoleMembers. An inventoried provider capability does not establish Graph support. |
+| `POST /identityGovernance/entitlementManagement/connectedOrganizations` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/connectedOrganizations` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/entitlementManagement/connectedOrganizations` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}` | Application | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/entitlementManagement/connectedOrganizations/{id}` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/entitlementManagement/connectedOrganizations/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /identityGovernance/entitlementManagement/connectedOrganizations/{id}` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `PATCH /identityGovernance/entitlementManagement/connectedOrganizations/{id}` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `PATCH /identityGovernance/entitlementManagement/connectedOrganizations/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /identityGovernance/entitlementManagement/connectedOrganizations/{id}` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}/internalSponsors` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}/internalSponsors` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}/internalSponsors` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}/internalSponsors` | Application | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}/internalSponsors` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/connectedOrganizations/{id}/internalSponsors/$ref` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/connectedOrganizations/{id}/internalSponsors/$ref` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/entitlementManagement/connectedOrganizations/{id}/internalSponsors/$ref` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/entitlementManagement/connectedOrganizations/{id}/internalSponsors/{id}/$ref` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/entitlementManagement/connectedOrganizations/{id}/internalSponsors/{id}/$ref` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /identityGovernance/entitlementManagement/connectedOrganizations/{id}/internalSponsors/{id}/$ref` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}/externalSponsors` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}/externalSponsors` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}/externalSponsors` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}/externalSponsors` | Application | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations/{id}/externalSponsors` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/connectedOrganizations/{id}/externalSponsors/$ref` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/connectedOrganizations/{id}/externalSponsors/$ref` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/entitlementManagement/connectedOrganizations/{id}/externalSponsors/$ref` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/entitlementManagement/connectedOrganizations/{id}/externalSponsors/{id}/$ref` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/entitlementManagement/connectedOrganizations/{id}/externalSponsors/{id}/$ref` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /identityGovernance/entitlementManagement/connectedOrganizations/{id}/externalSponsors/{id}/$ref` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /tenantRelationships/findTenantInformationByDomainName(domainName='{id}')` | DelegatedWork | `CrossTenantInformation.ReadBasic.All` | - | - |
+| `GET /tenantRelationships/findTenantInformationByDomainName(domainName='{id}')` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /tenantRelationships/findTenantInformationByDomainName(domainName='{id}')` | Application | `CrossTenantInformation.ReadBasic.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations` | Application | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/catalogs` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/catalogs` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/entitlementManagement/catalogs` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}` | Application | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/entitlementManagement/catalogs/{id}` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/entitlementManagement/catalogs/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /identityGovernance/entitlementManagement/catalogs/{id}` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `PATCH /identityGovernance/entitlementManagement/catalogs/{id}` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `PATCH /identityGovernance/entitlementManagement/catalogs/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /identityGovernance/entitlementManagement/catalogs/{id}` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/accessPackages` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/accessPackages` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/entitlementManagement/accessPackages` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/accessPackages/{id}` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/accessPackages/{id}` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/accessPackages/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/accessPackages/{id}` | Application | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/accessPackages/{id}` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/entitlementManagement/accessPackages/{id}` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/entitlementManagement/accessPackages/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /identityGovernance/entitlementManagement/accessPackages/{id}` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `PATCH /identityGovernance/entitlementManagement/accessPackages/{id}` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `PATCH /identityGovernance/entitlementManagement/accessPackages/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /identityGovernance/entitlementManagement/accessPackages/{id}` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/resourceRequests` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/resourceRequests` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/entitlementManagement/resourceRequests` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}/resources` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}/resources` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}/resources` | Application | `EntitlementManagement.Read.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/accessPackages/{id}/resourceRoleScopes` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/accessPackages/{id}/resourceRoleScopes` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/entitlementManagement/accessPackages/{id}/resourceRoleScopes` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/entitlementManagement/accessPackages/{id}/resourceRoleScopes` | DelegatedWork | Unknown / not annotated | - | The empty role-scope ID fallback produces a collection URI, not an item deletion. DevX does not annotate collection DELETE; this conservative failure-path candidate establishes neither bulk deletion support nor a permission grant. |
+| `DELETE /identityGovernance/entitlementManagement/accessPackages/{id}/resourceRoleScopes` | DelegatedPersonal | Unknown / not annotated | - | The empty role-scope ID fallback produces a collection URI, not an item deletion. DevX does not annotate collection DELETE; this conservative failure-path candidate establishes neither bulk deletion support nor a permission grant. |
+| `DELETE /identityGovernance/entitlementManagement/accessPackages/{id}/resourceRoleScopes` | Application | Unknown / not annotated | - | The empty role-scope ID fallback produces a collection URI, not an item deletion. DevX does not annotate collection DELETE; this conservative failure-path candidate establishes neither bulk deletion support nor a permission grant. |
+| `DELETE /identityGovernance/entitlementManagement/accessPackages/{id}/resourceRoleScopes/{id}` | DelegatedWork | Unknown / not annotated | - | The pin annotates POST under the legacy accessPackageResourceRoleScopes name, but no DELETE item entry exists under either spelling. Do not infer delete grants from create. |
+| `DELETE /identityGovernance/entitlementManagement/accessPackages/{id}/resourceRoleScopes/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pin annotates POST under the legacy accessPackageResourceRoleScopes name, but no DELETE item entry exists under either spelling. Do not infer delete grants from create. |
+| `DELETE /identityGovernance/entitlementManagement/accessPackages/{id}/resourceRoleScopes/{id}` | Application | Unknown / not annotated | - | The pin annotates POST under the legacy accessPackageResourceRoleScopes name, but no DELETE item entry exists under either spelling. Do not infer delete grants from create. |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}/resourceRoles` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}/resourceRoles` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}/resourceRoles` | Application | `EntitlementManagement.Read.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions` | Application | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions/{id}` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions/{id}` | Application | `EntitlementManagement.Read.All` | - | - |
+| `DELETE /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions/{id}` | DelegatedWork | Unknown / not annotated | - | The pin has legacy accessPackageCustomWorkflowExtensions GET and POST entries only; neither current nor legacy DELETE is annotated. |
+| `DELETE /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pin has legacy accessPackageCustomWorkflowExtensions GET and POST entries only; neither current nor legacy DELETE is annotated. |
+| `DELETE /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions/{id}` | Application | Unknown / not annotated | - | The pin has legacy accessPackageCustomWorkflowExtensions GET and POST entries only; neither current nor legacy DELETE is annotated. |
+| `PUT /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions/{id}` | DelegatedWork | Unknown / not annotated | - | The verified module uses PUT, but the pin has only legacy GET and POST extension entries. Do not change the HTTP method or infer update grants from create. |
+| `PUT /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions/{id}` | DelegatedPersonal | Unknown / not annotated | - | The verified module uses PUT, but the pin has only legacy GET and POST extension entries. Do not change the HTTP method or infer update grants from create. |
+| `PUT /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions/{id}` | Application | Unknown / not annotated | - | The verified module uses PUT, but the pin has only legacy GET and POST extension entries. Do not change the HTTP method or infer update grants from create. |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions` | Application | `EntitlementManagement.Read.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/assignmentPolicies` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/assignmentPolicies` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/entitlementManagement/assignmentPolicies` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/assignmentPolicies/{id}` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/assignmentPolicies/{id}` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/assignmentPolicies/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/assignmentPolicies/{id}` | Application | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/assignmentPolicies/{id}` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/entitlementManagement/assignmentPolicies/{id}` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/entitlementManagement/assignmentPolicies/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /identityGovernance/entitlementManagement/assignmentPolicies/{id}` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `PUT /identityGovernance/entitlementManagement/assignmentPolicies/{id}` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `PUT /identityGovernance/entitlementManagement/assignmentPolicies/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PUT /identityGovernance/entitlementManagement/assignmentPolicies/{id}` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/catalogs//customWorkflowExtensions` | DelegatedWork | Unknown / not annotated | - | The guarded catalog-extension read has an empty catalog-ID candidate. Its double-slash URI is not annotated; do not turn it into an item path or borrow item grants. This conservative failure-path candidate establishes no supported endpoint. |
+| `GET /identityGovernance/entitlementManagement/catalogs//customWorkflowExtensions` | DelegatedPersonal | Unknown / not annotated | - | The guarded catalog-extension read has an empty catalog-ID candidate. Its double-slash URI is not annotated; do not turn it into an item path or borrow item grants. This conservative failure-path candidate establishes no supported endpoint. |
+| `GET /identityGovernance/entitlementManagement/catalogs//customWorkflowExtensions` | Application | Unknown / not annotated | - | The guarded catalog-extension read has an empty catalog-ID candidate. Its double-slash URI is not annotated; do not turn it into an item path or borrow item grants. This conservative failure-path candidate establishes no supported endpoint. |
+
+DevX uses equivalent route spellings for these requests (the inventory retains both):
+
+- `DELETE /directory/administrativeUnits/{id}/members/{id}/$ref` -> `/directory/administrativeunits/{id}/members/{id}`.
+- `DELETE /groups/{id}/members/{id}/$ref` -> `/groups/{id}/members/{id}`.
+- `DELETE /identityGovernance/entitlementManagement/connectedOrganizations/{id}/externalSponsors/{id}/$ref` -> `/identitygovernance/entitlementmanagement/connectedorganizations/{id}/externalsponsors/{id}`.
+- `DELETE /identityGovernance/entitlementManagement/connectedOrganizations/{id}/internalSponsors/{id}/$ref` -> `/identitygovernance/entitlementmanagement/connectedorganizations/{id}/internalsponsors/{id}`.
+- `GET /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions` -> `/identitygovernance/entitlementmanagement/accesspackagecatalogs/{id}/accesspackagecustomworkflowextensions`.
+- `GET /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions/{id}` -> `/identitygovernance/entitlementmanagement/accesspackagecatalogs/{id}/accesspackagecustomworkflowextensions/{id}`.
+- `GET /identityGovernance/entitlementManagement/catalogs/{id}/resourceRoles` -> `/identitygovernance/entitlementmanagement/accesspackagecatalogs/{id}/accesspackageresourceroles`.
+- `GET /identityGovernance/entitlementManagement/catalogs/{id}/resources` -> `/identitygovernance/entitlementmanagement/accesspackagecatalogs/{id}/accesspackageresources`.
+- `GET /tenantRelationships/findTenantInformationByDomainName(domainName='{id}')` -> `/tenantrelationships/findtenantinformationbydomainname(domainname={id})`.
+- `POST /directory/administrativeUnits/{id}/members/$ref` -> `/directory/administrativeunits/{id}/members`.
+- `POST /identityGovernance/entitlementManagement/accessPackages/{id}/resourceRoleScopes` -> `/identitygovernance/entitlementmanagement/accesspackages/{id}/accesspackageresourcerolescopes`.
+- `POST /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions` -> `/identitygovernance/entitlementmanagement/accesspackagecatalogs/{id}/accesspackagecustomworkflowextensions`.
+- `POST /identityGovernance/entitlementManagement/connectedOrganizations/{id}/externalSponsors/$ref` -> `/identitygovernance/entitlementmanagement/connectedorganizations/{id}/externalsponsors`.
+- `POST /identityGovernance/entitlementManagement/connectedOrganizations/{id}/internalSponsors/$ref` -> `/identitygovernance/entitlementmanagement/connectedorganizations/{id}/internalsponsors`.
+- `POST /identityGovernance/entitlementManagement/resourceRequests` -> `/identitygovernance/entitlementmanagement/accesspackageresourcerequests`.
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /invitations` | `inviteRedirectUrl`, `invitedUserEmailAddress`, `invitedUserMessageInfo`, `sendInvitationMessage` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `POST /groups` | `description`, `displayName`, `groupTypes`, `isAssignableToRole`, `mailEnabled`, `mailNickname`, `members@odata.bind`, `membershipRule`, `membershipRuleProcessingState`, `owners@odata.bind`, `securityEnabled`, `visibility` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /groups/{id}` | `description`, `displayName`, `groupTypes`, `isAssignableToRole`, `mailEnabled`, `mailNickname`, `members@odata.bind`, `membershipRule`, `membershipRuleProcessingState`, `owners@odata.bind`, `securityEnabled`, `visibility` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `POST /directory/administrativeUnits` | `description`, `displayName`, `isMemberManagementRestricted`, `membershipRule`, `membershipRuleProcessingState`, `membershipType`, `visibility` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /directory/administrativeUnits/{id}` | `description`, `displayName`, `isMemberManagementRestricted`, `membershipRule`, `membershipRuleProcessingState`, `membershipType`, `visibility` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `POST /directory/administrativeUnits/{id}/scopedRoleMembers` | `roleId`, `roleMemberInfo` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /directory/administrativeUnits/{id}/scopedRoleMembers/{id}` | `roleId`, `roleMemberInfo` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `POST /identityGovernance/entitlementManagement/connectedOrganizations` | `description`, `displayName`, `identitySources`, `state` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /identityGovernance/entitlementManagement/connectedOrganizations/{id}` | `description`, `displayName`, `identitySources`, `state` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `GET /identityGovernance/entitlementManagement/connectedOrganizations` | `displayName`, `id`, `identitySources`, `state` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `POST /identityGovernance/entitlementManagement/catalogs` | `description`, `displayName`, `isExternallyVisible`, `state` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /identityGovernance/entitlementManagement/catalogs/{id}` | `description`, `displayName`, `isExternallyVisible`, `state` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `POST /identityGovernance/entitlementManagement/accessPackages` | `catalog`, `description`, `displayName`, `isHidden` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /identityGovernance/entitlementManagement/accessPackages/{id}` | `catalog`, `description`, `displayName`, `isHidden` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `POST /identityGovernance/entitlementManagement/resourceRequests` | `catalog`, `requestType`, `resource` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `POST /identityGovernance/entitlementManagement/accessPackages/{id}/resourceRoleScopes` | `role`, `scope` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `POST /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions` | `@odata.type`, `authenticationConfiguration`, `callbackConfiguration`, `description`, `displayName`, `endpointConfiguration` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PUT /identityGovernance/entitlementManagement/catalogs/{id}/customWorkflowExtensions/{id}` | `@odata.type`, `authenticationConfiguration`, `callbackConfiguration`, `description`, `displayName`, `endpointConfiguration` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `POST /identityGovernance/entitlementManagement/assignmentPolicies` | `accessPackage`, `allowedTargetScope`, `customExtensionStageSettings`, `description`, `displayName`, `expiration`, `questions`, `requestApprovalSettings`, `requestorSettings`, `reviewSettings`, `specificAllowedTargets` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PUT /identityGovernance/entitlementManagement/assignmentPolicies/{id}` | `accessPackage`, `allowedTargetScope`, `customExtensionStageSettings`, `description`, `displayName`, `expiration`, `questions`, `requestApprovalSettings`, `requestorSettings`, `reviewSettings`, `specificAllowedTargets` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

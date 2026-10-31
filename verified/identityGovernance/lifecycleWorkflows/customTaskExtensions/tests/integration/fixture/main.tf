@@ -35,28 +35,30 @@ resource "terraform_data" "suffix" {
 }
 # Existing, owner-prepared Azure fixture only; no Azure infrastructure or role grants.
 variable "lifecycle_extension_fixture" {
-  type = object({
-    logic_app = object({
-      subscription_id         = string
-      resource_group_name     = string
-      logic_app_workflow_name = string
-    })
-    authentication_resource_id = string
-  })
+  # logic_app keeps the keys of the secret (subscription_id, resource_group_name,
+  # logic_app_workflow_name); the Graph-named keys the module takes work too.
+  type     = any
   nullable = false
+}
+module "logic_app_keys" {
+  source    = "../logic_app_keys"
+  logic_app = var.lifecycle_extension_fixture.logic_app
 }
 module "extension" {
   source                     = "../../.."
   count                      = var.enabled ? 1 : 0
-  display_name               = "tftest-extension-${terraform_data.suffix.output}"
+  displayName                = "tftest-extension-${terraform_data.suffix.output}"
   description                = var.description
-  logic_app                  = var.lifecycle_extension_fixture.logic_app
+  logic_app                  = module.logic_app_keys.logic_app
   authentication_resource_id = var.lifecycle_extension_fixture.authentication_resource_id
   timeout_in_milliseconds    = 1000
   maximum_retries            = 0
 }
 output "expected" {
-  value = var.lifecycle_extension_fixture
+  value = {
+    logic_app                  = module.logic_app_keys.logic_app
+    authentication_resource_id = var.lifecycle_extension_fixture.authentication_resource_id
+  }
 }
 # Independent GET, separate from the module's create/refresh response.
 data "msgraph_resource" "item" {

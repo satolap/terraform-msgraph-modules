@@ -1,11 +1,11 @@
-variable "service_principal_id" {
+variable "servicePrincipal-id" {
   description = "Service principal object ID (not its application/client ID). The module creates a new password and never adopts an existing credential."
   type        = string
   nullable    = false
 
   validation {
-    condition     = can(regex("(?i)^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.service_principal_id))
-    error_message = "service_principal_id must be a service principal object ID (a GUID)."
+    condition     = can(regex("(?i)^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.servicePrincipal-id))
+    error_message = "servicePrincipal-id must be a service principal object ID (a GUID)."
   }
 }
 

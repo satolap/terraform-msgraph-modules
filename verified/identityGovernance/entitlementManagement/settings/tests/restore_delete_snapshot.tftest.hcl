@@ -26,7 +26,7 @@ mock_provider "msgraph" {
 }
 
 variables {
-  external_user_lifecycle_action = "blockSignIn"
+  externalUserLifecycleAction = "blockSignIn"
 }
 
 run "first_apply_snapshots_a_deleting_tenant" {

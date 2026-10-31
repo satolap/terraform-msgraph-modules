@@ -12,7 +12,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "groups/${urlencode(var.group_id)}/settings"
+  url                     = "groups/${urlencode(var.group-id)}/settings"
   api_version             = "beta"
   update_method           = "PATCH"
   body                    = local.body

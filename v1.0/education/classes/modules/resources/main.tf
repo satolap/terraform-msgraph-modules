@@ -12,7 +12,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "education/classes/${urlencode(var.education_class_id)}/modules/${urlencode(var.education_module_id)}/resources"
+  url                     = "education/classes/${urlencode(var.educationClass-id)}/modules/${urlencode(var.educationModule-id)}/resources"
   api_version             = "v1.0"
   update_method           = "PATCH"
   body                    = local.body

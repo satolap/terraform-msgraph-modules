@@ -1,11 +1,11 @@
-variable "user_id" {
+variable "user-id" {
   description = "The unique identifier of user"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.user_id)) > 0
-    error_message = "user_id must not be empty."
+    condition     = length(trimspace(var.user-id)) > 0
+    error_message = "user-id must not be empty."
   }
 }
 
@@ -36,7 +36,7 @@ variable "categories" {
   default     = null
 }
 
-variable "created_date_time" {
+variable "createdDateTime" {
   description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
@@ -48,13 +48,13 @@ variable "extensions" {
   default     = null
 }
 
-variable "last_modified_date_time" {
+variable "lastModifiedDateTime" {
   description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
 }
 
-variable "multi_value_extended_properties" {
+variable "multiValueExtendedProperties" {
   description = "The collection of multi-value extended properties defined for the note."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.multiValueLegacyExtendedProperty")
@@ -70,7 +70,7 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "single_value_extended_properties" {
+variable "singleValueExtendedProperties" {
   description = "The collection of single-value extended properties defined for the note."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.singleValueLegacyExtendedProperty")

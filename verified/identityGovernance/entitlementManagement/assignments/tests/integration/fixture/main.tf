@@ -44,56 +44,56 @@ resource "random_password" "recipient" {
   min_special = 1
 }
 module "recipient" {
-  source              = "../../../../../../users"
-  user_principal_name = "tftest-recipient-${terraform_data.suffix.output}@${var.verified_domain}"
-  display_name        = "tftest-recipient-${terraform_data.suffix.output}"
-  mail_nickname       = "tftest-recipient-${terraform_data.suffix.output}"
-  password            = random_password.recipient.result
-  account_enabled     = false
+  source            = "../../../../../../users"
+  userPrincipalName = "tftest-recipient-${terraform_data.suffix.output}@${var.verified_domain}"
+  displayName       = "tftest-recipient-${terraform_data.suffix.output}"
+  mailNickname      = "tftest-recipient-${terraform_data.suffix.output}"
+  password          = random_password.recipient.result
+  accountEnabled    = false
 }
 module "group" {
-  source           = "../../../../../../groups"
-  display_name     = "tftest-assignment-${terraform_data.suffix.output}"
-  mail_nickname    = "tftest-assignment-${terraform_data.suffix.output}"
-  security_enabled = true
+  source          = "../../../../../../groups"
+  displayName     = "tftest-assignment-${terraform_data.suffix.output}"
+  mailNickname    = "tftest-assignment-${terraform_data.suffix.output}"
+  securityEnabled = true
 }
 module "catalog" {
-  source       = "../../../../../../identity-governance/entitlement-management/catalogs"
-  display_name = "tftest-assignment-${terraform_data.suffix.output}"
-  description  = "Disposable acceptance catalog"
+  source      = "../../../../catalogs"
+  displayName = "tftest-assignment-${terraform_data.suffix.output}"
+  description = "Disposable acceptance catalog"
 }
 module "package" {
-  source       = "../../../../../../identity-governance/entitlement-management/access-packages"
-  catalog_id   = module.catalog.id
-  display_name = "tftest-assignment-${terraform_data.suffix.output}"
-  description  = "Disposable group membership only"
+  source      = "../../../../accessPackages"
+  catalog_id  = module.catalog.id
+  displayName = "tftest-assignment-${terraform_data.suffix.output}"
+  description = "Disposable group membership only"
   # Destroy the package before the catalog resource: Graph refuses the resource's
   # adminRemove while an access package still exists (GB-live-cleanup-502).
   depends_on = [module.resource]
 }
 module "resource" {
-  source                 = "../../../../../../identity-governance/entitlement-management/catalogs/resources"
-  catalog_id             = module.catalog.id
-  resource_origin_system = "AadGroup"
-  resource_origin_id     = module.group.id
+  source                  = "../../../../catalogs/resources"
+  accessPackageCatalog-id = module.catalog.id
+  resource_origin_system  = "AadGroup"
+  resource_origin_id      = module.group.id
 }
 module "role_scope" {
-  source                 = "../../../../../../identity-governance/entitlement-management/access-packages/resource-role-scopes"
-  access_package_id      = module.package.id
+  source                 = "../../../../accessPackages/resourceRoleScopes"
+  accessPackage-id       = module.package.id
   catalog_id             = module.catalog.id
   catalog_resource_id    = module.resource.resource_id
   resource_origin_system = "AadGroup"
   role_display_name      = "Member"
 }
 module "policy" {
-  source                    = "../../../../../../identity-governance/entitlement-management/assignment-policies"
+  source                    = "../../../../assignmentPolicies"
   access_package_id         = module.package.id
-  display_name              = "tftest-assignment-${terraform_data.suffix.output}"
+  displayName               = "tftest-assignment-${terraform_data.suffix.output}"
   description               = "Only the disabled disposable recipient is eligible"
-  allowed_target_scope      = "specificDirectoryUsers"
+  allowedTargetScope        = "specificDirectoryUsers"
   specific_allowed_targets  = [{ type = "singleUser", id = module.recipient.id }]
-  requestor_settings        = { enable_targets_to_self_add_access = false }
-  request_approval_settings = { is_approval_required_for_add = false }
+  requestor_settings        = { enableTargetsToSelfAddAccess = false }
+  request_approval_settings = { isApprovalRequiredForAdd = false }
   expiration                = { type = "afterDuration", duration_days = 1 }
 }
 module "assignment" {

@@ -1,11 +1,11 @@
-variable "group_id" {
+variable "group-id" {
   description = "Object ID of the existing security or Microsoft 365 group whose direct members this module manages; the module does not create the group. Changing it replaces the managed collection: the provider removes every member of the old group that its state lists, then adds member_ids to the new group. The module uses it in lower case, so a change of case alone plans nothing."
   type        = string
   nullable    = false
 
   validation {
-    condition     = can(regex("^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$", var.group_id))
-    error_message = "group_id must be the object ID of a group, a GUID."
+    condition     = can(regex("^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$", var.group-id))
+    error_message = "group-id must be the object ID of a group, a GUID."
   }
 }
 

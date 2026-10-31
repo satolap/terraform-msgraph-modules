@@ -1,21 +1,21 @@
-variable "chat_type" {
+variable "chatType" {
   description = "Microsoft Graph chatType property."
   type        = string
   default     = null
 
   validation {
-    condition     = var.chat_type == null ? true : contains(["oneOnOne", "group", "meeting"], var.chat_type)
-    error_message = "chat_type must be one of the documented enum values."
+    condition     = var.chatType == null ? true : contains(["oneOnOne", "group", "meeting"], var.chatType)
+    error_message = "chatType must be one of the documented enum values."
   }
 }
 
-variable "installed_apps" {
+variable "installedApps" {
   description = "A collection of all the apps in the chat. Nullable."
   type        = any
   default     = null
 }
 
-variable "last_message_preview" {
+variable "lastMessagePreview" {
   description = "Preview of the last message sent in the chat. Null if no messages were sent in the chat. Currently, only the list chats operation supports this property."
   type        = any
   default     = null
@@ -33,14 +33,14 @@ variable "messages" {
   default     = null
 }
 
-variable "migration_mode" {
+variable "migrationMode" {
   description = "Indicates whether a chat is in migration mode. This value is null for chats that never entered migration mode. The possible values are: inProgress, completed, unknownFutureValue."
   type        = string
   default     = null
 
   validation {
-    condition     = var.migration_mode == null ? true : contains(["inProgress", "completed"], var.migration_mode)
-    error_message = "migration_mode must be one of the documented enum values."
+    condition     = var.migrationMode == null ? true : contains(["inProgress", "completed"], var.migrationMode)
+    error_message = "migrationMode must be one of the documented enum values."
   }
 }
 
@@ -51,13 +51,13 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "original_created_date_time" {
+variable "originalCreatedDateTime" {
   description = "Timestamp of the original creation time for the chat. The value is null if the chat never entered migration mode."
   type        = string
   default     = null
 }
 
-variable "permission_grants" {
+variable "permissionGrants" {
   description = "A collection of permissions granted to apps for the chat."
   type = list(object({
     odata_type      = optional(string, "#microsoft.graph.resourceSpecificPermissionGrant")
@@ -66,7 +66,7 @@ variable "permission_grants" {
   default = null
 }
 
-variable "pinned_messages" {
+variable "pinnedMessages" {
   description = "A collection of all the pinned messages in the chat. Nullable."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.pinnedChatMessageInfo")
@@ -92,7 +92,7 @@ variable "tabs" {
   default = null
 }
 
-variable "targeted_messages" {
+variable "targetedMessages" {
   description = "A collection of targeted messages in the chat that are visible only to specific users. Nullable. You can't expand this relationship using $expand. Targeted messages can also be retrieved via the userTeamwork: getAllTargetedMessages API."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.targetedChatMessage")
@@ -190,8 +190,8 @@ variable "targeted_messages" {
   default = null
 
   validation {
-    condition     = (var.targeted_messages == null ? true : alltrue([alltrue([for input0 in var.targeted_messages : (input0 == null ? true : alltrue([(input0["body"] == null ? true : alltrue([(input0["body"]["contentType"] == null ? true : alltrue([(input0["body"]["contentType"] == null ? true : contains(["text", "html"], input0["body"]["contentType"]))]))])), (input0["importance"] == null ? true : alltrue([(input0["importance"] == null ? true : contains(["normal", "high", "urgent"], input0["importance"]))])), (input0["messageHistory"] == null ? true : alltrue([alltrue([for input2 in input0["messageHistory"] : (input2 == null ? true : alltrue([(input2["actions"] == null ? true : alltrue([(input2["actions"] == null ? true : try(alltrue([for value in split(",", input2["actions"]) : contains(["reactionadded", "reactionremoved", "actionundefined"], lower(trimspace(value)))]), false))]))]))])])), (input0["messageType"] == null ? true : alltrue([(input0["messageType"] == null ? true : contains(["message", "chatEvent", "typing"], input0["messageType"]))])), (input0["policyViolation"] == null ? true : alltrue([(input0["policyViolation"]["dlpAction"] == null ? true : alltrue([(input0["policyViolation"]["dlpAction"] == null ? true : try(alltrue([for value in split(",", input0["policyViolation"]["dlpAction"]) : contains(["none", "notifysender", "blockaccess", "blockaccessexternal"], lower(trimspace(value)))]), false))])), (input0["policyViolation"]["userAction"] == null ? true : alltrue([(input0["policyViolation"]["userAction"] == null ? true : try(alltrue([for value in split(",", input0["policyViolation"]["userAction"]) : contains(["none", "override", "reportfalsepositive"], lower(trimspace(value)))]), false))])), (input0["policyViolation"]["verdictDetails"] == null ? true : alltrue([(input0["policyViolation"]["verdictDetails"] == null ? true : try(alltrue([for value in split(",", input0["policyViolation"]["verdictDetails"]) : contains(["none", "allowfalsepositiveoverride", "allowoverridewithoutjustification", "allowoverridewithjustification"], lower(trimspace(value)))]), false))]))]))]))])]))
-    error_message = "targeted_messages: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.targetedMessages == null ? true : alltrue([alltrue([for input0 in var.targetedMessages : (input0 == null ? true : alltrue([(input0["body"] == null ? true : alltrue([(input0["body"]["contentType"] == null ? true : alltrue([(input0["body"]["contentType"] == null ? true : contains(["text", "html"], input0["body"]["contentType"]))]))])), (input0["importance"] == null ? true : alltrue([(input0["importance"] == null ? true : contains(["normal", "high", "urgent"], input0["importance"]))])), (input0["messageHistory"] == null ? true : alltrue([alltrue([for input2 in input0["messageHistory"] : (input2 == null ? true : alltrue([(input2["actions"] == null ? true : alltrue([(input2["actions"] == null ? true : try(alltrue([for value in split(",", input2["actions"]) : contains(["reactionadded", "reactionremoved", "actionundefined"], lower(trimspace(value)))]), false))]))]))])])), (input0["messageType"] == null ? true : alltrue([(input0["messageType"] == null ? true : contains(["message", "chatEvent", "typing"], input0["messageType"]))])), (input0["policyViolation"] == null ? true : alltrue([(input0["policyViolation"]["dlpAction"] == null ? true : alltrue([(input0["policyViolation"]["dlpAction"] == null ? true : try(alltrue([for value in split(",", input0["policyViolation"]["dlpAction"]) : contains(["none", "notifysender", "blockaccess", "blockaccessexternal"], lower(trimspace(value)))]), false))])), (input0["policyViolation"]["userAction"] == null ? true : alltrue([(input0["policyViolation"]["userAction"] == null ? true : try(alltrue([for value in split(",", input0["policyViolation"]["userAction"]) : contains(["none", "override", "reportfalsepositive"], lower(trimspace(value)))]), false))])), (input0["policyViolation"]["verdictDetails"] == null ? true : alltrue([(input0["policyViolation"]["verdictDetails"] == null ? true : try(alltrue([for value in split(",", input0["policyViolation"]["verdictDetails"]) : contains(["none", "allowfalsepositiveoverride", "allowoverridewithoutjustification", "allowoverridewithjustification"], lower(trimspace(value)))]), false))]))]))]))])]))
+    error_message = "targetedMessages: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 

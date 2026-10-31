@@ -19,12 +19,12 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//beta/sites/lists/items"
   version = "<version>"
 
-  site_id = "parent-object-id"
-  list_id = "parent-object-id"
+  site-id = "parent-object-id"
+  list-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -52,21 +52,21 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `site_id` | URL parameter `site-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `list_id` | URL parameter `list-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `site-id` | URL parameter `site-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `list-id` | URL parameter `list-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
 | `activities` | `activities` | `list(object({       odata_type = optional(string, "#microsoft.graph.itemActivityOLD")       action = optional(object({       odata_type = optional(string, "#microsoft.graph.itemActionSet")       comment = optional(object({       odata_type = optional(string, "#microsoft.graph.commentAction")       isReply = optional(bool)       parentAuthor = optional(any)       participants = optional(any)     }))       create = optional(any)       delete = optional(object({       odata_type = optional(string, "#microsoft.graph.deleteAction")       name = optional(string)       objectType = optional(string)     }))       edit = optional(any)       mention = optional(object({       odata_type = optional(string, "#microsoft.graph.mentionAction")       mentionees = optional(any)     }))       move = optional(object({       odata_type = optional(string, "#microsoft.graph.moveAction")       from = optional(string)       to = optional(string)     }))       rename = optional(object({       odata_type = optional(string, "#microsoft.graph.renameAction")       newName = optional(string)       oldName = optional(string)     }))       restore = optional(any)       share = optional(object({       odata_type = optional(string, "#microsoft.graph.shareAction")       recipients = optional(any)     }))       version = optional(object({       odata_type = optional(string, "#microsoft.graph.versionAction")       newVersion = optional(string)     }))     }))       actor = optional(any)       driveItem = optional(any)       listItem = optional(any)       times = optional(object({       odata_type = optional(string, "#microsoft.graph.itemActivityTimeSet")       lastRecordedDateTime = optional(string)       observedDateTime = optional(string)       recordedDateTime = optional(string)     }))     }))` | no | no | in place |
 | `analytics` | `analytics` | `any` | no | no | in place |
-| `content_type` | `contentType` | `object({       odata_type = optional(string, "#microsoft.graph.contentTypeInfo")       id = optional(string)       name = optional(string)     })` | no | no | in place |
-| `created_by_user` | `createdByUser` | `any` | no | no | in place |
+| `contentType` | `contentType` | `object({       odata_type = optional(string, "#microsoft.graph.contentTypeInfo")       id = optional(string)       name = optional(string)     })` | no | no | in place |
+| `createdByUser` | `createdByUser` | `any` | no | no | in place |
 | `deleted` | `deleted` | `object({       odata_type = optional(string, "#microsoft.graph.deleted")       state = optional(string)     })` | no | no | in place |
 | `description` | `description` | `string` | no | no | in place |
-| `document_set_versions` | `documentSetVersions` | `list(object({       odata_type = optional(string, "#microsoft.graph.documentSetVersion")       comment = optional(string)       createdBy = optional(any)       createdDateTime = optional(string)       fields = optional(any)       items = optional(list(object({       odata_type = optional(string, "#microsoft.graph.documentSetVersionItem")       itemId = optional(string)       title = optional(string)       versionId = optional(string)     })))       shouldCaptureMinorVersion = optional(bool)     }))` | no | no | in place |
-| `drive_item` | `driveItem` | `any` | no | no | in place |
+| `documentSetVersions` | `documentSetVersions` | `list(object({       odata_type = optional(string, "#microsoft.graph.documentSetVersion")       comment = optional(string)       createdBy = optional(any)       createdDateTime = optional(string)       fields = optional(any)       items = optional(list(object({       odata_type = optional(string, "#microsoft.graph.documentSetVersionItem")       itemId = optional(string)       title = optional(string)       versionId = optional(string)     })))       shouldCaptureMinorVersion = optional(bool)     }))` | no | no | in place |
+| `driveItem` | `driveItem` | `any` | no | no | in place |
 | `fields` | `fields` | `any` | no | no | in place |
-| `last_modified_by_user` | `lastModifiedByUser` | `any` | no | no | in place |
+| `lastModifiedByUser` | `lastModifiedByUser` | `any` | no | no | in place |
 | `name` | `name` | `string` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
-| `parent_reference` | `parentReference` | `object({       odata_type = optional(string, "#microsoft.graph.itemReference")       driveType = optional(string)       shareId = optional(string)       siteId = optional(string)     })` | no | no | in place |
+| `parentReference` | `parentReference` | `object({       odata_type = optional(string, "#microsoft.graph.itemReference")       driveType = optional(string)       shareId = optional(string)       siteId = optional(string)     })` | no | no | in place |
 | `versions` | `versions` | `any` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 

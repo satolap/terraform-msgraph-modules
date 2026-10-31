@@ -1,0 +1,132 @@
+# Offline plan tests: Terraform mocks the provider and never contacts Microsoft Graph.
+mock_provider "msgraph" {}
+
+run "minimal_request" {
+  command = plan
+
+  assert {
+    condition     = msgraph_resource.this.url == "security/tiIndicators"
+    error_message = "The collection URL must include parent identifiers and exclude the API-version prefix."
+  }
+
+  assert {
+    condition     = alltrue([for key in ["action", "activityGroupNames", "additionalInformation", "azureTenantId", "confidence", "description", "diamondModel", "domainName", "emailEncoding", "emailLanguage", "emailRecipient", "emailSenderAddress", "emailSenderName", "emailSourceDomain", "emailSourceIpAddress", "emailSubject", "emailXMailer", "expirationDateTime", "externalId", "fileCompileDateTime", "fileCreatedDateTime", "fileHashType", "fileHashValue", "fileMutexName", "fileName", "filePacker", "filePath", "fileSize", "fileType", "ingestedDateTime", "isActive", "killChain", "knownFalsePositives", "lastReportedDateTime", "malwareFamilyNames", "networkCidrBlock", "networkDestinationAsn", "networkDestinationCidrBlock", "networkDestinationIPv4", "networkDestinationIPv6", "networkDestinationPort", "networkIPv4", "networkIPv6", "networkPort", "networkProtocol", "networkSourceAsn", "networkSourceCidrBlock", "networkSourceIPv4", "networkSourceIPv6", "networkSourcePort", "passiveOnly", "severity", "tags", "targetProduct", "threatType", "tlpLevel", "url", "userAgent"] : !contains(keys(msgraph_resource.this.body), key)])
+    error_message = "Unset optional inputs must be omitted from the Graph request."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.ignore_missing_property == true
+    error_message = "Default reads must retain the provider missing-property suppression."
+  }
+
+  assert {
+    condition     = msgraph_resource.this.read_query_parameters == null
+    error_message = "Default reads must keep the full default GET response."
+  }
+}
+
+run "selected_response_is_opt_in" {
+  command = plan
+
+  variables {
+    select_response = true
+  }
+
+  assert {
+    condition     = msgraph_resource.this.read_query_parameters["$select"][0] == join(",", sort(distinct(concat(["id"], [for name in keys(local.body) : name if alltrue([!startswith(name, "@"), !can(regex("@odata\\.", name))])]))))
+    error_message = "Only the explicit selection opt-in may narrow the response."
+  }
+}
+
+run "typed_request" {
+  command = plan
+
+  variables {
+    action             = "unknown"
+    isActive           = false
+    confidence         = -2147483648
+    activityGroupNames = ["example"]
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["action"]) == jsonencode("unknown")
+    error_message = "action must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["isActive"]) == jsonencode(false)
+    error_message = "isActive must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["confidence"]) == jsonencode(-2147483648)
+    error_message = "confidence must preserve typed values and omit nested nulls."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.this.body["activityGroupNames"]) == jsonencode(["example"])
+    error_message = "activityGroupNames must preserve typed values and omit nested nulls."
+  }
+}
+
+run "invalid_enum" {
+  command = plan
+
+  variables {
+    action = "__graphmodules_invalid_enum__"
+  }
+
+  expect_failures = [var.action]
+}
+
+run "timeouts_unset_sends_no_block" {
+  command = plan
+
+  assert {
+    condition     = msgraph_resource.this.timeouts == null
+    error_message = "Unset timeouts must send no timeouts block."
+  }
+}
+
+run "timeouts_are_passed_through" {
+  command = plan
+
+  variables {
+    timeouts = { create = "45m", update = "20m", read = "7m" }
+  }
+
+  assert {
+    condition     = alltrue([msgraph_resource.this.timeouts.create == "45m", msgraph_resource.this.timeouts.update == "20m", msgraph_resource.this.timeouts.read == "7m", msgraph_resource.this.timeouts.delete == null])
+    error_message = "Timeouts must reach the provider resource unchanged."
+  }
+}
+
+run "timeouts_below_the_minimum" {
+  command = plan
+
+  variables {
+    timeouts = { create = "10s" }
+  }
+
+  expect_failures = [var.timeouts]
+}
+
+run "timeouts_with_an_invalid_duration" {
+  command = plan
+
+  variables {
+    timeouts = { update = "soon" }
+  }
+
+  expect_failures = [var.timeouts]
+}
+
+run "timeouts_of_zero" {
+  command = plan
+
+  variables {
+    timeouts = { delete = "0s" }
+  }
+
+  expect_failures = [var.timeouts]
+}

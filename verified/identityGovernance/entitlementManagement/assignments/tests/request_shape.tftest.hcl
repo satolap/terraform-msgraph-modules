@@ -118,10 +118,10 @@ run "sends_a_start_time_and_an_end_date" {
 
   variables {
     schedule = {
-      start_date_time = "2026-11-01T00:00:00Z"
+      startDateTime = "2026-11-01T00:00:00Z"
       expiration = {
-        type          = "afterDateTime"
-        end_date_time = "2027-01-01T00:00:00Z"
+        type        = "afterDateTime"
+        endDateTime = "2027-01-01T00:00:00Z"
       }
     }
   }

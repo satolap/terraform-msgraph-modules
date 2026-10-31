@@ -1,26 +1,26 @@
-variable "education_class_id" {
+variable "educationClass-id" {
   description = "The unique identifier of educationClass"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.education_class_id)) > 0
-    error_message = "education_class_id must not be empty."
+    condition     = length(trimspace(var.educationClass-id)) > 0
+    error_message = "educationClass-id must not be empty."
   }
 }
 
-variable "education_assignment_id" {
+variable "educationAssignment-id" {
   description = "The unique identifier of educationAssignment"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.education_assignment_id)) > 0
-    error_message = "education_assignment_id must not be empty."
+    condition     = length(trimspace(var.educationAssignment-id)) > 0
+    error_message = "educationAssignment-id must not be empty."
   }
 }
 
-variable "dependent_resources" {
+variable "dependentResources" {
   description = "A collection of assignment resources that depend on the parent educationAssignmentResource."
   type = list(object({
     odata_type               = optional(string, "#microsoft.graph.educationAssignmentResource")
@@ -31,7 +31,7 @@ variable "dependent_resources" {
   default = null
 }
 
-variable "distribute_for_student_work" {
+variable "distributeForStudentWork" {
   description = "Indicates whether this resource should be copied to each student submission for modification and submission. Required"
   type        = bool
   default     = null

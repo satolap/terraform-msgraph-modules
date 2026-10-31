@@ -23,12 +23,12 @@ resource "terraform_data" "suffix" {
 }
 # No keys, passwords, redirect URIs, federated credentials or Graph permissions.
 module "client_application" {
-  source       = "../../../../../../applications"
-  display_name = "tftest-client-${terraform_data.suffix.output}"
+  source      = "../../../../../../applications"
+  displayName = "tftest-client-${terraform_data.suffix.output}"
 }
 module "client" {
-  source = "../../../../../../service-principals"
-  app_id = module.client_application.app_id
+  source = "../../../../../../servicePrincipals"
+  appId  = module.client_application.app_id
 }
 # Organization.Read.All is the governance baseline; no tenant ID input or secret is logged.
 data "msgraph_resource" "organization" {
@@ -54,25 +54,25 @@ variable "second_role_definition_id" {
 }
 # A second safe tuple permits multiple results; only a Graph nextLink proves pagination.
 module "second_assignment" {
-  source             = "../../.."
-  count              = var.enabled ? 1 : 0
-  tenant_id          = one(data.msgraph_resource.organization.output.tenants).id
-  principal_id       = module.client.id
-  role_definition_id = var.second_role_definition_id
-  role_type          = "custom"
-  directory_scope_id = "/"
-  scope_type         = "tenant"
+  source           = "../../.."
+  count            = var.enabled ? 1 : 0
+  tenant_id        = one(data.msgraph_resource.organization.output.tenants).id
+  principalId      = module.client.id
+  roleDefinitionId = var.second_role_definition_id
+  role_type        = "custom"
+  directoryScopeId = "/"
+  scope_type       = "tenant"
 }
 module "assignment" {
-  source             = "../../.."
-  count              = var.enabled ? 1 : 0
-  tenant_id          = one(data.msgraph_resource.organization.output.tenants).id
-  principal_id       = module.client.id
-  role_display_name  = var.use_role_id ? null : "Directory Readers"
-  role_definition_id = var.use_role_id ? one(data.msgraph_resource.reader.output.roles).id : null
-  role_type          = "built_in"
-  directory_scope_id = "/"
-  scope_type         = "tenant"
+  source            = "../../.."
+  count             = var.enabled ? 1 : 0
+  tenant_id         = one(data.msgraph_resource.organization.output.tenants).id
+  principalId       = module.client.id
+  role_display_name = var.use_role_id ? null : "Directory Readers"
+  roleDefinitionId  = var.use_role_id ? one(data.msgraph_resource.reader.output.roles).id : null
+  role_type         = "built_in"
+  directoryScopeId  = "/"
+  scope_type        = "tenant"
 }
 output "expected" {
   value = var.enabled ? { principalId = module.client.id, roleDefinitionId = module.assignment[0].role_definition_id, directoryScopeId = "/" } : null

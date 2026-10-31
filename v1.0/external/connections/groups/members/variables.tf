@@ -1,22 +1,22 @@
-variable "external_connection_id" {
+variable "externalConnection-id" {
   description = "The unique identifier of externalConnection"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.external_connection_id)) > 0
-    error_message = "external_connection_id must not be empty."
+    condition     = length(trimspace(var.externalConnection-id)) > 0
+    error_message = "externalConnection-id must not be empty."
   }
 }
 
-variable "external_group_id" {
+variable "externalGroup-id" {
   description = "The unique identifier of externalGroup"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.external_group_id)) > 0
-    error_message = "external_group_id must not be empty."
+    condition     = length(trimspace(var.externalGroup-id)) > 0
+    error_message = "externalGroup-id must not be empty."
   }
 }
 

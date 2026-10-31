@@ -46,20 +46,22 @@ variable "justification" {
 }
 
 variable "schedule" {
-  description = "Optional schedule sent with the adminAdd request: an optional start_date_time (RFC 3339) and an optional expiration of type \"noExpiration\", \"afterDateTime\" (set end_date_time) or \"afterDuration\" (set duration, an ISO 8601 duration of days and time such as \"P30D\"). Null sends no schedule and the policy's expiration applies. It is captured when the request is sent: a later change does not re-send it and does not replace the assignment. Use schedule_update to change the schedule of a delivered assignment."
+  description = "Optional schedule sent with the adminAdd request: an optional startDateTime (RFC 3339) and an optional expiration of type \"noExpiration\", \"afterDateTime\" (set endDateTime) or \"afterDuration\" (set duration, an ISO 8601 duration of days and time such as \"P30D\"). Null sends no schedule and the policy's expiration applies. It is captured when the request is sent: a later change does not re-send it and does not replace the assignment. Use schedule_update to change the schedule of a delivered assignment."
   type = object({
-    start_date_time = optional(string)
+    startDateTime   = optional(string)
+    start_date_time = optional(any)
     expiration = optional(object({
       type          = string
-      end_date_time = optional(string)
+      endDateTime   = optional(string)
+      end_date_time = optional(any)
       duration      = optional(string)
     }))
   })
   default = null
 
   validation {
-    condition     = var.schedule == null ? true : (var.schedule.start_date_time == null ? true : can(timeadd(coalesce(var.schedule.start_date_time, "x"), "0s")))
-    error_message = "schedule.start_date_time must be an RFC 3339 timestamp, for example 2026-11-01T00:00:00Z."
+    condition     = var.schedule == null ? true : (var.schedule.startDateTime == null ? true : can(timeadd(coalesce(var.schedule.startDateTime, "x"), "0s")))
+    error_message = "schedule.startDateTime must be an RFC 3339 timestamp, for example 2026-11-01T00:00:00Z."
   }
 
   validation {
@@ -68,31 +70,40 @@ variable "schedule" {
   }
 
   validation {
-    condition     = var.schedule == null ? true : (var.schedule.expiration == null ? true : ((var.schedule.expiration.type == "afterDateTime") == (var.schedule.expiration.end_date_time != null) && (var.schedule.expiration.type == "afterDuration") == (var.schedule.expiration.duration != null)))
-    error_message = "schedule.expiration.end_date_time is required for \"afterDateTime\" and duration for \"afterDuration\"; each is refused for any other type."
+    condition     = var.schedule == null ? true : (var.schedule.expiration == null ? true : ((var.schedule.expiration.type == "afterDateTime") == (var.schedule.expiration.endDateTime != null) && (var.schedule.expiration.type == "afterDuration") == (var.schedule.expiration.duration != null)))
+    error_message = "schedule.expiration.endDateTime is required for \"afterDateTime\" and duration for \"afterDuration\"; each is refused for any other type."
   }
 
   validation {
-    condition     = var.schedule == null ? true : (var.schedule.expiration == null ? true : ((var.schedule.expiration.end_date_time == null ? true : can(timeadd(coalesce(var.schedule.expiration.end_date_time, "x"), "0s"))) && (var.schedule.expiration.duration == null ? true : (can(regex("^P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+S)?)?$", coalesce(var.schedule.expiration.duration, "x"))) && !can(regex("T$", coalesce(var.schedule.expiration.duration, "x"))) && coalesce(var.schedule.expiration.duration, "x") != "P"))))
-    error_message = "schedule.expiration.end_date_time must be an RFC 3339 timestamp and schedule.expiration.duration an ISO 8601 duration of days and time, such as \"PT8H\" or \"P30D\"."
+    condition     = var.schedule == null ? true : (var.schedule.expiration == null ? true : ((var.schedule.expiration.endDateTime == null ? true : can(timeadd(coalesce(var.schedule.expiration.endDateTime, "x"), "0s"))) && (var.schedule.expiration.duration == null ? true : (can(regex("^P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+S)?)?$", coalesce(var.schedule.expiration.duration, "x"))) && !can(regex("T$", coalesce(var.schedule.expiration.duration, "x"))) && coalesce(var.schedule.expiration.duration, "x") != "P"))))
+    error_message = "schedule.expiration.endDateTime must be an RFC 3339 timestamp and schedule.expiration.duration an ISO 8601 duration of days and time, such as \"PT8H\" or \"P30D\"."
+  }
+
+  # legacy-names guard: v4.0.0 spelled these attributes in snake_case; the object type would otherwise
+  # drop them and fall back to the default.
+  validation {
+    condition     = !can(regex("\"(end_date_time|start_date_time)\":[^n]", jsonencode(var.schedule)))
+    error_message = "schedule no longer accepts the v4.0.0 snake_case attribute names; rename them to Graph's names (end_date_time -> endDateTime, start_date_time -> startDateTime). An old name that is silently dropped would fall back to its default."
   }
 }
 
 variable "schedule_update" {
   description = "Optional adminUpdate of the delivered assignment, for example to extend it: the same shape as schedule. Setting or changing it sends one adminUpdate request for the resolved assignment ID; the update needs a delivered, resolved assignment and is refused otherwise. The update goes through the policy's approval like any request, and its own outcome is reported in update_request_phase. Null sends nothing."
   type = object({
-    start_date_time = optional(string)
+    startDateTime   = optional(string)
+    start_date_time = optional(any)
     expiration = optional(object({
       type          = string
-      end_date_time = optional(string)
+      endDateTime   = optional(string)
+      end_date_time = optional(any)
       duration      = optional(string)
     }))
   })
   default = null
 
   validation {
-    condition     = var.schedule_update == null ? true : (var.schedule_update.start_date_time == null ? true : can(timeadd(coalesce(var.schedule_update.start_date_time, "x"), "0s")))
-    error_message = "schedule_update.start_date_time must be an RFC 3339 timestamp, for example 2026-11-01T00:00:00Z."
+    condition     = var.schedule_update == null ? true : (var.schedule_update.startDateTime == null ? true : can(timeadd(coalesce(var.schedule_update.startDateTime, "x"), "0s")))
+    error_message = "schedule_update.startDateTime must be an RFC 3339 timestamp, for example 2026-11-01T00:00:00Z."
   }
 
   validation {
@@ -101,13 +112,20 @@ variable "schedule_update" {
   }
 
   validation {
-    condition     = var.schedule_update == null ? true : (var.schedule_update.expiration == null ? true : ((var.schedule_update.expiration.type == "afterDateTime") == (var.schedule_update.expiration.end_date_time != null) && (var.schedule_update.expiration.type == "afterDuration") == (var.schedule_update.expiration.duration != null)))
-    error_message = "schedule_update.expiration.end_date_time is required for \"afterDateTime\" and duration for \"afterDuration\"; each is refused for any other type."
+    condition     = var.schedule_update == null ? true : (var.schedule_update.expiration == null ? true : ((var.schedule_update.expiration.type == "afterDateTime") == (var.schedule_update.expiration.endDateTime != null) && (var.schedule_update.expiration.type == "afterDuration") == (var.schedule_update.expiration.duration != null)))
+    error_message = "schedule_update.expiration.endDateTime is required for \"afterDateTime\" and duration for \"afterDuration\"; each is refused for any other type."
   }
 
   validation {
-    condition     = var.schedule_update == null ? true : (var.schedule_update.expiration == null ? true : ((var.schedule_update.expiration.end_date_time == null ? true : can(timeadd(coalesce(var.schedule_update.expiration.end_date_time, "x"), "0s"))) && (var.schedule_update.expiration.duration == null ? true : (can(regex("^P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+S)?)?$", coalesce(var.schedule_update.expiration.duration, "x"))) && !can(regex("T$", coalesce(var.schedule_update.expiration.duration, "x"))) && coalesce(var.schedule_update.expiration.duration, "x") != "P"))))
-    error_message = "schedule_update.expiration.end_date_time must be an RFC 3339 timestamp and schedule_update.expiration.duration an ISO 8601 duration of days and time, such as \"PT8H\" or \"P30D\"."
+    condition     = var.schedule_update == null ? true : (var.schedule_update.expiration == null ? true : ((var.schedule_update.expiration.endDateTime == null ? true : can(timeadd(coalesce(var.schedule_update.expiration.endDateTime, "x"), "0s"))) && (var.schedule_update.expiration.duration == null ? true : (can(regex("^P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+S)?)?$", coalesce(var.schedule_update.expiration.duration, "x"))) && !can(regex("T$", coalesce(var.schedule_update.expiration.duration, "x"))) && coalesce(var.schedule_update.expiration.duration, "x") != "P"))))
+    error_message = "schedule_update.expiration.endDateTime must be an RFC 3339 timestamp and schedule_update.expiration.duration an ISO 8601 duration of days and time, such as \"PT8H\" or \"P30D\"."
+  }
+
+  # legacy-names guard: v4.0.0 spelled these attributes in snake_case; the object type would otherwise
+  # drop them and fall back to the default.
+  validation {
+    condition     = !can(regex("\"(end_date_time|start_date_time)\":[^n]", jsonencode(var.schedule_update)))
+    error_message = "schedule_update no longer accepts the v4.0.0 snake_case attribute names; rename them to Graph's names (end_date_time -> endDateTime, start_date_time -> startDateTime). An old name that is silently dropped would fall back to its default."
   }
 }
 

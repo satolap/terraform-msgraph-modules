@@ -26,7 +26,7 @@ variable "description" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The name of the program.  Required on create."
   type        = string
   default     = null

@@ -206,15 +206,15 @@ the whole module changes its policy ID and requires detaching CA references.
 ## Conditional Access wiring
 
 Graph stores the reference as `grantControls.authenticationStrength.id`.
-The existing verified `identity/conditional-access/policies` module accepts it
+The existing verified `identity/conditionalAccess/policies` module accepts it
 as `grant_controls.authentication_strength_id`:
 
 ```hcl
 module "pilot_ca" {
-  source  = "satolap/modules/msgraph//verified/identity/conditional-access/policies"
+  source  = "satolap/modules/msgraph//verified/identity/conditionalAccess/policies"
   version = "<version>"
 
-  display_name = "Pilot authentication strength"
+  displayName = "Pilot authentication strength"
   state        = "disabled"
   users        = var.reviewed_pilot_users
   applications = var.reviewed_pilot_applications
@@ -363,3 +363,70 @@ Terraform plans compare configuration and refreshed provider state. A plan that 
 - `x509CertificateCombinationConfigurations`: replaces `msgraph_resource.configuration` when `each.value` changes; creates or deletes `msgraph_resource.configuration` instances.
 - `licence_check`: changes `module.licence_guard`; see the module notes.
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /policies/authenticationStrengthPolicies` | DelegatedWork | `Policy.ReadWrite.ConditionalAccess` | - | - |
+| `POST /policies/authenticationStrengthPolicies` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /policies/authenticationStrengthPolicies` | Application | `Policy.ReadWrite.ConditionalAccess` | - | - |
+| `DELETE /policies/authenticationStrengthPolicies/{id}` | DelegatedWork | `Policy.ReadWrite.ConditionalAccess` | - | - |
+| `DELETE /policies/authenticationStrengthPolicies/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /policies/authenticationStrengthPolicies/{id}` | Application | `Policy.ReadWrite.ConditionalAccess` | - | - |
+| `PATCH /policies/authenticationStrengthPolicies/{id}` | DelegatedWork | `Policy.ReadWrite.ConditionalAccess` | - | - |
+| `PATCH /policies/authenticationStrengthPolicies/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /policies/authenticationStrengthPolicies/{id}` | Application | `Policy.ReadWrite.ConditionalAccess` | - | - |
+| `GET /policies/authenticationStrengthPolicies/{id}` | DelegatedWork | `Policy.Read.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationStrengthPolicies/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /policies/authenticationStrengthPolicies/{id}` | Application | `Policy.Read.AuthenticationMethod` | - | - |
+| `POST /policies/authenticationStrengthPolicies/{id}/updateAllowedCombinations` | DelegatedWork | `Policy.ReadWrite.ConditionalAccess` | - | - |
+| `POST /policies/authenticationStrengthPolicies/{id}/updateAllowedCombinations` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /policies/authenticationStrengthPolicies/{id}/updateAllowedCombinations` | Application | `Policy.ReadWrite.ConditionalAccess` | - | - |
+| `POST /policies/authenticationStrengthPolicies/{id}/combinationConfigurations` | DelegatedWork | `Policy.ReadWrite.ConditionalAccess` | - | - |
+| `POST /policies/authenticationStrengthPolicies/{id}/combinationConfigurations` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /policies/authenticationStrengthPolicies/{id}/combinationConfigurations` | Application | `Policy.ReadWrite.ConditionalAccess` | - | - |
+| `GET /policies/authenticationStrengthPolicies/{id}/combinationConfigurations/{id}` | DelegatedWork | `Policy.Read.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationStrengthPolicies/{id}/combinationConfigurations/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /policies/authenticationStrengthPolicies/{id}/combinationConfigurations/{id}` | Application | `Policy.Read.AuthenticationMethod` | - | - |
+| `DELETE /policies/authenticationStrengthPolicies/{id}/combinationConfigurations/{id}` | DelegatedWork | `Policy.ReadWrite.ConditionalAccess` | - | - |
+| `DELETE /policies/authenticationStrengthPolicies/{id}/combinationConfigurations/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /policies/authenticationStrengthPolicies/{id}/combinationConfigurations/{id}` | Application | `Policy.ReadWrite.ConditionalAccess` | - | - |
+| `PATCH /policies/authenticationStrengthPolicies/{id}/combinationConfigurations/{id}` | DelegatedWork | `Policy.ReadWrite.ConditionalAccess` | - | - |
+| `PATCH /policies/authenticationStrengthPolicies/{id}/combinationConfigurations/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /policies/authenticationStrengthPolicies/{id}/combinationConfigurations/{id}` | Application | `Policy.ReadWrite.ConditionalAccess` | - | - |
+| `GET /policies/authenticationStrengthPolicies/{id}/usage` | DelegatedWork | `Policy.Read.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationStrengthPolicies/{id}/usage` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /policies/authenticationStrengthPolicies/{id}/usage` | Application | `Policy.Read.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationStrengthPolicies/{id}/combinationConfigurations` | DelegatedWork | `Policy.Read.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationStrengthPolicies/{id}/combinationConfigurations` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /policies/authenticationStrengthPolicies/{id}/combinationConfigurations` | Application | `Policy.Read.AuthenticationMethod` | - | - |
+| `GET /subscribedSkus` | DelegatedWork | `LicenseAssignment.Read.All` | - | - |
+| `GET /subscribedSkus` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /subscribedSkus` | Application | `LicenseAssignment.Read.All` | - | - |
+
+DevX uses equivalent route spellings for these requests (the inventory retains both):
+
+- `DELETE /policies/authenticationStrengthPolicies/{id}/combinationConfigurations/{id}` -> `/identity/conditionalaccess/authenticationstrength/policies/{id}/combinationconfigurations/{id}`.
+- `GET /policies/authenticationStrengthPolicies/{id}/combinationConfigurations` -> `/identity/conditionalaccess/authenticationstrength/policies/{id}/combinationconfigurations`.
+- `GET /policies/authenticationStrengthPolicies/{id}/combinationConfigurations/{id}` -> `/identity/conditionalaccess/authenticationstrength/policies/{id}/combinationconfigurations/{id}`.
+- `PATCH /policies/authenticationStrengthPolicies/{id}/combinationConfigurations/{id}` -> `/identity/conditionalaccess/authenticationstrength/policies/{id}/combinationconfigurations/{id}`.
+- `POST /policies/authenticationStrengthPolicies/{id}/combinationConfigurations` -> `/identity/conditionalaccess/authenticationstrength/policies/{id}/combinationconfigurations`.
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /policies/authenticationStrengthPolicies` | `allowedCombinations`, `description`, `displayName` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /policies/authenticationStrengthPolicies/{id}` | `description`, `displayName` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `POST /policies/authenticationStrengthPolicies/{id}/updateAllowedCombinations` | `allowedCombinations` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `GET /subscribedSkus` | `capabilityStatus`, `prepaidUnits`, `servicePlans`, `skuId`, `skuPartNumber` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

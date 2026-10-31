@@ -11,10 +11,10 @@ run "minimal_request" {
   command = plan
 
   variables {
-    display_name     = "example"
-    mail_enabled     = false
-    mail_nickname    = "example"
-    security_enabled = false
+    displayName     = "example"
+    mailEnabled     = false
+    mailNickname    = "example"
+    securityEnabled = false
   }
 
   assert {
@@ -42,11 +42,11 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    display_name     = "example"
-    mail_enabled     = false
-    mail_nickname    = "example"
-    security_enabled = false
-    select_response  = true
+    displayName     = "example"
+    mailEnabled     = false
+    mailNickname    = "example"
+    securityEnabled = false
+    select_response = true
   }
 
   assert {
@@ -59,14 +59,14 @@ run "typed_request" {
   command = plan
 
   variables {
-    display_name                     = "example"
-    mail_enabled                     = false
-    mail_nickname                    = "example"
-    security_enabled                 = false
-    classification                   = "example"
-    has_members_with_license_errors  = false
-    on_premises_extension_attributes = { "extensionAttribute1" = null }
-    accepted_senders                 = [{}]
+    displayName                   = "example"
+    mailEnabled                   = false
+    mailNickname                  = "example"
+    securityEnabled               = false
+    classification                = "example"
+    hasMembersWithLicenseErrors   = false
+    onPremisesExtensionAttributes = { "extensionAttribute1" = null }
+    acceptedSenders               = [{}]
   }
 
   assert {
@@ -117,10 +117,10 @@ run "replacement_baseline" {
   command = apply
 
   variables {
-    display_name     = "example"
-    mail_enabled     = false
-    mail_nickname    = "example"
-    security_enabled = false
+    displayName     = "example"
+    mailEnabled     = false
+    mailNickname    = "example"
+    securityEnabled = false
   }
 
   assert {
@@ -129,51 +129,51 @@ run "replacement_baseline" {
   }
 }
 
-run "update_in_place_display_name" {
+run "update_in_place_displayName" {
   command = apply
 
   variables {
-    display_name     = "example-changed"
-    mail_enabled     = false
-    mail_nickname    = "example"
-    security_enabled = false
+    displayName     = "example-changed"
+    mailEnabled     = false
+    mailNickname    = "example"
+    securityEnabled = false
   }
 
   assert {
     condition     = msgraph_resource.this.id == run.replacement_baseline.id
-    error_message = "Changing display_name must update the object in place."
+    error_message = "Changing displayName must update the object in place."
   }
 }
 
-run "update_in_place_mail_enabled" {
+run "update_in_place_mailEnabled" {
   command = apply
 
   variables {
-    display_name     = "example-changed"
-    mail_enabled     = true
-    mail_nickname    = "example"
-    security_enabled = false
+    displayName     = "example-changed"
+    mailEnabled     = true
+    mailNickname    = "example"
+    securityEnabled = false
   }
 
   assert {
-    condition     = msgraph_resource.this.id == run.update_in_place_display_name.id
-    error_message = "Changing mail_enabled must update the object in place."
+    condition     = msgraph_resource.this.id == run.update_in_place_displayName.id
+    error_message = "Changing mailEnabled must update the object in place."
   }
 }
 
-run "update_in_place_mail_nickname" {
+run "update_in_place_mailNickname" {
   command = apply
 
   variables {
-    display_name     = "example-changed"
-    mail_enabled     = true
-    mail_nickname    = "example-changed"
-    security_enabled = false
+    displayName     = "example-changed"
+    mailEnabled     = true
+    mailNickname    = "example-changed"
+    securityEnabled = false
   }
 
   assert {
-    condition     = msgraph_resource.this.id == run.update_in_place_mail_enabled.id
-    error_message = "Changing mail_nickname must update the object in place."
+    condition     = msgraph_resource.this.id == run.update_in_place_mailEnabled.id
+    error_message = "Changing mailNickname must update the object in place."
   }
 }
 
@@ -181,15 +181,15 @@ run "update_in_place_unlisted_additional_property" {
   command = apply
 
   variables {
-    display_name          = "example-changed"
-    mail_enabled          = true
-    mail_nickname         = "example-changed"
-    security_enabled      = false
+    displayName           = "example-changed"
+    mailEnabled           = true
+    mailNickname          = "example-changed"
+    securityEnabled       = false
     additional_properties = { "unlistedProperty" = "example" }
   }
 
   assert {
-    condition     = msgraph_resource.this.id == run.update_in_place_mail_nickname.id
+    condition     = msgraph_resource.this.id == run.update_in_place_mailNickname.id
     error_message = "unlistedProperty in additional_properties must update the object in place."
   }
 }
@@ -198,10 +198,10 @@ run "keep_object_for_null_additional_property" {
   command = apply
 
   variables {
-    display_name          = "example-changed"
-    mail_enabled          = true
-    mail_nickname         = "example-changed"
-    security_enabled      = false
+    displayName           = "example-changed"
+    mailEnabled           = true
+    mailNickname          = "example-changed"
+    securityEnabled       = false
     additional_properties = { "unlistedProperty" = "example", "nullProperty" = null }
   }
 
@@ -211,103 +211,103 @@ run "keep_object_for_null_additional_property" {
   }
 }
 
-run "keep_object_for_default_is_assignable_to_role" {
+run "keep_object_for_default_isAssignableToRole" {
   command = apply
 
   variables {
-    display_name          = "example-changed"
-    mail_enabled          = true
-    mail_nickname         = "example-changed"
-    security_enabled      = false
+    displayName           = "example-changed"
+    mailEnabled           = true
+    mailNickname          = "example-changed"
+    securityEnabled       = false
     additional_properties = { "unlistedProperty" = "example", "nullProperty" = null }
-    is_assignable_to_role = false
+    isAssignableToRole    = false
   }
 
   assert {
     condition     = msgraph_resource.this.id == run.keep_object_for_null_additional_property.id
-    error_message = "Setting is_assignable_to_role to its default False must keep the object, as unset does."
+    error_message = "Setting isAssignableToRole to its default False must keep the object, as unset does."
   }
 }
 
-run "replace_on_is_assignable_to_role" {
+run "replace_on_isAssignableToRole" {
   command = apply
 
   variables {
-    display_name          = "example-changed"
-    mail_enabled          = true
-    mail_nickname         = "example-changed"
-    security_enabled      = true
+    displayName           = "example-changed"
+    mailEnabled           = true
+    mailNickname          = "example-changed"
+    securityEnabled       = true
     additional_properties = { "unlistedProperty" = "example", "nullProperty" = null }
-    is_assignable_to_role = true
+    isAssignableToRole    = true
   }
 
   assert {
-    condition     = msgraph_resource.this.id != run.keep_object_for_default_is_assignable_to_role.id
-    error_message = "Changing is_assignable_to_role must replace the object."
+    condition     = msgraph_resource.this.id != run.keep_object_for_default_isAssignableToRole.id
+    error_message = "Changing isAssignableToRole must replace the object."
   }
 }
 
-run "replace_when_unset_is_assignable_to_role" {
+run "replace_when_unset_isAssignableToRole" {
   command = apply
 
   variables {
-    display_name          = "example-changed"
-    mail_enabled          = true
-    mail_nickname         = "example-changed"
-    security_enabled      = true
+    displayName           = "example-changed"
+    mailEnabled           = true
+    mailNickname          = "example-changed"
+    securityEnabled       = true
     additional_properties = { "unlistedProperty" = "example", "nullProperty" = null }
   }
 
   assert {
-    condition     = msgraph_resource.this.id != run.replace_on_is_assignable_to_role.id
-    error_message = "Unsetting is_assignable_to_role after a non-default value must replace the object."
+    condition     = msgraph_resource.this.id != run.replace_on_isAssignableToRole.id
+    error_message = "Unsetting isAssignableToRole after a non-default value must replace the object."
   }
 }
 
-run "guard_2_security_enabled" {
+run "guard_2_securityEnabled" {
   command = plan
 
   variables {
-    display_name          = "example"
-    mail_enabled          = false
-    mail_nickname         = "example"
-    security_enabled      = false
-    is_assignable_to_role = true
+    displayName        = "example"
+    mailEnabled        = false
+    mailNickname       = "example"
+    securityEnabled    = false
+    isAssignableToRole = true
   }
 
   expect_failures = [msgraph_resource.this]
 }
 
-run "guard_3_group_types" {
+run "guard_3_groupTypes" {
   command = plan
 
   variables {
-    display_name          = "example"
-    mail_enabled          = false
-    mail_nickname         = "example"
-    security_enabled      = false
-    is_assignable_to_role = true
-    group_types           = ["DynamicMembership"]
+    displayName        = "example"
+    mailEnabled        = false
+    mailNickname       = "example"
+    securityEnabled    = false
+    isAssignableToRole = true
+    groupTypes         = ["DynamicMembership"]
   }
 
   expect_failures = [msgraph_resource.this]
 }
 
-run "typed_default_wins_is_assignable_to_role" {
+run "typed_default_wins_isAssignableToRole" {
   command = plan
 
   variables {
-    display_name          = "example"
-    mail_enabled          = false
-    mail_nickname         = "example"
-    security_enabled      = false
-    is_assignable_to_role = false
+    displayName           = "example"
+    mailEnabled           = false
+    mailNickname          = "example"
+    securityEnabled       = false
+    isAssignableToRole    = false
     additional_properties = { "isAssignableToRole" = true }
   }
 
   assert {
     condition     = !contains(keys(msgraph_resource.this.body), "isAssignableToRole")
-    error_message = "is_assignable_to_role set to its default must win over a different additional_properties value, so the key is not sent."
+    error_message = "isAssignableToRole set to its default must win over a different additional_properties value, so the key is not sent."
   }
 }
 
@@ -315,10 +315,10 @@ run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    display_name     = "example"
-    mail_enabled     = false
-    mail_nickname    = "example"
-    security_enabled = false
+    displayName     = "example"
+    mailEnabled     = false
+    mailNickname    = "example"
+    securityEnabled = false
   }
 
   assert {
@@ -331,11 +331,11 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    display_name     = "example"
-    mail_enabled     = false
-    mail_nickname    = "example"
-    security_enabled = false
-    timeouts         = { create = "45m", update = "20m", read = "7m" }
+    displayName     = "example"
+    mailEnabled     = false
+    mailNickname    = "example"
+    securityEnabled = false
+    timeouts        = { create = "45m", update = "20m", read = "7m" }
   }
 
   assert {
@@ -348,11 +348,11 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    display_name     = "example"
-    mail_enabled     = false
-    mail_nickname    = "example"
-    security_enabled = false
-    timeouts         = { create = "10s" }
+    displayName     = "example"
+    mailEnabled     = false
+    mailNickname    = "example"
+    securityEnabled = false
+    timeouts        = { create = "10s" }
   }
 
   expect_failures = [var.timeouts]
@@ -362,11 +362,11 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    display_name     = "example"
-    mail_enabled     = false
-    mail_nickname    = "example"
-    security_enabled = false
-    timeouts         = { update = "soon" }
+    displayName     = "example"
+    mailEnabled     = false
+    mailNickname    = "example"
+    securityEnabled = false
+    timeouts        = { update = "soon" }
   }
 
   expect_failures = [var.timeouts]
@@ -376,11 +376,11 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    display_name     = "example"
-    mail_enabled     = false
-    mail_nickname    = "example"
-    security_enabled = false
-    timeouts         = { delete = "0s" }
+    displayName     = "example"
+    mailEnabled     = false
+    mailNickname    = "example"
+    securityEnabled = false
+    timeouts        = { delete = "0s" }
   }
 
   expect_failures = [var.timeouts]

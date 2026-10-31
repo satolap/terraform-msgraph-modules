@@ -1,11 +1,11 @@
-variable "application_id" {
+variable "application-id" {
   description = "Application object ID (not its application/client ID). The module creates a new password and never adopts an existing credential."
   type        = string
   nullable    = false
 
   validation {
-    condition     = can(regex("(?i)^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.application_id))
-    error_message = "application_id must be an application object ID (a GUID)."
+    condition     = can(regex("(?i)^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.application-id))
+    error_message = "application-id must be an application object ID (a GUID)."
   }
 }
 

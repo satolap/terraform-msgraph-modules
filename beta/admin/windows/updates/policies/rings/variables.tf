@@ -1,11 +1,11 @@
-variable "policy_id" {
+variable "policy-id" {
   description = "The unique identifier of policy"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.policy_id)) > 0
-    error_message = "policy_id must not be empty."
+    condition     = length(trimspace(var.policy-id)) > 0
+    error_message = "policy-id must not be empty."
   }
 }
 
@@ -20,7 +20,7 @@ variable "odata_type" {
   }
 }
 
-variable "deferral_in_days" {
+variable "deferralInDays" {
   description = "The quality update deferral period in days. The value must be between 0 and 30. Optional."
   type        = number
   default     = null
@@ -32,13 +32,13 @@ variable "description" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The ring display name. The maximum length is 200 characters. Required."
   type        = string
   default     = null
 }
 
-variable "excluded_group_assignment" {
+variable "excludedGroupAssignment" {
   description = "Microsoft Graph excludedGroupAssignment property."
   type = object({
     odata_type = optional(string, "#microsoft.graph.windowsUpdates.excludedGroupAssignment")
@@ -50,7 +50,7 @@ variable "excluded_group_assignment" {
   default = null
 }
 
-variable "included_group_assignment" {
+variable "includedGroupAssignment" {
   description = "Microsoft Graph includedGroupAssignment property."
   type = object({
     odata_type = optional(string, "#microsoft.graph.windowsUpdates.includedGroupAssignment")
@@ -62,7 +62,7 @@ variable "included_group_assignment" {
   default = null
 }
 
-variable "is_paused" {
+variable "isPaused" {
   description = "The pause action for the quality update ring policy. Required."
   type        = bool
   default     = null

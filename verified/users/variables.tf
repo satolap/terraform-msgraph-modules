@@ -1,24 +1,24 @@
-variable "user_principal_name" {
+variable "userPrincipalName" {
   description = "The user principal name (alias@domain), where domain is a verified domain in the tenant."
   type        = string
 
   validation {
-    condition     = can(regex("^[^@]+@[^@]+$", var.user_principal_name))
-    error_message = "user_principal_name must be in the form alias@domain."
+    condition     = can(regex("^[^@]+@[^@]+$", var.userPrincipalName))
+    error_message = "userPrincipalName must be in the form alias@domain."
   }
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The name to display in the address book for the user."
   type        = string
 
   validation {
-    condition     = length(var.display_name) > 0 && length(var.display_name) <= 256
-    error_message = "display_name must be between 1 and 256 characters."
+    condition     = length(var.displayName) > 0 && length(var.displayName) <= 256
+    error_message = "displayName must be between 1 and 256 characters."
   }
 }
 
-variable "mail_nickname" {
+variable "mailNickname" {
   description = "The mail alias for the user."
   type        = string
 }
@@ -35,13 +35,13 @@ variable "force_change_password_next_sign_in" {
   default     = true
 }
 
-variable "account_enabled" {
+variable "accountEnabled" {
   description = "Whether the account is enabled."
   type        = bool
   default     = true
 }
 
-variable "given_name" {
+variable "givenName" {
   description = "The given (first) name of the user."
   type        = string
   default     = null
@@ -53,7 +53,7 @@ variable "surname" {
   default     = null
 }
 
-variable "job_title" {
+variable "jobTitle" {
   description = "The user's job title."
   type        = string
   default     = null
@@ -65,14 +65,14 @@ variable "department" {
   default     = null
 }
 
-variable "usage_location" {
+variable "usageLocation" {
   description = "Two-letter ISO 3166 country code (e.g. \"US\"). Required before assigning some licenses."
   type        = string
   default     = null
 
   validation {
-    condition     = var.usage_location == null ? true : can(regex("^[A-Z]{2}$", var.usage_location))
-    error_message = "usage_location must be a two-letter uppercase ISO 3166 country code."
+    condition     = var.usageLocation == null ? true : can(regex("^[A-Z]{2}$", var.usageLocation))
+    error_message = "usageLocation must be a two-letter uppercase ISO 3166 country code."
   }
 }
 
@@ -102,7 +102,7 @@ variable "api_version" {
 }
 
 variable "name_pattern" {
-  description = "Regular expression (RE2 syntax, not anchored unless it says so) that display_name must match, such as the pattern of a naming convention. When it is set and display_name does not match, the plan fails. Null, the default, accepts any display_name."
+  description = "Regular expression (RE2 syntax, not anchored unless it says so) that displayName must match, such as the pattern of a naming convention. When it is set and displayName does not match, the plan fails. Null, the default, accepts any displayName."
   type        = string
   default     = null
 
@@ -113,7 +113,7 @@ variable "name_pattern" {
 }
 
 variable "mail_nickname_pattern" {
-  description = "Regular expression (RE2 syntax, not anchored unless it says so) that mail_nickname must match, such as the pattern of a naming convention. When it is set and mail_nickname does not match, the plan fails. Null, the default, accepts any mail_nickname."
+  description = "Regular expression (RE2 syntax, not anchored unless it says so) that mailNickname must match, such as the pattern of a naming convention. When it is set and mailNickname does not match, the plan fails. Null, the default, accepts any mailNickname."
   type        = string
   default     = null
 

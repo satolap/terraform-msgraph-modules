@@ -72,18 +72,18 @@ locals {
   # organization has no such sponsor.
   approval_stages = [
     for stage in var.requests_policy.approval_stages : {
-      approval_timeout_in_days           = var.requests_policy.approval_timeout_in_days
-      is_approver_justification_required = var.requests_policy.is_approver_justification_required
-      primary_approvers                  = [{ type = stage == "external_sponsors" ? "externalSponsors" : "internalSponsors" }]
-      fallback_primary_approvers         = [{ type = "groupMembers", id = local.sponsor_groups[stage] }]
+      approval_timeout_in_days        = var.requests_policy.approval_timeout_in_days
+      isApproverJustificationRequired = var.requests_policy.is_approver_justification_required
+      primaryApprovers                = [{ type = stage == "external_sponsors" ? "externalSponsors" : "internalSponsors" }]
+      fallbackPrimaryApprovers        = [{ type = "groupMembers", id = local.sponsor_groups[stage] }]
     }
   ]
 
   requests_policy_approval_settings = {
-    is_approval_required_for_add        = length(local.approval_stages) > 0
-    is_approval_required_for_update     = length(local.approval_stages) > 0 && var.requests_policy.is_approval_required_for_update
-    is_requestor_justification_required = var.requests_policy.is_requestor_justification_required
-    stages                              = local.approval_stages
+    isApprovalRequiredForAdd         = length(local.approval_stages) > 0
+    isApprovalRequiredForUpdate      = length(local.approval_stages) > 0 && var.requests_policy.is_approval_required_for_update
+    isRequestorJustificationRequired = var.requests_policy.is_requestor_justification_required
+    stages                           = local.approval_stages
   }
 
   requests_policy_expiration = {
@@ -98,18 +98,18 @@ locals {
     duration_days = var.external_sponsor_policy.expiration_in_days
   }
   external_sponsor_policy_requestor_settings = {
-    allow_custom_assignment_schedule     = false
-    enable_targets_to_self_add_access    = true
-    enable_targets_to_self_update_access = true
-    enable_targets_to_self_remove_access = true
+    allowCustomAssignmentSchedule   = false
+    enableTargetsToSelfAddAccess    = true
+    enableTargetsToSelfUpdateAccess = true
+    enableTargetsToSelfRemoveAccess = true
   }
 
   # Users of the organization request for themselves; nobody requests on their behalf.
   requests_policy_requestor_settings = {
-    allow_custom_assignment_schedule     = var.requests_policy.allow_custom_assignment_schedule
-    enable_targets_to_self_add_access    = true
-    enable_targets_to_self_update_access = var.requests_policy.enable_targets_to_self_update_access
-    enable_targets_to_self_remove_access = var.requests_policy.enable_targets_to_self_remove_access
+    allowCustomAssignmentSchedule   = var.requests_policy.allow_custom_assignment_schedule
+    enableTargetsToSelfAddAccess    = true
+    enableTargetsToSelfUpdateAccess = var.requests_policy.enable_targets_to_self_update_access
+    enableTargetsToSelfRemoveAccess = var.requests_policy.enable_targets_to_self_remove_access
   }
 
   # Recurring reviews of the assignments by the internal sponsors group. Turning
@@ -117,15 +117,15 @@ locals {
   # enabled (GB-entitlement-management-507).
   access_review = var.requests_policy.access_review
   review_settings = local.access_review == null ? null : {
-    is_enabled                         = local.access_review.enabled
-    expiration_behavior                = local.access_review.expiration_behavior
-    is_recommendation_enabled          = local.access_review.is_recommendation_enabled
-    is_reviewer_justification_required = local.access_review.is_reviewer_justification_required
-    is_self_review                     = false
-    primary_reviewers                  = [{ type = "groupMembers", id = module.internal_sponsors_group.id }]
-    fallback_reviewers                 = []
+    isEnabled                       = local.access_review.enabled
+    expirationBehavior              = local.access_review.expiration_behavior
+    isRecommendationEnabled         = local.access_review.is_recommendation_enabled
+    isReviewerJustificationRequired = local.access_review.is_reviewer_justification_required
+    isSelfReview                    = false
+    primaryReviewers                = [{ type = "groupMembers", id = module.internal_sponsors_group.id }]
+    fallbackReviewers               = []
     schedule = {
-      start_date_time  = local.access_review.start_date_time
+      startDateTime    = local.access_review.start_date_time
       duration_in_days = local.access_review.duration_in_days
       recurrence = {
         type     = local.access_review.recurrence_type
@@ -133,6 +133,29 @@ locals {
       }
     }
   }
+
+  # The questions in the shape of the assignment-policies module, which names their
+  # attributes as Graph does; this composition keeps its own snake_case names.
+  questions = [
+    for q in var.questions : {
+      text                       = q.text
+      isRequired                 = q.is_required
+      isAnswerEditable           = q.is_answer_editable
+      sequence                   = q.sequence
+      type                       = q.type
+      isSingleLineQuestion       = q.is_single_line_question
+      regexPattern               = q.regex_pattern
+      isMultipleSelectionAllowed = q.is_multiple_selection_allowed
+      localizations              = q.localizations == null ? null : [for l in q.localizations : { text = l.text, languageCode = l.language_code }]
+      choices = q.choices == null ? null : [
+        for c in q.choices : {
+          text          = c.text
+          actualValue   = c.actual_value
+          localizations = c.localizations == null ? null : [for l in c.localizations : { text = l.text, languageCode = l.language_code }]
+        }
+      ]
+    }
+  ]
 
   # The stage settings of each policy: every stage of every extension that names the
   # policy, in the shape of the assignment-policies input.
@@ -165,8 +188,8 @@ module "names" {
 module "guests_group" {
   source = "../../groups"
 
-  display_name          = local.names.guests_group
-  mail_nickname         = local.names.guests_group_mail_nickname
+  displayName           = local.names.guests_group
+  mailNickname          = local.names.guests_group_mail_nickname
   description           = local.names.guests_group_description
   name_pattern          = local.patterns.guests_group
   mail_nickname_pattern = local.patterns.guests_group_mail_nickname
@@ -177,8 +200,8 @@ module "guests_group" {
 module "external_sponsors_group" {
   source = "../../groups"
 
-  display_name          = local.names.external_sponsors_group
-  mail_nickname         = local.names.external_sponsors_group_mail_nickname
+  displayName           = local.names.external_sponsors_group
+  mailNickname          = local.names.external_sponsors_group_mail_nickname
   description           = local.names.external_sponsors_group_description
   name_pattern          = local.patterns.external_sponsors_group
   mail_nickname_pattern = local.patterns.external_sponsors_group_mail_nickname
@@ -187,8 +210,8 @@ module "external_sponsors_group" {
 module "internal_sponsors_group" {
   source = "../../groups"
 
-  display_name          = local.names.internal_sponsors_group
-  mail_nickname         = local.names.internal_sponsors_group_mail_nickname
+  displayName           = local.names.internal_sponsors_group
+  mailNickname          = local.names.internal_sponsors_group_mail_nickname
   description           = local.names.internal_sponsors_group_description
   name_pattern          = local.patterns.internal_sponsors_group
   mail_nickname_pattern = local.patterns.internal_sponsors_group_mail_nickname
@@ -197,22 +220,22 @@ module "internal_sponsors_group" {
 module "external_sponsors_members" {
   source = "../../groups/members"
 
-  group_id   = module.external_sponsors_group.id
+  group-id   = module.external_sponsors_group.id
   member_ids = local.external_sponsor_member_ids
 }
 
 module "internal_sponsors_members" {
   source = "../../groups/members"
 
-  group_id   = module.internal_sponsors_group.id
+  group-id   = module.internal_sponsors_group.id
   member_ids = local.internal_sponsor_member_ids
 }
 
 module "administrative_unit" {
-  source = "../../directory/administrative-units"
+  source = "../../directory/administrativeUnits"
   count  = var.administrative_unit.enabled ? 1 : 0
 
-  display_name = local.names.administrative_unit
+  displayName  = local.names.administrative_unit
   description  = local.names.administrative_unit_description
   name_pattern = local.patterns.administrative_unit
   visibility   = var.administrative_unit.visibility
@@ -228,13 +251,20 @@ module "administrative_unit" {
 # The sponsor groups are the organization's only sponsors: the module manages each
 # relationship authoritatively, so users added as sponsors elsewhere are removed.
 module "connected_organization" {
-  source = "../../identity-governance/entitlement-management/connected-organizations"
+  source = "../../identityGovernance/entitlementManagement/connectedOrganizations"
 
-  display_name         = var.display_name
-  name_pattern         = var.name_pattern
-  description          = local.names.connected_organization_description
-  state                = var.connected_organization_state
-  identity_sources     = var.identity_sources
+  displayName  = var.display_name
+  name_pattern = var.name_pattern
+  description  = local.names.connected_organization_description
+  state        = var.connected_organization_state
+  identity_sources = [
+    for source in var.identity_sources : {
+      type        = source.type
+      tenantId    = source.tenant_id
+      domainName  = source.domain_name
+      displayName = source.display_name
+    }
+  ]
   internal_sponsor_ids = [module.internal_sponsors_group.id]
   external_sponsor_ids = [module.external_sponsors_group.id]
 }
@@ -244,13 +274,13 @@ module "connected_organization" {
 # A catalog must be published and enabled for external users before users of a
 # connected organization can request its access packages.
 module "catalog" {
-  source = "../../identity-governance/entitlement-management/catalogs"
+  source = "../../identityGovernance/entitlementManagement/catalogs"
 
-  display_name          = local.names.catalog
-  description           = local.names.catalog_description
-  name_pattern          = local.patterns.catalog
-  state                 = "published"
-  is_externally_visible = true
+  displayName         = local.names.catalog
+  description         = local.names.catalog_description
+  name_pattern        = local.patterns.catalog
+  state               = "published"
+  isExternallyVisible = true
 }
 
 # The role scope references the guests group's catalog resource but does not order
@@ -258,31 +288,31 @@ module "catalog" {
 # removed from the catalog, which Graph refuses while a package still uses it
 # (GB-live-cleanup-502).
 module "access_package" {
-  source = "../../identity-governance/entitlement-management/access-packages"
+  source = "../../identityGovernance/entitlementManagement/accessPackages"
 
   catalog_id   = module.catalog.id
-  display_name = local.names.access_package
+  displayName  = local.names.access_package
   description  = local.names.access_package_description
   name_pattern = local.patterns.access_package
-  is_hidden    = var.is_access_package_hidden
+  isHidden     = var.is_access_package_hidden
 
   depends_on = [module.guests_group_resource]
 }
 
 module "guests_group_resource" {
-  source = "../../identity-governance/entitlement-management/catalogs/resources"
+  source = "../../identityGovernance/entitlementManagement/catalogs/resources"
 
-  catalog_id             = module.catalog.id
-  resource_origin_system = "AadGroup"
-  resource_origin_id     = module.guests_group.id
-  resource_display_name  = local.names.guests_group
-  enable_destroy_cleanup = var.enable_destroy_cleanup
+  accessPackageCatalog-id = module.catalog.id
+  resource_origin_system  = "AadGroup"
+  resource_origin_id      = module.guests_group.id
+  resource_display_name   = local.names.guests_group
+  enable_destroy_cleanup  = var.enable_destroy_cleanup
 }
 
 module "guests_role_scope" {
-  source = "../../identity-governance/entitlement-management/access-packages/resource-role-scopes"
+  source = "../../identityGovernance/entitlementManagement/accessPackages/resourceRoleScopes"
 
-  access_package_id      = module.access_package.id
+  accessPackage-id       = module.access_package.id
   catalog_id             = module.catalog.id
   catalog_resource_id    = module.guests_group_resource.resource_id
   resource_origin_system = "AadGroup"
@@ -291,47 +321,52 @@ module "guests_role_scope" {
 }
 
 module "custom_extensions" {
-  source   = "../../identity-governance/entitlement-management/catalogs/custom-extensions"
+  source   = "../../identityGovernance/entitlementManagement/catalogs/customWorkflowExtensions"
   for_each = var.custom_extensions
 
-  catalog_id     = module.catalog.id
-  extension_type = each.value.extension_type
-  logic_app      = each.value.logic_app
-  display_name   = coalesce(each.value.display_name, each.key)
-  description    = each.value.description
-  callback       = each.value.callback
+  accessPackageCatalog-id = module.catalog.id
+  extension_type          = each.value.extension_type
+  logic_app = {
+    subscriptionId       = each.value.logic_app.subscription_id
+    resourceGroupName    = each.value.logic_app.resource_group_name
+    logicAppWorkflowName = each.value.logic_app.workflow_name
+    url                  = each.value.logic_app.trigger_url
+  }
+  displayName = coalesce(each.value.display_name, each.key)
+  description = each.value.description
+  callback    = each.value.callback == null ? null : { timeoutDuration = each.value.callback.timeout }
 }
 
 # --- Policies ---
 
 module "requests_policy" {
-  source = "../../identity-governance/entitlement-management/assignment-policies"
+  source = "../../identityGovernance/entitlementManagement/assignmentPolicies"
 
   access_package_id        = module.access_package.id
-  display_name             = local.names.requests_policy
+  displayName              = local.names.requests_policy
   description              = local.names.requests_policy_description
   name_pattern             = local.patterns.requests_policy
-  allowed_target_scope     = "specificConnectedOrganizationUsers"
+  allowedTargetScope       = "specificConnectedOrganizationUsers"
   specific_allowed_targets = [module.connected_organization.specific_allowed_target]
 
   expiration                = local.requests_policy_expiration
   requestor_settings        = local.requests_policy_requestor_settings
   request_approval_settings = local.requests_policy_approval_settings
 
-  questions                       = var.questions
+  questions                       = local.questions
   review_settings                 = local.review_settings
   custom_extension_stage_settings = local.extension_bindings["requests"]
 }
 
 module "external_sponsor_policy" {
-  source = "../../identity-governance/entitlement-management/assignment-policies"
+  source = "../../identityGovernance/entitlementManagement/assignmentPolicies"
   count  = var.external_sponsor_policy.enabled ? 1 : 0
 
-  access_package_id    = module.access_package.id
-  display_name         = local.names.external_sponsor_policy
-  description          = local.names.external_sponsor_policy_description
-  name_pattern         = local.patterns.external_sponsor_policy
-  allowed_target_scope = "specificDirectoryUsers"
+  access_package_id  = module.access_package.id
+  displayName        = local.names.external_sponsor_policy
+  description        = local.names.external_sponsor_policy_description
+  name_pattern       = local.patterns.external_sponsor_policy
+  allowedTargetScope = "specificDirectoryUsers"
 
   specific_allowed_targets = [
     { type = "groupMembers", id = module.external_sponsors_group.id },
@@ -344,7 +379,7 @@ module "external_sponsor_policy" {
 
   requestor_settings = local.external_sponsor_policy_requestor_settings
 
-  questions                       = var.questions
+  questions                       = local.questions
   custom_extension_stage_settings = local.extension_bindings["external_sponsor"]
 }
 

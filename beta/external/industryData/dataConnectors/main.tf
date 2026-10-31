@@ -1,0 +1,37 @@
+# Generated from pinned Microsoft Graph sources; do not edit.
+locals {
+  typed_body = { for key, value in {
+    "@odata.type"  = var.odata_type
+    "displayName"  = var.displayName
+    "sourceSystem" = (var.sourceSystem == null ? null : { for key0, value0 in { "@odata.type" = var.sourceSystem["odata_type"], "displayName" = var.sourceSystem["displayName"], "userMatchingSettings" = (var.sourceSystem["userMatchingSettings"] == null ? null : [for item1 in var.sourceSystem["userMatchingSettings"] : (item1 == null ? null : { for key2, value2 in { "@odata.type" = item1["odata_type"], "matchTarget" = (item1["matchTarget"] == null ? null : { for key3, value3 in { "@odata.type" = item1["matchTarget"]["odata_type"], "code" = item1["matchTarget"]["code"], "value" = (item1["matchTarget"]["value"] == null ? null : { for key4, value4 in { "@odata.type" = item1["matchTarget"]["value"]["odata_type"], "code" = item1["matchTarget"]["value"]["code"], "displayName" = item1["matchTarget"]["value"]["displayName"], "isDisabled" = item1["matchTarget"]["value"]["isDisabled"], "referenceType" = item1["matchTarget"]["value"]["referenceType"], "sortIndex" = item1["matchTarget"]["value"]["sortIndex"] } : key4 => value4 if value4 != null }) } : key3 => value3 if value3 != null }), "priorityOrder" = item1["priorityOrder"], "roleGroup" = (item1["roleGroup"] == null ? null : { for key3, value3 in { "@odata.type" = item1["roleGroup"]["odata_type"], "displayName" = item1["roleGroup"]["displayName"], "roles" = (item1["roleGroup"]["roles"] == null ? null : [for item4 in item1["roleGroup"]["roles"] : item4 if item4 != null]) } : key3 => value3 if value3 != null }), "sourceIdentifier" = (item1["sourceIdentifier"] == null ? null : { for key3, value3 in { "@odata.type" = item1["sourceIdentifier"]["odata_type"], "code" = item1["sourceIdentifier"]["code"], "value" = (item1["sourceIdentifier"]["value"] == null ? null : { for key4, value4 in { "@odata.type" = item1["sourceIdentifier"]["value"]["odata_type"], "code" = item1["sourceIdentifier"]["value"]["code"], "displayName" = item1["sourceIdentifier"]["value"]["displayName"], "isDisabled" = item1["sourceIdentifier"]["value"]["isDisabled"], "referenceType" = item1["sourceIdentifier"]["value"]["referenceType"], "sortIndex" = item1["sourceIdentifier"]["value"]["sortIndex"] } : key4 => value4 if value4 != null }) } : key3 => value3 if value3 != null }) } : key2 => value2 if value2 != null }) if item1 != null]), "vendor" = var.sourceSystem["vendor"] } : key0 => value0 if value0 != null })
+  } : key => value if value != null }
+  body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
+}
+
+locals {
+  timeouts_set = anytrue([var.timeouts.create != null, var.timeouts.read != null, var.timeouts.update != null, var.timeouts.delete != null])
+}
+
+resource "msgraph_resource" "this" {
+  url                     = "external/industryData/dataConnectors"
+  api_version             = "beta"
+  update_method           = "PATCH"
+  body                    = local.body
+  ignore_missing_property = true
+  read_query_parameters   = var.select_response ? { "$select" = [join(",", sort(distinct(concat(["id"], [for name in keys(local.body) : name if alltrue([!startswith(name, "@"), !can(regex("@odata\\.", name))])]))))] } : null
+
+  response_export_values = {
+    response = "@"
+  }
+
+  dynamic "timeouts" {
+    for_each = local.timeouts_set ? [var.timeouts] : []
+
+    content {
+      create = timeouts.value.create
+      read   = timeouts.value.read
+      update = timeouts.value.update
+      delete = timeouts.value.delete
+    }
+  }
+}

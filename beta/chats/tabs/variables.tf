@@ -1,11 +1,11 @@
-variable "chat_id" {
+variable "chat-id" {
   description = "The unique identifier of chat"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.chat_id)) > 0
-    error_message = "chat_id must not be empty."
+    condition     = length(trimspace(var.chat-id)) > 0
+    error_message = "chat-id must not be empty."
   }
 }
 
@@ -21,13 +21,13 @@ variable "configuration" {
   default = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "Name of the tab."
   type        = string
   default     = null
 }
 
-variable "message_id" {
+variable "messageId" {
   description = "Microsoft Graph messageId property."
   type        = string
   default     = null
@@ -40,19 +40,19 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "sort_order_index" {
+variable "sortOrderIndex" {
   description = "Index of the order used for sorting tabs."
   type        = string
   default     = null
 }
 
-variable "teams_app" {
+variable "teamsApp" {
   description = "The application that is linked to the tab."
   type        = any
   default     = null
 }
 
-variable "teams_app_id" {
+variable "teamsAppId" {
   description = "App definition identifier of the tab. This value can't be changed after tab creation. Because this property is deprecated, we recommend expanding teamsApp to retrieve the application that is linked to the tab."
   type        = string
   default     = null

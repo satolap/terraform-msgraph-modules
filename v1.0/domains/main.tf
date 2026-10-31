@@ -1,21 +1,21 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "authenticationType"               = var.authentication_type
-    "availabilityStatus"               = var.availability_status
-    "federationConfiguration"          = (var.federation_configuration == null ? null : [for item0 in var.federation_configuration : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "activeSignInUri" = item0["activeSignInUri"], "displayName" = item0["displayName"], "federatedIdpMfaBehavior" = item0["federatedIdpMfaBehavior"], "isSignedAuthenticationRequestRequired" = item0["isSignedAuthenticationRequestRequired"], "issuerUri" = item0["issuerUri"], "metadataExchangeUri" = item0["metadataExchangeUri"], "nextSigningCertificate" = item0["nextSigningCertificate"], "passiveSignInUri" = item0["passiveSignInUri"], "passwordResetUri" = item0["passwordResetUri"], "preferredAuthenticationProtocol" = item0["preferredAuthenticationProtocol"], "promptLoginBehavior" = item0["promptLoginBehavior"], "signOutUri" = item0["signOutUri"], "signingCertificate" = item0["signingCertificate"], "signingCertificateUpdateStatus" = (item0["signingCertificateUpdateStatus"] == null ? null : { for key2, value2 in { "@odata.type" = item0["signingCertificateUpdateStatus"]["odata_type"] } : key2 => value2 if value2 != null }), "systemBrowserEnabledOn" = item0["systemBrowserEnabledOn"] } : key1 => value1 if value1 != null }) if item0 != null])
-    "isAdminManaged"                   = var.is_admin_managed
-    "isDefault"                        = var.is_default
-    "isInitial"                        = var.is_initial
-    "isRoot"                           = var.is_root
-    "isVerified"                       = var.is_verified
+    "authenticationType"               = var.authenticationType
+    "availabilityStatus"               = var.availabilityStatus
+    "federationConfiguration"          = (var.federationConfiguration == null ? null : [for item0 in var.federationConfiguration : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "activeSignInUri" = item0["activeSignInUri"], "displayName" = item0["displayName"], "federatedIdpMfaBehavior" = item0["federatedIdpMfaBehavior"], "isSignedAuthenticationRequestRequired" = item0["isSignedAuthenticationRequestRequired"], "issuerUri" = item0["issuerUri"], "metadataExchangeUri" = item0["metadataExchangeUri"], "nextSigningCertificate" = item0["nextSigningCertificate"], "passiveSignInUri" = item0["passiveSignInUri"], "passwordResetUri" = item0["passwordResetUri"], "preferredAuthenticationProtocol" = item0["preferredAuthenticationProtocol"], "promptLoginBehavior" = item0["promptLoginBehavior"], "signOutUri" = item0["signOutUri"], "signingCertificate" = item0["signingCertificate"], "signingCertificateUpdateStatus" = (item0["signingCertificateUpdateStatus"] == null ? null : { for key2, value2 in { "@odata.type" = item0["signingCertificateUpdateStatus"]["odata_type"] } : key2 => value2 if value2 != null }), "systemBrowserEnabledOn" = item0["systemBrowserEnabledOn"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "isAdminManaged"                   = var.isAdminManaged
+    "isDefault"                        = var.isDefault
+    "isInitial"                        = var.isInitial
+    "isRoot"                           = var.isRoot
+    "isVerified"                       = var.isVerified
     "manufacturer"                     = var.manufacturer
     "model"                            = var.model
     "@odata.type"                      = var.odata_type
-    "passwordNotificationWindowInDays" = var.password_notification_window_in_days
-    "passwordValidityPeriodInDays"     = var.password_validity_period_in_days
+    "passwordNotificationWindowInDays" = var.passwordNotificationWindowInDays
+    "passwordValidityPeriodInDays"     = var.passwordValidityPeriodInDays
     "state"                            = (var.state == null ? null : { for key0, value0 in { "@odata.type" = var.state["odata_type"], "lastActionDateTime" = var.state["lastActionDateTime"], "operation" = var.state["operation"], "status" = var.state["status"] } : key0 => value0 if value0 != null })
-    "supportedServices"                = (var.supported_services == null ? null : [for item0 in var.supported_services : item0 if item0 != null])
+    "supportedServices"                = (var.supportedServices == null ? null : [for item0 in var.supportedServices : item0 if item0 != null])
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }

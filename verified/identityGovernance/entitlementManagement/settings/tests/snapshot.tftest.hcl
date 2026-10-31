@@ -28,9 +28,9 @@ mock_provider "msgraph" {
 }
 
 variables {
-  external_user_lifecycle_action                     = "blockSignInAndDelete"
-  duration_until_external_user_deleted_after_blocked = "P30D"
-  allow_external_user_deletion                       = true
+  externalUserLifecycleAction                  = "blockSignInAndDelete"
+  durationUntilExternalUserDeletedAfterBlocked = "P30D"
+  allow_external_user_deletion                 = true
 }
 
 run "first_apply_captures_a_cleaned_snapshot_of_both_settings" {
@@ -106,9 +106,9 @@ run "restore_leaves_unowned_settings_alone" {
 
   # The input differs from the snapshot value, so only a restore can produce blockSignIn.
   variables {
-    restore_previous_state                             = true
-    external_user_lifecycle_action                     = "none"
-    duration_until_external_user_deleted_after_blocked = null
+    restore_previous_state                       = true
+    externalUserLifecycleAction                  = "none"
+    durationUntilExternalUserDeletedAfterBlocked = null
   }
 
   assert {

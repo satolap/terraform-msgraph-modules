@@ -1,15 +1,15 @@
-variable "organization_id" {
+variable "organization-id" {
   description = "The unique identifier of organization"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.organization_id)) > 0
-    error_message = "organization_id must not be empty."
+    condition     = length(trimspace(var.organization-id)) > 0
+    error_message = "organization-id must not be empty."
   }
 }
 
-variable "is_default_theme" {
+variable "isDefaultTheme" {
   description = "Indicates whether the theme is set as the default branding theme for the entire tenant and includes all applications within the tenant. When set to true, this theme is automatically applied to any application that does not have a specific theme assigned. This property is useful for enforcing consistent branding across multiple apps without configuring each one individually. Optional."
   type        = bool
   default     = null

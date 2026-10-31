@@ -5,7 +5,7 @@ run "minimal_request" {
   command = plan
 
   variables {
-    device_id  = "test-parent-id"
+    device-id  = "test-parent-id"
     odata_type = "#microsoft.graph.openTypeExtension"
   }
 
@@ -34,7 +34,7 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    device_id       = "test-parent-id"
+    device-id       = "test-parent-id"
     odata_type      = "#microsoft.graph.openTypeExtension"
     select_response = true
   }
@@ -49,7 +49,7 @@ run "typed_request" {
   command = plan
 
   variables {
-    device_id  = "test-parent-id"
+    device-id  = "test-parent-id"
     odata_type = "#microsoft.graph.openTypeExtension"
   }
 
@@ -63,7 +63,7 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    device_id  = "test-parent-id"
+    device-id  = "test-parent-id"
     odata_type = "__graphmodules_invalid_enum__"
   }
 
@@ -74,7 +74,7 @@ run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    device_id  = "test-parent-id"
+    device-id  = "test-parent-id"
     odata_type = "#microsoft.graph.openTypeExtension"
   }
 
@@ -88,7 +88,7 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    device_id  = "test-parent-id"
+    device-id  = "test-parent-id"
     odata_type = "#microsoft.graph.openTypeExtension"
     timeouts   = { create = "45m", update = "20m", read = "7m" }
   }
@@ -103,7 +103,7 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    device_id  = "test-parent-id"
+    device-id  = "test-parent-id"
     odata_type = "#microsoft.graph.openTypeExtension"
     timeouts   = { create = "10s" }
   }
@@ -115,7 +115,7 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    device_id  = "test-parent-id"
+    device-id  = "test-parent-id"
     odata_type = "#microsoft.graph.openTypeExtension"
     timeouts   = { update = "soon" }
   }
@@ -127,7 +127,7 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    device_id  = "test-parent-id"
+    device-id  = "test-parent-id"
     odata_type = "#microsoft.graph.openTypeExtension"
     timeouts   = { delete = "0s" }
   }

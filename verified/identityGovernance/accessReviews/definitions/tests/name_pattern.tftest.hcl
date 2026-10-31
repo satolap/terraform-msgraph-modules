@@ -7,12 +7,12 @@ mock_provider "msgraph" {
 }
 
 variables {
-  display_name              = "Quarterly review"
-  description_for_admins    = "Offline fixture"
-  description_for_reviewers = "No decisions are applied"
-  group_id                  = "11111111-1111-1111-1111-111111111111"
-  reviewer_user_ids         = ["22222222-2222-2222-2222-222222222222"]
-  start_date                = "2030-01-15"
+  displayName             = "Quarterly review"
+  descriptionForAdmins    = "Offline fixture"
+  descriptionForReviewers = "No decisions are applied"
+  group_id                = "11111111-1111-1111-1111-111111111111"
+  reviewer_user_ids       = ["22222222-2222-2222-2222-222222222222"]
+  start_date              = "2030-01-15"
   recurrence = {
     type     = "weekly"
     interval = 1
@@ -27,7 +27,7 @@ run "accepts_any_display_name_without_name_pattern" {
   command = apply
 
   variables {
-    display_name = "Not following any convention"
+    displayName = "Not following any convention"
   }
 
   assert {
@@ -40,7 +40,7 @@ run "accepts_a_display_name_that_matches_name_pattern" {
   command = apply
 
   variables {
-    display_name = "Example ORG-DEV-Name"
+    displayName  = "Example ORG-DEV-Name"
     name_pattern = "ORG-(DEV|PRD)-"
   }
 
@@ -54,7 +54,7 @@ run "rejects_a_display_name_that_does_not_match_name_pattern" {
   command = plan
 
   variables {
-    display_name = "Example without the prefix"
+    displayName  = "Example without the prefix"
     name_pattern = "^ORG-(DEV|PRD)-"
   }
 

@@ -5,10 +5,10 @@ run "minimal_request" {
   command = plan
 
   variables {
-    education_class_id      = "test-parent-id"
-    education_assignment_id = "test-parent-id"
-    education_submission_id = "test-parent-id"
-    odata_type              = "#microsoft.graph.educationFeedbackOutcome"
+    educationClass-id      = "test-parent-id"
+    educationAssignment-id = "test-parent-id"
+    educationSubmission-id = "test-parent-id"
+    odata_type             = "#microsoft.graph.educationFeedbackOutcome"
   }
 
   assert {
@@ -36,11 +36,11 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    education_class_id      = "test-parent-id"
-    education_assignment_id = "test-parent-id"
-    education_submission_id = "test-parent-id"
-    odata_type              = "#microsoft.graph.educationFeedbackOutcome"
-    select_response         = true
+    educationClass-id      = "test-parent-id"
+    educationAssignment-id = "test-parent-id"
+    educationSubmission-id = "test-parent-id"
+    odata_type             = "#microsoft.graph.educationFeedbackOutcome"
+    select_response        = true
   }
 
   assert {
@@ -53,11 +53,11 @@ run "typed_request" {
   command = plan
 
   variables {
-    education_class_id      = "test-parent-id"
-    education_assignment_id = "test-parent-id"
-    education_submission_id = "test-parent-id"
-    odata_type              = "#microsoft.graph.educationFeedbackOutcome"
-    last_modified_date_time = "2026-01-01T00:00:00Z"
+    educationClass-id      = "test-parent-id"
+    educationAssignment-id = "test-parent-id"
+    educationSubmission-id = "test-parent-id"
+    odata_type             = "#microsoft.graph.educationFeedbackOutcome"
+    lastModifiedDateTime   = "2026-01-01T00:00:00Z"
   }
 
   assert {
@@ -75,10 +75,10 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    education_class_id      = "test-parent-id"
-    education_assignment_id = "test-parent-id"
-    education_submission_id = "test-parent-id"
-    odata_type              = "__graphmodules_invalid_enum__"
+    educationClass-id      = "test-parent-id"
+    educationAssignment-id = "test-parent-id"
+    educationSubmission-id = "test-parent-id"
+    odata_type             = "__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.odata_type]
@@ -88,10 +88,10 @@ run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    education_class_id      = "test-parent-id"
-    education_assignment_id = "test-parent-id"
-    education_submission_id = "test-parent-id"
-    odata_type              = "#microsoft.graph.educationFeedbackOutcome"
+    educationClass-id      = "test-parent-id"
+    educationAssignment-id = "test-parent-id"
+    educationSubmission-id = "test-parent-id"
+    odata_type             = "#microsoft.graph.educationFeedbackOutcome"
   }
 
   assert {
@@ -104,11 +104,11 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    education_class_id      = "test-parent-id"
-    education_assignment_id = "test-parent-id"
-    education_submission_id = "test-parent-id"
-    odata_type              = "#microsoft.graph.educationFeedbackOutcome"
-    timeouts                = { create = "45m", update = "20m", read = "7m" }
+    educationClass-id      = "test-parent-id"
+    educationAssignment-id = "test-parent-id"
+    educationSubmission-id = "test-parent-id"
+    odata_type             = "#microsoft.graph.educationFeedbackOutcome"
+    timeouts               = { create = "45m", update = "20m", read = "7m" }
   }
 
   assert {
@@ -121,11 +121,11 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    education_class_id      = "test-parent-id"
-    education_assignment_id = "test-parent-id"
-    education_submission_id = "test-parent-id"
-    odata_type              = "#microsoft.graph.educationFeedbackOutcome"
-    timeouts                = { create = "10s" }
+    educationClass-id      = "test-parent-id"
+    educationAssignment-id = "test-parent-id"
+    educationSubmission-id = "test-parent-id"
+    odata_type             = "#microsoft.graph.educationFeedbackOutcome"
+    timeouts               = { create = "10s" }
   }
 
   expect_failures = [var.timeouts]
@@ -135,11 +135,11 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    education_class_id      = "test-parent-id"
-    education_assignment_id = "test-parent-id"
-    education_submission_id = "test-parent-id"
-    odata_type              = "#microsoft.graph.educationFeedbackOutcome"
-    timeouts                = { update = "soon" }
+    educationClass-id      = "test-parent-id"
+    educationAssignment-id = "test-parent-id"
+    educationSubmission-id = "test-parent-id"
+    odata_type             = "#microsoft.graph.educationFeedbackOutcome"
+    timeouts               = { update = "soon" }
   }
 
   expect_failures = [var.timeouts]
@@ -149,11 +149,11 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    education_class_id      = "test-parent-id"
-    education_assignment_id = "test-parent-id"
-    education_submission_id = "test-parent-id"
-    odata_type              = "#microsoft.graph.educationFeedbackOutcome"
-    timeouts                = { delete = "0s" }
+    educationClass-id      = "test-parent-id"
+    educationAssignment-id = "test-parent-id"
+    educationSubmission-id = "test-parent-id"
+    odata_type             = "#microsoft.graph.educationFeedbackOutcome"
+    timeouts               = { delete = "0s" }
   }
 
   expect_failures = [var.timeouts]

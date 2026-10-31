@@ -27,7 +27,7 @@ mock_provider "msgraph" {
 }
 
 variables {
-  application_id = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"
+  application-id = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"
   displayName    = "Automation credential"
 }
 

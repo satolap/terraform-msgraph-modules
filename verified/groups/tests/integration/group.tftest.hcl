@@ -12,9 +12,9 @@ run "create_group" {
   command = apply
 
   variables {
-    display_name  = "tftest-group-${run.setup.suffix}"
-    mail_nickname = "tftest-group-${run.setup.suffix}"
-    description   = "Created by terraform test; safe to delete"
+    displayName  = "tftest-group-${run.setup.suffix}"
+    mailNickname = "tftest-group-${run.setup.suffix}"
+    description  = "Created by terraform test; safe to delete"
   }
 
   assert {
@@ -33,9 +33,9 @@ run "rename_group" {
   command = apply
 
   variables {
-    display_name  = "tftest-group-${run.setup.suffix}-renamed"
-    mail_nickname = "tftest-group-${run.setup.suffix}"
-    description   = "Created by terraform test; safe to delete"
+    displayName  = "tftest-group-${run.setup.suffix}-renamed"
+    mailNickname = "tftest-group-${run.setup.suffix}"
+    description  = "Created by terraform test; safe to delete"
   }
 
   assert {
@@ -53,11 +53,11 @@ run "make_group_dynamic" {
   command = apply
 
   variables {
-    display_name    = "tftest-group-${run.setup.suffix}-renamed"
-    mail_nickname   = "tftest-group-${run.setup.suffix}"
-    description     = "Created by terraform test; safe to delete"
-    group_types     = ["DynamicMembership"]
-    membership_rule = "user.department -eq \"tftest-${run.setup.suffix}-nobody\""
+    displayName    = "tftest-group-${run.setup.suffix}-renamed"
+    mailNickname   = "tftest-group-${run.setup.suffix}"
+    description    = "Created by terraform test; safe to delete"
+    groupTypes     = ["DynamicMembership"]
+    membershipRule = "user.department -eq \"tftest-${run.setup.suffix}-nobody\""
   }
 
   assert {
@@ -102,9 +102,9 @@ run "make_group_static_again" {
   command = apply
 
   variables {
-    display_name  = "tftest-group-${run.setup.suffix}-renamed"
-    mail_nickname = "tftest-group-${run.setup.suffix}"
-    description   = "Created by terraform test; safe to delete"
+    displayName  = "tftest-group-${run.setup.suffix}-renamed"
+    mailNickname = "tftest-group-${run.setup.suffix}"
+    description  = "Created by terraform test; safe to delete"
   }
 
   assert {
@@ -151,10 +151,10 @@ run "refuse_converting_to_microsoft_365" {
   command = plan
 
   variables {
-    display_name  = "tftest-group-${run.setup.suffix}-renamed"
-    mail_nickname = "tftest-group-${run.setup.suffix}"
-    group_types   = ["Unified"]
-    mail_enabled  = true
+    displayName  = "tftest-group-${run.setup.suffix}-renamed"
+    mailNickname = "tftest-group-${run.setup.suffix}"
+    groupTypes   = ["Unified"]
+    mailEnabled  = true
   }
 
   expect_failures = [msgraph_resource.group]

@@ -4,12 +4,12 @@ locals {
     "attachments"                   = (var.attachments == null ? null : [for item0 in var.attachments : item0 if item0 != null])
     "body"                          = (var.body == null ? null : { for key0, value0 in { "@odata.type" = var.body["odata_type"], "content" = var.body["content"], "contentType" = var.body["contentType"] } : key0 => value0 if value0 != null })
     "categories"                    = (var.categories == null ? null : [for item0 in var.categories : item0 if item0 != null])
-    "createdDateTime"               = var.created_date_time
+    "createdDateTime"               = var.createdDateTime
     "extensions"                    = (var.extensions == null ? null : [for item0 in var.extensions : item0 if item0 != null])
-    "lastModifiedDateTime"          = var.last_modified_date_time
-    "multiValueExtendedProperties"  = (var.multi_value_extended_properties == null ? null : [for item0 in var.multi_value_extended_properties : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "value" = (item0["value"] == null ? null : [for item2 in item0["value"] : item2 if item2 != null]) } : key1 => value1 if value1 != null }) if item0 != null])
+    "lastModifiedDateTime"          = var.lastModifiedDateTime
+    "multiValueExtendedProperties"  = (var.multiValueExtendedProperties == null ? null : [for item0 in var.multiValueExtendedProperties : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "value" = (item0["value"] == null ? null : [for item2 in item0["value"] : item2 if item2 != null]) } : key1 => value1 if value1 != null }) if item0 != null])
     "@odata.type"                   = var.odata_type
-    "singleValueExtendedProperties" = (var.single_value_extended_properties == null ? null : [for item0 in var.single_value_extended_properties : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "value" = item0["value"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "singleValueExtendedProperties" = (var.singleValueExtendedProperties == null ? null : [for item0 in var.singleValueExtendedProperties : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "value" = item0["value"] } : key1 => value1 if value1 != null }) if item0 != null])
     "subject"                       = var.subject
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
@@ -20,7 +20,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "users/${urlencode(var.user_id)}/notes"
+  url                     = "users/${urlencode(var.user-id)}/notes"
   api_version             = "v1.0"
   update_method           = "PATCH"
   body                    = local.body

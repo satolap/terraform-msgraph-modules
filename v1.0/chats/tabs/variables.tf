@@ -1,11 +1,11 @@
-variable "chat_id" {
+variable "chat-id" {
   description = "The unique identifier of chat"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.chat_id)) > 0
-    error_message = "chat_id must not be empty."
+    condition     = length(trimspace(var.chat-id)) > 0
+    error_message = "chat-id must not be empty."
   }
 }
 
@@ -21,7 +21,7 @@ variable "configuration" {
   default = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "Name of the tab."
   type        = string
   default     = null
@@ -34,7 +34,7 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "teams_app" {
+variable "teamsApp" {
   description = "The application that is linked to the tab. This can't be changed after tab creation."
   type        = any
   default     = null

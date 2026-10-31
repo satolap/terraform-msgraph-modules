@@ -1,33 +1,33 @@
-variable "education_class_id" {
+variable "educationClass-id" {
   description = "The unique identifier of educationClass"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.education_class_id)) > 0
-    error_message = "education_class_id must not be empty."
+    condition     = length(trimspace(var.educationClass-id)) > 0
+    error_message = "educationClass-id must not be empty."
   }
 }
 
-variable "education_assignment_id" {
+variable "educationAssignment-id" {
   description = "The unique identifier of educationAssignment"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.education_assignment_id)) > 0
-    error_message = "education_assignment_id must not be empty."
+    condition     = length(trimspace(var.educationAssignment-id)) > 0
+    error_message = "educationAssignment-id must not be empty."
   }
 }
 
-variable "education_submission_id" {
+variable "educationSubmission-id" {
   description = "The unique identifier of educationSubmission"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.education_submission_id)) > 0
-    error_message = "education_submission_id must not be empty."
+    condition     = length(trimspace(var.educationSubmission-id)) > 0
+    error_message = "educationSubmission-id must not be empty."
   }
 }
 
@@ -42,13 +42,13 @@ variable "odata_type" {
   }
 }
 
-variable "last_modified_by" {
+variable "lastModifiedBy" {
   description = "The individual who updated the resource."
   type        = any
   default     = null
 }
 
-variable "last_modified_date_time" {
+variable "lastModifiedDateTime" {
   description = "The moment in time when the resource was last modified. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2021 is 2021-01-01T00:00:00Z."
   type        = string
   default     = null

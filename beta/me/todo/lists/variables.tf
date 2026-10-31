@@ -1,4 +1,4 @@
-variable "display_name" {
+variable "displayName" {
   description = "The name of the task list."
   type        = string
   default     = null
@@ -10,13 +10,13 @@ variable "extensions" {
   default     = null
 }
 
-variable "is_owner" {
+variable "isOwner" {
   description = "True if the user is owner of the given task list."
   type        = bool
   default     = null
 }
 
-variable "is_shared" {
+variable "isShared" {
   description = "True if the task list is shared with other users"
   type        = bool
   default     = null
@@ -29,14 +29,14 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "wellknown_list_name" {
+variable "wellknownListName" {
   description = "Microsoft Graph wellknownListName property."
   type        = string
   default     = null
 
   validation {
-    condition     = var.wellknown_list_name == null ? true : contains(["none", "defaultList", "flaggedEmails"], var.wellknown_list_name)
-    error_message = "wellknown_list_name must be one of the documented enum values."
+    condition     = var.wellknownListName == null ? true : contains(["none", "defaultList", "flaggedEmails"], var.wellknownListName)
+    error_message = "wellknownListName must be one of the documented enum values."
   }
 }
 

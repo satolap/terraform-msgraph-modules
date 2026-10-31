@@ -13,8 +13,8 @@
 locals {
   # The owned properties, spelled as Graph spells them. Null inputs are omitted.
   owned_input = merge(
-    var.external_user_lifecycle_action == null ? {} : { externalUserLifecycleAction = var.external_user_lifecycle_action },
-    var.duration_until_external_user_deleted_after_blocked == null ? {} : { durationUntilExternalUserDeletedAfterBlocked = var.duration_until_external_user_deleted_after_blocked },
+    var.externalUserLifecycleAction == null ? {} : { externalUserLifecycleAction = var.externalUserLifecycleAction },
+    var.durationUntilExternalUserDeletedAfterBlocked == null ? {} : { durationUntilExternalUserDeletedAfterBlocked = var.durationUntilExternalUserDeletedAfterBlocked },
   )
 
   # Both settings as read before the module first wrote them. The id and OData annotations
@@ -124,17 +124,17 @@ resource "msgraph_update_resource" "this" {
   lifecycle {
     precondition {
       condition     = length(local.owned_input) > 0
-      error_message = "Set at least one of external_user_lifecycle_action and duration_until_external_user_deleted_after_blocked. A setting whose input is null is not owned, so there would be nothing to write or restore."
+      error_message = "Set at least one of externalUserLifecycleAction and durationUntilExternalUserDeletedAfterBlocked. A setting whose input is null is not owned, so there would be nothing to write or restore."
     }
 
     precondition {
-      condition     = var.restore_previous_state || var.external_user_lifecycle_action != "blockSignInAndDelete" || var.allow_external_user_deletion
-      error_message = "external_user_lifecycle_action = \"blockSignInAndDelete\" makes entitlement management delete guest accounts tenant-wide. Set allow_external_user_deletion = true to confirm."
+      condition     = var.restore_previous_state || var.externalUserLifecycleAction != "blockSignInAndDelete" || var.allow_external_user_deletion
+      error_message = "externalUserLifecycleAction = \"blockSignInAndDelete\" makes entitlement management delete guest accounts tenant-wide. Set allow_external_user_deletion = true to confirm."
     }
 
     precondition {
-      condition     = var.restore_previous_state || var.external_user_lifecycle_action != "blockSignInAndDelete" || var.duration_until_external_user_deleted_after_blocked != null
-      error_message = "external_user_lifecycle_action = \"blockSignInAndDelete\" needs duration_until_external_user_deleted_after_blocked. Without it the request would turn deletion on with whatever duration the tenant already holds, or fail at Graph when none exists."
+      condition     = var.restore_previous_state || var.externalUserLifecycleAction != "blockSignInAndDelete" || var.durationUntilExternalUserDeletedAfterBlocked != null
+      error_message = "externalUserLifecycleAction = \"blockSignInAndDelete\" needs durationUntilExternalUserDeletedAfterBlocked. Without it the request would turn deletion on with whatever duration the tenant already holds, or fail at Graph when none exists."
     }
 
     precondition {

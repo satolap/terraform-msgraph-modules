@@ -26,9 +26,9 @@ mock_provider "msgraph" {
 }
 
 variables {
-  principal_id                  = "11111111-1111-1111-1111-111111111111"
-  group_id                      = "22222222-2222-2222-2222-222222222222"
-  access_id                     = "member"
+  principalId                   = "11111111-1111-1111-1111-111111111111"
+  groupId                       = "22222222-2222-2222-2222-222222222222"
+  accessId                      = "member"
   justification                 = "Offline contract test"
   start_date_time               = "2099-01-01T00:00:00Z"
   end_date_time                 = "2099-01-01T08:00:00Z"
@@ -97,7 +97,7 @@ run "submits_owner_access_distinctly" {
   }
 
   variables {
-    access_id = "owner"
+    accessId = "owner"
   }
 
   assert {
@@ -556,10 +556,10 @@ run "rejects_missing_or_unknown_access" {
   }
 
   variables {
-    access_id = "admin"
+    accessId = "admin"
   }
 
-  expect_failures = [var.access_id]
+  expect_failures = [var.accessId]
 }
 
 run "rejects_blank_justification" {
@@ -586,11 +586,11 @@ run "rejects_non_canonical_identifiers" {
   }
 
   variables {
-    principal_id = "11111111-1111-1111-1111-11111111111G"
-    group_id     = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+    principalId = "11111111-1111-1111-1111-11111111111G"
+    groupId     = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
   }
 
-  expect_failures = [var.principal_id, var.group_id]
+  expect_failures = [var.principalId, var.groupId]
 }
 
 run "future_window_never_fails_the_gate" {

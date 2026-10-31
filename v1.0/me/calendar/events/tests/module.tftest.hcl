@@ -42,11 +42,11 @@ run "typed_request" {
   command = plan
 
   variables {
-    body_preview                  = "example"
-    allow_new_time_proposals      = false
-    reminder_minutes_before_start = -2147483648
-    body                          = { "content" = null }
-    attendees                     = [{}]
+    bodyPreview                = "example"
+    allowNewTimeProposals      = false
+    reminderMinutesBeforeStart = -2147483648
+    body                       = { "content" = null }
+    attendees                  = [{}]
   }
 
   assert {

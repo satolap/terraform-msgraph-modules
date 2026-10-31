@@ -1,11 +1,11 @@
-variable "user_id" {
+variable "user-id" {
   description = "The unique identifier of user"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.user_id)) > 0
-    error_message = "user_id must not be empty."
+    condition     = length(trimspace(var.user-id)) > 0
+    error_message = "user-id must not be empty."
   }
 }
 
@@ -30,7 +30,7 @@ variable "categories" {
   default     = null
 }
 
-variable "completed_date_time" {
+variable "completedDateTime" {
   description = "The date in the specified time zone that the task was finished."
   type = object({
     odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
@@ -40,13 +40,13 @@ variable "completed_date_time" {
   default = null
 }
 
-variable "created_date_time" {
+variable "createdDateTime" {
   description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
 }
 
-variable "due_date_time" {
+variable "dueDateTime" {
   description = "The date in the specified time zone that the task is to be finished."
   type = object({
     odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
@@ -56,7 +56,7 @@ variable "due_date_time" {
   default = null
 }
 
-variable "has_attachments" {
+variable "hasAttachments" {
   description = "Set to true if the task has attachments."
   type        = bool
   default     = null
@@ -73,13 +73,13 @@ variable "importance" {
   }
 }
 
-variable "is_reminder_on" {
+variable "isReminderOn" {
   description = "Set to true if an alert is set to remind the user of the task."
   type        = bool
   default     = null
 }
 
-variable "last_modified_date_time" {
+variable "lastModifiedDateTime" {
   description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
@@ -98,7 +98,7 @@ variable "owner" {
   default     = null
 }
 
-variable "parent_folder_id" {
+variable "parentFolderId" {
   description = "The unique identifier for the task's parent folder."
   type        = string
   default     = null
@@ -135,7 +135,7 @@ variable "recurrence" {
   }
 }
 
-variable "reminder_date_time" {
+variable "reminderDateTime" {
   description = "The date and time for a reminder alert of the task to occur."
   type = object({
     odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
@@ -156,7 +156,7 @@ variable "sensitivity" {
   }
 }
 
-variable "start_date_time" {
+variable "startDateTime" {
   description = "The date in the specified time zone when the task is to begin."
   type = object({
     odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")

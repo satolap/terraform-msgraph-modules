@@ -17,7 +17,7 @@ variable "title" {
   default     = null
 }
 
-variable "user_tags" {
+variable "userTags" {
   description = "Microsoft Graph userTags property."
   type        = list(string)
   default     = null

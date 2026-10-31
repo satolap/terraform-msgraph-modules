@@ -24,9 +24,9 @@ mock_provider "msgraph" {
 }
 
 variables {
-  principal_id                  = "11111111-1111-1111-1111-111111111111"
-  group_id                      = "22222222-2222-2222-2222-222222222222"
-  access_id                     = "member"
+  principalId                   = "11111111-1111-1111-1111-111111111111"
+  groupId                       = "22222222-2222-2222-2222-222222222222"
+  accessId                      = "member"
   justification                 = "Offline contract test"
   start_date_time               = "2099-01-01T00:00:00Z"
   end_date_time                 = "2099-01-01T08:00:00Z"
@@ -67,7 +67,7 @@ run "changed_principal_is_refused" {
   command = plan
 
   variables {
-    principal_id = "44444444-4444-4444-4444-444444444444"
+    principalId = "44444444-4444-4444-4444-444444444444"
   }
 
   expect_failures = [terraform_data.verification_gate]
@@ -77,8 +77,8 @@ run "changed_group_or_access_is_refused" {
   command = plan
 
   variables {
-    group_id  = "33333333-3333-3333-3333-333333333333"
-    access_id = "owner"
+    groupId  = "33333333-3333-3333-3333-333333333333"
+    accessId = "owner"
   }
 
   expect_failures = [terraform_data.verification_gate]

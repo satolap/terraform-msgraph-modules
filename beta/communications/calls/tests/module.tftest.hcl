@@ -42,10 +42,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    call_chain_id              = "example"
-    ringing_timeout_in_seconds = -2147483648
-    chat_info                  = { "messageId" = null }
-    audio_routing_groups       = [{}]
+    callChainId             = "example"
+    ringingTimeoutInSeconds = -2147483648
+    chatInfo                = { "messageId" = null }
+    audioRoutingGroups      = [{}]
   }
 
   assert {

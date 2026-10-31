@@ -44,12 +44,12 @@ resource "random_password" "member_one" {
   min_special = 1
 }
 module "member_one" {
-  source              = "../../../../../../users"
-  user_principal_name = "tftest-member_one-${terraform_data.suffix.output}@${var.verified_domain}"
-  display_name        = "tftest-member_one-${terraform_data.suffix.output}"
-  mail_nickname       = "tftest-member_one-${terraform_data.suffix.output}"
-  password            = random_password.member_one.result
-  account_enabled     = false
+  source            = "../../../../../../users"
+  userPrincipalName = "tftest-member_one-${terraform_data.suffix.output}@${var.verified_domain}"
+  displayName       = "tftest-member_one-${terraform_data.suffix.output}"
+  mailNickname      = "tftest-member_one-${terraform_data.suffix.output}"
+  password          = random_password.member_one.result
+  accountEnabled    = false
 }
 resource "random_password" "member_two" {
   length      = 24
@@ -59,12 +59,12 @@ resource "random_password" "member_two" {
   min_special = 1
 }
 module "member_two" {
-  source              = "../../../../../../users"
-  user_principal_name = "tftest-member_two-${terraform_data.suffix.output}@${var.verified_domain}"
-  display_name        = "tftest-member_two-${terraform_data.suffix.output}"
-  mail_nickname       = "tftest-member_two-${terraform_data.suffix.output}"
-  password            = random_password.member_two.result
-  account_enabled     = false
+  source            = "../../../../../../users"
+  userPrincipalName = "tftest-member_two-${terraform_data.suffix.output}@${var.verified_domain}"
+  displayName       = "tftest-member_two-${terraform_data.suffix.output}"
+  mailNickname      = "tftest-member_two-${terraform_data.suffix.output}"
+  password          = random_password.member_two.result
+  accountEnabled    = false
 }
 resource "random_password" "reviewer" {
   length      = 24
@@ -74,12 +74,12 @@ resource "random_password" "reviewer" {
   min_special = 1
 }
 module "reviewer" {
-  source              = "../../../../../../users"
-  user_principal_name = "tftest-reviewer-${terraform_data.suffix.output}@${var.verified_domain}"
-  display_name        = "tftest-reviewer-${terraform_data.suffix.output}"
-  mail_nickname       = "tftest-reviewer-${terraform_data.suffix.output}"
-  password            = random_password.reviewer.result
-  account_enabled     = false
+  source            = "../../../../../../users"
+  userPrincipalName = "tftest-reviewer-${terraform_data.suffix.output}@${var.verified_domain}"
+  displayName       = "tftest-reviewer-${terraform_data.suffix.output}"
+  mailNickname      = "tftest-reviewer-${terraform_data.suffix.output}"
+  password          = random_password.reviewer.result
+  accountEnabled    = false
 }
 variable "review_start_date" {
   type        = string
@@ -90,24 +90,24 @@ variable "review_start_date" {
   }
 }
 module "group" {
-  source           = "../../../../../../groups"
-  display_name     = "tftest-review-${terraform_data.suffix.output}"
-  mail_nickname    = "tftest-review-${terraform_data.suffix.output}"
-  security_enabled = true
-  member_ids       = [module.member_one.id, module.member_two.id]
+  source          = "../../../../../../groups"
+  displayName     = "tftest-review-${terraform_data.suffix.output}"
+  mailNickname    = "tftest-review-${terraform_data.suffix.output}"
+  securityEnabled = true
+  member_ids      = [module.member_one.id, module.member_two.id]
 }
 module "definition" {
   source                    = "../../.."
   count                     = var.enabled ? 1 : 0
-  display_name              = "tftest-review-${terraform_data.suffix.output}"
-  description_for_admins    = var.description
-  description_for_reviewers = "Disposable offline-subject review; do not act"
+  displayName               = "tftest-review-${terraform_data.suffix.output}"
+  descriptionForAdmins      = var.description
+  descriptionForReviewers   = "Disposable offline-subject review; do not act"
   group_id                  = module.group.id
   membership_scope          = "transitive"
   reviewer_user_ids         = [module.reviewer.id]
   depends_on                = [terraform_data.future_date]
   start_date                = var.review_start_date
-  recurrence                = { type = "weekly", interval = 1, number_of_occurrences = 1 }
+  recurrence                = { type = "weekly", interval = 1, numberOfOccurrences = 1 }
   instance_duration_in_days = 1
 }
 resource "terraform_data" "future_date" {

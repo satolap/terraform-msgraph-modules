@@ -4,7 +4,7 @@ locals {
     "content"     = var.content
     "@odata.type" = var.odata_type
     "title"       = var.title
-    "userTags"    = (var.user_tags == null ? null : [for item0 in var.user_tags : item0 if item0 != null])
+    "userTags"    = (var.userTags == null ? null : [for item0 in var.userTags : item0 if item0 != null])
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }
@@ -14,7 +14,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "sites/${urlencode(var.site_id)}/onenote/pages"
+  url                     = "sites/${urlencode(var.site-id)}/onenote/pages"
   api_version             = "v1.0"
   update_method           = "PATCH"
   body                    = local.body

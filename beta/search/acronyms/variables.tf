@@ -4,7 +4,7 @@ variable "description" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The search answer name that is displayed in search results."
   type        = string
   default     = null
@@ -17,7 +17,7 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "stands_for" {
+variable "standsFor" {
   description = "What the acronym stands for."
   type        = string
   default     = null
@@ -34,7 +34,7 @@ variable "state" {
   }
 }
 
-variable "web_url" {
+variable "webUrl" {
   description = "The URL link for the search answer. When users select this search answer from the search results, they're directed to the specified URL."
   type        = string
   default     = null

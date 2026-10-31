@@ -1,16 +1,16 @@
-variable "citation_jurisdiction" {
+variable "citationJurisdiction" {
   description = "Represents the jurisdiction or agency that published the citation."
   type        = string
   default     = null
 }
 
-variable "citation_url" {
+variable "citationUrl" {
   description = "Represents the URL to the published citation."
   type        = string
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "Unique string that defines a filePlanDescriptorTemplate name."
   type        = string
   default     = null

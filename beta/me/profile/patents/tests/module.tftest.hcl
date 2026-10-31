@@ -42,10 +42,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    allowed_audiences = "me"
-    is_pending        = false
-    graph_source      = { "type" = null }
-    sources           = [{}]
+    allowedAudiences = "me"
+    isPending        = false
+    graph_source     = { "type" = null }
+    sources          = [{}]
   }
 
   assert {
@@ -73,17 +73,17 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    allowed_audiences = "__graphmodules_invalid_enum__"
+    allowedAudiences = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.allowed_audiences]
+  expect_failures = [var.allowedAudiences]
 }
 
 run "flags_enum_combination" {
   command = plan
 
   variables {
-    allowed_audiences = "me, Family"
+    allowedAudiences = "me, Family"
   }
 
   assert {
@@ -96,10 +96,10 @@ run "invalid_flags_member" {
   command = plan
 
   variables {
-    allowed_audiences = "me,__graphmodules_invalid_enum__"
+    allowedAudiences = "me,__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.allowed_audiences]
+  expect_failures = [var.allowedAudiences]
 }
 
 run "timeouts_unset_sends_no_block" {

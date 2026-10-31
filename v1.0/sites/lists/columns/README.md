@@ -17,12 +17,12 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//v1.0/sites/lists/columns"
   version = "<version>"
 
-  site_id = "parent-object-id"
-  list_id = "parent-object-id"
+  site-id = "parent-object-id"
+  list-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -50,34 +50,34 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `site_id` | URL parameter `site-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `list_id` | URL parameter `list-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `site-id` | URL parameter `site-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `list-id` | URL parameter `list-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
 | `boolean` | `boolean` | `any` | no | no | in place |
 | `calculated` | `calculated` | `object({       odata_type = optional(string, "#microsoft.graph.calculatedColumn")       format = optional(string)       formula = optional(string)       outputType = optional(string)     })` | no | no | in place |
 | `choice` | `choice` | `object({       odata_type = optional(string, "#microsoft.graph.choiceColumn")       allowTextEntry = optional(bool)       choices = optional(list(string))       displayAs = optional(string)     })` | no | no | in place |
-| `column_group` | `columnGroup` | `string` | no | no | in place |
-| `content_approval_status` | `contentApprovalStatus` | `any` | no | no | in place |
+| `columnGroup` | `columnGroup` | `string` | no | no | in place |
+| `contentApprovalStatus` | `contentApprovalStatus` | `any` | no | no | in place |
 | `currency` | `currency` | `object({       odata_type = optional(string, "#microsoft.graph.currencyColumn")       locale = optional(string)     })` | no | no | in place |
-| `date_time` | `dateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeColumn")       displayAs = optional(string)       format = optional(string)     })` | no | no | in place |
-| `default_value` | `defaultValue` | `object({       odata_type = optional(string, "#microsoft.graph.defaultColumnValue")       formula = optional(string)       value = optional(string)     })` | no | no | in place |
+| `dateTime` | `dateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeColumn")       displayAs = optional(string)       format = optional(string)     })` | no | no | in place |
+| `defaultValue` | `defaultValue` | `object({       odata_type = optional(string, "#microsoft.graph.defaultColumnValue")       formula = optional(string)       value = optional(string)     })` | no | no | in place |
 | `description` | `description` | `string` | no | no | in place |
-| `display_name` | `displayName` | `string` | no | no | in place |
-| `enforce_unique_values` | `enforceUniqueValues` | `bool` | no | no | in place |
+| `displayName` | `displayName` | `string` | no | no | in place |
+| `enforceUniqueValues` | `enforceUniqueValues` | `bool` | no | no | in place |
 | `geolocation` | `geolocation` | `any` | no | no | in place |
 | `hidden` | `hidden` | `bool` | no | no | in place |
-| `hyperlink_or_picture` | `hyperlinkOrPicture` | `object({       odata_type = optional(string, "#microsoft.graph.hyperlinkOrPictureColumn")       isPicture = optional(bool)     })` | no | no | in place |
+| `hyperlinkOrPicture` | `hyperlinkOrPicture` | `object({       odata_type = optional(string, "#microsoft.graph.hyperlinkOrPictureColumn")       isPicture = optional(bool)     })` | no | no | in place |
 | `indexed` | `indexed` | `bool` | no | no | in place |
-| `is_deletable` | `isDeletable` | `bool` | no | no | in place |
-| `is_sealed` | `isSealed` | `bool` | no | no | in place |
+| `isDeletable` | `isDeletable` | `bool` | no | no | in place |
+| `isSealed` | `isSealed` | `bool` | no | no | in place |
 | `lookup` | `lookup` | `object({       odata_type = optional(string, "#microsoft.graph.lookupColumn")       allowMultipleValues = optional(bool)       allowUnlimitedLength = optional(bool)       columnName = optional(string)       listId = optional(string)       primaryLookupColumnId = optional(string)     })` | no | no | in place |
 | `name` | `name` | `string` | no | no | in place |
 | `number` | `number` | `object({       odata_type = optional(string, "#microsoft.graph.numberColumn")       decimalPlaces = optional(string)       displayAs = optional(string)       maximum = optional(any)       minimum = optional(any)     })` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
-| `person_or_group` | `personOrGroup` | `object({       odata_type = optional(string, "#microsoft.graph.personOrGroupColumn")       allowMultipleSelection = optional(bool)       chooseFromType = optional(string)       displayAs = optional(string)     })` | no | no | in place |
-| `propagate_changes` | `propagateChanges` | `bool` | no | no | in place |
-| `read_only` | `readOnly` | `bool` | no | no | in place |
+| `personOrGroup` | `personOrGroup` | `object({       odata_type = optional(string, "#microsoft.graph.personOrGroupColumn")       allowMultipleSelection = optional(bool)       chooseFromType = optional(string)       displayAs = optional(string)     })` | no | no | in place |
+| `propagateChanges` | `propagateChanges` | `bool` | no | no | in place |
+| `readOnly` | `readOnly` | `bool` | no | no | in place |
 | `required` | `required` | `bool` | no | no | in place |
-| `source_column` | `sourceColumn` | `any` | no | no | in place |
+| `sourceColumn` | `sourceColumn` | `any` | no | no | in place |
 | `term` | `term` | `object({       odata_type = optional(string, "#microsoft.graph.termColumn")       allowMultipleValues = optional(bool)       parentTerm = optional(any)       showFullyQualifiedName = optional(bool)       termSet = optional(any)     })` | no | no | in place |
 | `text` | `text` | `object({       odata_type = optional(string, "#microsoft.graph.textColumn")       allowMultipleLines = optional(bool)       appendChangesToExistingText = optional(bool)       linesForEditing = optional(number)       maxLength = optional(number)       textType = optional(string)     })` | no | no | in place |
 | `thumbnail` | `thumbnail` | `any` | no | no | in place |

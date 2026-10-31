@@ -5,7 +5,7 @@
 
 This module's state and saved plans retain these declared values:
 
-Potential personal-data inputs: `principal_id`.
+Potential personal-data inputs: `principalId`.
 
 Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
 
@@ -27,7 +27,7 @@ Graph v1.0 `/identityGovernance/privilegedAccess/group/eligibilityScheduleReques
 endpoint, and read the resulting schedule and instance back for correlation.
 Inputs and folder names keep Graph's original case. This is PIM for Groups
 (`accessId` is `member` or `owner`), distinct from PIM for Microsoft Entra roles
-([`role-schedules`](../../../../role-management/directory/role-schedules/README.md))
+([`roleSchedules`](../../../../roleManagement/directory/roleSchedules/README.md))
 and from ordinary group membership or ownership resources.
 
 For a published release containing this module, replace `<version>` with that
@@ -40,9 +40,9 @@ module "group_eligibility" {
   source  = "satolap/modules/msgraph//verified/identityGovernance/privilegedAccess/group/eligibilityScheduleRequests"
   version = "<version>"
 
-  principal_id    = "00000000-0000-0000-0000-000000000001"
-  group_id        = "00000000-0000-0000-0000-000000000002"
-  access_id       = "member"
+  principalId     = "00000000-0000-0000-0000-000000000001"
+  groupId         = "00000000-0000-0000-0000-000000000002"
+  accessId        = "member"
   justification   = "Reviewed change CHG-1001"
   start_date_time = "2026-11-01T00:00:00Z"
   end_date_time   = "2026-11-01T08:00:00Z"
@@ -61,7 +61,7 @@ else is offered, even though the resource metadata lists more:
 - No recurrence, no permanent grant, no duration-based window. The window is
   always explicit and at most 24 hours: a conservative limit of this module, not
   a Graph rule.
-- No default for `access_id`: ownership is never granted by omission.
+- No default for `accessId`: ownership is never granted by omission.
 - Eligibility never silently becomes active membership or ownership. Activation is
   the principal's own `selfActivate` request and is not modelled here.
 
@@ -164,9 +164,9 @@ Sources: [PIM for Groups APIs in Microsoft Graph overview](https://learn.microso
 
 | Name | Description | Type | Default | On change |
 | --- | --- | --- | --- | --- |
-| principal_id | Lowercase object ID of the user or group receiving the access | `string` | required | kept from creation: a change is refused or ignored (see notes) |
-| group_id | Lowercase object ID of the PIM-governed group | `string` | required | kept from creation: a change is refused or ignored (see notes) |
-| access_id | `member` or `owner` | `string` | required | kept from creation: a change is refused or ignored (see notes) |
+| principalId | Lowercase object ID of the user or group receiving the access | `string` | required | kept from creation: a change is refused or ignored (see notes) |
+| groupId | Lowercase object ID of the PIM-governed group | `string` | required | kept from creation: a change is refused or ignored (see notes) |
+| accessId | `member` or `owner` | `string` | required | kept from creation: a change is refused or ignored (see notes) |
 | justification | Nonempty justification sent with the request | `string` | required | kept from creation: a change is refused or ignored (see notes) |
 | start_date_time | RFC 3339 start | `string` | required | kept from creation: a change is refused or ignored (see notes) |
 | end_date_time | RFC 3339 end, at least five minutes after the start and at most 24 hours later | `string` | required | kept from creation: a change is refused or ignored (see notes) |
@@ -202,12 +202,46 @@ permissions, licensing and an explicit, bounded principal and group population.
 
 Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
 
-- `principal_id`: kept from creation: a change is refused or ignored (see notes).
-- `group_id`: kept from creation: a change is refused or ignored (see notes).
-- `access_id`: kept from creation: a change is refused or ignored (see notes).
+- `principalId`: kept from creation: a change is refused or ignored (see notes).
+- `groupId`: kept from creation: a change is refused or ignored (see notes).
+- `accessId`: kept from creation: a change is refused or ignored (see notes).
 - `justification`: kept from creation: a change is refused or ignored (see notes).
 - `start_date_time`: kept from creation: a change is refused or ignored (see notes).
 - `end_date_time`: kept from creation: a change is refused or ignored (see notes).
 - `verification_delay_seconds`: no object change (validation or timing only).
 - `fail_on_verification_mismatch`: no object change (validation or timing only).
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /identityGovernance/privilegedAccess/group/eligibilityScheduleRequests` | DelegatedWork | `PrivilegedEligibilitySchedule.ReadWrite.AzureADGroup` | - | - |
+| `POST /identityGovernance/privilegedAccess/group/eligibilityScheduleRequests` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/privilegedAccess/group/eligibilityScheduleRequests` | Application | `PrivilegedEligibilitySchedule.ReadWrite.AzureADGroup` | - | - |
+| `GET /identityGovernance/privilegedAccess/group/eligibilitySchedules` | DelegatedWork | `PrivilegedEligibilitySchedule.Read.AzureADGroup` | - | - |
+| `GET /identityGovernance/privilegedAccess/group/eligibilitySchedules` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/privilegedAccess/group/eligibilitySchedules` | Application | `PrivilegedEligibilitySchedule.Read.AzureADGroup` | - | - |
+| `GET /identityGovernance/privilegedAccess/group/eligibilityScheduleInstances` | DelegatedWork | `PrivilegedEligibilitySchedule.Read.AzureADGroup` | - | - |
+| `GET /identityGovernance/privilegedAccess/group/eligibilityScheduleInstances` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/privilegedAccess/group/eligibilityScheduleInstances` | Application | `PrivilegedEligibilitySchedule.Read.AzureADGroup` | - | - |
+| `GET /identityGovernance/privilegedAccess/group/eligibilityScheduleRequests` | DelegatedWork | `PrivilegedEligibilitySchedule.Read.AzureADGroup` | - | - |
+| `GET /identityGovernance/privilegedAccess/group/eligibilityScheduleRequests` | DelegatedWork | `PrivilegedEligibilitySchedule.ReadWrite.AzureADGroup` | - | - |
+| `GET /identityGovernance/privilegedAccess/group/eligibilityScheduleRequests` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/privilegedAccess/group/eligibilityScheduleRequests` | Application | `PrivilegedEligibilitySchedule.Read.AzureADGroup` | - | - |
+| `GET /identityGovernance/privilegedAccess/group/eligibilityScheduleRequests` | Application | `PrivilegedEligibilitySchedule.ReadWrite.AzureADGroup` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /identityGovernance/privilegedAccess/group/eligibilityScheduleRequests` | `accessId`, `action`, `groupId`, `justification`, `principalId`, `scheduleInfo` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

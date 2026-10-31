@@ -44,7 +44,7 @@ What the module does, and what it does not:
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "partner_names" {
@@ -74,8 +74,8 @@ module "guests_group" {
   source  = "satolap/modules/msgraph//verified/groups"
   version = "<version>"
 
-  display_name          = module.partner_names.names.guests_group       # FabrikamCafe-guests
-  mail_nickname         = module.partner_names.names.guests_nickname    # fabrikam-cafe-guests
+  displayName          = module.partner_names.names.guests_group       # FabrikamCafe-guests
+  mailNickname         = module.partner_names.names.guests_nickname    # fabrikam-cafe-guests
   name_pattern          = module.partner_names.patterns.guests_group    # ^[A-Za-z0-9]+-guests$
   mail_nickname_pattern = module.partner_names.patterns.guests_nickname # ^[a-z0-9]+(?:-[a-z0-9]+)*-guests$
 }
@@ -198,21 +198,21 @@ the source, or the kind only rejects a blank name.
 
 | Kind | Name | Maximum length | Characters | Source |
 | --- | --- | --- | --- | --- |
-| `access_package` | Access package display name | 90 | any | `verified/identity-governance/entitlement-management/access-packages` |
+| `access_package` | Access package display name | 90 | any | `verified/identityGovernance/entitlementManagement/accessPackages` |
 | `access_review` | Access review display name | none | any | `verified/identityGovernance/accessReviews/definitions` |
-| `administrative_unit` | Administrative unit display name | 256 | any | `verified/directory/administrative-units` |
+| `administrative_unit` | Administrative unit display name | 256 | any | `verified/directory/administrativeUnits` |
 | `application` | Application display name | 120 | any | `verified/applications` |
-| `assignment_policy` | Assignment policy display name | 90 | any | `verified/identity-governance/entitlement-management/assignment-policies` |
+| `assignment_policy` | Assignment policy display name | 90 | any | `verified/identityGovernance/entitlementManagement/assignmentPolicies` |
 | `authentication_strength` | Custom authentication strength display name | none | any | `verified/policies/authenticationStrengthPolicies` |
-| `catalog` | Catalog display name | 90 | any | `verified/identity-governance/entitlement-management/catalogs` |
-| `conditional_access_policy` | Conditional Access policy display name | none | any | `verified/identity/conditional-access/policies` |
-| `connected_organization` | Connected organization display name | none | any | `verified/identity-governance/entitlement-management/connected-organizations` |
-| `custom_extension` | Entitlement management custom extension display name | none | any | `verified/identity-governance/entitlement-management/catalogs/custom-extensions` |
+| `catalog` | Catalog display name | 90 | any | `verified/identityGovernance/entitlementManagement/catalogs` |
+| `conditional_access_policy` | Conditional Access policy display name | none | any | `verified/identity/conditionalAccess/policies` |
+| `connected_organization` | Connected organization display name | none | any | `verified/identityGovernance/entitlementManagement/connectedOrganizations` |
+| `custom_extension` | Entitlement management custom extension display name | none | any | `verified/identityGovernance/entitlementManagement/catalogs/customWorkflowExtensions` |
 | `custom_task_extension` | Lifecycle workflows custom task extension display name | none | any | `verified/identityGovernance/lifecycleWorkflows/customTaskExtensions` |
 | `group` | Group display name | 256 | any | `verified/groups` |
 | `group_mail_nickname` | Group mail nickname | 64 | ASCII, without `@ ( ) \ [ ] " ; : < > ,` or a space | `verified/groups` |
 | `lifecycle_workflow` | Lifecycle workflow display name | none | any | `verified/identityGovernance/lifecycleWorkflows/workflows` |
-| `named_location` | Named location display name | none | any | `verified/identity/conditional-access/named-locations` |
+| `named_location` | Named location display name | none | any | `verified/identity/conditionalAccess/namedLocations` |
 | `role_definition` | Custom directory role display name | none | any | `verified/roleManagement/directory/roleDefinitions` |
 | `terms_of_use_agreement` | Terms of Use agreement display name | none | any | `verified/identityGovernance/termsOfUse/agreements` |
 | `user` | User display name | 256 | any | `verified/users` |
@@ -406,3 +406,14 @@ Terraform plans compare configuration and refreshed provider state. A plan that 
 - `kinds`: no object change (validation or timing only).
 - `transliterations`: no object change (validation or timing only).
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+This module makes no Microsoft Graph requests.
+<!-- permissions:end -->

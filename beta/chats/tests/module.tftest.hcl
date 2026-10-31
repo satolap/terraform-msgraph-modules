@@ -42,9 +42,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    chat_type      = "oneOnOne"
-    viewpoint      = { "isHidden" = null }
-    installed_apps = [{}]
+    chatType      = "oneOnOne"
+    viewpoint     = { "isHidden" = null }
+    installedApps = [{}]
   }
 
   assert {
@@ -67,10 +67,10 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    chat_type = "__graphmodules_invalid_enum__"
+    chatType = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.chat_type]
+  expect_failures = [var.chatType]
 }
 
 run "timeouts_unset_sends_no_block" {

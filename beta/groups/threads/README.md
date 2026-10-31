@@ -19,11 +19,11 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//beta/groups/threads"
   version = "<version>"
 
-  group_id = "parent-object-id"
+  group-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -51,17 +51,17 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `group_id` | URL parameter `group-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `cc_recipients` | `ccRecipients` | `any` | no | no | in place |
-| `has_attachments` | `hasAttachments` | `bool` | no | no | in place |
-| `is_locked` | `isLocked` | `bool` | no | no | in place |
-| `last_delivered_date_time` | `lastDeliveredDateTime` | `string` | no | no | in place |
+| `group-id` | URL parameter `group-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `ccRecipients` | `ccRecipients` | `any` | no | no | in place |
+| `hasAttachments` | `hasAttachments` | `bool` | no | no | in place |
+| `isLocked` | `isLocked` | `bool` | no | no | in place |
+| `lastDeliveredDateTime` | `lastDeliveredDateTime` | `string` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
 | `posts` | `posts` | `list(object({       odata_type = optional(string, "#microsoft.graph.post")       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))       categories = optional(list(string))       createdDateTime = optional(string)       from = optional(any)       hasAttachments = optional(bool)       importance = optional(string)       lastModifiedDateTime = optional(string)       mentions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.mention")       application = optional(string)       clientReference = optional(string)       createdBy = optional(any)       createdDateTime = optional(string)       deepLink = optional(string)       mentionText = optional(string)       mentioned = optional(any)       serverCreatedDateTime = optional(string)     })))       newParticipants = optional(any)       receivedDateTime = optional(string)       sender = optional(any)     }))` | no | no | in place |
 | `preview` | `preview` | `string` | no | no | in place |
-| `to_recipients` | `toRecipients` | `any` | no | no | in place |
+| `toRecipients` | `toRecipients` | `any` | no | no | in place |
 | `topic` | `topic` | `string` | no | no | in place |
-| `unique_senders` | `uniqueSenders` | `list(string)` | no | no | in place |
+| `uniqueSenders` | `uniqueSenders` | `list(string)` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

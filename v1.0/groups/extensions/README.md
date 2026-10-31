@@ -17,12 +17,12 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//v1.0/groups/extensions"
   version = "<version>"
 
-  group_id = "parent-object-id"
+  group-id = "parent-object-id"
   odata_type = "#microsoft.graph.openTypeExtension"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -50,7 +50,7 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `group_id` | URL parameter `group-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `group-id` | URL parameter `group-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
 | `odata_type` | `@odata.type` | `string` | yes | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 

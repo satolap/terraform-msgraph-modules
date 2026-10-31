@@ -42,10 +42,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    created_date_time = "2026-01-01T00:00:00Z"
-    has_attachments   = false
-    body              = { "content" = null }
-    categories        = ["example"]
+    createdDateTime = "2026-01-01T00:00:00Z"
+    hasAttachments  = false
+    body            = { "content" = null }
+    categories      = ["example"]
   }
 
   assert {

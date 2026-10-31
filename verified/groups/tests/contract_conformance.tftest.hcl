@@ -14,8 +14,8 @@ mock_provider "msgraph" {
 }
 
 variables {
-  display_name  = "Engineering"
-  mail_nickname = "engineering"
+  displayName  = "Engineering"
+  mailNickname = "engineering"
 }
 
 # A role-assignable group must have visibility Private or leave it unset; Microsoft Graph refuses the replacement after the old group is deleted.
@@ -23,10 +23,10 @@ run "allows_isassignabletorole_visibility" {
   command = plan
 
   variables {
-    group_types           = ["Unified"]
-    is_assignable_to_role = true
-    mail_enabled          = true
-    visibility            = "Private"
+    groupTypes         = ["Unified"]
+    isAssignableToRole = true
+    mailEnabled        = true
+    visibility         = "Private"
   }
 }
 
@@ -34,10 +34,10 @@ run "allows_isassignabletorole_visibility_absent" {
   command = plan
 
   variables {
-    group_types           = ["Unified"]
-    is_assignable_to_role = true
-    mail_enabled          = true
-    visibility            = null
+    groupTypes         = ["Unified"]
+    isAssignableToRole = true
+    mailEnabled        = true
+    visibility         = null
   }
 }
 
@@ -45,10 +45,10 @@ run "refuses_isassignabletorole_visibility_public" {
   command = plan
 
   variables {
-    group_types           = ["Unified"]
-    is_assignable_to_role = true
-    mail_enabled          = true
-    visibility            = "Public"
+    groupTypes         = ["Unified"]
+    isAssignableToRole = true
+    mailEnabled        = true
+    visibility         = "Public"
   }
 
   expect_failures = [msgraph_resource.group]
@@ -58,10 +58,10 @@ run "unrelated_isassignabletorole_visibility_public" {
   command = plan
 
   variables {
-    group_types           = ["Unified"]
-    is_assignable_to_role = false
-    mail_enabled          = true
-    visibility            = "Public"
+    groupTypes         = ["Unified"]
+    isAssignableToRole = false
+    mailEnabled        = true
+    visibility         = "Public"
   }
 }
 
@@ -69,10 +69,10 @@ run "refuses_isassignabletorole_visibility_hiddenmembership" {
   command = plan
 
   variables {
-    group_types           = ["Unified"]
-    is_assignable_to_role = true
-    mail_enabled          = true
-    visibility            = "HiddenMembership"
+    groupTypes         = ["Unified"]
+    isAssignableToRole = true
+    mailEnabled        = true
+    visibility         = "HiddenMembership"
   }
 
   expect_failures = [msgraph_resource.group]
@@ -82,10 +82,10 @@ run "unrelated_isassignabletorole_visibility_hiddenmembership" {
   command = plan
 
   variables {
-    group_types           = ["Unified"]
-    is_assignable_to_role = false
-    mail_enabled          = true
-    visibility            = "HiddenMembership"
+    groupTypes         = ["Unified"]
+    isAssignableToRole = false
+    mailEnabled        = true
+    visibility         = "HiddenMembership"
   }
 }
 
@@ -94,10 +94,10 @@ run "allows_isassignabletorole_securityenabled" {
   command = plan
 
   variables {
-    group_types           = ["Unified"]
-    is_assignable_to_role = true
-    mail_enabled          = true
-    security_enabled      = true
+    groupTypes         = ["Unified"]
+    isAssignableToRole = true
+    mailEnabled        = true
+    securityEnabled    = true
   }
 }
 
@@ -105,10 +105,10 @@ run "refuses_isassignabletorole_securityenabled" {
   command = plan
 
   variables {
-    group_types           = ["Unified"]
-    is_assignable_to_role = true
-    mail_enabled          = true
-    security_enabled      = false
+    groupTypes         = ["Unified"]
+    isAssignableToRole = true
+    mailEnabled        = true
+    securityEnabled    = false
   }
 
   expect_failures = [msgraph_resource.group]
@@ -118,10 +118,10 @@ run "unrelated_isassignabletorole_securityenabled" {
   command = plan
 
   variables {
-    group_types           = ["Unified"]
-    is_assignable_to_role = false
-    mail_enabled          = true
-    security_enabled      = false
+    groupTypes         = ["Unified"]
+    isAssignableToRole = false
+    mailEnabled        = true
+    securityEnabled    = false
   }
 }
 
@@ -130,9 +130,9 @@ run "allows_isassignabletorole_grouptypes" {
   command = plan
 
   variables {
-    group_types           = []
-    is_assignable_to_role = true
-    membership_rule       = "user.department -eq \"Sales\""
+    groupTypes         = []
+    isAssignableToRole = true
+    membershipRule     = "user.department -eq \"Sales\""
   }
 }
 
@@ -140,9 +140,9 @@ run "refuses_isassignabletorole_grouptypes" {
   command = plan
 
   variables {
-    group_types           = ["DynamicMembership"]
-    is_assignable_to_role = true
-    membership_rule       = "user.department -eq \"Sales\""
+    groupTypes         = ["DynamicMembership"]
+    isAssignableToRole = true
+    membershipRule     = "user.department -eq \"Sales\""
   }
 
   expect_failures = [msgraph_resource.group]
@@ -152,8 +152,8 @@ run "unrelated_isassignabletorole_grouptypes" {
   command = plan
 
   variables {
-    group_types           = ["DynamicMembership"]
-    is_assignable_to_role = false
-    membership_rule       = "user.department -eq \"Sales\""
+    groupTypes         = ["DynamicMembership"]
+    isAssignableToRole = false
+    membershipRule     = "user.department -eq \"Sales\""
   }
 }

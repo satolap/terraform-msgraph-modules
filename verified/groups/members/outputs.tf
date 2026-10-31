@@ -1,5 +1,5 @@
 output "id" {
-  description = "The provider's ID of the managed collection, groups/{group_id}/members. A reference to it waits until the membership is applied."
+  description = "The provider's ID of the managed collection, groups/{group-id}/members. A reference to it waits until the membership is applied."
   value       = msgraph_resource_collection.this.id
 }
 

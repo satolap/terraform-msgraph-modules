@@ -42,9 +42,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    assistant_name   = "example"
-    business_address = { "city" = null }
-    business_phones  = ["example"]
+    assistantName   = "example"
+    businessAddress = { "city" = null }
+    businessPhones  = ["example"]
   }
 
   assert {

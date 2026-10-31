@@ -17,11 +17,11 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//v1.0/users/calendars"
   version = "<version>"
 
-  user_id = "parent-object-id"
+  user-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -49,17 +49,17 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `user_id` | URL parameter `user-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `allowed_online_meeting_providers` | `allowedOnlineMeetingProviders` | `list(string)` | no | no | in place |
-| `calendar_permissions` | `calendarPermissions` | `list(object({       odata_type = optional(string, "#microsoft.graph.calendarPermission")       allowedRoles = optional(list(string))       isInsideOrganization = optional(bool)       isRemovable = optional(bool)       role = optional(string)     }))` | no | no | in place |
-| `can_edit` | `canEdit` | `bool` | no | no | in place |
-| `can_share` | `canShare` | `bool` | no | no | in place |
-| `can_view_private_items` | `canViewPrivateItems` | `bool` | no | no | in place |
+| `user-id` | URL parameter `user-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `allowedOnlineMeetingProviders` | `allowedOnlineMeetingProviders` | `list(string)` | no | no | in place |
+| `calendarPermissions` | `calendarPermissions` | `list(object({       odata_type = optional(string, "#microsoft.graph.calendarPermission")       allowedRoles = optional(list(string))       isInsideOrganization = optional(bool)       isRemovable = optional(bool)       role = optional(string)     }))` | no | no | in place |
+| `canEdit` | `canEdit` | `bool` | no | no | in place |
+| `canShare` | `canShare` | `bool` | no | no | in place |
+| `canViewPrivateItems` | `canViewPrivateItems` | `bool` | no | no | in place |
 | `color` | `color` | `string` | no | no | in place |
-| `default_online_meeting_provider` | `defaultOnlineMeetingProvider` | `string` | no | no | in place |
-| `is_default_calendar` | `isDefaultCalendar` | `bool` | no | no | in place |
-| `is_removable` | `isRemovable` | `bool` | no | no | in place |
-| `is_tallying_responses` | `isTallyingResponses` | `bool` | no | no | in place |
+| `defaultOnlineMeetingProvider` | `defaultOnlineMeetingProvider` | `string` | no | no | in place |
+| `isDefaultCalendar` | `isDefaultCalendar` | `bool` | no | no | in place |
+| `isRemovable` | `isRemovable` | `bool` | no | no | in place |
+| `isTallyingResponses` | `isTallyingResponses` | `bool` | no | no | in place |
 | `name` | `name` | `string` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
 | `owner` | `owner` | `object({       odata_type = optional(string, "#microsoft.graph.emailAddress")       address = optional(string)       name = optional(string)     })` | no | no | in place |

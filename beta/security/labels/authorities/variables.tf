@@ -1,4 +1,4 @@
-variable "display_name" {
+variable "displayName" {
   description = "Unique string that defines a filePlanDescriptorTemplate name."
   type        = string
   default     = null

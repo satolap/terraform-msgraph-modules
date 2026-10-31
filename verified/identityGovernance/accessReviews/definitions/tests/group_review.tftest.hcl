@@ -7,12 +7,12 @@ mock_provider "msgraph" {
 }
 
 variables {
-  display_name              = "Quarterly review of the owned group"
-  description_for_admins    = "Offline fixture"
-  description_for_reviewers = "No decisions are applied"
-  group_id                  = "11111111-1111-1111-1111-111111111111"
-  reviewer_user_ids         = ["22222222-2222-2222-2222-222222222222"]
-  start_date                = "2030-01-15"
+  displayName             = "Quarterly review of the owned group"
+  descriptionForAdmins    = "Offline fixture"
+  descriptionForReviewers = "No decisions are applied"
+  group_id                = "11111111-1111-1111-1111-111111111111"
+  reviewer_user_ids       = ["22222222-2222-2222-2222-222222222222"]
+  start_date              = "2030-01-15"
   recurrence = {
     type     = "weekly"
     interval = 1
@@ -95,10 +95,10 @@ run "monthly_recurrence_with_occurrences" {
 
   variables {
     recurrence = {
-      type                  = "absoluteMonthly"
-      interval              = 3
-      day_of_month          = 10
-      number_of_occurrences = 4
+      type                = "absoluteMonthly"
+      interval            = 3
+      dayOfMonth          = 10
+      numberOfOccurrences = 4
     }
     instance_duration_in_days = 14
   }
@@ -238,9 +238,9 @@ run "rejects_weekly_with_day_of_month" {
 
   variables {
     recurrence = {
-      type         = "weekly"
-      interval     = 1
-      day_of_month = 5
+      type       = "weekly"
+      interval   = 1
+      dayOfMonth = 5
     }
   }
 
@@ -265,9 +265,9 @@ run "rejects_zero_occurrences" {
 
   variables {
     recurrence = {
-      type                  = "weekly"
-      interval              = 1
-      number_of_occurrences = 0
+      type                = "weekly"
+      interval            = 1
+      numberOfOccurrences = 0
     }
   }
 
@@ -288,10 +288,10 @@ run "rejects_empty_descriptions" {
   command = plan
 
   variables {
-    description_for_admins = " "
+    descriptionForAdmins = " "
   }
 
-  expect_failures = [var.description_for_admins]
+  expect_failures = [var.descriptionForAdmins]
 }
 
 run "rejects_an_invalid_timeout" {
@@ -308,17 +308,17 @@ run "rejects_a_reviewer_description_over_256_characters" {
   command = plan
 
   variables {
-    description_for_reviewers = join("", [for i in range(257) : "x"])
+    descriptionForReviewers = join("", [for i in range(257) : "x"])
   }
 
-  expect_failures = [var.description_for_reviewers]
+  expect_failures = [var.descriptionForReviewers]
 }
 
 run "accepts_a_reviewer_description_of_exactly_256_characters" {
   command = plan
 
   variables {
-    description_for_reviewers = join("", [for i in range(256) : "x"])
+    descriptionForReviewers = join("", [for i in range(256) : "x"])
   }
 }
 
@@ -327,9 +327,9 @@ run "rejects_a_monthly_instance_longer_than_the_recurrence" {
 
   variables {
     recurrence = {
-      type         = "absoluteMonthly"
-      interval     = 1
-      day_of_month = 1
+      type       = "absoluteMonthly"
+      interval   = 1
+      dayOfMonth = 1
     }
     instance_duration_in_days = 29
   }
@@ -356,7 +356,7 @@ run "a_second_apply_updates_the_same_definition_in_place" {
   command = apply
 
   variables {
-    display_name                       = "Renamed review"
+    displayName                        = "Renamed review"
     reviewer_user_ids                  = ["22222222-2222-2222-2222-222222222222", "33333333-3333-3333-3333-333333333333"]
     justification_required_on_approval = true
   }
@@ -431,7 +431,7 @@ run "an_unchanged_scope_does_not_replace_the_definition" {
   variables {
     group_id         = "55555555-5555-5555-5555-555555555555"
     membership_scope = "direct"
-    display_name     = "Renamed again"
+    displayName      = "Renamed again"
   }
 
   override_resource {

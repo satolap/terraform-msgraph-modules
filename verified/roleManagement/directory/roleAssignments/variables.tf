@@ -9,25 +9,25 @@ variable "tenant_id" {
   }
 }
 
-variable "principal_id" {
+variable "principalId" {
   description = "Object ID of the principal receiving the permanent active directory role."
   type        = string
   nullable    = false
 
   validation {
-    condition     = can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.principal_id))
-    error_message = "principal_id must be an object ID (a GUID)."
+    condition     = can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.principalId))
+    error_message = "principalId must be an object ID (a GUID)."
   }
 }
 
-variable "role_definition_id" {
+variable "roleDefinitionId" {
   description = "Directory-specific role definition GUID. Set exactly one role selector."
   type        = string
   default     = null
 
   validation {
-    condition     = var.role_definition_id == null ? true : can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.role_definition_id))
-    error_message = "role_definition_id must be null or a GUID."
+    condition     = var.roleDefinitionId == null ? true : can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.roleDefinitionId))
+    error_message = "roleDefinitionId must be null or a GUID."
   }
 }
 
@@ -65,19 +65,19 @@ variable "role_type" {
   }
 }
 
-variable "directory_scope_id" {
+variable "directoryScopeId" {
   description = "Required explicit directory scope: /, /administrativeUnits/{GUID}, or /{application-object-GUID}. Application scope uses the object ID, not the client ID."
   type        = string
   nullable    = false
 
   validation {
-    condition     = can(regex("^/((administrativeUnits/)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})?$", var.directory_scope_id))
-    error_message = "directory_scope_id must be /, /administrativeUnits/{GUID}, or /{application-object-GUID}."
+    condition     = can(regex("^/((administrativeUnits/)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})?$", var.directoryScopeId))
+    error_message = "directoryScopeId must be /, /administrativeUnits/{GUID}, or /{application-object-GUID}."
   }
 }
 
 variable "scope_type" {
-  description = "Required explicit scope type: tenant, administrative_unit or application; must agree with directory_scope_id. Selects the scope-specific licensing rule."
+  description = "Required explicit scope type: tenant, administrative_unit or application; must agree with directoryScopeId. Selects the scope-specific licensing rule."
   type        = string
   nullable    = false
 

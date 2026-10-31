@@ -27,12 +27,12 @@ resource "terraform_data" "suffix" {
 }
 # No keys, passwords, redirect URIs, federated credentials or Graph permissions.
 module "client_application" {
-  source       = "../../../../applications"
-  display_name = "tftest-client-${terraform_data.suffix.output}"
+  source      = "../../../../applications"
+  displayName = "tftest-client-${terraform_data.suffix.output}"
 }
 module "client" {
-  source = "../../../../service-principals"
-  app_id = module.client_application.app_id
+  source = "../../../../servicePrincipals"
+  appId  = module.client_application.app_id
 }
 variable "verified_domain" {
   type = string
@@ -49,12 +49,12 @@ resource "random_password" "user" {
   min_special = 1
 }
 module "user" {
-  source              = "../../../../users"
-  user_principal_name = "tftest-grant-${terraform_data.suffix.output}@${var.verified_domain}"
-  display_name        = "tftest-grant-${terraform_data.suffix.output}"
-  mail_nickname       = "tftest-grant-${terraform_data.suffix.output}"
-  password            = random_password.user.result
-  account_enabled     = false
+  source            = "../../../../users"
+  userPrincipalName = "tftest-grant-${terraform_data.suffix.output}@${var.verified_domain}"
+  displayName       = "tftest-grant-${terraform_data.suffix.output}"
+  mailNickname      = "tftest-grant-${terraform_data.suffix.output}"
+  password          = random_password.user.result
+  accountEnabled    = false
 }
 resource "terraform_data" "scope_ids" {
   input = [uuid(), uuid()]
@@ -83,7 +83,7 @@ resource "msgraph_resource" "resource_application" {
   response_export_values = { app_id = "appId" }
 }
 # msgraph_resource plans output as unknown on any in-place update, and the
-# service-principals module replaces its service principal when app_id changes
+# servicePrincipals module replaces its service principal when app_id changes
 # (GB-msgraph-provider-614). Replacing the resource service principal changes
 # the grant's resourceId, which re-keys the grant. Pin appId, which never
 # changes for an application, and feed the pin's input, not its output.
@@ -96,8 +96,8 @@ resource "terraform_data" "resource_app_id" {
   }
 }
 module "resource" {
-  source = "../../../../service-principals"
-  app_id = terraform_data.resource_app_id.input
+  source = "../../../../servicePrincipals"
+  appId  = terraform_data.resource_app_id.input
 }
 module "grant" {
   source      = "../../.."

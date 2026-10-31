@@ -1,19 +1,19 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "allowedAudiences"     = var.allowed_audiences
-    "createdBy"            = var.created_by
-    "createdDateTime"      = var.created_date_time
-    "displayName"          = var.display_name
+    "allowedAudiences"     = var.allowedAudiences
+    "createdBy"            = var.createdBy
+    "createdDateTime"      = var.createdDateTime
+    "displayName"          = var.displayName
     "first"                = var.first
     "source"               = (var.graph_source == null ? null : { for key0, value0 in { "@odata.type" = var.graph_source["odata_type"], "type" = (var.graph_source["type"] == null ? null : [for item1 in var.graph_source["type"] : item1 if item1 != null]) } : key0 => value0 if value0 != null })
     "inference"            = (var.inference == null ? null : { for key0, value0 in { "@odata.type" = var.inference["odata_type"], "confidenceScore" = var.inference["confidenceScore"], "userHasVerifiedAccuracy" = var.inference["userHasVerifiedAccuracy"] } : key0 => value0 if value0 != null })
     "initials"             = var.initials
-    "isSearchable"         = var.is_searchable
-    "languageTag"          = var.language_tag
+    "isSearchable"         = var.isSearchable
+    "languageTag"          = var.languageTag
     "last"                 = var.last
-    "lastModifiedBy"       = var.last_modified_by
-    "lastModifiedDateTime" = var.last_modified_date_time
+    "lastModifiedBy"       = var.lastModifiedBy
+    "lastModifiedDateTime" = var.lastModifiedDateTime
     "maiden"               = var.maiden
     "middle"               = var.middle
     "nickname"             = var.nickname
@@ -31,7 +31,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "users/${urlencode(var.user_id)}/profile/names"
+  url                     = "users/${urlencode(var.user-id)}/profile/names"
   api_version             = "beta"
   update_method           = "PATCH"
   body                    = local.body

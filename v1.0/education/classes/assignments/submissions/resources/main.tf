@@ -1,8 +1,8 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "assignmentResourceUrl" = var.assignment_resource_url
-    "dependentResources"    = (var.dependent_resources == null ? null : [for item0 in var.dependent_resources : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "assignmentResourceUrl" = item0["assignmentResourceUrl"], "dependentResources" = (item0["dependentResources"] == null ? null : [for item2 in item0["dependentResources"] : item2 if item2 != null]), "resource" = item0["resource"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "assignmentResourceUrl" = var.assignmentResourceUrl
+    "dependentResources"    = (var.dependentResources == null ? null : [for item0 in var.dependentResources : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "assignmentResourceUrl" = item0["assignmentResourceUrl"], "dependentResources" = (item0["dependentResources"] == null ? null : [for item2 in item0["dependentResources"] : item2 if item2 != null]), "resource" = item0["resource"] } : key1 => value1 if value1 != null }) if item0 != null])
     "@odata.type"           = var.odata_type
     "resource"              = var.resource
   } : key => value if value != null }
@@ -14,7 +14,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "education/classes/${urlencode(var.education_class_id)}/assignments/${urlencode(var.education_assignment_id)}/submissions/${urlencode(var.education_submission_id)}/resources"
+  url                     = "education/classes/${urlencode(var.educationClass-id)}/assignments/${urlencode(var.educationAssignment-id)}/submissions/${urlencode(var.educationSubmission-id)}/resources"
   api_version             = "v1.0"
   update_method           = "PATCH"
   body                    = local.body

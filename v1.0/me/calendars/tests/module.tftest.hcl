@@ -42,10 +42,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    color                            = "auto"
-    can_edit                         = false
-    owner                            = { "address" = null }
-    allowed_online_meeting_providers = ["unknown"]
+    color                         = "auto"
+    canEdit                       = false
+    owner                         = { "address" = null }
+    allowedOnlineMeetingProviders = ["unknown"]
   }
 
   assert {

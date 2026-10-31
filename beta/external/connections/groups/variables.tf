@@ -1,11 +1,11 @@
-variable "external_connection_id" {
+variable "externalConnection-id" {
   description = "The unique identifier of externalConnection"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.external_connection_id)) > 0
-    error_message = "external_connection_id must not be empty."
+    condition     = length(trimspace(var.externalConnection-id)) > 0
+    error_message = "externalConnection-id must not be empty."
   }
 }
 
@@ -15,7 +15,7 @@ variable "description" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The friendly name of the external group. Optional."
   type        = string
   default     = null

@@ -42,10 +42,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    display_name    = "example"
-    allow_all_users = false
-    capabilities    = { "bottomMargins" = null }
-    allowed_groups  = [{}]
+    displayName   = "example"
+    allowAllUsers = false
+    capabilities  = { "bottomMargins" = null }
+    allowedGroups = [{}]
   }
 
   assert {

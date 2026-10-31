@@ -22,7 +22,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -52,7 +52,7 @@ This module has no reviewed replication retry.
 | --- | --- | --- | --- | --- | --- |
 | `created` | `created` | `object({       odata_type = optional(string, "#microsoft.graph.security.auditInfo")       by = optional(string)       dateTime = optional(string)     })` | no | no | in place |
 | `description` | `description` | `string` | no | no | in place |
-| `display_name` | `displayName` | `string` | no | no | in place |
+| `displayName` | `displayName` | `string` | no | no | in place |
 | `environments` | `environments` | `list(object({       odata_type = optional(string, "#microsoft.graph.security.environment")       kind = optional(string)     }))` | no | no | in place |
 | `modified` | `modified` | `object({       odata_type = optional(string, "#microsoft.graph.security.auditInfo")       by = optional(string)       dateTime = optional(string)     })` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |

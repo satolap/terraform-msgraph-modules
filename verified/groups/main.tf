@@ -1,15 +1,15 @@
 locals {
   graph_base = "https://graph.microsoft.com/${var.api_version}"
 
-  is_dynamic = contains(var.group_types, "DynamicMembership")
+  is_dynamic = contains(var.groupTypes, "DynamicMembership")
 
   body = merge(
     {
-      displayName     = var.display_name
-      mailNickname    = var.mail_nickname
-      mailEnabled     = var.mail_enabled
-      securityEnabled = var.security_enabled
-      groupTypes      = var.group_types
+      displayName     = var.displayName
+      mailNickname    = var.mailNickname
+      mailEnabled     = var.mailEnabled
+      securityEnabled = var.securityEnabled
+      groupTypes      = var.groupTypes
     },
     var.description != null ? { description = var.description } : {},
     var.visibility != null ? { visibility = var.visibility } : {},
@@ -17,9 +17,9 @@ locals {
     # Sending only true keeps a change between null and false, which keeps the
     # group, out of the body: the provider's PATCH carries only the keys that
     # changed or appeared, so it never sends a key that left the body.
-    var.is_assignable_to_role == true ? { isAssignableToRole = true } : {},
-    local.is_dynamic && var.membership_rule != null ? {
-      membershipRule                = var.membership_rule
+    var.isAssignableToRole == true ? { isAssignableToRole = true } : {},
+    local.is_dynamic && var.membershipRule != null ? {
+      membershipRule                = var.membershipRule
       membershipRuleProcessingState = "On"
     } : {},
     length(var.owner_ids) > 0 ? {
@@ -40,7 +40,7 @@ locals {
 # Microsoft 365 group must be unique.
 resource "terraform_data" "immutable" {
   input = {
-    is_assignable_to_role = var.is_assignable_to_role == true
+    is_assignable_to_role = var.isAssignableToRole == true
     hidden_membership     = var.visibility == "HiddenMembership"
   }
 }
@@ -60,8 +60,8 @@ resource "terraform_data" "immutable" {
 # catch a conversion that Graph ignored in that window.
 resource "terraform_data" "created" {
   input = {
-    mail_enabled = var.mail_enabled
-    unified      = contains(var.group_types, "Unified")
+    mail_enabled = var.mailEnabled
+    unified      = contains(var.groupTypes, "Unified")
   }
   triggers_replace = terraform_data.immutable.input
 
@@ -91,48 +91,48 @@ resource "msgraph_resource" "group" {
     replace_triggered_by = [terraform_data.immutable, terraform_data.created]
 
     precondition {
-      condition     = !local.is_dynamic || try(length(trimspace(var.membership_rule)) > 0, false)
-      error_message = "membership_rule is required when group_types includes \"DynamicMembership\"."
+      condition     = !local.is_dynamic || try(length(trimspace(var.membershipRule)) > 0, false)
+      error_message = "membershipRule is required when groupTypes includes \"DynamicMembership\"."
     }
     precondition {
-      condition     = contains(var.group_types, "Unified") ? var.mail_enabled : (!var.mail_enabled && var.security_enabled)
+      condition     = contains(var.groupTypes, "Unified") ? var.mailEnabled : (!var.mailEnabled && var.securityEnabled)
       error_message = "Microsoft Graph can create mail-enabled Unified groups or non-mail-enabled security groups; distribution and mail-enabled security groups are read-only."
     }
     precondition {
       # Defence in depth: today the mail/security precondition above already refuses
       # a mail_enabled change that is not paired with Unified.
-      condition     = var.mail_enabled == terraform_data.created.input.mail_enabled
-      error_message = "mail_enabled cannot be changed on an existing group: Microsoft Learn's update group page does not list mailEnabled as updatable. Create a new group with the other setting and migrate its members and references."
+      condition     = var.mailEnabled == terraform_data.created.input.mail_enabled
+      error_message = "mailEnabled cannot be changed on an existing group: Microsoft Learn's update group page does not list mailEnabled as updatable. Create a new group with the other setting and migrate its members and references."
     }
     precondition {
-      condition     = contains(var.group_types, "Unified") == terraform_data.created.input.unified
-      error_message = "\"Unified\" cannot be added to or removed from group_types of an existing group: Microsoft Graph documents no conversion between a security group and a Microsoft 365 group. Create a new group and migrate its members and references. Adding or removing \"DynamicMembership\" is allowed."
+      condition     = contains(var.groupTypes, "Unified") == terraform_data.created.input.unified
+      error_message = "\"Unified\" cannot be added to or removed from groupTypes of an existing group: Microsoft Graph documents no conversion between a security group and a Microsoft 365 group. Create a new group and migrate its members and references. Adding or removing \"DynamicMembership\" is allowed."
     }
     precondition {
       condition     = !local.is_dynamic || length(var.member_ids) == 0
-      error_message = "Dynamic groups derive members from membership_rule; member_ids must be empty."
+      error_message = "Dynamic groups derive members from membershipRule; member_ids must be empty."
     }
     precondition {
-      condition     = var.is_assignable_to_role != true || (var.security_enabled && !local.is_dynamic)
-      error_message = "Role-assignable groups must have security_enabled=true and cannot have dynamic membership."
+      condition     = var.isAssignableToRole != true || (var.securityEnabled && !local.is_dynamic)
+      error_message = "Role-assignable groups must have securityEnabled=true and cannot have dynamic membership."
     }
     # A change of either create-only input deletes the group before Graph sees
     # the new one, so a combination that Graph refuses must stop the plan.
     precondition {
-      condition     = var.is_assignable_to_role != true || var.visibility == null || var.visibility == "Private"
+      condition     = var.isAssignableToRole != true || var.visibility == null || var.visibility == "Private"
       error_message = "Role-assignable groups are always Private: leave visibility null or set it to \"Private\"."
     }
     precondition {
-      condition     = var.visibility != "HiddenMembership" || contains(var.group_types, "Unified")
-      error_message = "visibility \"HiddenMembership\" applies only to Microsoft 365 groups: add \"Unified\" to group_types or choose another visibility."
+      condition     = var.visibility != "HiddenMembership" || contains(var.groupTypes, "Unified")
+      error_message = "visibility \"HiddenMembership\" applies only to Microsoft 365 groups: add \"Unified\" to groupTypes or choose another visibility."
     }
     precondition {
-      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.display_name))
-      error_message = "display_name \"${var.display_name}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set display_name to a value that matches, or change name_pattern."
+      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.displayName))
+      error_message = "displayName \"${var.displayName}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set displayName to a value that matches, or change name_pattern."
     }
     precondition {
-      condition     = var.mail_nickname_pattern == null || can(regex(var.mail_nickname_pattern, var.mail_nickname))
-      error_message = "mail_nickname \"${var.mail_nickname}\" does not match mail_nickname_pattern \"${var.mail_nickname_pattern == null ? "" : var.mail_nickname_pattern}\". Set mail_nickname to a value that matches, or change mail_nickname_pattern."
+      condition     = var.mail_nickname_pattern == null || can(regex(var.mail_nickname_pattern, var.mailNickname))
+      error_message = "mailNickname \"${var.mailNickname}\" does not match mail_nickname_pattern \"${var.mail_nickname_pattern == null ? "" : var.mail_nickname_pattern}\". Set mailNickname to a value that matches, or change mail_nickname_pattern."
     }
 
     # terraform_data.created is seeded from the configuration, so the first plan
@@ -142,12 +142,12 @@ resource "msgraph_resource" "group" {
     # provider plans output as unknown in an update (GB-msgraph-provider-614), so
     # they are decided after apply; a missing or null read-back fails closed.
     postcondition {
-      condition     = try(self.output.mail_enabled == var.mail_enabled, false)
-      error_message = "Microsoft Graph returned a mailEnabled value that differs from mail_enabled, or none. mailEnabled is not updatable on an existing group; the group was not changed to the configured setting."
+      condition     = try(self.output.mail_enabled == var.mailEnabled, false)
+      error_message = "Microsoft Graph returned a mailEnabled value that differs from mailEnabled, or none. mailEnabled is not updatable on an existing group; the group was not changed to the configured setting."
     }
     postcondition {
-      condition     = try(contains(self.output.group_types, "Unified") == contains(var.group_types, "Unified"), false)
-      error_message = "Microsoft Graph returned a groupTypes value whose Unified entry differs from group_types, or none. Unified is not updatable on an existing group; the group was not converted."
+      condition     = try(contains(self.output.group_types, "Unified") == contains(var.groupTypes, "Unified"), false)
+      error_message = "Microsoft Graph returned a groupTypes value whose Unified entry differs from groupTypes, or none. Unified is not updatable on an existing group; the group was not converted."
     }
   }
 }

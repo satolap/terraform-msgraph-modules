@@ -42,10 +42,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    connector_id         = "example"
-    ingested_items_count = 0
-    activity_settings    = { "urlToItemResolvers" = null }
-    groups               = [{}]
+    connectorId        = "example"
+    ingestedItemsCount = 0
+    activitySettings   = { "urlToItemResolvers" = null }
+    groups             = [{}]
   }
 
   assert {
@@ -73,17 +73,17 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    content_category = "__graphmodules_invalid_enum__"
+    contentCategory = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.content_category]
+  expect_failures = [var.contentCategory]
 }
 
 run "flags_enum_combination" {
   command = plan
 
   variables {
-    enabled_content_experiences = "search, Compliance"
+    enabledContentExperiences = "search, Compliance"
   }
 
   assert {
@@ -96,10 +96,10 @@ run "invalid_flags_member" {
   command = plan
 
   variables {
-    enabled_content_experiences = "search,__graphmodules_invalid_enum__"
+    enabledContentExperiences = "search,__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.enabled_content_experiences]
+  expect_failures = [var.enabledContentExperiences]
 }
 
 run "timeouts_unset_sends_no_block" {

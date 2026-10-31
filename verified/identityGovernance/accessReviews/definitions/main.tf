@@ -26,10 +26,10 @@ locals {
   # two object shapes would unify them to a map of strings.
   recurrence_range = merge(
     {
-      type      = var.recurrence.number_of_occurrences == null ? "noEnd" : "numbered"
+      type      = var.recurrence.numberOfOccurrences == null ? "noEnd" : "numbered"
       startDate = var.start_date
     },
-    var.recurrence.number_of_occurrences == null ? {} : { numberOfOccurrences = var.recurrence.number_of_occurrences },
+    var.recurrence.numberOfOccurrences == null ? {} : { numberOfOccurrences = var.recurrence.numberOfOccurrences },
   )
 
   # PUT expects every writable property, not only the changed ones, so every
@@ -38,9 +38,9 @@ locals {
   # instanceEnumerationScope, applyActions and others) are not sent and a PUT
   # may clear them; the README lists this limit.
   body = {
-    displayName             = var.display_name
-    descriptionForAdmins    = var.description_for_admins
-    descriptionForReviewers = var.description_for_reviewers
+    displayName             = var.displayName
+    descriptionForAdmins    = var.descriptionForAdmins
+    descriptionForReviewers = var.descriptionForReviewers
     scope = {
       "@odata.type" = "#microsoft.graph.accessReviewQueryScope"
       query         = local.scope_query
@@ -62,7 +62,7 @@ locals {
             type     = var.recurrence.type
             interval = var.recurrence.interval
           },
-          var.recurrence.type == "absoluteMonthly" ? { dayOfMonth = var.recurrence.day_of_month } : {},
+          var.recurrence.type == "absoluteMonthly" ? { dayOfMonth = var.recurrence.dayOfMonth } : {},
         )
         range = local.recurrence_range
       }
@@ -110,8 +110,8 @@ resource "msgraph_resource" "this" {
     replace_triggered_by = [terraform_data.scope]
 
     precondition {
-      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.display_name))
-      error_message = "display_name \"${var.display_name}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set display_name to a value that matches, or change name_pattern."
+      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.displayName))
+      error_message = "displayName \"${var.displayName}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set displayName to a value that matches, or change name_pattern."
     }
     precondition {
       condition     = length(setintersection(toset(local.reviewer_ids), toset(local.fallback_reviewer_ids))) == 0

@@ -5,7 +5,7 @@ mock_provider "msgraph" {
 }
 
 variables {
-  application_id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+  application-id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
   name           = "github-main"
   issuer         = "https://token.actions.githubusercontent.com"
   subject        = "repo:example-org/example-repo:ref:refs/heads/main"

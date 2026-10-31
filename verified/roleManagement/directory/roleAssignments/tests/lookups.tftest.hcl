@@ -23,18 +23,18 @@ override_data {
   values = { output = { roles = [], next_link = null } }
 }
 variables {
-  tenant_id          = "99999999-9999-4999-8999-999999999999"
-  scope_type         = "tenant"
-  directory_scope_id = "/"
-  principal_id       = "11111111-1111-4111-8111-111111111111"
-  role_definition_id = "22222222-2222-4222-8222-222222222222"
+  tenant_id        = "99999999-9999-4999-8999-999999999999"
+  scope_type       = "tenant"
+  directoryScopeId = "/"
+  principalId      = "11111111-1111-4111-8111-111111111111"
+  roleDefinitionId = "22222222-2222-4222-8222-222222222222"
 }
 
 run "resolves_template" {
   command = plan
   variables {
-    role_definition_id = null
-    template_id        = "33333333-3333-4333-8333-333333333333"
+    roleDefinitionId = null
+    template_id      = "33333333-3333-4333-8333-333333333333"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -49,8 +49,8 @@ run "resolves_template" {
 run "resolves_exact_name" {
   command = plan
   variables {
-    role_definition_id = null
-    role_display_name  = "Example role"
+    roleDefinitionId  = null
+    role_display_name = "Example role"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -65,8 +65,8 @@ run "resolves_exact_name" {
 run "escapes_odata_quotes" {
   command = plan
   variables {
-    role_definition_id = null
-    role_display_name  = "Example's role"
+    roleDefinitionId  = null
+    role_display_name = "Example's role"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -81,8 +81,8 @@ run "escapes_odata_quotes" {
 run "rejects_template_zero" {
   command = plan
   variables {
-    role_definition_id = null
-    template_id        = "33333333-3333-4333-8333-333333333333"
+    roleDefinitionId = null
+    template_id      = "33333333-3333-4333-8333-333333333333"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -94,8 +94,8 @@ run "rejects_template_zero" {
 run "rejects_template_ambiguous" {
   command = plan
   variables {
-    role_definition_id = null
-    template_id        = "33333333-3333-4333-8333-333333333333"
+    roleDefinitionId = null
+    template_id      = "33333333-3333-4333-8333-333333333333"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -107,8 +107,8 @@ run "rejects_template_ambiguous" {
 run "rejects_template_unrelated" {
   command = plan
   variables {
-    role_definition_id = null
-    template_id        = "33333333-3333-4333-8333-333333333333"
+    roleDefinitionId = null
+    template_id      = "33333333-3333-4333-8333-333333333333"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -120,8 +120,8 @@ run "rejects_template_unrelated" {
 run "rejects_template_incomplete" {
   command = plan
   variables {
-    role_definition_id = null
-    template_id        = "33333333-3333-4333-8333-333333333333"
+    roleDefinitionId = null
+    template_id      = "33333333-3333-4333-8333-333333333333"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -133,8 +133,8 @@ run "rejects_template_incomplete" {
 run "rejects_name_zero" {
   command = plan
   variables {
-    role_definition_id = null
-    role_display_name  = "Example role"
+    roleDefinitionId  = null
+    role_display_name = "Example role"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -146,8 +146,8 @@ run "rejects_name_zero" {
 run "rejects_name_ambiguous" {
   command = plan
   variables {
-    role_definition_id = null
-    role_display_name  = "Example role"
+    roleDefinitionId  = null
+    role_display_name = "Example role"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -159,8 +159,8 @@ run "rejects_name_ambiguous" {
 run "rejects_name_unrelated" {
   command = plan
   variables {
-    role_definition_id = null
-    role_display_name  = "Example role"
+    roleDefinitionId  = null
+    role_display_name = "Example role"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -172,8 +172,8 @@ run "rejects_name_unrelated" {
 run "rejects_name_incomplete" {
   command = plan
   variables {
-    role_definition_id = null
-    role_display_name  = "Example role"
+    roleDefinitionId  = null
+    role_display_name = "Example role"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -221,8 +221,8 @@ run "rejects_role_null_builtin" {
 run "rejects_template_null_collection" {
   command = plan
   variables {
-    role_definition_id = null
-    template_id        = "33333333-3333-4333-8333-333333333333"
+    roleDefinitionId = null
+    template_id      = "33333333-3333-4333-8333-333333333333"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -234,8 +234,8 @@ run "rejects_template_null_collection" {
 run "rejects_template_missing_collection" {
   command = plan
   variables {
-    role_definition_id = null
-    template_id        = "33333333-3333-4333-8333-333333333333"
+    roleDefinitionId = null
+    template_id      = "33333333-3333-4333-8333-333333333333"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -247,8 +247,8 @@ run "rejects_template_missing_collection" {
 run "rejects_template_invalid_identifier_collection" {
   command = plan
   variables {
-    role_definition_id = null
-    template_id        = "33333333-3333-4333-8333-333333333333"
+    roleDefinitionId = null
+    template_id      = "33333333-3333-4333-8333-333333333333"
   }
   override_data {
     target = data.msgraph_resource.roles

@@ -14,8 +14,8 @@ run "rejects_duplicate_role_ids" {
   command = plan
   variables {
     app_roles = [
-      { id = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab", display_name = "Read", description = "Read", value = "Read" },
-      { id = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab", display_name = "Write", description = "Write", value = "Write" },
+      { id = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab", displayName = "Read", description = "Read", value = "Read" },
+      { id = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab", displayName = "Write", description = "Write", value = "Write" },
     ]
   }
   expect_failures = [var.app_roles]
@@ -25,14 +25,14 @@ run "rejects_empty_allowed_member_types" {
   command = plan
   variables {
     app_roles = [
-      { id = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab", display_name = "Read", description = "Read", value = "Read", allowed_member_types = [] },
+      { id = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab", displayName = "Read", description = "Read", value = "Read", allowedMemberTypes = [] },
     ]
   }
   expect_failures = [var.app_roles]
 }
 
 variables {
-  display_name = "Engineering Internal Tool"
+  displayName = "Engineering Internal Tool"
 }
 
 run "creates_application_with_defaults" {
@@ -68,10 +68,10 @@ run "builds_app_roles" {
   variables {
     app_roles = [
       {
-        id           = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab"
-        display_name = "Contributor"
-        description  = "Can contribute"
-        value        = "Contributor"
+        id          = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab"
+        displayName = "Contributor"
+        description = "Can contribute"
+        value       = "Contributor"
       },
     ]
     web_redirect_uris = ["https://tool.contoso.com/auth"]
@@ -109,10 +109,10 @@ run "rejects_non_guid_app_role_id" {
   variables {
     app_roles = [
       {
-        id           = "not-a-guid"
-        display_name = "Contributor"
-        description  = "Can contribute"
-        value        = "Contributor"
+        id          = "not-a-guid"
+        displayName = "Contributor"
+        description = "Can contribute"
+        value       = "Contributor"
       },
     ]
   }
@@ -126,11 +126,11 @@ run "rejects_invalid_allowed_member_type" {
   variables {
     app_roles = [
       {
-        id                   = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab"
-        display_name         = "Contributor"
-        description          = "Can contribute"
-        value                = "Contributor"
-        allowed_member_types = ["Device"]
+        id                 = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab"
+        displayName        = "Contributor"
+        description        = "Can contribute"
+        value              = "Contributor"
+        allowedMemberTypes = ["Device"]
       },
     ]
   }
@@ -142,10 +142,10 @@ run "rejects_invalid_sign_in_audience" {
   command = plan
 
   variables {
-    sign_in_audience = "Everyone"
+    signInAudience = "Everyone"
   }
 
-  expect_failures = [var.sign_in_audience]
+  expect_failures = [var.signInAudience]
 }
 
 run "explicit_empty_collections_are_clear_requests" {
@@ -199,11 +199,11 @@ run "populated_collections_and_disabled_roles_are_preserved" {
     spa_redirect_uris           = ["https://example.org/spa"]
     public_client_redirect_uris = ["https://example.org/native"]
     app_roles = [{
-      id           = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab"
-      display_name = "Retiring role"
-      description  = "Disable before removing in a separate apply"
-      value        = "RetiringRole"
-      is_enabled   = false
+      id          = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab"
+      displayName = "Retiring role"
+      description = "Disable before removing in a separate apply"
+      value       = "RetiringRole"
+      isEnabled   = false
     }]
   }
   assert {

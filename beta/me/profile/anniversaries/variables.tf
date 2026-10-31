@@ -1,21 +1,21 @@
-variable "allowed_audiences" {
+variable "allowedAudiences" {
   description = "The audiences that are able to see the values contained within the associated entity. The possible values are: me, family, contacts, groupMembers, organization, federatedOrganizations, everyone, unknownFutureValue."
   type        = string
   default     = null
 
   validation {
-    condition     = var.allowed_audiences == null ? true : try(alltrue([for value in split(",", var.allowed_audiences) : contains(["me", "family", "contacts", "groupmembers", "organization", "federatedorganizations", "everyone"], lower(trimspace(value)))]), false)
-    error_message = "allowed_audiences must be one or more of the documented enum values, separated by commas."
+    condition     = var.allowedAudiences == null ? true : try(alltrue([for value in split(",", var.allowedAudiences) : contains(["me", "family", "contacts", "groupmembers", "organization", "federatedorganizations", "everyone"], lower(trimspace(value)))]), false)
+    error_message = "allowedAudiences must be one or more of the documented enum values, separated by commas."
   }
 }
 
-variable "created_by" {
+variable "createdBy" {
   description = "Provides the identifier of the user and/or application that created the entity."
   type        = any
   default     = null
 }
 
-variable "created_date_time" {
+variable "createdDateTime" {
   description = "Provides the dateTimeOffset for when the entity was created."
   type        = string
   default     = null
@@ -27,7 +27,7 @@ variable "date" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "Microsoft Graph displayName property."
   type        = string
   default     = null
@@ -52,19 +52,19 @@ variable "inference" {
   default = null
 }
 
-variable "is_searchable" {
+variable "isSearchable" {
   description = "Microsoft Graph isSearchable property."
   type        = bool
   default     = null
 }
 
-variable "last_modified_by" {
+variable "lastModifiedBy" {
   description = "Provides the identifier of the user and/or application that last modified the entity."
   type        = any
   default     = null
 }
 
-variable "last_modified_date_time" {
+variable "lastModifiedDateTime" {
   description = "Provides the dateTimeOffset for when the entity was created."
   type        = string
   default     = null

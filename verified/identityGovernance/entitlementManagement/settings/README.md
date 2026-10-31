@@ -25,7 +25,7 @@ the path migration (#119) moves them.
 
 The catalog creators setting is not part of this resource. Microsoft assigns it through the
 entitlement management role assignments, see the
-[role assignments module](../../../role-management/entitlement-management/role-assignments/README.md).
+[role assignments module](../../../roleManagement/entitlementManagement/roleAssignments/README.md).
 
 ## Usage
 
@@ -37,7 +37,7 @@ module "entitlement_management_settings" {
   version = "<version>"
 
   # Block guests when their last assignment ends, keep the account.
-  external_user_lifecycle_action = "blockSignIn"
+  externalUserLifecycleAction = "blockSignIn"
 }
 ```
 
@@ -48,9 +48,9 @@ module "entitlement_management_settings" {
   source  = "satolap/modules/msgraph//verified/identityGovernance/entitlementManagement/settings"
   version = "<version>"
 
-  external_user_lifecycle_action                     = "blockSignInAndDelete"
-  duration_until_external_user_deleted_after_blocked = "P30D"
-  allow_external_user_deletion                       = true
+  externalUserLifecycleAction                  = "blockSignInAndDelete"
+  durationUntilExternalUserDeletedAfterBlocked = "P30D"
+  allow_external_user_deletion                 = true
 }
 ```
 
@@ -76,8 +76,8 @@ Sources: [Entitlement management license requirements](https://learn.microsoft.c
 
 | Name | Description | Type | Default | Required | On change |
 |------|-------------|------|---------|----------| --- |
-| external_user_lifecycle_action | `externalUserLifecycleAction`: `none`, `blockSignIn` or `blockSignInAndDelete`. Null leaves it unmanaged | `string` | `null` | no | in place |
-| duration_until_external_user_deleted_after_blocked | `durationUntilExternalUserDeletedAfterBlocked`, whole days as an ISO 8601 duration such as `P30D`, no leading zeros; only with `blockSignInAndDelete`. Null leaves it unmanaged | `string` | `null` | no | in place |
+| externalUserLifecycleAction | `externalUserLifecycleAction`: `none`, `blockSignIn` or `blockSignInAndDelete`. Null leaves it unmanaged | `string` | `null` | no | in place |
+| durationUntilExternalUserDeletedAfterBlocked | `durationUntilExternalUserDeletedAfterBlocked`, whole days as an ISO 8601 duration such as `P30D`, no leading zeros; only with `blockSignInAndDelete`. Null leaves it unmanaged | `string` | `null` | no | in place |
 | allow_external_user_deletion | Required `true` to apply `blockSignInAndDelete`, and to restore a snapshot that holds it; changes nothing else | `bool` | `false` | no | no object change (validation or timing only) |
 | restore_previous_state | PATCH the owned settings back to the values captured at the first apply | `bool` | `false` | no | in place |
 | restore_over_changes | Let a restore overwrite a value that someone changed since the module last wrote it | `bool` | `false` | no | no object change (validation or timing only) |
@@ -227,9 +227,29 @@ prerequisites, bounded assertions and the acceptance that remains outstanding.
 
 Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
 
-- `external_user_lifecycle_action`: in place.
-- `duration_until_external_user_deleted_after_blocked`: in place.
+- `externalUserLifecycleAction`: in place.
+- `durationUntilExternalUserDeletedAfterBlocked`: in place.
 - `allow_external_user_deletion`: no object change (validation or timing only).
 - `restore_previous_state`: in place.
 - `restore_over_changes`: no object change (validation or timing only).
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `PATCH /identityGovernance/entitlementManagement/settings` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `PATCH /identityGovernance/entitlementManagement/settings` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /identityGovernance/entitlementManagement/settings` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/settings` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/settings` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/settings` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/settings` | Application | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/settings` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+<!-- permissions:end -->

@@ -2,12 +2,12 @@
 locals {
   typed_body = { for key, value in {
     "configuration"  = (var.configuration == null ? null : { for key0, value0 in { "@odata.type" = var.configuration["odata_type"], "contentUrl" = var.configuration["contentUrl"], "entityId" = var.configuration["entityId"], "removeUrl" = var.configuration["removeUrl"], "websiteUrl" = var.configuration["websiteUrl"] } : key0 => value0 if value0 != null })
-    "displayName"    = var.display_name
-    "messageId"      = var.message_id
+    "displayName"    = var.displayName
+    "messageId"      = var.messageId
     "@odata.type"    = var.odata_type
-    "sortOrderIndex" = var.sort_order_index
-    "teamsApp"       = var.teams_app
-    "teamsAppId"     = var.teams_app_id
+    "sortOrderIndex" = var.sortOrderIndex
+    "teamsApp"       = var.teamsApp
+    "teamsAppId"     = var.teamsAppId
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }
@@ -17,7 +17,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "chats/${urlencode(var.chat_id)}/tabs"
+  url                     = "chats/${urlencode(var.chat-id)}/tabs"
   api_version             = "beta"
   update_method           = "PATCH"
   body                    = local.body

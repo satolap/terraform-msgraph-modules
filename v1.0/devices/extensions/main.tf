@@ -11,7 +11,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "devices/${urlencode(var.device_id)}/extensions"
+  url                     = "devices/${urlencode(var.device-id)}/extensions"
   api_version             = "v1.0"
   update_method           = "PATCH"
   body                    = local.body

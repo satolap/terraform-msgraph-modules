@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "description" = var.description
-    "displayName" = var.display_name
+    "displayName" = var.displayName
     "members"     = (var.members == null ? null : [for item0 in var.members : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "type" = item0["type"] } : key1 => value1 if value1 != null }) if item0 != null])
     "@odata.type" = var.odata_type
   } : key => value if value != null }
@@ -14,7 +14,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "external/connections/${urlencode(var.external_connection_id)}/groups"
+  url                     = "external/connections/${urlencode(var.externalConnection-id)}/groups"
   api_version             = "v1.0"
   update_method           = "PATCH"
   body                    = local.body

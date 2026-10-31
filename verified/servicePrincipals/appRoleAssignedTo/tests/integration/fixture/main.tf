@@ -23,12 +23,12 @@ resource "terraform_data" "suffix" {
 }
 # No keys, passwords, redirect URIs, federated credentials or Graph permissions.
 module "client_application" {
-  source       = "../../../../../applications"
-  display_name = "tftest-client-${terraform_data.suffix.output}"
+  source      = "../../../../../applications"
+  displayName = "tftest-client-${terraform_data.suffix.output}"
 }
 module "client" {
-  source = "../../../../../service-principals"
-  app_id = module.client_application.app_id
+  source = "../../../.."
+  appId  = module.client_application.app_id
 }
 resource "terraform_data" "role_id" {
   input = uuid()
@@ -37,20 +37,20 @@ resource "terraform_data" "role_id" {
   }
 }
 module "resource_application" {
-  source       = "../../../../../applications"
-  display_name = "tftest-api-${terraform_data.suffix.output}"
+  source      = "../../../../../applications"
+  displayName = "tftest-api-${terraform_data.suffix.output}"
   app_roles = [{
-    id                   = terraform_data.role_id.output
-    display_name         = "tftest read"
-    description          = "Disposable API only; no downstream access"
-    value                = "tftest.read"
-    allowed_member_types = ["Application"]
-    is_enabled           = true
+    id                 = terraform_data.role_id.output
+    displayName        = "tftest read"
+    description        = "Disposable API only; no downstream access"
+    value              = "tftest.read"
+    allowedMemberTypes = ["Application"]
+    isEnabled          = true
   }]
 }
 module "resource" {
-  source = "../../../../../service-principals"
-  app_id = module.resource_application.app_id
+  source = "../../../.."
+  appId  = module.resource_application.app_id
 }
 module "assignment" {
   source       = "../../.."

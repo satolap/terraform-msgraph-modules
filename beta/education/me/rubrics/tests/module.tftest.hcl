@@ -42,9 +42,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    display_name = "example"
-    description  = { "content" = null }
-    levels       = [{}]
+    displayName = "example"
+    description = { "content" = null }
+    levels      = [{}]
   }
 
   assert {

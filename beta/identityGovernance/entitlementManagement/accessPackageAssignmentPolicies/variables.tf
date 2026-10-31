@@ -1,0 +1,226 @@
+variable "accessPackageCatalog" {
+  description = "Microsoft Graph accessPackageCatalog property."
+  type        = any
+  default     = null
+}
+
+variable "accessPackageId" {
+  description = "Identifier of the access package."
+  type        = string
+  default     = null
+}
+
+variable "accessPackageNotificationSettings" {
+  description = "Represents the settings for email notifications for requests to an access package."
+  type = object({
+    odata_type                       = optional(string, "#microsoft.graph.accessPackageNotificationSettings")
+    isAssignmentNotificationDisabled = optional(bool)
+  })
+  default = null
+}
+
+variable "accessReviewSettings" {
+  description = "Who must review, and how often, the assignments to the access package from this policy. This property is null if reviews aren't required."
+  type = object({
+    odata_type                      = optional(string, "#microsoft.graph.assignmentReviewSettings")
+    accessReviewTimeoutBehavior     = optional(string)
+    durationInDays                  = optional(number)
+    isAccessRecommendationEnabled   = optional(bool)
+    isAgenticExperienceEnabled      = optional(bool)
+    isApprovalJustificationRequired = optional(bool)
+    isEnabled                       = optional(bool)
+    recurrenceType                  = optional(string)
+    reviewerType                    = optional(string)
+    reviewers                       = optional(any)
+    startDateTime                   = optional(string)
+  })
+  default = null
+
+  validation {
+    condition     = (var.accessReviewSettings == null ? true : alltrue([(var.accessReviewSettings["accessReviewTimeoutBehavior"] == null ? true : alltrue([(var.accessReviewSettings["accessReviewTimeoutBehavior"] == null ? true : contains(["keepAccess", "removeAccess", "acceptAccessRecommendation"], var.accessReviewSettings["accessReviewTimeoutBehavior"]))]))]))
+    error_message = "accessReviewSettings: nested required attributes must be non-null and enum values must be supported input members."
+  }
+}
+
+variable "canExtend" {
+  description = "Indicates whether a user can extend the access package assignment duration after approval."
+  type        = bool
+  default     = null
+}
+
+variable "createdBy" {
+  description = "Microsoft Graph createdBy property."
+  type        = string
+  default     = null
+}
+
+variable "createdDateTime" {
+  description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
+  type        = string
+  default     = null
+}
+
+variable "customExtensionHandlers" {
+  description = "The collection of stages when to execute one or more custom access package workflow extensions. Supports $expand."
+  type = list(object({
+    odata_type      = optional(string, "#microsoft.graph.customExtensionHandler")
+    customExtension = optional(any)
+    stage           = optional(string)
+  }))
+  default = null
+
+  validation {
+    condition     = (var.customExtensionHandlers == null ? true : alltrue([alltrue([for input0 in var.customExtensionHandlers : (input0 == null ? true : alltrue([(input0["stage"] == null ? true : alltrue([(input0["stage"] == null ? true : contains(["assignmentRequestCreated", "assignmentRequestApproved", "assignmentRequestGranted", "assignmentRequestRemoved", "assignmentFourteenDaysBeforeExpiration", "assignmentOneDayBeforeExpiration"], input0["stage"]))]))]))])]))
+    error_message = "customExtensionHandlers: nested required attributes must be non-null and enum values must be supported input members."
+  }
+}
+
+variable "customExtensionStageSettings" {
+  description = "The collection of stages when to execute one or more custom access package workflow extensions. Supports $expand."
+  type = list(object({
+    odata_type      = optional(string, "#microsoft.graph.customExtensionStageSetting")
+    customExtension = optional(any)
+    stage           = optional(string)
+  }))
+  default = null
+
+  validation {
+    condition     = (var.customExtensionStageSettings == null ? true : alltrue([alltrue([for input0 in var.customExtensionStageSettings : (input0 == null ? true : alltrue([(input0["stage"] == null ? true : alltrue([(input0["stage"] == null ? true : contains(["assignmentRequestCreated", "assignmentRequestApproved", "assignmentRequestGranted", "assignmentRequestRemoved", "assignmentFourteenDaysBeforeExpiration", "assignmentOneDayBeforeExpiration"], input0["stage"]))]))]))])]))
+    error_message = "customExtensionStageSettings: nested required attributes must be non-null and enum values must be supported input members."
+  }
+}
+
+variable "description" {
+  description = "The description of the policy."
+  type        = string
+  default     = null
+}
+
+variable "displayName" {
+  description = "The display name of the policy. Supports $filter (eq)."
+  type        = string
+  default     = null
+}
+
+variable "durationInDays" {
+  description = "The number of days in which assignments from this policy last until they're expired."
+  type        = number
+  default     = null
+}
+
+variable "expirationDateTime" {
+  description = "The expiration date for assignments created in this policy. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
+  type        = string
+  default     = null
+}
+
+variable "modifiedBy" {
+  description = "Microsoft Graph modifiedBy property."
+  type        = string
+  default     = null
+}
+
+variable "modifiedDateTime" {
+  description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
+  type        = string
+  default     = null
+}
+
+variable "odata_type" {
+  description = "Microsoft Graph @odata.type property."
+  type        = string
+  default     = "#microsoft.graph.accessPackageAssignmentPolicy"
+  nullable    = false
+}
+
+variable "questions" {
+  description = "Questions that are posed to the  requestor."
+  type        = any
+  default     = null
+}
+
+variable "requestApprovalSettings" {
+  description = "Who must approve requests for access package in this policy."
+  type = object({
+    odata_type                       = optional(string, "#microsoft.graph.approvalSettings")
+    approvalMode                     = optional(string)
+    approvalStages                   = optional(any)
+    isApprovalRequired               = optional(bool)
+    isApprovalRequiredForExtension   = optional(bool)
+    isRequestorJustificationRequired = optional(bool)
+  })
+  default = null
+}
+
+variable "requestorSettings" {
+  description = "Who can request this access package from this policy."
+  type = object({
+    odata_type        = optional(string, "#microsoft.graph.requestorSettings")
+    acceptRequests    = optional(bool)
+    allowedRequestors = optional(any)
+    scopeType         = optional(string)
+  })
+  default = null
+}
+
+variable "verifiableCredentialSettings" {
+  description = "Settings for verifiable credentials set up through the Microsoft Entra Verified I D service. These settings represent the verifiable credentials that a requestor of an access package in this policy can present to be assigned the access package."
+  type = object({
+    odata_type = optional(string, "#microsoft.graph.verifiableCredentialSettings")
+    credentialTypes = optional(list(object({
+      odata_type     = optional(string, "#microsoft.graph.verifiableCredentialType")
+      credentialType = optional(string)
+      issuers        = optional(list(string))
+    })))
+  })
+  default   = null
+  sensitive = true
+}
+
+variable "timeouts" {
+  description = "Optional timeouts of the msgraph_resource, each a duration in whole hours, minutes or seconds greater than zero, such as \"30m\" or \"1h30m\". create, update and delete must be at least \"15s\": after each request the provider waits for consistent reads within the same timeout. Every value defaults to null, which keeps the provider defaults and sends no timeouts block. The reviewed replication retries of this module, where it has any, count against these timeouts."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+    delete = optional(string)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.read, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : (can(regex("^([0-9]+[hms])+$", t)) ? !can(regex("^(0+[hms])+$", t)) : false)
+    ])
+    error_message = "timeouts values must be durations in whole hours, minutes or seconds greater than zero, such as \"10m\" or \"1h30m\"."
+  }
+
+  validation {
+    condition = alltrue([
+      for t in [var.timeouts.create, var.timeouts.update, var.timeouts.delete] :
+      t == null ? true : try(sum([for m in regexall("([0-9]+)([hms])", t) : tonumber(m[0]) * lookup({ h = 3600, m = 60, s = 1 }, m[1])]) >= 15, true)
+    ])
+    error_message = "timeouts.create, timeouts.update and timeouts.delete must be at least \"15s\"."
+  }
+}
+
+variable "select_response" {
+  description = "Opt in to a configured-property GET selection; this narrows response and can remove fields consumers use."
+  type        = bool
+  default     = false
+  nullable    = false
+}
+
+variable "additional_properties" {
+  description = "Additional writable Graph properties using API field names. Explicit typed inputs take precedence. Null top-level values are omitted; callers must omit nested nulls in untyped values."
+  type        = any
+  default     = {}
+  nullable    = false
+  sensitive   = true
+
+  validation {
+    condition     = can(keys(var.additional_properties)) ? alltrue([for key in keys(var.additional_properties) : !contains(["accessPackage", "id"], key)]) : false
+    error_message = "additional_properties must be an object without documented read-only properties."
+  }
+}

@@ -19,11 +19,11 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//beta/sites/pages"
   version = "<version>"
 
-  site_id = "parent-object-id"
+  site-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -51,15 +51,15 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `site_id` | URL parameter `site-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `created_by_user` | `createdByUser` | `any` | no | no | in place |
+| `site-id` | URL parameter `site-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `createdByUser` | `createdByUser` | `any` | no | no | in place |
 | `description` | `description` | `string` | no | no | in place |
-| `last_modified_by_user` | `lastModifiedByUser` | `any` | no | no | in place |
+| `lastModifiedByUser` | `lastModifiedByUser` | `any` | no | no | in place |
 | `name` | `name` | `string` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
-| `page_layout` | `pageLayout` | `string` | no | no | in place |
-| `parent_reference` | `parentReference` | `object({       odata_type = optional(string, "#microsoft.graph.itemReference")       driveType = optional(string)       shareId = optional(string)       siteId = optional(string)     })` | no | no | in place |
-| `publishing_state` | `publishingState` | `object({       odata_type = optional(string, "#microsoft.graph.publicationFacet")       checkedOutBy = optional(any)     })` | no | no | in place |
+| `pageLayout` | `pageLayout` | `string` | no | no | in place |
+| `parentReference` | `parentReference` | `object({       odata_type = optional(string, "#microsoft.graph.itemReference")       driveType = optional(string)       shareId = optional(string)       siteId = optional(string)     })` | no | no | in place |
+| `publishingState` | `publishingState` | `object({       odata_type = optional(string, "#microsoft.graph.publicationFacet")       checkedOutBy = optional(any)     })` | no | no | in place |
 | `title` | `title` | `string` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 

@@ -17,12 +17,12 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//v1.0/users/todo/lists/tasks"
   version = "<version>"
 
-  user_id = "parent-object-id"
-  todo_task_list_id = "parent-object-id"
+  user-id = "parent-object-id"
+  todoTaskList-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -50,27 +50,27 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `user_id` | URL parameter `user-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `todo_task_list_id` | URL parameter `todoTaskList-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `attachment_sessions` | `attachmentSessions` | `list(object({       odata_type = optional(string, "#microsoft.graph.attachmentSession")       content = optional(string)       expirationDateTime = optional(string)       nextExpectedRanges = optional(list(string))     }))` | no | no | in place |
+| `user-id` | URL parameter `user-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `todoTaskList-id` | URL parameter `todoTaskList-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `attachmentSessions` | `attachmentSessions` | `list(object({       odata_type = optional(string, "#microsoft.graph.attachmentSession")       content = optional(string)       expirationDateTime = optional(string)       nextExpectedRanges = optional(list(string))     }))` | no | no | in place |
 | `attachments` | `attachments` | `any` | no | no | in place |
 | `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no | in place |
-| `body_last_modified_date_time` | `bodyLastModifiedDateTime` | `string` | no | no | in place |
+| `bodyLastModifiedDateTime` | `bodyLastModifiedDateTime` | `string` | no | no | in place |
 | `categories` | `categories` | `list(string)` | no | no | in place |
-| `checklist_items` | `checklistItems` | `list(object({       odata_type = optional(string, "#microsoft.graph.checklistItem")       checkedDateTime = optional(string)       createdDateTime = optional(string)       displayName = optional(string)       isChecked = optional(bool)     }))` | no | no | in place |
-| `completed_date_time` | `completedDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no | in place |
-| `created_date_time` | `createdDateTime` | `string` | no | no | in place |
-| `due_date_time` | `dueDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no | in place |
+| `checklistItems` | `checklistItems` | `list(object({       odata_type = optional(string, "#microsoft.graph.checklistItem")       checkedDateTime = optional(string)       createdDateTime = optional(string)       displayName = optional(string)       isChecked = optional(bool)     }))` | no | no | in place |
+| `completedDateTime` | `completedDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no | in place |
+| `createdDateTime` | `createdDateTime` | `string` | no | no | in place |
+| `dueDateTime` | `dueDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no | in place |
 | `extensions` | `extensions` | `any` | no | no | in place |
-| `has_attachments` | `hasAttachments` | `bool` | no | no | in place |
+| `hasAttachments` | `hasAttachments` | `bool` | no | no | in place |
 | `importance` | `importance` | `string` | no | no | in place |
-| `is_reminder_on` | `isReminderOn` | `bool` | no | no | in place |
-| `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no | in place |
-| `linked_resources` | `linkedResources` | `list(object({       odata_type = optional(string, "#microsoft.graph.linkedResource")       applicationName = optional(string)       displayName = optional(string)       externalId = optional(string)       webUrl = optional(string)     }))` | no | no | in place |
+| `isReminderOn` | `isReminderOn` | `bool` | no | no | in place |
+| `lastModifiedDateTime` | `lastModifiedDateTime` | `string` | no | no | in place |
+| `linkedResources` | `linkedResources` | `list(object({       odata_type = optional(string, "#microsoft.graph.linkedResource")       applicationName = optional(string)       displayName = optional(string)       externalId = optional(string)       webUrl = optional(string)     }))` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
 | `recurrence` | `recurrence` | `object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     })` | no | no | in place |
-| `reminder_date_time` | `reminderDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no | in place |
-| `start_date_time` | `startDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no | in place |
+| `reminderDateTime` | `reminderDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no | in place |
+| `startDateTime` | `startDateTime` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no | in place |
 | `status` | `status` | `string` | no | no | in place |
 | `title` | `title` | `string` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |

@@ -22,7 +22,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -51,42 +51,42 @@ This module has no reviewed replication retry.
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
 | `attachments` | `attachments` | `any` | no | no | in place |
-| `bcc_recipients` | `bccRecipients` | `any` | no | no | in place |
+| `bccRecipients` | `bccRecipients` | `any` | no | no | in place |
 | `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no | in place |
-| `body_preview` | `bodyPreview` | `string` | no | no | in place |
+| `bodyPreview` | `bodyPreview` | `string` | no | no | in place |
 | `categories` | `categories` | `list(string)` | no | no | in place |
-| `cc_recipients` | `ccRecipients` | `any` | no | no | in place |
-| `conversation_id` | `conversationId` | `string` | no | no | in place |
-| `conversation_index` | `conversationIndex` | `string` | no | no | in place |
-| `created_date_time` | `createdDateTime` | `string` | no | no | in place |
+| `ccRecipients` | `ccRecipients` | `any` | no | no | in place |
+| `conversationId` | `conversationId` | `string` | no | no | in place |
+| `conversationIndex` | `conversationIndex` | `string` | no | no | in place |
+| `createdDateTime` | `createdDateTime` | `string` | no | no | in place |
 | `extensions` | `extensions` | `any` | no | no | in place |
 | `flag` | `flag` | `object({       odata_type = optional(string, "#microsoft.graph.followupFlag")       completedDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       dueDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       flagStatus = optional(string)       startDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))     })` | no | no | in place |
 | `from` | `from` | `any` | no | no | in place |
-| `has_attachments` | `hasAttachments` | `bool` | no | no | in place |
+| `hasAttachments` | `hasAttachments` | `bool` | no | no | in place |
 | `importance` | `importance` | `string` | no | no | in place |
-| `inference_classification` | `inferenceClassification` | `string` | no | no | in place |
-| `internet_message_id` | `internetMessageId` | `string` | no | no | in place |
-| `is_delivery_receipt_requested` | `isDeliveryReceiptRequested` | `bool` | no | no | in place |
-| `is_draft` | `isDraft` | `bool` | no | no | in place |
-| `is_read` | `isRead` | `bool` | no | no | in place |
-| `is_read_receipt_requested` | `isReadReceiptRequested` | `bool` | no | no | in place |
-| `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no | in place |
+| `inferenceClassification` | `inferenceClassification` | `string` | no | no | in place |
+| `internetMessageId` | `internetMessageId` | `string` | no | no | in place |
+| `isDeliveryReceiptRequested` | `isDeliveryReceiptRequested` | `bool` | no | no | in place |
+| `isDraft` | `isDraft` | `bool` | no | no | in place |
+| `isRead` | `isRead` | `bool` | no | no | in place |
+| `isReadReceiptRequested` | `isReadReceiptRequested` | `bool` | no | no | in place |
+| `lastModifiedDateTime` | `lastModifiedDateTime` | `string` | no | no | in place |
 | `mentions` | `mentions` | `list(object({       odata_type = optional(string, "#microsoft.graph.mention")       application = optional(string)       clientReference = optional(string)       createdBy = optional(any)       createdDateTime = optional(string)       deepLink = optional(string)       mentionText = optional(string)       mentioned = optional(any)       serverCreatedDateTime = optional(string)     }))` | no | no | in place |
-| `mentions_preview` | `mentionsPreview` | `object({       odata_type = optional(string, "#microsoft.graph.mentionsPreview")     })` | no | no | in place |
-| `multi_value_extended_properties` | `multiValueExtendedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.multiValueLegacyExtendedProperty")       value = optional(list(string))     }))` | no | no | in place |
+| `mentionsPreview` | `mentionsPreview` | `object({       odata_type = optional(string, "#microsoft.graph.mentionsPreview")     })` | no | no | in place |
+| `multiValueExtendedProperties` | `multiValueExtendedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.multiValueLegacyExtendedProperty")       value = optional(list(string))     }))` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
-| `parent_folder_id` | `parentFolderId` | `string` | no | no | in place |
-| `received_date_time` | `receivedDateTime` | `string` | no | no | in place |
-| `reply_to` | `replyTo` | `any` | no | no | in place |
+| `parentFolderId` | `parentFolderId` | `string` | no | no | in place |
+| `receivedDateTime` | `receivedDateTime` | `string` | no | no | in place |
+| `replyTo` | `replyTo` | `any` | no | no | in place |
 | `sender` | `sender` | `any` | no | no | in place |
-| `sent_date_time` | `sentDateTime` | `string` | no | no | in place |
-| `single_value_extended_properties` | `singleValueExtendedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.singleValueLegacyExtendedProperty")       value = optional(string)     }))` | no | no | in place |
+| `sentDateTime` | `sentDateTime` | `string` | no | no | in place |
+| `singleValueExtendedProperties` | `singleValueExtendedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.singleValueLegacyExtendedProperty")       value = optional(string)     }))` | no | no | in place |
 | `subject` | `subject` | `string` | no | no | in place |
-| `to_recipients` | `toRecipients` | `any` | no | no | in place |
-| `unique_body` | `uniqueBody` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no | in place |
-| `unsubscribe_data` | `unsubscribeData` | `list(string)` | no | no | in place |
-| `unsubscribe_enabled` | `unsubscribeEnabled` | `bool` | no | no | in place |
-| `web_link` | `webLink` | `string` | no | no | in place |
+| `toRecipients` | `toRecipients` | `any` | no | no | in place |
+| `uniqueBody` | `uniqueBody` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no | in place |
+| `unsubscribeData` | `unsubscribeData` | `list(string)` | no | no | in place |
+| `unsubscribeEnabled` | `unsubscribeEnabled` | `bool` | no | no | in place |
+| `webLink` | `webLink` | `string` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

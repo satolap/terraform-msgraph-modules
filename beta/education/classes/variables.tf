@@ -1,4 +1,4 @@
-variable "assignment_categories" {
+variable "assignmentCategories" {
   description = "All categories associated with this class. Nullable."
   type = list(object({
     odata_type  = optional(string, "#microsoft.graph.educationCategory")
@@ -7,13 +7,13 @@ variable "assignment_categories" {
   default = null
 }
 
-variable "assignment_defaults" {
+variable "assignmentDefaults" {
   description = "Specifies class-level defaults respected by new assignments created in the class."
   type        = any
   default     = null
 }
 
-variable "assignment_settings" {
+variable "assignmentSettings" {
   description = "Specifies class-level assignments settings."
   type        = any
   default     = null
@@ -59,7 +59,7 @@ variable "assignments" {
   }
 }
 
-variable "class_code" {
+variable "classCode" {
   description = "Class code used by the school to identify the class."
   type        = string
   default     = null
@@ -78,7 +78,7 @@ variable "course" {
   default = null
 }
 
-variable "created_by" {
+variable "createdBy" {
   description = "Entity who created the class."
   type        = any
   default     = null
@@ -90,36 +90,36 @@ variable "description" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "Name of the class."
   type        = string
   default     = null
 }
 
-variable "external_id" {
+variable "externalId" {
   description = "ID of the class from the syncing system."
   type        = string
   default     = null
 }
 
-variable "external_name" {
+variable "externalName" {
   description = "Name of the class in the syncing system."
   type        = string
   default     = null
 }
 
-variable "external_source" {
+variable "externalSource" {
   description = "The type of external source this resource was generated from (automatically determined from externalSourceDetail). The possible values are: sis, lms, or manual."
   type        = string
   default     = null
 
   validation {
-    condition     = var.external_source == null ? true : contains(["sis", "manual"], var.external_source)
-    error_message = "external_source must be one of the documented enum values."
+    condition     = var.externalSource == null ? true : contains(["sis", "manual"], var.externalSource)
+    error_message = "externalSource must be one of the documented enum values."
   }
 }
 
-variable "external_source_detail" {
+variable "externalSourceDetail" {
   description = "The name of the external source from which this resource was generated."
   type        = string
   default     = null
@@ -137,7 +137,7 @@ variable "group" {
   default     = null
 }
 
-variable "mail_nickname" {
+variable "mailNickname" {
   description = "Mail name for sending email to all members, if this is enabled."
   type        = string
   default     = null

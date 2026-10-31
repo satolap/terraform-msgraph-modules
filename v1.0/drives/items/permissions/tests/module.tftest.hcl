@@ -5,8 +5,8 @@ run "minimal_request" {
   command = plan
 
   variables {
-    drive_id      = "test-parent-id"
-    drive_item_id = "test-parent-id"
+    drive-id     = "test-parent-id"
+    driveItem-id = "test-parent-id"
   }
 
   assert {
@@ -34,8 +34,8 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    drive_id        = "test-parent-id"
-    drive_item_id   = "test-parent-id"
+    drive-id        = "test-parent-id"
+    driveItem-id    = "test-parent-id"
     select_response = true
   }
 
@@ -49,9 +49,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    drive_id             = "test-parent-id"
-    drive_item_id        = "test-parent-id"
-    expiration_date_time = "2026-01-01T00:00:00Z"
+    drive-id           = "test-parent-id"
+    driveItem-id       = "test-parent-id"
+    expirationDateTime = "2026-01-01T00:00:00Z"
   }
 
   assert {
@@ -64,8 +64,8 @@ run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    drive_id      = "test-parent-id"
-    drive_item_id = "test-parent-id"
+    drive-id     = "test-parent-id"
+    driveItem-id = "test-parent-id"
   }
 
   assert {
@@ -78,9 +78,9 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    drive_id      = "test-parent-id"
-    drive_item_id = "test-parent-id"
-    timeouts      = { create = "45m", update = "20m", read = "7m" }
+    drive-id     = "test-parent-id"
+    driveItem-id = "test-parent-id"
+    timeouts     = { create = "45m", update = "20m", read = "7m" }
   }
 
   assert {
@@ -93,9 +93,9 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    drive_id      = "test-parent-id"
-    drive_item_id = "test-parent-id"
-    timeouts      = { create = "10s" }
+    drive-id     = "test-parent-id"
+    driveItem-id = "test-parent-id"
+    timeouts     = { create = "10s" }
   }
 
   expect_failures = [var.timeouts]
@@ -105,9 +105,9 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    drive_id      = "test-parent-id"
-    drive_item_id = "test-parent-id"
-    timeouts      = { update = "soon" }
+    drive-id     = "test-parent-id"
+    driveItem-id = "test-parent-id"
+    timeouts     = { update = "soon" }
   }
 
   expect_failures = [var.timeouts]
@@ -117,9 +117,9 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    drive_id      = "test-parent-id"
-    drive_item_id = "test-parent-id"
-    timeouts      = { delete = "0s" }
+    drive-id     = "test-parent-id"
+    driveItem-id = "test-parent-id"
+    timeouts     = { delete = "0s" }
   }
 
   expect_failures = [var.timeouts]

@@ -5,7 +5,7 @@ run "minimal_request" {
   command = plan
 
   variables {
-    education_class_id = "test-parent-id"
+    educationClass-id = "test-parent-id"
   }
 
   assert {
@@ -33,8 +33,8 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    education_class_id = "test-parent-id"
-    select_response    = true
+    educationClass-id = "test-parent-id"
+    select_response   = true
   }
 
   assert {
@@ -47,11 +47,11 @@ run "typed_request" {
   command = plan
 
   variables {
-    education_class_id     = "test-parent-id"
-    add_to_calendar_action = "none"
-    allow_late_submissions = false
-    instructions           = { "content" = null }
-    resources              = [{}]
+    educationClass-id    = "test-parent-id"
+    addToCalendarAction  = "none"
+    allowLateSubmissions = false
+    instructions         = { "content" = null }
+    resources            = [{}]
   }
 
   assert {
@@ -79,18 +79,18 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    education_class_id     = "test-parent-id"
-    add_to_calendar_action = "__graphmodules_invalid_enum__"
+    educationClass-id   = "test-parent-id"
+    addToCalendarAction = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.add_to_calendar_action]
+  expect_failures = [var.addToCalendarAction]
 }
 
 run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    education_class_id = "test-parent-id"
+    educationClass-id = "test-parent-id"
   }
 
   assert {
@@ -103,8 +103,8 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    education_class_id = "test-parent-id"
-    timeouts           = { create = "45m", update = "20m", read = "7m" }
+    educationClass-id = "test-parent-id"
+    timeouts          = { create = "45m", update = "20m", read = "7m" }
   }
 
   assert {
@@ -117,8 +117,8 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    education_class_id = "test-parent-id"
-    timeouts           = { create = "10s" }
+    educationClass-id = "test-parent-id"
+    timeouts          = { create = "10s" }
   }
 
   expect_failures = [var.timeouts]
@@ -128,8 +128,8 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    education_class_id = "test-parent-id"
-    timeouts           = { update = "soon" }
+    educationClass-id = "test-parent-id"
+    timeouts          = { update = "soon" }
   }
 
   expect_failures = [var.timeouts]
@@ -139,8 +139,8 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    education_class_id = "test-parent-id"
-    timeouts           = { delete = "0s" }
+    educationClass-id = "test-parent-id"
+    timeouts          = { delete = "0s" }
   }
 
   expect_failures = [var.timeouts]

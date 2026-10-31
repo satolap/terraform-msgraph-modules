@@ -6,7 +6,7 @@
 This module's state and saved plans retain these declared values:
 
 Sensitive inputs: `password`.
-Potential personal-data inputs: `given_name`, `surname`, `user_principal_name`.
+Potential personal-data inputs: `givenName`, `surname`, `userPrincipalName`.
 
 Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
 
@@ -40,22 +40,22 @@ management as:
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "developer" {
   source  = "satolap/modules/msgraph//verified/users"
   version = "<version>"
 
-  user_principal_name = "jdoe@contoso.com"
-  display_name        = "Jane Doe"
-  mail_nickname       = "jdoe"
-  password            = var.initial_password # sensitive; source from a vault, not hardcoded
-  given_name          = "Jane"
-  surname             = "Doe"
-  job_title           = "Software Engineer"
-  department          = "Engineering"
-  usage_location      = "US"
+  userPrincipalName = "jdoe@contoso.com"
+  displayName       = "Jane Doe"
+  mailNickname      = "jdoe"
+  password          = var.initial_password # sensitive; source from a vault, not hardcoded
+  givenName         = "Jane"
+  surname           = "Doe"
+  jobTitle          = "Software Engineer"
+  department        = "Engineering"
+  usageLocation     = "US"
 }
 ```
 
@@ -97,23 +97,23 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 | Name | Description | Type | Default | Required | On change |
 |------|-------------|------|---------|----------| --- |
-| user_principal_name | UPN (alias@verified-domain) | `string` | n/a | yes | in place |
-| display_name | Display name (1-256 characters) | `string` | n/a | yes | in place |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
-| mail_nickname | Mail alias | `string` | n/a | yes | in place |
-| mail_nickname_pattern | Regular expression (RE2, not anchored unless it says so) that mail_nickname must match, or the plan fails; null accepts any alias | `string` | `null` | no | no object change (validation or timing only) |
+| userPrincipalName | UPN (alias@verified-domain) | `string` | n/a | yes | in place |
+| displayName | Display name (1-256 characters) | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that displayName must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| mailNickname | Mail alias | `string` | n/a | yes | in place |
+| mail_nickname_pattern | Regular expression (RE2, not anchored unless it says so) that mailNickname must match, or the plan fails; null accepts any alias | `string` | `null` | no | no object change (validation or timing only) |
 | password | Initial password (sensitive) | `string` | n/a | yes | in place |
 | force_change_password_next_sign_in | Force password change on next sign-in | `bool` | `true` | no | in place |
-| account_enabled | Whether the account is enabled | `bool` | `true` | no | in place |
-| given_name | First name | `string` | `null` | no | in place |
+| accountEnabled | Whether the account is enabled | `bool` | `true` | no | in place |
+| givenName | First name | `string` | `null` | no | in place |
 | surname | Last name | `string` | `null` | no | in place |
-| job_title | Job title | `string` | `null` | no | in place |
+| jobTitle | Job title | `string` | `null` | no | in place |
 | department | Department | `string` | `null` | no | in place |
-| usage_location | Two-letter ISO 3166 country code | `string` | `null` | no | in place |
+| usageLocation | Two-letter ISO 3166 country code | `string` | `null` | no | in place |
 | additional_properties | Other writable user properties; cannot override explicit module inputs | `any` (object) | `{}` | no | in place |
 | api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no | in place |
 
-Unique values, inferred from the pinned metadata (declaration.json gives each source): `user_principal_name` within `/users`. Graph refuses a value already used in that scope.
+Unique values, inferred from the pinned metadata (declaration.json gives each source): `userPrincipalName` within `/users`. Graph refuses a value already used in that scope.
 
 ## Outputs
 
@@ -128,17 +128,17 @@ Unique values, inferred from the pinned metadata (declaration.json gives each so
 
 Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
 
-- `user_principal_name`: in place.
-- `display_name`: in place.
-- `mail_nickname`: in place.
+- `userPrincipalName`: in place.
+- `displayName`: in place.
+- `mailNickname`: in place.
 - `password`: in place.
 - `force_change_password_next_sign_in`: in place.
-- `account_enabled`: in place.
-- `given_name`: in place.
+- `accountEnabled`: in place.
+- `givenName`: in place.
 - `surname`: in place.
-- `job_title`: in place.
+- `jobTitle`: in place.
 - `department`: in place.
-- `usage_location`: in place.
+- `usageLocation`: in place.
 - `additional_properties`: in place.
 - `api_version`: in place.
 - `name_pattern`: no object change (validation or timing only).
@@ -151,23 +151,34 @@ Terraform plans compare configuration and refreshed provider state. A plan that 
 Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
 The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
 
-| Operation | Authentication | Least-privilege alternative | AlsoRequires |
-| --- | --- | --- | --- |
-| `POST /users` | DelegatedWork | `User.ReadWrite.All` | — |
-| `POST /users` | DelegatedPersonal | Unknown / not annotated | — |
-| `POST /users` | Application | `User.ReadWrite.All` | — |
-| `GET /users/{id}` | DelegatedWork | `User.ReadBasic.All` | — |
-| `GET /users/{id}` | DelegatedWork | `User.ReadWrite.All` | — |
-| `GET /users/{id}` | DelegatedPersonal | `User.Read` | — |
-| `GET /users/{id}` | DelegatedPersonal | `User.ReadWrite` | — |
-| `GET /users/{id}` | Application | `User.ReadBasic.All` | — |
-| `GET /users/{id}` | Application | `User.ReadWrite.All` | — |
-| `PATCH /users/{id}` | DelegatedWork | `User.ReadWrite.All` | — |
-| `PATCH /users/{id}` | DelegatedPersonal | `User.ReadWrite` | — |
-| `PATCH /users/{id}` | Application | `User.ReadWrite.All` | — |
-| `DELETE /users/{id}` | DelegatedWork | `User.DeleteRestore.All` | — |
-| `DELETE /users/{id}` | DelegatedWork | `User.ReadWrite.All` | — |
-| `DELETE /users/{id}` | DelegatedPersonal | Unknown / not annotated | — |
-| `DELETE /users/{id}` | Application | `User.DeleteRestore.All` | — |
-| `DELETE /users/{id}` | Application | `User.ReadWrite.All` | — |
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /users` | DelegatedWork | `User.ReadWrite.All` | - | - |
+| `POST /users` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /users` | Application | `User.ReadWrite.All` | - | - |
+| `GET /users/{id}` | DelegatedWork | `User.ReadBasic.All` | - | - |
+| `GET /users/{id}` | DelegatedWork | `User.ReadWrite.All` | - | - |
+| `GET /users/{id}` | DelegatedPersonal | `User.Read` | - | - |
+| `GET /users/{id}` | DelegatedPersonal | `User.ReadWrite` | - | - |
+| `GET /users/{id}` | Application | `User.ReadBasic.All` | - | - |
+| `GET /users/{id}` | Application | `User.ReadWrite.All` | - | - |
+| `DELETE /users/{id}` | DelegatedWork | `User.DeleteRestore.All` | - | - |
+| `DELETE /users/{id}` | DelegatedWork | `User.ReadWrite.All` | - | - |
+| `DELETE /users/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /users/{id}` | Application | `User.DeleteRestore.All` | - | - |
+| `DELETE /users/{id}` | Application | `User.ReadWrite.All` | - | - |
+| `PATCH /users/{id}` | DelegatedWork | `User.ReadWrite.All` | - | - |
+| `PATCH /users/{id}` | DelegatedPersonal | `User.ReadWrite` | - | - |
+| `PATCH /users/{id}` | Application | `User.ReadWrite.All` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /users` | `accountEnabled`, `department`, `displayName`, `givenName`, `jobTitle`, `mailNickname`, `passwordProfile`, `surname`, `usageLocation`, `userPrincipalName` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /users/{id}` | `accountEnabled`, `department`, `displayName`, `givenName`, `jobTitle`, `mailNickname`, `passwordProfile`, `surname`, `usageLocation`, `userPrincipalName` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
 <!-- permissions:end -->

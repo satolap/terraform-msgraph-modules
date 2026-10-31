@@ -5,10 +5,10 @@ run "minimal_request" {
   command = plan
 
   variables {
-    group_id               = "test-parent-id"
-    conversation_thread_id = "test-parent-id"
-    post_id                = "test-parent-id"
-    odata_type             = "#microsoft.graph.openTypeExtension"
+    group-id              = "test-parent-id"
+    conversationThread-id = "test-parent-id"
+    post-id               = "test-parent-id"
+    odata_type            = "#microsoft.graph.openTypeExtension"
   }
 
   assert {
@@ -36,11 +36,11 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    group_id               = "test-parent-id"
-    conversation_thread_id = "test-parent-id"
-    post_id                = "test-parent-id"
-    odata_type             = "#microsoft.graph.openTypeExtension"
-    select_response        = true
+    group-id              = "test-parent-id"
+    conversationThread-id = "test-parent-id"
+    post-id               = "test-parent-id"
+    odata_type            = "#microsoft.graph.openTypeExtension"
+    select_response       = true
   }
 
   assert {
@@ -53,10 +53,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    group_id               = "test-parent-id"
-    conversation_thread_id = "test-parent-id"
-    post_id                = "test-parent-id"
-    odata_type             = "#microsoft.graph.openTypeExtension"
+    group-id              = "test-parent-id"
+    conversationThread-id = "test-parent-id"
+    post-id               = "test-parent-id"
+    odata_type            = "#microsoft.graph.openTypeExtension"
   }
 
   assert {
@@ -69,10 +69,10 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    group_id               = "test-parent-id"
-    conversation_thread_id = "test-parent-id"
-    post_id                = "test-parent-id"
-    odata_type             = "__graphmodules_invalid_enum__"
+    group-id              = "test-parent-id"
+    conversationThread-id = "test-parent-id"
+    post-id               = "test-parent-id"
+    odata_type            = "__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.odata_type]
@@ -82,10 +82,10 @@ run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    group_id               = "test-parent-id"
-    conversation_thread_id = "test-parent-id"
-    post_id                = "test-parent-id"
-    odata_type             = "#microsoft.graph.openTypeExtension"
+    group-id              = "test-parent-id"
+    conversationThread-id = "test-parent-id"
+    post-id               = "test-parent-id"
+    odata_type            = "#microsoft.graph.openTypeExtension"
   }
 
   assert {
@@ -98,11 +98,11 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    group_id               = "test-parent-id"
-    conversation_thread_id = "test-parent-id"
-    post_id                = "test-parent-id"
-    odata_type             = "#microsoft.graph.openTypeExtension"
-    timeouts               = { create = "45m", update = "20m", read = "7m" }
+    group-id              = "test-parent-id"
+    conversationThread-id = "test-parent-id"
+    post-id               = "test-parent-id"
+    odata_type            = "#microsoft.graph.openTypeExtension"
+    timeouts              = { create = "45m", update = "20m", read = "7m" }
   }
 
   assert {
@@ -115,11 +115,11 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    group_id               = "test-parent-id"
-    conversation_thread_id = "test-parent-id"
-    post_id                = "test-parent-id"
-    odata_type             = "#microsoft.graph.openTypeExtension"
-    timeouts               = { create = "10s" }
+    group-id              = "test-parent-id"
+    conversationThread-id = "test-parent-id"
+    post-id               = "test-parent-id"
+    odata_type            = "#microsoft.graph.openTypeExtension"
+    timeouts              = { create = "10s" }
   }
 
   expect_failures = [var.timeouts]
@@ -129,11 +129,11 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    group_id               = "test-parent-id"
-    conversation_thread_id = "test-parent-id"
-    post_id                = "test-parent-id"
-    odata_type             = "#microsoft.graph.openTypeExtension"
-    timeouts               = { update = "soon" }
+    group-id              = "test-parent-id"
+    conversationThread-id = "test-parent-id"
+    post-id               = "test-parent-id"
+    odata_type            = "#microsoft.graph.openTypeExtension"
+    timeouts              = { update = "soon" }
   }
 
   expect_failures = [var.timeouts]
@@ -143,11 +143,11 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    group_id               = "test-parent-id"
-    conversation_thread_id = "test-parent-id"
-    post_id                = "test-parent-id"
-    odata_type             = "#microsoft.graph.openTypeExtension"
-    timeouts               = { delete = "0s" }
+    group-id              = "test-parent-id"
+    conversationThread-id = "test-parent-id"
+    post-id               = "test-parent-id"
+    odata_type            = "#microsoft.graph.openTypeExtension"
+    timeouts              = { delete = "0s" }
   }
 
   expect_failures = [var.timeouts]

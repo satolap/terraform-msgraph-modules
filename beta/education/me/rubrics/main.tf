@@ -2,7 +2,7 @@
 locals {
   typed_body = { for key, value in {
     "description" = (var.description == null ? null : { for key0, value0 in { "@odata.type" = var.description["odata_type"], "content" = var.description["content"], "contentType" = var.description["contentType"] } : key0 => value0 if value0 != null })
-    "displayName" = var.display_name
+    "displayName" = var.displayName
     "grading"     = var.grading
     "levels"      = (var.levels == null ? null : [for item0 in var.levels : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "description" = (item0["description"] == null ? null : { for key2, value2 in { "@odata.type" = item0["description"]["odata_type"], "content" = item0["description"]["content"], "contentType" = item0["description"]["contentType"] } : key2 => value2 if value2 != null }), "displayName" = item0["displayName"], "grading" = item0["grading"], "levelId" = item0["levelId"] } : key1 => value1 if value1 != null }) if item0 != null])
     "@odata.type" = var.odata_type

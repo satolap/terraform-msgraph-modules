@@ -1,7 +1,7 @@
 mock_provider "msgraph" {}
 
 variables {
-  application_id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+  application-id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
   name           = "github-main"
   issuer         = "https://token.actions.githubusercontent.com"
   subject        = "repo:example-org/example-repo:ref:refs/heads/main"
@@ -9,20 +9,20 @@ variables {
 
 run "rejects_empty_application_id" {
   command = plan
-  variables { application_id = "" }
-  expect_failures = [var.application_id]
+  variables { application-id = "" }
+  expect_failures = [var.application-id]
 }
 
 run "rejects_application_client_selector" {
   command = plan
-  variables { application_id = "applications(appId=example)" }
-  expect_failures = [var.application_id]
+  variables { application-id = "applications(appId=example)" }
+  expect_failures = [var.application-id]
 }
 
 run "rejects_application_id_with_suffix" {
   command = plan
-  variables { application_id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\n" }
-  expect_failures = [var.application_id]
+  variables { application-id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\n" }
+  expect_failures = [var.application-id]
 }
 
 run "rejects_empty_name" {

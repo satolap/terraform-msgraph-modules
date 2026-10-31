@@ -1,14 +1,14 @@
-variable "display_name" {
+variable "displayName" {
   description = "Display name of the application registration."
   type        = string
 
   validation {
-    condition     = length(var.display_name) > 0 && length(var.display_name) <= 120
-    error_message = "display_name must be between 1 and 120 characters."
+    condition     = length(var.displayName) > 0 && length(var.displayName) <= 120
+    error_message = "displayName must be between 1 and 120 characters."
   }
 }
 
-variable "sign_in_audience" {
+variable "signInAudience" {
   description = "Which Microsoft accounts are supported for the application."
   type        = string
   default     = "AzureADMyOrg"
@@ -19,8 +19,8 @@ variable "sign_in_audience" {
       "AzureADMultipleOrgs",
       "AzureADandPersonalMicrosoftAccount",
       "PersonalMicrosoftAccount",
-    ], var.sign_in_audience)
-    error_message = "sign_in_audience must be one of AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, or PersonalMicrosoftAccount."
+    ], var.signInAudience)
+    error_message = "signInAudience must be one of AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, or PersonalMicrosoftAccount."
   }
 }
 
@@ -69,11 +69,13 @@ variable "app_roles" {
   EOT
   type = list(object({
     id                   = string
-    display_name         = string
+    displayName          = string
     description          = string
     value                = string
-    allowed_member_types = optional(list(string), ["User"])
-    is_enabled           = optional(bool, true)
+    allowedMemberTypes   = optional(list(string), ["User"])
+    allowed_member_types = optional(any)
+    isEnabled            = optional(bool, true)
+    is_enabled           = optional(any)
   }))
   default = null
 
@@ -86,11 +88,11 @@ variable "app_roles" {
 
   validation {
     condition = alltrue([
-      for r in coalesce(var.app_roles, []) : length(r.allowed_member_types) > 0 && alltrue([
-        for t in r.allowed_member_types : contains(["User", "Application"], t)
+      for r in coalesce(var.app_roles, []) : length(r.allowedMemberTypes) > 0 && alltrue([
+        for t in r.allowedMemberTypes : contains(["User", "Application"], t)
       ])
     ])
-    error_message = "app_roles[*].allowed_member_types entries must be \"User\" and/or \"Application\"."
+    error_message = "app_roles[*].allowedMemberTypes entries must be \"User\" and/or \"Application\"."
   }
 
   validation {
@@ -101,6 +103,13 @@ variable "app_roles" {
   validation {
     condition     = length(distinct([for r in coalesce(var.app_roles, []) : r.value])) == length(coalesce(var.app_roles, []))
     error_message = "App role values must be unique because app_role_ids is keyed by value."
+  }
+
+  # legacy-names guard: v4.0.0 spelled these attributes in snake_case; the object type would otherwise
+  # drop them and fall back to the default.
+  validation {
+    condition     = !can(regex("\"(allowed_member_types|is_enabled)\":[^n]", jsonencode(var.app_roles)))
+    error_message = "app_roles no longer accepts the v4.0.0 snake_case attribute names; rename them to Graph's names (allowed_member_types -> allowedMemberTypes, is_enabled -> isEnabled). An old name that is silently dropped would fall back to its default."
   }
 }
 
@@ -116,7 +125,7 @@ variable "api_version" {
 }
 
 variable "name_pattern" {
-  description = "Regular expression (RE2 syntax, not anchored unless it says so) that display_name must match, such as the pattern of a naming convention. When it is set and display_name does not match, the plan fails. Null, the default, accepts any display_name."
+  description = "Regular expression (RE2 syntax, not anchored unless it says so) that displayName must match, such as the pattern of a naming convention. When it is set and displayName does not match, the plan fails. Null, the default, accepts any displayName."
   type        = string
   default     = null
 

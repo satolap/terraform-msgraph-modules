@@ -42,8 +42,8 @@ run "typed_request" {
   command = plan
 
   variables {
-    closed_date_time = "2026-01-01T00:00:00Z"
-    custodians       = [{}]
+    closedDateTime = "2026-01-01T00:00:00Z"
+    custodians     = [{}]
   }
 
   assert {

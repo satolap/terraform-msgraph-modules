@@ -1,14 +1,14 @@
-variable "display_name" {
+variable "displayName" {
   description = "Display name of the group."
   type        = string
 
   validation {
-    condition     = length(var.display_name) > 0 && length(var.display_name) <= 256
-    error_message = "display_name must be between 1 and 256 characters."
+    condition     = length(var.displayName) > 0 && length(var.displayName) <= 256
+    error_message = "displayName must be between 1 and 256 characters."
   }
 }
 
-variable "mail_nickname" {
+variable "mailNickname" {
   description = "The mail alias for the group, at most 64 characters. Microsoft Graph accepts only ASCII characters and none of these: @ ( ) \\ [ ] \" ; : < > , or a space. A period is allowed."
   type        = string
 
@@ -16,13 +16,13 @@ variable "mail_nickname" {
   # except the characters below. A period is not among them, and Exchange
   # aliases such as help.desk use one; only the update group page also lists it.
   validation {
-    condition     = can(regex("^[^@()\\\\\\[\\]\";:<>, \\x{80}-\\x{10FFFF}]+$", var.mail_nickname))
-    error_message = "mail_nickname must hold only ASCII characters and none of these: @ ( ) \\ [ ] \" ; : < > , or a space. A period is allowed."
+    condition     = can(regex("^[^@()\\\\\\[\\]\";:<>, \\x{80}-\\x{10FFFF}]+$", var.mailNickname))
+    error_message = "mailNickname must hold only ASCII characters and none of these: @ ( ) \\ [ ] \" ; : < > , or a space. A period is allowed."
   }
 
   validation {
-    condition     = length(var.mail_nickname) <= 64
-    error_message = "mail_nickname must be at most 64 characters long."
+    condition     = length(var.mailNickname) <= 64
+    error_message = "mailNickname must be at most 64 characters long."
   }
 }
 
@@ -32,26 +32,26 @@ variable "description" {
   default     = null
 }
 
-variable "security_enabled" {
+variable "securityEnabled" {
   description = "Whether the group is a security group."
   type        = bool
   default     = true
 }
 
-variable "mail_enabled" {
+variable "mailEnabled" {
   description = "Whether the group is mail-enabled. Mail-enabled security groups and Microsoft 365 groups have additional constraints; a plain security group should leave this false. Microsoft Graph does not list mailEnabled as updatable, so changing it on an existing group fails the plan."
   type        = bool
   default     = false
 }
 
-variable "group_types" {
+variable "groupTypes" {
   description = "The group type. Use [\"Unified\"] for a Microsoft 365 group, or [] for a security group. Dynamic membership adds \"DynamicMembership\". Adding or removing \"DynamicMembership\" updates an existing group in place; adding or removing \"Unified\" on an existing group fails the plan."
   type        = list(string)
   default     = []
 
   validation {
-    condition     = alltrue([for t in var.group_types : contains(["Unified", "DynamicMembership"], t)])
-    error_message = "group_types entries must be one of \"Unified\" or \"DynamicMembership\"."
+    condition     = alltrue([for t in var.groupTypes : contains(["Unified", "DynamicMembership"], t)])
+    error_message = "groupTypes entries must be one of \"Unified\" or \"DynamicMembership\"."
   }
 }
 
@@ -66,14 +66,14 @@ variable "visibility" {
   }
 }
 
-variable "is_assignable_to_role" {
+variable "isAssignableToRole" {
   description = "Whether Microsoft Entra roles can be assigned to the group. Microsoft Graph sets it only at creation, so changing it between true and false or null replaces the group. Requires the group to be a security group."
   type        = bool
   default     = null
 }
 
-variable "membership_rule" {
-  description = "Dynamic membership rule. Required when group_types includes \"DynamicMembership\"."
+variable "membershipRule" {
+  description = "Dynamic membership rule. Required when groupTypes includes \"DynamicMembership\"."
   type        = string
   default     = null
 }
@@ -102,7 +102,7 @@ variable "api_version" {
 }
 
 variable "name_pattern" {
-  description = "Regular expression (RE2 syntax, not anchored unless it says so) that display_name must match, such as the pattern of a naming convention. When it is set and display_name does not match, the plan fails. Null, the default, accepts any display_name."
+  description = "Regular expression (RE2 syntax, not anchored unless it says so) that displayName must match, such as the pattern of a naming convention. When it is set and displayName does not match, the plan fails. Null, the default, accepts any displayName."
   type        = string
   default     = null
 
@@ -113,7 +113,7 @@ variable "name_pattern" {
 }
 
 variable "mail_nickname_pattern" {
-  description = "Regular expression (RE2 syntax, not anchored unless it says so) that mail_nickname must match, such as the pattern of a naming convention. When it is set and mail_nickname does not match, the plan fails. Null, the default, accepts any mail_nickname."
+  description = "Regular expression (RE2 syntax, not anchored unless it says so) that mailNickname must match, such as the pattern of a naming convention. When it is set and mailNickname does not match, the plan fails. Null, the default, accepts any mailNickname."
   type        = string
   default     = null
 

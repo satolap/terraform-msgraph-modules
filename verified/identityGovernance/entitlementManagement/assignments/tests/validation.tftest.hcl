@@ -64,7 +64,7 @@ run "rejects_a_malformed_start_time" {
   command = plan
 
   variables {
-    schedule = { start_date_time = "tomorrow" }
+    schedule = { startDateTime = "tomorrow" }
   }
 
   expect_failures = [var.schedule]
@@ -94,7 +94,7 @@ run "rejects_an_end_with_the_wrong_type" {
   command = plan
 
   variables {
-    schedule = { expiration = { type = "noExpiration", end_date_time = "2027-01-01T00:00:00Z" } }
+    schedule = { expiration = { type = "noExpiration", endDateTime = "2027-01-01T00:00:00Z" } }
   }
 
   expect_failures = [var.schedule]
@@ -114,7 +114,7 @@ run "rejects_a_duration_with_the_wrong_type" {
   command = plan
 
   variables {
-    schedule = { expiration = { type = "afterDateTime", end_date_time = "2027-01-01T00:00:00Z", duration = "P1D" } }
+    schedule = { expiration = { type = "afterDateTime", endDateTime = "2027-01-01T00:00:00Z", duration = "P1D" } }
   }
 
   expect_failures = [var.schedule]
@@ -154,7 +154,7 @@ run "rejects_a_malformed_end_date" {
   command = plan
 
   variables {
-    schedule = { expiration = { type = "afterDateTime", end_date_time = "2027-01-01" } }
+    schedule = { expiration = { type = "afterDateTime", endDateTime = "2027-01-01" } }
   }
 
   expect_failures = [var.schedule]

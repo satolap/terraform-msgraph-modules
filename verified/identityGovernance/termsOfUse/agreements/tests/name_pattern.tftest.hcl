@@ -1,11 +1,11 @@
 mock_provider "msgraph" {}
 
 variables {
-  display_name = "Example ORG-DEV-Terms of use"
+  displayName = "Example ORG-DEV-Terms of use"
 
   default_file = {
     language       = "en"
-    file_name      = "TOU.pdf"
+    fileName       = "TOU.pdf"
     content_base64 = "JVBERi0xLjQgc3ludGhldGljIGVuZ2xpc2g="
   }
 }
@@ -14,7 +14,7 @@ run "accepts_any_display_name_without_name_pattern" {
   command = plan
 
   variables {
-    display_name = "Not following any convention"
+    displayName = "Not following any convention"
   }
 
   assert {

@@ -11,12 +11,12 @@ mock_provider "msgraph" {
 }
 
 variables {
-  display_name = "Grant manager access"
+  displayName = "Grant manager access"
 
   logic_app = {
-    subscription_id         = "11111111-1111-4111-8111-111111111111"
-    resource_group_name     = "rg-example"
-    logic_app_workflow_name = "example-logic-app"
+    subscriptionId       = "11111111-1111-4111-8111-111111111111"
+    resourceGroupName    = "rg-example"
+    logicAppWorkflowName = "example-logic-app"
   }
 
   authentication_resource_id = "22222222-2222-4222-8222-222222222222"
@@ -29,10 +29,10 @@ run "rejects_an_empty_display_name" {
   command = plan
 
   variables {
-    display_name = "  "
+    displayName = "  "
   }
 
-  expect_failures = [var.display_name]
+  expect_failures = [var.displayName]
 }
 
 run "rejects_a_subscription_id_that_is_not_a_guid" {
@@ -40,9 +40,9 @@ run "rejects_a_subscription_id_that_is_not_a_guid" {
 
   variables {
     logic_app = {
-      subscription_id         = "my-subscription"
-      resource_group_name     = "rg-example"
-      logic_app_workflow_name = "example-logic-app"
+      subscriptionId       = "my-subscription"
+      resourceGroupName    = "rg-example"
+      logicAppWorkflowName = "example-logic-app"
     }
   }
 
@@ -54,9 +54,9 @@ run "rejects_a_subscription_id_with_trailing_text" {
 
   variables {
     logic_app = {
-      subscription_id         = "11111111-1111-4111-8111-111111111111\n"
-      resource_group_name     = "rg-example"
-      logic_app_workflow_name = "example-logic-app"
+      subscriptionId       = "11111111-1111-4111-8111-111111111111\n"
+      resourceGroupName    = "rg-example"
+      logicAppWorkflowName = "example-logic-app"
     }
   }
 
@@ -68,9 +68,9 @@ run "rejects_an_empty_resource_group" {
 
   variables {
     logic_app = {
-      subscription_id         = "11111111-1111-4111-8111-111111111111"
-      resource_group_name     = ""
-      logic_app_workflow_name = "example-logic-app"
+      subscriptionId       = "11111111-1111-4111-8111-111111111111"
+      resourceGroupName    = ""
+      logicAppWorkflowName = "example-logic-app"
     }
   }
 
@@ -82,9 +82,9 @@ run "rejects_a_logic_app_name_with_a_path_separator" {
 
   variables {
     logic_app = {
-      subscription_id         = "11111111-1111-4111-8111-111111111111"
-      resource_group_name     = "rg-example"
-      logic_app_workflow_name = "group/app"
+      subscriptionId       = "11111111-1111-4111-8111-111111111111"
+      resourceGroupName    = "rg-example"
+      logicAppWorkflowName = "group/app"
     }
   }
 
@@ -96,9 +96,9 @@ run "rejects_a_logic_app_name_with_surrounding_space" {
 
   variables {
     logic_app = {
-      subscription_id         = "11111111-1111-4111-8111-111111111111"
-      resource_group_name     = "rg-example"
-      logic_app_workflow_name = " example-logic-app"
+      subscriptionId       = "11111111-1111-4111-8111-111111111111"
+      resourceGroupName    = "rg-example"
+      logicAppWorkflowName = " example-logic-app"
     }
   }
 

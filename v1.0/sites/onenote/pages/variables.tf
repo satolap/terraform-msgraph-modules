@@ -1,11 +1,11 @@
-variable "site_id" {
+variable "site-id" {
   description = "The unique identifier of site"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.site_id)) > 0
-    error_message = "site_id must not be empty."
+    condition     = length(trimspace(var.site-id)) > 0
+    error_message = "site-id must not be empty."
   }
 }
 
@@ -28,7 +28,7 @@ variable "title" {
   default     = null
 }
 
-variable "user_tags" {
+variable "userTags" {
   description = "Microsoft Graph userTags property."
   type        = list(string)
   default     = null

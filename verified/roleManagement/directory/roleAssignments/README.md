@@ -5,7 +5,7 @@
 
 This module's state and saved plans retain these declared values:
 
-Potential personal-data inputs: `principal_id`.
+Potential personal-data inputs: `principalId`.
 
 Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
 
@@ -24,12 +24,12 @@ Assurance: **verified offline-only**. No current live acceptance is recorded for
 
 Creates one **permanent active, direct** assignment through
 `POST /roleManagement/directory/roleAssignments` (v1.0). This grants privileges
-immediately. It is separate from [PIM role schedules](../../../role-management/directory/role-schedules/README.md),
+immediately. It is separate from [PIM role schedules](../../../roleManagement/directory/roleSchedules/README.md),
 which use schedule requests, eligibility, activation and PIM policy/licensing.
 This module creates neither a principal nor a role definition and never writes
 to either. Built-in definitions remain read-only references.
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 Availability in this source tree does not mean an existing release already
 includes the module.
 
@@ -40,11 +40,11 @@ module "hybrid_identity_administrator" {
   source  = "satolap/modules/msgraph//verified/roleManagement/directory/roleAssignments"
   version = "<version>"
 
-  tenant_id    = var.tenant_id
-  principal_id = var.hybrid_identity_administrator_principal_id
+  tenant_id   = var.tenant_id
+  principalId = var.hybrid_identity_administrator_principal_id
   # Explicit tenant-wide access; neither scope input has a default.
-  scope_type         = "tenant"
-  directory_scope_id = "/"
+  scope_type       = "tenant"
+  directoryScopeId = "/"
   # Microsoft's service-wide built-in template, resolved through roleDefinitions;
   # this is not a tenant's directory-specific role definition or assignment ID.
   template_id = "8ac3fc64-6eca-42ea-9e69-59f4c7b60eb2"
@@ -58,7 +58,7 @@ Administrator directory assignment does not provision those Azure permissions.
 
 ## Role and scope selection
 
-Set exactly one of `role_definition_id`, `template_id` or `role_display_name`.
+Set exactly one of `roleDefinitionId`, `template_id` or `role_display_name`.
 Template lookup reads the definition collection and matches `templateId` locally;
 the pinned list contract does not document filtering that property. Display-name
 lookup escapes OData quotes and requires an exact name. Zero, several, malformed
@@ -76,7 +76,7 @@ to the same role; prefer a stable template or definition ID.
 | `application` | `/{GUID}` | Application registration **object ID**, not client ID |
 
 Both scope inputs are required and reject null; neither defaults to tenant-wide
-access. State `scope_type = "tenant"` and `directory_scope_id = "/"` explicitly
+access. State `scope_type = "tenant"` and `directoryScopeId = "/"` explicitly
 for a tenant-wide assignment. This validates syntax and licensing selection,
 not whether a particular role works at that scope. Graph's unsupported role/scope
 refusal is surfaced unchanged; no role-to-scope allowlist is invented. `appScopeId`
@@ -233,12 +233,12 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 | Name | Description | Type | Default | Required | On change |
 | --- | --- | --- | --- | --- | --- |
 | tenant_id | Provider and CLI tenant; captured for cleanup | `string` | n/a | yes | replaces `msgraph_resource.assignment` |
-| principal_id | Assignee object GUID | `string` | n/a | yes | replaces `msgraph_resource.assignment` when its effect on `local.request_body` changes |
-| role_definition_id | Directory-specific definition GUID; exactly one selector | `string` | `null` | no | replaces `msgraph_resource.assignment` when `local.request_body`, `var.role_definition_id == null ? null : lower(var.role_definition_id)` changes |
+| principalId | Assignee object GUID | `string` | n/a | yes | replaces `msgraph_resource.assignment` when its effect on `local.request_body` changes |
+| roleDefinitionId | Directory-specific definition GUID; exactly one selector | `string` | `null` | no | replaces `msgraph_resource.assignment` when `local.request_body`, `var.roleDefinitionId == null ? null : lower(var.roleDefinitionId)` changes |
 | template_id | Read-only template GUID lookup; exactly one selector | `string` | `null` | no | replaces `msgraph_resource.assignment` when `local.request_body`, `var.template_id == null ? null : lower(var.template_id)` changes |
 | role_display_name | Exact, unique, read-only display-name lookup | `string` | `null` | no | replaces `msgraph_resource.assignment` |
 | role_type | `built_in` or `custom`, verified against the definition | `string` | `"built_in"` | no | replaces `msgraph_resource.assignment` |
-| directory_scope_id | Explicit tenant, administrative-unit or application object scope | `string` | n/a | yes | replaces `msgraph_resource.assignment` when its effect on `local.request_body` changes |
+| directoryScopeId | Explicit tenant, administrative-unit or application object scope | `string` | n/a | yes | replaces `msgraph_resource.assignment` when its effect on `local.request_body` changes |
 | scope_type | Explicit `tenant`, `administrative_unit` or `application`, matching the scope | `string` | n/a | yes | replaces `msgraph_resource.assignment` |
 
 ## Outputs
@@ -311,11 +311,57 @@ run must:
 Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
 
 - `tenant_id`: replaces `msgraph_resource.assignment`.
-- `principal_id`: replaces `msgraph_resource.assignment` when its effect on `local.request_body` changes.
-- `role_definition_id`: replaces `msgraph_resource.assignment` when `local.request_body`, `var.role_definition_id == null ? null : lower(var.role_definition_id)` changes.
+- `principalId`: replaces `msgraph_resource.assignment` when its effect on `local.request_body` changes.
+- `roleDefinitionId`: replaces `msgraph_resource.assignment` when `local.request_body`, `var.roleDefinitionId == null ? null : lower(var.roleDefinitionId)` changes.
 - `template_id`: replaces `msgraph_resource.assignment` when `local.request_body`, `var.template_id == null ? null : lower(var.template_id)` changes.
 - `role_display_name`: replaces `msgraph_resource.assignment`.
 - `role_type`: replaces `msgraph_resource.assignment`.
-- `directory_scope_id`: replaces `msgraph_resource.assignment` when its effect on `local.request_body` changes.
+- `directoryScopeId`: replaces `msgraph_resource.assignment` when its effect on `local.request_body` changes.
 - `scope_type`: replaces `msgraph_resource.assignment`.
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `GET /roleManagement/directory/roleAssignments` | DelegatedWork | `RoleManagement.Read.Directory` | - | - |
+| `GET /roleManagement/directory/roleAssignments` | DelegatedWork | `RoleManagement.ReadWrite.Directory` | - | - |
+| `GET /roleManagement/directory/roleAssignments` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /roleManagement/directory/roleAssignments` | Application | `RoleManagement.Read.Directory` | - | - |
+| `GET /roleManagement/directory/roleAssignments` | Application | `RoleManagement.ReadWrite.Directory` | - | - |
+| `POST /roleManagement/directory/roleAssignments` | DelegatedWork | `RoleManagement.ReadWrite.Directory` | - | - |
+| `POST /roleManagement/directory/roleAssignments` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /roleManagement/directory/roleAssignments` | Application | `RoleManagement.ReadWrite.Directory` | - | - |
+| `GET /roleManagement/directory/roleAssignments/{id}` | DelegatedWork | `RoleManagement.Read.Directory` | - | - |
+| `GET /roleManagement/directory/roleAssignments/{id}` | DelegatedWork | `RoleManagement.ReadWrite.Directory` | - | - |
+| `GET /roleManagement/directory/roleAssignments/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /roleManagement/directory/roleAssignments/{id}` | Application | `RoleManagement.Read.Directory` | - | - |
+| `GET /roleManagement/directory/roleAssignments/{id}` | Application | `RoleManagement.ReadWrite.Directory` | - | - |
+| `DELETE /roleManagement/directory/roleAssignments/{id}` | DelegatedWork | `RoleManagement.ReadWrite.Directory` | - | - |
+| `DELETE /roleManagement/directory/roleAssignments/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /roleManagement/directory/roleAssignments/{id}` | Application | `RoleManagement.ReadWrite.Directory` | - | - |
+| `GET /roleManagement/directory/roleDefinitions` | DelegatedWork | `RoleManagement.Read.Directory` | - | - |
+| `GET /roleManagement/directory/roleDefinitions` | DelegatedWork | `RoleManagement.ReadWrite.Directory` | - | - |
+| `GET /roleManagement/directory/roleDefinitions` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /roleManagement/directory/roleDefinitions` | Application | `RoleManagement.Read.Directory` | - | - |
+| `GET /roleManagement/directory/roleDefinitions` | Application | `RoleManagement.ReadWrite.Directory` | - | - |
+| `GET /roleManagement/directory/roleDefinitions/{id}` | DelegatedWork | `RoleManagement.Read.Directory` | - | - |
+| `GET /roleManagement/directory/roleDefinitions/{id}` | DelegatedWork | `RoleManagement.ReadWrite.Directory` | - | - |
+| `GET /roleManagement/directory/roleDefinitions/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /roleManagement/directory/roleDefinitions/{id}` | Application | `RoleManagement.Read.Directory` | - | - |
+| `GET /roleManagement/directory/roleDefinitions/{id}` | Application | `RoleManagement.ReadWrite.Directory` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /roleManagement/directory/roleAssignments` | `directoryScopeId`, `principalId`, `roleDefinitionId` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

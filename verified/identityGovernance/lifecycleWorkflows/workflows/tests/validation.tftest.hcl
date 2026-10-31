@@ -12,22 +12,22 @@ mock_provider "msgraph" {
 }
 
 variables {
-  display_name = "Offboard leaver"
-  category     = "leaver"
+  displayName = "Offboard leaver"
+  category    = "leaver"
 
   execution_conditions = {
     type       = "trigger_and_scope"
     scope_rule = "(department eq 'Marketing')"
     trigger = {
-      time_based_attribute = "employeeLeaveDateTime"
-      offset_in_days       = 1
+      timeBasedAttribute = "employeeLeaveDateTime"
+      offsetInDays       = 1
     }
   }
 
   tasks = [
     {
-      task         = "send_email_on_users_last_day"
-      display_name = "Send last day email"
+      task        = "send_email_on_users_last_day"
+      displayName = "Send last day email"
     },
   ]
 }
@@ -42,9 +42,9 @@ run "accepts_the_mover_category" {
     category = "mover"
     tasks = [
       {
-        task         = "add_user_to_groups"
-        display_name = "Add to groups"
-        arguments    = { groupID = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb" }
+        task        = "add_user_to_groups"
+        displayName = "Add to groups"
+        arguments   = { groupID = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb" }
       },
     ]
   }
@@ -69,10 +69,10 @@ run "rejects_empty_display_name" {
   command = plan
 
   variables {
-    display_name = " "
+    displayName = " "
   }
 
-  expect_failures = [var.display_name]
+  expect_failures = [var.displayName]
 }
 
 run "rejects_unknown_execution_condition_type" {
@@ -92,7 +92,7 @@ run "rejects_a_schedule_without_a_scope_rule" {
     execution_conditions = {
       type = "trigger_and_scope"
       trigger = {
-        time_based_attribute = "employeeLeaveDateTime"
+        timeBasedAttribute = "employeeLeaveDateTime"
       }
     }
   }
@@ -108,7 +108,7 @@ run "rejects_an_empty_scope_rule" {
       type       = "trigger_and_scope"
       scope_rule = "  "
       trigger = {
-        time_based_attribute = "employeeLeaveDateTime"
+        timeBasedAttribute = "employeeLeaveDateTime"
       }
     }
   }
@@ -123,7 +123,7 @@ run "rejects_a_trigger_on_an_on_demand_workflow" {
     execution_conditions = {
       type = "on_demand"
       trigger = {
-        time_based_attribute = "employeeLeaveDateTime"
+        timeBasedAttribute = "employeeLeaveDateTime"
       }
     }
   }
@@ -139,7 +139,7 @@ run "rejects_an_unknown_trigger_attribute" {
       type       = "trigger_and_scope"
       scope_rule = "(department eq 'Marketing')"
       trigger = {
-        time_based_attribute = "managerChange"
+        timeBasedAttribute = "managerChange"
       }
     }
   }
@@ -155,8 +155,8 @@ run "rejects_an_offset_beyond_180_days" {
       type       = "trigger_and_scope"
       scope_rule = "(department eq 'Marketing')"
       trigger = {
-        time_based_attribute = "employeeLeaveDateTime"
-        offset_in_days       = 181
+        timeBasedAttribute = "employeeLeaveDateTime"
+        offsetInDays       = 181
       }
     }
   }
@@ -178,7 +178,7 @@ run "rejects_a_task_that_is_not_a_built_in_definition" {
   command = plan
 
   variables {
-    tasks = [{ task = "format_hard_drive", display_name = "Nope" }]
+    tasks = [{ task = "format_hard_drive", displayName = "Nope" }]
   }
 
   expect_failures = [var.tasks]
@@ -188,7 +188,7 @@ run "rejects_the_custom_task_extension_task_without_acknowledgement" {
   command = plan
 
   variables {
-    tasks = [{ task = "run_a_custom_task_extension", display_name = "Extension", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } }]
+    tasks = [{ task = "run_a_custom_task_extension", displayName = "Extension", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } }]
   }
 
   expect_failures = [msgraph_resource.workflow]
@@ -198,7 +198,7 @@ run "rejects_a_task_outside_the_workflow_category" {
   command = plan
 
   variables {
-    tasks = [{ task = "send_welcome_email", display_name = "Welcome" }]
+    tasks = [{ task = "send_welcome_email", displayName = "Welcome" }]
   }
 
   expect_failures = [var.tasks]
@@ -208,7 +208,7 @@ run "rejects_an_undocumented_argument_name" {
   command = plan
 
   variables {
-    tasks = [{ task = "send_email_on_users_last_day", display_name = "Last day", arguments = { recipient = "User" } }]
+    tasks = [{ task = "send_email_on_users_last_day", displayName = "Last day", arguments = { recipient = "User" } }]
   }
 
   expect_failures = [var.tasks]
@@ -218,7 +218,7 @@ run "rejects_an_enum_argument_outside_its_values" {
   command = plan
 
   variables {
-    tasks                       = [{ task = "disable_user_account", display_name = "Disable", arguments = { disableOnPremisesAccount = "maybe" } }]
+    tasks                       = [{ task = "disable_user_account", displayName = "Disable", arguments = { disableOnPremisesAccount = "maybe" } }]
     acknowledge_dangerous_tasks = true
   }
 
@@ -229,7 +229,7 @@ run "accepts_a_free_form_string_argument" {
   command = plan
 
   variables {
-    tasks = [{ task = "send_email_on_users_last_day", display_name = "Last day", arguments = { customSubject = "Goodbye", to = "Manager" } }]
+    tasks = [{ task = "send_email_on_users_last_day", displayName = "Last day", arguments = { customSubject = "Goodbye", to = "Manager" } }]
   }
 
   assert {
@@ -242,7 +242,7 @@ run "rejects_enabling_without_opt_in" {
   command = plan
 
   variables {
-    is_enabled = true
+    isEnabled = true
   }
 
   expect_failures = [msgraph_resource.workflow]
@@ -252,7 +252,7 @@ run "rejects_enabling_scheduling_alone_without_opt_in" {
   command = plan
 
   variables {
-    is_scheduling_enabled = true
+    isSchedulingEnabled = true
   }
 
   expect_failures = [msgraph_resource.workflow]
@@ -262,8 +262,8 @@ run "accepts_enabling_scheduling_alone_with_opt_in" {
   command = plan
 
   variables {
-    is_scheduling_enabled = true
-    activation_opt_in     = true
+    isSchedulingEnabled = true
+    activation_opt_in   = true
   }
 
   assert {
@@ -276,7 +276,7 @@ run "rejects_a_dangerous_task_without_acknowledgement" {
   command = plan
 
   variables {
-    tasks = [{ task = "disable_user_account", display_name = "Disable" }]
+    tasks = [{ task = "disable_user_account", displayName = "Disable" }]
   }
 
   expect_failures = [msgraph_resource.workflow]
@@ -286,7 +286,7 @@ run "accepts_a_dangerous_task_with_acknowledgement" {
   command = plan
 
   variables {
-    tasks                       = [{ task = "disable_user_account", display_name = "Disable", arguments = { disableOnPremisesAccount = "false" } }]
+    tasks                       = [{ task = "disable_user_account", displayName = "Disable", arguments = { disableOnPremisesAccount = "false" } }]
     acknowledge_dangerous_tasks = true
   }
 

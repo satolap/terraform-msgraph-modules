@@ -23,11 +23,11 @@ override_data {
   values = { output = { roles = [], next_link = null } }
 }
 variables {
-  tenant_id          = "99999999-9999-4999-8999-999999999999"
-  scope_type         = "tenant"
-  directory_scope_id = "/"
-  principal_id       = "11111111-1111-4111-8111-111111111111"
-  role_definition_id = "22222222-2222-4222-8222-222222222222"
+  tenant_id        = "99999999-9999-4999-8999-999999999999"
+  scope_type       = "tenant"
+  directoryScopeId = "/"
+  principalId      = "11111111-1111-4111-8111-111111111111"
+  roleDefinitionId = "22222222-2222-4222-8222-222222222222"
 }
 
 run "rejects_invalid_tenant" {
@@ -41,9 +41,9 @@ run "rejects_invalid_tenant" {
 run "rejects_invalid_principal" {
   command = plan
   variables {
-    principal_id = "bad"
+    principalId = "bad"
   }
-  expect_failures = [var.principal_id]
+  expect_failures = [var.principalId]
 }
 
 
@@ -51,16 +51,16 @@ run "rejects_invalid_principal" {
 run "rejects_invalid_role_id" {
   command = plan
   variables {
-    role_definition_id = "bad"
+    roleDefinitionId = "bad"
   }
-  expect_failures = [var.role_definition_id]
+  expect_failures = [var.roleDefinitionId]
 }
 
 run "rejects_invalid_template" {
   command = plan
   variables {
-    template_id        = "bad"
-    role_definition_id = null
+    template_id      = "bad"
+    roleDefinitionId = null
   }
   expect_failures = [var.template_id]
 }
@@ -68,8 +68,8 @@ run "rejects_invalid_template" {
 run "rejects_empty_name" {
   command = plan
   variables {
-    role_display_name  = "  "
-    role_definition_id = null
+    role_display_name = "  "
+    roleDefinitionId  = null
   }
   expect_failures = [var.role_display_name]
 }
@@ -77,7 +77,7 @@ run "rejects_empty_name" {
 run "rejects_no_selector" {
   command = plan
   variables {
-    role_definition_id = null
+    roleDefinitionId = null
   }
   expect_failures = [terraform_data.preflight]
 }
@@ -117,7 +117,7 @@ run "rejects_invalid_scope_type" {
 run "rejects_scope_misclassification" {
   command = plan
   variables {
-    directory_scope_id = "/11111111-1111-4111-8111-111111111111"
+    directoryScopeId = "/11111111-1111-4111-8111-111111111111"
   }
   expect_failures = [terraform_data.preflight]
 }
@@ -125,63 +125,63 @@ run "rejects_scope_misclassification" {
 run "rejects_scope_0" {
   command = plan
   variables {
-    directory_scope_id = ""
+    directoryScopeId = ""
   }
-  expect_failures = [var.directory_scope_id]
+  expect_failures = [var.directoryScopeId]
 }
 
 run "rejects_scope_1" {
   command = plan
   variables {
-    directory_scope_id = "/applications/11111111-1111-4111-8111-111111111111"
+    directoryScopeId = "/applications/11111111-1111-4111-8111-111111111111"
   }
-  expect_failures = [var.directory_scope_id]
+  expect_failures = [var.directoryScopeId]
 }
 
 run "rejects_scope_2" {
   command = plan
   variables {
-    directory_scope_id = "/administrativeUnits/bad"
+    directoryScopeId = "/administrativeUnits/bad"
   }
-  expect_failures = [var.directory_scope_id]
+  expect_failures = [var.directoryScopeId]
 }
 
 run "rejects_scope_3" {
   command = plan
   variables {
-    directory_scope_id = "/administrativeunits/11111111-1111-4111-8111-111111111111"
+    directoryScopeId = "/administrativeunits/11111111-1111-4111-8111-111111111111"
   }
-  expect_failures = [var.directory_scope_id]
+  expect_failures = [var.directoryScopeId]
 }
 
 run "rejects_scope_4" {
   command = plan
   variables {
-    directory_scope_id = "/AccessPackageCatalog/11111111-1111-4111-8111-111111111111"
+    directoryScopeId = "/AccessPackageCatalog/11111111-1111-4111-8111-111111111111"
   }
-  expect_failures = [var.directory_scope_id]
+  expect_failures = [var.directoryScopeId]
 }
 
 run "rejects_scope_5" {
   command = plan
   variables {
-    directory_scope_id = "/11111111-1111-4111-8111-111111111111/"
+    directoryScopeId = "/11111111-1111-4111-8111-111111111111/"
   }
-  expect_failures = [var.directory_scope_id]
+  expect_failures = [var.directoryScopeId]
 }
 
 run "rejects_scope_6" {
   command = plan
   variables {
-    directory_scope_id = "/11111111-1111-4111-8111-111111111111\n"
+    directoryScopeId = "/11111111-1111-4111-8111-111111111111\n"
   }
-  expect_failures = [var.directory_scope_id]
+  expect_failures = [var.directoryScopeId]
 }
 
 run "rejects_scope_7" {
   command = plan
   variables {
-    directory_scope_id = "//"
+    directoryScopeId = "//"
   }
-  expect_failures = [var.directory_scope_id]
+  expect_failures = [var.directoryScopeId]
 }

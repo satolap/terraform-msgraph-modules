@@ -1,22 +1,22 @@
-variable "user_id" {
+variable "user-id" {
   description = "The unique identifier of user"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.user_id)) > 0
-    error_message = "user_id must not be empty."
+    condition     = length(trimspace(var.user-id)) > 0
+    error_message = "user-id must not be empty."
   }
 }
 
-variable "note_id" {
+variable "note-id" {
   description = "The unique identifier of note"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.note_id)) > 0
-    error_message = "note_id must not be empty."
+    condition     = length(trimspace(var.note-id)) > 0
+    error_message = "note-id must not be empty."
   }
 }
 

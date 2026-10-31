@@ -29,7 +29,7 @@ run "first_apply_owns_only_the_action" {
   command = apply
 
   variables {
-    external_user_lifecycle_action = "blockSignIn"
+    externalUserLifecycleAction = "blockSignIn"
   }
 
   assert {
@@ -42,9 +42,9 @@ run "the_duration_becomes_owned_later" {
   command = apply
 
   variables {
-    external_user_lifecycle_action                     = "blockSignInAndDelete"
-    duration_until_external_user_deleted_after_blocked = "P30D"
-    allow_external_user_deletion                       = true
+    externalUserLifecycleAction                  = "blockSignInAndDelete"
+    durationUntilExternalUserDeletedAfterBlocked = "P30D"
+    allow_external_user_deletion                 = true
   }
 
   assert {
@@ -57,10 +57,10 @@ run "restore_skips_the_property_owned_later" {
   command = apply
 
   variables {
-    external_user_lifecycle_action                     = "blockSignInAndDelete"
-    duration_until_external_user_deleted_after_blocked = "P30D"
-    restore_previous_state                             = true
-    restore_over_changes                               = true
+    externalUserLifecycleAction                  = "blockSignInAndDelete"
+    durationUntilExternalUserDeletedAfterBlocked = "P30D"
+    restore_previous_state                       = true
+    restore_over_changes                         = true
   }
 
   assert {

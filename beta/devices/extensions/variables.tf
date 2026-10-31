@@ -1,11 +1,11 @@
-variable "device_id" {
+variable "device-id" {
   description = "The unique identifier of device"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.device_id)) > 0
-    error_message = "device_id must not be empty."
+    condition     = length(trimspace(var.device-id)) > 0
+    error_message = "device-id must not be empty."
   }
 }
 

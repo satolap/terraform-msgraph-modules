@@ -5,7 +5,7 @@
 
 This module's state and saved plans retain these declared values:
 
-Sensitive inputs: `additional_properties`, `federation_configuration`, `password_notification_window_in_days`, `password_validity_period_in_days`.
+Sensitive inputs: `additional_properties`, `federationConfiguration`, `passwordNotificationWindowInDays`, `passwordValidityPeriodInDays`.
 Sensitive outputs: `response`.
 
 Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
@@ -35,7 +35,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -63,20 +63,20 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `authentication_type` | `authenticationType` | `string` | no | no | in place |
-| `availability_status` | `availabilityStatus` | `string` | no | no | in place |
-| `federation_configuration` | `federationConfiguration` | `list(object({       odata_type = optional(string, "#microsoft.graph.internalDomainFederation")       activeSignInUri = optional(string)       defaultInteractiveAuthenticationMethod = optional(string)       displayName = optional(string)       federatedIdpMfaBehavior = optional(string)       isSignedAuthenticationRequestRequired = optional(bool)       issuerUri = optional(string)       metadataExchangeUri = optional(string)       nextSigningCertificate = optional(string)       openIdConnectDiscoveryEndpoint = optional(string)       passiveSignInUri = optional(string)       passwordChangeUri = optional(string)       passwordResetUri = optional(string)       preferredAuthenticationProtocol = optional(string)       promptLoginBehavior = optional(string)       signOutUri = optional(string)       signingCertificate = optional(string)       signingCertificateUpdateStatus = optional(object({       odata_type = optional(string, "#microsoft.graph.signingCertificateUpdateStatus")     }))     }))` | no | yes | in place |
-| `is_admin_managed` | `isAdminManaged` | `bool` | no | no | in place |
-| `is_default` | `isDefault` | `bool` | no | no | in place |
-| `is_initial` | `isInitial` | `bool` | no | no | in place |
-| `is_root` | `isRoot` | `bool` | no | no | in place |
-| `is_verified` | `isVerified` | `bool` | no | no | in place |
+| `authenticationType` | `authenticationType` | `string` | no | no | in place |
+| `availabilityStatus` | `availabilityStatus` | `string` | no | no | in place |
+| `federationConfiguration` | `federationConfiguration` | `list(object({       odata_type = optional(string, "#microsoft.graph.internalDomainFederation")       activeSignInUri = optional(string)       defaultInteractiveAuthenticationMethod = optional(string)       displayName = optional(string)       federatedIdpMfaBehavior = optional(string)       isSignedAuthenticationRequestRequired = optional(bool)       issuerUri = optional(string)       metadataExchangeUri = optional(string)       nextSigningCertificate = optional(string)       openIdConnectDiscoveryEndpoint = optional(string)       passiveSignInUri = optional(string)       passwordChangeUri = optional(string)       passwordResetUri = optional(string)       preferredAuthenticationProtocol = optional(string)       promptLoginBehavior = optional(string)       signOutUri = optional(string)       signingCertificate = optional(string)       signingCertificateUpdateStatus = optional(object({       odata_type = optional(string, "#microsoft.graph.signingCertificateUpdateStatus")     }))     }))` | no | yes | in place |
+| `isAdminManaged` | `isAdminManaged` | `bool` | no | no | in place |
+| `isDefault` | `isDefault` | `bool` | no | no | in place |
+| `isInitial` | `isInitial` | `bool` | no | no | in place |
+| `isRoot` | `isRoot` | `bool` | no | no | in place |
+| `isVerified` | `isVerified` | `bool` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
-| `password_notification_window_in_days` | `passwordNotificationWindowInDays` | `number` | no | yes | in place |
-| `password_validity_period_in_days` | `passwordValidityPeriodInDays` | `number` | no | yes | in place |
-| `shared_email_domain_invitations` | `sharedEmailDomainInvitations` | `list(object({       odata_type = optional(string, "#microsoft.graph.sharedEmailDomainInvitation")       expiryTime = optional(string)       invitationDomain = optional(string)       invitationStatus = optional(string)     }))` | no | no | in place |
+| `passwordNotificationWindowInDays` | `passwordNotificationWindowInDays` | `number` | no | yes | in place |
+| `passwordValidityPeriodInDays` | `passwordValidityPeriodInDays` | `number` | no | yes | in place |
+| `sharedEmailDomainInvitations` | `sharedEmailDomainInvitations` | `list(object({       odata_type = optional(string, "#microsoft.graph.sharedEmailDomainInvitation")       expiryTime = optional(string)       invitationDomain = optional(string)       invitationStatus = optional(string)     }))` | no | no | in place |
 | `state` | `state` | `object({       odata_type = optional(string, "#microsoft.graph.domainState")       lastActionDateTime = optional(string)       operation = optional(string)       status = optional(string)     })` | no | no | in place |
-| `supported_services` | `supportedServices` | `list(string)` | no | no | in place |
+| `supportedServices` | `supportedServices` | `list(string)` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

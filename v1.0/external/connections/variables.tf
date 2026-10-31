@@ -1,4 +1,4 @@
-variable "activity_settings" {
+variable "activitySettings" {
   description = "Collects configurable settings related to activities involving connector content."
   type = object({
     odata_type         = optional(string, "#microsoft.graph.externalConnectors.activitySettings")
@@ -16,20 +16,20 @@ variable "configuration" {
   default = null
 }
 
-variable "connector_id" {
+variable "connectorId" {
   description = "The Teams app ID. Optional."
   type        = string
   default     = null
 }
 
-variable "content_category" {
+variable "contentCategory" {
   description = "Microsoft Graph contentCategory property."
   type        = string
   default     = null
 
   validation {
-    condition     = var.content_category == null ? true : contains(["uncategorized", "knowledgeBase", "wikis", "fileRepository", "qna", "crm", "dashboard", "people", "media", "email", "messaging", "meetingTranscripts", "taskManagement", "learningManagement"], var.content_category)
-    error_message = "content_category must be one of the documented enum values."
+    condition     = var.contentCategory == null ? true : contains(["uncategorized", "knowledgeBase", "wikis", "fileRepository", "qna", "crm", "dashboard", "people", "media", "email", "messaging", "meetingTranscripts", "taskManagement", "learningManagement"], var.contentCategory)
+    error_message = "contentCategory must be one of the documented enum values."
   }
 }
 
@@ -140,7 +140,7 @@ variable "schema" {
   default     = null
 }
 
-variable "search_settings" {
+variable "searchSettings" {
   description = "The settings configuring the search experience for content in this connection, such as the display templates for search results."
   type = object({
     odata_type = optional(string, "#microsoft.graph.externalConnectors.searchSettings")
@@ -161,8 +161,8 @@ variable "search_settings" {
   default = null
 
   validation {
-    condition     = (var.search_settings == null ? true : alltrue([(var.search_settings["searchResultTemplates"] == null ? true : alltrue([alltrue([for input1 in var.search_settings["searchResultTemplates"] : (input1 == null ? true : alltrue([(input1["rules"] == null ? true : alltrue([alltrue([for input3 in input1["rules"] : (input3 == null ? true : alltrue([(input3["operation"] == null ? true : alltrue([(input3["operation"] == null ? true : contains(["null", "equals", "notEquals", "contains", "notContains", "lessThan", "greaterThan", "startsWith"], input3["operation"]))])), (input3["valuesJoinedBy"] == null ? true : alltrue([(input3["valuesJoinedBy"] == null ? true : contains(["or", "and"], input3["valuesJoinedBy"]))]))]))])]))]))])]))]))
-    error_message = "search_settings: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.searchSettings == null ? true : alltrue([(var.searchSettings["searchResultTemplates"] == null ? true : alltrue([alltrue([for input1 in var.searchSettings["searchResultTemplates"] : (input1 == null ? true : alltrue([(input1["rules"] == null ? true : alltrue([alltrue([for input3 in input1["rules"] : (input3 == null ? true : alltrue([(input3["operation"] == null ? true : alltrue([(input3["operation"] == null ? true : contains(["null", "equals", "notEquals", "contains", "notContains", "lessThan", "greaterThan", "startsWith"], input3["operation"]))])), (input3["valuesJoinedBy"] == null ? true : alltrue([(input3["valuesJoinedBy"] == null ? true : contains(["or", "and"], input3["valuesJoinedBy"]))]))]))])]))]))])]))]))
+    error_message = "searchSettings: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 

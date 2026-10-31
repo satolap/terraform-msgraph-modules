@@ -1,11 +1,11 @@
-variable "education_class_id" {
+variable "educationClass-id" {
   description = "The unique identifier of educationClass"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.education_class_id)) > 0
-    error_message = "education_class_id must not be empty."
+    condition     = length(trimspace(var.educationClass-id)) > 0
+    error_message = "educationClass-id must not be empty."
   }
 }
 
@@ -15,19 +15,19 @@ variable "description" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "Name of the module."
   type        = string
   default     = null
 }
 
-variable "is_pinned" {
+variable "isPinned" {
   description = "Indicates whether the module is pinned."
   type        = bool
   default     = null
 }
 
-variable "language_tag" {
+variable "languageTag" {
   description = "Specifies the language in which UI notifications for the assignment are displayed. If languageTag isn't provided, the default language is en-US. Optional."
   type        = string
   default     = null

@@ -1,22 +1,22 @@
-variable "group_id" {
+variable "group-id" {
   description = "The unique identifier of group"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.group_id)) > 0
-    error_message = "group_id must not be empty."
+    condition     = length(trimspace(var.group-id)) > 0
+    error_message = "group-id must not be empty."
   }
 }
 
-variable "event_id" {
+variable "event-id" {
   description = "The unique identifier of event"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.event_id)) > 0
-    error_message = "event_id must not be empty."
+    condition     = length(trimspace(var.event-id)) > 0
+    error_message = "event-id must not be empty."
   }
 }
 

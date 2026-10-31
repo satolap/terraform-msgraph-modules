@@ -1,15 +1,15 @@
-variable "user_id" {
+variable "user-id" {
   description = "The unique identifier of user"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.user_id)) > 0
-    error_message = "user_id must not be empty."
+    condition     = length(trimspace(var.user-id)) > 0
+    error_message = "user-id must not be empty."
   }
 }
 
-variable "allow_new_time_proposals" {
+variable "allowNewTimeProposals" {
   description = "true if the meeting organizer allows invitees to propose a new time when responding; otherwise false. Optional. Default is true."
   type        = bool
   default     = null
@@ -51,13 +51,13 @@ variable "body" {
   }
 }
 
-variable "body_preview" {
+variable "bodyPreview" {
   description = "The preview of the message associated with the event. It is in text format."
   type        = string
   default     = null
 }
 
-variable "cancelled_occurrences" {
+variable "cancelledOccurrences" {
   description = "Contains occurrenceId property values of canceled instances in a recurring series, if the event is the series master. Instances in a recurring series that are canceled are called cancelledOccurences.Returned only on $select in a Get operation which specifies the id of a series master event (that is, the seriesMasterId property value)."
   type        = list(string)
   default     = null
@@ -69,7 +69,7 @@ variable "categories" {
   default     = null
 }
 
-variable "created_date_time" {
+variable "createdDateTime" {
   description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
@@ -85,7 +85,7 @@ variable "end" {
   default = null
 }
 
-variable "exception_occurrences" {
+variable "exceptionOccurrences" {
   description = "Microsoft Graph exceptionOccurrences property."
   type = list(object({
     odata_type            = optional(string, "#microsoft.graph.event")
@@ -179,8 +179,8 @@ variable "exception_occurrences" {
   default = null
 
   validation {
-    condition     = (var.exception_occurrences == null ? true : alltrue([alltrue([for input0 in var.exception_occurrences : (input0 == null ? true : alltrue([(input0["attendees"] == null ? true : alltrue([alltrue([for input2 in input0["attendees"] : (input2 == null ? true : alltrue([(input2["status"] == null ? true : alltrue([(input2["status"]["response"] == null ? true : alltrue([(input2["status"]["response"] == null ? true : contains(["none", "organizer", "tentativelyAccepted", "accepted", "declined", "notResponded"], input2["status"]["response"]))]))])), (input2["type"] == null ? true : alltrue([(input2["type"] == null ? true : contains(["required", "optional", "resource"], input2["type"]))]))]))])])), (input0["body"] == null ? true : alltrue([(input0["body"]["contentType"] == null ? true : alltrue([(input0["body"]["contentType"] == null ? true : contains(["text", "html"], input0["body"]["contentType"]))]))])), (input0["importance"] == null ? true : alltrue([(input0["importance"] == null ? true : contains(["low", "normal", "high"], input0["importance"]))])), (input0["onlineMeetingProvider"] == null ? true : alltrue([(input0["onlineMeetingProvider"] == null ? true : contains(["unknown", "skypeForBusiness", "skypeForConsumer", "teamsForBusiness"], input0["onlineMeetingProvider"]))])), (input0["recurrence"] == null ? true : alltrue([(input0["recurrence"]["pattern"] == null ? true : alltrue([(input0["recurrence"]["pattern"]["daysOfWeek"] == null ? true : alltrue([alltrue([for input4 in input0["recurrence"]["pattern"]["daysOfWeek"] : (input4 == null ? true : alltrue([(input4 == null ? true : contains(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"], input4))]))])])), (input0["recurrence"]["pattern"]["firstDayOfWeek"] == null ? true : alltrue([(input0["recurrence"]["pattern"]["firstDayOfWeek"] == null ? true : contains(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"], input0["recurrence"]["pattern"]["firstDayOfWeek"]))])), (input0["recurrence"]["pattern"]["index"] == null ? true : alltrue([(input0["recurrence"]["pattern"]["index"] == null ? true : contains(["first", "second", "third", "fourth", "last"], input0["recurrence"]["pattern"]["index"]))])), (input0["recurrence"]["pattern"]["type"] == null ? true : alltrue([(input0["recurrence"]["pattern"]["type"] == null ? true : contains(["daily", "weekly", "absoluteMonthly", "relativeMonthly", "absoluteYearly", "relativeYearly"], input0["recurrence"]["pattern"]["type"]))]))])), (input0["recurrence"]["range"] == null ? true : alltrue([(input0["recurrence"]["range"]["type"] == null ? true : alltrue([(input0["recurrence"]["range"]["type"] == null ? true : contains(["endDate", "noEnd", "numbered"], input0["recurrence"]["range"]["type"]))]))]))])), (input0["responseStatus"] == null ? true : alltrue([(input0["responseStatus"]["response"] == null ? true : alltrue([(input0["responseStatus"]["response"] == null ? true : contains(["none", "organizer", "tentativelyAccepted", "accepted", "declined", "notResponded"], input0["responseStatus"]["response"]))]))])), (input0["sensitivity"] == null ? true : alltrue([(input0["sensitivity"] == null ? true : contains(["normal", "personal", "private", "confidential"], input0["sensitivity"]))])), (input0["showAs"] == null ? true : alltrue([(input0["showAs"] == null ? true : contains(["unknown", "free", "tentative", "busy", "oof", "workingElsewhere"], input0["showAs"]))]))]))])]))
-    error_message = "exception_occurrences: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.exceptionOccurrences == null ? true : alltrue([alltrue([for input0 in var.exceptionOccurrences : (input0 == null ? true : alltrue([(input0["attendees"] == null ? true : alltrue([alltrue([for input2 in input0["attendees"] : (input2 == null ? true : alltrue([(input2["status"] == null ? true : alltrue([(input2["status"]["response"] == null ? true : alltrue([(input2["status"]["response"] == null ? true : contains(["none", "organizer", "tentativelyAccepted", "accepted", "declined", "notResponded"], input2["status"]["response"]))]))])), (input2["type"] == null ? true : alltrue([(input2["type"] == null ? true : contains(["required", "optional", "resource"], input2["type"]))]))]))])])), (input0["body"] == null ? true : alltrue([(input0["body"]["contentType"] == null ? true : alltrue([(input0["body"]["contentType"] == null ? true : contains(["text", "html"], input0["body"]["contentType"]))]))])), (input0["importance"] == null ? true : alltrue([(input0["importance"] == null ? true : contains(["low", "normal", "high"], input0["importance"]))])), (input0["onlineMeetingProvider"] == null ? true : alltrue([(input0["onlineMeetingProvider"] == null ? true : contains(["unknown", "skypeForBusiness", "skypeForConsumer", "teamsForBusiness"], input0["onlineMeetingProvider"]))])), (input0["recurrence"] == null ? true : alltrue([(input0["recurrence"]["pattern"] == null ? true : alltrue([(input0["recurrence"]["pattern"]["daysOfWeek"] == null ? true : alltrue([alltrue([for input4 in input0["recurrence"]["pattern"]["daysOfWeek"] : (input4 == null ? true : alltrue([(input4 == null ? true : contains(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"], input4))]))])])), (input0["recurrence"]["pattern"]["firstDayOfWeek"] == null ? true : alltrue([(input0["recurrence"]["pattern"]["firstDayOfWeek"] == null ? true : contains(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"], input0["recurrence"]["pattern"]["firstDayOfWeek"]))])), (input0["recurrence"]["pattern"]["index"] == null ? true : alltrue([(input0["recurrence"]["pattern"]["index"] == null ? true : contains(["first", "second", "third", "fourth", "last"], input0["recurrence"]["pattern"]["index"]))])), (input0["recurrence"]["pattern"]["type"] == null ? true : alltrue([(input0["recurrence"]["pattern"]["type"] == null ? true : contains(["daily", "weekly", "absoluteMonthly", "relativeMonthly", "absoluteYearly", "relativeYearly"], input0["recurrence"]["pattern"]["type"]))]))])), (input0["recurrence"]["range"] == null ? true : alltrue([(input0["recurrence"]["range"]["type"] == null ? true : alltrue([(input0["recurrence"]["range"]["type"] == null ? true : contains(["endDate", "noEnd", "numbered"], input0["recurrence"]["range"]["type"]))]))]))])), (input0["responseStatus"] == null ? true : alltrue([(input0["responseStatus"]["response"] == null ? true : alltrue([(input0["responseStatus"]["response"] == null ? true : contains(["none", "organizer", "tentativelyAccepted", "accepted", "declined", "notResponded"], input0["responseStatus"]["response"]))]))])), (input0["sensitivity"] == null ? true : alltrue([(input0["sensitivity"] == null ? true : contains(["normal", "personal", "private", "confidential"], input0["sensitivity"]))])), (input0["showAs"] == null ? true : alltrue([(input0["showAs"] == null ? true : contains(["unknown", "free", "tentative", "busy", "oof", "workingElsewhere"], input0["showAs"]))]))]))])]))
+    error_message = "exceptionOccurrences: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
@@ -190,13 +190,13 @@ variable "extensions" {
   default     = null
 }
 
-variable "has_attachments" {
+variable "hasAttachments" {
   description = "Set to true if the event has attachments."
   type        = bool
   default     = null
 }
 
-variable "hide_attendees" {
+variable "hideAttendees" {
   description = "When set to true, each attendee only sees themselves in the meeting request and meeting Tracking list. Default is false."
   type        = bool
   default     = null
@@ -213,43 +213,43 @@ variable "importance" {
   }
 }
 
-variable "is_all_day" {
+variable "isAllDay" {
   description = "Set to true if the event lasts all day. If true, regardless of whether it's a single-day or multi-day event, start and end time must be set to midnight and be in the same time zone."
   type        = bool
   default     = null
 }
 
-variable "is_cancelled" {
+variable "isCancelled" {
   description = "Set to true if the event has been canceled."
   type        = bool
   default     = null
 }
 
-variable "is_draft" {
+variable "isDraft" {
   description = "Set to true if the user has updated the meeting in Outlook but hasn't sent the updates to attendees. Set to false if all changes have been sent, or if the event is an appointment without any attendees."
   type        = bool
   default     = null
 }
 
-variable "is_online_meeting" {
+variable "isOnlineMeeting" {
   description = "True if this event has online meeting information (that is, onlineMeeting points to an onlineMeetingInfo resource), false otherwise. Default is false (onlineMeeting is null). Optional.  After you set isOnlineMeeting to true, Microsoft Graph initializes onlineMeeting. Outlook then ignores any further changes to isOnlineMeeting, and the meeting remains available online."
   type        = bool
   default     = null
 }
 
-variable "is_organizer" {
+variable "isOrganizer" {
   description = "Set to true if the calendar owner (specified by the owner property of the calendar) is the organizer of the event (specified by the organizer property of the event). This also applies if a delegate organized the event on behalf of the owner."
   type        = bool
   default     = null
 }
 
-variable "is_reminder_on" {
+variable "isReminderOn" {
   description = "Set to true if an alert is set to remind the user of the event."
   type        = bool
   default     = null
 }
 
-variable "last_modified_date_time" {
+variable "lastModifiedDateTime" {
   description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
@@ -267,7 +267,7 @@ variable "locations" {
   default     = null
 }
 
-variable "occurrence_id" {
+variable "occurrenceId" {
   description = "An identifier for an occurrence in a recurring event series. Null if the event isn't part of a recurring series.The format of the property value is OID.{seriesMasterId-value}.{occurrence-start-date}. The time zone for {occurrence-start-date} is the recurrenceTimeZone property defined for the corresponding recurrenceRange.This property can identify any occurrence in a recurring series, including an occurrence that has been modified or canceled. You can use this property to perform all operations supported by occurrences in the recurring series."
   type        = string
   default     = null
@@ -280,14 +280,14 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "online_meeting_provider" {
+variable "onlineMeetingProvider" {
   description = "Represents the online meeting service provider. By default, onlineMeetingProvider is unknown. The possible values are unknown, teamsForBusiness, skypeForBusiness, and skypeForConsumer. Optional.  After you set onlineMeetingProvider, Microsoft Graph initializes onlineMeeting. Subsequently you can't change onlineMeetingProvider again, and the meeting remains available online."
   type        = string
   default     = null
 
   validation {
-    condition     = var.online_meeting_provider == null ? true : contains(["unknown", "skypeForBusiness", "skypeForConsumer", "teamsForBusiness"], var.online_meeting_provider)
-    error_message = "online_meeting_provider must be one of the documented enum values."
+    condition     = var.onlineMeetingProvider == null ? true : contains(["unknown", "skypeForBusiness", "skypeForConsumer", "teamsForBusiness"], var.onlineMeetingProvider)
+    error_message = "onlineMeetingProvider must be one of the documented enum values."
   }
 }
 
@@ -297,19 +297,19 @@ variable "organizer" {
   default     = null
 }
 
-variable "original_end_time_zone" {
+variable "originalEndTimeZone" {
   description = "The end time zone that was set when the event was created. A value of tzone://Microsoft/Custom indicates that a legacy custom time zone was set in desktop Outlook."
   type        = string
   default     = null
 }
 
-variable "original_start" {
+variable "originalStart" {
   description = "Represents the start time of an event when it's initially created as an occurrence or exception in a recurring series. This property isn't returned for events that are single instances. Its date and time information is expressed in ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
 }
 
-variable "original_start_time_zone" {
+variable "originalStartTimeZone" {
   description = "The start time zone that was set when the event was created. A value of tzone://Microsoft/Custom indicates that a legacy custom time zone was set in desktop Outlook."
   type        = string
   default     = null
@@ -346,19 +346,19 @@ variable "recurrence" {
   }
 }
 
-variable "reminder_minutes_before_start" {
+variable "reminderMinutesBeforeStart" {
   description = "The number of minutes before the event start time that the reminder alert occurs."
   type        = number
   default     = null
 }
 
-variable "response_requested" {
+variable "responseRequested" {
   description = "Default is true, which represents the organizer would like an invitee to send a response to the event."
   type        = bool
   default     = null
 }
 
-variable "response_status" {
+variable "responseStatus" {
   description = "Indicates the type of response sent in response to an event message."
   type = object({
     odata_type = optional(string, "#microsoft.graph.responseStatus")
@@ -368,8 +368,8 @@ variable "response_status" {
   default = null
 
   validation {
-    condition     = (var.response_status == null ? true : alltrue([(var.response_status["response"] == null ? true : alltrue([(var.response_status["response"] == null ? true : contains(["none", "organizer", "tentativelyAccepted", "accepted", "declined", "notResponded"], var.response_status["response"]))]))]))
-    error_message = "response_status: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.responseStatus == null ? true : alltrue([(var.responseStatus["response"] == null ? true : alltrue([(var.responseStatus["response"] == null ? true : contains(["none", "organizer", "tentativelyAccepted", "accepted", "declined", "notResponded"], var.responseStatus["response"]))]))]))
+    error_message = "responseStatus: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
@@ -384,20 +384,20 @@ variable "sensitivity" {
   }
 }
 
-variable "series_master_id" {
+variable "seriesMasterId" {
   description = "The ID for the recurring series master item, if this event is part of a recurring series."
   type        = string
   default     = null
 }
 
-variable "show_as" {
+variable "showAs" {
   description = "The status to show. The possible values are: free, tentative, busy, oof, workingElsewhere, unknown."
   type        = string
   default     = null
 
   validation {
-    condition     = var.show_as == null ? true : contains(["unknown", "free", "tentative", "busy", "oof", "workingElsewhere"], var.show_as)
-    error_message = "show_as must be one of the documented enum values."
+    condition     = var.showAs == null ? true : contains(["unknown", "free", "tentative", "busy", "oof", "workingElsewhere"], var.showAs)
+    error_message = "showAs must be one of the documented enum values."
   }
 }
 
@@ -417,7 +417,7 @@ variable "subject" {
   default     = null
 }
 
-variable "transaction_id" {
+variable "transactionId" {
   description = "A custom identifier specified by a client app for the server to avoid redundant POST operations if the client retries to create the same event. This is useful when low network connectivity causes the client to time out before receiving a response from the server for the client's prior create-event request. After you set transactionId when creating an event, you can't change transactionId in a subsequent update. This property is only returned in a response payload if an app has set it. Optional."
   type        = string
   default     = null
@@ -429,7 +429,7 @@ variable "uid" {
   default     = null
 }
 
-variable "web_link" {
+variable "webLink" {
   description = "The URL to open the event in Outlook on the web.Outlook on the web opens the event in the browser if you're signed in to your mailbox. Otherwise, Outlook on the web prompts you to sign in.This URL can't be accessed from within an iFrame."
   type        = string
   default     = null

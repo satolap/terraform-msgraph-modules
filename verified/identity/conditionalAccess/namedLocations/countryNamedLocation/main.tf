@@ -1,0 +1,49 @@
+locals {
+  # The derived @odata.type is required on create and on every update. Codes
+  # are sorted so that caller order never causes an update.
+  body = {
+    "@odata.type"                     = "#microsoft.graph.countryNamedLocation"
+    displayName                       = var.displayName
+    countriesAndRegions               = sort(var.countriesAndRegions)
+    includeUnknownCountriesAndRegions = var.includeUnknownCountriesAndRegions
+    countryLookupMethod               = var.countryLookupMethod
+  }
+}
+
+# Update countryNamedLocation lists only countriesAndRegions, displayName and
+# includeUnknownCountriesAndRegions, so a lookup method change replaces the
+# location. The replacement is created first, so a policy that references this
+# location's id is updated to the new id before the old location is deleted.
+resource "terraform_data" "country_lookup_method" {
+  input = var.countryLookupMethod
+}
+
+resource "msgraph_resource" "named_location" {
+  url                     = "identity/conditionalAccess/namedLocations"
+  api_version             = var.api_version
+  body                    = local.body
+  ignore_missing_property = false
+
+  response_export_values = {
+    display_name                          = "displayName"
+    countries_and_regions                 = "countriesAndRegions"
+    include_unknown_countries_and_regions = "includeUnknownCountriesAndRegions"
+    country_lookup_method                 = "countryLookupMethod"
+  }
+
+  timeouts {
+    create = var.timeouts.create
+    read   = var.timeouts.read
+    update = var.timeouts.update
+    delete = var.timeouts.delete
+  }
+
+  lifecycle {
+    create_before_destroy = true
+    replace_triggered_by  = [terraform_data.country_lookup_method]
+    precondition {
+      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.displayName))
+      error_message = "displayName \"${var.displayName}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set displayName to a value that matches, or change name_pattern."
+    }
+  }
+}

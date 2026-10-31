@@ -5,7 +5,7 @@
 
 This module's state and saved plans retain these declared values:
 
-Sensitive inputs: `additional_properties`, `custom_account_reset_credentials_url`, `custom_forgot_my_password_text`, `login_page_text_visibility_settings`.
+Sensitive inputs: `additional_properties`, `customAccountResetCredentialsUrl`, `customForgotMyPasswordText`, `loginPageTextVisibilitySettings`.
 Sensitive outputs: `response`.
 
 Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
@@ -30,11 +30,11 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//v1.0/organization/branding/localizations"
   version = "<version>"
 
-  organization_id = "parent-object-id"
+  organization-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -62,31 +62,31 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `organization_id` | URL parameter `organization-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `background_color` | `backgroundColor` | `string` | no | no | in place |
-| `background_image` | `backgroundImage` | `string` | no | no | in place |
-| `banner_logo` | `bannerLogo` | `string` | no | no | in place |
-| `content_customization` | `contentCustomization` | `object({       odata_type = optional(string, "#microsoft.graph.contentCustomization")       attributeCollection = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       attributeCollectionRelativeUrl = optional(string)       registrationCampaign = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       registrationCampaignRelativeUrl = optional(string)     })` | no | no | in place |
-| `custom_account_reset_credentials_url` | `customAccountResetCredentialsUrl` | `string` | no | yes | in place |
-| `custom_cannot_access_your_account_text` | `customCannotAccessYourAccountText` | `string` | no | no | in place |
-| `custom_cannot_access_your_account_url` | `customCannotAccessYourAccountUrl` | `string` | no | no | in place |
-| `custom_css` | `customCSS` | `string` | no | no | in place |
-| `custom_forgot_my_password_text` | `customForgotMyPasswordText` | `string` | no | yes | in place |
-| `custom_privacy_and_cookies_text` | `customPrivacyAndCookiesText` | `string` | no | no | in place |
-| `custom_privacy_and_cookies_url` | `customPrivacyAndCookiesUrl` | `string` | no | no | in place |
-| `custom_reset_it_now_text` | `customResetItNowText` | `string` | no | no | in place |
-| `custom_terms_of_use_text` | `customTermsOfUseText` | `string` | no | no | in place |
-| `custom_terms_of_use_url` | `customTermsOfUseUrl` | `string` | no | no | in place |
+| `organization-id` | URL parameter `organization-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `backgroundColor` | `backgroundColor` | `string` | no | no | in place |
+| `backgroundImage` | `backgroundImage` | `string` | no | no | in place |
+| `bannerLogo` | `bannerLogo` | `string` | no | no | in place |
+| `contentCustomization` | `contentCustomization` | `object({       odata_type = optional(string, "#microsoft.graph.contentCustomization")       attributeCollection = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       attributeCollectionRelativeUrl = optional(string)       registrationCampaign = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       registrationCampaignRelativeUrl = optional(string)     })` | no | no | in place |
+| `customAccountResetCredentialsUrl` | `customAccountResetCredentialsUrl` | `string` | no | yes | in place |
+| `customCSS` | `customCSS` | `string` | no | no | in place |
+| `customCannotAccessYourAccountText` | `customCannotAccessYourAccountText` | `string` | no | no | in place |
+| `customCannotAccessYourAccountUrl` | `customCannotAccessYourAccountUrl` | `string` | no | no | in place |
+| `customForgotMyPasswordText` | `customForgotMyPasswordText` | `string` | no | yes | in place |
+| `customPrivacyAndCookiesText` | `customPrivacyAndCookiesText` | `string` | no | no | in place |
+| `customPrivacyAndCookiesUrl` | `customPrivacyAndCookiesUrl` | `string` | no | no | in place |
+| `customResetItNowText` | `customResetItNowText` | `string` | no | no | in place |
+| `customTermsOfUseText` | `customTermsOfUseText` | `string` | no | no | in place |
+| `customTermsOfUseUrl` | `customTermsOfUseUrl` | `string` | no | no | in place |
 | `favicon` | `favicon` | `string` | no | no | in place |
-| `header_background_color` | `headerBackgroundColor` | `string` | no | no | in place |
-| `header_logo` | `headerLogo` | `string` | no | no | in place |
-| `login_page_layout_configuration` | `loginPageLayoutConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.loginPageLayoutConfiguration")       isFooterShown = optional(bool)       isHeaderShown = optional(bool)       layoutTemplateType = optional(string)     })` | no | no | in place |
-| `login_page_text_visibility_settings` | `loginPageTextVisibilitySettings` | `object({       odata_type = optional(string, "#microsoft.graph.loginPageTextVisibilitySettings")       hideAccountResetCredentials = optional(bool)       hideCannotAccessYourAccount = optional(bool)       hideForgotMyPassword = optional(bool)       hidePrivacyAndCookies = optional(bool)       hideResetItNow = optional(bool)       hideTermsOfUse = optional(bool)     })` | no | yes | in place |
+| `headerBackgroundColor` | `headerBackgroundColor` | `string` | no | no | in place |
+| `headerLogo` | `headerLogo` | `string` | no | no | in place |
+| `loginPageLayoutConfiguration` | `loginPageLayoutConfiguration` | `object({       odata_type = optional(string, "#microsoft.graph.loginPageLayoutConfiguration")       isFooterShown = optional(bool)       isHeaderShown = optional(bool)       layoutTemplateType = optional(string)     })` | no | no | in place |
+| `loginPageTextVisibilitySettings` | `loginPageTextVisibilitySettings` | `object({       odata_type = optional(string, "#microsoft.graph.loginPageTextVisibilitySettings")       hideAccountResetCredentials = optional(bool)       hideCannotAccessYourAccount = optional(bool)       hideForgotMyPassword = optional(bool)       hidePrivacyAndCookies = optional(bool)       hideResetItNow = optional(bool)       hideTermsOfUse = optional(bool)     })` | no | yes | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
-| `sign_in_page_text` | `signInPageText` | `string` | no | no | in place |
-| `square_logo` | `squareLogo` | `string` | no | no | in place |
-| `square_logo_dark` | `squareLogoDark` | `string` | no | no | in place |
-| `username_hint_text` | `usernameHintText` | `string` | no | no | in place |
+| `signInPageText` | `signInPageText` | `string` | no | no | in place |
+| `squareLogo` | `squareLogo` | `string` | no | no | in place |
+| `squareLogoDark` | `squareLogoDark` | `string` | no | no | in place |
+| `usernameHintText` | `usernameHintText` | `string` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

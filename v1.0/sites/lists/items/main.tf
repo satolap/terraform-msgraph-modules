@@ -2,14 +2,14 @@
 locals {
   typed_body = { for key, value in {
     "analytics"           = var.analytics
-    "contentType"         = (var.content_type == null ? null : { for key0, value0 in { "@odata.type" = var.content_type["odata_type"], "id" = var.content_type["id"], "name" = var.content_type["name"] } : key0 => value0 if value0 != null })
+    "contentType"         = (var.contentType == null ? null : { for key0, value0 in { "@odata.type" = var.contentType["odata_type"], "id" = var.contentType["id"], "name" = var.contentType["name"] } : key0 => value0 if value0 != null })
     "description"         = var.description
-    "documentSetVersions" = (var.document_set_versions == null ? null : [for item0 in var.document_set_versions : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "comment" = item0["comment"], "createdBy" = item0["createdBy"], "createdDateTime" = item0["createdDateTime"], "fields" = item0["fields"], "items" = (item0["items"] == null ? null : [for item2 in item0["items"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"], "itemId" = item2["itemId"], "title" = item2["title"], "versionId" = item2["versionId"] } : key3 => value3 if value3 != null }) if item2 != null]), "shouldCaptureMinorVersion" = item0["shouldCaptureMinorVersion"] } : key1 => value1 if value1 != null }) if item0 != null])
-    "driveItem"           = var.drive_item
+    "documentSetVersions" = (var.documentSetVersions == null ? null : [for item0 in var.documentSetVersions : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "comment" = item0["comment"], "createdBy" = item0["createdBy"], "createdDateTime" = item0["createdDateTime"], "fields" = item0["fields"], "items" = (item0["items"] == null ? null : [for item2 in item0["items"] : (item2 == null ? null : { for key3, value3 in { "@odata.type" = item2["odata_type"], "itemId" = item2["itemId"], "title" = item2["title"], "versionId" = item2["versionId"] } : key3 => value3 if value3 != null }) if item2 != null]), "shouldCaptureMinorVersion" = item0["shouldCaptureMinorVersion"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "driveItem"           = var.driveItem
     "fields"              = var.fields
     "name"                = var.name
     "@odata.type"         = var.odata_type
-    "parentReference"     = (var.parent_reference == null ? null : { for key0, value0 in { "@odata.type" = var.parent_reference["odata_type"], "driveType" = var.parent_reference["driveType"], "shareId" = var.parent_reference["shareId"], "siteId" = var.parent_reference["siteId"] } : key0 => value0 if value0 != null })
+    "parentReference"     = (var.parentReference == null ? null : { for key0, value0 in { "@odata.type" = var.parentReference["odata_type"], "driveType" = var.parentReference["driveType"], "shareId" = var.parentReference["shareId"], "siteId" = var.parentReference["siteId"] } : key0 => value0 if value0 != null })
     "versions"            = (var.versions == null ? null : [for item0 in var.versions : item0 if item0 != null])
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
@@ -20,7 +20,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "sites/${urlencode(var.site_id)}/lists/${urlencode(var.list_id)}/items"
+  url                     = "sites/${urlencode(var.site-id)}/lists/${urlencode(var.list-id)}/items"
   api_version             = "v1.0"
   update_method           = "PATCH"
   body                    = local.body

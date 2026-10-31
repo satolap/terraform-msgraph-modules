@@ -5,7 +5,7 @@ run "minimal_request" {
   command = plan
 
   variables {
-    organization_id = "test-parent-id"
+    organization-id = "test-parent-id"
   }
 
   assert {
@@ -33,7 +33,7 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    organization_id = "test-parent-id"
+    organization-id = "test-parent-id"
     select_response = true
   }
 
@@ -47,10 +47,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    organization_id  = "test-parent-id"
-    name             = "example"
-    is_default_theme = false
-    localizations    = [{}]
+    organization-id = "test-parent-id"
+    name            = "example"
+    isDefaultTheme  = false
+    localizations   = [{}]
   }
 
   assert {
@@ -73,7 +73,7 @@ run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    organization_id = "test-parent-id"
+    organization-id = "test-parent-id"
   }
 
   assert {
@@ -86,7 +86,7 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    organization_id = "test-parent-id"
+    organization-id = "test-parent-id"
     timeouts        = { create = "45m", update = "20m", read = "7m" }
   }
 
@@ -100,7 +100,7 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    organization_id = "test-parent-id"
+    organization-id = "test-parent-id"
     timeouts        = { create = "10s" }
   }
 
@@ -111,7 +111,7 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    organization_id = "test-parent-id"
+    organization-id = "test-parent-id"
     timeouts        = { update = "soon" }
   }
 
@@ -122,7 +122,7 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    organization_id = "test-parent-id"
+    organization-id = "test-parent-id"
     timeouts        = { delete = "0s" }
   }
 

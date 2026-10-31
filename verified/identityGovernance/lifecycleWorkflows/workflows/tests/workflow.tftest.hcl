@@ -12,27 +12,27 @@ mock_provider "msgraph" {
 }
 
 variables {
-  display_name = "Onboard new hire"
-  category     = "joiner"
+  displayName = "Onboard new hire"
+  category    = "joiner"
 
   execution_conditions = {
     type       = "trigger_and_scope"
     scope_rule = "(department eq 'Marketing')"
     trigger = {
-      time_based_attribute = "employeeHireDate"
-      offset_in_days       = -1
+      timeBasedAttribute = "employeeHireDate"
+      offsetInDays       = -1
     }
   }
 
   tasks = [
     {
-      task         = "enable_user_account"
-      display_name = "Enable user account"
+      task        = "enable_user_account"
+      displayName = "Enable user account"
     },
     {
-      task         = "send_welcome_email"
-      display_name = "Send welcome email"
-      arguments    = { locale = "en-us", to = "User" }
+      task        = "send_welcome_email"
+      displayName = "Send welcome email"
+      arguments   = { locale = "en-us", to = "User" }
     },
   ]
 }
@@ -118,8 +118,8 @@ run "renaming_and_describing_update_in_place" {
   command = apply
 
   variables {
-    display_name = "Onboard new hire (renamed)"
-    description  = "Renamed workflow"
+    displayName = "Onboard new hire (renamed)"
+    description = "Renamed workflow"
   }
 
   override_resource {
@@ -149,11 +149,11 @@ run "enabling_with_opt_in_updates_in_place" {
   command = apply
 
   variables {
-    display_name          = "Onboard new hire (renamed)"
-    description           = "Renamed workflow"
-    is_enabled            = true
-    is_scheduling_enabled = true
-    activation_opt_in     = true
+    displayName         = "Onboard new hire (renamed)"
+    description         = "Renamed workflow"
+    isEnabled           = true
+    isSchedulingEnabled = true
+    activation_opt_in   = true
   }
 
   override_resource {
@@ -178,15 +178,15 @@ run "changing_a_task_replaces_the_workflow" {
   command = apply
 
   variables {
-    display_name          = "Onboard new hire (renamed)"
-    description           = "Renamed workflow"
-    is_enabled            = true
-    is_scheduling_enabled = true
-    activation_opt_in     = true
+    displayName         = "Onboard new hire (renamed)"
+    description         = "Renamed workflow"
+    isEnabled           = true
+    isSchedulingEnabled = true
+    activation_opt_in   = true
     tasks = [
       {
-        task         = "enable_user_account"
-        display_name = "Enable user account"
+        task        = "enable_user_account"
+        displayName = "Enable user account"
       },
     ]
   }
@@ -218,23 +218,23 @@ run "changing_the_execution_conditions_replaces_the_workflow" {
   command = apply
 
   variables {
-    display_name          = "Onboard new hire (renamed)"
-    description           = "Renamed workflow"
-    is_enabled            = true
-    is_scheduling_enabled = true
-    activation_opt_in     = true
+    displayName         = "Onboard new hire (renamed)"
+    description         = "Renamed workflow"
+    isEnabled           = true
+    isSchedulingEnabled = true
+    activation_opt_in   = true
     execution_conditions = {
       type       = "trigger_and_scope"
       scope_rule = "(department eq 'Sales')"
       trigger = {
-        time_based_attribute = "employeeHireDate"
-        offset_in_days       = 0
+        timeBasedAttribute = "employeeHireDate"
+        offsetInDays       = 0
       }
     }
     tasks = [
       {
-        task         = "enable_user_account"
-        display_name = "Enable user account"
+        task        = "enable_user_account"
+        displayName = "Enable user account"
       },
     ]
   }
@@ -261,23 +261,23 @@ run "renaming_only_a_task_replaces_the_workflow" {
   command = apply
 
   variables {
-    display_name          = "Onboard new hire (renamed)"
-    description           = "Renamed workflow"
-    is_enabled            = true
-    is_scheduling_enabled = true
-    activation_opt_in     = true
+    displayName         = "Onboard new hire (renamed)"
+    description         = "Renamed workflow"
+    isEnabled           = true
+    isSchedulingEnabled = true
+    activation_opt_in   = true
     execution_conditions = {
       type       = "trigger_and_scope"
       scope_rule = "(department eq 'Sales')"
       trigger = {
-        time_based_attribute = "employeeHireDate"
-        offset_in_days       = 0
+        timeBasedAttribute = "employeeHireDate"
+        offsetInDays       = 0
       }
     }
     tasks = [
       {
-        task         = "enable_user_account"
-        display_name = "Enable the account"
+        task        = "enable_user_account"
+        displayName = "Enable the account"
       },
     ]
   }

@@ -344,3 +344,46 @@ Terraform plans compare configuration and refreshed provider state. A plan that 
 - `acknowledge_all_principals`: no object change (validation or timing only).
 - `scopes`: kept from creation in `msgraph_resource_action.grant`; updates `msgraph_update_resource.scope` in place.
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /oauth2PermissionGrants` | DelegatedWork | Unknown / not annotated | - | The pinned DevX entry lists permissions but marks none least privileged for this scheme. |
+| `POST /oauth2PermissionGrants` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /oauth2PermissionGrants` | Application | Unknown / not annotated | - | The pinned DevX entry lists permissions but marks none least privileged for this scheme. |
+| `DELETE /oauth2PermissionGrants` | DelegatedWork | Unknown / not annotated | - | The empty-ID cleanup fallback produces a collection URI, not an item deletion. DevX does not annotate collection DELETE; this conservative failure-path candidate establishes neither bulk deletion support nor a permission grant. |
+| `DELETE /oauth2PermissionGrants` | DelegatedPersonal | Unknown / not annotated | - | The empty-ID cleanup fallback produces a collection URI, not an item deletion. DevX does not annotate collection DELETE; this conservative failure-path candidate establishes neither bulk deletion support nor a permission grant. |
+| `DELETE /oauth2PermissionGrants` | Application | Unknown / not annotated | - | The empty-ID cleanup fallback produces a collection URI, not an item deletion. DevX does not annotate collection DELETE; this conservative failure-path candidate establishes neither bulk deletion support nor a permission grant. |
+| `DELETE /oauth2PermissionGrants/{id}` | DelegatedWork | Unknown / not annotated | - | The pinned DevX entry lists permissions but marks none least privileged for this scheme. |
+| `DELETE /oauth2PermissionGrants/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /oauth2PermissionGrants/{id}` | Application | Unknown / not annotated | - | The pinned DevX entry lists permissions but marks none least privileged for this scheme. |
+| `PATCH /oauth2PermissionGrants` | DelegatedWork | Unknown / not annotated | - | The empty-ID update fallback produces a collection URI, not an item update. DevX does not annotate collection PATCH; this conservative failure-path candidate establishes neither bulk update support nor a permission grant. |
+| `PATCH /oauth2PermissionGrants` | DelegatedPersonal | Unknown / not annotated | - | The empty-ID update fallback produces a collection URI, not an item update. DevX does not annotate collection PATCH; this conservative failure-path candidate establishes neither bulk update support nor a permission grant. |
+| `PATCH /oauth2PermissionGrants` | Application | Unknown / not annotated | - | The empty-ID update fallback produces a collection URI, not an item update. DevX does not annotate collection PATCH; this conservative failure-path candidate establishes neither bulk update support nor a permission grant. |
+| `GET /oauth2PermissionGrants` | DelegatedWork | `Directory.Read.All` | - | - |
+| `GET /oauth2PermissionGrants` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /oauth2PermissionGrants` | Application | `Directory.Read.All` | - | - |
+| `PATCH /oauth2PermissionGrants/{id}` | DelegatedWork | Unknown / not annotated | - | The pinned DevX entry lists permissions but marks none least privileged for this scheme. |
+| `PATCH /oauth2PermissionGrants/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /oauth2PermissionGrants/{id}` | Application | Unknown / not annotated | - | The pinned DevX entry lists permissions but marks none least privileged for this scheme. |
+| `GET /oauth2PermissionGrants/{id}` | DelegatedWork | `Directory.Read.All` | - | - |
+| `GET /oauth2PermissionGrants/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /oauth2PermissionGrants/{id}` | Application | `Directory.Read.All` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /oauth2PermissionGrants` | `clientId`, `consentType`, `principalId`, `resourceId`, `scope` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /oauth2PermissionGrants` | `scope` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /oauth2PermissionGrants/{id}` | `scope` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

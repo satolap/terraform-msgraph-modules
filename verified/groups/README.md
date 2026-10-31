@@ -40,16 +40,16 @@ to add it to a catalog and `access-packages/resource-role-scopes` to grant its m
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "engineering_group" {
   source  = "satolap/modules/msgraph//verified/groups"
   version = "<version>"
 
-  display_name     = "Engineering"
-  mail_nickname    = "engineering"
-  security_enabled = true
+  displayName     = "Engineering"
+  mailNickname    = "engineering"
+  securityEnabled = true
 
   owner_ids  = [module.team_lead.id]
   member_ids = [module.developer.id]
@@ -60,17 +60,17 @@ module "project_group" {
   source  = "satolap/modules/msgraph//verified/groups"
   version = "<version>"
 
-  display_name  = "Project X"
-  mail_nickname = "projectx"
-  group_types   = ["Unified"]
-  mail_enabled  = true
-  visibility    = "Private"
+  displayName  = "Project X"
+  mailNickname = "projectx"
+  groupTypes   = ["Unified"]
+  mailEnabled  = true
+  visibility   = "Private"
 }
 ```
 
 ## Mail nickname
 
-`mail_nickname` takes at most 64 ASCII characters and none of `@ ( ) \ [ ] " ; : < > ,`
+`mailNickname` takes at most 64 ASCII characters and none of `@ ( ) \ [ ] " ; : < > ,`
 or a space, as Microsoft Learn's [group resource](https://learn.microsoft.com/en-us/graph/api/resources/group?view=graph-rest-1.0)
 and [Create group](https://learn.microsoft.com/en-us/graph/api/group-post-groups?view=graph-rest-1.0)
 pages document. A period is allowed, as in `help.desk`. The
@@ -81,7 +81,7 @@ even though creation accepts it.
 ## Replacement
 
 Microsoft Graph sets `isAssignableToRole`, and the `HiddenMembership` visibility, only when
-it creates a group. A change of `is_assignable_to_role` between `true` and `false` or `null`,
+it creates a group. A change of `isAssignableToRole` between `true` and `false` or `null`,
 or of `visibility` to or from `"HiddenMembership"`, therefore replaces the group: Terraform
 plans a destroy and a create of `msgraph_resource.group`. The old group is deleted before the
 new one is created, because a Microsoft 365 group's mail nickname must be unique. The new
@@ -90,15 +90,15 @@ the old ID must follow it. Owners and members are bound again from `owner_ids` a
 `member_ids`; members added outside them are not. A deleted Microsoft 365 group or cloud
 security group can be restored for 30 days; Microsoft Learn does not say whether it keeps its
 mail nickname during that time, so if creating the new group fails on the nickname, either
-permanently delete the old group or choose another `mail_nickname`. A change between `null`
+permanently delete the old group or choose another `mailNickname`. A change between `null`
 and `false` keeps the group and sends nothing: `false` is Graph's default, so the module sends
 `isAssignableToRole` only when it is `true`. A state written by an earlier release with
-`is_assignable_to_role = false` plans one in-place update that drops the key from the stored
+`isAssignableToRole = false` plans one in-place update that drops the key from the stored
 body; the provider sends no request for a key that left the body.
 
 Because the old group is gone before Graph sees the new one, the plan refuses combinations
 that Graph documents as invalid: a role-assignable group with a `visibility` other than `null`
-or `"Private"`, and `"HiddenMembership"` on a group whose `group_types` lacks `"Unified"`.
+or `"Private"`, and `"HiddenMembership"` on a group whose `groupTypes` lacks `"Unified"`.
 
 `terraform_data.immutable` holds these two values and makes no API call. Upgrading from a
 release without it plans only its creation and no change to the group. Terraform does not
@@ -108,15 +108,15 @@ replace in the apply that creates it, so make a change to these inputs in a late
 
 Microsoft Learn's update group page does not list `mailEnabled` among the updatable properties,
 and Microsoft Graph documents no conversion between a security group and a Microsoft 365 group.
-A change of `mail_enabled`, or adding or removing `"Unified"` in `group_types`, therefore fails
+A change of `mailEnabled`, or adding or removing `"Unified"` in `groupTypes`, therefore fails
 the plan instead of sending a PATCH that Graph may refuse or ignore. Create a new group with the
 other setting and move its members and references. Adding or removing `"DynamicMembership"`
-(with `membership_rule`) is documented as a change of an existing group and updates it in place.
+(with `membershipRule`) is documented as a change of an existing group and updates it in place.
 `terraform_data.created` keeps the creation-time values, makes no API call and is replaced with
 `terraform_data.immutable`, so a replacement of the group may carry new mail settings. A group
 that exists from before this resource, or that was imported, takes its snapshot from the first
 plan, which therefore cannot refuse a conversion made in that same plan: upgrade first with
-unchanged `mail_enabled` and `group_types`. Two postconditions compare the `mailEnabled` and
+unchanged `mailEnabled` and `groupTypes`. Two postconditions compare the `mailEnabled` and
 `groupTypes` values that Graph returns with the configuration, so a conversion that Graph ignored
 fails the apply, and a missing read-back fails it too.
 This is documentation-based; a live run records what Graph does (GB-directory-objects-519, -520).
@@ -129,7 +129,7 @@ This is documentation-based; a live run records what Graph does (GB-directory-ob
 | msgraph | >= 0.3.0 |
 
 Requires the `Group.ReadWrite.All` Microsoft Graph permission (or `Directory.ReadWrite.All`).
-Setting `is_assignable_to_role = true` additionally requires `RoleManagement.ReadWrite.Directory`.
+Setting `isAssignableToRole = true` additionally requires `RoleManagement.ReadWrite.Directory`.
 
 <!-- licensing:begin -->
 ## Licensing and prerequisites
@@ -141,13 +141,13 @@ Before deployment, check the requirements of the features you enable and the use
 | Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
 | --- | --- | --- | --- | --- | --- |
 | Always | DIRECTORY-BASIC | The reviewed create APIs for users, assigned security groups, applications and service principals specify no additional premium license. This covers the object operation only; features built on these objects can require licenses. No additional license specified. | No per-user entitlement for the object operation itself | direct / per_tenant | documented |
-| `group_types` contains `"DynamicMembership"` | GROUP-DYNAMIC | Dynamic user membership requires Microsoft Entra ID P1 or Intune for Education coverage in the tenant for each unique user who is a member of one or more dynamic groups. Licenses do not have to be assigned directly to those users. Device-only dynamic membership has no per-device license requirement. Any of: Microsoft Entra ID P1 (`AAD_PREMIUM`); Intune for Education (`INTUNE_EDU`). | Each unique user who is a member of any dynamic group | group_based / per_tenant | documented |
-| `is_assignable_to_role` is `true` | GROUP-ROLE | Role-assignable groups require Microsoft Entra ID P1. Just-in-time activation of the roles assigned to the group adds Privileged Identity Management licensing requirements. Any of: Microsoft Entra ID P1 (`AAD_PREMIUM`). | Tenant-wide feature; review Privileged Identity Management coverage separately for activation scenarios | group_based / per_tenant | documented |
+| `groupTypes` contains `"DynamicMembership"` | GROUP-DYNAMIC | Dynamic user membership requires Microsoft Entra ID P1 or Intune for Education coverage in the tenant for each unique user who is a member of one or more dynamic groups. Licenses do not have to be assigned directly to those users. Device-only dynamic membership has no per-device license requirement. Any of: Microsoft Entra ID P1 (`AAD_PREMIUM`); Intune for Education (`INTUNE_EDU`). | Each unique user who is a member of any dynamic group | group_based / per_tenant | documented |
+| `isAssignableToRole` is `true` | GROUP-ROLE | Role-assignable groups require Microsoft Entra ID P1. Just-in-time activation of the roles assigned to the group adds Privileged Identity Management licensing requirements. Any of: Microsoft Entra ID P1 (`AAD_PREMIUM`). | Tenant-wide feature; review Privileged Identity Management coverage separately for activation scenarios | group_based / per_tenant | documented |
 
 Notes:
 
 - A dynamic membership rule and a role-assignable group are separate licensed features, not interchangeable variants of the same test.
-- When `group_types` contains `"Unified"`: Microsoft 365 group workloads (mailbox, site, Teams) require their own service and license review.
+- When `groupTypes` contains `"Unified"`: Microsoft 365 group workloads (mailbox, site, Teams) require their own service and license review.
 
 Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-users?view=graph-rest-1.0), [Create group](https://learn.microsoft.com/en-us/graph/api/group-post-groups?view=graph-rest-1.0), [Create application](https://learn.microsoft.com/en-us/graph/api/application-post-applications?view=graph-rest-1.0), [Create servicePrincipal](https://learn.microsoft.com/en-us/graph/api/serviceprincipal-post-serviceprincipals?view=graph-rest-1.0), [Dynamic membership license requirements](https://learn.microsoft.com/en-us/entra/identity/users/groups-dynamic-membership#license-requirements), [Role-assignable groups license requirements](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/groups-concept#license-requirements).
 <!-- licensing:end -->
@@ -156,22 +156,22 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 | Name | Description | Type | Default | Required | On change |
 |------|-------------|------|---------|----------| --- |
-| display_name | Display name of the group | `string` | n/a | yes | in place |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
-| mail_nickname | Mail alias, at most 64 ASCII characters; see [Mail nickname](#mail-nickname) | `string` | n/a | yes | in place |
-| mail_nickname_pattern | Regular expression (RE2, not anchored unless it says so) that mail_nickname must match, or the plan fails; null accepts any alias | `string` | `null` | no | no object change (validation or timing only) |
+| displayName | Display name of the group | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that displayName must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| mailNickname | Mail alias, at most 64 ASCII characters; see [Mail nickname](#mail-nickname) | `string` | n/a | yes | in place |
+| mail_nickname_pattern | Regular expression (RE2, not anchored unless it says so) that mailNickname must match, or the plan fails; null accepts any alias | `string` | `null` | no | no object change (validation or timing only) |
 | description | Description of the group | `string` | `null` | no | in place |
-| security_enabled | Whether the group is a security group | `bool` | `true` | no | in place |
-| mail_enabled | Whether the group is mail-enabled | `bool` | `false` | no | kept from creation: a change is refused or ignored (see notes) |
-| group_types | `["Unified"]` for M365, `[]` for security; add `"DynamicMembership"` for dynamic | `list(string)` | `[]` | no | kept from creation: a change is refused or ignored (see notes) |
+| securityEnabled | Whether the group is a security group | `bool` | `true` | no | in place |
+| mailEnabled | Whether the group is mail-enabled | `bool` | `false` | no | kept from creation: a change is refused or ignored (see notes) |
+| groupTypes | `["Unified"]` for M365, `[]` for security; add `"DynamicMembership"` for dynamic | `list(string)` | `[]` | no | kept from creation: a change is refused or ignored (see notes) |
 | visibility | `Public`/`Private`/`HiddenMembership` (M365 groups only); a change to or from `HiddenMembership` replaces the group | `string` | `null` | no | replaces `msgraph_resource.group` when `var.visibility == "HiddenMembership"` changes |
-| is_assignable_to_role | Allow Entra role assignment to the group; a change replaces the group | `bool` | `null` | no | replaces `msgraph_resource.group` when `var.is_assignable_to_role == true` changes |
-| membership_rule | Dynamic membership rule (required with `DynamicMembership`) | `string` | `null` | no | in place |
+| isAssignableToRole | Allow Entra role assignment to the group; a change replaces the group | `bool` | `null` | no | replaces `msgraph_resource.group` when `var.isAssignableToRole == true` changes |
+| membershipRule | Dynamic membership rule (required with `DynamicMembership`) | `string` | `null` | no | in place |
 | owner_ids | Directory object IDs to set as owners | `list(string)` | `[]` | no | changes `msgraph_resource.group`; see the module notes |
 | member_ids | Directory object IDs to set as members | `list(string)` | `[]` | no | changes `msgraph_resource.group`; see the module notes |
 | api_version | Graph API version (`v1.0` or `beta`) | `string` | `"v1.0"` | no | in place |
 
-Unique values, inferred from the pinned metadata (declaration.json gives each source): `mail_nickname` within the tenant, among Microsoft 365 groups. Graph refuses a value already used in that scope.
+Unique values, inferred from the pinned metadata (declaration.json gives each source): `mailNickname` within the tenant, among Microsoft 365 groups. Graph refuses a value already used in that scope.
 
 ## Outputs
 
@@ -186,15 +186,15 @@ Unique values, inferred from the pinned metadata (declaration.json gives each so
 
 Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
 
-- `display_name`: in place.
-- `mail_nickname`: in place.
+- `displayName`: in place.
+- `mailNickname`: in place.
 - `description`: in place.
-- `security_enabled`: in place.
-- `mail_enabled`: kept from creation: a change is refused or ignored (see notes).
-- `group_types`: kept from creation: a change is refused or ignored (see notes).
+- `securityEnabled`: in place.
+- `mailEnabled`: kept from creation: a change is refused or ignored (see notes).
+- `groupTypes`: kept from creation: a change is refused or ignored (see notes).
 - `visibility`: replaces `msgraph_resource.group` when `var.visibility == "HiddenMembership"` changes.
-- `is_assignable_to_role`: replaces `msgraph_resource.group` when `var.is_assignable_to_role == true` changes.
-- `membership_rule`: in place.
+- `isAssignableToRole`: replaces `msgraph_resource.group` when `var.isAssignableToRole == true` changes.
+- `membershipRule`: in place.
 - `owner_ids`: changes `msgraph_resource.group`; see the module notes.
 - `member_ids`: changes `msgraph_resource.group`; see the module notes.
 - `api_version`: in place.
@@ -208,18 +208,29 @@ Terraform plans compare configuration and refreshed provider state. A plan that 
 Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
 The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
 
-| Operation | Authentication | Least-privilege alternative | AlsoRequires |
-| --- | --- | --- | --- |
-| `POST /groups` | DelegatedWork | `Group.ReadWrite.All` | — |
-| `POST /groups` | DelegatedPersonal | Unknown / not annotated | — |
-| `POST /groups` | Application | `Group.Create` | — |
-| `GET /groups/{id}` | DelegatedWork | `Group-NestingSupport.ReadWrite.All` | — |
-| `GET /groups/{id}` | DelegatedPersonal | Unknown / not annotated | — |
-| `GET /groups/{id}` | Application | `Group-NestingSupport.ReadWrite.All` | — |
-| `PATCH /groups/{id}` | DelegatedWork | `Group-NestingSupport.ReadWrite.All` | — |
-| `PATCH /groups/{id}` | DelegatedPersonal | Unknown / not annotated | — |
-| `PATCH /groups/{id}` | Application | `Group-NestingSupport.ReadWrite.All` | — |
-| `DELETE /groups/{id}` | DelegatedWork | `Group.ReadWrite.All` | — |
-| `DELETE /groups/{id}` | DelegatedPersonal | Unknown / not annotated | — |
-| `DELETE /groups/{id}` | Application | `Group.ReadWrite.All` | — |
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /groups` | DelegatedWork | `Group.ReadWrite.All` | - | - |
+| `POST /groups` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /groups` | Application | `Group.Create` | - | - |
+| `GET /groups/{id}` | DelegatedWork | `Group-NestingSupport.ReadWrite.All` | - | - |
+| `GET /groups/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /groups/{id}` | Application | `Group-NestingSupport.ReadWrite.All` | - | - |
+| `DELETE /groups/{id}` | DelegatedWork | `Group.ReadWrite.All` | - | - |
+| `DELETE /groups/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /groups/{id}` | Application | `Group.ReadWrite.All` | - | - |
+| `PATCH /groups/{id}` | DelegatedWork | `Group-NestingSupport.ReadWrite.All` | - | - |
+| `PATCH /groups/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /groups/{id}` | Application | `Group-NestingSupport.ReadWrite.All` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /groups` | `description`, `displayName`, `groupTypes`, `isAssignableToRole`, `mailEnabled`, `mailNickname`, `members@odata.bind`, `membershipRule`, `membershipRuleProcessingState`, `owners@odata.bind`, `securityEnabled`, `visibility` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /groups/{id}` | `description`, `displayName`, `groupTypes`, `isAssignableToRole`, `mailEnabled`, `mailNickname`, `members@odata.bind`, `membershipRule`, `membershipRuleProcessingState`, `owners@odata.bind`, `securityEnabled`, `visibility` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
 <!-- permissions:end -->

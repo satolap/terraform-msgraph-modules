@@ -5,7 +5,7 @@ run "minimal_request" {
   command = plan
 
   variables {
-    user_id = "test-parent-id"
+    user-id = "test-parent-id"
   }
 
   assert {
@@ -33,7 +33,7 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    user_id         = "test-parent-id"
+    user-id         = "test-parent-id"
     select_response = true
   }
 
@@ -47,11 +47,11 @@ run "typed_request" {
   command = plan
 
   variables {
-    user_id           = "test-parent-id"
-    allowed_audiences = "me"
-    is_searchable     = false
-    graph_source      = { "type" = null }
-    sources           = [{}]
+    user-id          = "test-parent-id"
+    allowedAudiences = "me"
+    isSearchable     = false
+    graph_source     = { "type" = null }
+    sources          = [{}]
   }
 
   assert {
@@ -79,19 +79,19 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    user_id           = "test-parent-id"
-    allowed_audiences = "__graphmodules_invalid_enum__"
+    user-id          = "test-parent-id"
+    allowedAudiences = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.allowed_audiences]
+  expect_failures = [var.allowedAudiences]
 }
 
 run "flags_enum_combination" {
   command = plan
 
   variables {
-    user_id           = "test-parent-id"
-    allowed_audiences = "me, Family"
+    user-id          = "test-parent-id"
+    allowedAudiences = "me, Family"
   }
 
   assert {
@@ -104,18 +104,18 @@ run "invalid_flags_member" {
   command = plan
 
   variables {
-    user_id           = "test-parent-id"
-    allowed_audiences = "me,__graphmodules_invalid_enum__"
+    user-id          = "test-parent-id"
+    allowedAudiences = "me,__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.allowed_audiences]
+  expect_failures = [var.allowedAudiences]
 }
 
 run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    user_id = "test-parent-id"
+    user-id = "test-parent-id"
   }
 
   assert {
@@ -128,7 +128,7 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    user_id  = "test-parent-id"
+    user-id  = "test-parent-id"
     timeouts = { create = "45m", update = "20m", read = "7m" }
   }
 
@@ -142,7 +142,7 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    user_id  = "test-parent-id"
+    user-id  = "test-parent-id"
     timeouts = { create = "10s" }
   }
 
@@ -153,7 +153,7 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    user_id  = "test-parent-id"
+    user-id  = "test-parent-id"
     timeouts = { update = "soon" }
   }
 
@@ -164,7 +164,7 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    user_id  = "test-parent-id"
+    user-id  = "test-parent-id"
     timeouts = { delete = "0s" }
   }
 

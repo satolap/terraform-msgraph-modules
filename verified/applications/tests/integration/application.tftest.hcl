@@ -12,15 +12,15 @@ run "create_application_with_app_role" {
   command = apply
 
   variables {
-    display_name = "tftest-app-${run.setup.suffix}"
-    description  = "Created by terraform test; safe to delete"
+    displayName = "tftest-app-${run.setup.suffix}"
+    description = "Created by terraform test; safe to delete"
 
     app_roles = [
       {
-        id           = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab"
-        display_name = "Contributor"
-        description  = "Integration test app role"
-        value        = "Contributor"
+        id          = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab"
+        displayName = "Contributor"
+        description = "Integration test app role"
+        value       = "Contributor"
       },
     ]
   }
@@ -41,15 +41,15 @@ run "rename_application" {
   command = apply
 
   variables {
-    display_name = "tftest-app-${run.setup.suffix}-renamed"
-    description  = "Created by terraform test; safe to delete"
+    displayName = "tftest-app-${run.setup.suffix}-renamed"
+    description = "Created by terraform test; safe to delete"
 
     app_roles = [
       {
-        id           = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab"
-        display_name = "Contributor"
-        description  = "Integration test app role"
-        value        = "Contributor"
+        id          = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab"
+        displayName = "Contributor"
+        description = "Integration test app role"
+        value       = "Contributor"
       },
     ]
   }

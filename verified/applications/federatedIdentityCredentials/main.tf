@@ -1,5 +1,5 @@
 locals {
-  application_id = lower(var.application_id)
+  application_id = lower(var.application-id)
   body = merge(
     {
       name      = var.name
@@ -17,7 +17,7 @@ locals {
 # A dependent's create_before_destroy can override this ordering; see the README.
 resource "terraform_data" "immutable" {
   input = {
-    application_id = lower(var.application_id)
+    application_id = lower(var.application-id)
     name           = var.name
   }
 }

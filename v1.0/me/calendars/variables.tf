@@ -1,15 +1,15 @@
-variable "allowed_online_meeting_providers" {
+variable "allowedOnlineMeetingProviders" {
   description = "Represent the online meeting service providers that can be used to create online meetings in this calendar. The possible values are: unknown, skypeForBusiness, skypeForConsumer, teamsForBusiness."
   type        = list(string)
   default     = null
 
   validation {
-    condition     = (var.allowed_online_meeting_providers == null ? true : alltrue([alltrue([for input0 in var.allowed_online_meeting_providers : (input0 == null ? true : alltrue([(input0 == null ? true : contains(["unknown", "skypeForBusiness", "skypeForConsumer", "teamsForBusiness"], input0))]))])]))
-    error_message = "allowed_online_meeting_providers: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.allowedOnlineMeetingProviders == null ? true : alltrue([alltrue([for input0 in var.allowedOnlineMeetingProviders : (input0 == null ? true : alltrue([(input0 == null ? true : contains(["unknown", "skypeForBusiness", "skypeForConsumer", "teamsForBusiness"], input0))]))])]))
+    error_message = "allowedOnlineMeetingProviders: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "calendar_permissions" {
+variable "calendarPermissions" {
   description = "The permissions of the users with whom the calendar is shared."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.calendarPermission")
@@ -21,24 +21,24 @@ variable "calendar_permissions" {
   default = null
 
   validation {
-    condition     = (var.calendar_permissions == null ? true : alltrue([alltrue([for input0 in var.calendar_permissions : (input0 == null ? true : alltrue([(input0["allowedRoles"] == null ? true : alltrue([alltrue([for input2 in input0["allowedRoles"] : (input2 == null ? true : alltrue([(input2 == null ? true : contains(["none", "freeBusyRead", "limitedRead", "read", "write", "delegateWithoutPrivateEventAccess", "delegateWithPrivateEventAccess", "custom"], input2))]))])])), (input0["role"] == null ? true : alltrue([(input0["role"] == null ? true : contains(["none", "freeBusyRead", "limitedRead", "read", "write", "delegateWithoutPrivateEventAccess", "delegateWithPrivateEventAccess", "custom"], input0["role"]))]))]))])]))
-    error_message = "calendar_permissions: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.calendarPermissions == null ? true : alltrue([alltrue([for input0 in var.calendarPermissions : (input0 == null ? true : alltrue([(input0["allowedRoles"] == null ? true : alltrue([alltrue([for input2 in input0["allowedRoles"] : (input2 == null ? true : alltrue([(input2 == null ? true : contains(["none", "freeBusyRead", "limitedRead", "read", "write", "delegateWithoutPrivateEventAccess", "delegateWithPrivateEventAccess", "custom"], input2))]))])])), (input0["role"] == null ? true : alltrue([(input0["role"] == null ? true : contains(["none", "freeBusyRead", "limitedRead", "read", "write", "delegateWithoutPrivateEventAccess", "delegateWithPrivateEventAccess", "custom"], input0["role"]))]))]))])]))
+    error_message = "calendarPermissions: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "can_edit" {
+variable "canEdit" {
   description = "true if the user can write to the calendar, false otherwise. This property is true for the user who created the calendar. This property is also true for a user who shared a calendar and granted write access."
   type        = bool
   default     = null
 }
 
-variable "can_share" {
+variable "canShare" {
   description = "true if the user has permission to share the calendar, false otherwise. Only the user who created the calendar can share it."
   type        = bool
   default     = null
 }
 
-variable "can_view_private_items" {
+variable "canViewPrivateItems" {
   description = "If true, the user can read calendar items that have been marked private, false otherwise."
   type        = bool
   default     = null
@@ -55,30 +55,30 @@ variable "color" {
   }
 }
 
-variable "default_online_meeting_provider" {
+variable "defaultOnlineMeetingProvider" {
   description = "The default online meeting provider for meetings sent from this calendar. The possible values are: unknown, skypeForBusiness, skypeForConsumer, teamsForBusiness."
   type        = string
   default     = null
 
   validation {
-    condition     = var.default_online_meeting_provider == null ? true : contains(["unknown", "skypeForBusiness", "skypeForConsumer", "teamsForBusiness"], var.default_online_meeting_provider)
-    error_message = "default_online_meeting_provider must be one of the documented enum values."
+    condition     = var.defaultOnlineMeetingProvider == null ? true : contains(["unknown", "skypeForBusiness", "skypeForConsumer", "teamsForBusiness"], var.defaultOnlineMeetingProvider)
+    error_message = "defaultOnlineMeetingProvider must be one of the documented enum values."
   }
 }
 
-variable "is_default_calendar" {
+variable "isDefaultCalendar" {
   description = "true if this is the default calendar where new events are created by default, false otherwise."
   type        = bool
   default     = null
 }
 
-variable "is_removable" {
+variable "isRemovable" {
   description = "Indicates whether this user calendar can be deleted from the user mailbox."
   type        = bool
   default     = null
 }
 
-variable "is_tallying_responses" {
+variable "isTallyingResponses" {
   description = "Indicates whether this user calendar supports tracking of meeting responses. Only meeting invites sent from users' primary calendars support tracking of meeting responses."
   type        = bool
   default     = null

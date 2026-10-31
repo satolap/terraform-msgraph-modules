@@ -9,7 +9,7 @@ locals {
 # Case-only changes to the service principal GUID do not rotate a password.
 resource "terraform_data" "identity" {
   input = {
-    service_principal_id = lower(var.service_principal_id)
+    service_principal_id = lower(var.servicePrincipal-id)
     password             = local.password
     rotation_trigger     = var.rotation_trigger
   }
@@ -18,7 +18,7 @@ resource "terraform_data" "identity" {
 # Never model this as CRUD or PATCH passwordCredentials: Graph generates the
 # secret and returns it only in this POST response. Read on the action is a no-op.
 resource "msgraph_resource_action" "add" {
-  resource_url = "servicePrincipals/${lower(var.service_principal_id)}"
+  resource_url = "servicePrincipals/${lower(var.servicePrincipal-id)}"
   action       = "addPassword"
   method       = "POST"
   api_version  = "v1.0"

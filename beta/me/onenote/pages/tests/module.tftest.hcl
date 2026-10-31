@@ -42,8 +42,8 @@ run "typed_request" {
   command = plan
 
   variables {
-    content   = "example"
-    user_tags = ["example"]
+    content  = "example"
+    userTags = ["example"]
   }
 
   assert {

@@ -1,73 +1,73 @@
-variable "education_class_id" {
+variable "educationClass-id" {
   description = "The unique identifier of educationClass"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.education_class_id)) > 0
-    error_message = "education_class_id must not be empty."
+    condition     = length(trimspace(var.educationClass-id)) > 0
+    error_message = "educationClass-id must not be empty."
   }
 }
 
-variable "add_to_calendar_action" {
+variable "addToCalendarAction" {
   description = "Optional field to control the assignment behavior  for adding assignments to students' and teachers' calendars when the assignment is published. The possible values are: none, studentsAndPublisher, studentsAndTeamOwners, unknownFutureValue, and studentsOnly. Use the Prefer: include-unknown-enum-members request header to get the following members in this evolvable enum: studentsOnly. The default value is none."
   type        = string
   default     = null
 
   validation {
-    condition     = var.add_to_calendar_action == null ? true : contains(["none", "studentsAndPublisher", "studentsAndTeamOwners"], var.add_to_calendar_action)
-    error_message = "add_to_calendar_action must be one of the documented enum values."
+    condition     = var.addToCalendarAction == null ? true : contains(["none", "studentsAndPublisher", "studentsAndTeamOwners"], var.addToCalendarAction)
+    error_message = "addToCalendarAction must be one of the documented enum values."
   }
 }
 
-variable "added_student_action" {
+variable "addedStudentAction" {
   description = "Optional field to control the assignment behavior for students who are added after the assignment is published. If not specified, defaults to none. Supported values are: none, assignIfOpen. For example, a teacher can use assignIfOpen to indicate that an assignment should be assigned to any new student who joins the class while the assignment is still open, and none to indicate that an assignment shouldn't be assigned to new students."
   type        = string
   default     = null
 
   validation {
-    condition     = var.added_student_action == null ? true : contains(["none", "assignIfOpen"], var.added_student_action)
-    error_message = "added_student_action must be one of the documented enum values."
+    condition     = var.addedStudentAction == null ? true : contains(["none", "assignIfOpen"], var.addedStudentAction)
+    error_message = "addedStudentAction must be one of the documented enum values."
   }
 }
 
-variable "allow_late_submissions" {
+variable "allowLateSubmissions" {
   description = "Identifies whether students can submit after the due date. If this property isn't specified during create, it defaults to true."
   type        = bool
   default     = null
 }
 
-variable "allow_students_to_add_resources_to_submission" {
+variable "allowStudentsToAddResourcesToSubmission" {
   description = "Identifies whether students can add their own resources to a submission or if they can only modify resources added by the teacher."
   type        = bool
   default     = null
 }
 
-variable "assign_to" {
+variable "assignTo" {
   description = "Which users, or whole class should receive a submission object once the assignment is published."
   type        = any
   default     = null
 }
 
-variable "class_id" {
+variable "classId" {
   description = "Class to which this assignment belongs."
   type        = string
   default     = null
 }
 
-variable "close_date_time" {
+variable "closeDateTime" {
   description = "Date when the assignment will be closed for submissions. This is an optional field that can be null if the assignment doesn't allowLateSubmissions or when the closeDateTime is the same as the dueDateTime. But if specified, then the closeDateTime must be greater than or equal to the dueDateTime. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "Name of the assignment."
   type        = string
   default     = null
 }
 
-variable "due_date_time" {
+variable "dueDateTime" {
   description = "Date when the students assignment is due.  The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
@@ -79,13 +79,13 @@ variable "grading" {
   default     = null
 }
 
-variable "grading_category" {
+variable "gradingCategory" {
   description = "When set, enables users to weight assignments differently when computing a class average grade."
   type        = any
   default     = null
 }
 
-variable "grading_scheme" {
+variable "gradingScheme" {
   description = "When set, enables users to configure custom string grades based on the percentage of total points earned on this assignment."
   type        = any
   default     = null
@@ -106,19 +106,19 @@ variable "instructions" {
   }
 }
 
-variable "language_tag" {
+variable "languageTag" {
   description = "Specifies the language in which UI notifications for the assignment are displayed. If languageTag isn't provided, the default language is en-US. Optional."
   type        = string
   default     = null
 }
 
-variable "module_url" {
+variable "moduleUrl" {
   description = "The URL of the module from which to access the assignment."
   type        = string
   default     = null
 }
 
-variable "notification_channel_url" {
+variable "notificationChannelUrl" {
   description = "Optional field to specify the URL of the channel to post the assignment publish notification. If not specified or null, defaults to the General channel. This field only applies to assignments where the assignTo value is educationAssignmentClassRecipient. Updating the notificationChannelUrl isn't allowed after the assignment has been published."
   type        = string
   default     = null

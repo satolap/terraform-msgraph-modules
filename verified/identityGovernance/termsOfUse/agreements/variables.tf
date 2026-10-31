@@ -1,15 +1,15 @@
-variable "display_name" {
-  description = "Display name of the agreement, used for internal tracking: Learn says it is not shown to end users (each file's display_name is). It can be updated in place."
+variable "displayName" {
+  description = "Display name of the agreement, used for internal tracking: Learn says it is not shown to end users (each file's displayName is). It can be updated in place."
   type        = string
   nullable    = false
 
   validation {
-    condition     = try(length(trimspace(var.display_name)) > 0, false)
-    error_message = "display_name must not be empty."
+    condition     = try(length(trimspace(var.displayName)) > 0, false)
+    error_message = "displayName must not be empty."
   }
 }
 
-variable "is_viewing_before_acceptance_required" {
+variable "isViewingBeforeAcceptanceRequired" {
   description = "Whether a user has to expand and view the agreement before accepting it (isViewingBeforeAcceptanceRequired). Learn lists it among the properties required to create an agreement and documents it for update, so it is always sent and changes in place. Changing it does not by itself ask users to accept again; Learn documents no such effect."
   type        = bool
   default     = false
@@ -26,8 +26,8 @@ variable "default_file" {
 
     - language: language of the file, "languagecode2-country/regioncode2" or a BCP-47 tag, for
       example "en" or "en-US" (Learn). Compared case-insensitively with the other files.
-    - file_name: name of the file, for example "TOU.pdf".
-    - display_name: localized name that end users see; null leaves it out of the request.
+    - fileName: name of the file, for example "TOU.pdf".
+    - displayName: localized name that end users see; null leaves it out of the request.
     - content_base64: the PDF, base64 encoded, for example filebase64("terms.pdf"). It must start
       with the PDF header ("%PDF-") and decode to at most 2 MiB. The size limit is this module's
       own, conservative choice: Learn states none and it is not verified against Graph's request limit. The content is sent to Graph, is kept in the Terraform
@@ -36,8 +36,9 @@ variable "default_file" {
   EOT
   type = object({
     language       = string
-    file_name      = string
-    display_name   = optional(string)
+    fileName       = string
+    displayName    = optional(string)
+    display_name   = optional(any)
     content_base64 = string
   })
   nullable = false
@@ -48,13 +49,13 @@ variable "default_file" {
   }
 
   validation {
-    condition     = try(trimspace(var.default_file.file_name) != "" && length(var.default_file.file_name) <= 255 && !can(regex("[/\\\\\\p{Cc}]", var.default_file.file_name)), false)
-    error_message = "default_file.file_name must not be empty, must be at most 255 characters and must not contain a path separator or a control character."
+    condition     = try(trimspace(var.default_file.fileName) != "" && length(var.default_file.fileName) <= 255 && !can(regex("[/\\\\\\p{Cc}]", var.default_file.fileName)), false)
+    error_message = "default_file.fileName must not be empty, must be at most 255 characters and must not contain a path separator or a control character."
   }
 
   validation {
-    condition     = try(var.default_file.display_name == null ? true : trimspace(var.default_file.display_name) != "", false)
-    error_message = "default_file.display_name must be null or not empty."
+    condition     = try(var.default_file.displayName == null ? true : trimspace(var.default_file.displayName) != "", false)
+    error_message = "default_file.displayName must be null or not empty."
   }
 
   validation {
@@ -71,6 +72,13 @@ variable "default_file" {
     condition     = try(floor(length(var.default_file.content_base64) / 4) * 3 - (length(var.default_file.content_base64) - length(trimsuffix(trimsuffix(var.default_file.content_base64, "="), "="))) <= 2097152, false)
     error_message = "default_file.content_base64 must decode to at most 2 MiB (this module's conservative limit; Learn states none and it is unverified against Graph)."
   }
+
+  # legacy-names guard: v4.0.0 spelled these attributes in snake_case; the object type would otherwise
+  # drop them and fall back to the default.
+  validation {
+    condition     = !can(regex("\"(display_name)\":[^n]", jsonencode(var.default_file)))
+    error_message = "default_file no longer accepts the v4.0.0 snake_case attribute names; rename them to Graph's names (display_name -> displayName). An old name that is silently dropped would fall back to its default."
+  }
 }
 
 variable "additional_files" {
@@ -82,9 +90,9 @@ variable "additional_files" {
     refused at plan time, and removing a key only stops Terraform from tracking the file: the file
     stays in the agreement (see "Changing files" in the README).
 
-    - language, file_name, display_name, content_base64: as in default_file. The language must
+    - language, fileName, displayName, content_base64: as in default_file. The language must
       differ (case-insensitively) from every other file's.
-    - is_major_version: Learn says a major version update invalidates the agreement's acceptances
+    - isMajorVersion: Learn says a major version update invalidates the agreement's acceptances
       for that language. Set it true only when the file has to be accepted again; for a new
       language it is normally false.
 
@@ -92,10 +100,12 @@ variable "additional_files" {
   EOT
   type = map(object({
     language         = string
-    file_name        = string
-    display_name     = optional(string)
+    fileName         = string
+    displayName      = optional(string)
+    display_name     = optional(any)
     content_base64   = string
-    is_major_version = optional(bool, false)
+    isMajorVersion   = optional(bool, false)
+    is_major_version = optional(any)
   }))
   default  = {}
   nullable = false
@@ -113,14 +123,14 @@ variable "additional_files" {
   validation {
     condition = alltrue([
       for key, f in var.additional_files :
-      try(trimspace(f.file_name) != "" && length(f.file_name) <= 255 && !can(regex("[/\\\\\\p{Cc}]", f.file_name)), false)
+      try(trimspace(f.fileName) != "" && length(f.fileName) <= 255 && !can(regex("[/\\\\\\p{Cc}]", f.fileName)), false)
     ])
-    error_message = "Every additional_files file_name must not be empty, must be at most 255 characters and must not contain a path separator or a control character."
+    error_message = "Every additional_files fileName must not be empty, must be at most 255 characters and must not contain a path separator or a control character."
   }
 
   validation {
-    condition     = alltrue([for key, f in var.additional_files : try(f.display_name == null ? true : trimspace(f.display_name) != "", false)])
-    error_message = "Every additional_files display_name must be null or not empty."
+    condition     = alltrue([for key, f in var.additional_files : try(f.displayName == null ? true : trimspace(f.displayName) != "", false)])
+    error_message = "Every additional_files displayName must be null or not empty."
   }
 
   validation {
@@ -138,10 +148,17 @@ variable "additional_files" {
     ])
     error_message = "Every additional_files content_base64 must decode to at most 2 MiB (this module's conservative limit; Learn states none and it is unverified against Graph)."
   }
+
+  # legacy-names guard: v4.0.0 spelled these attributes in snake_case; the object type would otherwise
+  # drop them and fall back to the default.
+  validation {
+    condition     = alltrue([for f in values(var.additional_files) : try(f.display_name == null && f.is_major_version == null, false)])
+    error_message = "additional_files no longer accepts the v4.0.0 snake_case attribute names; rename them to Graph's names (display_name -> displayName, is_major_version -> isMajorVersion). An old name that is silently dropped would fall back to its default."
+  }
 }
 
 variable "name_pattern" {
-  description = "Regular expression (RE2 syntax, not anchored unless it says so) that display_name must match, such as the pattern of a naming convention. When it is set and display_name does not match, the plan fails. Null, the default, accepts any display_name."
+  description = "Regular expression (RE2 syntax, not anchored unless it says so) that displayName must match, such as the pattern of a naming convention. When it is set and displayName does not match, the plan fails. Null, the default, accepts any displayName."
   type        = string
   default     = null
 

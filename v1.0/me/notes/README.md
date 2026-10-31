@@ -20,7 +20,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -51,12 +51,12 @@ This module has no reviewed replication retry.
 | `attachments` | `attachments` | `any` | no | no | in place |
 | `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no | in place |
 | `categories` | `categories` | `list(string)` | no | no | in place |
-| `created_date_time` | `createdDateTime` | `string` | no | no | in place |
+| `createdDateTime` | `createdDateTime` | `string` | no | no | in place |
 | `extensions` | `extensions` | `any` | no | no | in place |
-| `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no | in place |
-| `multi_value_extended_properties` | `multiValueExtendedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.multiValueLegacyExtendedProperty")       value = optional(list(string))     }))` | no | no | in place |
+| `lastModifiedDateTime` | `lastModifiedDateTime` | `string` | no | no | in place |
+| `multiValueExtendedProperties` | `multiValueExtendedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.multiValueLegacyExtendedProperty")       value = optional(list(string))     }))` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
-| `single_value_extended_properties` | `singleValueExtendedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.singleValueLegacyExtendedProperty")       value = optional(string)     }))` | no | no | in place |
+| `singleValueExtendedProperties` | `singleValueExtendedProperties` | `list(object({       odata_type = optional(string, "#microsoft.graph.singleValueLegacyExtendedProperty")       value = optional(string)     }))` | no | no | in place |
 | `subject` | `subject` | `string` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 

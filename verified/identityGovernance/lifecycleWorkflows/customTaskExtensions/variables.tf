@@ -1,11 +1,11 @@
-variable "display_name" {
+variable "displayName" {
   description = "Display name of the custom task extension. Microsoft Learn documents it as a unique string that identifies the extension; it can be updated in place."
   type        = string
   nullable    = false
 
   validation {
-    condition     = try(length(trimspace(var.display_name)) > 0, false)
-    error_message = "display_name must not be empty."
+    condition     = try(length(trimspace(var.displayName)) > 0, false)
+    error_message = "displayName must not be empty."
   }
 }
 
@@ -22,9 +22,9 @@ variable "logic_app" {
     logicAppTriggerEndpointConfiguration. The module creates no Azure resource and reads none: the
     three values are inputs. Changing them updates the extension in place.
 
-    - subscription_id: the ID (GUID) of the Azure subscription that holds the Logic App.
-    - resource_group_name: the resource group of the Logic App.
-    - logic_app_workflow_name: the name of the Logic App.
+    - subscriptionId: the ID (GUID) of the Azure subscription that holds the Logic App.
+    - resourceGroupName: the resource group of the Logic App.
+    - logicAppWorkflowName: the name of the Logic App.
 
     The identity that applies this module also needs one of the Azure roles Logic App Contributor,
     Contributor or Owner on the Logic App (Learn names this for create and update). The module
@@ -32,23 +32,23 @@ variable "logic_app" {
     Lifecycle Workflows.
   EOT
   type = object({
-    subscription_id         = string
-    resource_group_name     = string
-    logic_app_workflow_name = string
+    subscriptionId       = string
+    resourceGroupName    = string
+    logicAppWorkflowName = string
   })
   nullable = false
 
   validation {
-    condition     = can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", try(var.logic_app.subscription_id, "")))
-    error_message = "logic_app.subscription_id must be a subscription ID (a GUID)."
+    condition     = can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", try(var.logic_app.subscriptionId, "")))
+    error_message = "logic_app.subscriptionId must be a subscription ID (a GUID)."
   }
 
   validation {
     condition = alltrue([
-      for name in [try(var.logic_app.resource_group_name, ""), try(var.logic_app.logic_app_workflow_name, "")] :
+      for name in [try(var.logic_app.resourceGroupName, ""), try(var.logic_app.logicAppWorkflowName, "")] :
       trimspace(name) != "" && trimspace(name) == name && length(name) <= 90 && !can(regex("[/\\\\?#%]", name))
     ])
-    error_message = "logic_app.resource_group_name and logic_app.logic_app_workflow_name must not be empty, must not start or end with a space, must be at most 90 characters and must not contain / \\ ? # or %."
+    error_message = "logic_app.resourceGroupName and logic_app.logicAppWorkflowName must not be empty, must not start or end with a space, must be at most 90 characters and must not contain / \\ ? # or %."
   }
 }
 
@@ -119,7 +119,7 @@ variable "callback_timeout_duration" {
 }
 
 variable "name_pattern" {
-  description = "Regular expression (RE2 syntax, not anchored unless it says so) that display_name must match, such as the pattern of a naming convention. When it is set and display_name does not match, the plan fails. Null, the default, accepts any display_name."
+  description = "Regular expression (RE2 syntax, not anchored unless it says so) that displayName must match, such as the pattern of a naming convention. When it is set and displayName does not match, the plan fails. Null, the default, accepts any displayName."
   type        = string
   default     = null
 

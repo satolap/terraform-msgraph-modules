@@ -12,21 +12,21 @@ mock_provider "msgraph" {
 }
 
 variables {
-  display_name = "Example ORG-DEV-Onboarding"
-  category     = "joiner"
+  displayName = "Example ORG-DEV-Onboarding"
+  category    = "joiner"
 
   execution_conditions = {
     type = "on_demand"
   }
 
-  tasks = [{ task = "enable_user_account", display_name = "Enable" }]
+  tasks = [{ task = "enable_user_account", displayName = "Enable" }]
 }
 
 run "accepts_any_display_name_without_name_pattern" {
   command = plan
 
   variables {
-    display_name = "Not following any convention"
+    displayName = "Not following any convention"
   }
 
   assert {
@@ -52,7 +52,7 @@ run "rejects_a_display_name_that_does_not_match_name_pattern" {
   command = plan
 
   variables {
-    display_name = "Example without the prefix"
+    displayName  = "Example without the prefix"
     name_pattern = "^ORG-(DEV|PRD)-"
   }
 

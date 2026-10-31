@@ -19,11 +19,11 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//beta/users/contacts"
   version = "<version>"
 
-  user_id = "parent-object-id"
+  user-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -51,49 +51,49 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `user_id` | URL parameter `user-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `assistant_name` | `assistantName` | `string` | no | no | in place |
+| `user-id` | URL parameter `user-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `assistantName` | `assistantName` | `string` | no | no | in place |
 | `birthday` | `birthday` | `string` | no | no | in place |
 | `categories` | `categories` | `list(string)` | no | no | in place |
 | `children` | `children` | `list(string)` | no | no | in place |
-| `company_name` | `companyName` | `string` | no | no | in place |
-| `created_date_time` | `createdDateTime` | `string` | no | no | in place |
+| `companyName` | `companyName` | `string` | no | no | in place |
+| `createdDateTime` | `createdDateTime` | `string` | no | no | in place |
 | `department` | `department` | `string` | no | no | in place |
-| `display_name` | `displayName` | `string` | no | no | in place |
-| `email_addresses` | `emailAddresses` | `list(object({       odata_type = optional(string, "#microsoft.graph.typedEmailAddress")       address = optional(string)       name = optional(string)       otherLabel = optional(string)       type = optional(string)     }))` | no | no | in place |
+| `displayName` | `displayName` | `string` | no | no | in place |
+| `emailAddresses` | `emailAddresses` | `list(object({       odata_type = optional(string, "#microsoft.graph.typedEmailAddress")       address = optional(string)       name = optional(string)       otherLabel = optional(string)       type = optional(string)     }))` | no | no | in place |
 | `extensions` | `extensions` | `any` | no | no | in place |
-| `file_as` | `fileAs` | `string` | no | no | in place |
+| `fileAs` | `fileAs` | `string` | no | no | in place |
 | `flag` | `flag` | `object({       odata_type = optional(string, "#microsoft.graph.followupFlag")       completedDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       dueDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       flagStatus = optional(string)       startDateTime = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))     })` | no | no | in place |
 | `gender` | `gender` | `string` | no | no | in place |
 | `generation` | `generation` | `string` | no | no | in place |
-| `given_name` | `givenName` | `string` | no | no | in place |
-| `im_addresses` | `imAddresses` | `list(string)` | no | no | in place |
+| `givenName` | `givenName` | `string` | no | no | in place |
+| `imAddresses` | `imAddresses` | `list(string)` | no | no | in place |
 | `initials` | `initials` | `string` | no | no | in place |
-| `is_favorite` | `isFavorite` | `bool` | no | no | in place |
-| `job_title` | `jobTitle` | `string` | no | no | in place |
-| `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no | in place |
+| `isFavorite` | `isFavorite` | `bool` | no | no | in place |
+| `jobTitle` | `jobTitle` | `string` | no | no | in place |
+| `lastModifiedDateTime` | `lastModifiedDateTime` | `string` | no | no | in place |
 | `manager` | `manager` | `string` | no | no | in place |
-| `middle_name` | `middleName` | `string` | no | no | in place |
-| `nick_name` | `nickName` | `string` | no | no | in place |
+| `middleName` | `middleName` | `string` | no | no | in place |
+| `nickName` | `nickName` | `string` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
-| `office_location` | `officeLocation` | `string` | no | no | in place |
-| `parent_folder_id` | `parentFolderId` | `string` | no | no | in place |
-| `personal_notes` | `personalNotes` | `string` | no | no | in place |
+| `officeLocation` | `officeLocation` | `string` | no | no | in place |
+| `parentFolderId` | `parentFolderId` | `string` | no | no | in place |
+| `personalNotes` | `personalNotes` | `string` | no | no | in place |
 | `phones` | `phones` | `list(object({       odata_type = optional(string, "#microsoft.graph.phone")       number = optional(string)       type = optional(string)     }))` | no | no | in place |
 | `photo` | `photo` | `any` | no | no | in place |
-| `postal_addresses` | `postalAddresses` | `list(object({       odata_type = optional(string, "#microsoft.graph.physicalAddress")       city = optional(string)       countryOrRegion = optional(string)       postOfficeBox = optional(string)       postalCode = optional(string)       state = optional(string)       street = optional(string)       type = optional(string)     }))` | no | no | in place |
-| `primary_email_address` | `primaryEmailAddress` | `any` | no | no | in place |
+| `postalAddresses` | `postalAddresses` | `list(object({       odata_type = optional(string, "#microsoft.graph.physicalAddress")       city = optional(string)       countryOrRegion = optional(string)       postOfficeBox = optional(string)       postalCode = optional(string)       state = optional(string)       street = optional(string)       type = optional(string)     }))` | no | no | in place |
+| `primaryEmailAddress` | `primaryEmailAddress` | `any` | no | no | in place |
 | `profession` | `profession` | `string` | no | no | in place |
-| `secondary_email_address` | `secondaryEmailAddress` | `any` | no | no | in place |
-| `spouse_name` | `spouseName` | `string` | no | no | in place |
+| `secondaryEmailAddress` | `secondaryEmailAddress` | `any` | no | no | in place |
+| `spouseName` | `spouseName` | `string` | no | no | in place |
 | `surname` | `surname` | `string` | no | no | in place |
-| `tertiary_email_address` | `tertiaryEmailAddress` | `any` | no | no | in place |
+| `tertiaryEmailAddress` | `tertiaryEmailAddress` | `any` | no | no | in place |
 | `title` | `title` | `string` | no | no | in place |
 | `websites` | `websites` | `list(object({       odata_type = optional(string, "#microsoft.graph.website")       address = optional(string)       displayName = optional(string)       type = optional(string)     }))` | no | no | in place |
-| `wedding_anniversary` | `weddingAnniversary` | `string` | no | no | in place |
-| `yomi_company_name` | `yomiCompanyName` | `string` | no | no | in place |
-| `yomi_given_name` | `yomiGivenName` | `string` | no | no | in place |
-| `yomi_surname` | `yomiSurname` | `string` | no | no | in place |
+| `weddingAnniversary` | `weddingAnniversary` | `string` | no | no | in place |
+| `yomiCompanyName` | `yomiCompanyName` | `string` | no | no | in place |
+| `yomiGivenName` | `yomiGivenName` | `string` | no | no | in place |
+| `yomiSurname` | `yomiSurname` | `string` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

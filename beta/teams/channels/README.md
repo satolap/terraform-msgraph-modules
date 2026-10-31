@@ -19,11 +19,11 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//beta/teams/channels"
   version = "<version>"
 
-  team_id = "parent-object-id"
+  team-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -51,26 +51,26 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `team_id` | URL parameter `team-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `all_members` | `allMembers` | `any` | no | no | in place |
+| `team-id` | URL parameter `team-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `allMembers` | `allMembers` | `any` | no | no | in place |
 | `description` | `description` | `string` | no | no | in place |
-| `display_name` | `displayName` | `string` | no | no | in place |
-| `enabled_apps` | `enabledApps` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsApp")       appDefinitions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsAppDefinition")       allowedInstallationScopes = optional(string)       authorization = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsAppAuthorization")       clientAppId = optional(string)       requiredPermissionSet = optional(any)     }))       azureADAppId = optional(string)       bot = optional(any)       colorIcon = optional(any)       createdBy = optional(any)       dashboardCards = optional(any)       description = optional(string)       displayName = optional(string)       lastModifiedDateTime = optional(string)       outlineIcon = optional(any)       publishingState = optional(string)       shortdescription = optional(string)       teamsAppId = optional(string)       version = optional(string)     })))       displayName = optional(string)       externalId = optional(string)     }))` | no | no | in place |
-| `files_folder` | `filesFolder` | `any` | no | no | in place |
-| `is_favorite_by_default` | `isFavoriteByDefault` | `bool` | no | no | in place |
-| `joined_users` | `joinedUsers` | `any` | no | no | in place |
-| `layout_type` | `layoutType` | `string` | no | no | in place |
+| `displayName` | `displayName` | `string` | no | no | in place |
+| `enabledApps` | `enabledApps` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsApp")       appDefinitions = optional(list(object({       odata_type = optional(string, "#microsoft.graph.teamsAppDefinition")       allowedInstallationScopes = optional(string)       authorization = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsAppAuthorization")       clientAppId = optional(string)       requiredPermissionSet = optional(any)     }))       azureADAppId = optional(string)       bot = optional(any)       colorIcon = optional(any)       createdBy = optional(any)       dashboardCards = optional(any)       description = optional(string)       displayName = optional(string)       lastModifiedDateTime = optional(string)       outlineIcon = optional(any)       publishingState = optional(string)       shortdescription = optional(string)       teamsAppId = optional(string)       version = optional(string)     })))       displayName = optional(string)       externalId = optional(string)     }))` | no | no | in place |
+| `filesFolder` | `filesFolder` | `any` | no | no | in place |
+| `isFavoriteByDefault` | `isFavoriteByDefault` | `bool` | no | no | in place |
+| `joinedUsers` | `joinedUsers` | `any` | no | no | in place |
+| `layoutType` | `layoutType` | `string` | no | no | in place |
 | `members` | `members` | `any` | no | no | in place |
-| `membership_type` | `membershipType` | `string` | no | no | in place |
+| `membershipType` | `membershipType` | `string` | no | no | in place |
 | `messages` | `messages` | `any` | no | no | in place |
-| `migration_mode` | `migrationMode` | `string` | no | no | in place |
-| `moderation_settings` | `moderationSettings` | `object({       odata_type = optional(string, "#microsoft.graph.channelModerationSettings")       allowNewMessageFromBots = optional(bool)       allowNewMessageFromConnectors = optional(bool)       replyRestriction = optional(string)       userNewMessageRestriction = optional(string)     })` | no | no | in place |
+| `migrationMode` | `migrationMode` | `string` | no | no | in place |
+| `moderationSettings` | `moderationSettings` | `object({       odata_type = optional(string, "#microsoft.graph.channelModerationSettings")       allowNewMessageFromBots = optional(bool)       allowNewMessageFromConnectors = optional(bool)       replyRestriction = optional(string)       userNewMessageRestriction = optional(string)     })` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
-| `original_created_date_time` | `originalCreatedDateTime` | `string` | no | no | in place |
-| `shared_with_teams` | `sharedWithTeams` | `list(object({       odata_type = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")       allowedMembers = optional(any)       displayName = optional(string)       isHostTeam = optional(bool)       team = optional(any)       tenantId = optional(string)     }))` | no | no | in place |
+| `originalCreatedDateTime` | `originalCreatedDateTime` | `string` | no | no | in place |
+| `sharedWithTeams` | `sharedWithTeams` | `list(object({       odata_type = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")       allowedMembers = optional(any)       displayName = optional(string)       isHostTeam = optional(bool)       team = optional(any)       tenantId = optional(string)     }))` | no | no | in place |
 | `summary` | `summary` | `object({       odata_type = optional(string, "#microsoft.graph.channelSummary")       guestsCount = optional(number)       hasMembersFromOtherTenants = optional(bool)       membersCount = optional(number)       ownersCount = optional(number)     })` | no | no | in place |
 | `tabs` | `tabs` | `list(object({       odata_type = optional(string, "#microsoft.graph.teamsTab")       configuration = optional(object({       odata_type = optional(string, "#microsoft.graph.teamsTabConfiguration")       contentUrl = optional(string)       entityId = optional(string)       removeUrl = optional(string)       websiteUrl = optional(string)     }))       displayName = optional(string)       messageId = optional(string)       sortOrderIndex = optional(string)       teamsApp = optional(any)       teamsAppId = optional(string)     }))` | no | no | in place |
-| `tenant_id` | `tenantId` | `string` | no | no | in place |
+| `tenantId` | `tenantId` | `string` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

@@ -22,7 +22,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -50,41 +50,41 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `account_enabled` | `accountEnabled` | `bool` | no | no | in place |
-| `alternative_names` | `alternativeNames` | `list(string)` | no | no | in place |
-| `alternative_security_ids` | `alternativeSecurityIds` | `list(object({       odata_type = optional(string, "#microsoft.graph.alternativeSecurityId")       identityProvider = optional(string)       key = optional(string)       type = optional(number)     }))` | no | no | in place |
-| `cloud_licensing` | `cloudLicensing` | `object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.deviceCloudLicensing")       assignments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.assignment")       allotment = optional(any)       assignedTo = optional(any)       disabledServicePlanIds = optional(list(string))     })))       usageRights = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.usageRight")       allotments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.allotment")       assignableTo = optional(string)       assignments = optional(any)       externalServiceIdentifier = optional(string)       subscriptions = optional(any)       waitingMembers = optional(any)     })))       assignments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.assignment")       allotment = optional(any)       assignedTo = optional(any)       disabledServicePlanIds = optional(any)     })))       externalServiceIdentifier = optional(string)     })))       waitingMembers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.waitingMember")       allotment = optional(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.allotment")       assignableTo = optional(string)       assignments = optional(any)       externalServiceIdentifier = optional(string)       subscriptions = optional(any)       waitingMembers = optional(any)     }))       assignedTo = optional(any)       waitingSinceDateTime = optional(string)     })))     })` | no | no | in place |
+| `accountEnabled` | `accountEnabled` | `bool` | no | no | in place |
+| `alternativeNames` | `alternativeNames` | `list(string)` | no | no | in place |
+| `alternativeSecurityIds` | `alternativeSecurityIds` | `list(object({       odata_type = optional(string, "#microsoft.graph.alternativeSecurityId")       identityProvider = optional(string)       key = optional(string)       type = optional(number)     }))` | no | no | in place |
+| `cloudLicensing` | `cloudLicensing` | `object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.deviceCloudLicensing")       assignments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.assignment")       allotment = optional(any)       assignedTo = optional(any)       disabledServicePlanIds = optional(list(string))     })))       usageRights = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.usageRight")       allotments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.allotment")       assignableTo = optional(string)       assignments = optional(any)       externalServiceIdentifier = optional(string)       subscriptions = optional(any)       waitingMembers = optional(any)     })))       assignments = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.assignment")       allotment = optional(any)       assignedTo = optional(any)       disabledServicePlanIds = optional(any)     })))       externalServiceIdentifier = optional(string)     })))       waitingMembers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.waitingMember")       allotment = optional(object({       odata_type = optional(string, "#microsoft.graph.cloudLicensing.allotment")       assignableTo = optional(string)       assignments = optional(any)       externalServiceIdentifier = optional(string)       subscriptions = optional(any)       waitingMembers = optional(any)     }))       assignedTo = optional(any)       waitingSinceDateTime = optional(string)     })))     })` | no | no | in place |
 | `commands` | `commands` | `list(object({       odata_type = optional(string, "#microsoft.graph.command")       appServiceName = optional(string)       error = optional(string)       packageFamilyName = optional(string)       payload = optional(any)       permissionTicket = optional(string)       postBackUri = optional(string)       responsepayload = optional(any)       status = optional(string)       type = optional(string)     }))` | no | no | in place |
-| `deleted_date_time` | `deletedDateTime` | `string` | no | no | in place |
-| `device_category` | `deviceCategory` | `string` | no | no | in place |
-| `device_id` | `deviceId` | `string` | no | no | in place |
-| `device_metadata` | `deviceMetadata` | `string` | no | no | in place |
-| `device_ownership` | `deviceOwnership` | `string` | no | no | in place |
-| `device_version` | `deviceVersion` | `number` | no | no | in place |
-| `display_name` | `displayName` | `string` | no | no | in place |
-| `domain_name` | `domainName` | `string` | no | no | in place |
-| `enrollment_profile_name` | `enrollmentProfileName` | `string` | no | no | in place |
-| `enrollment_type` | `enrollmentType` | `string` | no | no | in place |
-| `extension_attributes` | `extensionAttributes` | `object({       odata_type = optional(string, "#microsoft.graph.onPremisesExtensionAttributes")       extensionAttribute1 = optional(string)       extensionAttribute10 = optional(string)       extensionAttribute11 = optional(string)       extensionAttribute12 = optional(string)       extensionAttribute13 = optional(string)       extensionAttribute14 = optional(string)       extensionAttribute15 = optional(string)       extensionAttribute2 = optional(string)       extensionAttribute3 = optional(string)       extensionAttribute4 = optional(string)       extensionAttribute5 = optional(string)       extensionAttribute6 = optional(string)       extensionAttribute7 = optional(string)       extensionAttribute8 = optional(string)       extensionAttribute9 = optional(string)     })` | no | no | in place |
+| `deletedDateTime` | `deletedDateTime` | `string` | no | no | in place |
+| `deviceCategory` | `deviceCategory` | `string` | no | no | in place |
+| `deviceId` | `deviceId` | `string` | no | no | in place |
+| `deviceMetadata` | `deviceMetadata` | `string` | no | no | in place |
+| `deviceOwnership` | `deviceOwnership` | `string` | no | no | in place |
+| `deviceVersion` | `deviceVersion` | `number` | no | no | in place |
+| `displayName` | `displayName` | `string` | no | no | in place |
+| `domainName` | `domainName` | `string` | no | no | in place |
+| `enrollmentProfileName` | `enrollmentProfileName` | `string` | no | no | in place |
+| `enrollmentType` | `enrollmentType` | `string` | no | no | in place |
+| `extensionAttributes` | `extensionAttributes` | `object({       odata_type = optional(string, "#microsoft.graph.onPremisesExtensionAttributes")       extensionAttribute1 = optional(string)       extensionAttribute10 = optional(string)       extensionAttribute11 = optional(string)       extensionAttribute12 = optional(string)       extensionAttribute13 = optional(string)       extensionAttribute14 = optional(string)       extensionAttribute15 = optional(string)       extensionAttribute2 = optional(string)       extensionAttribute3 = optional(string)       extensionAttribute4 = optional(string)       extensionAttribute5 = optional(string)       extensionAttribute6 = optional(string)       extensionAttribute7 = optional(string)       extensionAttribute8 = optional(string)       extensionAttribute9 = optional(string)     })` | no | no | in place |
 | `hostnames` | `hostnames` | `list(string)` | no | no | in place |
-| `is_managed` | `isManaged` | `bool` | no | no | in place |
-| `is_rooted` | `isRooted` | `bool` | no | no | in place |
+| `isManaged` | `isManaged` | `bool` | no | no | in place |
+| `isRooted` | `isRooted` | `bool` | no | no | in place |
 | `kind` | `kind` | `string` | no | no | in place |
-| `management_type` | `managementType` | `string` | no | no | in place |
+| `managementType` | `managementType` | `string` | no | no | in place |
 | `name` | `name` | `string` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
-| `operating_system` | `operatingSystem` | `string` | no | no | in place |
-| `operating_system_version` | `operatingSystemVersion` | `string` | no | no | in place |
-| `physical_ids` | `physicalIds` | `list(string)` | no | no | in place |
+| `operatingSystem` | `operatingSystem` | `string` | no | no | in place |
+| `operatingSystemVersion` | `operatingSystemVersion` | `string` | no | no | in place |
+| `physicalIds` | `physicalIds` | `list(string)` | no | no | in place |
 | `platform` | `platform` | `string` | no | no | in place |
-| `profile_type` | `profileType` | `string` | no | no | in place |
+| `profileType` | `profileType` | `string` | no | no | in place |
 | `status` | `status` | `string` | no | no | in place |
-| `system_labels` | `systemLabels` | `list(string)` | no | no | in place |
-| `transitive_member_of` | `transitiveMemberOf` | `any` | no | no | in place |
-| `usage_rights` | `usageRights` | `list(object({       odata_type = optional(string, "#microsoft.graph.usageRight")       catalogId = optional(string)       serviceIdentifier = optional(string)       state = optional(string)     }))` | no | no | in place |
+| `systemLabels` | `systemLabels` | `list(string)` | no | no | in place |
+| `transitiveMemberOf` | `transitiveMemberOf` | `any` | no | no | in place |
+| `usageRights` | `usageRights` | `list(object({       odata_type = optional(string, "#microsoft.graph.usageRight")       catalogId = optional(string)       serviceIdentifier = optional(string)       state = optional(string)     }))` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
-Unique values, inferred from the pinned metadata (declaration.json gives each source): `device_id` within `/devices`. Graph refuses a value already used in that scope, or, where the rule is a combination, only the same combination; some of these values, such as identity provider claims, are dictated by another system rather than chosen freely.
+Unique values, inferred from the pinned metadata (declaration.json gives each source): `deviceId` within `/devices`. Graph refuses a value already used in that scope, or, where the rule is a combination, only the same combination; some of these values, such as identity provider claims, are dictated by another system rather than chosen freely.
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.
 

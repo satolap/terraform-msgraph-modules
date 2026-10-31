@@ -35,11 +35,11 @@ locals {
 
   add_schedule = var.schedule == null ? {} : {
     schedule = merge(
-      var.schedule.start_date_time != null ? { startDateTime = var.schedule.start_date_time } : {},
+      var.schedule.startDateTime != null ? { startDateTime = var.schedule.startDateTime } : {},
       var.schedule.expiration != null ? {
         expiration = merge(
           { type = var.schedule.expiration.type },
-          var.schedule.expiration.end_date_time != null ? { endDateTime = var.schedule.expiration.end_date_time } : {},
+          var.schedule.expiration.endDateTime != null ? { endDateTime = var.schedule.expiration.endDateTime } : {},
           var.schedule.expiration.duration != null ? { duration = var.schedule.expiration.duration } : {},
         )
       } : {},
@@ -248,11 +248,11 @@ resource "terraform_data" "verification_gate" {
 locals {
   update_schedule = var.schedule_update == null ? {} : {
     schedule = merge(
-      var.schedule_update.start_date_time != null ? { startDateTime = var.schedule_update.start_date_time } : {},
+      var.schedule_update.startDateTime != null ? { startDateTime = var.schedule_update.startDateTime } : {},
       var.schedule_update.expiration != null ? {
         expiration = merge(
           { type = var.schedule_update.expiration.type },
-          var.schedule_update.expiration.end_date_time != null ? { endDateTime = var.schedule_update.expiration.end_date_time } : {},
+          var.schedule_update.expiration.endDateTime != null ? { endDateTime = var.schedule_update.expiration.endDateTime } : {},
           var.schedule_update.expiration.duration != null ? { duration = var.schedule_update.expiration.duration } : {},
         )
       } : {},
@@ -275,8 +275,23 @@ locals {
 }
 
 # Changing schedule_update sends a new adminUpdate; the old one is not undone.
+# The stored value keeps the shape that v4.0.0 saved (snake_case keys, every optional
+# key present), so that renaming the attributes to Graph's names does not change the
+# stored input, replace the update action through replace_triggered_by or send another
+# adminUpdate on the first apply after the upgrade.
+locals {
+  stored_schedule_update = var.schedule_update == null ? null : {
+    start_date_time = var.schedule_update.startDateTime
+    expiration = var.schedule_update.expiration == null ? null : {
+      type          = var.schedule_update.expiration.type
+      end_date_time = var.schedule_update.expiration.endDateTime
+      duration      = var.schedule_update.expiration.duration
+    }
+  }
+}
+
 resource "terraform_data" "update_input" {
-  input = var.schedule_update
+  input = local.stored_schedule_update
 }
 
 # Sends adminUpdate for the resolved assignment, after the gate confirmed it.

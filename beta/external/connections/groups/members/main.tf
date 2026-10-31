@@ -12,7 +12,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "external/connections/${urlencode(var.external_connection_id)}/groups/${urlencode(var.external_group_id)}/members"
+  url                     = "external/connections/${urlencode(var.externalConnection-id)}/groups/${urlencode(var.externalGroup-id)}/members"
   api_version             = "beta"
   update_method           = "PATCH"
   body                    = local.body

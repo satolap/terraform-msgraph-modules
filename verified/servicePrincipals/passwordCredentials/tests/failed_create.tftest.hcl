@@ -28,7 +28,7 @@ mock_provider "msgraph" {
 
 variables {
   acknowledge_secret_in_plan_output = true
-  service_principal_id              = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"
+  servicePrincipal-id               = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"
   displayName                       = "Automation credential"
 }
 

@@ -1,0 +1,2053 @@
+mock_provider "msgraph" {
+  mock_resource "msgraph_resource" {
+    defaults = {
+      id = "66666666-6666-6666-6666-666666666666"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = false
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = false
+          cloud_app_security                = false
+        }
+        unmanaged_properties = {
+          description                          = false
+          template_id                          = false
+          application_filter                   = false
+          include_guests_or_external_users     = false
+          exclude_guests_or_external_users     = false
+          client_applications                  = false
+          service_principal_risk_levels        = false
+          insider_risk_levels                  = false
+          authentication_flow_transfer_methods = false
+          custom_authentication_factors        = false
+          disable_resilience_defaults          = false
+          secure_sign_in_session               = false
+        }
+      }
+    }
+  }
+}
+
+variables {
+  displayName          = "Require MFA for pilot"
+  break_glass_user_ids = ["11111111-1111-1111-1111-111111111111"]
+  users                = { includeGroups = ["22222222-2222-2222-2222-222222222222"] }
+  applications         = { includeApplications = ["All"] }
+  grant_controls       = { builtInControls = ["mfa"] }
+}
+
+run "defaults_render_full_shape_in_report_only" {
+  command = apply
+
+  assert {
+    condition     = msgraph_resource.policy.url == "identity/conditionalAccess/policies" && msgraph_resource.policy.api_version == "v1.0"
+    error_message = "Policies must be created at identity/conditionalAccess/policies on v1.0."
+  }
+
+  assert {
+    condition     = msgraph_resource.policy.ignore_missing_property == false
+    error_message = "ignore_missing_property must be false so that server-side nulling shows as drift."
+  }
+
+  assert {
+    condition = jsonencode(msgraph_resource.policy.body) == jsonencode({
+      displayName = "Require MFA for pilot"
+      state       = "enabledForReportingButNotEnforced"
+      conditions = {
+        users = {
+          includeUsers  = []
+          excludeUsers  = ["11111111-1111-1111-1111-111111111111"]
+          includeGroups = ["22222222-2222-2222-2222-222222222222"]
+          excludeGroups = []
+          includeRoles  = []
+          excludeRoles  = []
+        }
+        applications = {
+          includeApplications                         = ["All"]
+          excludeApplications                         = []
+          includeUserActions                          = []
+          includeAuthenticationContextClassReferences = []
+        }
+        clientAppTypes   = ["all"]
+        signInRiskLevels = []
+        userRiskLevels   = []
+        locations        = null
+        platforms        = null
+        devices          = null
+      }
+      grantControls = {
+        operator        = "OR"
+        builtInControls = ["mfa"]
+        termsOfUse      = []
+      }
+      sessionControls = null
+    })
+    error_message = "The body must render every managed key: lists empty when unset, absent optional parts null, the break-glass user excluded, and report-only state."
+  }
+
+  assert {
+    condition     = jsonencode(terraform_data.presence.output) == jsonencode(["grantControls"])
+    error_message = "The presence signature must list exactly the optional parts that are present."
+  }
+
+  assert {
+    condition     = jsonencode(local.server_presence) == jsonencode(local.presence) && length(output.optional_parts_not_in_configuration) == 0
+    error_message = "The optional parts read back from Microsoft Graph must be mapped into the presence form, and none may be reported as missing from the configuration."
+  }
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-666666666666" && output.state == "enabledForReportingButNotEnforced" && output.display_name == "Require MFA for pilot"
+    error_message = "id, state and display_name must come from the resource and its read-back."
+  }
+
+  assert {
+    condition     = jsonencode(output.excluded_user_ids) == jsonencode(["11111111-1111-1111-1111-111111111111"]) && length(output.excluded_group_ids) == 0
+    error_message = "The read-back exclusions must be exposed."
+  }
+}
+
+run "value_changes_keep_the_presence_signature" {
+  command = apply
+
+  variables {
+    displayName           = "Require MFA for pilot renamed"
+    state                 = "disabled"
+    break_glass_group_ids = ["44444444-4444-4444-4444-444444444444"]
+    client_app_types      = ["mobileAppsAndDesktopClients", "browser"]
+    grant_controls        = { operator = "AND", builtInControls = ["mfa", "compliantDevice"] }
+  }
+
+  # A new object would take this id; an in-place update keeps the old one.
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000001"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = false
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = false
+          cloud_app_security                = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = jsonencode(terraform_data.presence.output) == jsonencode(["grantControls"])
+    error_message = "A value-only change must keep the presence signature, so the policy is updated in place."
+  }
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-666666666666"
+    error_message = "A value-only change must update the policy in place and keep its id."
+  }
+
+  assert {
+    condition     = msgraph_resource.policy.body.state == "disabled" && msgraph_resource.policy.body.displayName == "Require MFA for pilot renamed"
+    error_message = "The update body must carry the new state and name."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.users.excludeGroups) == jsonencode(["44444444-4444-4444-4444-444444444444"])
+    error_message = "A break-glass group must be merged into excludeGroups."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.clientAppTypes) == jsonencode(["browser", "mobileAppsAndDesktopClients"])
+    error_message = "clientAppTypes must be sorted."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.grantControls) == jsonencode({ operator = "AND", builtInControls = ["compliantDevice", "mfa"], termsOfUse = [] })
+    error_message = "The update body must carry the full, sorted grant controls object."
+  }
+}
+
+run "adding_a_session_control_changes_the_presence_signature" {
+  command = apply
+
+  variables {
+    session_controls = { signInFrequency = { type = "hours", value = 12 } }
+  }
+
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000002"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = true
+          sign_in_frequency                 = true
+          persistent_browser                = false
+          application_enforced_restrictions = false
+          cloud_app_security                = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-000000000002"
+    error_message = "Adding an optional part must replace the policy, so the new object's id is used."
+  }
+
+  assert {
+    condition     = jsonencode(local.server_presence) == jsonencode(local.presence)
+    error_message = "The replacement's read-back optional parts must match the configuration."
+  }
+
+  assert {
+    condition     = jsonencode(terraform_data.presence.output) == jsonencode(["grantControls", "sessionControls", "sessionControls.signInFrequency"])
+    error_message = "Adding a session control must change the presence signature, which replaces the policy."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.sessionControls) == jsonencode({ signInFrequency = { authenticationType = "primaryAndSecondaryAuthentication", frequencyInterval = "timeBased", isEnabled = true, type = "hours", value = 12 } })
+    error_message = "signInFrequency must be sent enabled, with every key."
+  }
+}
+
+run "frequency_change_inside_a_present_part_updates_in_place" {
+  command = apply
+
+  variables {
+    session_controls = { signInFrequency = { frequencyInterval = "everyTime" } }
+  }
+
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000003"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = true
+          sign_in_frequency                 = true
+          persistent_browser                = false
+          application_enforced_restrictions = false
+          cloud_app_security                = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-000000000002"
+    error_message = "A change inside a present session control must update the policy in place and keep its id."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.sessionControls.signInFrequency) == jsonencode({ authenticationType = "primaryAndSecondaryAuthentication", frequencyInterval = "everyTime", isEnabled = true, type = null, value = null })
+    error_message = "Switching to everyTime must send type and value as null inside the whole signInFrequency object."
+  }
+}
+
+run "removing_a_session_control_changes_the_presence_signature" {
+  command = apply
+
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000004"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = false
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = false
+          cloud_app_security                = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-000000000004"
+    error_message = "Removing an optional part must replace the policy, so the new object's id is used."
+  }
+
+  assert {
+    condition     = jsonencode(terraform_data.presence.output) == jsonencode(["grantControls"]) && msgraph_resource.policy.body.sessionControls == null
+    error_message = "Removing the session controls must change the presence signature and send sessionControls as null."
+  }
+}
+
+run "refresh_only_keeps_body_equal_to_configuration" {
+  command = apply
+
+  plan_options {
+    mode = refresh-only
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body) == jsonencode(local.body)
+    error_message = "A refresh-only run must be able to compare the refreshed body with local.body."
+  }
+}
+
+run "canonicalizes_ids_and_merges_break_glass" {
+  command = plan
+
+  variables {
+    break_glass_user_ids  = ["11111111-1111-1111-1111-111111111111", "33333333-3333-3333-3333-333333333333"]
+    break_glass_group_ids = ["44444444-4444-4444-4444-444444444444"]
+    users = {
+      includeUsers  = ["All"]
+      excludeUsers  = ["AAAAAAAA-0000-0000-0000-000000000001", "aaaaaaaa-0000-0000-0000-000000000001", "GuestsOrExternalUsers", "11111111-1111-1111-1111-111111111111"]
+      excludeGroups = ["55555555-5555-5555-5555-555555555555"]
+      includeRoles  = ["BBBBBBBB-0000-4000-8000-000000000001"]
+    }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.users.excludeUsers) == jsonencode(["11111111-1111-1111-1111-111111111111", "33333333-3333-3333-3333-333333333333", "GuestsOrExternalUsers", "aaaaaaaa-0000-0000-0000-000000000001"])
+    error_message = "excludeUsers must hold the lower-cased, de-duplicated, sorted union of excludeUsers and the break-glass users, keeping GuestsOrExternalUsers."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.users.excludeGroups) == jsonencode(["44444444-4444-4444-4444-444444444444", "55555555-5555-5555-5555-555555555555"])
+    error_message = "excludeGroups must hold the union of excludeGroups and the break-glass groups."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.users.includeUsers) == jsonencode(["All"]) && jsonencode(msgraph_resource.policy.body.conditions.users.includeRoles) == jsonencode(["bbbbbbbb-0000-4000-8000-000000000001"])
+    error_message = "Special values must be kept as given and role template IDs lower-cased."
+  }
+}
+
+run "canonicalizes_application_location_terms_of_use_and_strength_ids" {
+  command = plan
+
+  # The policy is replaced, so its read-back and the unmanaged_properties check
+  # are known only after apply; this proves nothing about the check.
+  expect_failures = [check.unmanaged_properties]
+
+  variables {
+    applications = {
+      includeApplications = ["AAAAAAAA-0000-0000-0000-00000000000A", "aaaaaaaa-0000-0000-0000-00000000000a", "Office365"]
+      excludeApplications = ["BBBBBBBB-0000-0000-0000-00000000000B"]
+    }
+    locations      = { includeLocations = ["CCCCCCCC-0000-0000-0000-00000000000C", "AllTrusted"], excludeLocations = ["DDDDDDDD-0000-0000-0000-00000000000D"] }
+    grant_controls = { operator = "AND", builtInControls = ["compliantDevice"], authentication_strength_id = "EEEEEEEE-0000-0000-0000-00000000000E", termsOfUse = ["ABABABAB-0000-0000-0000-00000000000A", "abababab-0000-0000-0000-00000000000a"] }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.applications.includeApplications) == jsonencode(["Office365", "aaaaaaaa-0000-0000-0000-00000000000a"]) && jsonencode(msgraph_resource.policy.body.conditions.applications.excludeApplications) == jsonencode(["bbbbbbbb-0000-0000-0000-00000000000b"])
+    error_message = "Application IDs must be lower-cased and de-duplicated, keeping Office365 as given."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.locations) == jsonencode({ excludeLocations = ["dddddddd-0000-0000-0000-00000000000d"], includeLocations = ["AllTrusted", "cccccccc-0000-0000-0000-00000000000c"] })
+    error_message = "Named location IDs must be lower-cased, keeping AllTrusted as given."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.grantControls) == jsonencode({ authenticationStrength = { id = "eeeeeeee-0000-0000-0000-00000000000e" }, builtInControls = ["compliantDevice"], operator = "AND", termsOfUse = ["abababab-0000-0000-0000-00000000000a"] })
+    error_message = "The authentication strength ID and the terms of use IDs must be lower-cased, and the terms of use de-duplicated."
+  }
+}
+
+run "renders_every_optional_part" {
+  command = plan
+
+  # The policy is replaced, so its read-back and the unmanaged_properties check
+  # are known only after apply; this proves nothing about the check.
+  expect_failures = [check.unmanaged_properties]
+
+  variables {
+    locations        = { includeLocations = ["All"], excludeLocations = ["AllTrusted", "77777777-7777-7777-7777-777777777777"] }
+    platforms        = { includePlatforms = ["all"], excludePlatforms = ["iOS"] }
+    device_filter    = { mode = "exclude", rule = "device.extensionAttribute1 -ne \"SAW\"" }
+    grant_controls   = { operator = "AND", builtInControls = ["compliantDevice"], authentication_strength_id = "00000000-0000-0000-0000-000000000002", termsOfUse = ["88888888-8888-8888-8888-888888888888"] }
+    session_controls = { signInFrequency = { frequencyInterval = "everyTime" }, persistent_browser_mode = "never", applicationEnforcedRestrictions = true, cloudAppSecurityType = "monitorOnly" }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.locations) == jsonencode({ excludeLocations = ["77777777-7777-7777-7777-777777777777", "AllTrusted"], includeLocations = ["All"] })
+    error_message = "locations must be rendered with sorted include and exclude lists."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.platforms) == jsonencode({ excludePlatforms = ["iOS"], includePlatforms = ["all"] })
+    error_message = "platforms must be rendered with both lists."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.devices) == jsonencode({ deviceFilter = { mode = "exclude", rule = "device.extensionAttribute1 -ne \"SAW\"" } })
+    error_message = "device_filter must be rendered as conditions.devices.deviceFilter."
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.grantControls) == jsonencode({ authenticationStrength = { id = "00000000-0000-0000-0000-000000000002" }, builtInControls = ["compliantDevice"], operator = "AND", termsOfUse = ["88888888-8888-8888-8888-888888888888"] })
+    error_message = "grantControls must carry the authentication strength by id and the terms of use."
+  }
+
+  assert {
+    condition = jsonencode(msgraph_resource.policy.body.sessionControls) == jsonencode({
+      applicationEnforcedRestrictions = { isEnabled = true }
+      cloudAppSecurity                = { cloudAppSecurityType = "monitorOnly", isEnabled = true }
+      persistentBrowser               = { isEnabled = true, mode = "never" }
+      signInFrequency                 = { authenticationType = "primaryAndSecondaryAuthentication", frequencyInterval = "everyTime", isEnabled = true, type = null, value = null }
+    })
+    error_message = "Every configured session control must be sent enabled; everyTime sends a null type and value."
+  }
+
+  assert {
+    condition = jsonencode(terraform_data.presence.input) == jsonencode([
+      "conditions.devices",
+      "conditions.locations",
+      "conditions.platforms",
+      "grantControls",
+      "grantControls.authenticationStrength",
+      "sessionControls",
+      "sessionControls.applicationEnforcedRestrictions",
+      "sessionControls.cloudAppSecurity",
+      "sessionControls.persistentBrowser",
+      "sessionControls.signInFrequency",
+    ])
+    error_message = "The presence signature must list every optional part that is present."
+  }
+}
+
+run "allows_user_actions_when_disabled" {
+  command = plan
+
+  variables {
+    state        = "disabled"
+    applications = { includeUserActions = ["urn:user:registersecurityinfo"] }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.applications.includeUserActions) == jsonencode(["urn:user:registersecurityinfo"]) && length(msgraph_resource.policy.body.conditions.applications.includeApplications) == 0
+    error_message = "User actions must be sent, with includeApplications empty."
+  }
+}
+
+run "allows_password_change_policy" {
+  command = plan
+
+  variables {
+    users            = { includeUsers = ["All"] }
+    user_risk_levels = ["high"]
+    grant_controls   = { operator = "AND", builtInControls = ["mfa", "passwordChange"] }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.grantControls.builtInControls) == jsonencode(["mfa", "passwordChange"]) && jsonencode(msgraph_resource.policy.body.conditions.userRiskLevels) == jsonencode(["high"])
+    error_message = "A valid password change policy must be accepted."
+  }
+}
+
+run "allows_block_as_the_only_grant_control" {
+  command = plan
+
+  variables {
+    grant_controls = { builtInControls = ["block"] }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.grantControls) == jsonencode({ operator = "OR", builtInControls = ["block"], termsOfUse = [] })
+    error_message = "block alone must be accepted and sent as the only grant control."
+  }
+}
+
+run "allows_authentication_context_as_the_only_target_selector" {
+  command = plan
+
+  variables {
+    applications = { includeAuthenticationContextClassReferences = ["c1"] }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.applications.includeAuthenticationContextClassReferences) == jsonencode(["c1"]) && length(msgraph_resource.policy.body.conditions.applications.includeApplications) == 0 && length(msgraph_resource.policy.body.conditions.applications.includeUserActions) == 0
+    error_message = "An authentication context as the only target selector must be accepted, with the other selectors empty."
+  }
+}
+
+run "allows_23_hour_sign_in_frequency" {
+  command = plan
+
+  # The policy is replaced, so its read-back and the unmanaged_properties check
+  # are known only after apply; this proves nothing about the check.
+  expect_failures = [check.unmanaged_properties]
+
+  variables {
+    session_controls = { signInFrequency = { type = "hours", value = 23 } }
+  }
+
+  assert {
+    condition     = msgraph_resource.policy.body.sessionControls.signInFrequency.type == "hours" && msgraph_resource.policy.body.sessionControls.signInFrequency.value == 23
+    error_message = "A time-based sign-in frequency of 23 hours must be accepted."
+  }
+}
+
+run "allows_365_day_sign_in_frequency" {
+  command = plan
+
+  # The policy is replaced, so its read-back and the unmanaged_properties check
+  # are known only after apply; this proves nothing about the check.
+  expect_failures = [check.unmanaged_properties]
+
+  variables {
+    session_controls = { signInFrequency = { type = "days", value = 365 } }
+  }
+
+  assert {
+    condition     = msgraph_resource.policy.body.sessionControls.signInFrequency.type == "days" && msgraph_resource.policy.body.sessionControls.signInFrequency.value == 365
+    error_message = "A time-based sign-in frequency of 365 days must be accepted."
+  }
+}
+
+run "allows_session_controls_without_grant_controls" {
+  command = plan
+
+  # The policy is replaced, so its read-back and the unmanaged_properties check
+  # are known only after apply; this proves nothing about the check.
+  expect_failures = [check.unmanaged_properties]
+
+  variables {
+    grant_controls   = null
+    session_controls = { signInFrequency = { type = "hours", value = 12 } }
+  }
+
+  assert {
+    condition     = msgraph_resource.policy.body.grantControls == null && msgraph_resource.policy.body.sessionControls.signInFrequency.value == 12
+    error_message = "A policy with session controls and no grant controls must be accepted."
+  }
+}
+
+run "allows_register_device_with_mfa_when_disabled" {
+  command = plan
+
+  variables {
+    state        = "disabled"
+    applications = { includeUserActions = ["urn:user:registerdevice"] }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.applications.includeUserActions) == jsonencode(["urn:user:registerdevice"]) && jsonencode(msgraph_resource.policy.body.grantControls.builtInControls) == jsonencode(["mfa"])
+    error_message = "Register or join devices with mfa must be accepted."
+  }
+}
+
+run "rejects_break_glass_user_in_include_users" {
+  command = plan
+
+  variables {
+    users = { includeUsers = ["11111111-1111-1111-1111-111111111111"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_break_glass_group_in_include_groups" {
+  command = plan
+
+  variables {
+    break_glass_group_ids = ["22222222-2222-2222-2222-222222222222"]
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_break_glass_user_in_include_groups" {
+  command = plan
+
+  variables {
+    users = { includeGroups = ["22222222-2222-2222-2222-222222222222", "11111111-1111-1111-1111-111111111111"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_missing_break_glass_user" {
+  command = plan
+
+  variables {
+    break_glass_user_ids  = []
+    break_glass_group_ids = ["44444444-4444-4444-4444-444444444444"]
+  }
+
+  expect_failures = [var.break_glass_user_ids]
+}
+
+run "rejects_upper_case_break_glass_user" {
+  command = plan
+
+  variables {
+    break_glass_user_ids = ["AAAAAAAA-0000-0000-0000-000000000001"]
+  }
+
+  expect_failures = [var.break_glass_user_ids]
+}
+
+run "rejects_upper_case_break_glass_group" {
+  command = plan
+
+  variables {
+    break_glass_group_ids = ["AAAAAAAA-0000-0000-0000-000000000002"]
+  }
+
+  expect_failures = [var.break_glass_group_ids]
+}
+
+run "rejects_unknown_state" {
+  command = plan
+
+  variables {
+    state = "on"
+  }
+
+  expect_failures = [var.state]
+}
+
+run "rejects_empty_display_name" {
+  command = plan
+
+  variables {
+    displayName = " "
+  }
+
+  expect_failures = [var.displayName]
+}
+
+run "rejects_unknown_include_users_keyword" {
+  command = plan
+
+  variables {
+    users = { includeUsers = ["Everyone"] }
+  }
+
+  expect_failures = [var.users]
+}
+
+run "rejects_all_in_exclude_users" {
+  command = plan
+
+  variables {
+    users = { includeGroups = ["22222222-2222-2222-2222-222222222222"], excludeUsers = ["All"] }
+  }
+
+  expect_failures = [var.users]
+}
+
+run "rejects_non_guid_group" {
+  command = plan
+
+  variables {
+    users = { includeGroups = ["engineering"] }
+  }
+
+  expect_failures = [var.users]
+}
+
+run "rejects_users_without_include" {
+  command = plan
+
+  variables {
+    users = { excludeGroups = ["22222222-2222-2222-2222-222222222222"] }
+  }
+
+  expect_failures = [var.users]
+}
+
+run "rejects_unknown_application_keyword" {
+  command = plan
+
+  variables {
+    applications = { includeApplications = ["Office"] }
+  }
+
+  expect_failures = [var.applications]
+}
+
+run "rejects_all_in_exclude_applications" {
+  command = plan
+
+  variables {
+    applications = { includeApplications = ["All"], excludeApplications = ["All"] }
+  }
+
+  expect_failures = [var.applications]
+}
+
+run "rejects_unknown_user_action" {
+  command = plan
+
+  variables {
+    applications = { includeUserActions = ["urn:user:registerapp"] }
+  }
+
+  expect_failures = [var.applications]
+}
+
+run "rejects_invalid_authentication_context" {
+  command = plan
+
+  variables {
+    applications = { includeAuthenticationContextClassReferences = ["c100"] }
+  }
+
+  expect_failures = [var.applications]
+}
+
+run "rejects_applications_without_include" {
+  command = plan
+
+  variables {
+    applications = { excludeApplications = ["Office365"] }
+  }
+
+  expect_failures = [var.applications]
+}
+
+# The target selectors are mutually exclusive. The state is disabled so that
+# the user action rule for report-only policies cannot fail these runs instead.
+run "rejects_applications_with_user_actions" {
+  command = plan
+
+  variables {
+    state        = "disabled"
+    applications = { includeApplications = ["All"], includeUserActions = ["urn:user:registersecurityinfo"] }
+  }
+
+  expect_failures = [var.applications]
+}
+
+run "rejects_applications_with_authentication_context" {
+  command = plan
+
+  variables {
+    state        = "disabled"
+    applications = { includeApplications = ["All"], includeAuthenticationContextClassReferences = ["c1"] }
+  }
+
+  expect_failures = [var.applications]
+}
+
+run "rejects_user_actions_with_authentication_context" {
+  command = plan
+
+  variables {
+    state        = "disabled"
+    applications = { includeUserActions = ["urn:user:registersecurityinfo"], includeAuthenticationContextClassReferences = ["c1"] }
+  }
+
+  expect_failures = [var.applications]
+}
+
+run "rejects_empty_client_app_types" {
+  command = plan
+
+  variables {
+    client_app_types = []
+  }
+
+  expect_failures = [var.client_app_types]
+}
+
+run "rejects_unknown_client_app_type" {
+  command = plan
+
+  variables {
+    client_app_types = ["legacy"]
+  }
+
+  expect_failures = [var.client_app_types]
+}
+
+run "rejects_unknown_sign_in_risk_level" {
+  command = plan
+
+  variables {
+    sign_in_risk_levels = ["unknownFutureValue"]
+  }
+
+  expect_failures = [var.sign_in_risk_levels]
+}
+
+run "rejects_unknown_user_risk_level" {
+  command = plan
+
+  variables {
+    user_risk_levels = ["severe"]
+  }
+
+  expect_failures = [var.user_risk_levels]
+}
+
+run "rejects_empty_include_locations" {
+  command = plan
+
+  variables {
+    locations = { includeLocations = [] }
+  }
+
+  expect_failures = [var.locations]
+}
+
+run "rejects_all_in_exclude_locations" {
+  command = plan
+
+  variables {
+    locations = { includeLocations = ["AllTrusted"], excludeLocations = ["All"] }
+  }
+
+  expect_failures = [var.locations]
+}
+
+run "rejects_empty_include_platforms" {
+  command = plan
+
+  variables {
+    platforms = { includePlatforms = [] }
+  }
+
+  expect_failures = [var.platforms]
+}
+
+run "rejects_unknown_platform" {
+  command = plan
+
+  variables {
+    platforms = { includePlatforms = ["ios"] }
+  }
+
+  expect_failures = [var.platforms]
+}
+
+run "rejects_linux_platform" {
+  command = plan
+
+  variables {
+    platforms = { includePlatforms = ["linux"] }
+  }
+
+  expect_failures = [var.platforms]
+}
+
+run "rejects_unknown_device_filter_mode" {
+  command = plan
+
+  variables {
+    device_filter = { mode = "only", rule = "device.extensionAttribute1 -ne \"SAW\"" }
+  }
+
+  expect_failures = [var.device_filter]
+}
+
+run "rejects_empty_device_filter_rule" {
+  command = plan
+
+  variables {
+    device_filter = { mode = "exclude", rule = " " }
+  }
+
+  expect_failures = [var.device_filter]
+}
+
+run "rejects_device_filter_rule_over_3072_characters" {
+  command = plan
+
+  variables {
+    device_filter = { mode = "exclude", rule = join("", [for i in range(1000) : "abcd"]) }
+  }
+
+  expect_failures = [var.device_filter]
+}
+
+run "rejects_unknown_operator" {
+  command = plan
+
+  variables {
+    grant_controls = { operator = "XOR", builtInControls = ["mfa"] }
+  }
+
+  expect_failures = [var.grant_controls]
+}
+
+run "rejects_risk_remediation" {
+  command = plan
+
+  variables {
+    grant_controls = { operator = "AND", builtInControls = ["riskRemediation"] }
+  }
+
+  expect_failures = [var.grant_controls]
+}
+
+run "rejects_approved_application" {
+  command = plan
+
+  variables {
+    grant_controls = { operator = "OR", builtInControls = ["approvedApplication", "compliantApplication"] }
+  }
+
+  expect_failures = [var.grant_controls]
+}
+
+run "rejects_non_guid_authentication_strength" {
+  command = plan
+
+  variables {
+    grant_controls = { authentication_strength_id = "phishing-resistant" }
+  }
+
+  expect_failures = [var.grant_controls]
+}
+
+run "rejects_empty_grant_controls" {
+  command = plan
+
+  variables {
+    grant_controls = { operator = "OR" }
+  }
+
+  expect_failures = [var.grant_controls]
+}
+
+run "rejects_empty_session_controls" {
+  command = plan
+
+  variables {
+    session_controls = {}
+  }
+
+  expect_failures = [var.session_controls]
+}
+
+run "rejects_time_based_frequency_without_type" {
+  command = plan
+
+  variables {
+    session_controls = { signInFrequency = { value = 4 } }
+  }
+
+  expect_failures = [var.session_controls]
+}
+
+run "rejects_fractional_frequency" {
+  command = plan
+
+  variables {
+    session_controls = { signInFrequency = { type = "hours", value = 1.5 } }
+  }
+
+  expect_failures = [var.session_controls]
+}
+
+run "rejects_24_hour_frequency" {
+  command = plan
+
+  variables {
+    session_controls = { signInFrequency = { type = "hours", value = 24 } }
+  }
+
+  expect_failures = [var.session_controls]
+}
+
+run "rejects_366_day_frequency" {
+  command = plan
+
+  variables {
+    session_controls = { signInFrequency = { type = "days", value = 366 } }
+  }
+
+  expect_failures = [var.session_controls]
+}
+
+run "rejects_every_time_with_value" {
+  command = plan
+
+  variables {
+    session_controls = { signInFrequency = { frequencyInterval = "everyTime", type = "hours", value = 1 } }
+  }
+
+  expect_failures = [var.session_controls]
+}
+
+run "rejects_unknown_persistent_browser_mode" {
+  command = plan
+
+  variables {
+    session_controls = { persistent_browser_mode = "sometimes" }
+  }
+
+  expect_failures = [var.session_controls]
+}
+
+run "rejects_unknown_cloud_app_security_type" {
+  command = plan
+
+  variables {
+    session_controls = { cloudAppSecurityType = "blockUploads" }
+  }
+
+  expect_failures = [var.session_controls]
+}
+
+run "rejects_unknown_api_version" {
+  command = plan
+
+  variables {
+    api_version = "v2.0"
+  }
+
+  expect_failures = [var.api_version]
+}
+
+run "rejects_beta_api_version" {
+  command = plan
+
+  variables {
+    api_version = "beta"
+  }
+
+  expect_failures = [var.api_version]
+}
+
+run "timeouts_default_to_the_previous_behaviour" {
+  command = plan
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.timeouts) == jsonencode({ create = "10m", delete = "10m", read = null, update = "10m" })
+    error_message = "With default inputs the create, update and delete timeouts must stay 10m and read must stay unset, so an upgrade plans no timeout change."
+  }
+}
+
+run "plans_custom_timeouts" {
+  command = plan
+
+  variables {
+    timeouts = { create = "30m", read = "5m", update = "20m", delete = "25m" }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.timeouts) == jsonencode({ create = "30m", delete = "25m", read = "5m", update = "20m" })
+    error_message = "Each configured timeout must be planned as given."
+  }
+}
+
+# A wrapper that forwards an unset variable passes null; the module must plan the
+# defaults, as it does when timeouts is unset.
+run "null_timeouts_plan_the_defaults" {
+  command = plan
+
+  variables {
+    timeouts = null
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.timeouts) == jsonencode({ create = "10m", delete = "10m", read = null, update = "10m" })
+    error_message = "A null timeouts must plan the create, update and delete defaults of 10m and leave read unset."
+  }
+}
+
+run "rejects_malformed_timeout" {
+  command = plan
+
+  variables {
+    timeouts = { update = "10 minutes" }
+  }
+
+  expect_failures = [var.timeouts]
+}
+
+# The provider accepts a zero duration; the module does not. read has no minimum,
+# so only the zero rule rejects it.
+run "rejects_zero_timeout" {
+  command = plan
+
+  variables {
+    timeouts = { read = "0s" }
+  }
+
+  expect_failures = [var.timeouts]
+}
+
+# The provider waits at least 10 seconds for three consistent reads after a write.
+run "rejects_short_timeout" {
+  command = plan
+
+  variables {
+    timeouts = { update = "14s" }
+  }
+
+  expect_failures = [var.timeouts]
+}
+
+# The minimum itself is accepted.
+run "accepts_15_second_timeouts" {
+  command = plan
+
+  variables {
+    timeouts = { create = "15s", update = "15s", delete = "15s" }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.timeouts) == jsonencode({ create = "15s", delete = "15s", read = null, update = "15s" })
+    error_message = "15s is the documented minimum for create, update and delete and must be accepted."
+  }
+}
+
+run "rejects_user_actions_in_report_only" {
+  command = plan
+
+  variables {
+    applications = { includeUserActions = ["urn:user:registerdevice"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_combined_risk_levels" {
+  command = plan
+
+  variables {
+    sign_in_risk_levels = ["high"]
+    user_risk_levels    = ["high"]
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_mfa_with_authentication_strength" {
+  command = plan
+
+  variables {
+    grant_controls = { builtInControls = ["mfa"], authentication_strength_id = "00000000-0000-0000-0000-000000000002" }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_password_change_with_or" {
+  command = plan
+
+  variables {
+    users            = { includeUsers = ["All"] }
+    user_risk_levels = ["high"]
+    grant_controls   = { operator = "OR", builtInControls = ["mfa", "passwordChange"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+# Microsoft Graph stores "OR" for a single grant control, so "AND" with one control
+# would never match the read-back.
+run "rejects_and_with_a_single_grant_control" {
+  command = plan
+
+  variables {
+    grant_controls = { operator = "AND", builtInControls = ["mfa"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+# The same terms of use ID in two casings is one control once canonicalised.
+run "rejects_and_with_one_terms_of_use_id_in_two_casings" {
+  command = plan
+
+  variables {
+    grant_controls = { operator = "AND", termsOfUse = ["aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_password_change_without_mfa" {
+  command = plan
+
+  variables {
+    users            = { includeUsers = ["All"] }
+    user_risk_levels = ["high"]
+    grant_controls   = { operator = "AND", builtInControls = ["passwordChange"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+# passwordChange needs the mfa built-in control; an authentication strength
+# does not stand in for it.
+run "rejects_password_change_with_authentication_strength" {
+  command = plan
+
+  variables {
+    users            = { includeUsers = ["All"] }
+    user_risk_levels = ["high"]
+    grant_controls   = { operator = "AND", builtInControls = ["passwordChange"], authentication_strength_id = "00000000-0000-0000-0000-000000000002" }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+# block must be the only grant control.
+run "rejects_block_with_mfa" {
+  command = plan
+
+  variables {
+    grant_controls = { operator = "OR", builtInControls = ["block", "mfa"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_block_with_terms_of_use" {
+  command = plan
+
+  variables {
+    grant_controls = { builtInControls = ["block"], termsOfUse = ["88888888-8888-8888-8888-888888888888"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_block_with_authentication_strength" {
+  command = plan
+
+  variables {
+    grant_controls = { builtInControls = ["block"], authentication_strength_id = "00000000-0000-0000-0000-000000000002" }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_password_change_without_user_risk" {
+  command = plan
+
+  variables {
+    users          = { includeUsers = ["All"] }
+    grant_controls = { operator = "AND", builtInControls = ["mfa", "passwordChange"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_password_change_with_another_condition" {
+  command = plan
+
+  variables {
+    users            = { includeUsers = ["All"] }
+    user_risk_levels = ["high"]
+    locations        = { includeLocations = ["All"] }
+    grant_controls   = { operator = "AND", builtInControls = ["mfa", "passwordChange"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_password_change_without_all_applications" {
+  command = plan
+
+  variables {
+    users            = { includeUsers = ["All"] }
+    user_risk_levels = ["high"]
+    applications     = { includeApplications = ["Office365"] }
+    grant_controls   = { operator = "AND", builtInControls = ["mfa", "passwordChange"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_password_change_with_compliant_device" {
+  command = plan
+
+  variables {
+    users            = { includeUsers = ["All"] }
+    user_risk_levels = ["high"]
+    grant_controls   = { operator = "AND", builtInControls = ["mfa", "passwordChange", "compliantDevice"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_password_change_with_terms_of_use" {
+  command = plan
+
+  variables {
+    users            = { includeUsers = ["All"] }
+    user_risk_levels = ["high"]
+    grant_controls   = { operator = "AND", builtInControls = ["mfa", "passwordChange"], termsOfUse = ["88888888-8888-8888-8888-888888888888"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_password_change_with_an_excluded_application" {
+  command = plan
+
+  variables {
+    users            = { includeUsers = ["All"] }
+    user_risk_levels = ["high"]
+    applications     = { includeApplications = ["All"], excludeApplications = ["Office365"] }
+    grant_controls   = { operator = "AND", builtInControls = ["mfa", "passwordChange"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_password_change_with_platforms" {
+  command = plan
+
+  variables {
+    users            = { includeUsers = ["All"] }
+    user_risk_levels = ["high"]
+    platforms        = { includePlatforms = ["all"] }
+    grant_controls   = { operator = "AND", builtInControls = ["mfa", "passwordChange"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_password_change_with_device_filter" {
+  command = plan
+
+  variables {
+    users            = { includeUsers = ["All"] }
+    user_risk_levels = ["high"]
+    device_filter    = { mode = "exclude", rule = "device.extensionAttribute1 -ne \"SAW\"" }
+    grant_controls   = { operator = "AND", builtInControls = ["mfa", "passwordChange"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_password_change_with_another_client_app_type" {
+  command = plan
+
+  variables {
+    users            = { includeUsers = ["All"] }
+    user_risk_levels = ["high"]
+    client_app_types = ["browser"]
+    grant_controls   = { operator = "AND", builtInControls = ["mfa", "passwordChange"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_persistent_browser_without_all_applications" {
+  command = plan
+
+  variables {
+    applications     = { includeApplications = ["Office365"] }
+    session_controls = { persistent_browser_mode = "never" }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_policy_without_controls" {
+  command = plan
+
+  variables {
+    grant_controls = null
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_register_device_with_compliant_device" {
+  command = plan
+
+  variables {
+    state          = "disabled"
+    applications   = { includeUserActions = ["urn:user:registerdevice"] }
+    grant_controls = { operator = "OR", builtInControls = ["mfa", "compliantDevice"] }
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+run "rejects_register_device_with_client_app_types" {
+  command = plan
+
+  variables {
+    state            = "disabled"
+    applications     = { includeUserActions = ["urn:user:registerdevice"] }
+    client_app_types = ["browser"]
+  }
+
+  expect_failures = [msgraph_resource.policy]
+}
+
+# An authentication strength id that is unknown at plan time replaces the policy,
+# because the presence signature cannot be told. The helper module feeds the
+# policy an id that terraform_data reports as unknown whenever its input changes.
+# These runs use their own state, so they do not disturb the runs around them.
+run "strength_id_from_the_same_apply_creates_the_policy" {
+  command = apply
+
+  module {
+    source = "./tests/unknown_strength"
+  }
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-666666666666"
+    error_message = "The first apply must create the policy with the mock's default id."
+  }
+}
+
+run "unknown_strength_id_replaces_the_policy" {
+  command = apply
+
+  module {
+    source = "./tests/unknown_strength"
+  }
+
+  variables {
+    strength_seed = "00000000-0000-0000-0000-000000000003"
+  }
+
+  # An in-place update would keep the state's id; only a replacement takes this one.
+  override_resource {
+    target = module.policy.msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000008"
+      output = {
+        display_name   = "Require a strength for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = true
+          session_controls                  = false
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = false
+          cloud_app_security                = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-000000000008"
+    error_message = "A strength id that is unknown at plan time must replace the policy, as the README's limits and the id output document."
+  }
+}
+
+run "known_strength_id_updates_the_policy_in_place" {
+  command = apply
+
+  module {
+    source = "./tests/unknown_strength"
+  }
+
+  variables {
+    strength_seed = "00000000-0000-0000-0000-000000000003"
+    strength_id   = "00000000-0000-0000-0000-000000000004"
+  }
+
+  override_resource {
+    target = module.policy.msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000009"
+      output = {
+        display_name   = "Require a strength for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = true
+          session_controls                  = false
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = false
+          cloud_app_security                = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-000000000008"
+    error_message = "A strength id that is known at plan time must update the policy in place and keep its id."
+  }
+}
+
+# unmanaged_properties_set and the unmanaged_properties check. Each apply run
+# adds or removes a session control, so the policy is replaced and the
+# override's read-back applies to the new object; a mock in-place update keeps
+# the old read-back. The override replaces the read-back object, so a mock
+# provider never evaluates the JMESPath keys that produce it; a static check in
+# the Python suite ties them to the mapping.
+run "reports_no_unmanaged_property_when_graph_returns_none" {
+  command = apply
+
+  variables {
+    session_controls = { applicationEnforcedRestrictions = true }
+  }
+
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000013"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = true
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = true
+          cloud_app_security                = false
+        }
+        unmanaged_properties = {
+          description                          = false
+          template_id                          = false
+          application_filter                   = false
+          include_guests_or_external_users     = false
+          exclude_guests_or_external_users     = false
+          client_applications                  = false
+          service_principal_risk_levels        = false
+          insider_risk_levels                  = false
+          authentication_flow_transfer_methods = false
+          custom_authentication_factors        = false
+          disable_resilience_defaults          = false
+          secure_sign_in_session               = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-000000000013"
+    error_message = "Adding a session control must replace the policy, so the new object's read-back is used."
+  }
+
+  assert {
+    condition     = length(output.unmanaged_properties_set) == 0
+    error_message = "A read-back without unmanaged properties set must report none, and the check must not warn."
+  }
+}
+
+run "reports_one_unmanaged_property_that_graph_returns_set" {
+  command = apply
+
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000014"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = false
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = false
+          cloud_app_security                = false
+        }
+        unmanaged_properties = {
+          description                          = false
+          template_id                          = false
+          application_filter                   = false
+          include_guests_or_external_users     = false
+          exclude_guests_or_external_users     = true
+          client_applications                  = false
+          service_principal_risk_levels        = false
+          insider_risk_levels                  = false
+          authentication_flow_transfer_methods = false
+          custom_authentication_factors        = false
+          disable_resilience_defaults          = false
+          secure_sign_in_session               = false
+        }
+      }
+    }
+  }
+
+  expect_failures = [check.unmanaged_properties]
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-000000000014"
+    error_message = "Removing the session control must replace the policy, so the new object's read-back is used."
+  }
+
+  assert {
+    condition     = jsonencode(output.unmanaged_properties_set) == jsonencode(["conditions.users.excludeGuestsOrExternalUsers"])
+    error_message = "An excludeGuestsOrExternalUsers value that Microsoft Graph returned must be reported by its JSON path."
+  }
+}
+
+run "reports_every_unmanaged_property_that_graph_returns_set" {
+  command = apply
+
+  variables {
+    session_controls = { applicationEnforcedRestrictions = true }
+  }
+
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000015"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = true
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = true
+          cloud_app_security                = false
+        }
+        unmanaged_properties = {
+          description                          = true
+          template_id                          = true
+          application_filter                   = true
+          include_guests_or_external_users     = true
+          exclude_guests_or_external_users     = true
+          client_applications                  = true
+          service_principal_risk_levels        = true
+          insider_risk_levels                  = true
+          authentication_flow_transfer_methods = true
+          custom_authentication_factors        = true
+          disable_resilience_defaults          = true
+          secure_sign_in_session               = true
+        }
+      }
+    }
+  }
+
+  expect_failures = [check.unmanaged_properties]
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-000000000015"
+    error_message = "Adding a session control must replace the policy, so the new object's read-back is used."
+  }
+
+  assert {
+    condition = jsonencode(output.unmanaged_properties_set) == jsonencode([
+      "conditions.applications.applicationFilter",
+      "conditions.authenticationFlows.transferMethods",
+      "conditions.clientApplications",
+      "conditions.insiderRiskLevels",
+      "conditions.servicePrincipalRiskLevels",
+      "conditions.users.excludeGuestsOrExternalUsers",
+      "conditions.users.includeGuestsOrExternalUsers",
+      "description",
+      "grantControls.customAuthenticationFactors",
+      "sessionControls.disableResilienceDefaults",
+      "sessionControls.secureSignInSession",
+      "templateId",
+    ])
+    error_message = "Every one of the twelve unmanaged properties must map to its JSON path."
+  }
+}
+
+# A plan without changes reads the state's read-back, so the check warns at plan.
+run "warns_on_a_plan_without_changes" {
+  command = plan
+
+  variables {
+    session_controls = { applicationEnforcedRestrictions = true }
+  }
+
+  expect_failures = [check.unmanaged_properties]
+
+  assert {
+    condition     = length(output.unmanaged_properties_set) == 12
+    error_message = "A plan without changes must report the properties from the last read."
+  }
+}
+
+# optional_parts_not_in_configuration compares the optional parts Microsoft
+# Graph returned with the configured ones. The first two runs cover every one of
+# the ten mapping lines from the read-back object to local.server_presence. The
+# override replaces the read-back object, so a mock provider never evaluates the
+# JMESPath keys in response_export_values that produce it; only a live run or a
+# static check of those keys can catch a wrong one. The last run stays last: it
+# leaves a mismatch in state on purpose.
+run "every_optional_part_read_back_matches_the_configuration" {
+  command = apply
+
+  variables {
+    locations        = { includeLocations = ["All"], excludeLocations = ["AllTrusted", "77777777-7777-7777-7777-777777777777"] }
+    platforms        = { includePlatforms = ["all"], excludePlatforms = ["iOS"] }
+    device_filter    = { mode = "exclude", rule = "device.extensionAttribute1 -ne \"SAW\"" }
+    grant_controls   = { operator = "AND", builtInControls = ["compliantDevice"], authentication_strength_id = "00000000-0000-0000-0000-000000000002", termsOfUse = ["88888888-8888-8888-8888-888888888888"] }
+    session_controls = { signInFrequency = { frequencyInterval = "everyTime" }, persistent_browser_mode = "never", applicationEnforcedRestrictions = true, cloudAppSecurityType = "monitorOnly" }
+  }
+
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000010"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = true
+          platforms                         = true
+          devices                           = true
+          grant_controls                    = true
+          authentication_strength           = true
+          session_controls                  = true
+          sign_in_frequency                 = true
+          persistent_browser                = true
+          application_enforced_restrictions = true
+          cloud_app_security                = true
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = length(local.presence) == 10 && length(local.server_presence) == 10
+    error_message = "All ten optional parts must appear in the configured and in the read-back presence lists."
+  }
+
+  assert {
+    condition     = jsonencode(local.server_presence) == jsonencode(local.presence)
+    error_message = "Every optional part read back from Microsoft Graph must map to the same entry as the configured part."
+  }
+
+  assert {
+    condition     = length(output.optional_parts_not_in_configuration) == 0
+    error_message = "A read-back that matches the configuration must report no part as missing from it."
+  }
+}
+
+run "only_grant_controls_read_back_lists_nothing" {
+  command = apply
+
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000011"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = false
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = false
+          cloud_app_security                = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = jsonencode(local.server_presence) == jsonencode(["grantControls"]) && jsonencode(local.presence) == jsonencode(["grantControls"])
+    error_message = "Only grant controls must be present in the configuration and in the read-back."
+  }
+
+  assert {
+    condition     = length(output.optional_parts_not_in_configuration) == 0
+    error_message = "A policy with only grant controls must report no part as missing from the configuration."
+  }
+}
+
+# Microsoft Graph may return GUIDs in another case than the module sent; the
+# exclusion outputs are lower-cased. A session control is added so that the
+# presence signature changes and the override's read-back applies to a new object.
+run "read_back_exclusions_are_lower_cased" {
+  command = apply
+
+  variables {
+    session_controls = { applicationEnforcedRestrictions = true }
+  }
+
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000012"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["AAAAAAAA-0000-0000-0000-000000000001", "GuestsOrExternalUsers"]
+        exclude_groups = ["BBBBBBBB-0000-0000-0000-000000000002"]
+        optional_parts = {
+          locations                         = false
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = true
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = true
+          cloud_app_security                = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-000000000012"
+    error_message = "Adding a session control must replace the policy, so the new object's read-back is used."
+  }
+
+  assert {
+    condition     = jsonencode(output.excluded_user_ids) == jsonencode(["GuestsOrExternalUsers", "aaaaaaaa-0000-0000-0000-000000000001"])
+    error_message = "excluded_user_ids must lower-case GUIDs and keep GuestsOrExternalUsers as given."
+  }
+
+  assert {
+    condition     = jsonencode(output.excluded_group_ids) == jsonencode(["bbbbbbbb-0000-0000-0000-000000000002"])
+    error_message = "excluded_group_ids must be lower-cased."
+  }
+}
+
+run "adding_a_location_replaces_the_policy_and_matches_graph" {
+  command = apply
+
+  variables {
+    locations = { includeLocations = ["All"], excludeLocations = ["AllTrusted"] }
+  }
+
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000005"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = true
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = false
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = false
+          cloud_app_security                = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = output.id == "66666666-6666-6666-6666-000000000005"
+    error_message = "Adding the location condition must replace the policy."
+  }
+
+  assert {
+    condition     = jsonencode(local.server_presence) == jsonencode(["conditions.locations", "grantControls"])
+    error_message = "The read-back optional parts must include the location condition."
+  }
+}
+
+run "reports_an_optional_part_that_graph_has_and_the_configuration_lacks" {
+  command = apply
+
+  # The configuration drops the location condition, but the object read back
+  # still has one, as after an out-of-band addition or a retried replacement.
+  override_resource {
+    target = msgraph_resource.policy
+    values = {
+      id = "66666666-6666-6666-6666-000000000006"
+      output = {
+        display_name   = "Require MFA for pilot"
+        state          = "enabledForReportingButNotEnforced"
+        exclude_users  = ["11111111-1111-1111-1111-111111111111"]
+        exclude_groups = []
+        optional_parts = {
+          locations                         = true
+          platforms                         = false
+          devices                           = false
+          grant_controls                    = true
+          authentication_strength           = false
+          session_controls                  = false
+          sign_in_frequency                 = false
+          persistent_browser                = false
+          application_enforced_restrictions = false
+          cloud_app_security                = false
+        }
+      }
+    }
+  }
+
+  assert {
+    condition     = jsonencode(output.optional_parts_not_in_configuration) == jsonencode(["conditions.locations"])
+    error_message = "A part that Microsoft Graph returned and the configuration lacks must be reported, because an in-place apply cannot remove it."
+  }
+}
+
+# A named location created moments before can be missing from the replica that
+# serves the policy request: Graph answers 400, error 1040, "NamedLocation with
+# id <id> does not exist in the directory." The module hands the provider a
+# retry on that message instead of sleeping, so nothing waits unless Graph
+# returned the error, and a policy without a locations condition has no retry.
+# A mock provider cannot send a request, so these runs check the configuration
+# the provider receives and that its expression matches the message Graph
+# returns.
+run "no_locations_condition_sets_no_retry" {
+  command = apply
+
+  assert {
+    condition     = msgraph_resource.policy.retry == null
+    error_message = "A policy without a locations condition must not set a retry: nothing it sends references a named location."
+  }
+
+  assert {
+    condition     = !contains(local.presence, "conditions.locations")
+    error_message = "The default policy must have no locations condition."
+  }
+}
+
+run "named_location_reference_retries_the_replication_error" {
+  command = apply
+
+  variables {
+    locations = { includeLocations = ["AAAAAAAA-0000-0000-0000-000000000001"], excludeLocations = ["aaaaaaaa-0000-0000-0000-000000000002"] }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.retry) == jsonencode({ error_message_regex = ["^\\s*\\{\\s*\"error\"\\s*:\\s*\\{\\s*\"code\"\\s*:\\s*\"BadRequest\"\\s*,\\s*\"message\"\\s*:\\s*\"1040: NamedLocation with id [0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12} does not exist in the directory\\.\"\\s*[,}]"] })
+    error_message = "A policy that names a location must retry the not-yet-replicated named location error, and nothing else."
+  }
+
+  assert {
+    condition = alltrue([
+      for re in msgraph_resource.policy.retry.error_message_regex :
+      can(regex(re, "{\"error\":{\"code\":\"BadRequest\",\"message\":\"1040: NamedLocation with id 77777777-7777-7777-7777-777777777777 does not exist in the directory.\"}}"))
+    ])
+    error_message = "The retry expression must match the message Microsoft Graph returns for a named location that has not replicated."
+  }
+
+  assert {
+    condition = alltrue([
+      for re in msgraph_resource.policy.retry.error_message_regex :
+      !can(regex(re, "{\"error\":{\"code\":\"BadRequest\",\"message\":\"Property includeGroups contains an invalid value.\"}}"))
+    ])
+    error_message = "The retry expression must not match unrelated 400 errors, which would retry until the timeout."
+  }
+
+  assert {
+    condition     = msgraph_resource.policy.timeouts.create == "10m" && msgraph_resource.policy.timeouts.update == "10m"
+    error_message = "The retry is bounded by the create and update timeouts, which default to 10m."
+  }
+
+  assert {
+    condition = alltrue(flatten([
+      for re in msgraph_resource.policy.retry.error_message_regex : [
+        for response in [
+          jsonencode({ id = "77777777-7777-7777-7777-777777777777", displayName = "1040: NamedLocation with id 77777777-7777-7777-7777-777777777777 does not exist in the directory." }),
+          jsonencode({ error = { code = "Forbidden", message = "1040: NamedLocation with id 77777777-7777-7777-7777-777777777777 does not exist in the directory." } }),
+          jsonencode({ error = { code = "BadRequest", message = "1177: NamedLocation with id 77777777-7777-7777-7777-777777777777 does not exist in the directory." } }),
+          jsonencode({ error = { code = "BadRequest", message = "1040: NamedLocation with id --- does not exist in the directory." } }),
+        ] : !can(regex(re, response))
+      ]
+    ]))
+    error_message = "Successful responses, other error codes and malformed IDs must never trigger the replication retry."
+  }
+}
+
+run "the_wait_is_bounded_by_the_configured_timeouts" {
+  command = apply
+
+  variables {
+    locations = { includeLocations = ["aaaaaaaa-0000-0000-0000-000000000001"] }
+    timeouts  = { create = "3m", update = "2m" }
+  }
+
+  assert {
+    condition     = msgraph_resource.policy.timeouts.create == "3m" && msgraph_resource.policy.timeouts.update == "2m"
+    error_message = "timeouts.create and timeouts.update must bound the retry."
+  }
+}
+
+run "special_location_values_are_sent_as_given" {
+  command = apply
+
+  variables {
+    locations = { includeLocations = ["All"], excludeLocations = ["AllTrusted"] }
+  }
+
+  assert {
+    condition     = jsonencode(msgraph_resource.policy.body.conditions.locations) == jsonencode({ excludeLocations = ["AllTrusted"], includeLocations = ["All"] })
+    error_message = "All and AllTrusted must be sent as given."
+  }
+}

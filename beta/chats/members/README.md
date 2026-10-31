@@ -19,12 +19,12 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//beta/chats/members"
   version = "<version>"
 
-  chat_id = "parent-object-id"
+  chat-id = "parent-object-id"
   odata_type = "#microsoft.graph.aadUserConversationMember"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -52,11 +52,11 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `chat_id` | URL parameter `chat-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `chat-id` | URL parameter `chat-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
 | `odata_type` | `@odata.type` | `string` | yes | no | in place |
-| `display_name` | `displayName` | `string` | no | no | in place |
+| `displayName` | `displayName` | `string` | no | no | in place |
 | `roles` | `roles` | `list(string)` | no | no | in place |
-| `visible_history_start_date_time` | `visibleHistoryStartDateTime` | `string` | no | no | in place |
+| `visibleHistoryStartDateTime` | `visibleHistoryStartDateTime` | `string` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.

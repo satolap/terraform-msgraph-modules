@@ -20,7 +20,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -48,10 +48,10 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `activity_settings` | `activitySettings` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.activitySettings")       urlToItemResolvers = optional(any)     })` | no | no | in place |
+| `activitySettings` | `activitySettings` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.activitySettings")       urlToItemResolvers = optional(any)     })` | no | no | in place |
 | `configuration` | `configuration` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.configuration")       authorizedAppIds = optional(list(string))     })` | no | no | in place |
-| `connector_id` | `connectorId` | `string` | no | no | in place |
-| `content_category` | `contentCategory` | `string` | no | no | in place |
+| `connectorId` | `connectorId` | `string` | no | no | in place |
+| `contentCategory` | `contentCategory` | `string` | no | no | in place |
 | `description` | `description` | `string` | no | no | in place |
 | `groups` | `groups` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalGroup")       description = optional(string)       displayName = optional(string)       members = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.identity")       type = optional(string)     })))     }))` | no | no | in place |
 | `items` | `items` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItem")       acl = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.acl")       accessType = optional(string)       type = optional(string)       value = optional(string)     })))       activities = optional(any)       content = optional(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItemContent")       type = optional(string)       value = optional(string)     }))       informationProtectionLabel = optional(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.externalItemInformationProtectionLabel")       sensitivityLabelId = optional(string)     }))       properties = optional(any)     }))` | no | no | in place |
@@ -59,7 +59,7 @@ This module has no reviewed replication retry.
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
 | `operations` | `operations` | `list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.connectionOperation")       error = optional(object({       odata_type = optional(string, "#microsoft.graph.publicError")       code = optional(string)       details = optional(list(object({       odata_type = optional(string, "#microsoft.graph.publicErrorDetail")       code = optional(string)       message = optional(string)       target = optional(string)     })))       innerError = optional(object({       odata_type = optional(string, "#microsoft.graph.publicInnerError")       code = optional(string)       details = optional(any)       message = optional(string)       target = optional(string)     }))       message = optional(string)       target = optional(string)     }))       status = optional(string)     }))` | no | no | in place |
 | `schema` | `schema` | `any` | no | no | in place |
-| `search_settings` | `searchSettings` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.searchSettings")       searchResultTemplates = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.displayTemplate")       id = optional(string)       layout = optional(any)       priority = optional(number)       rules = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.propertyRule")       operation = optional(string)       property = optional(string)       values = optional(any)       valuesJoinedBy = optional(string)     })))     })))     })` | no | no | in place |
+| `searchSettings` | `searchSettings` | `object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.searchSettings")       searchResultTemplates = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.displayTemplate")       id = optional(string)       layout = optional(any)       priority = optional(number)       rules = optional(list(object({       odata_type = optional(string, "#microsoft.graph.externalConnectors.propertyRule")       operation = optional(string)       property = optional(string)       values = optional(any)       valuesJoinedBy = optional(string)     })))     })))     })` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

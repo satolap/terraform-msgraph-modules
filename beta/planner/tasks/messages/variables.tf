@@ -1,11 +1,11 @@
-variable "planner_task_id" {
+variable "plannerTask-id" {
   description = "The unique identifier of plannerTask"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.planner_task_id)) > 0
-    error_message = "planner_task_id must not be empty."
+    condition     = length(trimspace(var.plannerTask-id)) > 0
+    error_message = "plannerTask-id must not be empty."
   }
 }
 
@@ -15,25 +15,25 @@ variable "content" {
   default     = null
 }
 
-variable "created_by" {
+variable "createdBy" {
   description = "The identity of the user who created the message."
   type        = any
   default     = null
 }
 
-variable "created_date_time" {
+variable "createdDateTime" {
   description = "The date and time when the message was created. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z."
   type        = string
   default     = null
 }
 
-variable "deleted_date_time" {
+variable "deletedDateTime" {
   description = "Microsoft Graph deletedDateTime property."
   type        = string
   default     = null
 }
 
-variable "edited_date_time" {
+variable "editedDateTime" {
   description = "Microsoft Graph editedDateTime property."
   type        = string
   default     = null
@@ -55,14 +55,14 @@ variable "mentions" {
   }
 }
 
-variable "message_type" {
+variable "messageType" {
   description = "Microsoft Graph messageType property."
   type        = string
   default     = null
 
   validation {
-    condition     = var.message_type == null ? true : contains(["richTextHtml", "plainText"], var.message_type)
-    error_message = "message_type must be one of the documented enum values."
+    condition     = var.messageType == null ? true : contains(["richTextHtml", "plainText"], var.messageType)
+    error_message = "messageType must be one of the documented enum values."
   }
 }
 
@@ -73,7 +73,7 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "parent_entity_id" {
+variable "parentEntityId" {
   description = "The ID of the parent plannerTask that this message belongs to."
   type        = string
   default     = null

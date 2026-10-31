@@ -11,10 +11,10 @@ run "minimal_request" {
   command = plan
 
   variables {
-    change_type          = "example"
-    expiration_date_time = "2026-01-01T00:00:00Z"
-    notification_url     = "example"
-    resource             = "example"
+    changeType         = "example"
+    expirationDateTime = "2026-01-01T00:00:00Z"
+    notificationUrl    = "example"
+    resource           = "example"
   }
 
   assert {
@@ -42,11 +42,11 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    change_type          = "example"
-    expiration_date_time = "2026-01-01T00:00:00Z"
-    notification_url     = "example"
-    resource             = "example"
-    select_response      = true
+    changeType         = "example"
+    expirationDateTime = "2026-01-01T00:00:00Z"
+    notificationUrl    = "example"
+    resource           = "example"
+    select_response    = true
   }
 
   assert {
@@ -59,12 +59,12 @@ run "typed_request" {
   command = plan
 
   variables {
-    change_type           = "example"
-    expiration_date_time  = "2026-01-01T00:00:00Z"
-    notification_url      = "example"
-    resource              = "example"
-    client_state          = "example"
-    include_resource_data = false
+    changeType          = "example"
+    expirationDateTime  = "2026-01-01T00:00:00Z"
+    notificationUrl     = "example"
+    resource            = "example"
+    clientState         = "example"
+    includeResourceData = false
   }
 
   assert {
@@ -105,10 +105,10 @@ run "replacement_baseline" {
   command = apply
 
   variables {
-    change_type          = "example"
-    expiration_date_time = "2026-01-01T00:00:00Z"
-    notification_url     = "example"
-    resource             = "example"
+    changeType         = "example"
+    expirationDateTime = "2026-01-01T00:00:00Z"
+    notificationUrl    = "example"
+    resource           = "example"
   }
 
   assert {
@@ -117,35 +117,35 @@ run "replacement_baseline" {
   }
 }
 
-run "update_in_place_expiration_date_time" {
+run "update_in_place_expirationDateTime" {
   command = apply
 
   variables {
-    change_type          = "example"
-    expiration_date_time = "2026-01-01T00:00:00Z-changed"
-    notification_url     = "example"
-    resource             = "example"
+    changeType         = "example"
+    expirationDateTime = "2026-01-01T00:00:00Z-changed"
+    notificationUrl    = "example"
+    resource           = "example"
   }
 
   assert {
     condition     = msgraph_resource.this.id == run.replacement_baseline.id
-    error_message = "Changing expiration_date_time must update the object in place."
+    error_message = "Changing expirationDateTime must update the object in place."
   }
 }
 
-run "update_in_place_notification_url" {
+run "update_in_place_notificationUrl" {
   command = apply
 
   variables {
-    change_type          = "example"
-    expiration_date_time = "2026-01-01T00:00:00Z-changed"
-    notification_url     = "example-changed"
-    resource             = "example"
+    changeType         = "example"
+    expirationDateTime = "2026-01-01T00:00:00Z-changed"
+    notificationUrl    = "example-changed"
+    resource           = "example"
   }
 
   assert {
-    condition     = msgraph_resource.this.id == run.update_in_place_expiration_date_time.id
-    error_message = "Changing notification_url must update the object in place."
+    condition     = msgraph_resource.this.id == run.update_in_place_expirationDateTime.id
+    error_message = "Changing notificationUrl must update the object in place."
   }
 }
 
@@ -153,15 +153,15 @@ run "replace_through_additional_properties" {
   command = apply
 
   variables {
-    change_type           = "example"
-    expiration_date_time  = "2026-01-01T00:00:00Z-changed"
-    notification_url      = "example-changed"
+    changeType            = "example"
+    expirationDateTime    = "2026-01-01T00:00:00Z-changed"
+    notificationUrl       = "example-changed"
     resource              = "example"
     additional_properties = { "clientState" = "example" }
   }
 
   assert {
-    condition     = msgraph_resource.this.id != run.update_in_place_notification_url.id
+    condition     = msgraph_resource.this.id != run.update_in_place_notificationUrl.id
     error_message = "clientState in additional_properties must replace the object."
   }
 }
@@ -170,9 +170,9 @@ run "replace_through_unlisted_additional_property" {
   command = apply
 
   variables {
-    change_type           = "example"
-    expiration_date_time  = "2026-01-01T00:00:00Z-changed"
-    notification_url      = "example-changed"
+    changeType            = "example"
+    expirationDateTime    = "2026-01-01T00:00:00Z-changed"
+    notificationUrl       = "example-changed"
     resource              = "example"
     additional_properties = { "clientState" = "example", "unlistedProperty" = "example" }
   }
@@ -187,9 +187,9 @@ run "keep_object_for_null_additional_property" {
   command = apply
 
   variables {
-    change_type           = "example"
-    expiration_date_time  = "2026-01-01T00:00:00Z-changed"
-    notification_url      = "example-changed"
+    changeType            = "example"
+    expirationDateTime    = "2026-01-01T00:00:00Z-changed"
+    notificationUrl       = "example-changed"
     resource              = "example"
     additional_properties = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
   }
@@ -200,20 +200,20 @@ run "keep_object_for_null_additional_property" {
   }
 }
 
-run "replace_on_change_type" {
+run "replace_on_changeType" {
   command = apply
 
   variables {
-    change_type           = "example-changed"
-    expiration_date_time  = "2026-01-01T00:00:00Z-changed"
-    notification_url      = "example-changed"
+    changeType            = "example-changed"
+    expirationDateTime    = "2026-01-01T00:00:00Z-changed"
+    notificationUrl       = "example-changed"
     resource              = "example"
     additional_properties = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
   }
 
   assert {
     condition     = msgraph_resource.this.id != run.keep_object_for_null_additional_property.id
-    error_message = "Changing change_type must replace the object."
+    error_message = "Changing changeType must replace the object."
   }
 }
 
@@ -221,269 +221,269 @@ run "replace_on_resource" {
   command = apply
 
   variables {
-    change_type           = "example-changed"
-    expiration_date_time  = "2026-01-01T00:00:00Z-changed"
-    notification_url      = "example-changed"
+    changeType            = "example-changed"
+    expirationDateTime    = "2026-01-01T00:00:00Z-changed"
+    notificationUrl       = "example-changed"
     resource              = "example-changed"
     additional_properties = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
   }
 
   assert {
-    condition     = msgraph_resource.this.id != run.replace_on_change_type.id
+    condition     = msgraph_resource.this.id != run.replace_on_changeType.id
     error_message = "Changing resource must replace the object."
   }
 }
 
-run "replace_on_client_state" {
+run "replace_on_clientState" {
   command = apply
 
   variables {
-    change_type           = "example-changed"
-    expiration_date_time  = "2026-01-01T00:00:00Z-changed"
-    notification_url      = "example-changed"
+    changeType            = "example-changed"
+    expirationDateTime    = "2026-01-01T00:00:00Z-changed"
+    notificationUrl       = "example-changed"
     resource              = "example-changed"
     additional_properties = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
-    client_state          = "example-changed"
+    clientState           = "example-changed"
   }
 
   assert {
     condition     = msgraph_resource.this.id != run.replace_on_resource.id
-    error_message = "Changing client_state must replace the object."
+    error_message = "Changing clientState must replace the object."
   }
 }
 
-run "replace_on_encryption_certificate" {
+run "replace_on_encryptionCertificate" {
   command = apply
 
   variables {
-    change_type            = "example-changed"
-    expiration_date_time   = "2026-01-01T00:00:00Z-changed"
-    notification_url       = "example-changed"
-    resource               = "example-changed"
-    additional_properties  = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
-    client_state           = "example-changed"
-    encryption_certificate = "example-changed"
+    changeType            = "example-changed"
+    expirationDateTime    = "2026-01-01T00:00:00Z-changed"
+    notificationUrl       = "example-changed"
+    resource              = "example-changed"
+    additional_properties = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
+    clientState           = "example-changed"
+    encryptionCertificate = "example-changed"
   }
 
   assert {
-    condition     = msgraph_resource.this.id != run.replace_on_client_state.id
-    error_message = "Changing encryption_certificate must replace the object."
+    condition     = msgraph_resource.this.id != run.replace_on_clientState.id
+    error_message = "Changing encryptionCertificate must replace the object."
   }
 }
 
-run "replace_on_encryption_certificate_id" {
+run "replace_on_encryptionCertificateId" {
   command = apply
 
   variables {
-    change_type               = "example-changed"
-    expiration_date_time      = "2026-01-01T00:00:00Z-changed"
-    notification_url          = "example-changed"
+    changeType              = "example-changed"
+    expirationDateTime      = "2026-01-01T00:00:00Z-changed"
+    notificationUrl         = "example-changed"
+    resource                = "example-changed"
+    additional_properties   = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
+    clientState             = "example-changed"
+    encryptionCertificate   = "example-changed"
+    encryptionCertificateId = "example-changed"
+  }
+
+  assert {
+    condition     = msgraph_resource.this.id != run.replace_on_encryptionCertificate.id
+    error_message = "Changing encryptionCertificateId must replace the object."
+  }
+}
+
+run "replace_on_includeResourceData" {
+  command = apply
+
+  variables {
+    changeType              = "example-changed"
+    expirationDateTime      = "2026-01-01T00:00:00Z-changed"
+    notificationUrl         = "example-changed"
+    resource                = "example-changed"
+    additional_properties   = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
+    clientState             = "example-changed"
+    encryptionCertificate   = "example-changed"
+    encryptionCertificateId = "example-changed"
+    includeResourceData     = true
+  }
+
+  assert {
+    condition     = msgraph_resource.this.id != run.replace_on_encryptionCertificateId.id
+    error_message = "Changing includeResourceData must replace the object."
+  }
+}
+
+run "replace_on_latestSupportedTlsVersion" {
+  command = apply
+
+  variables {
+    changeType                = "example-changed"
+    expirationDateTime        = "2026-01-01T00:00:00Z-changed"
+    notificationUrl           = "example-changed"
     resource                  = "example-changed"
     additional_properties     = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
-    client_state              = "example-changed"
-    encryption_certificate    = "example-changed"
-    encryption_certificate_id = "example-changed"
+    clientState               = "example-changed"
+    encryptionCertificate     = "example-changed"
+    encryptionCertificateId   = "example-changed"
+    includeResourceData       = true
+    latestSupportedTlsVersion = "example-changed"
   }
 
   assert {
-    condition     = msgraph_resource.this.id != run.replace_on_encryption_certificate.id
-    error_message = "Changing encryption_certificate_id must replace the object."
+    condition     = msgraph_resource.this.id != run.replace_on_includeResourceData.id
+    error_message = "Changing latestSupportedTlsVersion must replace the object."
   }
 }
 
-run "replace_on_include_resource_data" {
+run "replace_on_lifecycleNotificationUrl" {
   command = apply
 
   variables {
-    change_type               = "example-changed"
-    expiration_date_time      = "2026-01-01T00:00:00Z-changed"
-    notification_url          = "example-changed"
+    changeType                = "example-changed"
+    expirationDateTime        = "2026-01-01T00:00:00Z-changed"
+    notificationUrl           = "example-changed"
     resource                  = "example-changed"
     additional_properties     = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
-    client_state              = "example-changed"
-    encryption_certificate    = "example-changed"
-    encryption_certificate_id = "example-changed"
-    include_resource_data     = true
+    clientState               = "example-changed"
+    encryptionCertificate     = "example-changed"
+    encryptionCertificateId   = "example-changed"
+    includeResourceData       = true
+    latestSupportedTlsVersion = "example-changed"
+    lifecycleNotificationUrl  = "example-changed"
   }
 
   assert {
-    condition     = msgraph_resource.this.id != run.replace_on_encryption_certificate_id.id
-    error_message = "Changing include_resource_data must replace the object."
+    condition     = msgraph_resource.this.id != run.replace_on_latestSupportedTlsVersion.id
+    error_message = "Changing lifecycleNotificationUrl must replace the object."
   }
 }
 
-run "replace_on_latest_supported_tls_version" {
+run "replace_on_notificationQueryOptions" {
   command = apply
 
   variables {
-    change_type                  = "example-changed"
-    expiration_date_time         = "2026-01-01T00:00:00Z-changed"
-    notification_url             = "example-changed"
-    resource                     = "example-changed"
-    additional_properties        = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
-    client_state                 = "example-changed"
-    encryption_certificate       = "example-changed"
-    encryption_certificate_id    = "example-changed"
-    include_resource_data        = true
-    latest_supported_tls_version = "example-changed"
+    changeType                = "example-changed"
+    expirationDateTime        = "2026-01-01T00:00:00Z-changed"
+    notificationUrl           = "example-changed"
+    resource                  = "example-changed"
+    additional_properties     = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
+    clientState               = "example-changed"
+    encryptionCertificate     = "example-changed"
+    encryptionCertificateId   = "example-changed"
+    includeResourceData       = true
+    latestSupportedTlsVersion = "example-changed"
+    lifecycleNotificationUrl  = "example-changed"
+    notificationQueryOptions  = "example-changed"
   }
 
   assert {
-    condition     = msgraph_resource.this.id != run.replace_on_include_resource_data.id
-    error_message = "Changing latest_supported_tls_version must replace the object."
+    condition     = msgraph_resource.this.id != run.replace_on_lifecycleNotificationUrl.id
+    error_message = "Changing notificationQueryOptions must replace the object."
   }
 }
 
-run "replace_on_lifecycle_notification_url" {
+run "replace_on_notificationUrlAppId" {
   command = apply
 
   variables {
-    change_type                  = "example-changed"
-    expiration_date_time         = "2026-01-01T00:00:00Z-changed"
-    notification_url             = "example-changed"
-    resource                     = "example-changed"
-    additional_properties        = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
-    client_state                 = "example-changed"
-    encryption_certificate       = "example-changed"
-    encryption_certificate_id    = "example-changed"
-    include_resource_data        = true
-    latest_supported_tls_version = "example-changed"
-    lifecycle_notification_url   = "example-changed"
+    changeType                = "example-changed"
+    expirationDateTime        = "2026-01-01T00:00:00Z-changed"
+    notificationUrl           = "example-changed"
+    resource                  = "example-changed"
+    additional_properties     = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
+    clientState               = "example-changed"
+    encryptionCertificate     = "example-changed"
+    encryptionCertificateId   = "example-changed"
+    includeResourceData       = true
+    latestSupportedTlsVersion = "example-changed"
+    lifecycleNotificationUrl  = "example-changed"
+    notificationQueryOptions  = "example-changed"
+    notificationUrlAppId      = "example-changed"
   }
 
   assert {
-    condition     = msgraph_resource.this.id != run.replace_on_latest_supported_tls_version.id
-    error_message = "Changing lifecycle_notification_url must replace the object."
+    condition     = msgraph_resource.this.id != run.replace_on_notificationQueryOptions.id
+    error_message = "Changing notificationUrlAppId must replace the object."
   }
 }
 
-run "replace_on_notification_query_options" {
+run "replace_on_vapidPublicKey" {
   command = apply
 
   variables {
-    change_type                  = "example-changed"
-    expiration_date_time         = "2026-01-01T00:00:00Z-changed"
-    notification_url             = "example-changed"
-    resource                     = "example-changed"
-    additional_properties        = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
-    client_state                 = "example-changed"
-    encryption_certificate       = "example-changed"
-    encryption_certificate_id    = "example-changed"
-    include_resource_data        = true
-    latest_supported_tls_version = "example-changed"
-    lifecycle_notification_url   = "example-changed"
-    notification_query_options   = "example-changed"
+    changeType                = "example-changed"
+    expirationDateTime        = "2026-01-01T00:00:00Z-changed"
+    notificationUrl           = "example-changed"
+    resource                  = "example-changed"
+    additional_properties     = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
+    clientState               = "example-changed"
+    encryptionCertificate     = "example-changed"
+    encryptionCertificateId   = "example-changed"
+    includeResourceData       = true
+    latestSupportedTlsVersion = "example-changed"
+    lifecycleNotificationUrl  = "example-changed"
+    notificationQueryOptions  = "example-changed"
+    notificationUrlAppId      = "example-changed"
+    vapidPublicKey            = "example-changed"
   }
 
   assert {
-    condition     = msgraph_resource.this.id != run.replace_on_lifecycle_notification_url.id
-    error_message = "Changing notification_query_options must replace the object."
+    condition     = msgraph_resource.this.id != run.replace_on_notificationUrlAppId.id
+    error_message = "Changing vapidPublicKey must replace the object."
   }
 }
 
-run "replace_on_notification_url_app_id" {
+run "replace_on_webPushEncryptionP256dhPublicKey" {
   command = apply
 
   variables {
-    change_type                  = "example-changed"
-    expiration_date_time         = "2026-01-01T00:00:00Z-changed"
-    notification_url             = "example-changed"
-    resource                     = "example-changed"
-    additional_properties        = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
-    client_state                 = "example-changed"
-    encryption_certificate       = "example-changed"
-    encryption_certificate_id    = "example-changed"
-    include_resource_data        = true
-    latest_supported_tls_version = "example-changed"
-    lifecycle_notification_url   = "example-changed"
-    notification_query_options   = "example-changed"
-    notification_url_app_id      = "example-changed"
+    changeType                       = "example-changed"
+    expirationDateTime               = "2026-01-01T00:00:00Z-changed"
+    notificationUrl                  = "example-changed"
+    resource                         = "example-changed"
+    additional_properties            = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
+    clientState                      = "example-changed"
+    encryptionCertificate            = "example-changed"
+    encryptionCertificateId          = "example-changed"
+    includeResourceData              = true
+    latestSupportedTlsVersion        = "example-changed"
+    lifecycleNotificationUrl         = "example-changed"
+    notificationQueryOptions         = "example-changed"
+    notificationUrlAppId             = "example-changed"
+    vapidPublicKey                   = "example-changed"
+    webPushEncryptionP256dhPublicKey = "example-changed"
   }
 
   assert {
-    condition     = msgraph_resource.this.id != run.replace_on_notification_query_options.id
-    error_message = "Changing notification_url_app_id must replace the object."
+    condition     = msgraph_resource.this.id != run.replace_on_vapidPublicKey.id
+    error_message = "Changing webPushEncryptionP256dhPublicKey must replace the object."
   }
 }
 
-run "replace_on_vapid_public_key" {
+run "replace_on_webPushEncryptionSecret" {
   command = apply
 
   variables {
-    change_type                  = "example-changed"
-    expiration_date_time         = "2026-01-01T00:00:00Z-changed"
-    notification_url             = "example-changed"
-    resource                     = "example-changed"
-    additional_properties        = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
-    client_state                 = "example-changed"
-    encryption_certificate       = "example-changed"
-    encryption_certificate_id    = "example-changed"
-    include_resource_data        = true
-    latest_supported_tls_version = "example-changed"
-    lifecycle_notification_url   = "example-changed"
-    notification_query_options   = "example-changed"
-    notification_url_app_id      = "example-changed"
-    vapid_public_key             = "example-changed"
+    changeType                       = "example-changed"
+    expirationDateTime               = "2026-01-01T00:00:00Z-changed"
+    notificationUrl                  = "example-changed"
+    resource                         = "example-changed"
+    additional_properties            = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
+    clientState                      = "example-changed"
+    encryptionCertificate            = "example-changed"
+    encryptionCertificateId          = "example-changed"
+    includeResourceData              = true
+    latestSupportedTlsVersion        = "example-changed"
+    lifecycleNotificationUrl         = "example-changed"
+    notificationQueryOptions         = "example-changed"
+    notificationUrlAppId             = "example-changed"
+    vapidPublicKey                   = "example-changed"
+    webPushEncryptionP256dhPublicKey = "example-changed"
+    webPushEncryptionSecret          = "example-changed"
   }
 
   assert {
-    condition     = msgraph_resource.this.id != run.replace_on_notification_url_app_id.id
-    error_message = "Changing vapid_public_key must replace the object."
-  }
-}
-
-run "replace_on_web_push_encryption_p256dh_public_key" {
-  command = apply
-
-  variables {
-    change_type                           = "example-changed"
-    expiration_date_time                  = "2026-01-01T00:00:00Z-changed"
-    notification_url                      = "example-changed"
-    resource                              = "example-changed"
-    additional_properties                 = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
-    client_state                          = "example-changed"
-    encryption_certificate                = "example-changed"
-    encryption_certificate_id             = "example-changed"
-    include_resource_data                 = true
-    latest_supported_tls_version          = "example-changed"
-    lifecycle_notification_url            = "example-changed"
-    notification_query_options            = "example-changed"
-    notification_url_app_id               = "example-changed"
-    vapid_public_key                      = "example-changed"
-    web_push_encryption_p256dh_public_key = "example-changed"
-  }
-
-  assert {
-    condition     = msgraph_resource.this.id != run.replace_on_vapid_public_key.id
-    error_message = "Changing web_push_encryption_p256dh_public_key must replace the object."
-  }
-}
-
-run "replace_on_web_push_encryption_secret" {
-  command = apply
-
-  variables {
-    change_type                           = "example-changed"
-    expiration_date_time                  = "2026-01-01T00:00:00Z-changed"
-    notification_url                      = "example-changed"
-    resource                              = "example-changed"
-    additional_properties                 = { "clientState" = "example", "unlistedProperty" = "example", "nullProperty" = null }
-    client_state                          = "example-changed"
-    encryption_certificate                = "example-changed"
-    encryption_certificate_id             = "example-changed"
-    include_resource_data                 = true
-    latest_supported_tls_version          = "example-changed"
-    lifecycle_notification_url            = "example-changed"
-    notification_query_options            = "example-changed"
-    notification_url_app_id               = "example-changed"
-    vapid_public_key                      = "example-changed"
-    web_push_encryption_p256dh_public_key = "example-changed"
-    web_push_encryption_secret            = "example-changed"
-  }
-
-  assert {
-    condition     = msgraph_resource.this.id != run.replace_on_web_push_encryption_p256dh_public_key.id
-    error_message = "Changing web_push_encryption_secret must replace the object."
+    condition     = msgraph_resource.this.id != run.replace_on_webPushEncryptionP256dhPublicKey.id
+    error_message = "Changing webPushEncryptionSecret must replace the object."
   }
 }
 
@@ -491,10 +491,10 @@ run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    change_type          = "example"
-    expiration_date_time = "2026-01-01T00:00:00Z"
-    notification_url     = "example"
-    resource             = "example"
+    changeType         = "example"
+    expirationDateTime = "2026-01-01T00:00:00Z"
+    notificationUrl    = "example"
+    resource           = "example"
   }
 
   assert {
@@ -507,11 +507,11 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    change_type          = "example"
-    expiration_date_time = "2026-01-01T00:00:00Z"
-    notification_url     = "example"
-    resource             = "example"
-    timeouts             = { create = "45m", update = "20m", read = "7m" }
+    changeType         = "example"
+    expirationDateTime = "2026-01-01T00:00:00Z"
+    notificationUrl    = "example"
+    resource           = "example"
+    timeouts           = { create = "45m", update = "20m", read = "7m" }
   }
 
   assert {
@@ -524,11 +524,11 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    change_type          = "example"
-    expiration_date_time = "2026-01-01T00:00:00Z"
-    notification_url     = "example"
-    resource             = "example"
-    timeouts             = { create = "10s" }
+    changeType         = "example"
+    expirationDateTime = "2026-01-01T00:00:00Z"
+    notificationUrl    = "example"
+    resource           = "example"
+    timeouts           = { create = "10s" }
   }
 
   expect_failures = [var.timeouts]
@@ -538,11 +538,11 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    change_type          = "example"
-    expiration_date_time = "2026-01-01T00:00:00Z"
-    notification_url     = "example"
-    resource             = "example"
-    timeouts             = { update = "soon" }
+    changeType         = "example"
+    expirationDateTime = "2026-01-01T00:00:00Z"
+    notificationUrl    = "example"
+    resource           = "example"
+    timeouts           = { update = "soon" }
   }
 
   expect_failures = [var.timeouts]
@@ -552,11 +552,11 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    change_type          = "example"
-    expiration_date_time = "2026-01-01T00:00:00Z"
-    notification_url     = "example"
-    resource             = "example"
-    timeouts             = { delete = "0s" }
+    changeType         = "example"
+    expirationDateTime = "2026-01-01T00:00:00Z"
+    notificationUrl    = "example"
+    resource           = "example"
+    timeouts           = { delete = "0s" }
   }
 
   expect_failures = [var.timeouts]

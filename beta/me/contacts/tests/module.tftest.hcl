@@ -42,10 +42,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    assistant_name = "example"
-    is_favorite    = false
-    flag           = { "completedDateTime" = null }
-    categories     = ["example"]
+    assistantName = "example"
+    isFavorite    = false
+    flag          = { "completedDateTime" = null }
+    categories    = ["example"]
   }
 
   assert {

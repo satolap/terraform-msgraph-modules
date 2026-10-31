@@ -19,11 +19,11 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//beta/planner/tasks/messages"
   version = "<version>"
 
-  planner_task_id = "parent-object-id"
+  plannerTask-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -51,16 +51,16 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `planner_task_id` | URL parameter `plannerTask-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `plannerTask-id` | URL parameter `plannerTask-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
 | `content` | `content` | `string` | no | no | in place |
-| `created_by` | `createdBy` | `any` | no | no | in place |
-| `created_date_time` | `createdDateTime` | `string` | no | no | in place |
-| `deleted_date_time` | `deletedDateTime` | `string` | no | no | in place |
-| `edited_date_time` | `editedDateTime` | `string` | no | no | in place |
+| `createdBy` | `createdBy` | `any` | no | no | in place |
+| `createdDateTime` | `createdDateTime` | `string` | no | no | in place |
+| `deletedDateTime` | `deletedDateTime` | `string` | no | no | in place |
+| `editedDateTime` | `editedDateTime` | `string` | no | no | in place |
 | `mentions` | `mentions` | `list(object({       odata_type = optional(string, "#microsoft.graph.plannerTaskChatMention")       mentionType = optional(string)       mentioned = optional(string)       position = optional(number)     }))` | no | no | in place |
-| `message_type` | `messageType` | `string` | no | no | in place |
+| `messageType` | `messageType` | `string` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
-| `parent_entity_id` | `parentEntityId` | `string` | no | no | in place |
+| `parentEntityId` | `parentEntityId` | `string` | no | no | in place |
 | `reactions` | `reactions` | `list(object({       odata_type = optional(string, "#microsoft.graph.plannerTaskChatReaction")       reactionEvents = optional(list(object({       odata_type = optional(string, "#microsoft.graph.plannerTaskChatReactionEvent")       createdBy = optional(any)       createdDateTime = optional(string)     })))       reactionType = optional(string)     }))` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 

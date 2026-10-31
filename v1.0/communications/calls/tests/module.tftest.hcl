@@ -42,9 +42,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    call_chain_id        = "example"
-    chat_info            = { "messageId" = null }
-    audio_routing_groups = [{}]
+    callChainId        = "example"
+    chatInfo           = { "messageId" = null }
+    audioRoutingGroups = [{}]
   }
 
   assert {

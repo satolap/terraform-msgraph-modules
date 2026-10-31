@@ -1,9 +1,9 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "citationJurisdiction" = var.citation_jurisdiction
-    "citationUrl"          = var.citation_url
-    "displayName"          = var.display_name
+    "citationJurisdiction" = var.citationJurisdiction
+    "citationUrl"          = var.citationUrl
+    "displayName"          = var.displayName
     "@odata.type"          = var.odata_type
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)

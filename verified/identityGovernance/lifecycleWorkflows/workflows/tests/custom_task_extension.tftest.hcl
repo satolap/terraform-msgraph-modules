@@ -18,8 +18,8 @@ mock_provider "msgraph" {
 # asserts them.
 
 variables {
-  display_name = "Onboard with extension"
-  category     = "joiner"
+  displayName = "Onboard with extension"
+  category    = "joiner"
 
   execution_conditions = {
     type = "on_demand"
@@ -27,13 +27,13 @@ variables {
 
   tasks = [
     {
-      task         = "enable_user_account"
-      display_name = "Enable user account"
+      task        = "enable_user_account"
+      displayName = "Enable user account"
     },
     {
-      task         = "run_a_custom_task_extension"
-      display_name = "Notify the integration"
-      arguments    = { customTaskExtensionID = "CCCCCCCC-cccc-4ccc-8ccc-cccccccccccc" }
+      task        = "run_a_custom_task_extension"
+      displayName = "Notify the integration"
+      arguments   = { customTaskExtensionID = "CCCCCCCC-cccc-4ccc-8ccc-cccccccccccc" }
     },
   ]
 }
@@ -79,8 +79,8 @@ run "the_acknowledgement_does_not_cover_dangerous_tasks" {
     acknowledged_custom_task_extension_ids = ["cccccccc-cccc-4ccc-8ccc-cccccccccccc"]
     category                               = "leaver"
     tasks = [
-      { task = "disable_user_account", display_name = "Disable" },
-      { task = "run_a_custom_task_extension", display_name = "Notify", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } },
+      { task = "disable_user_account", displayName = "Disable" },
+      { task = "run_a_custom_task_extension", displayName = "Notify", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } },
     ]
   }
 
@@ -94,8 +94,8 @@ run "the_dangerous_acknowledgement_does_not_cover_the_extension_task" {
     acknowledge_dangerous_tasks = true
     category                    = "leaver"
     tasks = [
-      { task = "disable_user_account", display_name = "Disable" },
-      { task = "run_a_custom_task_extension", display_name = "Notify", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } },
+      { task = "disable_user_account", displayName = "Disable" },
+      { task = "run_a_custom_task_extension", displayName = "Notify", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } },
     ]
   }
 
@@ -110,8 +110,8 @@ run "both_acknowledgements_allow_both_kinds_of_task" {
     acknowledged_custom_task_extension_ids = ["cccccccc-cccc-4ccc-8ccc-cccccccccccc"]
     category                               = "leaver"
     tasks = [
-      { task = "disable_user_account", display_name = "Disable" },
-      { task = "run_a_custom_task_extension", display_name = "Notify", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } },
+      { task = "disable_user_account", displayName = "Disable" },
+      { task = "run_a_custom_task_extension", displayName = "Notify", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } },
     ]
   }
 
@@ -127,7 +127,7 @@ run "rejects_a_missing_extension_id" {
   variables {
     acknowledged_custom_task_extension_ids = ["cccccccc-cccc-4ccc-8ccc-cccccccccccc"]
     tasks = [
-      { task = "run_a_custom_task_extension", display_name = "Notify" },
+      { task = "run_a_custom_task_extension", displayName = "Notify" },
     ]
   }
 
@@ -140,7 +140,7 @@ run "rejects_an_extension_id_that_is_not_a_guid" {
   variables {
     acknowledged_custom_task_extension_ids = ["cccccccc-cccc-4ccc-8ccc-cccccccccccc"]
     tasks = [
-      { task = "run_a_custom_task_extension", display_name = "Notify", arguments = { customTaskExtensionID = "my-logic-app" } },
+      { task = "run_a_custom_task_extension", displayName = "Notify", arguments = { customTaskExtensionID = "my-logic-app" } },
     ]
   }
 
@@ -153,7 +153,7 @@ run "rejects_an_extension_id_with_trailing_text" {
   variables {
     acknowledged_custom_task_extension_ids = ["cccccccc-cccc-4ccc-8ccc-cccccccccccc"]
     tasks = [
-      { task = "run_a_custom_task_extension", display_name = "Notify", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc\n" } },
+      { task = "run_a_custom_task_extension", displayName = "Notify", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc\n" } },
     ]
   }
 
@@ -166,7 +166,7 @@ run "rejects_an_undocumented_argument_next_to_the_extension_id" {
   variables {
     acknowledged_custom_task_extension_ids = ["cccccccc-cccc-4ccc-8ccc-cccccccccccc"]
     tasks = [
-      { task = "run_a_custom_task_extension", display_name = "Notify", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc", url = "https://example.invalid" } },
+      { task = "run_a_custom_task_extension", displayName = "Notify", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc", url = "https://example.invalid" } },
     ]
   }
 
@@ -177,7 +177,7 @@ run "an_ordinary_workflow_needs_no_custom_task_acknowledgement" {
   command = plan
 
   variables {
-    tasks = [{ task = "enable_user_account", display_name = "Enable" }]
+    tasks = [{ task = "enable_user_account", displayName = "Enable" }]
   }
 
   assert {
@@ -205,7 +205,7 @@ run "changing_the_extension_id_without_updating_the_acknowledgement_fails" {
   variables {
     acknowledged_custom_task_extension_ids = ["cccccccc-cccc-4ccc-8ccc-cccccccccccc"]
     tasks = [
-      { task = "run_a_custom_task_extension", display_name = "Notify", arguments = { customTaskExtensionID = "dddddddd-dddd-4ddd-8ddd-dddddddddddd" } },
+      { task = "run_a_custom_task_extension", displayName = "Notify", arguments = { customTaskExtensionID = "dddddddd-dddd-4ddd-8ddd-dddddddddddd" } },
     ]
   }
 
@@ -218,8 +218,8 @@ run "adding_a_second_extension_needs_its_own_acknowledgement" {
   variables {
     acknowledged_custom_task_extension_ids = ["cccccccc-cccc-4ccc-8ccc-cccccccccccc"]
     tasks = [
-      { task = "run_a_custom_task_extension", display_name = "First", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } },
-      { task = "run_a_custom_task_extension", display_name = "Second", arguments = { customTaskExtensionID = "dddddddd-dddd-4ddd-8ddd-dddddddddddd" } },
+      { task = "run_a_custom_task_extension", displayName = "First", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } },
+      { task = "run_a_custom_task_extension", displayName = "Second", arguments = { customTaskExtensionID = "dddddddd-dddd-4ddd-8ddd-dddddddddddd" } },
     ]
   }
 
@@ -232,8 +232,8 @@ run "acknowledging_both_extensions_passes" {
   variables {
     acknowledged_custom_task_extension_ids = ["dddddddd-dddd-4ddd-8ddd-dddddddddddd", "cccccccc-cccc-4ccc-8ccc-cccccccccccc"]
     tasks = [
-      { task = "run_a_custom_task_extension", display_name = "First", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } },
-      { task = "run_a_custom_task_extension", display_name = "Second", arguments = { customTaskExtensionID = "DDDDDDDD-dddd-4ddd-8ddd-dddddddddddd" } },
+      { task = "run_a_custom_task_extension", displayName = "First", arguments = { customTaskExtensionID = "cccccccc-cccc-4ccc-8ccc-cccccccccccc" } },
+      { task = "run_a_custom_task_extension", displayName = "Second", arguments = { customTaskExtensionID = "DDDDDDDD-dddd-4ddd-8ddd-dddddddddddd" } },
     ]
   }
 
@@ -248,7 +248,7 @@ run "an_acknowledgement_that_is_no_longer_used_fails" {
 
   variables {
     acknowledged_custom_task_extension_ids = ["cccccccc-cccc-4ccc-8ccc-cccccccccccc"]
-    tasks                                  = [{ task = "enable_user_account", display_name = "Enable" }]
+    tasks                                  = [{ task = "enable_user_account", displayName = "Enable" }]
   }
 
   expect_failures = [msgraph_resource.workflow]

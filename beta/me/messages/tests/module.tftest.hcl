@@ -42,10 +42,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    body_preview    = "example"
-    has_attachments = false
-    body            = { "content" = null }
-    attachments     = [{}]
+    bodyPreview    = "example"
+    hasAttachments = false
+    body           = { "content" = null }
+    attachments    = [{}]
   }
 
   assert {

@@ -17,11 +17,11 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//v1.0/education/classes/assignments"
   version = "<version>"
 
-  education_class_id = "parent-object-id"
+  educationClass-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -49,23 +49,23 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `education_class_id` | URL parameter `educationClass-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `add_to_calendar_action` | `addToCalendarAction` | `string` | no | no | in place |
-| `added_student_action` | `addedStudentAction` | `string` | no | no | in place |
-| `allow_late_submissions` | `allowLateSubmissions` | `bool` | no | no | in place |
-| `allow_students_to_add_resources_to_submission` | `allowStudentsToAddResourcesToSubmission` | `bool` | no | no | in place |
-| `assign_to` | `assignTo` | `any` | no | no | in place |
-| `class_id` | `classId` | `string` | no | no | in place |
-| `close_date_time` | `closeDateTime` | `string` | no | no | in place |
-| `display_name` | `displayName` | `string` | no | no | in place |
-| `due_date_time` | `dueDateTime` | `string` | no | no | in place |
+| `educationClass-id` | URL parameter `educationClass-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `addToCalendarAction` | `addToCalendarAction` | `string` | no | no | in place |
+| `addedStudentAction` | `addedStudentAction` | `string` | no | no | in place |
+| `allowLateSubmissions` | `allowLateSubmissions` | `bool` | no | no | in place |
+| `allowStudentsToAddResourcesToSubmission` | `allowStudentsToAddResourcesToSubmission` | `bool` | no | no | in place |
+| `assignTo` | `assignTo` | `any` | no | no | in place |
+| `classId` | `classId` | `string` | no | no | in place |
+| `closeDateTime` | `closeDateTime` | `string` | no | no | in place |
+| `displayName` | `displayName` | `string` | no | no | in place |
+| `dueDateTime` | `dueDateTime` | `string` | no | no | in place |
 | `grading` | `grading` | `any` | no | no | in place |
-| `grading_category` | `gradingCategory` | `any` | no | no | in place |
-| `grading_scheme` | `gradingScheme` | `any` | no | no | in place |
+| `gradingCategory` | `gradingCategory` | `any` | no | no | in place |
+| `gradingScheme` | `gradingScheme` | `any` | no | no | in place |
 | `instructions` | `instructions` | `object({       odata_type = optional(string, "#microsoft.graph.educationItemBody")       content = optional(string)       contentType = optional(string)     })` | no | no | in place |
-| `language_tag` | `languageTag` | `string` | no | no | in place |
-| `module_url` | `moduleUrl` | `string` | no | no | in place |
-| `notification_channel_url` | `notificationChannelUrl` | `string` | no | no | in place |
+| `languageTag` | `languageTag` | `string` | no | no | in place |
+| `moduleUrl` | `moduleUrl` | `string` | no | no | in place |
+| `notificationChannelUrl` | `notificationChannelUrl` | `string` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
 | `resources` | `resources` | `list(object({       odata_type = optional(string, "#microsoft.graph.educationAssignmentResource")       dependentResources = optional(any)       distributeForStudentWork = optional(bool)       resource = optional(any)     }))` | no | no | in place |
 | `rubric` | `rubric` | `any` | no | no | in place |

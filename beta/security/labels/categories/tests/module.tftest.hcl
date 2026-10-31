@@ -42,7 +42,7 @@ run "typed_request" {
   command = plan
 
   variables {
-    display_name  = "example"
+    displayName   = "example"
     subcategories = [{}]
   }
 

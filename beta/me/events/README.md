@@ -22,7 +22,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -50,47 +50,47 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `allow_new_time_proposals` | `allowNewTimeProposals` | `bool` | no | no | in place |
+| `allowNewTimeProposals` | `allowNewTimeProposals` | `bool` | no | no | in place |
 | `attendees` | `attendees` | `list(object({       odata_type = optional(string, "#microsoft.graph.attendee")       emailAddress = optional(any)       proposedNewTime = optional(any)       status = optional(object({       odata_type = optional(string, "#microsoft.graph.responseStatus")       response = optional(string)       time = optional(string)     }))       type = optional(string)     }))` | no | no | in place |
 | `body` | `body` | `object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     })` | no | no | in place |
-| `body_preview` | `bodyPreview` | `string` | no | no | in place |
-| `cancelled_occurrences` | `cancelledOccurrences` | `list(string)` | no | no | in place |
+| `bodyPreview` | `bodyPreview` | `string` | no | no | in place |
+| `cancelledOccurrences` | `cancelledOccurrences` | `list(string)` | no | no | in place |
 | `categories` | `categories` | `list(string)` | no | no | in place |
-| `created_date_time` | `createdDateTime` | `string` | no | no | in place |
+| `createdDateTime` | `createdDateTime` | `string` | no | no | in place |
 | `end` | `end` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no | in place |
-| `exception_occurrences` | `exceptionOccurrences` | `list(object({       odata_type = optional(string, "#microsoft.graph.event")       allowNewTimeProposals = optional(bool)       attendees = optional(list(object({       odata_type = optional(string, "#microsoft.graph.attendee")       emailAddress = optional(any)       proposedNewTime = optional(any)       status = optional(object({       odata_type = optional(string, "#microsoft.graph.responseStatus")       response = optional(string)       time = optional(string)     }))       type = optional(string)     })))       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))       bodyPreview = optional(string)       cancelledOccurrences = optional(list(string))       categories = optional(list(string))       createdDateTime = optional(string)       end = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       exceptionOccurrences = optional(any)       extensions = optional(any)       hasAttachments = optional(bool)       hideAttendees = optional(bool)       importance = optional(string)       isAllDay = optional(bool)       isCancelled = optional(bool)       isDraft = optional(bool)       isOnlineMeeting = optional(bool)       isOrganizer = optional(bool)       isReminderOn = optional(bool)       lastModifiedDateTime = optional(string)       location = optional(any)       locations = optional(any)       occurrenceId = optional(string)       onlineMeetingProvider = optional(string)       organizer = optional(any)       originalEndTimeZone = optional(string)       originalStart = optional(string)       originalStartTimeZone = optional(string)       recurrence = optional(object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     }))       reminderMinutesBeforeStart = optional(number)       responseRequested = optional(bool)       responseStatus = optional(object({       odata_type = optional(string, "#microsoft.graph.responseStatus")       response = optional(string)       time = optional(string)     }))       sensitivity = optional(string)       seriesMasterId = optional(string)       showAs = optional(string)       start = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       subject = optional(string)       transactionId = optional(string)       uid = optional(string)       webLink = optional(string)     }))` | no | no | in place |
+| `exceptionOccurrences` | `exceptionOccurrences` | `list(object({       odata_type = optional(string, "#microsoft.graph.event")       allowNewTimeProposals = optional(bool)       attendees = optional(list(object({       odata_type = optional(string, "#microsoft.graph.attendee")       emailAddress = optional(any)       proposedNewTime = optional(any)       status = optional(object({       odata_type = optional(string, "#microsoft.graph.responseStatus")       response = optional(string)       time = optional(string)     }))       type = optional(string)     })))       body = optional(object({       odata_type = optional(string, "#microsoft.graph.itemBody")       content = optional(string)       contentType = optional(string)     }))       bodyPreview = optional(string)       cancelledOccurrences = optional(list(string))       categories = optional(list(string))       createdDateTime = optional(string)       end = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       exceptionOccurrences = optional(any)       extensions = optional(any)       hasAttachments = optional(bool)       hideAttendees = optional(bool)       importance = optional(string)       isAllDay = optional(bool)       isCancelled = optional(bool)       isDraft = optional(bool)       isOnlineMeeting = optional(bool)       isOrganizer = optional(bool)       isReminderOn = optional(bool)       lastModifiedDateTime = optional(string)       location = optional(any)       locations = optional(any)       occurrenceId = optional(string)       onlineMeetingProvider = optional(string)       organizer = optional(any)       originalEndTimeZone = optional(string)       originalStart = optional(string)       originalStartTimeZone = optional(string)       recurrence = optional(object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     }))       reminderMinutesBeforeStart = optional(number)       responseRequested = optional(bool)       responseStatus = optional(object({       odata_type = optional(string, "#microsoft.graph.responseStatus")       response = optional(string)       time = optional(string)     }))       sensitivity = optional(string)       seriesMasterId = optional(string)       showAs = optional(string)       start = optional(object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     }))       subject = optional(string)       transactionId = optional(string)       uid = optional(string)       webLink = optional(string)     }))` | no | no | in place |
 | `extensions` | `extensions` | `any` | no | no | in place |
-| `has_attachments` | `hasAttachments` | `bool` | no | no | in place |
-| `hide_attendees` | `hideAttendees` | `bool` | no | no | in place |
+| `hasAttachments` | `hasAttachments` | `bool` | no | no | in place |
+| `hideAttendees` | `hideAttendees` | `bool` | no | no | in place |
 | `importance` | `importance` | `string` | no | no | in place |
-| `is_all_day` | `isAllDay` | `bool` | no | no | in place |
-| `is_cancelled` | `isCancelled` | `bool` | no | no | in place |
-| `is_draft` | `isDraft` | `bool` | no | no | in place |
-| `is_online_meeting` | `isOnlineMeeting` | `bool` | no | no | in place |
-| `is_organizer` | `isOrganizer` | `bool` | no | no | in place |
-| `is_reminder_on` | `isReminderOn` | `bool` | no | no | in place |
-| `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no | in place |
+| `isAllDay` | `isAllDay` | `bool` | no | no | in place |
+| `isCancelled` | `isCancelled` | `bool` | no | no | in place |
+| `isDraft` | `isDraft` | `bool` | no | no | in place |
+| `isOnlineMeeting` | `isOnlineMeeting` | `bool` | no | no | in place |
+| `isOrganizer` | `isOrganizer` | `bool` | no | no | in place |
+| `isReminderOn` | `isReminderOn` | `bool` | no | no | in place |
+| `lastModifiedDateTime` | `lastModifiedDateTime` | `string` | no | no | in place |
 | `location` | `location` | `any` | no | no | in place |
 | `locations` | `locations` | `any` | no | no | in place |
-| `occurrence_id` | `occurrenceId` | `string` | no | no | in place |
+| `occurrenceId` | `occurrenceId` | `string` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
-| `online_meeting_provider` | `onlineMeetingProvider` | `string` | no | no | in place |
+| `onlineMeetingProvider` | `onlineMeetingProvider` | `string` | no | no | in place |
 | `organizer` | `organizer` | `any` | no | no | in place |
-| `original_end_time_zone` | `originalEndTimeZone` | `string` | no | no | in place |
-| `original_start` | `originalStart` | `string` | no | no | in place |
-| `original_start_time_zone` | `originalStartTimeZone` | `string` | no | no | in place |
+| `originalEndTimeZone` | `originalEndTimeZone` | `string` | no | no | in place |
+| `originalStart` | `originalStart` | `string` | no | no | in place |
+| `originalStartTimeZone` | `originalStartTimeZone` | `string` | no | no | in place |
 | `recurrence` | `recurrence` | `object({       odata_type = optional(string, "#microsoft.graph.patternedRecurrence")       pattern = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrencePattern")       dayOfMonth = optional(number)       daysOfWeek = optional(list(string))       firstDayOfWeek = optional(string)       index = optional(string)       interval = optional(number)       month = optional(number)       type = optional(string)     }))       range = optional(object({       odata_type = optional(string, "#microsoft.graph.recurrenceRange")       endDate = optional(string)       numberOfOccurrences = optional(number)       recurrenceTimeZone = optional(string)       startDate = optional(string)       type = optional(string)     }))     })` | no | no | in place |
-| `reminder_minutes_before_start` | `reminderMinutesBeforeStart` | `number` | no | no | in place |
-| `response_requested` | `responseRequested` | `bool` | no | no | in place |
-| `response_status` | `responseStatus` | `object({       odata_type = optional(string, "#microsoft.graph.responseStatus")       response = optional(string)       time = optional(string)     })` | no | no | in place |
+| `reminderMinutesBeforeStart` | `reminderMinutesBeforeStart` | `number` | no | no | in place |
+| `responseRequested` | `responseRequested` | `bool` | no | no | in place |
+| `responseStatus` | `responseStatus` | `object({       odata_type = optional(string, "#microsoft.graph.responseStatus")       response = optional(string)       time = optional(string)     })` | no | no | in place |
 | `sensitivity` | `sensitivity` | `string` | no | no | in place |
-| `series_master_id` | `seriesMasterId` | `string` | no | no | in place |
-| `show_as` | `showAs` | `string` | no | no | in place |
+| `seriesMasterId` | `seriesMasterId` | `string` | no | no | in place |
+| `showAs` | `showAs` | `string` | no | no | in place |
 | `start` | `start` | `object({       odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")       dateTime = optional(string)       timeZone = optional(string)     })` | no | no | in place |
 | `subject` | `subject` | `string` | no | no | in place |
-| `transaction_id` | `transactionId` | `string` | no | no | in place |
+| `transactionId` | `transactionId` | `string` | no | no | in place |
 | `uid` | `uid` | `string` | no | no | in place |
-| `web_link` | `webLink` | `string` | no | no | in place |
+| `webLink` | `webLink` | `string` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

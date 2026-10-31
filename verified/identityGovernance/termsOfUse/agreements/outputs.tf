@@ -5,7 +5,7 @@ output "id" {
 
 output "display_name" {
   description = "The display name of the agreement, as configured."
-  value       = var.display_name
+  value       = var.displayName
 }
 
 output "file_languages" {
@@ -35,20 +35,20 @@ output "content_sha256" {
 output "request_summary" {
   description = "The create request without any PDF content: the agreement's properties and, per file, its name, language, default flag and content hash. Nothing in it is a secret."
   value = {
-    displayName                       = var.display_name
-    isViewingBeforeAcceptanceRequired = var.is_viewing_before_acceptance_required
+    displayName                       = var.displayName
+    isViewingBeforeAcceptanceRequired = var.isViewingBeforeAcceptanceRequired
     files = concat(
       [{
-        fileName       = var.default_file.file_name
+        fileName       = var.default_file.fileName
         language       = var.default_file.language
         isDefault      = true
         content_sha256 = sha256(var.default_file.content_base64)
       }],
       [for key in sort(keys(local.additional)) : {
-        fileName       = var.additional_files[key].file_name
+        fileName       = var.additional_files[key].fileName
         language       = var.additional_files[key].language
         isDefault      = false
-        isMajorVersion = var.additional_files[key].is_major_version
+        isMajorVersion = var.additional_files[key].isMajorVersion
         content_sha256 = local.additional[key].content_sha256
       }],
     )

@@ -13,15 +13,15 @@ locals {
 
   # The file objects of the create request and of the "create agreementFileLocalization" call.
   # The PDF is the only value marked sensitive, so that a plan shows no base64 wall; it stays in
-  # the request body and therefore in the state. A null display_name is left out.
+  # the request body and therefore in the state. A null displayName is left out.
   default_file_body = merge(
     {
-      fileName  = var.default_file.file_name
+      fileName  = var.default_file.fileName
       language  = var.default_file.language
       isDefault = true
       fileData  = { data = sensitive(var.default_file.content_base64) }
     },
-    { for key, value in { displayName = var.default_file.display_name } : key => value if value != null },
+    { for key, value in { displayName = var.default_file.displayName } : key => value if value != null },
   )
 
   # Every property that Learn documents for creating an agreement (displayName and
@@ -29,8 +29,8 @@ locals {
   # isPerDeviceAcceptanceRequired, termsExpiration and userReacceptRequiredFrequency are on the
   # resource page but in no request table, so they are not sent.
   body = {
-    displayName                       = var.display_name
-    isViewingBeforeAcceptanceRequired = var.is_viewing_before_acceptance_required
+    displayName                       = var.displayName
+    isViewingBeforeAcceptanceRequired = var.isViewingBeforeAcceptanceRequired
     files                             = [local.default_file_body]
   }
 
@@ -38,13 +38,13 @@ locals {
     for key in sort(keys(var.additional_files)) : key => {
       body = merge(
         {
-          fileName       = var.additional_files[key].file_name
+          fileName       = var.additional_files[key].fileName
           language       = var.additional_files[key].language
           isDefault      = false
-          isMajorVersion = var.additional_files[key].is_major_version
+          isMajorVersion = var.additional_files[key].isMajorVersion
           fileData       = { data = sensitive(var.additional_files[key].content_base64) }
         },
-        { for name, value in { displayName = var.additional_files[key].display_name } : name => value if value != null },
+        { for name, value in { displayName = var.additional_files[key].displayName } : name => value if value != null },
       )
       content_sha256 = sha256(var.additional_files[key].content_base64)
     }
@@ -54,17 +54,17 @@ locals {
   # base64 text. A change of any of them is a change that Graph has no documented call for.
   default_fingerprint = sha256(jsonencode({
     language       = local.default_language
-    file_name      = var.default_file.file_name
-    display_name   = var.default_file.display_name
+    file_name      = var.default_file.fileName
+    display_name   = var.default_file.displayName
     content_sha256 = sha256(var.default_file.content_base64)
   }))
   additional_fingerprints = {
     for key in sort(keys(var.additional_files)) : key => sha256(jsonencode({
       language         = lower(var.additional_files[key].language)
-      file_name        = var.additional_files[key].file_name
-      display_name     = var.additional_files[key].display_name
+      file_name        = var.additional_files[key].fileName
+      display_name     = var.additional_files[key].displayName
       content_sha256   = local.additional[key].content_sha256
-      is_major_version = var.additional_files[key].is_major_version
+      is_major_version = var.additional_files[key].isMajorVersion
     }))
   }
 }
@@ -100,8 +100,8 @@ resource "msgraph_resource" "agreement" {
     create_before_destroy = true
 
     precondition {
-      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.display_name))
-      error_message = "display_name \"${var.display_name}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set display_name to a value that matches, or change name_pattern."
+      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.displayName))
+      error_message = "displayName \"${var.displayName}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set displayName to a value that matches, or change name_pattern."
     }
 
     precondition {

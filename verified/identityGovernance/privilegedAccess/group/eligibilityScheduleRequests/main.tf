@@ -8,9 +8,9 @@ locals {
   # offered, even though the resource metadata lists them.
   request_body = {
     action        = "adminAssign"
-    principalId   = var.principal_id
-    groupId       = var.group_id
-    accessId      = var.access_id
+    principalId   = var.principalId
+    groupId       = var.groupId
+    accessId      = var.accessId
     justification = var.justification
     scheduleInfo = {
       startDateTime = var.start_date_time
@@ -22,14 +22,14 @@ locals {
   }
 
   grant_identity = {
-    principal_id    = var.principal_id
-    group_id        = var.group_id
-    access_id       = var.access_id
+    principal_id    = var.principalId
+    group_id        = var.groupId
+    access_id       = var.accessId
     start_date_time = var.start_date_time
     end_date_time   = var.end_date_time
   }
 
-  filter = "principalId eq '${var.principal_id}' and groupId eq '${var.group_id}' and accessId eq '${var.access_id}'"
+  filter = "principalId eq '${var.principalId}' and groupId eq '${var.groupId}' and accessId eq '${var.accessId}'"
 }
 
 # Records the identity and window that were submitted, once. ignore_changes keeps
@@ -168,9 +168,9 @@ locals {
   # never counts.
   matched_schedules = [
     for s in try(data.msgraph_resource.schedule.output.schedules, []) : s
-    if lower(try(s.principalId, "")) == var.principal_id
-    && lower(try(s.groupId, "")) == var.group_id
-    && lower(try(s.accessId, "")) == var.access_id
+    if lower(try(s.principalId, "")) == var.principalId
+    && lower(try(s.groupId, "")) == var.groupId
+    && lower(try(s.accessId, "")) == var.accessId
     && lower(try(s.memberType, "")) == "direct"
     && local.request_id != null
     && (
@@ -193,9 +193,9 @@ locals {
   matched_instances = local.schedule_id == null ? [] : [
     for i in try(data.msgraph_resource.instance.output.instances, []) : i
     if try(i.eligibilityScheduleId, null) == local.schedule_id
-    && lower(try(i.principalId, "")) == var.principal_id
-    && lower(try(i.groupId, "")) == var.group_id
-    && lower(try(i.accessId, "")) == var.access_id
+    && lower(try(i.principalId, "")) == var.principalId
+    && lower(try(i.groupId, "")) == var.groupId
+    && lower(try(i.accessId, "")) == var.accessId
     && lower(try(i.memberType, "")) == "direct"
   ]
 
@@ -258,7 +258,7 @@ resource "terraform_data" "verification_gate" {
 
     precondition {
       condition     = !var.fail_on_verification_mismatch || !local.started || local.ended || (local.schedule_correlated && local.instance_correlated)
-      error_message = "Found ${length(local.matched_schedules)} correlated eligibility schedules and ${length(local.matched_instances)} correlated instances for principal '${var.principal_id}' in group '${var.group_id}' (${var.access_id}) after ${var.verification_delay_seconds}s (request status: ${coalesce(local.request_status, "unknown")}); expected exactly one of each. The request may be awaiting approval or still provisioning: increase verification_delay_seconds and re-apply, or set fail_on_verification_mismatch = false and inspect the state output. An accepted request is not effective access."
+      error_message = "Found ${length(local.matched_schedules)} correlated eligibility schedules and ${length(local.matched_instances)} correlated instances for principal '${var.principalId}' in group '${var.groupId}' (${var.accessId}) after ${var.verification_delay_seconds}s (request status: ${coalesce(local.request_status, "unknown")}); expected exactly one of each. The request may be awaiting approval or still provisioning: increase verification_delay_seconds and re-apply, or set fail_on_verification_mismatch = false and inspect the state output. An accepted request is not effective access."
     }
   }
 

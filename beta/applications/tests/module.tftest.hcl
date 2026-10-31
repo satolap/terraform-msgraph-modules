@@ -5,7 +5,7 @@ run "minimal_request" {
   command = plan
 
   variables {
-    display_name = "example"
+    displayName = "example"
   }
 
   assert {
@@ -33,7 +33,7 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    display_name    = "example"
+    displayName     = "example"
     select_response = true
   }
 
@@ -47,11 +47,11 @@ run "typed_request" {
   command = plan
 
   variables {
-    display_name                  = "example"
-    default_redirect_uri          = "example"
-    is_device_only_auth_supported = false
-    api                           = { "acceptMappedClaims" = null }
-    app_management_policies       = [{}]
+    displayName               = "example"
+    defaultRedirectUri        = "example"
+    isDeviceOnlyAuthSupported = false
+    api                       = { "acceptMappedClaims" = null }
+    appManagementPolicies     = [{}]
   }
 
   assert {
@@ -84,19 +84,19 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    display_name                       = "example"
-    native_authentication_apis_enabled = "__graphmodules_invalid_enum__"
+    displayName                     = "example"
+    nativeAuthenticationApisEnabled = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.native_authentication_apis_enabled]
+  expect_failures = [var.nativeAuthenticationApisEnabled]
 }
 
 run "flags_enum_combination" {
   command = plan
 
   variables {
-    display_name                       = "example"
-    native_authentication_apis_enabled = "none, All"
+    displayName                     = "example"
+    nativeAuthenticationApisEnabled = "none, All"
   }
 
   assert {
@@ -109,18 +109,18 @@ run "invalid_flags_member" {
   command = plan
 
   variables {
-    display_name                       = "example"
-    native_authentication_apis_enabled = "none,__graphmodules_invalid_enum__"
+    displayName                     = "example"
+    nativeAuthenticationApisEnabled = "none,__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.native_authentication_apis_enabled]
+  expect_failures = [var.nativeAuthenticationApisEnabled]
 }
 
 run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    display_name = "example"
+    displayName = "example"
   }
 
   assert {
@@ -133,8 +133,8 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    display_name = "example"
-    timeouts     = { create = "45m", update = "20m", read = "7m" }
+    displayName = "example"
+    timeouts    = { create = "45m", update = "20m", read = "7m" }
   }
 
   assert {
@@ -147,8 +147,8 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    display_name = "example"
-    timeouts     = { create = "10s" }
+    displayName = "example"
+    timeouts    = { create = "10s" }
   }
 
   expect_failures = [var.timeouts]
@@ -158,8 +158,8 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    display_name = "example"
-    timeouts     = { update = "soon" }
+    displayName = "example"
+    timeouts    = { update = "soon" }
   }
 
   expect_failures = [var.timeouts]
@@ -169,8 +169,8 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    display_name = "example"
-    timeouts     = { delete = "0s" }
+    displayName = "example"
+    timeouts    = { delete = "0s" }
   }
 
   expect_failures = [var.timeouts]

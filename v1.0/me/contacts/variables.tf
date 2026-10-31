@@ -1,4 +1,4 @@
-variable "assistant_name" {
+variable "assistantName" {
   description = "The name of the contact's assistant."
   type        = string
   default     = null
@@ -10,7 +10,7 @@ variable "birthday" {
   default     = null
 }
 
-variable "business_address" {
+variable "businessAddress" {
   description = "The contact's business address."
   type = object({
     odata_type      = optional(string, "#microsoft.graph.physicalAddress")
@@ -23,13 +23,13 @@ variable "business_address" {
   default = null
 }
 
-variable "business_home_page" {
+variable "businessHomePage" {
   description = "The business home page of the contact."
   type        = string
   default     = null
 }
 
-variable "business_phones" {
+variable "businessPhones" {
   description = "The contact's business phone numbers."
   type        = list(string)
   default     = null
@@ -47,13 +47,13 @@ variable "children" {
   default     = null
 }
 
-variable "company_name" {
+variable "companyName" {
   description = "The name of the contact's company."
   type        = string
   default     = null
 }
 
-variable "created_date_time" {
+variable "createdDateTime" {
   description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
@@ -65,13 +65,13 @@ variable "department" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The contact's display name. You can specify the display name in a create or update operation. Note that later updates to other properties may cause an automatically generated value to overwrite the displayName value you have specified. To preserve a pre-existing value, always include it as displayName in an update operation."
   type        = string
   default     = null
 }
 
-variable "email_addresses" {
+variable "emailAddresses" {
   description = "The contact's email addresses."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.emailAddress")
@@ -81,7 +81,7 @@ variable "email_addresses" {
   default = null
 }
 
-variable "file_as" {
+variable "fileAs" {
   description = "The name the contact is filed under."
   type        = string
   default     = null
@@ -93,13 +93,13 @@ variable "generation" {
   default     = null
 }
 
-variable "given_name" {
+variable "givenName" {
   description = "The contact's given name."
   type        = string
   default     = null
 }
 
-variable "home_address" {
+variable "homeAddress" {
   description = "The contact's home address."
   type = object({
     odata_type      = optional(string, "#microsoft.graph.physicalAddress")
@@ -112,13 +112,13 @@ variable "home_address" {
   default = null
 }
 
-variable "home_phones" {
+variable "homePhones" {
   description = "The contact's home phone numbers."
   type        = list(string)
   default     = null
 }
 
-variable "im_addresses" {
+variable "imAddresses" {
   description = "The contact's instant messaging (IM) addresses."
   type        = list(string)
   default     = null
@@ -130,13 +130,13 @@ variable "initials" {
   default     = null
 }
 
-variable "job_title" {
+variable "jobTitle" {
   description = "The contact’s job title."
   type        = string
   default     = null
 }
 
-variable "last_modified_date_time" {
+variable "lastModifiedDateTime" {
   description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
@@ -148,19 +148,19 @@ variable "manager" {
   default     = null
 }
 
-variable "middle_name" {
+variable "middleName" {
   description = "The contact's middle name."
   type        = string
   default     = null
 }
 
-variable "mobile_phone" {
+variable "mobilePhone" {
   description = "The contact's mobile phone number."
   type        = string
   default     = null
 }
 
-variable "nick_name" {
+variable "nickName" {
   description = "The contact's nickname."
   type        = string
   default     = null
@@ -173,13 +173,13 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "office_location" {
+variable "officeLocation" {
   description = "The location of the contact's office."
   type        = string
   default     = null
 }
 
-variable "other_address" {
+variable "otherAddress" {
   description = "Other addresses for the contact."
   type = object({
     odata_type      = optional(string, "#microsoft.graph.physicalAddress")
@@ -192,13 +192,13 @@ variable "other_address" {
   default = null
 }
 
-variable "parent_folder_id" {
+variable "parentFolderId" {
   description = "The ID of the contact's parent folder."
   type        = string
   default     = null
 }
 
-variable "personal_notes" {
+variable "personalNotes" {
   description = "The user's notes about the contact."
   type        = string
   default     = null
@@ -210,7 +210,7 @@ variable "photo" {
   default     = null
 }
 
-variable "primary_email_address" {
+variable "primaryEmailAddress" {
   description = "The contact's primary email address."
   type = object({
     odata_type = optional(string, "#microsoft.graph.emailAddress")
@@ -226,7 +226,7 @@ variable "profession" {
   default     = null
 }
 
-variable "secondary_email_address" {
+variable "secondaryEmailAddress" {
   description = "The contact's secondary email address."
   type = object({
     odata_type = optional(string, "#microsoft.graph.emailAddress")
@@ -236,7 +236,7 @@ variable "secondary_email_address" {
   default = null
 }
 
-variable "spouse_name" {
+variable "spouseName" {
   description = "The name of the contact's spouse/partner."
   type        = string
   default     = null
@@ -248,7 +248,7 @@ variable "surname" {
   default     = null
 }
 
-variable "tertiary_email_address" {
+variable "tertiaryEmailAddress" {
   description = "The contact's tertiary email address."
   type = object({
     odata_type = optional(string, "#microsoft.graph.emailAddress")
@@ -264,19 +264,19 @@ variable "title" {
   default     = null
 }
 
-variable "yomi_company_name" {
+variable "yomiCompanyName" {
   description = "The phonetic Japanese company name of the contact."
   type        = string
   default     = null
 }
 
-variable "yomi_given_name" {
+variable "yomiGivenName" {
   description = "The phonetic Japanese given name (first name) of the contact."
   type        = string
   default     = null
 }
 
-variable "yomi_surname" {
+variable "yomiSurname" {
   description = "The phonetic Japanese surname (last name)  of the contact."
   type        = string
   default     = null

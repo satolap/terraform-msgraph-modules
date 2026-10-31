@@ -42,10 +42,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    deleted_date_time        = "2026-01-01T00:00:00Z"
-    account_enabled          = false
-    device_version           = -2147483648
-    alternative_security_ids = [{}]
+    deletedDateTime        = "2026-01-01T00:00:00Z"
+    accountEnabled         = false
+    deviceVersion          = -2147483648
+    alternativeSecurityIds = [{}]
   }
 
   assert {

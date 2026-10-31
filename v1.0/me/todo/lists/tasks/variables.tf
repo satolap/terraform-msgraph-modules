@@ -1,15 +1,15 @@
-variable "todo_task_list_id" {
+variable "todoTaskList-id" {
   description = "The unique identifier of todoTaskList"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.todo_task_list_id)) > 0
-    error_message = "todo_task_list_id must not be empty."
+    condition     = length(trimspace(var.todoTaskList-id)) > 0
+    error_message = "todoTaskList-id must not be empty."
   }
 }
 
-variable "attachment_sessions" {
+variable "attachmentSessions" {
   description = "Microsoft Graph attachmentSessions property."
   type = list(object({
     odata_type         = optional(string, "#microsoft.graph.attachmentSession")
@@ -41,7 +41,7 @@ variable "body" {
   }
 }
 
-variable "body_last_modified_date_time" {
+variable "bodyLastModifiedDateTime" {
   description = "The date and time when the task body was last modified. By default, it is in UTC. You can provide a custom time zone in the request header. The property value uses ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2020 would look like this: '2020-01-01T00:00:00Z'."
   type        = string
   default     = null
@@ -53,7 +53,7 @@ variable "categories" {
   default     = null
 }
 
-variable "checklist_items" {
+variable "checklistItems" {
   description = "A collection of checklistItems linked to a task."
   type = list(object({
     odata_type      = optional(string, "#microsoft.graph.checklistItem")
@@ -65,7 +65,7 @@ variable "checklist_items" {
   default = null
 }
 
-variable "completed_date_time" {
+variable "completedDateTime" {
   description = "The date and time in the specified time zone that the task was finished."
   type = object({
     odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
@@ -75,13 +75,13 @@ variable "completed_date_time" {
   default = null
 }
 
-variable "created_date_time" {
+variable "createdDateTime" {
   description = "The date and time when the task was created. By default, it is in UTC. You can provide a custom time zone in the request header. The property value uses ISO 8601 format. For example, midnight UTC on Jan 1, 2020 would look like this: '2020-01-01T00:00:00Z'."
   type        = string
   default     = null
 }
 
-variable "due_date_time" {
+variable "dueDateTime" {
   description = "The date and time in the specified time zone that the task is to be finished."
   type = object({
     odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
@@ -97,7 +97,7 @@ variable "extensions" {
   default     = null
 }
 
-variable "has_attachments" {
+variable "hasAttachments" {
   description = "Indicates whether the task has attachments."
   type        = bool
   default     = null
@@ -114,19 +114,19 @@ variable "importance" {
   }
 }
 
-variable "is_reminder_on" {
+variable "isReminderOn" {
   description = "Set to true if an alert is set to remind the user of the task."
   type        = bool
   default     = null
 }
 
-variable "last_modified_date_time" {
+variable "lastModifiedDateTime" {
   description = "The date and time when the task was last modified. By default, it is in UTC. You can provide a custom time zone in the request header. The property value uses ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2020 would look like this: '2020-01-01T00:00:00Z'."
   type        = string
   default     = null
 }
 
-variable "linked_resources" {
+variable "linkedResources" {
   description = "A collection of resources linked to the task."
   type = list(object({
     odata_type      = optional(string, "#microsoft.graph.linkedResource")
@@ -176,7 +176,7 @@ variable "recurrence" {
   }
 }
 
-variable "reminder_date_time" {
+variable "reminderDateTime" {
   description = "The date and time in the specified time zone for a reminder alert of the task to occur."
   type = object({
     odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")
@@ -186,7 +186,7 @@ variable "reminder_date_time" {
   default = null
 }
 
-variable "start_date_time" {
+variable "startDateTime" {
   description = "The date and time in the specified time zone at which the task is scheduled to start."
   type = object({
     odata_type = optional(string, "#microsoft.graph.dateTimeTimeZone")

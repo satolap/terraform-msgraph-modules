@@ -1,10 +1,10 @@
-variable "availability_end_date_time" {
+variable "availabilityEndDateTime" {
   description = "Date and time when the QnA stops appearing as a search result. Set as null for always available. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z."
   type        = string
   default     = null
 }
 
-variable "availability_start_date_time" {
+variable "availabilityStartDateTime" {
   description = "Date and time when the QnA starts to appear as a search result. Set as null for always available. The timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z."
   type        = string
   default     = null
@@ -16,13 +16,13 @@ variable "description" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The search answer name that is displayed in search results."
   type        = string
   default     = null
 }
 
-variable "group_ids" {
+variable "groupIds" {
   description = "The list of security groups that are able to view this QnA."
   type        = list(string)
   default     = null
@@ -39,7 +39,7 @@ variable "keywords" {
   default = null
 }
 
-variable "language_tags" {
+variable "languageTags" {
   description = "A list of geographically specific language names in which this QnA can be viewed. Each language tag value follows the pattern {language}-{region}. For example, en-us is English as used in the United States. For the list of possible values, see Supported language tags."
   type        = list(string)
   default     = null
@@ -74,7 +74,7 @@ variable "state" {
   }
 }
 
-variable "targeted_variations" {
+variable "targetedVariations" {
   description = "Variations of a QnA for different countries/regions or devices. Use when you need to show different content to users based on their device, country/region, or both. The date and group settings apply to all variations."
   type = list(object({
     odata_type  = optional(string, "#microsoft.graph.search.answerVariant")
@@ -87,12 +87,12 @@ variable "targeted_variations" {
   default = null
 
   validation {
-    condition     = (var.targeted_variations == null ? true : alltrue([alltrue([for input0 in var.targeted_variations : (input0 == null ? true : alltrue([(input0["platform"] == null ? true : alltrue([(input0["platform"] == null ? true : contains(["android", "androidForWork", "iOS", "macOS", "windowsPhone81", "windows81AndLater", "windows10AndLater", "androidWorkProfile", "unknown", "androidAOSP", "androidMobileApplicationManagement", "iOSMobileApplicationManagement"], input0["platform"]))]))]))])]))
-    error_message = "targeted_variations: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.targetedVariations == null ? true : alltrue([alltrue([for input0 in var.targetedVariations : (input0 == null ? true : alltrue([(input0["platform"] == null ? true : alltrue([(input0["platform"] == null ? true : contains(["android", "androidForWork", "iOS", "macOS", "windowsPhone81", "windows81AndLater", "windows10AndLater", "androidWorkProfile", "unknown", "androidAOSP", "androidMobileApplicationManagement", "iOSMobileApplicationManagement"], input0["platform"]))]))]))])]))
+    error_message = "targetedVariations: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "web_url" {
+variable "webUrl" {
   description = "The URL link for the search answer. When users select this search answer from the search results, they are directed to the specified URL."
   type        = string
   default     = null

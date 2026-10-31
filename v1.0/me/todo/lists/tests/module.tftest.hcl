@@ -42,9 +42,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    display_name = "example"
-    is_owner     = false
-    extensions   = [{}]
+    displayName = "example"
+    isOwner     = false
+    extensions  = [{}]
   }
 
   assert {
@@ -67,10 +67,10 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    wellknown_list_name = "__graphmodules_invalid_enum__"
+    wellknownListName = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.wellknown_list_name]
+  expect_failures = [var.wellknownListName]
 }
 
 run "timeouts_unset_sends_no_block" {

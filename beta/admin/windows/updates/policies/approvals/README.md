@@ -19,11 +19,11 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//beta/admin/windows/updates/policies/approvals"
   version = "<version>"
 
-  policy_id = "parent-object-id"
+  policy-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -51,8 +51,8 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `policy_id` | URL parameter `policy-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `catalog_entry_id` | `catalogEntryId` | `string` | no | no | in place |
+| `policy-id` | URL parameter `policy-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `catalogEntryId` | `catalogEntryId` | `string` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
 | `status` | `status` | `string` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |

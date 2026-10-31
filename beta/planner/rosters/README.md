@@ -22,7 +22,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -50,7 +50,7 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `assigned_sensitivity_label` | `assignedSensitivityLabel` | `object({       odata_type = optional(string, "#microsoft.graph.sensitivityLabelAssignment")       assignmentMethod = optional(string)       sensitivityLabelId = optional(string)       tenantId = optional(string)     })` | no | no | in place |
+| `assignedSensitivityLabel` | `assignedSensitivityLabel` | `object({       odata_type = optional(string, "#microsoft.graph.sensitivityLabelAssignment")       assignmentMethod = optional(string)       sensitivityLabelId = optional(string)       tenantId = optional(string)     })` | no | no | in place |
 | `members` | `members` | `list(object({       odata_type = optional(string, "#microsoft.graph.plannerRosterMember")       roles = optional(list(string))       tenantId = optional(string)       userId = optional(string)     }))` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
 | `plans` | `plans` | `list(object({       odata_type = optional(string, "#microsoft.graph.plannerPlan")       container = optional(any)       contentSensitivityLabelAssignment = optional(object({       odata_type = optional(string, "#microsoft.graph.contentSensitivityLabelAssignment")       assignmentMethod = optional(string)       justificationText = optional(string)       sensitivityLabelId = optional(string)       tenantId = optional(string)     }))       creationSource = optional(any)       owner = optional(string)       sharedWithContainers = optional(list(object({       odata_type = optional(string, "#microsoft.graph.plannerSharedWithContainer")       accessLevel = optional(string)       containerId = optional(string)       type = optional(string)       url = optional(string)     })))       title = optional(string)     }))` | no | no | in place |

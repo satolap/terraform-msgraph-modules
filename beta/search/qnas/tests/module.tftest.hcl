@@ -42,9 +42,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    availability_end_date_time = "2026-01-01T00:00:00Z"
-    keywords                   = { "keywords" = null }
-    group_ids                  = ["example"]
+    availabilityEndDateTime = "2026-01-01T00:00:00Z"
+    keywords                = { "keywords" = null }
+    groupIds                = ["example"]
   }
 
   assert {

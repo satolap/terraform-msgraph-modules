@@ -99,49 +99,48 @@ verified/
 ├── compositions/
 │   └── connected-organization-access/
 ├── directory/
-│   └── administrative-units/
+│   └── administrativeUnits/
 ├── groups/
 │   └── members/
 ├── identity/
-│   └── conditional-access/
-│       ├── named-locations/
-│       │   ├── countries/
-│       │   └── ip-ranges/
+│   └── conditionalAccess/
+│       ├── namedLocations/
+│       │   ├── countryNamedLocation/
+│       │   └── ipNamedLocation/
 │       └── policies/
-├── identity-governance/
-│   └── entitlement-management/
-│       ├── access-packages/
-│       │   └── resource-role-scopes/
-│       ├── assignment-policies/
-│       ├── catalogs/
-│       │   ├── custom-extensions/
-│       │   └── resources/
-│       └── connected-organizations/
 ├── identityGovernance/
 │   ├── accessReviews/
 │   │   └── definitions/
 │   ├── entitlementManagement/
+│   │   ├── accessPackages/
+│   │   │   └── resourceRoleScopes/
+│   │   ├── assignmentPolicies/
 │   │   ├── assignments/
+│   │   ├── catalogs/
+│   │   │   ├── customWorkflowExtensions/
+│   │   │   └── resources/
+│   │   ├── connectedOrganizations/
 │   │   └── settings/
 │   ├── lifecycleWorkflows/
+│   │   ├── customTaskExtensions/
 │   │   └── workflows/
-│   └── privilegedAccess/
-│       └── group/
-│           ├── assignmentScheduleRequests/
-│           └── eligibilityScheduleRequests/
+│   ├── privilegedAccess/
+│   │   └── group/
+│   │       ├── assignmentScheduleRequests/
+│   │       └── eligibilityScheduleRequests/
+│   └── termsOfUse/
+│       └── agreements/
 ├── naming/
 ├── oauth2PermissionGrants/
 ├── policies/
 │   └── authenticationStrengthPolicies/
-├── role-management/
-│   ├── directory/
-│   │   └── role-schedules/
-│   └── entitlement-management/
-│       └── role-assignments/
 ├── roleManagement/
-│   └── directory/
-│       ├── roleAssignments/
-│       └── roleDefinitions/
+│   ├── directory/
+│   │   ├── roleAssignments/
+│   │   ├── roleDefinitions/
+│   │   └── roleSchedules/
+│   └── entitlementManagement/
+│       └── roleAssignments/
 ├── security-baseline/
 │   ├── admin-consent-workflow/
 │   ├── authentication-methods/
@@ -153,14 +152,15 @@ verified/
 ├── servicePrincipals/
 │   ├── appRoleAssignedTo/
 │   └── passwordCredentials/
-├── service-principals/
 └── users/
 ```
 
-`groups/`, `access-packages/` and `catalogs/` are modules themselves; their child
-folders provide separate relationship modules. `compositions/`, `directory/`,
-`identity/`, `conditional-access/`, `named-locations/` and `role-management/` only group
-modules. A Terraform module source points to the specific module folder, rather than this
+`groups/`, `accessPackages/`, `catalogs/` and `servicePrincipals/` are modules themselves;
+their child folders provide separate relationship modules. `compositions/`, `directory/`,
+`identity/`, `conditionalAccess/`, `namedLocations/` and `roleManagement/` only group
+modules. Folder names keep Microsoft Graph's spelling, and inputs that fill a Graph property
+or URL parameter keep Graph's name (`displayName`, `group-id`); the release notes list every
+renamed folder and input. A Terraform module source points to the specific module folder, rather than this
 index or a grouping folder. A module under `compositions/` calls other verified modules with
 relative sources, so it needs the whole `verified/` tree, which the registry package
 provides.
@@ -174,35 +174,35 @@ provides.
 | [Application passwords](applications/passwordCredentials/README.md) | One-time passwords and rotation; explicit acknowledgement of clear-text plan/show exposure required |
 | [Groups](groups/README.md) | Microsoft Entra groups |
 | [Group members](groups/members/README.md) | Authoritative direct members of an existing group |
-| [Service principals](service-principals/README.md) | Tenant application identities linked by application ID |
+| [Service principals](servicePrincipals/README.md) | Tenant application identities linked by application ID |
 | [Service principal passwords](servicePrincipals/passwordCredentials/README.md) | One-time passwords and keyed rotation; explicit acknowledgement of clear-text plan/show exposure required |
 | [App role assignments](servicePrincipals/appRoleAssignedTo/README.md) | One resource application role granted to a user, group or client service principal; exact role-value lookup and identity-checked owned cleanup |
 | [Delegated permission grants](oauth2PermissionGrants/README.md) | Explicit user or tenant-wide delegated consent; scope-only updates and identity-checked owned cleanup |
 | [Users](users/README.md) | Microsoft Entra user accounts |
-| [Administrative units](directory/administrative-units/README.md) | Administrative units, restricted management or dynamic, and their members |
-| [Catalogs](identity-governance/entitlement-management/catalogs/README.md) | Entitlement management resource catalogs |
-| [Catalog resources](identity-governance/entitlement-management/catalogs/resources/README.md) | Resource associations within a catalog; DirectoryRole preview onboarding only |
-| [Catalog custom extensions](identity-governance/entitlement-management/catalogs/custom-extensions/README.md) | Logic App custom workflow extensions, launch and continue or launch and wait, that assignment policies call |
-| [Access packages](identity-governance/entitlement-management/access-packages/README.md) | Packages of access to catalog resources |
-| [Resource role scopes](identity-governance/entitlement-management/access-packages/resource-role-scopes/README.md) | Resource roles and scopes attached to an access package |
-| [Assignment policies](identity-governance/entitlement-management/assignment-policies/README.md) | Access-package request and assignment policies, with approval stages, requestor questions and access reviews |
+| [Administrative units](directory/administrativeUnits/README.md) | Administrative units, restricted management or dynamic, and their members |
+| [Catalogs](identityGovernance/entitlementManagement/catalogs/README.md) | Entitlement management resource catalogs |
+| [Catalog resources](identityGovernance/entitlementManagement/catalogs/resources/README.md) | Resource associations within a catalog; DirectoryRole preview onboarding only |
+| [Catalog custom extensions](identityGovernance/entitlementManagement/catalogs/customWorkflowExtensions/README.md) | Logic App custom workflow extensions, launch and continue or launch and wait, that assignment policies call |
+| [Access packages](identityGovernance/entitlementManagement/accessPackages/README.md) | Packages of access to catalog resources |
+| [Resource role scopes](identityGovernance/entitlementManagement/accessPackages/resourceRoleScopes/README.md) | Resource roles and scopes attached to an access package |
+| [Assignment policies](identityGovernance/entitlementManagement/assignmentPolicies/README.md) | Access-package request and assignment policies, with approval stages, requestor questions and access reviews |
 | [Access-package assignments](identityGovernance/entitlementManagement/assignments/README.md) | Grants one user an access package with adminAdd, separates pending, denied and delivered requests from the resolved assignment, and revokes only that assignment |
-| [Connected organizations](identity-governance/entitlement-management/connected-organizations/README.md) | External tenants and domains whose users can request access packages, and their sponsors |
+| [Connected organizations](identityGovernance/entitlementManagement/connectedOrganizations/README.md) | External tenants and domains whose users can request access packages, and their sponsors |
 | [Group access reviews](identityGovernance/accessReviews/definitions/README.md) | One access review definition of an owned static group's members, with explicit reviewers, an explicit schedule and every automatic action off |
 | [Lifecycle workflow custom task extensions](identityGovernance/lifecycleWorkflows/customTaskExtensions/README.md) | Logic App-backed extensions that the "Run a custom task extension" task calls; takes the Logic App as an input and invokes nothing |
 | [Lifecycle workflows](identityGovernance/lifecycleWorkflows/workflows/README.md) | Joiner, mover and leaver workflows and their built-in tasks, created disabled, with activation and dangerous-task guards |
 | [Terms of Use agreements](identityGovernance/termsOfUse/agreements/README.md) | One Terms of Use agreement and its localized PDFs, delegated access only; fixed files, a refused change guard and no enforcement, acceptance or policy |
-| [Role schedules](role-management/directory/role-schedules/README.md) | PIM eligible and active assignments of Microsoft Entra roles, permanent or time-bound |
-| [Entitlement management role assignments](role-management/entitlement-management/role-assignments/README.md) | Catalog roles and tenant-wide entitlement management roles for a user, group or service principal |
+| [Role schedules](roleManagement/directory/roleSchedules/README.md) | PIM eligible and active assignments of Microsoft Entra roles, permanent or time-bound |
+| [Entitlement management role assignments](roleManagement/entitlementManagement/roleAssignments/README.md) | Catalog roles and tenant-wide entitlement management roles for a user, group or service principal |
 | [Entitlement management settings](identityGovernance/entitlementManagement/settings/README.md) | Tenant-wide external user lifecycle settings, updating the existing singleton with a tested restore and no delete |
 | [Direct directory role assignments](roleManagement/directory/roleAssignments/README.md) | Permanent active built-in/custom Entra role assignments; tenant, AU and application scopes; separate from PIM |
 | [Custom directory role definitions](roleManagement/directory/roleDefinitions/README.md) | New custom Microsoft Entra directory roles; makes no assignment |
 | [PIM for Groups eligibility requests](identityGovernance/privilegedAccess/group/eligibilityScheduleRequests/README.md) | One bounded administrative eligibility request for group membership or ownership, with schedule and instance correlation; no activation or removal |
 | [PIM for Groups active assignment requests](identityGovernance/privilegedAccess/group/assignmentScheduleRequests/README.md) | One bounded administrative active membership or ownership request, with schedule and instance correlation; no revocation or policy change |
 | [Authentication strength policies](policies/authenticationStrengthPolicies/README.md) | Custom authentication strengths and combination configurations (`/policies/authenticationStrengthPolicies`) |
-| [Conditional Access policies](identity/conditional-access/policies/README.md) | Conditional Access policies, report-only by default, with mandatory break-glass exclusions |
-| [IP named locations](identity/conditional-access/named-locations/ip-ranges/README.md) | IPv4 and IPv6 named locations for Conditional Access |
-| [Country named locations](identity/conditional-access/named-locations/countries/README.md) | Country and region named locations for Conditional Access |
+| [Conditional Access policies](identity/conditionalAccess/policies/README.md) | Conditional Access policies, report-only by default, with mandatory break-glass exclusions |
+| [IP named locations](identity/conditionalAccess/namedLocations/ipNamedLocation/README.md) | IPv4 and IPv6 named locations for Conditional Access |
+| [Country named locations](identity/conditionalAccess/namedLocations/countryNamedLocation/README.md) | Country and region named locations for Conditional Access |
 | [Authorization policy](security-baseline/authorization-policy/README.md) | Tenant authorization policy baseline: one user consent policy, guest settings and optional app and tenant creation, with a tested restore |
 | [Authentication methods](security-baseline/authentication-methods/README.md) | Authentication methods policy baseline: Authenticator, passkeys, registration campaign and optional SMS and voice restriction, updating existing singletons |
 | [Conditional Access baseline (P1)](security-baseline/conditional-access-p1/README.md) | Four Conditional Access policies that replace security defaults, report-only by default, with mandatory break-glass exclusions and a decommission that restores security defaults |
@@ -233,11 +233,10 @@ sources. A successful API call never counts as license evidence.
 
 ## Naming conventions
 
-Every verified module with a `display_name` input also takes an optional `name_pattern`, a
-regular expression (RE2 syntax, not anchored unless it says so). When it is set and
-`display_name` does not match, the plan fails; when it is null, the default, any name is
-accepted. The groups and users modules also take `mail_nickname_pattern` for
-`mail_nickname`. The service principal module has no such input, because Microsoft Graph
+Every verified module with a `displayName` input (the composition keeps `display_name`) also takes an optional `name_pattern`, a regular expression (RE2 syntax,
+not anchored unless it says so). When it is set and the display name does not match, the plan
+fails; when it is null, the default, any name is accepted. The groups and users modules also take
+`mail_nickname_pattern` for `mailNickname`. The service principal module has no such input, because Microsoft Graph
 takes a service principal's display name from its application. The
 [naming module](naming/README.md) derives these patterns from a convention in its `patterns`
 output, and its `kinds` input checks each name against the limits of the module that takes

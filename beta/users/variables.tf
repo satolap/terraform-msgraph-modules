@@ -1,16 +1,16 @@
-variable "about_me" {
+variable "aboutMe" {
   description = "A freeform text entry field for users to describe themselves. Requires $select to retrieve."
   type        = string
   default     = null
 }
 
-variable "account_enabled" {
+variable "accountEnabled" {
   description = "true if the account is enabled; otherwise, false. This property is required when creating the object. Supports $filter (eq, ne, not, and in). This property is subject to sensitive action restrictions; only specific privileged administrator roles can update it."
   type        = bool
   default     = null
 }
 
-variable "age_group" {
+variable "ageGroup" {
   description = "Sets the age group of the user. Allowed values: null, Minor, NotAdult, and Adult. For more information, see legal age group property definitions. Supports $filter (eq, ne, not, and in)."
   type        = string
   default     = null
@@ -22,7 +22,7 @@ variable "analytics" {
   default     = null
 }
 
-variable "app_consent_requests_for_approval" {
+variable "appConsentRequestsForApproval" {
   description = "Microsoft Graph appConsentRequestsForApproval property."
   type = list(object({
     odata_type     = optional(string, "#microsoft.graph.appConsentRequest")
@@ -48,14 +48,14 @@ variable "app_consent_requests_for_approval" {
   default = null
 }
 
-variable "app_role_assigned_resources" {
+variable "appRoleAssignedResources" {
   description = "Microsoft Graph appRoleAssignedResources property."
   type        = any
   default     = null
   sensitive   = true
 }
 
-variable "app_role_assignments" {
+variable "appRoleAssignments" {
   description = "Represents the app roles a user has been granted for an application. Supports $expand."
   type = list(object({
     odata_type          = optional(string, "#microsoft.graph.appRoleAssignment")
@@ -81,7 +81,7 @@ variable "approvals" {
   default = null
 }
 
-variable "assigned_licenses" {
+variable "assignedLicenses" {
   description = "The licenses that are assigned to the user, including inherited (group-based) licenses. This property doesn't differentiate between directly assigned and inherited licenses. Use the licenseAssignmentStates property to identify the directly assigned and inherited licenses. Not nullable. Supports $filter (eq, not, /$count eq 0, /$count ne 0)."
   type = list(object({
     odata_type    = optional(string, "#microsoft.graph.assignedLicense")
@@ -97,7 +97,7 @@ variable "authentication" {
   default     = null
 }
 
-variable "authorization_info" {
+variable "authorizationInfo" {
   description = "Identifiers that can be used to identify and authenticate a user in non-Azure AD environments. This property can store identifiers for smartcard-based certificates that users use to access on-premises Active Directory deployments or federated access. It can also be used to store the Subject Alternate Name (SAN) that's associated with a Common Access Card (CAC). Nullable.Supports $filter (eq and startsWith)."
   type = object({
     odata_type         = optional(string, "#microsoft.graph.authorizationInfo")
@@ -112,7 +112,7 @@ variable "birthday" {
   default     = null
 }
 
-variable "business_phones" {
+variable "businessPhones" {
   description = "The telephone numbers for the user. Only one number can be set for this property. Read-only for users synced from on-premises directory. Supports $filter (eq, not, ge, le, startsWith). This property is subject to sensitive action restrictions; only specific privileged administrator roles can update it."
   type        = list(string)
   default     = null
@@ -237,13 +237,13 @@ variable "city" {
   default     = null
 }
 
-variable "cloud_clipboard" {
+variable "cloudClipboard" {
   description = "Microsoft Graph cloudClipboard property."
   type        = any
   default     = null
 }
 
-variable "cloud_licensing" {
+variable "cloudLicensing" {
   description = "The relationships of a user to cloud licensing resources."
   type = object({
     odata_type = optional(string, "#microsoft.graph.cloudLicensing.userCloudLicensing")
@@ -295,12 +295,12 @@ variable "cloud_licensing" {
   default = null
 
   validation {
-    condition     = (var.cloud_licensing == null ? true : alltrue([(var.cloud_licensing["usageRights"] == null ? true : alltrue([alltrue([for input1 in var.cloud_licensing["usageRights"] : (input1 == null ? true : alltrue([(input1["allotments"] == null ? true : alltrue([alltrue([for input3 in input1["allotments"] : (input3 == null ? true : alltrue([(input3["assignableTo"] == null ? true : alltrue([(input3["assignableTo"] == null ? true : try(alltrue([for value in split(",", input3["assignableTo"]) : contains(["none", "user", "group", "device"], lower(trimspace(value)))]), false))]))]))])]))]))])])), (var.cloud_licensing["waitingMembers"] == null ? true : alltrue([alltrue([for input1 in var.cloud_licensing["waitingMembers"] : (input1 == null ? true : alltrue([(input1["allotment"] == null ? true : alltrue([(input1["allotment"]["assignableTo"] == null ? true : alltrue([(input1["allotment"]["assignableTo"] == null ? true : try(alltrue([for value in split(",", input1["allotment"]["assignableTo"]) : contains(["none", "user", "group", "device"], lower(trimspace(value)))]), false))]))]))]))])]))]))
-    error_message = "cloud_licensing: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.cloudLicensing == null ? true : alltrue([(var.cloudLicensing["usageRights"] == null ? true : alltrue([alltrue([for input1 in var.cloudLicensing["usageRights"] : (input1 == null ? true : alltrue([(input1["allotments"] == null ? true : alltrue([alltrue([for input3 in input1["allotments"] : (input3 == null ? true : alltrue([(input3["assignableTo"] == null ? true : alltrue([(input3["assignableTo"] == null ? true : try(alltrue([for value in split(",", input3["assignableTo"]) : contains(["none", "user", "group", "device"], lower(trimspace(value)))]), false))]))]))])]))]))])])), (var.cloudLicensing["waitingMembers"] == null ? true : alltrue([alltrue([for input1 in var.cloudLicensing["waitingMembers"] : (input1 == null ? true : alltrue([(input1["allotment"] == null ? true : alltrue([(input1["allotment"]["assignableTo"] == null ? true : alltrue([(input1["allotment"]["assignableTo"] == null ? true : try(alltrue([for value in split(",", input1["allotment"]["assignableTo"]) : contains(["none", "user", "group", "device"], lower(trimspace(value)))]), false))]))]))]))])]))]))
+    error_message = "cloudLicensing: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "cloud_realtime_communication_info" {
+variable "cloudRealtimeCommunicationInfo" {
   description = "Microsoft realtime communication information related to the user.  Supports $filter (eq, ne,not)."
   type = object({
     odata_type = optional(string, "#microsoft.graph.cloudRealtimeCommunicationInfo")
@@ -314,13 +314,13 @@ variable "communications" {
   default     = null
 }
 
-variable "company_name" {
+variable "companyName" {
   description = "The name of the company the user is associated with. This property can be useful for describing the company that an external user comes from. The maximum length is 64 characters.Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "consent_provided_for_minor" {
+variable "consentProvidedForMinor" {
   description = "Sets whether consent has been obtained for minors. Allowed values: null, Granted, Denied and NotRequired. Refer to the legal age group property definitions for further information. Supports $filter (eq, ne, not, and in)."
   type        = string
   default     = null
@@ -332,13 +332,13 @@ variable "country" {
   default     = null
 }
 
-variable "custom_security_attributes" {
+variable "customSecurityAttributes" {
   description = "An open complex type that holds the value of a custom security attribute that is assigned to a directory object. Nullable. Requires $select to retrieve. Supports $filter (eq, ne, not, startsWith). The filter value is case-sensitive. To read this property, the calling app must be assigned the CustomSecAttributeAssignment.Read.All permission. To write this property, the calling app must be assigned the CustomSecAttributeAssignment.ReadWrite.All permissions. To read or write this property in delegated scenarios, the admin must be assigned the Attribute Assignment Administrator role. Supports $filter (eq, ne, not , ge, le, in)."
   type        = any
   default     = null
 }
 
-variable "deleted_date_time" {
+variable "deletedDateTime" {
   description = "Date and time when this object was deleted. Always null when the object hasn't been deleted."
   type        = string
   default     = null
@@ -350,19 +350,19 @@ variable "department" {
   default     = null
 }
 
-variable "device_enrollment_configurations" {
+variable "deviceEnrollmentConfigurations" {
   description = "Get enrollment configurations targeted to the user"
   type        = any
   default     = null
 }
 
-variable "device_enrollment_limit" {
+variable "deviceEnrollmentLimit" {
   description = "The limit on the maximum number of devices that the user is permitted to enroll. Allowed values are 5 or 1000."
   type        = number
   default     = null
 }
 
-variable "device_keys" {
+variable "deviceKeys" {
   description = "Microsoft Graph deviceKeys property."
   type = list(object({
     odata_type  = optional(string, "#microsoft.graph.deviceKey")
@@ -373,7 +373,7 @@ variable "device_keys" {
   default = null
 }
 
-variable "device_management_troubleshooting_events" {
+variable "deviceManagementTroubleshootingEvents" {
   description = "The list of troubleshooting events for this user."
   type        = any
   default     = null
@@ -481,31 +481,31 @@ variable "devices" {
   }
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The name displayed in the address book for the user. This value is usually the combination of the user's first name, middle initial, and last name. This property is required when a user is created, and it cannot be cleared during updates. Maximum length is 256 characters. Supports $filter (eq, ne, not , ge, le, in, startsWith, and eq on null values), $orderby, and $search."
   type        = string
   default     = null
 }
 
-variable "employee_hire_date" {
+variable "employeeHireDate" {
   description = "The date and time when the user was hired or will start work if there is a future hire. Supports $filter (eq, ne, not , ge, le, in)."
   type        = string
   default     = null
 }
 
-variable "employee_id" {
+variable "employeeId" {
   description = "The employee identifier assigned to the user by the organization. The maximum length is 16 characters.Supports $filter (eq, ne, not , ge, le, in, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "employee_leave_date_time" {
+variable "employeeLeaveDateTime" {
   description = "The date and time when the user left or will leave the organization. To read this property, the calling app must be assigned the User-LifeCycleInfo.Read.All permission. To write this property, the calling app must be assigned the User.Read.All and User-LifeCycleInfo.ReadWrite.All permissions. To read this property in delegated scenarios, the admin needs at least one of the following Microsoft Entra roles: Lifecycle Workflows Administrator (least privilege), Global Reader. To write this property in delegated scenarios, the admin needs the Global Administrator role. Supports $filter (eq, ne, not , ge, le, in). For more information, see Configure the employeeLeaveDateTime property for a user."
   type        = string
   default     = null
 }
 
-variable "employee_org_data" {
+variable "employeeOrgData" {
   description = "Represents organization data (for example, division and costCenter) associated with a user. Supports $filter (eq, ne, not , ge, le, in)."
   type = object({
     odata_type = optional(string, "#microsoft.graph.employeeOrgData")
@@ -515,7 +515,7 @@ variable "employee_org_data" {
   default = null
 }
 
-variable "employee_type" {
+variable "employeeType" {
   description = "Captures enterprise worker type. For example, Employee, Contractor, Consultant, or Vendor. Supports $filter (eq, ne, not , ge, le, in, startsWith)."
   type        = string
   default     = null
@@ -527,25 +527,25 @@ variable "extensions" {
   default     = null
 }
 
-variable "external_user_state" {
+variable "externalUserState" {
   description = "For an external user invited to the tenant using the invitation API, this property represents the invited user's invitation status. For invited users, the state can be PendingAcceptance or Accepted, or null for all other users. Supports $filter (eq, ne, not , in)."
   type        = string
   default     = null
 }
 
-variable "external_user_state_change_date_time" {
+variable "externalUserStateChangeDateTime" {
   description = "Shows the timestamp for the latest change to the externalUserState property. Supports $filter (eq, ne, not , in)."
   type        = string
   default     = null
 }
 
-variable "fax_number" {
+variable "faxNumber" {
   description = "The fax number of the user. Supports $filter (eq, ne, not , ge, le, in, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "followed_sites" {
+variable "followedSites" {
   description = "Microsoft Graph followedSites property."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.site")
@@ -950,18 +950,18 @@ variable "followed_sites" {
   default = null
 
   validation {
-    condition     = (var.followed_sites == null ? true : alltrue([alltrue([for input0 in var.followed_sites : (input0 == null ? true : alltrue([(input0["contentModels"] == null ? true : alltrue([alltrue([for input2 in input0["contentModels"] : (input2 == null ? true : alltrue([(input2["modelType"] == null ? true : alltrue([(input2["modelType"] == null ? true : contains(["teachingMethod", "layoutMethod", "freeformSelectionMethod", "prebuiltContractModel", "prebuiltInvoiceModel", "prebuiltReceiptModel"], input2["modelType"]))]))]))])])), (input0["documentProcessingJobs"] == null ? true : alltrue([alltrue([for input2 in input0["documentProcessingJobs"] : (input2 == null ? true : alltrue([(input2["jobType"] == null ? true : alltrue([(input2["jobType"] == null ? true : contains(["file", "folder"], input2["jobType"]))])), (input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["inProgress", "completed", "failed"], input2["status"]))]))]))])])), (input0["lockState"] == null ? true : alltrue([(input0["lockState"] == null ? true : contains(["unlocked", "lockedReadOnly", "lockedNoAccess", "lockedNoAdditions"], input0["lockState"]))])), (input0["operations"] == null ? true : alltrue([alltrue([for input2 in input0["operations"] : (input2 == null ? true : alltrue([(input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["notStarted", "running", "succeeded", "failed"], input2["status"]))]))]))])])), (input0["pageTemplates"] == null ? true : alltrue([alltrue([for input2 in input0["pageTemplates"] : (input2 == null ? true : alltrue([(input2["pageLayout"] == null ? true : alltrue([(input2["pageLayout"] == null ? true : contains(["microsoftReserved", "article", "home"], input2["pageLayout"]))])), (input2["titleArea"] == null ? true : alltrue([(input2["titleArea"]["layout"] == null ? true : alltrue([(input2["titleArea"]["layout"] == null ? true : contains(["imageAndTitle", "plain", "colorBlock", "overlap"], input2["titleArea"]["layout"]))])), (input2["titleArea"]["textAlignment"] == null ? true : alltrue([(input2["titleArea"]["textAlignment"] == null ? true : contains(["left", "center"], input2["titleArea"]["textAlignment"]))]))]))]))])])), (input0["template"] == null ? true : alltrue([(input0["template"] == null ? true : contains(["sitepagepublishing", "sts"], input0["template"]))]))]))])]))
-    error_message = "followed_sites: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.followedSites == null ? true : alltrue([alltrue([for input0 in var.followedSites : (input0 == null ? true : alltrue([(input0["contentModels"] == null ? true : alltrue([alltrue([for input2 in input0["contentModels"] : (input2 == null ? true : alltrue([(input2["modelType"] == null ? true : alltrue([(input2["modelType"] == null ? true : contains(["teachingMethod", "layoutMethod", "freeformSelectionMethod", "prebuiltContractModel", "prebuiltInvoiceModel", "prebuiltReceiptModel"], input2["modelType"]))]))]))])])), (input0["documentProcessingJobs"] == null ? true : alltrue([alltrue([for input2 in input0["documentProcessingJobs"] : (input2 == null ? true : alltrue([(input2["jobType"] == null ? true : alltrue([(input2["jobType"] == null ? true : contains(["file", "folder"], input2["jobType"]))])), (input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["inProgress", "completed", "failed"], input2["status"]))]))]))])])), (input0["lockState"] == null ? true : alltrue([(input0["lockState"] == null ? true : contains(["unlocked", "lockedReadOnly", "lockedNoAccess", "lockedNoAdditions"], input0["lockState"]))])), (input0["operations"] == null ? true : alltrue([alltrue([for input2 in input0["operations"] : (input2 == null ? true : alltrue([(input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["notStarted", "running", "succeeded", "failed"], input2["status"]))]))]))])])), (input0["pageTemplates"] == null ? true : alltrue([alltrue([for input2 in input0["pageTemplates"] : (input2 == null ? true : alltrue([(input2["pageLayout"] == null ? true : alltrue([(input2["pageLayout"] == null ? true : contains(["microsoftReserved", "article", "home"], input2["pageLayout"]))])), (input2["titleArea"] == null ? true : alltrue([(input2["titleArea"]["layout"] == null ? true : alltrue([(input2["titleArea"]["layout"] == null ? true : contains(["imageAndTitle", "plain", "colorBlock", "overlap"], input2["titleArea"]["layout"]))])), (input2["titleArea"]["textAlignment"] == null ? true : alltrue([(input2["titleArea"]["textAlignment"] == null ? true : contains(["left", "center"], input2["titleArea"]["textAlignment"]))]))]))]))])])), (input0["template"] == null ? true : alltrue([(input0["template"] == null ? true : contains(["sitepagepublishing", "sts"], input0["template"]))]))]))])]))
+    error_message = "followedSites: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "given_name" {
+variable "givenName" {
   description = "The given name (first name) of the user. Maximum length is 64 characters. Supports $filter (eq, ne, not , ge, le, in, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "hire_date" {
+variable "hireDate" {
   description = "The hire date of the user. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z.  Requires $select to retrieve.  Note: This property is specific to SharePoint Online. We recommend using the native employeeHireDate property to set and update hire date values using Microsoft Graph APIs."
   type        = string
   default     = null
@@ -978,7 +978,7 @@ variable "identities" {
   default = null
 }
 
-variable "identity_governance" {
+variable "identityGovernance" {
   description = "The identity governance settings for the user, including the approver delegate configuration. Nullable. Returned only on $select. Supports $expand."
   type = object({
     odata_type = optional(string, "#microsoft.graph.identityGovernanceUserSettings")
@@ -1021,30 +1021,30 @@ variable "identity_governance" {
   default = null
 
   validation {
-    condition     = (var.identity_governance == null ? true : alltrue([(var.identity_governance["approverDelegate"] == null ? true : alltrue([(var.identity_governance["approverDelegate"]["schedule"] == null ? true : alltrue([(var.identity_governance["approverDelegate"]["schedule"]["expiration"] == null ? true : alltrue([(var.identity_governance["approverDelegate"]["schedule"]["expiration"]["type"] == null ? true : alltrue([(var.identity_governance["approverDelegate"]["schedule"]["expiration"]["type"] == null ? true : contains(["notSpecified", "noExpiration", "afterDateTime", "afterDuration"], var.identity_governance["approverDelegate"]["schedule"]["expiration"]["type"]))]))])), (var.identity_governance["approverDelegate"]["schedule"]["recurrence"] == null ? true : alltrue([(var.identity_governance["approverDelegate"]["schedule"]["recurrence"]["pattern"] == null ? true : alltrue([(var.identity_governance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["firstDayOfWeek"] == null ? true : alltrue([(var.identity_governance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["firstDayOfWeek"] == null ? true : contains(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"], var.identity_governance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["firstDayOfWeek"]))])), (var.identity_governance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["index"] == null ? true : alltrue([(var.identity_governance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["index"] == null ? true : contains(["first", "second", "third", "fourth", "last"], var.identity_governance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["index"]))])), (var.identity_governance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["type"] == null ? true : alltrue([(var.identity_governance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["type"] == null ? true : contains(["daily", "weekly", "absoluteMonthly", "relativeMonthly", "absoluteYearly", "relativeYearly"], var.identity_governance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["type"]))]))])), (var.identity_governance["approverDelegate"]["schedule"]["recurrence"]["range"] == null ? true : alltrue([(var.identity_governance["approverDelegate"]["schedule"]["recurrence"]["range"]["type"] == null ? true : alltrue([(var.identity_governance["approverDelegate"]["schedule"]["recurrence"]["range"]["type"] == null ? true : contains(["endDate", "noEnd", "numbered"], var.identity_governance["approverDelegate"]["schedule"]["recurrence"]["range"]["type"]))]))]))]))]))]))]))
-    error_message = "identity_governance: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.identityGovernance == null ? true : alltrue([(var.identityGovernance["approverDelegate"] == null ? true : alltrue([(var.identityGovernance["approverDelegate"]["schedule"] == null ? true : alltrue([(var.identityGovernance["approverDelegate"]["schedule"]["expiration"] == null ? true : alltrue([(var.identityGovernance["approverDelegate"]["schedule"]["expiration"]["type"] == null ? true : alltrue([(var.identityGovernance["approverDelegate"]["schedule"]["expiration"]["type"] == null ? true : contains(["notSpecified", "noExpiration", "afterDateTime", "afterDuration"], var.identityGovernance["approverDelegate"]["schedule"]["expiration"]["type"]))]))])), (var.identityGovernance["approverDelegate"]["schedule"]["recurrence"] == null ? true : alltrue([(var.identityGovernance["approverDelegate"]["schedule"]["recurrence"]["pattern"] == null ? true : alltrue([(var.identityGovernance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["firstDayOfWeek"] == null ? true : alltrue([(var.identityGovernance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["firstDayOfWeek"] == null ? true : contains(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"], var.identityGovernance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["firstDayOfWeek"]))])), (var.identityGovernance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["index"] == null ? true : alltrue([(var.identityGovernance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["index"] == null ? true : contains(["first", "second", "third", "fourth", "last"], var.identityGovernance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["index"]))])), (var.identityGovernance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["type"] == null ? true : alltrue([(var.identityGovernance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["type"] == null ? true : contains(["daily", "weekly", "absoluteMonthly", "relativeMonthly", "absoluteYearly", "relativeYearly"], var.identityGovernance["approverDelegate"]["schedule"]["recurrence"]["pattern"]["type"]))]))])), (var.identityGovernance["approverDelegate"]["schedule"]["recurrence"]["range"] == null ? true : alltrue([(var.identityGovernance["approverDelegate"]["schedule"]["recurrence"]["range"]["type"] == null ? true : alltrue([(var.identityGovernance["approverDelegate"]["schedule"]["recurrence"]["range"]["type"] == null ? true : contains(["endDate", "noEnd", "numbered"], var.identityGovernance["approverDelegate"]["schedule"]["recurrence"]["range"]["type"]))]))]))]))]))]))]))
+    error_message = "identityGovernance: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "identity_parent_id" {
+variable "identityParentId" {
   description = "The object ID of the parent identity for agent users. Always null for regular user accounts. For agentUser resources, this property references the object ID of the associated agent identity."
   type        = string
   default     = null
 }
 
-variable "inference_classification" {
+variable "inferenceClassification" {
   description = "Relevance classification of the user's messages based on explicit designations that override inferred relevance or importance."
   type        = any
   default     = null
 }
 
-variable "info_catalogs" {
+variable "infoCatalogs" {
   description = "Identifies the info segments assigned to the user.  Supports $filter (eq, not, ge, le, startsWith)."
   type        = list(string)
   default     = null
 }
 
-variable "information_protection" {
+variable "informationProtection" {
   description = "Microsoft Graph informationProtection property."
   type        = any
   default     = null
@@ -1056,25 +1056,25 @@ variable "interests" {
   default     = null
 }
 
-variable "invited_by" {
+variable "invitedBy" {
   description = "The user or service principal that invited the user."
   type        = any
   default     = null
 }
 
-variable "is_resource_account" {
+variable "isResourceAccount" {
   description = "Do not use. Reserved for future use."
   type        = bool
   default     = null
 }
 
-variable "job_title" {
+variable "jobTitle" {
   description = "The user's job title. Maximum length is 128 characters. Supports $filter (eq, ne, not , ge, le, in, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "joined_groups" {
+variable "joinedGroups" {
   description = "Microsoft Graph joinedGroups property."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.group")
@@ -1320,12 +1320,12 @@ variable "joined_groups" {
   default = null
 
   validation {
-    condition     = (var.joined_groups == null ? true : alltrue([alltrue([for input0 in var.joined_groups : (input0 == null ? true : alltrue([(input0["accessType"] == null ? true : alltrue([(input0["accessType"] == null ? true : contains(["none", "private", "secret", "public"], input0["accessType"]))])), (input0["events"] == null ? true : alltrue([alltrue([for input2 in input0["events"] : (input2 == null ? true : alltrue([(input2["body"] == null ? true : alltrue([(input2["body"]["contentType"] == null ? true : alltrue([(input2["body"]["contentType"] == null ? true : contains(["text", "html"], input2["body"]["contentType"]))]))])), (input2["importance"] == null ? true : alltrue([(input2["importance"] == null ? true : contains(["low", "normal", "high"], input2["importance"]))])), (input2["onlineMeetingProvider"] == null ? true : alltrue([(input2["onlineMeetingProvider"] == null ? true : contains(["unknown", "skypeForBusiness", "skypeForConsumer", "teamsForBusiness"], input2["onlineMeetingProvider"]))])), (input2["responseStatus"] == null ? true : alltrue([(input2["responseStatus"]["response"] == null ? true : alltrue([(input2["responseStatus"]["response"] == null ? true : contains(["none", "organizer", "tentativelyAccepted", "accepted", "declined", "notResponded"], input2["responseStatus"]["response"]))]))])), (input2["sensitivity"] == null ? true : alltrue([(input2["sensitivity"] == null ? true : contains(["normal", "personal", "private", "confidential"], input2["sensitivity"]))])), (input2["showAs"] == null ? true : alltrue([(input2["showAs"] == null ? true : contains(["unknown", "free", "tentative", "busy", "oof", "workingElsewhere"], input2["showAs"]))]))]))])])), (input0["sites"] == null ? true : alltrue([alltrue([for input2 in input0["sites"] : (input2 == null ? true : alltrue([(input2["lockState"] == null ? true : alltrue([(input2["lockState"] == null ? true : contains(["unlocked", "lockedReadOnly", "lockedNoAccess", "lockedNoAdditions"], input2["lockState"]))])), (input2["template"] == null ? true : alltrue([(input2["template"] == null ? true : contains(["sitepagepublishing", "sts"], input2["template"]))]))]))])]))]))])]))
-    error_message = "joined_groups: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.joinedGroups == null ? true : alltrue([alltrue([for input0 in var.joinedGroups : (input0 == null ? true : alltrue([(input0["accessType"] == null ? true : alltrue([(input0["accessType"] == null ? true : contains(["none", "private", "secret", "public"], input0["accessType"]))])), (input0["events"] == null ? true : alltrue([alltrue([for input2 in input0["events"] : (input2 == null ? true : alltrue([(input2["body"] == null ? true : alltrue([(input2["body"]["contentType"] == null ? true : alltrue([(input2["body"]["contentType"] == null ? true : contains(["text", "html"], input2["body"]["contentType"]))]))])), (input2["importance"] == null ? true : alltrue([(input2["importance"] == null ? true : contains(["low", "normal", "high"], input2["importance"]))])), (input2["onlineMeetingProvider"] == null ? true : alltrue([(input2["onlineMeetingProvider"] == null ? true : contains(["unknown", "skypeForBusiness", "skypeForConsumer", "teamsForBusiness"], input2["onlineMeetingProvider"]))])), (input2["responseStatus"] == null ? true : alltrue([(input2["responseStatus"]["response"] == null ? true : alltrue([(input2["responseStatus"]["response"] == null ? true : contains(["none", "organizer", "tentativelyAccepted", "accepted", "declined", "notResponded"], input2["responseStatus"]["response"]))]))])), (input2["sensitivity"] == null ? true : alltrue([(input2["sensitivity"] == null ? true : contains(["normal", "personal", "private", "confidential"], input2["sensitivity"]))])), (input2["showAs"] == null ? true : alltrue([(input2["showAs"] == null ? true : contains(["unknown", "free", "tentative", "busy", "oof", "workingElsewhere"], input2["showAs"]))]))]))])])), (input0["sites"] == null ? true : alltrue([alltrue([for input2 in input0["sites"] : (input2 == null ? true : alltrue([(input2["lockState"] == null ? true : alltrue([(input2["lockState"] == null ? true : contains(["unlocked", "lockedReadOnly", "lockedNoAccess", "lockedNoAdditions"], input2["lockState"]))])), (input2["template"] == null ? true : alltrue([(input2["template"] == null ? true : contains(["sitepagepublishing", "sts"], input2["template"]))]))]))])]))]))])]))
+    error_message = "joinedGroups: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "license_details" {
+variable "licenseDetails" {
   description = "Microsoft Graph licenseDetails property."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.licenseDetails")
@@ -1339,13 +1339,13 @@ variable "mail" {
   default     = null
 }
 
-variable "mail_nickname" {
+variable "mailNickname" {
   description = "The mail alias for the user. This property must be specified when a user is created. Maximum length is 64 characters. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "mailbox_settings" {
+variable "mailboxSettings" {
   description = "Settings for the primary mailbox of the signed-in user. You can get or update settings for sending automatic replies to incoming messages, locale, and time zone. For more information, see User preferences for languages and regional formats. Requires $select to retrieve."
   type = object({
     odata_type = optional(string, "#microsoft.graph.mailboxSettings")
@@ -1387,12 +1387,12 @@ variable "mailbox_settings" {
   default = null
 
   validation {
-    condition     = (var.mailbox_settings == null ? true : alltrue([(var.mailbox_settings["automaticRepliesSetting"] == null ? true : alltrue([(var.mailbox_settings["automaticRepliesSetting"]["externalAudience"] == null ? true : alltrue([(var.mailbox_settings["automaticRepliesSetting"]["externalAudience"] == null ? true : contains(["none", "contactsOnly", "all"], var.mailbox_settings["automaticRepliesSetting"]["externalAudience"]))])), (var.mailbox_settings["automaticRepliesSetting"]["status"] == null ? true : alltrue([(var.mailbox_settings["automaticRepliesSetting"]["status"] == null ? true : contains(["disabled", "alwaysEnabled", "scheduled"], var.mailbox_settings["automaticRepliesSetting"]["status"]))]))])), (var.mailbox_settings["delegateMeetingMessageDeliveryOptions"] == null ? true : alltrue([(var.mailbox_settings["delegateMeetingMessageDeliveryOptions"] == null ? true : contains(["sendToDelegateAndInformationToPrincipal", "sendToDelegateAndPrincipal", "sendToDelegateOnly"], var.mailbox_settings["delegateMeetingMessageDeliveryOptions"]))])), (var.mailbox_settings["userPurposeV2"] == null ? true : alltrue([(var.mailbox_settings["userPurposeV2"] == null ? true : contains(["unknown", "user", "linked", "shared", "room", "equipment", "others"], var.mailbox_settings["userPurposeV2"]))])), (var.mailbox_settings["workingHours"] == null ? true : alltrue([(var.mailbox_settings["workingHours"]["daysOfWeek"] == null ? true : alltrue([alltrue([for input2 in var.mailbox_settings["workingHours"]["daysOfWeek"] : (input2 == null ? true : alltrue([(input2 == null ? true : contains(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"], input2))]))])]))]))]))
-    error_message = "mailbox_settings: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.mailboxSettings == null ? true : alltrue([(var.mailboxSettings["automaticRepliesSetting"] == null ? true : alltrue([(var.mailboxSettings["automaticRepliesSetting"]["externalAudience"] == null ? true : alltrue([(var.mailboxSettings["automaticRepliesSetting"]["externalAudience"] == null ? true : contains(["none", "contactsOnly", "all"], var.mailboxSettings["automaticRepliesSetting"]["externalAudience"]))])), (var.mailboxSettings["automaticRepliesSetting"]["status"] == null ? true : alltrue([(var.mailboxSettings["automaticRepliesSetting"]["status"] == null ? true : contains(["disabled", "alwaysEnabled", "scheduled"], var.mailboxSettings["automaticRepliesSetting"]["status"]))]))])), (var.mailboxSettings["delegateMeetingMessageDeliveryOptions"] == null ? true : alltrue([(var.mailboxSettings["delegateMeetingMessageDeliveryOptions"] == null ? true : contains(["sendToDelegateAndInformationToPrincipal", "sendToDelegateAndPrincipal", "sendToDelegateOnly"], var.mailboxSettings["delegateMeetingMessageDeliveryOptions"]))])), (var.mailboxSettings["userPurposeV2"] == null ? true : alltrue([(var.mailboxSettings["userPurposeV2"] == null ? true : contains(["unknown", "user", "linked", "shared", "room", "equipment", "others"], var.mailboxSettings["userPurposeV2"]))])), (var.mailboxSettings["workingHours"] == null ? true : alltrue([(var.mailboxSettings["workingHours"]["daysOfWeek"] == null ? true : alltrue([alltrue([for input2 in var.mailboxSettings["workingHours"]["daysOfWeek"] : (input2 == null ? true : alltrue([(input2 == null ? true : contains(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"], input2))]))])]))]))]))
+    error_message = "mailboxSettings: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "managed_app_log_collection_requests" {
+variable "managedAppLogCollectionRequests" {
   description = "Zero or more log collection requests triggered for the user."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.managedAppLogCollectionRequest")
@@ -1402,18 +1402,18 @@ variable "managed_app_log_collection_requests" {
   default = null
 
   validation {
-    condition     = (var.managed_app_log_collection_requests == null ? true : alltrue([alltrue([for input0 in var.managed_app_log_collection_requests : (input0 == null ? true : alltrue([(input0["userLogUploadConsent"] == null ? true : alltrue([(input0["userLogUploadConsent"] == null ? true : contains(["unknown", "declined", "accepted"], input0["userLogUploadConsent"]))]))]))])]))
-    error_message = "managed_app_log_collection_requests: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.managedAppLogCollectionRequests == null ? true : alltrue([alltrue([for input0 in var.managedAppLogCollectionRequests : (input0 == null ? true : alltrue([(input0["userLogUploadConsent"] == null ? true : alltrue([(input0["userLogUploadConsent"] == null ? true : contains(["unknown", "declined", "accepted"], input0["userLogUploadConsent"]))]))]))])]))
+    error_message = "managedAppLogCollectionRequests: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "managed_app_registrations" {
+variable "managedAppRegistrations" {
   description = "Zero or more managed app registrations that belong to the user."
   type        = any
   default     = null
 }
 
-variable "managed_devices" {
+variable "managedDevices" {
   description = "The managed devices associated with the user."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.managedDevice")
@@ -1681,12 +1681,12 @@ variable "managed_devices" {
   sensitive = true
 
   validation {
-    condition     = (var.managed_devices == null ? true : alltrue([alltrue([for input0 in var.managed_devices : (input0 == null ? true : alltrue([(input0["configurationManagerClientHealthState"] == null ? true : alltrue([(input0["configurationManagerClientHealthState"]["state"] == null ? true : alltrue([(input0["configurationManagerClientHealthState"]["state"] == null ? true : contains(["unknown", "installed", "healthy", "installFailed", "updateFailed", "communicationError"], input0["configurationManagerClientHealthState"]["state"]))]))])), (input0["detectedApps"] == null ? true : alltrue([alltrue([for input2 in input0["detectedApps"] : (input2 == null ? true : alltrue([(input2["platform"] == null ? true : alltrue([(input2["platform"] == null ? true : contains(["unknown", "windows", "windowsMobile", "windowsHolographic", "ios", "macOS", "chromeOS", "androidOSP", "androidDeviceAdministrator", "androidWorkProfile", "androidDedicatedAndFullyManaged"], input2["platform"]))]))]))])])), (input0["deviceCompliancePolicyStates"] == null ? true : alltrue([alltrue([for input2 in input0["deviceCompliancePolicyStates"] : (input2 == null ? true : alltrue([(input2["platformType"] == null ? true : alltrue([(input2["platformType"] == null ? true : contains(["android", "androidForWork", "iOS", "macOS", "windowsPhone81", "windows81AndLater", "windows10AndLater", "androidWorkProfile", "windows10XProfile", "androidAOSP", "all"], input2["platformType"]))])), (input2["state"] == null ? true : alltrue([(input2["state"] == null ? true : contains(["unknown", "notApplicable", "compliant", "remediated", "nonCompliant", "error", "conflict", "notAssigned"], input2["state"]))]))]))])])), (input0["deviceConfigurationStates"] == null ? true : alltrue([alltrue([for input2 in input0["deviceConfigurationStates"] : (input2 == null ? true : alltrue([(input2["platformType"] == null ? true : alltrue([(input2["platformType"] == null ? true : contains(["android", "androidForWork", "iOS", "macOS", "windowsPhone81", "windows81AndLater", "windows10AndLater", "androidWorkProfile", "windows10XProfile", "androidAOSP", "all"], input2["platformType"]))])), (input2["state"] == null ? true : alltrue([(input2["state"] == null ? true : contains(["unknown", "notApplicable", "compliant", "remediated", "nonCompliant", "error", "conflict", "notAssigned"], input2["state"]))]))]))])])), (input0["joinType"] == null ? true : alltrue([(input0["joinType"] == null ? true : contains(["unknown", "azureADJoined", "azureADRegistered", "hybridAzureADJoined"], input0["joinType"]))])), (input0["logCollectionRequests"] == null ? true : alltrue([alltrue([for input2 in input0["logCollectionRequests"] : (input2 == null ? true : alltrue([(input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["pending", "completed", "failed"], input2["status"]))]))]))])])), (input0["managedDeviceMobileAppConfigurationStates"] == null ? true : alltrue([alltrue([for input2 in input0["managedDeviceMobileAppConfigurationStates"] : (input2 == null ? true : alltrue([(input2["platformType"] == null ? true : alltrue([(input2["platformType"] == null ? true : contains(["android", "androidForWork", "iOS", "macOS", "windowsPhone81", "windows81AndLater", "windows10AndLater", "androidWorkProfile", "windows10XProfile", "androidAOSP", "all"], input2["platformType"]))])), (input2["state"] == null ? true : alltrue([(input2["state"] == null ? true : contains(["unknown", "notApplicable", "compliant", "remediated", "nonCompliant", "error", "conflict", "notAssigned"], input2["state"]))]))]))])])), (input0["managedDeviceOwnerType"] == null ? true : alltrue([(input0["managedDeviceOwnerType"] == null ? true : contains(["unknown", "company", "personal"], input0["managedDeviceOwnerType"]))])), (input0["managementFeatures"] == null ? true : alltrue([(input0["managementFeatures"] == null ? true : contains(["none", "microsoftManagedDesktop"], input0["managementFeatures"]))])), (input0["ownerType"] == null ? true : alltrue([(input0["ownerType"] == null ? true : contains(["unknown", "company", "personal"], input0["ownerType"]))])), (input0["securityBaselineStates"] == null ? true : alltrue([alltrue([for input2 in input0["securityBaselineStates"] : (input2 == null ? true : alltrue([(input2["state"] == null ? true : alltrue([(input2["state"] == null ? true : contains(["unknown", "secure", "notApplicable", "notSecure", "error", "conflict"], input2["state"]))]))]))])])), (input0["users"] == null ? true : alltrue([alltrue([for input2 in input0["users"] : (input2 == null ? true : alltrue([(input2["mailboxSettings"] == null ? true : alltrue([(input2["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"] == null ? true : alltrue([(input2["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"] == null ? true : contains(["sendToDelegateAndInformationToPrincipal", "sendToDelegateAndPrincipal", "sendToDelegateOnly"], input2["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"]))])), (input2["mailboxSettings"]["userPurposeV2"] == null ? true : alltrue([(input2["mailboxSettings"]["userPurposeV2"] == null ? true : contains(["unknown", "user", "linked", "shared", "room", "equipment", "others"], input2["mailboxSettings"]["userPurposeV2"]))]))]))]))])]))]))])]))
-    error_message = "managed_devices: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.managedDevices == null ? true : alltrue([alltrue([for input0 in var.managedDevices : (input0 == null ? true : alltrue([(input0["configurationManagerClientHealthState"] == null ? true : alltrue([(input0["configurationManagerClientHealthState"]["state"] == null ? true : alltrue([(input0["configurationManagerClientHealthState"]["state"] == null ? true : contains(["unknown", "installed", "healthy", "installFailed", "updateFailed", "communicationError"], input0["configurationManagerClientHealthState"]["state"]))]))])), (input0["detectedApps"] == null ? true : alltrue([alltrue([for input2 in input0["detectedApps"] : (input2 == null ? true : alltrue([(input2["platform"] == null ? true : alltrue([(input2["platform"] == null ? true : contains(["unknown", "windows", "windowsMobile", "windowsHolographic", "ios", "macOS", "chromeOS", "androidOSP", "androidDeviceAdministrator", "androidWorkProfile", "androidDedicatedAndFullyManaged"], input2["platform"]))]))]))])])), (input0["deviceCompliancePolicyStates"] == null ? true : alltrue([alltrue([for input2 in input0["deviceCompliancePolicyStates"] : (input2 == null ? true : alltrue([(input2["platformType"] == null ? true : alltrue([(input2["platformType"] == null ? true : contains(["android", "androidForWork", "iOS", "macOS", "windowsPhone81", "windows81AndLater", "windows10AndLater", "androidWorkProfile", "windows10XProfile", "androidAOSP", "all"], input2["platformType"]))])), (input2["state"] == null ? true : alltrue([(input2["state"] == null ? true : contains(["unknown", "notApplicable", "compliant", "remediated", "nonCompliant", "error", "conflict", "notAssigned"], input2["state"]))]))]))])])), (input0["deviceConfigurationStates"] == null ? true : alltrue([alltrue([for input2 in input0["deviceConfigurationStates"] : (input2 == null ? true : alltrue([(input2["platformType"] == null ? true : alltrue([(input2["platformType"] == null ? true : contains(["android", "androidForWork", "iOS", "macOS", "windowsPhone81", "windows81AndLater", "windows10AndLater", "androidWorkProfile", "windows10XProfile", "androidAOSP", "all"], input2["platformType"]))])), (input2["state"] == null ? true : alltrue([(input2["state"] == null ? true : contains(["unknown", "notApplicable", "compliant", "remediated", "nonCompliant", "error", "conflict", "notAssigned"], input2["state"]))]))]))])])), (input0["joinType"] == null ? true : alltrue([(input0["joinType"] == null ? true : contains(["unknown", "azureADJoined", "azureADRegistered", "hybridAzureADJoined"], input0["joinType"]))])), (input0["logCollectionRequests"] == null ? true : alltrue([alltrue([for input2 in input0["logCollectionRequests"] : (input2 == null ? true : alltrue([(input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["pending", "completed", "failed"], input2["status"]))]))]))])])), (input0["managedDeviceMobileAppConfigurationStates"] == null ? true : alltrue([alltrue([for input2 in input0["managedDeviceMobileAppConfigurationStates"] : (input2 == null ? true : alltrue([(input2["platformType"] == null ? true : alltrue([(input2["platformType"] == null ? true : contains(["android", "androidForWork", "iOS", "macOS", "windowsPhone81", "windows81AndLater", "windows10AndLater", "androidWorkProfile", "windows10XProfile", "androidAOSP", "all"], input2["platformType"]))])), (input2["state"] == null ? true : alltrue([(input2["state"] == null ? true : contains(["unknown", "notApplicable", "compliant", "remediated", "nonCompliant", "error", "conflict", "notAssigned"], input2["state"]))]))]))])])), (input0["managedDeviceOwnerType"] == null ? true : alltrue([(input0["managedDeviceOwnerType"] == null ? true : contains(["unknown", "company", "personal"], input0["managedDeviceOwnerType"]))])), (input0["managementFeatures"] == null ? true : alltrue([(input0["managementFeatures"] == null ? true : contains(["none", "microsoftManagedDesktop"], input0["managementFeatures"]))])), (input0["ownerType"] == null ? true : alltrue([(input0["ownerType"] == null ? true : contains(["unknown", "company", "personal"], input0["ownerType"]))])), (input0["securityBaselineStates"] == null ? true : alltrue([alltrue([for input2 in input0["securityBaselineStates"] : (input2 == null ? true : alltrue([(input2["state"] == null ? true : alltrue([(input2["state"] == null ? true : contains(["unknown", "secure", "notApplicable", "notSecure", "error", "conflict"], input2["state"]))]))]))])])), (input0["users"] == null ? true : alltrue([alltrue([for input2 in input0["users"] : (input2 == null ? true : alltrue([(input2["mailboxSettings"] == null ? true : alltrue([(input2["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"] == null ? true : alltrue([(input2["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"] == null ? true : contains(["sendToDelegateAndInformationToPrincipal", "sendToDelegateAndPrincipal", "sendToDelegateOnly"], input2["mailboxSettings"]["delegateMeetingMessageDeliveryOptions"]))])), (input2["mailboxSettings"]["userPurposeV2"] == null ? true : alltrue([(input2["mailboxSettings"]["userPurposeV2"] == null ? true : contains(["unknown", "user", "linked", "shared", "room", "equipment", "others"], input2["mailboxSettings"]["userPurposeV2"]))]))]))]))])]))]))])]))
+    error_message = "managedDevices: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "mobile_app_intent_and_states" {
+variable "mobileAppIntentAndStates" {
   description = "The list of troubleshooting events for this user."
   type = list(object({
     odata_type              = optional(string, "#microsoft.graph.mobileAppIntentAndState")
@@ -1705,12 +1705,12 @@ variable "mobile_app_intent_and_states" {
   default = null
 
   validation {
-    condition     = (var.mobile_app_intent_and_states == null ? true : alltrue([alltrue([for input0 in var.mobile_app_intent_and_states : (input0 == null ? true : alltrue([(input0["mobileAppList"] == null ? true : alltrue([alltrue([for input2 in input0["mobileAppList"] : (input2 == null ? true : alltrue([(input2["installState"] == null ? true : alltrue([(input2["installState"] == null ? true : contains(["notApplicable", "installed", "failed", "notInstalled", "uninstallFailed", "pendingInstall", "unknown"], input2["installState"]))])), (input2["mobileAppIntent"] == null ? true : alltrue([(input2["mobileAppIntent"] == null ? true : contains(["available", "notAvailable", "requiredInstall", "requiredUninstall", "requiredAndAvailableInstall", "availableInstallWithoutEnrollment", "exclude"], input2["mobileAppIntent"]))]))]))])]))]))])]))
-    error_message = "mobile_app_intent_and_states: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.mobileAppIntentAndStates == null ? true : alltrue([alltrue([for input0 in var.mobileAppIntentAndStates : (input0 == null ? true : alltrue([(input0["mobileAppList"] == null ? true : alltrue([alltrue([for input2 in input0["mobileAppList"] : (input2 == null ? true : alltrue([(input2["installState"] == null ? true : alltrue([(input2["installState"] == null ? true : contains(["notApplicable", "installed", "failed", "notInstalled", "uninstallFailed", "pendingInstall", "unknown"], input2["installState"]))])), (input2["mobileAppIntent"] == null ? true : alltrue([(input2["mobileAppIntent"] == null ? true : contains(["available", "notAvailable", "requiredInstall", "requiredUninstall", "requiredAndAvailableInstall", "availableInstallWithoutEnrollment", "exclude"], input2["mobileAppIntent"]))]))]))])]))]))])]))
+    error_message = "mobileAppIntentAndStates: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "mobile_app_troubleshooting_events" {
+variable "mobileAppTroubleshootingEvents" {
   description = "The list of mobile app troubleshooting events for this user."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.mobileAppTroubleshootingEvent")
@@ -1750,18 +1750,18 @@ variable "mobile_app_troubleshooting_events" {
   default = null
 
   validation {
-    condition     = (var.mobile_app_troubleshooting_events == null ? true : alltrue([alltrue([for input0 in var.mobile_app_troubleshooting_events : (input0 == null ? true : alltrue([(input0["appLogCollectionRequests"] == null ? true : alltrue([alltrue([for input2 in input0["appLogCollectionRequests"] : (input2 == null ? true : alltrue([(input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["pending", "completed", "failed"], input2["status"]))]))]))])]))]))])]))
-    error_message = "mobile_app_troubleshooting_events: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.mobileAppTroubleshootingEvents == null ? true : alltrue([alltrue([for input0 in var.mobileAppTroubleshootingEvents : (input0 == null ? true : alltrue([(input0["appLogCollectionRequests"] == null ? true : alltrue([alltrue([for input2 in input0["appLogCollectionRequests"] : (input2 == null ? true : alltrue([(input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["pending", "completed", "failed"], input2["status"]))]))]))])]))]))])]))
+    error_message = "mobileAppTroubleshootingEvents: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "mobile_phone" {
+variable "mobilePhone" {
   description = "The primary cellular telephone number for the user. Read-only for users synced from the on-premises directory.  Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values) and $search. This property is subject to sensitive action restrictions; only specific privileged administrator roles can update it."
   type        = string
   default     = null
 }
 
-variable "my_site" {
+variable "mySite" {
   description = "The URL for the user's site. Requires $select to retrieve."
   type        = string
   default     = null
@@ -1798,7 +1798,7 @@ variable "notifications" {
   }
 }
 
-variable "oauth2_permission_grants" {
+variable "oauth2PermissionGrants" {
   description = "Microsoft Graph oauth2PermissionGrants property."
   type = list(object({
     odata_type  = optional(string, "#microsoft.graph.oAuth2PermissionGrant")
@@ -1820,25 +1820,25 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "office_location" {
+variable "officeLocation" {
   description = "The office location in the user's place of business. Maximum length is 128 characters. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "on_premises_distinguished_name" {
+variable "onPremisesDistinguishedName" {
   description = "Contains the on-premises Active Directory distinguished name or DN."
   type        = string
   default     = null
 }
 
-variable "on_premises_domain_name" {
+variable "onPremisesDomainName" {
   description = "Contains the on-premises domainFQDN, also called dnsDomainName synchronized from the on-premises directory."
   type        = string
   default     = null
 }
 
-variable "on_premises_extension_attributes" {
+variable "onPremisesExtensionAttributes" {
   description = "Contains extensionAttributes1-15 for the user. These extension attributes are also known as Exchange custom attributes 1-15. Each attribute can store up to 1024 characters. For an onPremisesSyncEnabled user, the source of authority for this set of properties is the on-premises and is read-only. For a cloud-only user (where onPremisesSyncEnabled is false), these properties can be set during the creation or update of a user object.  For a cloud-only user previously synced from on-premises Active Directory, these properties are read-only in Microsoft Graph but can be fully managed through the Exchange Admin Center or the Exchange Online V2 module in PowerShell. Supports $filter (eq, ne, not, in)."
   type = object({
     odata_type           = optional(string, "#microsoft.graph.onPremisesExtensionAttributes")
@@ -1861,13 +1861,13 @@ variable "on_premises_extension_attributes" {
   default = null
 }
 
-variable "on_premises_immutable_id" {
+variable "onPremisesImmutableId" {
   description = "This property associates an on-premises Active Directory user account to their Microsoft Entra user object. This property must be specified when creating a new user account in the Graph if you're using a federated domain for the user's userPrincipalName (UPN) property. Note: The $ and _ characters can't be used when specifying this property. Supports $filter (eq, ne, not, ge, le, in). This property is subject to sensitive action restrictions; only specific privileged administrator roles can update it."
   type        = string
   default     = null
 }
 
-variable "on_premises_provisioning_errors" {
+variable "onPremisesProvisioningErrors" {
   description = "Errors when using Microsoft synchronization product during provisioning.  Supports $filter (eq, not, ge, le)."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.onPremisesProvisioningError")
@@ -1879,25 +1879,25 @@ variable "on_premises_provisioning_errors" {
   default = null
 }
 
-variable "on_premises_sam_account_name" {
+variable "onPremisesSamAccountName" {
   description = "Contains the on-premises sAMAccountName synchronized from the on-premises directory.  Supports $filter (eq, ne, not, ge, le, in, startsWith)."
   type        = string
   default     = null
 }
 
-variable "on_premises_security_identifier" {
+variable "onPremisesSecurityIdentifier" {
   description = "Contains the on-premises security identifier (SID) for the user synchronized from on-premises to the cloud. Must be in the format of SID, such as 'S-1-5-21-1180699209-877415012-3182824384-1006'. Supports $filter (eq including on null values)."
   type        = string
   default     = null
 }
 
-variable "on_premises_sync_behavior" {
+variable "onPremisesSyncBehavior" {
   description = "Indicates the state of synchronization for a user between the cloud and on-premises Active Directory. Supports $filter only with advanced query capabilities, for example, $filter=onPremisesSyncBehavior/isCloudManaged eq true&$count=true."
   type        = any
   default     = null
 }
 
-variable "on_premises_user_principal_name" {
+variable "onPremisesUserPrincipalName" {
   description = "Contains the on-premises userPrincipalName synchronized from the on-premises directory. Supports $filter (eq, ne, not, ge, le, in, startsWith)."
   type        = string
   default     = null
@@ -1909,7 +1909,7 @@ variable "onenote" {
   default     = null
 }
 
-variable "online_meetings" {
+variable "onlineMeetings" {
   description = "Information about a meeting, including the URL used to join a meeting, the attendees list, and the description."
   type = list(object({
     odata_type                           = optional(string, "#microsoft.graph.onlineMeeting")
@@ -1998,25 +1998,25 @@ variable "online_meetings" {
   default = null
 
   validation {
-    condition     = (var.online_meetings == null ? true : alltrue([alltrue([for input0 in var.online_meetings : (input0 == null ? true : alltrue([(input0["allowLiveShare"] == null ? true : alltrue([(input0["allowLiveShare"] == null ? true : contains(["enabled", "disabled"], input0["allowLiveShare"]))])), (input0["allowMeetingChat"] == null ? true : alltrue([(input0["allowMeetingChat"] == null ? true : contains(["enabled", "disabled", "limited"], input0["allowMeetingChat"]))])), (input0["allowedLobbyAdmitters"] == null ? true : alltrue([(input0["allowedLobbyAdmitters"] == null ? true : contains(["organizerAndCoOrganizersAndPresenters", "organizerAndCoOrganizers"], input0["allowedLobbyAdmitters"]))])), (input0["allowedPresenters"] == null ? true : alltrue([(input0["allowedPresenters"] == null ? true : contains(["everyone", "organization", "roleIsPresenter", "organizer"], input0["allowedPresenters"]))])), (input0["anonymizeIdentityForRoles"] == null ? true : alltrue([alltrue([for input2 in input0["anonymizeIdentityForRoles"] : (input2 == null ? true : alltrue([(input2 == null ? true : contains(["attendee", "presenter", "producer"], input2))]))])])), (input0["broadcastSettings"] == null ? true : alltrue([(input0["broadcastSettings"]["allowedAudience"] == null ? true : alltrue([(input0["broadcastSettings"]["allowedAudience"] == null ? true : contains(["roleIsAttendee", "organization", "everyone"], input0["broadcastSettings"]["allowedAudience"]))]))])), (input0["capabilities"] == null ? true : alltrue([alltrue([for input2 in input0["capabilities"] : (input2 == null ? true : alltrue([(input2 == null ? true : contains(["questionAndAnswer"], input2))]))])])), (input0["lobbyBypassSettings"] == null ? true : alltrue([(input0["lobbyBypassSettings"]["scope"] == null ? true : alltrue([(input0["lobbyBypassSettings"]["scope"] == null ? true : contains(["organizer", "organization", "organizationAndFederated", "everyone"], input0["lobbyBypassSettings"]["scope"]))]))])), (input0["shareMeetingChatHistoryDefault"] == null ? true : alltrue([(input0["shareMeetingChatHistoryDefault"] == null ? true : contains(["none", "all"], input0["shareMeetingChatHistoryDefault"]))]))]))])]))
-    error_message = "online_meetings: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.onlineMeetings == null ? true : alltrue([alltrue([for input0 in var.onlineMeetings : (input0 == null ? true : alltrue([(input0["allowLiveShare"] == null ? true : alltrue([(input0["allowLiveShare"] == null ? true : contains(["enabled", "disabled"], input0["allowLiveShare"]))])), (input0["allowMeetingChat"] == null ? true : alltrue([(input0["allowMeetingChat"] == null ? true : contains(["enabled", "disabled", "limited"], input0["allowMeetingChat"]))])), (input0["allowedLobbyAdmitters"] == null ? true : alltrue([(input0["allowedLobbyAdmitters"] == null ? true : contains(["organizerAndCoOrganizersAndPresenters", "organizerAndCoOrganizers"], input0["allowedLobbyAdmitters"]))])), (input0["allowedPresenters"] == null ? true : alltrue([(input0["allowedPresenters"] == null ? true : contains(["everyone", "organization", "roleIsPresenter", "organizer"], input0["allowedPresenters"]))])), (input0["anonymizeIdentityForRoles"] == null ? true : alltrue([alltrue([for input2 in input0["anonymizeIdentityForRoles"] : (input2 == null ? true : alltrue([(input2 == null ? true : contains(["attendee", "presenter", "producer"], input2))]))])])), (input0["broadcastSettings"] == null ? true : alltrue([(input0["broadcastSettings"]["allowedAudience"] == null ? true : alltrue([(input0["broadcastSettings"]["allowedAudience"] == null ? true : contains(["roleIsAttendee", "organization", "everyone"], input0["broadcastSettings"]["allowedAudience"]))]))])), (input0["capabilities"] == null ? true : alltrue([alltrue([for input2 in input0["capabilities"] : (input2 == null ? true : alltrue([(input2 == null ? true : contains(["questionAndAnswer"], input2))]))])])), (input0["lobbyBypassSettings"] == null ? true : alltrue([(input0["lobbyBypassSettings"]["scope"] == null ? true : alltrue([(input0["lobbyBypassSettings"]["scope"] == null ? true : contains(["organizer", "organization", "organizationAndFederated", "everyone"], input0["lobbyBypassSettings"]["scope"]))]))])), (input0["shareMeetingChatHistoryDefault"] == null ? true : alltrue([(input0["shareMeetingChatHistoryDefault"] == null ? true : contains(["none", "all"], input0["shareMeetingChatHistoryDefault"]))]))]))])]))
+    error_message = "onlineMeetings: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "other_mails" {
+variable "otherMails" {
   description = "A list of additional email addresses for the user; for example: ['bob@contoso.com', 'Robert@fabrikam.com']. Can store up to 250 values, each with a limit of 250 characters. NOTE: This property can't contain accent characters.Supports $filter (eq, not, ge, le, in, startsWith, endsWith, /$count eq 0, /$count ne 0). This property is subject to sensitive action restrictions; only specific privileged administrator roles can update it."
   type        = list(string)
   default     = null
 }
 
-variable "password_policies" {
+variable "passwordPolicies" {
   description = "Specifies password policies for the user. This value is an enumeration with one possible value being DisableStrongPassword, which allows weaker passwords than the default policy to be specified. DisablePasswordExpiration can also be specified. The two may be specified together; for example: DisablePasswordExpiration, DisableStrongPassword. For more information on the default password policies, see Microsoft Entra password policies. Supports $filter (ne, not, and eq on null values)."
   type        = string
   default     = null
   sensitive   = true
 }
 
-variable "password_profile" {
+variable "passwordProfile" {
   description = "Specifies the password profile for the user. The profile contains the user's password. This property is required when a user is created. The password in the profile must satisfy minimum requirements as specified by the passwordPolicies property. By default, a strong password is required. Supports $filter (eq, ne, not, in, and eq on null values).  User-PasswordProfile.ReadWrite.All is the least privileged permission to update this property.  In delegated scenarios, the User Administrator Microsoft Entra role is the least privileged admin role supported to update this property for nonadmin users. Privileged Authentication Administrator is the least privileged role that's allowed to update this property for all administrators in the tenant. In general, the signed-in user must have a higher privileged administrator role as indicated in Who can reset passwords.  In app-only scenarios, the calling app must be assigned a supported permission and at least the User Administrator Microsoft Entra role.This property is also subject to sensitive action restrictions."
   type = object({
     odata_type                           = optional(string, "#microsoft.graph.passwordProfile")
@@ -2028,13 +2028,13 @@ variable "password_profile" {
   sensitive = true
 }
 
-variable "past_projects" {
+variable "pastProjects" {
   description = "A list for users to enumerate their past projects. Requires $select to retrieve."
   type        = list(string)
   default     = null
 }
 
-variable "pending_access_review_instances" {
+variable "pendingAccessReviewInstances" {
   description = "Navigation property to get a list of access reviews pending approval by the reviewer."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.accessReviewInstance")
@@ -2080,12 +2080,12 @@ variable "pending_access_review_instances" {
   default = null
 
   validation {
-    condition     = (var.pending_access_review_instances == null ? true : alltrue([alltrue([for input0 in var.pending_access_review_instances : (input0 == null ? true : alltrue([(input0["fallbackReviewers"] == null ? true : alltrue([alltrue([for input2 in input0["fallbackReviewers"] : (input2 == null ? true : alltrue([(input2["scopeType"] == null ? true : alltrue([(input2["scopeType"] == null ? true : contains(["user", "group", "self", "manager", "sponsor", "resourceOwner", "managerOrSponsor"], input2["scopeType"]))]))]))])])), (input0["reviewers"] == null ? true : alltrue([alltrue([for input2 in input0["reviewers"] : (input2 == null ? true : alltrue([(input2["scopeType"] == null ? true : alltrue([(input2["scopeType"] == null ? true : contains(["user", "group", "self", "manager", "sponsor", "resourceOwner", "managerOrSponsor"], input2["scopeType"]))]))]))])]))]))])]))
-    error_message = "pending_access_review_instances: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.pendingAccessReviewInstances == null ? true : alltrue([alltrue([for input0 in var.pendingAccessReviewInstances : (input0 == null ? true : alltrue([(input0["fallbackReviewers"] == null ? true : alltrue([alltrue([for input2 in input0["fallbackReviewers"] : (input2 == null ? true : alltrue([(input2["scopeType"] == null ? true : alltrue([(input2["scopeType"] == null ? true : contains(["user", "group", "self", "manager", "sponsor", "resourceOwner", "managerOrSponsor"], input2["scopeType"]))]))]))])])), (input0["reviewers"] == null ? true : alltrue([alltrue([for input2 in input0["reviewers"] : (input2 == null ? true : alltrue([(input2["scopeType"] == null ? true : alltrue([(input2["scopeType"] == null ? true : contains(["user", "group", "self", "manager", "sponsor", "resourceOwner", "managerOrSponsor"], input2["scopeType"]))]))]))])]))]))])]))
+    error_message = "pendingAccessReviewInstances: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "permission_grants" {
+variable "permissionGrants" {
   description = "List all resource-specific permission grants of a user."
   type = list(object({
     odata_type      = optional(string, "#microsoft.graph.resourceSpecificPermissionGrant")
@@ -2094,25 +2094,25 @@ variable "permission_grants" {
   default = null
 }
 
-variable "postal_code" {
+variable "postalCode" {
   description = "The postal code for the user's postal address. The postal code is specific to the user's country/region. In the United States of America, this attribute contains the ZIP code. Maximum length is 40 characters. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "preferred_data_location" {
+variable "preferredDataLocation" {
   description = "The preferred data location for the user. For more information, see OneDrive Online Multi-Geo."
   type        = string
   default     = null
 }
 
-variable "preferred_language" {
+variable "preferredLanguage" {
   description = "The preferred language for the user. The preferred language format is based on RFC 4646. The name combines an ISO 639 two-letter lowercase culture code associated with the language and an ISO 3166 two-letter uppercase subculture code associated with the country or region. Example: 'en-US', or 'es-ES'. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "preferred_name" {
+variable "preferredName" {
   description = "The preferred name for the user. Not Supported. This attribute returns an empty string.Requires $select to retrieve."
   type        = string
   default     = null
@@ -2473,7 +2473,7 @@ variable "security" {
   default     = null
 }
 
-variable "service_provisioning_errors" {
+variable "serviceProvisioningErrors" {
   description = "Errors published by a federated service describing a nontransient, service-specific error regarding the properties or link from a user object."
   type        = any
   default     = null
@@ -2485,7 +2485,7 @@ variable "settings" {
   default     = null
 }
 
-variable "show_in_address_list" {
+variable "showInAddressList" {
   description = "Do not use in Microsoft Graph. Manage this property through the Microsoft 365 admin center instead. Represents whether the user should be included in the Outlook global address list. See Known issue."
   type        = bool
   default     = null
@@ -2509,7 +2509,7 @@ variable "state" {
   default     = null
 }
 
-variable "street_address" {
+variable "streetAddress" {
   description = "The street address of the user's place of business. Maximum length is 1024 characters. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values)."
   type        = string
   default     = null
@@ -2527,19 +2527,19 @@ variable "todo" {
   default     = null
 }
 
-variable "transitive_member_of" {
+variable "transitiveMemberOf" {
   description = "The groups, including nested groups and directory roles that a user is a member of. Nullable."
   type        = any
   default     = null
 }
 
-variable "usage_location" {
+variable "usageLocation" {
   description = "A two-letter country/region code (ISO standard 3166). Required for users that are assigned licenses due to legal requirements to check for availability of services in countries/regions. Examples include: US, JP, and GB. Not nullable. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "usage_rights" {
+variable "usageRights" {
   description = "Represents the usage rights a user has been granted."
   type = list(object({
     odata_type        = optional(string, "#microsoft.graph.usageRight")
@@ -2550,30 +2550,30 @@ variable "usage_rights" {
   default = null
 
   validation {
-    condition     = (var.usage_rights == null ? true : alltrue([alltrue([for input0 in var.usage_rights : (input0 == null ? true : alltrue([(input0["state"] == null ? true : alltrue([(input0["state"] == null ? true : contains(["active", "inactive", "warning", "suspended"], input0["state"]))]))]))])]))
-    error_message = "usage_rights: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.usageRights == null ? true : alltrue([alltrue([for input0 in var.usageRights : (input0 == null ? true : alltrue([(input0["state"] == null ? true : alltrue([(input0["state"] == null ? true : contains(["active", "inactive", "warning", "suspended"], input0["state"]))]))]))])]))
+    error_message = "usageRights: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "user_principal_name" {
+variable "userPrincipalName" {
   description = "The user principal name (UPN) of the user. The UPN is an Internet-style sign-in name for the user based on the Internet standard RFC 822. By convention, this should map to the user's email name. The general format is alias@domain, where the domain must be present in the tenant's verified domain collection. This property is required when a user is created. The verified domains for the tenant can be accessed from the verifiedDomains property of organization.NOTE: This property can't contain accent characters. Only the following characters are allowed A - Z, a - z, 0 - 9, ' . - _ ! # ^ ~. For the complete list of allowed characters, see username policies. Supports $filter (eq, ne, not, ge, le, in, startsWith, endsWith) and $orderby. This property is subject to sensitive action restrictions; only specific privileged administrator roles can update it."
   type        = string
   default     = null
 }
 
-variable "user_type" {
+variable "userType" {
   description = "A String value that can be used to classify user types in your directory. The possible values are Member and Guest. Supports $filter (eq, ne, not, in, and eq on null values). NOTE: For more information about the permissions for member and guest users, see What are the default user permissions in Microsoft Entra ID?"
   type        = string
   default     = null
 }
 
-variable "virtual_events" {
+variable "virtualEvents" {
   description = "Microsoft Graph virtualEvents property."
   type        = any
   default     = null
 }
 
-variable "windows_information_protection_device_registrations" {
+variable "windowsInformationProtectionDeviceRegistrations" {
   description = "Zero or more WIP device registrations that belong to the user."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.windowsInformationProtectionDeviceRegistration")

@@ -47,9 +47,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    odata_type         = "#microsoft.graph.windowsUpdates.qualityUpdatePolicy"
-    description        = "example"
-    applicable_content = [{}]
+    odata_type        = "#microsoft.graph.windowsUpdates.qualityUpdatePolicy"
+    description       = "example"
+    applicableContent = [{}]
   }
 
   assert {

@@ -13,13 +13,13 @@ mock_provider "msgraph" {
 }
 
 variables {
-  display_name                          = "Terms of use for guests"
-  is_viewing_before_acceptance_required = true
+  displayName                       = "Terms of use for guests"
+  isViewingBeforeAcceptanceRequired = true
 
   default_file = {
     language       = "en"
-    file_name      = "TOU.pdf"
-    display_name   = "Terms of use for guests"
+    fileName       = "TOU.pdf"
+    displayName    = "Terms of use for guests"
     content_base64 = "JVBERi0xLjQgc3ludGhldGljIGVuZ2xpc2g="
   }
 }
@@ -84,8 +84,8 @@ run "updates_name_and_viewing_requirement_in_place" {
   command = apply
 
   variables {
-    display_name                          = "Terms of use for guests (2026)"
-    is_viewing_before_acceptance_required = false
+    displayName                       = "Terms of use for guests (2026)"
+    isViewingBeforeAcceptanceRequired = false
   }
 
   assert {
@@ -103,12 +103,12 @@ run "refuses_a_changed_default_file_content" {
   command = plan
 
   variables {
-    display_name                          = "Terms of use for guests (2026)"
-    is_viewing_before_acceptance_required = false
+    displayName                       = "Terms of use for guests (2026)"
+    isViewingBeforeAcceptanceRequired = false
     default_file = {
       language       = "en"
-      file_name      = "TOU.pdf"
-      display_name   = "Terms of use for guests"
+      fileName       = "TOU.pdf"
+      displayName    = "Terms of use for guests"
       content_base64 = "JVBERi0xLjQgc3ludGhldGljIGVuZ2xpc2ggdjI="
     }
   }
@@ -120,12 +120,12 @@ run "refuses_a_changed_default_language" {
   command = plan
 
   variables {
-    display_name                          = "Terms of use for guests (2026)"
-    is_viewing_before_acceptance_required = false
+    displayName                       = "Terms of use for guests (2026)"
+    isViewingBeforeAcceptanceRequired = false
     default_file = {
       language       = "en-US"
-      file_name      = "TOU.pdf"
-      display_name   = "Terms of use for guests"
+      fileName       = "TOU.pdf"
+      displayName    = "Terms of use for guests"
       content_base64 = "JVBERi0xLjQgc3ludGhldGljIGVuZ2xpc2g="
     }
   }
@@ -137,13 +137,13 @@ run "adds_a_localized_file_with_one_post" {
   command = apply
 
   variables {
-    display_name                          = "Terms of use for guests (2026)"
-    is_viewing_before_acceptance_required = false
+    displayName                       = "Terms of use for guests (2026)"
+    isViewingBeforeAcceptanceRequired = false
     additional_files = {
       french = {
         language       = "fr-FR"
-        file_name      = "TOU-fr.pdf"
-        display_name   = "Conditions generales"
+        fileName       = "TOU-fr.pdf"
+        displayName    = "Conditions generales"
         content_base64 = "JVBERi0xLjQgc3ludGhldGljIGZyZW5jaA=="
       }
     }
@@ -191,15 +191,15 @@ run "refuses_a_changed_additional_file" {
   command = plan
 
   variables {
-    display_name                          = "Terms of use for guests (2026)"
-    is_viewing_before_acceptance_required = false
+    displayName                       = "Terms of use for guests (2026)"
+    isViewingBeforeAcceptanceRequired = false
     additional_files = {
       french = {
-        language         = "fr-FR"
-        file_name        = "TOU-fr.pdf"
-        display_name     = "Conditions generales"
-        content_base64   = "JVBERi0xLjQgc3ludGhldGljIGZyZW5jaA=="
-        is_major_version = true
+        language       = "fr-FR"
+        fileName       = "TOU-fr.pdf"
+        displayName    = "Conditions generales"
+        content_base64 = "JVBERi0xLjQgc3ludGhldGljIGZyZW5jaA=="
+        isMajorVersion = true
       }
     }
   }
@@ -211,27 +211,27 @@ run "adds_a_second_file_and_keeps_the_first_unchanged" {
   command = apply
 
   variables {
-    display_name                          = "Terms of use for guests (2026)"
-    is_viewing_before_acceptance_required = false
+    displayName                       = "Terms of use for guests (2026)"
+    isViewingBeforeAcceptanceRequired = false
     additional_files = {
       french = {
         language       = "fr-FR"
-        file_name      = "TOU-fr.pdf"
-        display_name   = "Conditions generales"
+        fileName       = "TOU-fr.pdf"
+        displayName    = "Conditions generales"
         content_base64 = "JVBERi0xLjQgc3ludGhldGljIGZyZW5jaA=="
       }
       german = {
-        language         = "de"
-        file_name        = "TOU-de.pdf"
-        content_base64   = "JVBERi0xLjQgc3ludGhldGljIGdlcm1hbg=="
-        is_major_version = true
+        language       = "de"
+        fileName       = "TOU-de.pdf"
+        content_base64 = "JVBERi0xLjQgc3ludGhldGljIGdlcm1hbg=="
+        isMajorVersion = true
       }
     }
   }
 
   assert {
     condition     = msgraph_resource_action.file["german"].body.isMajorVersion == true && !contains(keys(msgraph_resource_action.file["german"].body), "displayName")
-    error_message = "A null file display_name must be left out and is_major_version must be sent as configured."
+    error_message = "A null file displayName must be left out and isMajorVersion must be sent as configured."
   }
 
   assert {
@@ -244,13 +244,13 @@ run "forgets_a_removed_file_without_deleting_anything" {
   command = apply
 
   variables {
-    display_name                          = "Terms of use for guests (2026)"
-    is_viewing_before_acceptance_required = false
+    displayName                       = "Terms of use for guests (2026)"
+    isViewingBeforeAcceptanceRequired = false
     additional_files = {
       french = {
         language       = "fr-FR"
-        file_name      = "TOU-fr.pdf"
-        display_name   = "Conditions generales"
+        fileName       = "TOU-fr.pdf"
+        displayName    = "Conditions generales"
         content_base64 = "JVBERi0xLjQgc3ludGhldGljIGZyZW5jaA=="
       }
     }
@@ -266,19 +266,19 @@ run "replaces_the_agreement_only_when_asked_to" {
   command = apply
 
   variables {
-    display_name                          = "Terms of use for guests (2026)"
-    is_viewing_before_acceptance_required = false
+    displayName                       = "Terms of use for guests (2026)"
+    isViewingBeforeAcceptanceRequired = false
     default_file = {
       language       = "en"
-      file_name      = "TOU.pdf"
-      display_name   = "Terms of use for guests"
+      fileName       = "TOU.pdf"
+      displayName    = "Terms of use for guests"
       content_base64 = "JVBERi0xLjQgc3ludGhldGljIGVuZ2xpc2ggdjI="
     }
     additional_files = {
       french = {
         language       = "fr-FR"
-        file_name      = "TOU-fr.pdf"
-        display_name   = "Conditions generales"
+        fileName       = "TOU-fr.pdf"
+        displayName    = "Conditions generales"
         content_base64 = "JVBERi0xLjQgc3ludGhldGljIGZyZW5jaA=="
       }
     }
@@ -308,19 +308,19 @@ run "accepts_the_new_content_after_the_replacement" {
   command = plan
 
   variables {
-    display_name                          = "Terms of use for guests (2026)"
-    is_viewing_before_acceptance_required = false
+    displayName                       = "Terms of use for guests (2026)"
+    isViewingBeforeAcceptanceRequired = false
     default_file = {
       language       = "en"
-      file_name      = "TOU.pdf"
-      display_name   = "Terms of use for guests"
+      fileName       = "TOU.pdf"
+      displayName    = "Terms of use for guests"
       content_base64 = "JVBERi0xLjQgc3ludGhldGljIGVuZ2xpc2ggdjI="
     }
     additional_files = {
       french = {
         language       = "fr-FR"
-        file_name      = "TOU-fr.pdf"
-        display_name   = "Conditions generales"
+        fileName       = "TOU-fr.pdf"
+        displayName    = "Conditions generales"
         content_base64 = "JVBERi0xLjQgc3ludGhldGljIGZyZW5jaA=="
       }
     }

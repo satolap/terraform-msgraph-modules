@@ -22,7 +22,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -50,20 +50,20 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `availability_end_date_time` | `availabilityEndDateTime` | `string` | no | no | in place |
-| `availability_start_date_time` | `availabilityStartDateTime` | `string` | no | no | in place |
+| `availabilityEndDateTime` | `availabilityEndDateTime` | `string` | no | no | in place |
+| `availabilityStartDateTime` | `availabilityStartDateTime` | `string` | no | no | in place |
 | `categories` | `categories` | `list(string)` | no | no | in place |
 | `description` | `description` | `string` | no | no | in place |
-| `display_name` | `displayName` | `string` | no | no | in place |
-| `group_ids` | `groupIds` | `list(string)` | no | no | in place |
+| `displayName` | `displayName` | `string` | no | no | in place |
+| `groupIds` | `groupIds` | `list(string)` | no | no | in place |
 | `keywords` | `keywords` | `object({       odata_type = optional(string, "#microsoft.graph.search.answerKeyword")       keywords = optional(list(string))       matchSimilarKeywords = optional(bool)       reservedKeywords = optional(list(string))     })` | no | no | in place |
-| `language_tags` | `languageTags` | `list(string)` | no | no | in place |
+| `languageTags` | `languageTags` | `list(string)` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
 | `platforms` | `platforms` | `list(string)` | no | no | in place |
-| `power_app_ids` | `powerAppIds` | `list(string)` | no | no | in place |
+| `powerAppIds` | `powerAppIds` | `list(string)` | no | no | in place |
 | `state` | `state` | `string` | no | no | in place |
-| `targeted_variations` | `targetedVariations` | `list(object({       odata_type = optional(string, "#microsoft.graph.search.answerVariant")       description = optional(string)       displayName = optional(string)       languageTag = optional(string)       platform = optional(string)       webUrl = optional(string)     }))` | no | no | in place |
-| `web_url` | `webUrl` | `string` | no | no | in place |
+| `targetedVariations` | `targetedVariations` | `list(object({       odata_type = optional(string, "#microsoft.graph.search.answerVariant")       description = optional(string)       displayName = optional(string)       languageTag = optional(string)       platform = optional(string)       webUrl = optional(string)     }))` | no | no | in place |
+| `webUrl` | `webUrl` | `string` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

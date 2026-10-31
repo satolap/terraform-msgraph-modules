@@ -1,11 +1,11 @@
-variable "user_id" {
+variable "user-id" {
   description = "The unique identifier of user"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.user_id)) > 0
-    error_message = "user_id must not be empty."
+    condition     = length(trimspace(var.user-id)) > 0
+    error_message = "user-id must not be empty."
   }
 }
 
@@ -15,7 +15,7 @@ variable "attachments" {
   default     = null
 }
 
-variable "bcc_recipients" {
+variable "bccRecipients" {
   description = "The Bcc: recipients for the message."
   type        = any
   default     = null
@@ -36,7 +36,7 @@ variable "body" {
   }
 }
 
-variable "body_preview" {
+variable "bodyPreview" {
   description = "The first 255 characters of the message body. It is in text format."
   type        = string
   default     = null
@@ -48,25 +48,25 @@ variable "categories" {
   default     = null
 }
 
-variable "cc_recipients" {
+variable "ccRecipients" {
   description = "The Cc: recipients for the message."
   type        = any
   default     = null
 }
 
-variable "conversation_id" {
+variable "conversationId" {
   description = "The ID of the conversation the email belongs to."
   type        = string
   default     = null
 }
 
-variable "conversation_index" {
+variable "conversationIndex" {
   description = "Indicates the position of the message within the conversation."
   type        = string
   default     = null
 }
 
-variable "created_date_time" {
+variable "createdDateTime" {
   description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
@@ -113,7 +113,7 @@ variable "from" {
   default     = null
 }
 
-variable "has_attachments" {
+variable "hasAttachments" {
   description = "Indicates whether the message has attachments. This property doesn't include inline attachments, so if a message contains only inline attachments, this property is false. To verify the existence of inline attachments, parse the body property to look for a src attribute, such as <IMG src='cid:image001.jpg@01D26CD8.6C05F070'>."
   type        = bool
   default     = null
@@ -130,54 +130,54 @@ variable "importance" {
   }
 }
 
-variable "inference_classification" {
+variable "inferenceClassification" {
   description = "The classification of the message for the user, based on inferred relevance or importance, or on an explicit override. The possible values are: focused or other."
   type        = string
   default     = null
 
   validation {
-    condition     = var.inference_classification == null ? true : contains(["focused", "other"], var.inference_classification)
-    error_message = "inference_classification must be one of the documented enum values."
+    condition     = var.inferenceClassification == null ? true : contains(["focused", "other"], var.inferenceClassification)
+    error_message = "inferenceClassification must be one of the documented enum values."
   }
 }
 
-variable "internet_message_id" {
+variable "internetMessageId" {
   description = "The message ID in the format specified by RFC2822."
   type        = string
   default     = null
 }
 
-variable "is_delivery_receipt_requested" {
+variable "isDeliveryReceiptRequested" {
   description = "Indicates whether a read receipt is requested for the message."
   type        = bool
   default     = null
 }
 
-variable "is_draft" {
+variable "isDraft" {
   description = "Indicates whether the message is a draft. A message is a draft if it hasn't been sent yet."
   type        = bool
   default     = null
 }
 
-variable "is_read" {
+variable "isRead" {
   description = "Indicates whether the message has been read."
   type        = bool
   default     = null
 }
 
-variable "is_read_receipt_requested" {
+variable "isReadReceiptRequested" {
   description = "Indicates whether a read receipt is requested for the message."
   type        = bool
   default     = null
 }
 
-variable "last_modified_date_time" {
+variable "lastModifiedDateTime" {
   description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
 }
 
-variable "multi_value_extended_properties" {
+variable "multiValueExtendedProperties" {
   description = "The collection of multi-value extended properties defined for the message. Nullable."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.multiValueLegacyExtendedProperty")
@@ -193,19 +193,19 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "parent_folder_id" {
+variable "parentFolderId" {
   description = "The unique identifier for the message's parent mailFolder."
   type        = string
   default     = null
 }
 
-variable "received_date_time" {
+variable "receivedDateTime" {
   description = "The date and time the message was received.  The date and time information uses ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z."
   type        = string
   default     = null
 }
 
-variable "reply_to" {
+variable "replyTo" {
   description = "The email addresses to use when replying."
   type        = any
   default     = null
@@ -217,13 +217,13 @@ variable "sender" {
   default     = null
 }
 
-variable "sent_date_time" {
+variable "sentDateTime" {
   description = "The date and time the message was sent.  The date and time information uses ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z."
   type        = string
   default     = null
 }
 
-variable "single_value_extended_properties" {
+variable "singleValueExtendedProperties" {
   description = "The collection of single-value extended properties defined for the message. Nullable."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.singleValueLegacyExtendedProperty")
@@ -238,13 +238,13 @@ variable "subject" {
   default     = null
 }
 
-variable "to_recipients" {
+variable "toRecipients" {
   description = "The To: recipients for the message."
   type        = any
   default     = null
 }
 
-variable "unique_body" {
+variable "uniqueBody" {
   description = "The part of the body of the message that is unique to the current message. uniqueBody is not returned by default but can be retrieved for a given message by use of the ?$select=uniqueBody query. It can be in HTML or text format."
   type = object({
     odata_type  = optional(string, "#microsoft.graph.itemBody")
@@ -254,12 +254,12 @@ variable "unique_body" {
   default = null
 
   validation {
-    condition     = (var.unique_body == null ? true : alltrue([(var.unique_body["contentType"] == null ? true : alltrue([(var.unique_body["contentType"] == null ? true : contains(["text", "html"], var.unique_body["contentType"]))]))]))
-    error_message = "unique_body: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.uniqueBody == null ? true : alltrue([(var.uniqueBody["contentType"] == null ? true : alltrue([(var.uniqueBody["contentType"] == null ? true : contains(["text", "html"], var.uniqueBody["contentType"]))]))]))
+    error_message = "uniqueBody: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "web_link" {
+variable "webLink" {
   description = "The URL to open the message in Outlook on the web.You can append an ispopout argument to the end of the URL to change how the message is displayed. If ispopout is not present or if it is set to 1, then the message is shown in a popout window. If ispopout is set to 0, the browser shows the message in the Outlook on the web review pane.The message opens in the browser if you are signed in to your mailbox via Outlook on the web. You are prompted to sign in if you are not already signed in with the browser.This URL cannot be accessed from within an iFrame.NOTE: When using this URL to access a message from a mailbox with delegate permissions, both the signed-in user and the target mailbox must be in the same database region. For example, an error is returned when a user with a mailbox in the EUR (Europe) region attempts to access messages from a mailbox in the NAM (North America) region."
   type        = string
   default     = null

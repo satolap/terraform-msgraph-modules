@@ -1,5 +1,5 @@
 locals {
-  by_lookup = var.role_definition_id == null
+  by_lookup = var.roleDefinitionId == null
   # The list API documents filtering displayName, but not templateId. Template
   # selection therefore filters the returned definitions locally.
   lookup_name = var.role_display_name == null ? "" : var.role_display_name
@@ -21,7 +21,7 @@ locals {
     var.template_id != null ? try(lower(role.templateId) == lower(var.template_id), false) :
     try(role.displayName == var.role_display_name, false)
   )]
-  selected_id = local.by_lookup ? try(lower(one(local.matches).id), null) : lower(var.role_definition_id)
+  selected_id = local.by_lookup ? try(lower(one(local.matches).id), null) : lower(var.roleDefinitionId)
   role_id     = can(regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", local.selected_id)) ? local.selected_id : null
 }
 
@@ -40,14 +40,14 @@ data "msgraph_resource" "role" {
 
 locals {
   body = {
-    principalId      = lower(var.principal_id)
+    principalId      = lower(var.principalId)
     roleDefinitionId = local.role_id
-    directoryScopeId = lower(var.directory_scope_id)
+    directoryScopeId = lower(var.directoryScopeId)
   }
   # Keep the Graph path component's documented casing, normalizing only GUIDs.
   directory_scope_id = replace(local.body.directoryScopeId, "administrativeunits", "administrativeUnits")
   request_body       = merge(local.body, { directoryScopeId = local.directory_scope_id })
-  actual_scope_type  = var.directory_scope_id == "/" ? "tenant" : (startswith(var.directory_scope_id, "/administrativeUnits/") ? "administrative_unit" : "application")
+  actual_scope_type  = var.directoryScopeId == "/" ? "tenant" : (startswith(var.directoryScopeId, "/administrativeUnits/") ? "administrative_unit" : "application")
 }
 
 # A create-time, read-only duplicate check. Its replacement orders removal of
@@ -61,9 +61,9 @@ resource "terraform_data" "preflight" {
     script     = local.assignment_guard
     role_type  = var.role_type
     scope_type = var.scope_type
-    selectors  = [var.role_definition_id == null ? null : lower(var.role_definition_id), var.template_id == null ? null : lower(var.template_id), var.role_display_name]
+    selectors  = [var.roleDefinitionId == null ? null : lower(var.roleDefinitionId), var.template_id == null ? null : lower(var.template_id), var.role_display_name]
   }
-  triggers_replace = [lower(var.tenant_id), local.request_body, var.role_type, var.scope_type, var.role_definition_id == null ? null : lower(var.role_definition_id), var.template_id == null ? null : lower(var.template_id), var.role_display_name]
+  triggers_replace = [lower(var.tenant_id), local.request_body, var.role_type, var.scope_type, var.roleDefinitionId == null ? null : lower(var.roleDefinitionId), var.template_id == null ? null : lower(var.template_id), var.role_display_name]
 
   provisioner "local-exec" {
     command     = "duplicate"
@@ -80,8 +80,8 @@ resource "terraform_data" "preflight" {
       error_message = "The role readback must identify the selected template."
     }
     precondition {
-      condition     = length([for selector in [var.role_definition_id, var.template_id, var.role_display_name] : selector if selector != null]) == 1
-      error_message = "Set exactly one of role_definition_id, template_id and role_display_name."
+      condition     = length([for selector in [var.roleDefinitionId, var.template_id, var.role_display_name] : selector if selector != null]) == 1
+      error_message = "Set exactly one of roleDefinitionId, template_id and role_display_name."
     }
     precondition {
       condition     = local.by_lookup ? try(length(local.matches) == 1, false) : true
@@ -105,7 +105,7 @@ resource "terraform_data" "preflight" {
     }
     precondition {
       condition     = var.scope_type == local.actual_scope_type
-      error_message = "scope_type must agree with directory_scope_id."
+      error_message = "scope_type must agree with directoryScopeId."
     }
   }
 }

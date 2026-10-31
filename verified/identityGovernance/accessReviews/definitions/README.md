@@ -5,7 +5,7 @@
 
 This module's state and saved plans retain these declared values:
 
-Potential personal-data inputs: `description_for_reviewers`, `fallback_reviewer_user_ids`, `reviewer_user_ids`.
+Potential personal-data inputs: `descriptionForReviewers`, `fallback_reviewer_user_ids`, `reviewer_user_ids`.
 
 Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
 
@@ -46,16 +46,16 @@ are outside the definition.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "team_access_review" {
   source  = "satolap/modules/msgraph//verified/identityGovernance/accessReviews/definitions"
   version = "<version>"
 
-  display_name              = "Quarterly review of the Fabrikam team group"
-  description_for_admins    = "Quarterly membership review of the Fabrikam team group"
-  description_for_reviewers = "Confirm who still needs to be in the group"
+  displayName             = "Quarterly review of the Fabrikam team group"
+  descriptionForAdmins    = "Quarterly membership review of the Fabrikam team group"
+  descriptionForReviewers = "Confirm who still needs to be in the group"
 
   group_id          = var.team_group_id
   reviewer_user_ids = [var.team_lead_user_id]
@@ -64,8 +64,8 @@ module "team_access_review" {
   recurrence = {
     type                  = "absoluteMonthly"
     interval              = 3
-    day_of_month          = 15
-    number_of_occurrences = null # never ends
+    dayOfMonth          = 15
+    numberOfOccurrences = null # never ends
   }
   instance_duration_in_days = 14
 }
@@ -123,7 +123,7 @@ preserves unowned properties on a PUT is not established.
   removes access.
 - **Reviewers are not notified.** Mail and reminder notifications are always off, so reviewers receive
   no email when an instance starts. Tell them out of band. The 256-character
-  limit on `description_for_reviewers` is the limit Learn gives for reviewer email notifications and is
+  limit on `descriptionForReviewers` is the limit Learn gives for reviewer email notifications and is
   enforced although no email is sent.
 - **Empty reviewers.** An empty reviewer list is self-review; the module rejects it. Fallback reviewers
   default to none. Removing a fallback reviewer is not proven (Learn says fallback reviewers added in
@@ -191,16 +191,16 @@ Sources: [Create an access review of groups and applications: prerequisites](htt
 
 | Name | Description | Type | Default | Required | On change |
 |------|-------------|------|---------|----------| --- |
-| display_name | Name of the review series | `string` | n/a | yes | in place |
-| name_pattern | Optional RE2 pattern that display_name must match | `string` | `null` | no | no object change (validation or timing only) |
-| description_for_admins | Context for administrators; required on create | `string` | n/a | yes | in place |
-| description_for_reviewers | Context for reviewers; required on create | `string` | n/a | yes | in place |
+| displayName | Name of the review series | `string` | n/a | yes | in place |
+| name_pattern | Optional RE2 pattern that displayName must match | `string` | `null` | no | no object change (validation or timing only) |
+| descriptionForAdmins | Context for administrators; required on create | `string` | n/a | yes | in place |
+| descriptionForReviewers | Context for reviewers; required on create | `string` | n/a | yes | in place |
 | group_id | Object ID of the existing static group to review | `string` | n/a | yes | replaces `msgraph_resource.this` when its effect on `local.scope_query` changes |
 | membership_scope | `transitive` (`transitiveMembers`) or `direct` (`members`) | `string` | `"transitive"` | no | replaces `msgraph_resource.this` when its effect on `local.scope_query` changes |
 | reviewer_user_ids | Individual reviewer user IDs; at least one, no self-review | `list(string)` | n/a | yes | in place |
 | fallback_reviewer_user_ids | Individual fallback reviewer user IDs | `list(string)` | `[]` | no | in place |
 | start_date | Explicit first day, `YYYY-MM-DD` | `string` | n/a | yes | in place |
-| recurrence | `type` (`weekly` or `absoluteMonthly`), `interval`, `day_of_month`, `number_of_occurrences` | `object` | n/a | yes | in place |
+| recurrence | `type` (`weekly` or `absoluteMonthly`), `interval`, `dayOfMonth`, `numberOfOccurrences` | `object` | n/a | yes | in place |
 | instance_duration_in_days | Days each instance is open | `number` | n/a | yes | in place |
 | recommendations_enabled | Show decision recommendations | `bool` | `false` | no | in place |
 | justification_required_on_approval | Require a justification with a decision | `bool` | `false` | no | in place |
@@ -227,10 +227,10 @@ prerequisites, bounded assertions and the acceptance that remains outstanding.
 
 Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
 
-- `display_name`: in place.
+- `displayName`: in place.
 - `name_pattern`: no object change (validation or timing only).
-- `description_for_admins`: in place.
-- `description_for_reviewers`: in place.
+- `descriptionForAdmins`: in place.
+- `descriptionForReviewers`: in place.
 - `group_id`: replaces `msgraph_resource.this` when its effect on `local.scope_query` changes.
 - `membership_scope`: replaces `msgraph_resource.this` when its effect on `local.scope_query` changes.
 - `reviewer_user_ids`: in place.
@@ -242,3 +242,38 @@ Terraform plans compare configuration and refreshed provider state. A plan that 
 - `justification_required_on_approval`: in place.
 - `timeouts`: no object change (validation or timing only).
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /identityGovernance/accessReviews/definitions` | DelegatedWork | `AccessReview.ReadWrite.All` | - | - |
+| `POST /identityGovernance/accessReviews/definitions` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/accessReviews/definitions` | Application | `AccessReview.ReadWrite.All` | - | - |
+| `GET /identityGovernance/accessReviews/definitions/{id}` | DelegatedWork | `AccessReview.Read.All` | - | - |
+| `GET /identityGovernance/accessReviews/definitions/{id}` | DelegatedWork | `AccessReview.ReadWrite.All` | - | - |
+| `GET /identityGovernance/accessReviews/definitions/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/accessReviews/definitions/{id}` | Application | `AccessReview.Read.All` | - | - |
+| `GET /identityGovernance/accessReviews/definitions/{id}` | Application | `AccessReview.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/accessReviews/definitions/{id}` | DelegatedWork | `AccessReview.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/accessReviews/definitions/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /identityGovernance/accessReviews/definitions/{id}` | Application | `AccessReview.ReadWrite.All` | - | - |
+| `PUT /identityGovernance/accessReviews/definitions/{id}` | DelegatedWork | `AccessReview.ReadWrite.All` | - | - |
+| `PUT /identityGovernance/accessReviews/definitions/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PUT /identityGovernance/accessReviews/definitions/{id}` | Application | `AccessReview.ReadWrite.All` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /identityGovernance/accessReviews/definitions` | `descriptionForAdmins`, `descriptionForReviewers`, `displayName`, `fallbackReviewers`, `reviewers`, `scope`, `settings` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PUT /identityGovernance/accessReviews/definitions/{id}` | `descriptionForAdmins`, `descriptionForReviewers`, `displayName`, `fallbackReviewers`, `reviewers`, `scope`, `settings` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

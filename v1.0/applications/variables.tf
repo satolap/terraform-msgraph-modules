@@ -1,10 +1,10 @@
-variable "display_name" {
+variable "displayName" {
   description = "The display name for the application. Maximum length is 256 characters. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values), $search, and $orderby."
   type        = string
   nullable    = false
 }
 
-variable "add_ins" {
+variable "addIns" {
   description = "Defines custom behavior that a consuming service can use to call an app in specific contexts. For example, applications that can render file streams can set the addIns property for its 'FileHandler' functionality. This lets services like Microsoft 365 call the application in the context of a document the user is working on."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.addIn")
@@ -48,7 +48,7 @@ variable "api" {
   sensitive = true
 }
 
-variable "app_management_policies" {
+variable "appManagementPolicies" {
   description = "The appManagementPolicy applied to this application."
   type = list(object({
     odata_type      = optional(string, "#microsoft.graph.appManagementPolicy")
@@ -89,12 +89,12 @@ variable "app_management_policies" {
   sensitive = true
 
   validation {
-    condition     = (var.app_management_policies == null ? true : alltrue([alltrue([for input0 in var.app_management_policies : (input0 == null ? true : alltrue([(input0["restrictions"] == null ? true : alltrue([(input0["restrictions"]["keyCredentials"] == null ? true : alltrue([alltrue([for input3 in input0["restrictions"]["keyCredentials"] : (input3 == null ? true : alltrue([(input3["restrictionType"] == null ? true : alltrue([(input3["restrictionType"] == null ? true : contains(["asymmetricKeyLifetime"], input3["restrictionType"]))])), (input3["state"] == null ? true : alltrue([(input3["state"] == null ? true : contains(["enabled", "disabled"], input3["state"]))]))]))])])), (input0["restrictions"]["passwordCredentials"] == null ? true : alltrue([alltrue([for input3 in input0["restrictions"]["passwordCredentials"] : (input3 == null ? true : alltrue([(input3["restrictionType"] == null ? true : alltrue([(input3["restrictionType"] == null ? true : contains(["passwordAddition", "passwordLifetime", "symmetricKeyAddition", "symmetricKeyLifetime", "customPasswordAddition"], input3["restrictionType"]))])), (input3["state"] == null ? true : alltrue([(input3["state"] == null ? true : contains(["enabled", "disabled"], input3["state"]))]))]))])]))]))]))])]))
-    error_message = "app_management_policies: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.appManagementPolicies == null ? true : alltrue([alltrue([for input0 in var.appManagementPolicies : (input0 == null ? true : alltrue([(input0["restrictions"] == null ? true : alltrue([(input0["restrictions"]["keyCredentials"] == null ? true : alltrue([alltrue([for input3 in input0["restrictions"]["keyCredentials"] : (input3 == null ? true : alltrue([(input3["restrictionType"] == null ? true : alltrue([(input3["restrictionType"] == null ? true : contains(["asymmetricKeyLifetime"], input3["restrictionType"]))])), (input3["state"] == null ? true : alltrue([(input3["state"] == null ? true : contains(["enabled", "disabled"], input3["state"]))]))]))])])), (input0["restrictions"]["passwordCredentials"] == null ? true : alltrue([alltrue([for input3 in input0["restrictions"]["passwordCredentials"] : (input3 == null ? true : alltrue([(input3["restrictionType"] == null ? true : alltrue([(input3["restrictionType"] == null ? true : contains(["passwordAddition", "passwordLifetime", "symmetricKeyAddition", "symmetricKeyLifetime", "customPasswordAddition"], input3["restrictionType"]))])), (input3["state"] == null ? true : alltrue([(input3["state"] == null ? true : contains(["enabled", "disabled"], input3["state"]))]))]))])]))]))]))])]))
+    error_message = "appManagementPolicies: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "app_roles" {
+variable "appRoles" {
   description = "The collection of roles defined for the application. With app role assignments, these roles can be assigned to users, groups, or service principals associated with other applications. Not nullable. App roles and exposed delegated permission scopes (api.oauth2PermissionScopes) share a default limit of 700 permission definitions per application. Enabled and disabled definitions both count. This limit is separate from the aggregate 1,200-entry application manifest limit and from app role assignment limits. For counting rules, behavior for existing objects above the limit, and design guidance, see App role limits."
   type = list(object({
     odata_type         = optional(string, "#microsoft.graph.appRole")
@@ -108,7 +108,7 @@ variable "app_roles" {
   default = null
 }
 
-variable "authentication_behaviors" {
+variable "authenticationBehaviors" {
   description = "The set of breaking change behaviors related to token issuance that are configured for the application. Authentication behaviors are unset by default (null) and must be explicitly enabled or disabled. Nullable. Returned only on $select. Requires $select to retrieve.  For more information about authentication behaviors, see Manage application authenticationBehaviors."
   type = object({
     odata_type                    = optional(string, "#microsoft.graph.authenticationBehaviors")
@@ -131,13 +131,13 @@ variable "certification" {
   default = null
 }
 
-variable "default_redirect_uri" {
+variable "defaultRedirectUri" {
   description = "Microsoft Graph defaultRedirectUri property."
   type        = string
   default     = null
 }
 
-variable "deleted_date_time" {
+variable "deletedDateTime" {
   description = "Date and time when this object was deleted. Always null when the object hasn't been deleted."
   type        = string
   default     = null
@@ -149,13 +149,13 @@ variable "description" {
   default     = null
 }
 
-variable "disabled_by_microsoft_status" {
+variable "disabledByMicrosoftStatus" {
   description = "Specifies whether Microsoft has disabled the registered application. The possible values are: null (default value), NotDisabled, and DisabledDueToViolationOfServicesAgreement (reasons include suspicious, abusive, or malicious activity, or a violation of the Microsoft Services Agreement).  Supports $filter (eq, ne, not)."
   type        = string
   default     = null
 }
 
-variable "federated_identity_credentials" {
+variable "federatedIdentityCredentials" {
   description = "Federated identities for applications. Supports $expand and $filter (startsWith, /$count eq 0, /$count ne 0)."
   type = list(object({
     odata_type  = optional(string, "#microsoft.graph.federatedIdentityCredential")
@@ -169,13 +169,13 @@ variable "federated_identity_credentials" {
   sensitive = true
 }
 
-variable "group_membership_claims" {
+variable "groupMembershipClaims" {
   description = "Configures the groups claim issued in a user or OAuth 2.0 access token that the application expects. To set this attribute, use one of the following valid string values: None, SecurityGroup (for security groups and Microsoft Entra roles), All (this gets all of the security groups, distribution groups, and Microsoft Entra directory roles that the signed-in user is a member of)."
   type        = string
   default     = null
 }
 
-variable "home_realm_discovery_policies" {
+variable "homeRealmDiscoveryPolicies" {
   description = "Microsoft Graph homeRealmDiscoveryPolicies property."
   type = list(object({
     odata_type            = optional(string, "#microsoft.graph.homeRealmDiscoveryPolicy")
@@ -189,7 +189,7 @@ variable "home_realm_discovery_policies" {
   default = null
 }
 
-variable "identifier_uris" {
+variable "identifierUris" {
   description = "Also known as App ID URI, this value is set when an application is used as a resource app. The identifierUris acts as the prefix for the scopes you reference in your API's code, and it must be globally unique across Microsoft Entra ID. For more information on valid identifierUris patterns and best practices, see Microsoft Entra application registration security best practices. Not nullable. Supports $filter (eq, ne, ge, le, startsWith)."
   type        = list(string)
   default     = null
@@ -207,25 +207,25 @@ variable "info" {
   default = null
 }
 
-variable "is_device_only_auth_supported" {
+variable "isDeviceOnlyAuthSupported" {
   description = "Specifies whether this application supports device authentication without a user. The default is false."
   type        = bool
   default     = null
 }
 
-variable "is_disabled" {
+variable "isDisabled" {
   description = "Microsoft Graph isDisabled property."
   type        = bool
   default     = null
 }
 
-variable "is_fallback_public_client" {
+variable "isFallbackPublicClient" {
   description = "Specifies the fallback application type as public client, such as an installed application running on a mobile device. The default value is false, which means the fallback application type is confidential client such as a web app. There are certain scenarios where Microsoft Entra ID can't determine the client application type. For example, the ROPC flow where it's configured without specifying a redirect URI. In those cases, Microsoft Entra ID interprets the application type based on the value of this property."
   type        = bool
   default     = null
 }
 
-variable "key_credentials" {
+variable "keyCredentials" {
   description = "The collection of key credentials associated with the application. Not nullable. Supports $filter (eq, not, ge, le)."
   type = list(object({
     odata_type          = optional(string, "#microsoft.graph.keyCredential")
@@ -248,20 +248,20 @@ variable "logo" {
   default     = null
 }
 
-variable "manager_applications" {
+variable "managerApplications" {
   description = "A collection of application IDs for Microsoft first-party applications designated as managers. Manager applications can create service principals, agent identities, and agent users for managed agent blueprints. Limited to a maximum of 10 entries. Not nullable. Only supported on agentIdentityBlueprint objects; attempts to set this property on non-agent-blueprint applications return an error. Not returned by default; must be explicitly requested via $select."
   type        = list(string)
   default     = null
 }
 
-variable "native_authentication_apis_enabled" {
+variable "nativeAuthenticationApisEnabled" {
   description = "Specifies whether the Native Authentication APIs are enabled for the application. The possible values are: none and all. Default is none. For more information, see Native Authentication."
   type        = string
   default     = null
 
   validation {
-    condition     = var.native_authentication_apis_enabled == null ? true : try(alltrue([for value in split(",", var.native_authentication_apis_enabled) : contains(["none", "all"], lower(trimspace(value)))]), false)
-    error_message = "native_authentication_apis_enabled must be one or more of the documented enum values, separated by commas."
+    condition     = var.nativeAuthenticationApisEnabled == null ? true : try(alltrue([for value in split(",", var.nativeAuthenticationApisEnabled) : contains(["none", "all"], lower(trimspace(value)))]), false)
+    error_message = "nativeAuthenticationApisEnabled must be one or more of the documented enum values, separated by commas."
   }
 }
 
@@ -271,7 +271,7 @@ variable "notes" {
   default     = null
 }
 
-variable "oauth2_require_post_response" {
+variable "oauth2RequirePostResponse" {
   description = "Microsoft Graph oauth2RequirePostResponse property."
   type        = bool
   default     = null
@@ -284,7 +284,7 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "optional_claims" {
+variable "optionalClaims" {
   description = "Application developers can configure optional claims in their Microsoft Entra applications to specify the claims that are sent to their application by the Microsoft security token service. For more information, see How to: Provide optional claims to your app."
   type = object({
     odata_type = optional(string, "#microsoft.graph.optionalClaims")
@@ -320,7 +320,7 @@ variable "owners" {
   default     = null
 }
 
-variable "parental_control_settings" {
+variable "parentalControlSettings" {
   description = "Specifies parental control settings for an application."
   type = object({
     odata_type                = optional(string, "#microsoft.graph.parentalControlSettings")
@@ -330,7 +330,7 @@ variable "parental_control_settings" {
   default = null
 }
 
-variable "password_credentials" {
+variable "passwordCredentials" {
   description = "The collection of password credentials associated with the application. Not nullable."
   type = list(object({
     odata_type          = optional(string, "#microsoft.graph.passwordCredential")
@@ -344,7 +344,7 @@ variable "password_credentials" {
   sensitive = true
 }
 
-variable "public_client" {
+variable "publicClient" {
   description = "Specifies settings for installed clients such as desktop or mobile devices."
   type = object({
     odata_type   = optional(string, "#microsoft.graph.publicClientApplication")
@@ -353,7 +353,7 @@ variable "public_client" {
   default = null
 }
 
-variable "request_signature_verification" {
+variable "requestSignatureVerification" {
   description = "Specifies whether this application requires Microsoft Entra ID to verify the signed authentication requests."
   type = object({
     odata_type              = optional(string, "#microsoft.graph.requestSignatureVerification")
@@ -363,12 +363,12 @@ variable "request_signature_verification" {
   default = null
 
   validation {
-    condition     = (var.request_signature_verification == null ? true : alltrue([(var.request_signature_verification["allowedWeakAlgorithms"] == null ? true : alltrue([(var.request_signature_verification["allowedWeakAlgorithms"] == null ? true : try(alltrue([for value in split(",", var.request_signature_verification["allowedWeakAlgorithms"]) : contains(["rsasha1"], lower(trimspace(value)))]), false))]))]))
-    error_message = "request_signature_verification: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.requestSignatureVerification == null ? true : alltrue([(var.requestSignatureVerification["allowedWeakAlgorithms"] == null ? true : alltrue([(var.requestSignatureVerification["allowedWeakAlgorithms"] == null ? true : try(alltrue([for value in split(",", var.requestSignatureVerification["allowedWeakAlgorithms"]) : contains(["rsasha1"], lower(trimspace(value)))]), false))]))]))
+    error_message = "requestSignatureVerification: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "required_resource_access" {
+variable "requiredResourceAccess" {
   description = "Specifies the resources that the application needs to access. This property also specifies the set of delegated permissions and application roles that it needs for each of those resources. This configuration of access to the required resources drives the consent experience. No more than 50 resource services (APIs) can be configured. Beginning mid-October 2021, the total number of required permissions must not exceed 400. For more information, see Limits on requested permissions per app. Not nullable. Supports $filter (eq, not, ge, le)."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.requiredResourceAccess")
@@ -382,19 +382,19 @@ variable "required_resource_access" {
   default = null
 }
 
-variable "saml_metadata_url" {
+variable "samlMetadataUrl" {
   description = "The URL where the service exposes SAML metadata for federation. This property is valid only for single-tenant applications. Nullable."
   type        = string
   default     = null
 }
 
-variable "service_management_reference" {
+variable "serviceManagementReference" {
   description = "References application or service contact information from a Service or Asset Management database. Nullable."
   type        = string
   default     = null
 }
 
-variable "service_principal_lock_configuration" {
+variable "servicePrincipalLockConfiguration" {
   description = "Specifies whether sensitive properties of a multitenant application should be locked for editing after the application is provisioned in a tenant. Nullable. null by default."
   type = object({
     odata_type                 = optional(string, "#microsoft.graph.servicePrincipalLockConfiguration")
@@ -408,7 +408,7 @@ variable "service_principal_lock_configuration" {
   sensitive = true
 }
 
-variable "sign_in_audience" {
+variable "signInAudience" {
   description = "Specifies the Microsoft accounts that are supported for the current application. The possible values are: AzureADMyOrg (default), AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, and PersonalMicrosoftAccount. See more in the table. The value of this object also limits the number of permissions an app can request. For more information, see Limits on requested permissions per app. The value for this property has implications on other app object properties. As a result, if you change this property, you might need to change other properties first. For more information, see Validation differences for signInAudience.Supports $filter (eq, ne, not)."
   type        = string
   default     = null
@@ -435,13 +435,13 @@ variable "tags" {
   default     = null
 }
 
-variable "token_encryption_key_id" {
+variable "tokenEncryptionKeyId" {
   description = "Specifies the keyId of a public key from the keyCredentials collection. When configured, Microsoft Entra ID encrypts all the tokens it emits by using the key this property points to. The application code that receives the encrypted token must use the matching private key to decrypt the token before it can be used for the signed-in user."
   type        = string
   default     = null
 }
 
-variable "token_issuance_policies" {
+variable "tokenIssuancePolicies" {
   description = "Microsoft Graph tokenIssuancePolicies property."
   type = list(object({
     odata_type            = optional(string, "#microsoft.graph.tokenIssuancePolicy")
@@ -455,7 +455,7 @@ variable "token_issuance_policies" {
   default = null
 }
 
-variable "token_lifetime_policies" {
+variable "tokenLifetimePolicies" {
   description = "Microsoft Graph tokenLifetimePolicies property."
   type = list(object({
     odata_type            = optional(string, "#microsoft.graph.tokenLifetimePolicy")
@@ -469,7 +469,7 @@ variable "token_lifetime_policies" {
   default = null
 }
 
-variable "verified_publisher" {
+variable "verifiedPublisher" {
   description = "Specifies the verified publisher of the application. For more information about how publisher verification helps support application security, trustworthiness, and compliance, see Publisher verification."
   type = object({
     odata_type          = optional(string, "#microsoft.graph.verifiedPublisher")

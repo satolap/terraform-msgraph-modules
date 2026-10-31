@@ -19,11 +19,11 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//beta/users/profile/anniversaries"
   version = "<version>"
 
-  user_id = "parent-object-id"
+  user-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -51,17 +51,17 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `user_id` | URL parameter `user-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `allowed_audiences` | `allowedAudiences` | `string` | no | no | in place |
-| `created_by` | `createdBy` | `any` | no | no | in place |
-| `created_date_time` | `createdDateTime` | `string` | no | no | in place |
+| `user-id` | URL parameter `user-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `allowedAudiences` | `allowedAudiences` | `string` | no | no | in place |
+| `createdBy` | `createdBy` | `any` | no | no | in place |
+| `createdDateTime` | `createdDateTime` | `string` | no | no | in place |
 | `date` | `date` | `string` | no | no | in place |
-| `display_name` | `displayName` | `string` | no | no | in place |
+| `displayName` | `displayName` | `string` | no | no | in place |
 | `graph_source` | `source` | `object({       odata_type = optional(string, "#microsoft.graph.personDataSources")       type = optional(list(string))     })` | no | no | in place |
 | `inference` | `inference` | `object({       odata_type = optional(string, "#microsoft.graph.inferenceData")       confidenceScore = optional(any)       userHasVerifiedAccuracy = optional(bool)     })` | no | no | in place |
-| `is_searchable` | `isSearchable` | `bool` | no | no | in place |
-| `last_modified_by` | `lastModifiedBy` | `any` | no | no | in place |
-| `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no | in place |
+| `isSearchable` | `isSearchable` | `bool` | no | no | in place |
+| `lastModifiedBy` | `lastModifiedBy` | `any` | no | no | in place |
+| `lastModifiedDateTime` | `lastModifiedDateTime` | `string` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
 | `sources` | `sources` | `list(object({       odata_type = optional(string, "#microsoft.graph.profileSourceAnnotation")       isDefaultSource = optional(bool)       properties = optional(list(string))       sourceId = optional(string)     }))` | no | no | in place |
 | `type` | `type` | `string` | no | no | in place |

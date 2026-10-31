@@ -13,8 +13,8 @@ mock_provider "msgraph" {
 }
 
 variables {
-  display_name  = "Engineering"
-  mail_nickname = "engineering"
+  displayName  = "Engineering"
+  mailNickname = "engineering"
 }
 
 run "creates_security_group_with_defaults" {
@@ -69,8 +69,8 @@ run "builds_dynamic_group_body" {
   command = apply
 
   variables {
-    group_types     = ["DynamicMembership"]
-    membership_rule = "user.department -eq \"Engineering\""
+    groupTypes     = ["DynamicMembership"]
+    membershipRule = "user.department -eq \"Engineering\""
   }
 
   assert {
@@ -88,7 +88,7 @@ run "rejects_dynamic_group_without_rule" {
   command = plan
 
   variables {
-    group_types = ["DynamicMembership"]
+    groupTypes = ["DynamicMembership"]
   }
 
   expect_failures = [msgraph_resource.group]
@@ -98,10 +98,10 @@ run "rejects_invalid_mail_nickname" {
   command = plan
 
   variables {
-    mail_nickname = "has space"
+    mailNickname = "has space"
   }
 
-  expect_failures = [var.mail_nickname]
+  expect_failures = [var.mailNickname]
 }
 
 run "rejects_invalid_visibility" {
@@ -118,16 +118,16 @@ run "rejects_invalid_group_type" {
   command = plan
 
   variables {
-    group_types = ["Distribution"]
+    groupTypes = ["Distribution"]
   }
 
-  expect_failures = [var.group_types]
+  expect_failures = [var.groupTypes]
 }
 
 run "rejects_mail_enabled_security_group" {
   command = plan
   variables {
-    mail_enabled = true
+    mailEnabled = true
   }
   expect_failures = [msgraph_resource.group]
 }
@@ -135,9 +135,9 @@ run "rejects_mail_enabled_security_group" {
 run "rejects_static_members_in_dynamic_group" {
   command = plan
   variables {
-    group_types     = ["DynamicMembership"]
-    membership_rule = "user.department -eq \"Engineering\""
-    member_ids      = ["aaaaaaaa-0000-0000-0000-000000000001"]
+    groupTypes     = ["DynamicMembership"]
+    membershipRule = "user.department -eq \"Engineering\""
+    member_ids     = ["aaaaaaaa-0000-0000-0000-000000000001"]
   }
   expect_failures = [msgraph_resource.group]
 }
@@ -145,9 +145,9 @@ run "rejects_static_members_in_dynamic_group" {
 run "rejects_dynamic_role_assignable_group" {
   command = plan
   variables {
-    group_types           = ["DynamicMembership"]
-    membership_rule       = "user.department -eq \"Engineering\""
-    is_assignable_to_role = true
+    groupTypes         = ["DynamicMembership"]
+    membershipRule     = "user.department -eq \"Engineering\""
+    isAssignableToRole = true
   }
   expect_failures = [msgraph_resource.group]
 }
@@ -155,10 +155,10 @@ run "rejects_dynamic_role_assignable_group" {
 run "rejects_a_public_role_assignable_group" {
   command = plan
   variables {
-    group_types           = ["Unified"]
-    mail_enabled          = true
-    visibility            = "Public"
-    is_assignable_to_role = true
+    groupTypes         = ["Unified"]
+    mailEnabled        = true
+    visibility         = "Public"
+    isAssignableToRole = true
   }
   expect_failures = [msgraph_resource.group]
 }
@@ -175,10 +175,10 @@ run "accepts_a_private_role_assignable_microsoft_365_group" {
   command   = plan
   state_key = "plan_only"
   variables {
-    group_types           = ["Unified"]
-    mail_enabled          = true
-    visibility            = "Private"
-    is_assignable_to_role = true
+    groupTypes         = ["Unified"]
+    mailEnabled        = true
+    visibility         = "Private"
+    isAssignableToRole = true
   }
   assert {
     condition     = msgraph_resource.group.body.isAssignableToRole && msgraph_resource.group.body.visibility == "Private"
@@ -190,8 +190,8 @@ run "creates_unified_group" {
   command   = plan
   state_key = "plan_only"
   variables {
-    group_types  = ["Unified"]
-    mail_enabled = true
+    groupTypes  = ["Unified"]
+    mailEnabled = true
   }
   assert {
     condition     = msgraph_resource.group.body.mailEnabled
@@ -202,7 +202,7 @@ run "creates_unified_group" {
 run "accepts_a_period_in_mail_nickname" {
   command = plan
   variables {
-    mail_nickname = "help.desk"
+    mailNickname = "help.desk"
   }
   assert {
     condition     = msgraph_resource.group.body.mailNickname == "help.desk"
@@ -213,63 +213,63 @@ run "accepts_a_period_in_mail_nickname" {
 run "rejects_an_at_sign_in_mail_nickname" {
   command = plan
   variables {
-    mail_nickname = "help@desk"
+    mailNickname = "help@desk"
   }
-  expect_failures = [var.mail_nickname]
+  expect_failures = [var.mailNickname]
 }
 
 run "rejects_a_backslash_in_mail_nickname" {
   command = plan
   variables {
-    mail_nickname = "help\\desk"
+    mailNickname = "help\\desk"
   }
-  expect_failures = [var.mail_nickname]
+  expect_failures = [var.mailNickname]
 }
 
 run "rejects_a_bracket_in_mail_nickname" {
   command = plan
   variables {
-    mail_nickname = "help]desk"
+    mailNickname = "help]desk"
   }
-  expect_failures = [var.mail_nickname]
+  expect_failures = [var.mailNickname]
 }
 
 run "rejects_a_quote_in_mail_nickname" {
   command = plan
   variables {
-    mail_nickname = "help\"desk"
+    mailNickname = "help\"desk"
   }
-  expect_failures = [var.mail_nickname]
+  expect_failures = [var.mailNickname]
 }
 
 run "rejects_an_angle_bracket_in_mail_nickname" {
   command = plan
   variables {
-    mail_nickname = "help<desk"
+    mailNickname = "help<desk"
   }
-  expect_failures = [var.mail_nickname]
+  expect_failures = [var.mailNickname]
 }
 
 run "rejects_a_non_ascii_mail_nickname" {
   command = plan
   variables {
-    mail_nickname = "gruppe-zürich"
+    mailNickname = "gruppe-zürich"
   }
-  expect_failures = [var.mail_nickname]
+  expect_failures = [var.mailNickname]
 }
 
 run "rejects_a_mail_nickname_longer_than_64_characters" {
   command = plan
   variables {
-    mail_nickname = "a234567890123456789012345678901234567890123456789012345678901234x"
+    mailNickname = "a234567890123456789012345678901234567890123456789012345678901234x"
   }
-  expect_failures = [var.mail_nickname]
+  expect_failures = [var.mailNickname]
 }
 
 run "accepts_a_64_character_mail_nickname" {
   command = plan
   variables {
-    mail_nickname = "a234567890123456789012345678901234567890123456789012345678901234"
+    mailNickname = "a234567890123456789012345678901234567890123456789012345678901234"
   }
   assert {
     condition     = length(msgraph_resource.group.body.mailNickname) == 64
@@ -299,7 +299,7 @@ run "false_role_assignability_keeps_the_group" {
   command = apply
 
   variables {
-    is_assignable_to_role = false
+    isAssignableToRole = false
   }
 
   override_resource {
@@ -325,7 +325,7 @@ run "role_assignability_replaces_the_group" {
   command = apply
 
   variables {
-    is_assignable_to_role = true
+    isAssignableToRole = true
   }
 
   override_resource {
@@ -351,8 +351,8 @@ run "other_changes_keep_a_role_assignable_group" {
   command = apply
 
   variables {
-    is_assignable_to_role = true
-    description           = "Role holders"
+    isAssignableToRole = true
+    description        = "Role holders"
   }
 
   override_resource {
@@ -392,8 +392,8 @@ run "adding_dynamic_membership_updates_in_place" {
   command = apply
 
   variables {
-    group_types     = ["DynamicMembership"]
-    membership_rule = "user.department -eq \"Engineering\""
+    groupTypes     = ["DynamicMembership"]
+    membershipRule = "user.department -eq \"Engineering\""
   }
 
   assert {
@@ -420,8 +420,8 @@ run "refuses_converting_a_security_group_to_microsoft_365" {
   command = plan
 
   variables {
-    group_types  = ["Unified"]
-    mail_enabled = true
+    groupTypes  = ["Unified"]
+    mailEnabled = true
   }
 
   expect_failures = [msgraph_resource.group]
@@ -440,8 +440,8 @@ run "fails_when_graph_ignores_mail_enabled" {
   state_key = "ignored_mail"
 
   variables {
-    group_types  = ["Unified"]
-    mail_enabled = true
+    groupTypes  = ["Unified"]
+    mailEnabled = true
   }
 
   override_resource {
@@ -460,8 +460,8 @@ run "fails_when_graph_ignores_unified" {
   state_key = "ignored_unified"
 
   variables {
-    group_types  = ["Unified"]
-    mail_enabled = true
+    groupTypes  = ["Unified"]
+    mailEnabled = true
   }
 
   override_resource {
@@ -497,9 +497,9 @@ run "private_microsoft_365_group" {
   state_key = "microsoft_365"
 
   variables {
-    group_types  = ["Unified"]
-    mail_enabled = true
-    visibility   = "Private"
+    groupTypes  = ["Unified"]
+    mailEnabled = true
+    visibility  = "Private"
   }
 
   override_resource {
@@ -521,9 +521,9 @@ run "private_to_public_updates_in_place" {
   state_key = "microsoft_365"
 
   variables {
-    group_types  = ["Unified"]
-    mail_enabled = true
-    visibility   = "Public"
+    groupTypes  = ["Unified"]
+    mailEnabled = true
+    visibility  = "Public"
   }
 
   override_resource {
@@ -545,9 +545,9 @@ run "hidden_membership_replaces_the_group" {
   state_key = "microsoft_365"
 
   variables {
-    group_types  = ["Unified"]
-    mail_enabled = true
-    visibility   = "HiddenMembership"
+    groupTypes  = ["Unified"]
+    mailEnabled = true
+    visibility  = "HiddenMembership"
   }
 
   override_resource {
@@ -574,9 +574,9 @@ run "leaving_hidden_membership_replaces_the_group" {
   state_key = "microsoft_365"
 
   variables {
-    group_types  = ["Unified"]
-    mail_enabled = true
-    visibility   = "Public"
+    groupTypes  = ["Unified"]
+    mailEnabled = true
+    visibility  = "Public"
   }
 
   override_resource {
@@ -599,10 +599,10 @@ run "replacement_may_carry_new_mail_settings" {
   command = apply
 
   variables {
-    group_types           = ["Unified"]
-    mail_enabled          = true
-    visibility            = "Private"
-    is_assignable_to_role = true
+    groupTypes         = ["Unified"]
+    mailEnabled        = true
+    visibility         = "Private"
+    isAssignableToRole = true
   }
 
   override_resource {

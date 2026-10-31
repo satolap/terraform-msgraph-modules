@@ -5,9 +5,9 @@ run "minimal_request" {
   command = plan
 
   variables {
-    user_id           = "test-parent-id"
-    todo_task_list_id = "test-parent-id"
-    odata_type        = "#microsoft.graph.openTypeExtension"
+    user-id         = "test-parent-id"
+    todoTaskList-id = "test-parent-id"
+    odata_type      = "#microsoft.graph.openTypeExtension"
   }
 
   assert {
@@ -35,10 +35,10 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    user_id           = "test-parent-id"
-    todo_task_list_id = "test-parent-id"
-    odata_type        = "#microsoft.graph.openTypeExtension"
-    select_response   = true
+    user-id         = "test-parent-id"
+    todoTaskList-id = "test-parent-id"
+    odata_type      = "#microsoft.graph.openTypeExtension"
+    select_response = true
   }
 
   assert {
@@ -51,9 +51,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    user_id           = "test-parent-id"
-    todo_task_list_id = "test-parent-id"
-    odata_type        = "#microsoft.graph.openTypeExtension"
+    user-id         = "test-parent-id"
+    todoTaskList-id = "test-parent-id"
+    odata_type      = "#microsoft.graph.openTypeExtension"
   }
 
   assert {
@@ -66,9 +66,9 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    user_id           = "test-parent-id"
-    todo_task_list_id = "test-parent-id"
-    odata_type        = "__graphmodules_invalid_enum__"
+    user-id         = "test-parent-id"
+    todoTaskList-id = "test-parent-id"
+    odata_type      = "__graphmodules_invalid_enum__"
   }
 
   expect_failures = [var.odata_type]
@@ -78,9 +78,9 @@ run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    user_id           = "test-parent-id"
-    todo_task_list_id = "test-parent-id"
-    odata_type        = "#microsoft.graph.openTypeExtension"
+    user-id         = "test-parent-id"
+    todoTaskList-id = "test-parent-id"
+    odata_type      = "#microsoft.graph.openTypeExtension"
   }
 
   assert {
@@ -93,10 +93,10 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    user_id           = "test-parent-id"
-    todo_task_list_id = "test-parent-id"
-    odata_type        = "#microsoft.graph.openTypeExtension"
-    timeouts          = { create = "45m", update = "20m", read = "7m" }
+    user-id         = "test-parent-id"
+    todoTaskList-id = "test-parent-id"
+    odata_type      = "#microsoft.graph.openTypeExtension"
+    timeouts        = { create = "45m", update = "20m", read = "7m" }
   }
 
   assert {
@@ -109,10 +109,10 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    user_id           = "test-parent-id"
-    todo_task_list_id = "test-parent-id"
-    odata_type        = "#microsoft.graph.openTypeExtension"
-    timeouts          = { create = "10s" }
+    user-id         = "test-parent-id"
+    todoTaskList-id = "test-parent-id"
+    odata_type      = "#microsoft.graph.openTypeExtension"
+    timeouts        = { create = "10s" }
   }
 
   expect_failures = [var.timeouts]
@@ -122,10 +122,10 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    user_id           = "test-parent-id"
-    todo_task_list_id = "test-parent-id"
-    odata_type        = "#microsoft.graph.openTypeExtension"
-    timeouts          = { update = "soon" }
+    user-id         = "test-parent-id"
+    todoTaskList-id = "test-parent-id"
+    odata_type      = "#microsoft.graph.openTypeExtension"
+    timeouts        = { update = "soon" }
   }
 
   expect_failures = [var.timeouts]
@@ -135,10 +135,10 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    user_id           = "test-parent-id"
-    todo_task_list_id = "test-parent-id"
-    odata_type        = "#microsoft.graph.openTypeExtension"
-    timeouts          = { delete = "0s" }
+    user-id         = "test-parent-id"
+    todoTaskList-id = "test-parent-id"
+    odata_type      = "#microsoft.graph.openTypeExtension"
+    timeouts        = { delete = "0s" }
   }
 
   expect_failures = [var.timeouts]

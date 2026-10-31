@@ -29,8 +29,8 @@ run "restore_on_first_apply_is_a_no_op" {
   command = apply
 
   variables {
-    external_user_lifecycle_action = "none"
-    restore_previous_state         = true
+    externalUserLifecycleAction = "none"
+    restore_previous_state      = true
   }
 
   assert {

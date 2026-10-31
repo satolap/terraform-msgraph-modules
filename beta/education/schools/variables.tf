@@ -18,7 +18,7 @@ variable "address" {
   }
 }
 
-variable "administrative_unit" {
+variable "administrativeUnit" {
   description = "Microsoft Graph administrativeUnit property."
   type        = any
   default     = null
@@ -285,7 +285,7 @@ variable "classes" {
   }
 }
 
-variable "created_by" {
+variable "createdBy" {
   description = "Entity who created the school."
   type        = any
   default     = null
@@ -297,36 +297,36 @@ variable "description" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "Organization display name."
   type        = string
   default     = null
 }
 
-variable "external_id" {
+variable "externalId" {
   description = "ID of school in syncing system."
   type        = string
   default     = null
 }
 
-variable "external_principal_id" {
+variable "externalPrincipalId" {
   description = "ID of principal in syncing system."
   type        = string
   default     = null
 }
 
-variable "external_source" {
+variable "externalSource" {
   description = "Where this user was created from. The possible values are: sis, lms, or manual."
   type        = string
   default     = null
 
   validation {
-    condition     = var.external_source == null ? true : contains(["sis", "manual"], var.external_source)
-    error_message = "external_source must be one of the documented enum values."
+    condition     = var.externalSource == null ? true : contains(["sis", "manual"], var.externalSource)
+    error_message = "externalSource must be one of the documented enum values."
   }
 }
 
-variable "external_source_detail" {
+variable "externalSourceDetail" {
   description = "Microsoft Graph externalSourceDetail property."
   type        = string
   default     = null
@@ -338,13 +338,13 @@ variable "fax" {
   default     = null
 }
 
-variable "highest_grade" {
+variable "highestGrade" {
   description = "Highest grade taught."
   type        = string
   default     = null
 }
 
-variable "lowest_grade" {
+variable "lowestGrade" {
   description = "Lowest grade taught."
   type        = string
   default     = null
@@ -363,19 +363,19 @@ variable "phone" {
   default     = null
 }
 
-variable "principal_email" {
+variable "principalEmail" {
   description = "Email address of the principal."
   type        = string
   default     = null
 }
 
-variable "principal_name" {
+variable "principalName" {
   description = "Name of the principal."
   type        = string
   default     = null
 }
 
-variable "school_number" {
+variable "schoolNumber" {
   description = "School Number."
   type        = string
   default     = null

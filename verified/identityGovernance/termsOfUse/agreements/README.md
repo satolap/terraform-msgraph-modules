@@ -28,21 +28,21 @@ Terraform state. Read them with the owner-dispatched probe in the
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "guest_terms" {
   source  = "satolap/modules/msgraph//verified/identityGovernance/termsOfUse/agreements"
   version = "<version>"
 
-  display_name                          = "Guest terms of use"
-  is_viewing_before_acceptance_required = true
+  displayName                       = "Guest terms of use"
+  isViewingBeforeAcceptanceRequired = true
 
   # The default file is created together with the agreement and fixed from then on.
   default_file = {
     language       = "en"
-    file_name      = "guest-terms.pdf"
-    display_name   = "Guest terms of use"
+    fileName      = "guest-terms.pdf"
+    displayName   = "Guest terms of use"
     content_base64 = filebase64("${path.module}/guest-terms-en.pdf")
   }
 
@@ -50,8 +50,8 @@ module "guest_terms" {
   additional_files = {
     french = {
       language       = "fr-FR"
-      file_name      = "guest-terms-fr.pdf"
-      display_name   = "Conditions d'utilisation"
+      fileName      = "guest-terms-fr.pdf"
+      displayName   = "Conditions d'utilisation"
       content_base64 = filebase64("${path.module}/guest-terms-fr.pdf")
     }
   }
@@ -66,17 +66,17 @@ output "agreement_id" {
 
 Creating the agreement changes nothing for any user. To require it, create a Conditional Access
 policy with the
-[policies module](../../../identity/conditional-access/policies/README.md) and pass the agreement
+[policies module](../../../identity/conditionalAccess/policies/README.md) and pass the agreement
 ID as a grant control. Leave the policy **report-only** (the module's default state,
 `enabledForReportingButNotEnforced`) until the sign-in reports show who it would prompt, and
 exclude the emergency access accounts as that module requires:
 
 ```hcl
 module "guest_terms_policy" {
-  source  = "satolap/modules/msgraph//verified/identity/conditional-access/policies"
+  source  = "satolap/modules/msgraph//verified/identity/conditionalAccess/policies"
   version = "<version>"
 
-  display_name = "Guests accept the terms of use"
+  displayName = "Guests accept the terms of use"
   # state defaults to enabledForReportingButNotEnforced; set "enabled" only after reviewing it.
 
   grant_controls = {
@@ -133,7 +133,7 @@ who must accept.
 The PDF is part of the request body, and the provider keeps the body in the Terraform state, so
 the document is stored in the state file (as a sensitive value: a plan shows `(sensitive value)`
 instead of the base64 text). Only the PDF leaf is marked, but Terraform may still show the whole
-request `body` as sensitive, in which case a `display_name` change is not visible in the plan: read
+request `body` as sensitive, in which case a `displayName` change is not visible in the plan: read
 it from the configuration diff. Treat the state as holding the agreement text. A terms of use
 document is meant for every user who signs in, but if yours is not public, keep the state in a
 backend that is access-controlled and encrypted. The module's outputs never carry the content:
@@ -158,7 +158,7 @@ So after an agreement exists:
   documents.
 - **A new language** is added by a new `additional_files` key.
 - **A change to a file that was already applied** (its PDF, name, language, display name or
-  `is_major_version`, in `default_file` or in an `additional_files` entry) is **refused** by a
+  `isMajorVersion`, in `default_file` or in an `additional_files` entry) is **refused** by a
   plan-time check (`terraform_data.guard`), because Graph has no documented call for it and the
   provider would otherwise plan a request that Graph does not document or silently drop the
   change. The check compares the configuration with a record of what was applied
@@ -187,9 +187,9 @@ So after an agreement exists:
     old agreement keeps or discards them is not documented.
   - Learn does not say that an agreement display name must be unique, so the old and the new
     agreement may exist with the same name for a moment. This is unverified; the live runbook
-    probes it. If Graph refuses the create, change `display_name` in an earlier apply.
+    probes it. If Graph refuses the create, change `displayName` in an earlier apply.
 
-`is_major_version` is Learn's flag for a file update: a major version update invalidates the
+`isMajorVersion` is Learn's flag for a file update: a major version update invalidates the
 agreement's acceptances for that language. The module can only send it with a *new* language
 file, where it has no earlier acceptance to invalidate; it cannot re-version an existing file.
 
@@ -286,11 +286,11 @@ Sources: [Conditional Access license requirements](https://learn.microsoft.com/e
 
 | Name | Description | Type | Default | Required | On change |
 |------|-------------|------|---------|----------| --- |
-| display_name | Display name of the agreement (internal; end users see the file display names); updated in place | `string` | n/a | yes | in place |
-| default_file | The default localized PDF, created with the agreement: `language`, `file_name`, optional `display_name`, `content_base64`; fixed after creation | `object` | n/a | yes | kept from creation: a change is refused or ignored (see notes) |
-| is_viewing_before_acceptance_required | Whether a user has to expand the agreement before accepting; updated in place | `bool` | `false` | no | in place |
+| displayName | Display name of the agreement (internal; end users see the file display names); updated in place | `string` | n/a | yes | in place |
+| default_file | The default localized PDF, created with the agreement: `language`, `fileName`, optional `displayName`, `content_base64`; fixed after creation | `object` | n/a | yes | kept from creation: a change is refused or ignored (see notes) |
+| isViewingBeforeAcceptanceRequired | Whether a user has to expand the agreement before accepting; updated in place | `bool` | `false` | no | in place |
 | additional_files | Further localized PDFs by key, each posted once; a key can be added, but a changed or removed entry is refused or forgotten | `map(object)` | `{}` | no | creates or deletes `msgraph_resource_action.file` instances; kept from creation: a change is refused or ignored (see notes) |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that displayName must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
 | licence_check | Opt-in plan-time check that a usable Microsoft Entra ID P1 subscription exists; reads `GET /subscribedSkus` only when `true` | `bool` | `false` | no | changes `module.licence_guard`; see the module notes |
 
 ## Outputs
@@ -319,7 +319,7 @@ and acceptance testing apart.
    administrator, `GET identityGovernance/termsOfUse/agreements/{id}?$expand=files`: the default
    file is present with the configured language and `isDefault: true`. This is the first proof that
    the create call accepts the `files` array (GB-terms-of-use-504).
-2. Change `display_name` and `is_viewing_before_acceptance_required` and apply; the ID must stay
+2. Change `displayName` and `isViewingBeforeAcceptanceRequired` and apply; the ID must stay
    the same and a refresh-only plan must be empty.
 3. Add an `additional_files` entry; confirm the file appears and that a second apply posts nothing.
 4. Remove that entry; confirm the file stays in the agreement and that a plan is empty.
@@ -335,7 +335,7 @@ record Graph's answer and the policy's state afterwards. Never enable the policy
 **Acceptance probe** (separate run, one dedicated test user, read-only for the module): have the
 test user sign in and accept; read `GET identityGovernance/termsOfUse/agreements/{id}/acceptances`
 with `AgreementAcceptance.Read.All` as the administrator and record the count and the state only.
-Add a language file with `is_major_version = true` and a replacement agreement, and record whether
+Add a language file with `isMajorVersion = true` and a replacement agreement, and record whether
 the user is asked again. Never create, approve or delete an acceptance, and keep the user
 identifiers, names and the document out of public artifacts.
 
@@ -354,10 +354,54 @@ change-guard pattern (GB-write-semantics-515).
 
 Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
 
-- `display_name`: in place.
-- `is_viewing_before_acceptance_required`: in place.
+- `displayName`: in place.
+- `isViewingBeforeAcceptanceRequired`: in place.
 - `default_file`: kept from creation: a change is refused or ignored (see notes).
 - `additional_files`: creates or deletes `msgraph_resource_action.file` instances; kept from creation: a change is refused or ignored (see notes).
 - `name_pattern`: no object change (validation or timing only).
 - `licence_check`: changes `module.licence_guard`; see the module notes.
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /identityGovernance/termsOfUse/agreements` | DelegatedWork | `Agreement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/termsOfUse/agreements` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/termsOfUse/agreements` | Application | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/termsOfUse/agreements/{id}` | DelegatedWork | `Agreement.Read.All` | - | - |
+| `GET /identityGovernance/termsOfUse/agreements/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/termsOfUse/agreements/{id}` | Application | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /identityGovernance/termsOfUse/agreements/{id}` | DelegatedWork | `Agreement.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/termsOfUse/agreements/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /identityGovernance/termsOfUse/agreements/{id}` | Application | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /identityGovernance/termsOfUse/agreements/{id}` | DelegatedWork | `Agreement.ReadWrite.All` | - | - |
+| `PATCH /identityGovernance/termsOfUse/agreements/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /identityGovernance/termsOfUse/agreements/{id}` | Application | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/termsOfUse/agreements/{id}/files` | DelegatedWork | `Agreement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/termsOfUse/agreements/{id}/files` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/termsOfUse/agreements/{id}/files` | Application | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /subscribedSkus` | DelegatedWork | `LicenseAssignment.Read.All` | - | - |
+| `GET /subscribedSkus` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /subscribedSkus` | Application | `LicenseAssignment.Read.All` | - | - |
+
+DevX uses equivalent route spellings for these requests (the inventory retains both):
+
+- `POST /identityGovernance/termsOfUse/agreements/{id}/files` -> `/agreements/{id}/files`.
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /identityGovernance/termsOfUse/agreements` | `displayName`, `files`, `isViewingBeforeAcceptanceRequired` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /identityGovernance/termsOfUse/agreements/{id}` | `displayName`, `files`, `isViewingBeforeAcceptanceRequired` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `GET /subscribedSkus` | `capabilityStatus`, `prepaidUnits`, `servicePlans`, `skuId`, `skuPartNumber` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

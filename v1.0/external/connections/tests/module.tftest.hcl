@@ -42,9 +42,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    connector_id      = "example"
-    activity_settings = { "urlToItemResolvers" = null }
-    groups            = [{}]
+    connectorId      = "example"
+    activitySettings = { "urlToItemResolvers" = null }
+    groups           = [{}]
   }
 
   assert {
@@ -67,10 +67,10 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    content_category = "__graphmodules_invalid_enum__"
+    contentCategory = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.content_category]
+  expect_failures = [var.contentCategory]
 }
 
 run "timeouts_unset_sends_no_block" {

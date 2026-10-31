@@ -17,14 +17,14 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//v1.0/education/classes/assignments/submissions/outcomes"
   version = "<version>"
 
-  education_class_id = "parent-object-id"
-  education_assignment_id = "parent-object-id"
-  education_submission_id = "parent-object-id"
+  educationClass-id = "parent-object-id"
+  educationAssignment-id = "parent-object-id"
+  educationSubmission-id = "parent-object-id"
   odata_type = "#microsoft.graph.educationFeedbackOutcome"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -52,12 +52,12 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `education_class_id` | URL parameter `educationClass-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `education_assignment_id` | URL parameter `educationAssignment-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `education_submission_id` | URL parameter `educationSubmission-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `educationClass-id` | URL parameter `educationClass-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `educationAssignment-id` | URL parameter `educationAssignment-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `educationSubmission-id` | URL parameter `educationSubmission-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
 | `odata_type` | `@odata.type` | `string` | yes | no | in place |
-| `last_modified_by` | `lastModifiedBy` | `any` | no | no | in place |
-| `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no | in place |
+| `lastModifiedBy` | `lastModifiedBy` | `any` | no | no | in place |
+| `lastModifiedDateTime` | `lastModifiedDateTime` | `string` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults, except for abstract types listed in the generation notes: set their `odata_type` to a concrete type.

@@ -3,11 +3,11 @@ mock_provider "msgraph" {}
 # Synthetic content only: the base64 text below decodes to a few ASCII characters that start with
 # the PDF header. No real document is part of this repository.
 variables {
-  display_name = "Terms of use for guests"
+  displayName = "Terms of use for guests"
 
   default_file = {
     language       = "en"
-    file_name      = "TOU.pdf"
+    fileName       = "TOU.pdf"
     content_base64 = "JVBERi0xLjQgc3ludGhldGljIGVuZ2xpc2g="
   }
 }
@@ -24,9 +24,9 @@ run "accepts_the_minimal_configuration" {
 run "rejects_an_empty_display_name" {
   command = plan
   variables {
-    display_name = "  "
+    displayName = "  "
   }
-  expect_failures = [var.display_name]
+  expect_failures = [var.displayName]
 }
 
 run "rejects_a_language_that_is_not_a_language_tag" {
@@ -34,7 +34,7 @@ run "rejects_a_language_that_is_not_a_language_tag" {
   variables {
     default_file = {
       language       = "english"
-      file_name      = "TOU.pdf"
+      fileName       = "TOU.pdf"
       content_base64 = "JVBERi0xLjQgc3ludGhldGljIGVuZ2xpc2g="
     }
   }
@@ -46,7 +46,7 @@ run "accepts_country_and_script_subtags" {
   variables {
     default_file = {
       language       = "zh-Hant-TW"
-      file_name      = "TOU.pdf"
+      fileName       = "TOU.pdf"
       content_base64 = "JVBERi0xLjQgc3ludGhldGljIGVuZ2xpc2g="
     }
   }
@@ -62,7 +62,7 @@ run "rejects_a_file_name_with_a_path_separator" {
   variables {
     default_file = {
       language       = "en"
-      file_name      = "../TOU.pdf"
+      fileName       = "../TOU.pdf"
       content_base64 = "JVBERi0xLjQgc3ludGhldGljIGVuZ2xpc2g="
     }
   }
@@ -74,8 +74,8 @@ run "rejects_an_empty_file_display_name" {
   variables {
     default_file = {
       language       = "en"
-      file_name      = "TOU.pdf"
-      display_name   = " "
+      fileName       = "TOU.pdf"
+      displayName    = " "
       content_base64 = "JVBERi0xLjQgc3ludGhldGljIGVuZ2xpc2g="
     }
   }
@@ -87,7 +87,7 @@ run "rejects_content_that_is_not_base64" {
   variables {
     default_file = {
       language       = "en"
-      file_name      = "TOU.pdf"
+      fileName       = "TOU.pdf"
       content_base64 = "JVBERi0 not base64!"
     }
   }
@@ -99,7 +99,7 @@ run "rejects_unpadded_base64" {
   variables {
     default_file = {
       language       = "en"
-      file_name      = "TOU.pdf"
+      fileName       = "TOU.pdf"
       content_base64 = "JVBERi0xLjQgc3ludGhldGljIGVuZ2xpc2g"
     }
   }
@@ -111,7 +111,7 @@ run "rejects_content_that_is_not_a_pdf" {
   variables {
     default_file = {
       language       = "en"
-      file_name      = "TOU.pdf"
+      fileName       = "TOU.pdf"
       content_base64 = "bm90IGEgcGRmIGF0IGFsbCEh"
     }
   }
@@ -123,7 +123,7 @@ run "rejects_content_over_the_size_limit" {
   variables {
     default_file = {
       language       = "en"
-      file_name      = "TOU.pdf"
+      fileName       = "TOU.pdf"
       content_base64 = "JVBERi0A${join("", [for i in range(699) : join("", [for j in range(1000) : "AAAA"])])}${join("", [for j in range(48) : "AAAA"])}AAAA"
     }
   }
@@ -135,7 +135,7 @@ run "accepts_content_at_the_size_limit" {
   variables {
     default_file = {
       language       = "en"
-      file_name      = "TOU.pdf"
+      fileName       = "TOU.pdf"
       content_base64 = "JVBERi0A${join("", [for i in range(699) : join("", [for j in range(1000) : "AAAA"])])}${join("", [for j in range(48) : "AAAA"])}AAA="
     }
   }
@@ -152,7 +152,7 @@ run "rejects_an_additional_file_key_that_is_not_a_name" {
     additional_files = {
       "Not A Key" = {
         language       = "fr"
-        file_name      = "TOU-fr.pdf"
+        fileName       = "TOU-fr.pdf"
         content_base64 = "JVBERi0xLjQgc3ludGhldGljIGZyZW5jaA=="
       }
     }
@@ -166,7 +166,7 @@ run "rejects_an_additional_file_with_bad_content" {
     additional_files = {
       french = {
         language       = "fr"
-        file_name      = "TOU-fr.pdf"
+        fileName       = "TOU-fr.pdf"
         content_base64 = "bm90IGEgcGRmIGF0IGFsbCEh"
       }
     }
@@ -180,7 +180,7 @@ run "rejects_an_additional_file_with_a_bad_language" {
     additional_files = {
       french = {
         language       = "f"
-        file_name      = "TOU-fr.pdf"
+        fileName       = "TOU-fr.pdf"
         content_base64 = "JVBERi0xLjQgc3ludGhldGljIGZyZW5jaA=="
       }
     }
@@ -194,7 +194,7 @@ run "rejects_a_language_repeated_in_another_case" {
     additional_files = {
       english_again = {
         language       = "EN"
-        file_name      = "TOU-2.pdf"
+        fileName       = "TOU-2.pdf"
         content_base64 = "JVBERi0xLjQgc3ludGhldGljIGZyZW5jaA=="
       }
     }
@@ -208,12 +208,12 @@ run "rejects_two_additional_files_with_the_same_language" {
     additional_files = {
       first = {
         language       = "fr"
-        file_name      = "TOU-fr.pdf"
+        fileName       = "TOU-fr.pdf"
         content_base64 = "JVBERi0xLjQgc3ludGhldGljIGZyZW5jaA=="
       }
       second = {
         language       = "fr"
-        file_name      = "TOU-fr-2.pdf"
+        fileName       = "TOU-fr-2.pdf"
         content_base64 = "JVBERi0xLjQgc3ludGhldGljIGdlcm1hbg=="
       }
     }

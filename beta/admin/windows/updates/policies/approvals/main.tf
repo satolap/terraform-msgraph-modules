@@ -1,7 +1,7 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "catalogEntryId" = var.catalog_entry_id
+    "catalogEntryId" = var.catalogEntryId
     "@odata.type"    = var.odata_type
     "status"         = var.status
   } : key => value if value != null }
@@ -13,7 +13,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "admin/windows/updates/policies/${urlencode(var.policy_id)}/approvals"
+  url                     = "admin/windows/updates/policies/${urlencode(var.policy-id)}/approvals"
   api_version             = "beta"
   update_method           = "PATCH"
   body                    = local.body

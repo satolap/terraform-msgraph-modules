@@ -23,11 +23,11 @@ override_data {
   values = { output = { roles = [], next_link = null } }
 }
 variables {
-  tenant_id          = "99999999-9999-4999-8999-999999999999"
-  scope_type         = "tenant"
-  directory_scope_id = "/"
-  principal_id       = "11111111-1111-4111-8111-111111111111"
-  role_definition_id = "22222222-2222-4222-8222-222222222222"
+  tenant_id        = "99999999-9999-4999-8999-999999999999"
+  scope_type       = "tenant"
+  directoryScopeId = "/"
+  principalId      = "11111111-1111-4111-8111-111111111111"
+  roleDefinitionId = "22222222-2222-4222-8222-222222222222"
 }
 
 run "creates_builtin_tenant_assignment" {
@@ -49,7 +49,7 @@ run "unchanged_inputs_keep_assignment" {
 run "replaces_for_principal" {
   command = plan
   variables {
-    principal_id = "33333333-3333-4333-8333-333333333333"
+    principalId = "33333333-3333-4333-8333-333333333333"
   }
   override_data {
     target = data.msgraph_resource.role
@@ -75,8 +75,8 @@ run "replaces_for_principal" {
 run "replaces_for_custom_role" {
   command = plan
   variables {
-    role_definition_id = "11111111-1111-4111-8111-111111111111"
-    role_type          = "custom"
+    roleDefinitionId = "11111111-1111-4111-8111-111111111111"
+    role_type        = "custom"
   }
   override_data {
     target = data.msgraph_resource.role
@@ -102,8 +102,8 @@ run "replaces_for_custom_role" {
 run "replaces_for_au_scope" {
   command = plan
   variables {
-    directory_scope_id = "/administrativeUnits/11111111-1111-4111-8111-111111111111"
-    scope_type         = "administrative_unit"
+    directoryScopeId = "/administrativeUnits/11111111-1111-4111-8111-111111111111"
+    scope_type       = "administrative_unit"
   }
   override_data {
     target = data.msgraph_resource.role
@@ -129,8 +129,8 @@ run "replaces_for_au_scope" {
 run "replaces_for_application_scope" {
   command = plan
   variables {
-    directory_scope_id = "/11111111-1111-4111-8111-111111111111"
-    scope_type         = "application"
+    directoryScopeId = "/11111111-1111-4111-8111-111111111111"
+    scope_type       = "application"
   }
   override_data {
     target = data.msgraph_resource.role
@@ -156,8 +156,8 @@ run "replaces_for_application_scope" {
 run "replaces_selector_even_for_same_role" {
   command = plan
   variables {
-    role_definition_id = null
-    template_id        = "33333333-3333-4333-8333-333333333333"
+    roleDefinitionId = null
+    template_id      = "33333333-3333-4333-8333-333333333333"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -183,8 +183,8 @@ run "replaces_selector_even_for_same_role" {
 run "replaces_name_selector" {
   command = plan
   variables {
-    role_definition_id = null
-    role_display_name  = "Example role"
+    roleDefinitionId  = null
+    role_display_name = "Example role"
   }
   override_data {
     target = data.msgraph_resource.roles
@@ -228,7 +228,7 @@ run "returns_to_definition_selector" {
 
 run "hex_case_baseline" {
   command = plan
-  variables { principal_id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa" }
+  variables { principalId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa" }
   override_resource {
     override_during = plan
     target          = msgraph_resource.assignment
@@ -246,7 +246,7 @@ run "hex_case_baseline" {
 }
 run "guid_case_does_not_replace" {
   command = plan
-  variables { principal_id = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA" }
+  variables { principalId = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA" }
   override_resource {
     override_during = plan
     target          = msgraph_resource.assignment

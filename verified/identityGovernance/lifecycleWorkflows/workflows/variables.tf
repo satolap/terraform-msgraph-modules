@@ -1,11 +1,11 @@
-variable "display_name" {
+variable "displayName" {
   description = "Display name of the workflow. Microsoft Learn documents it as a unique string that identifies the workflow, and it can be updated in place."
   type        = string
   nullable    = false
 
   validation {
-    condition     = try(length(trimspace(var.display_name)) > 0, false)
-    error_message = "display_name must not be empty."
+    condition     = try(length(trimspace(var.displayName)) > 0, false)
+    error_message = "displayName must not be empty."
   }
 }
 
@@ -34,8 +34,8 @@ variable "execution_conditions" {
     - type "trigger_and_scope": the workflow runs on a schedule for the users that a rule selects.
       Set scope_rule (a rule over user properties, such as "(department eq 'Marketing')", sent as a
       ruleBasedSubjectSet) and trigger. The trigger is a timeBasedAttributeTrigger:
-      time_based_attribute is "employeeHireDate", "employeeLeaveDateTime" or "createdDateTime", and
-      offset_in_days is between -180 and 180 days before or after it. The module checks that the rule
+      timeBasedAttribute is "employeeHireDate", "employeeLeaveDateTime" or "createdDateTime", and
+      offsetInDays is between -180 and 180 days before or after it. The module checks that the rule
       is not empty; it does not parse the rule, so it cannot tell how many users the rule selects.
     - type "on_demand": the workflow runs only when someone starts it. Set neither scope_rule nor trigger.
   EOT
@@ -43,8 +43,9 @@ variable "execution_conditions" {
     type       = string
     scope_rule = optional(string)
     trigger = optional(object({
-      time_based_attribute = string
-      offset_in_days       = optional(number, 0)
+      timeBasedAttribute = string
+      offsetInDays       = optional(number, 0)
+      offset_in_days     = optional(any)
     }))
   })
   nullable = false
@@ -67,12 +68,19 @@ variable "execution_conditions" {
     # Terraform before 1.12 evaluates both operands of || and &&, so a conditional guards the
     # trigger attributes instead.
     condition = try(var.execution_conditions.trigger == null ? true : (
-      contains(["employeeHireDate", "employeeLeaveDateTime", "createdDateTime"], var.execution_conditions.trigger.time_based_attribute) &&
-      var.execution_conditions.trigger.offset_in_days == floor(var.execution_conditions.trigger.offset_in_days) &&
-      var.execution_conditions.trigger.offset_in_days >= -180 &&
-      var.execution_conditions.trigger.offset_in_days <= 180
+      contains(["employeeHireDate", "employeeLeaveDateTime", "createdDateTime"], var.execution_conditions.trigger.timeBasedAttribute) &&
+      var.execution_conditions.trigger.offsetInDays == floor(var.execution_conditions.trigger.offsetInDays) &&
+      var.execution_conditions.trigger.offsetInDays >= -180 &&
+      var.execution_conditions.trigger.offsetInDays <= 180
     ), false)
-    error_message = "execution_conditions.trigger.time_based_attribute must be \"employeeHireDate\", \"employeeLeaveDateTime\" or \"createdDateTime\", and offset_in_days a whole number from -180 to 180."
+    error_message = "execution_conditions.trigger.timeBasedAttribute must be \"employeeHireDate\", \"employeeLeaveDateTime\" or \"createdDateTime\", and offsetInDays a whole number from -180 to 180."
+  }
+
+  # legacy-names guard: v4.0.0 spelled these attributes in snake_case; the object type would otherwise
+  # drop them and fall back to the default.
+  validation {
+    condition     = !can(regex("\"(offset_in_days)\":[^n]", jsonencode(var.execution_conditions)))
+    error_message = "execution_conditions no longer accepts the v4.0.0 snake_case attribute names; rename them to Graph's names (offset_in_days -> offsetInDays). An old name that is silently dropped would fall back to its default."
   }
 }
 
@@ -87,7 +95,7 @@ variable "tasks" {
       extension task ("run_a_custom_task_extension") needs its ID in acknowledged_custom_task_extension_ids
       and an arguments entry customTaskExtensionID that is the ID of a custom task extension (a GUID,
       for example the id output of the customTaskExtensions module).
-    - display_name, and optionally description, continue_on_error (default false) and is_enabled (default true).
+    - displayName, and optionally description, continueOnError (default false) and isEnabled (default true).
     - arguments: a map of argument name to value. A name must be a parameter of the task definition,
       and a value for a parameter with a fixed set of values must be one of them.
 
@@ -97,10 +105,12 @@ variable "tasks" {
   EOT
   type = list(object({
     task              = string
-    display_name      = string
+    displayName       = string
     description       = optional(string, "")
-    continue_on_error = optional(bool, false)
-    is_enabled        = optional(bool, true)
+    continueOnError   = optional(bool, false)
+    continue_on_error = optional(any)
+    isEnabled         = optional(bool, true)
+    is_enabled        = optional(any)
     arguments         = optional(map(string), {})
   }))
   nullable = false
@@ -129,8 +139,8 @@ variable "tasks" {
   }
 
   validation {
-    condition     = alltrue([for t in var.tasks : try(length(trimspace(t.display_name)) > 0, false)])
-    error_message = "Every tasks[*].display_name must not be empty."
+    condition     = alltrue([for t in var.tasks : try(length(trimspace(t.displayName)) > 0, false)])
+    error_message = "Every tasks[*].displayName must not be empty."
   }
 
   validation {
@@ -156,24 +166,31 @@ variable "tasks" {
     condition     = alltrue([for t in var.tasks : contains(try(local.catalogue[t.task].categories, []), var.category)])
     error_message = "Every task's documented category list must include the workflow category."
   }
+
+  # legacy-names guard: v4.0.0 spelled these attributes in snake_case; the object type would otherwise
+  # drop them and fall back to the default.
+  validation {
+    condition     = alltrue([for t in var.tasks : try(t.continue_on_error == null && t.is_enabled == null, false)])
+    error_message = "tasks no longer accepts the v4.0.0 snake_case attribute names; rename them to Graph's names (continue_on_error -> continueOnError, is_enabled -> isEnabled). An old name that is silently dropped would fall back to its default."
+  }
 }
 
-variable "is_enabled" {
+variable "isEnabled" {
   description = "Whether the workflow is enabled (isEnabled). Defaults to false. Enabling it needs activation_opt_in. Updated in place."
   type        = bool
   default     = false
   nullable    = false
 }
 
-variable "is_scheduling_enabled" {
-  description = "Whether scheduling is enabled (isSchedulingEnabled). Defaults to false, independently of is_enabled. Enabling it needs activation_opt_in. Updated in place."
+variable "isSchedulingEnabled" {
+  description = "Whether scheduling is enabled (isSchedulingEnabled). Defaults to false, independently of isEnabled. Enabling it needs activation_opt_in. Updated in place."
   type        = bool
   default     = false
   nullable    = false
 }
 
 variable "activation_opt_in" {
-  description = "Explicit opt-in that must be true before is_enabled or is_scheduling_enabled may be true. It is not a Microsoft Graph property."
+  description = "Explicit opt-in that must be true before isEnabled or isSchedulingEnabled may be true. It is not a Microsoft Graph property."
   type        = bool
   default     = false
   nullable    = false
@@ -199,7 +216,7 @@ variable "acknowledged_custom_task_extension_ids" {
 }
 
 variable "name_pattern" {
-  description = "Regular expression (RE2 syntax, not anchored unless it says so) that display_name must match, such as the pattern of a naming convention. When it is set and display_name does not match, the plan fails. Null, the default, accepts any display_name."
+  description = "Regular expression (RE2 syntax, not anchored unless it says so) that displayName must match, such as the pattern of a naming convention. When it is set and displayName does not match, the plan fails. Null, the default, accepts any displayName."
   type        = string
   default     = null
 

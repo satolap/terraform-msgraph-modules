@@ -5,8 +5,8 @@ run "minimal_request" {
   command = plan
 
   variables {
-    team_id    = "test-parent-id"
-    channel_id = "test-parent-id"
+    team-id    = "test-parent-id"
+    channel-id = "test-parent-id"
     odata_type = "#microsoft.graph.aadUserConversationMember"
   }
 
@@ -35,8 +35,8 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    team_id         = "test-parent-id"
-    channel_id      = "test-parent-id"
+    team-id         = "test-parent-id"
+    channel-id      = "test-parent-id"
     odata_type      = "#microsoft.graph.aadUserConversationMember"
     select_response = true
   }
@@ -51,11 +51,11 @@ run "typed_request" {
   command = plan
 
   variables {
-    team_id      = "test-parent-id"
-    channel_id   = "test-parent-id"
-    odata_type   = "#microsoft.graph.aadUserConversationMember"
-    display_name = "example"
-    roles        = ["example"]
+    team-id     = "test-parent-id"
+    channel-id  = "test-parent-id"
+    odata_type  = "#microsoft.graph.aadUserConversationMember"
+    displayName = "example"
+    roles       = ["example"]
   }
 
   assert {
@@ -78,8 +78,8 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    team_id    = "test-parent-id"
-    channel_id = "test-parent-id"
+    team-id    = "test-parent-id"
+    channel-id = "test-parent-id"
     odata_type = "__graphmodules_invalid_enum__"
   }
 
@@ -90,8 +90,8 @@ run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    team_id    = "test-parent-id"
-    channel_id = "test-parent-id"
+    team-id    = "test-parent-id"
+    channel-id = "test-parent-id"
     odata_type = "#microsoft.graph.aadUserConversationMember"
   }
 
@@ -105,8 +105,8 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    team_id    = "test-parent-id"
-    channel_id = "test-parent-id"
+    team-id    = "test-parent-id"
+    channel-id = "test-parent-id"
     odata_type = "#microsoft.graph.aadUserConversationMember"
     timeouts   = { create = "45m", update = "20m", read = "7m" }
   }
@@ -121,8 +121,8 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    team_id    = "test-parent-id"
-    channel_id = "test-parent-id"
+    team-id    = "test-parent-id"
+    channel-id = "test-parent-id"
     odata_type = "#microsoft.graph.aadUserConversationMember"
     timeouts   = { create = "10s" }
   }
@@ -134,8 +134,8 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    team_id    = "test-parent-id"
-    channel_id = "test-parent-id"
+    team-id    = "test-parent-id"
+    channel-id = "test-parent-id"
     odata_type = "#microsoft.graph.aadUserConversationMember"
     timeouts   = { update = "soon" }
   }
@@ -147,8 +147,8 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    team_id    = "test-parent-id"
-    channel_id = "test-parent-id"
+    team-id    = "test-parent-id"
+    channel-id = "test-parent-id"
     odata_type = "#microsoft.graph.aadUserConversationMember"
     timeouts   = { delete = "0s" }
   }

@@ -16,7 +16,7 @@ Manages one Microsoft Entra ID Governance **Lifecycle Workflows custom task exte
 workflow task at an **existing Azure Logic App**, so that the built-in task "Run a custom task
 extension" can call it for each user a workflow runs for. It is not the entitlement management
 custom workflow extension, which is catalog-scoped and bound to a policy stage (see the
-[custom-extensions module](../../../identity-governance/entitlement-management/catalogs/custom-extensions/README.md)):
+[custom-extensions module](../../../identityGovernance/entitlementManagement/catalogs/customWorkflowExtensions/README.md)):
 the contracts differ and nothing is shared.
 
 The module **creates no Azure resource and reads none**. The Logic App, its resource group,
@@ -28,19 +28,19 @@ holds no secret; the request body holds only identifiers.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "manager_access" {
   source  = "satolap/modules/msgraph//verified/identityGovernance/lifecycleWorkflows/customTaskExtensions"
   version = "<version>"
 
-  display_name = "Grant manager access to mailbox"
+  displayName = "Grant manager access to mailbox"
 
   logic_app = {
-    subscription_id         = var.logic_app_subscription_id
-    resource_group_name     = "rg-lifecycle"
-    logic_app_workflow_name = "ManagerAccess"
+    subscriptionId         = var.logic_app_subscription_id
+    resourceGroupName     = "rg-lifecycle"
+    logicAppWorkflowName = "ManagerAccess"
   }
 
   authentication_resource_id = var.logic_app_auth_application_id
@@ -54,7 +54,7 @@ module "leaver_workflow" {
   source  = "satolap/modules/msgraph//verified/identityGovernance/lifecycleWorkflows/workflows"
   version = "<version>"
 
-  display_name         = "Offboard: manager access"
+  displayName          = "Offboard: manager access"
   category             = "leaver"
   execution_conditions = { type = "on_demand" }
 
@@ -188,14 +188,14 @@ Sources: [Lifecycle workflows license requirements](https://learn.microsoft.com/
 
 | Name | Description | Type | Default | Required | On change |
 |------|-------------|------|---------|----------| --- |
-| display_name | Display name; Learn calls it unique; updated in place | `string` | n/a | yes | in place |
-| logic_app | The existing Logic App: `subscription_id` (GUID), `resource_group_name`, `logic_app_workflow_name` | `object` | n/a | yes | in place |
+| displayName | Display name; Learn calls it unique; updated in place | `string` | n/a | yes | in place |
+| logic_app | The existing Logic App: `subscriptionId` (GUID), `resourceGroupName`, `logicAppWorkflowName` | `object` | n/a | yes | in place |
 | authentication_resource_id | The appId (GUID) of the application that authenticates the call | `string` | n/a | yes | in place |
 | description | Description; updated in place | `string` | `""` | no | in place |
 | timeout_in_milliseconds | Connection timeout, 200 to 2000 | `number` | `1000` | no | in place |
 | maximum_retries | 0 or 1; null leaves the service default; unsetting does not clear it | `number` | `null` | no | in place |
 | callback_timeout_duration | Normalised `PT30M` to `PT3H` (for example `PT1H30M`, not `PT90M`) makes launch and wait; null is launch and continue; unsetting does not clear it | `string` | `null` | no | in place |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that displayName must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
 
 ## Outputs
 
@@ -256,7 +256,7 @@ prerequisites, bounded assertions and the acceptance that remains outstanding.
 
 Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
 
-- `display_name`: in place.
+- `displayName`: in place.
 - `description`: in place.
 - `logic_app`: in place.
 - `authentication_resource_id`: in place.
@@ -265,3 +265,36 @@ Terraform plans compare configuration and refreshed provider state. A plan that 
 - `callback_timeout_duration`: in place.
 - `name_pattern`: no object change (validation or timing only).
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /identityGovernance/lifecycleWorkflows/customTaskExtensions` | DelegatedWork | `LifecycleWorkflows-CustomExt.ReadWrite.All` | - | - |
+| `POST /identityGovernance/lifecycleWorkflows/customTaskExtensions` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/lifecycleWorkflows/customTaskExtensions` | Application | `LifecycleWorkflows-CustomExt.ReadWrite.All` | - | - |
+| `GET /identityGovernance/lifecycleWorkflows/customTaskExtensions/{id}` | DelegatedWork | `LifecycleWorkflows-CustomExt.Read.All` | - | - |
+| `GET /identityGovernance/lifecycleWorkflows/customTaskExtensions/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/lifecycleWorkflows/customTaskExtensions/{id}` | Application | `LifecycleWorkflows-CustomExt.Read.All` | - | - |
+| `DELETE /identityGovernance/lifecycleWorkflows/customTaskExtensions/{id}` | DelegatedWork | `LifecycleWorkflows-CustomExt.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/lifecycleWorkflows/customTaskExtensions/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /identityGovernance/lifecycleWorkflows/customTaskExtensions/{id}` | Application | `LifecycleWorkflows-CustomExt.ReadWrite.All` | - | - |
+| `PATCH /identityGovernance/lifecycleWorkflows/customTaskExtensions/{id}` | DelegatedWork | `LifecycleWorkflows-CustomExt.ReadWrite.All` | - | - |
+| `PATCH /identityGovernance/lifecycleWorkflows/customTaskExtensions/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /identityGovernance/lifecycleWorkflows/customTaskExtensions/{id}` | Application | `LifecycleWorkflows-CustomExt.ReadWrite.All` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /identityGovernance/lifecycleWorkflows/customTaskExtensions` | `authenticationConfiguration`, `clientConfiguration`, `description`, `displayName`, `endpointConfiguration` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /identityGovernance/lifecycleWorkflows/customTaskExtensions/{id}` | `authenticationConfiguration`, `clientConfiguration`, `description`, `displayName`, `endpointConfiguration` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

@@ -28,7 +28,7 @@ mock_provider "msgraph" {
 
 variables {
   acknowledge_secret_in_plan_output = true
-  service_principal_id              = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"
+  servicePrincipal-id               = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"
   displayName                       = "Automation credential"
 }
 
@@ -83,7 +83,7 @@ run "noop_preserves_the_one_time_response" {
 
 run "service_principal_id_case_does_not_rotate" {
   command = apply
-  variables { service_principal_id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa" }
+  variables { servicePrincipal-id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa" }
   override_resource {
     target = msgraph_resource_action.add
     values = {
@@ -213,11 +213,11 @@ run "changed_dates_replace_and_send_only_documented_fields" {
 run "changed_label_replaces_the_password" {
   command = apply
   variables {
-    service_principal_id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
-    displayName          = "Rotated label"
-    rotation_trigger     = "generation-2"
-    startDateTime        = "2026-01-01T00:00:00Z"
-    endDateTime          = "2028-01-01T00:00:00Z"
+    servicePrincipal-id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+    displayName         = "Rotated label"
+    rotation_trigger    = "generation-2"
+    startDateTime       = "2026-01-01T00:00:00Z"
+    endDateTime         = "2028-01-01T00:00:00Z"
   }
   override_resource {
     target = msgraph_resource_action.add
@@ -263,11 +263,11 @@ run "changed_label_replaces_the_password" {
 run "changed_parent_creates_a_credential_on_the_new_service_principal" {
   command = apply
   variables {
-    service_principal_id = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
-    displayName          = "Rotated label"
-    rotation_trigger     = "generation-2"
-    startDateTime        = "2026-01-01T00:00:00Z"
-    endDateTime          = "2028-01-01T00:00:00Z"
+    servicePrincipal-id = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+    displayName         = "Rotated label"
+    rotation_trigger    = "generation-2"
+    startDateTime       = "2026-01-01T00:00:00Z"
+    endDateTime         = "2028-01-01T00:00:00Z"
   }
   override_resource {
     target = msgraph_resource_action.add

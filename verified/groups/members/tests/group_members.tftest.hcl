@@ -7,7 +7,7 @@ mock_provider "msgraph" {
 }
 
 variables {
-  group_id = "11111111-1111-1111-1111-111111111111"
+  group-id = "11111111-1111-1111-1111-111111111111"
   member_ids = [
     "aaaaaaaa-0000-0000-0000-000000000001",
     "aaaaaaaa-0000-0000-0000-000000000002",
@@ -99,7 +99,7 @@ run "upper_case_ids_give_the_same_url_and_reference_ids" {
   command = plan
 
   variables {
-    group_id = "11111111-1111-1111-1111-111111111111"
+    group-id = "11111111-1111-1111-1111-111111111111"
     member_ids = [
       "AAAAAAAA-0000-0000-0000-000000000001",
       "aaaaaaaa-0000-0000-0000-000000000002",
@@ -116,7 +116,7 @@ run "upper_case_group_id_gives_the_same_url" {
   command = apply
 
   variables {
-    group_id = "BBBBBBBB-1111-1111-1111-111111111111"
+    group-id = "BBBBBBBB-1111-1111-1111-111111111111"
   }
 
   assert {
@@ -134,7 +134,7 @@ run "lower_case_group_id_gives_the_same_url" {
   command = plan
 
   variables {
-    group_id = "bbbbbbbb-1111-1111-1111-111111111111"
+    group-id = "bbbbbbbb-1111-1111-1111-111111111111"
   }
 
   assert {
@@ -209,20 +209,20 @@ run "rejects_a_group_id_that_is_not_a_guid" {
   command = plan
 
   variables {
-    group_id = "engineering"
+    group-id = "engineering"
   }
 
-  expect_failures = [var.group_id]
+  expect_failures = [var.group-id]
 }
 
 run "rejects_an_empty_group_id" {
   command = plan
 
   variables {
-    group_id = ""
+    group-id = ""
   }
 
-  expect_failures = [var.group_id]
+  expect_failures = [var.group-id]
 }
 
 run "rejects_a_member_id_that_is_not_a_guid" {

@@ -42,9 +42,9 @@ run "typed_request" {
   command = plan
 
   variables {
-    calendar_group_id                = "example"
-    is_default_calendar              = false
-    allowed_online_meeting_providers = ["unknown"]
+    calendarGroupId               = "example"
+    isDefaultCalendar             = false
+    allowedOnlineMeetingProviders = ["unknown"]
   }
 
   assert {

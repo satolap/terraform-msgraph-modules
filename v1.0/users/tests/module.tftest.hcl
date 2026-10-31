@@ -17,11 +17,11 @@ run "minimal_request" {
   command = plan
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
   }
 
   assert {
@@ -49,12 +49,12 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    select_response     = true
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    select_response   = true
   }
 
   assert {
@@ -67,16 +67,16 @@ run "typed_request" {
   command = plan
 
   variables {
-    account_enabled         = false
-    display_name            = "example"
-    mail_nickname           = "example"
-    password_profile        = { "forceChangePasswordNextSignIn" = null }
-    user_principal_name     = "example"
-    about_me                = "example"
-    is_resource_account     = false
-    device_enrollment_limit = -2147483648
-    authorization_info      = { "certificateUserIds" = null }
-    app_role_assignments    = [{}]
+    accountEnabled        = false
+    displayName           = "example"
+    mailNickname          = "example"
+    passwordProfile       = { "forceChangePasswordNextSignIn" = null }
+    userPrincipalName     = "example"
+    aboutMe               = "example"
+    isResourceAccount     = false
+    deviceEnrollmentLimit = -2147483648
+    authorizationInfo     = { "certificateUserIds" = null }
+    appRoleAssignments    = [{}]
   }
 
   assert {
@@ -153,11 +153,11 @@ run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
   }
 
   assert {
@@ -170,12 +170,12 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    timeouts            = { create = "45m", update = "20m", read = "7m" }
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    timeouts          = { create = "45m", update = "20m", read = "7m" }
   }
 
   assert {
@@ -188,12 +188,12 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    timeouts            = { create = "10s" }
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    timeouts          = { create = "10s" }
   }
 
   expect_failures = [var.timeouts]
@@ -203,12 +203,12 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    timeouts            = { update = "soon" }
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    timeouts          = { update = "soon" }
   }
 
   expect_failures = [var.timeouts]
@@ -218,12 +218,12 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    timeouts            = { delete = "0s" }
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    timeouts          = { delete = "0s" }
   }
 
   expect_failures = [var.timeouts]
@@ -235,11 +235,11 @@ run "clear_properties_default_has_no_sidecar" {
   command = plan
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
   }
 
   assert {
@@ -257,12 +257,12 @@ run "clear_properties_send_json_null" {
   command = plan
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    clear_properties    = ["ageGroup", "consentProvidedForMinor"]
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    clear_properties  = ["ageGroup", "consentProvidedForMinor"]
   }
 
   assert {
@@ -305,12 +305,12 @@ run "clear_properties_refuse_an_unreviewed_name" {
   command = plan
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    clear_properties    = ["__graphmodules_unreviewed__"]
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    clear_properties  = ["__graphmodules_unreviewed__"]
   }
 
   expect_failures = [var.clear_properties]
@@ -320,12 +320,12 @@ run "clear_properties_refuse_a_null_name" {
   command = plan
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    clear_properties    = [null]
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    clear_properties  = [null]
   }
 
   expect_failures = [var.clear_properties]
@@ -335,12 +335,12 @@ run "clear_properties_refuse_a_repeated_name" {
   command = plan
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    clear_properties    = ["ageGroup", "ageGroup"]
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    clear_properties  = ["ageGroup", "ageGroup"]
   }
 
   expect_failures = [var.clear_properties]
@@ -350,13 +350,13 @@ run "clear_properties_selected_response_is_opt_in" {
   command = plan
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    clear_properties    = ["ageGroup", "consentProvidedForMinor"]
-    select_response     = true
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    clear_properties  = ["ageGroup", "consentProvidedForMinor"]
+    select_response   = true
   }
 
   assert {
@@ -369,13 +369,13 @@ run "clear_property_refuses_a_typed_value" {
   command = plan
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    age_group           = "example"
-    clear_properties    = ["ageGroup"]
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    ageGroup          = "example"
+    clear_properties  = ["ageGroup"]
   }
 
   expect_failures = [msgraph_resource.this]
@@ -385,11 +385,11 @@ run "clear_property_refuses_an_additional_properties_value" {
   command = plan
 
   variables {
-    account_enabled       = false
-    display_name          = "example"
-    mail_nickname         = "example"
-    password_profile      = {}
-    user_principal_name   = "example"
+    accountEnabled        = false
+    displayName           = "example"
+    mailNickname          = "example"
+    passwordProfile       = {}
+    userPrincipalName     = "example"
     additional_properties = { "ageGroup" = "example" }
     clear_properties      = ["ageGroup"]
   }
@@ -403,12 +403,12 @@ run "clear_properties_apply_creates_the_request" {
   command = apply
 
   variables {
-    account_enabled     = false
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    clear_properties    = ["ageGroup"]
+    accountEnabled    = false
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    clear_properties  = ["ageGroup"]
   }
 
   assert {
@@ -421,12 +421,12 @@ run "clear_properties_apply_after_an_input_change" {
   command = apply
 
   variables {
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    account_enabled     = true
-    clear_properties    = ["ageGroup"]
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    accountEnabled    = true
+    clear_properties  = ["ageGroup"]
   }
 
   assert {
@@ -444,12 +444,12 @@ run "clear_properties_apply_adds_a_name" {
   command = apply
 
   variables {
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    account_enabled     = true
-    clear_properties    = ["ageGroup", "consentProvidedForMinor"]
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    accountEnabled    = true
+    clear_properties  = ["ageGroup", "consentProvidedForMinor"]
   }
 
   assert {
@@ -462,11 +462,11 @@ run "clear_properties_apply_stops_clearing" {
   command = apply
 
   variables {
-    display_name        = "example"
-    mail_nickname       = "example"
-    password_profile    = {}
-    user_principal_name = "example"
-    account_enabled     = true
+    displayName       = "example"
+    mailNickname      = "example"
+    passwordProfile   = {}
+    userPrincipalName = "example"
+    accountEnabled    = true
   }
 
   assert {

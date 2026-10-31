@@ -1,26 +1,26 @@
-variable "case_id" {
+variable "case-id" {
   description = "The unique identifier of case"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.case_id)) > 0
-    error_message = "case_id must not be empty."
+    condition     = length(trimspace(var.case-id)) > 0
+    error_message = "case-id must not be empty."
   }
 }
 
-variable "child_selectability" {
+variable "childSelectability" {
   description = "Indicates whether a single or multiple child tags can be associated with a document. The possible values are: One, Many.  This value controls whether the UX presents the tags as checkboxes or a radio button group."
   type        = string
   default     = null
 
   validation {
-    condition     = var.child_selectability == null ? true : contains(["One", "Many"], var.child_selectability)
-    error_message = "child_selectability must be one of the documented enum values."
+    condition     = var.childSelectability == null ? true : contains(["One", "Many"], var.childSelectability)
+    error_message = "childSelectability must be one of the documented enum values."
   }
 }
 
-variable "child_tags" {
+variable "childTags" {
   description = "Returns the tags that are a child of a tag."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.ediscovery.tag")
@@ -35,12 +35,12 @@ variable "child_tags" {
   default = null
 
   validation {
-    condition     = (var.child_tags == null ? true : alltrue([alltrue([for input0 in var.child_tags : (input0 == null ? true : alltrue([(input0["childSelectability"] == null ? true : alltrue([(input0["childSelectability"] == null ? true : contains(["One", "Many"], input0["childSelectability"]))]))]))])]))
-    error_message = "child_tags: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.childTags == null ? true : alltrue([alltrue([for input0 in var.childTags : (input0 == null ? true : alltrue([(input0["childSelectability"] == null ? true : alltrue([(input0["childSelectability"] == null ? true : contains(["One", "Many"], input0["childSelectability"]))]))]))])]))
+    error_message = "childTags: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "created_by" {
+variable "createdBy" {
   description = "The user who created the tag."
   type        = any
   default     = null
@@ -52,13 +52,13 @@ variable "description" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "Display name of the tag."
   type        = string
   default     = null
 }
 
-variable "last_modified_date_time" {
+variable "lastModifiedDateTime" {
   description = "The date and time the tag was last modified."
   type        = string
   default     = null

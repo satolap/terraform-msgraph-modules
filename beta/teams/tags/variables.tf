@@ -1,11 +1,11 @@
-variable "team_id" {
+variable "team-id" {
   description = "The unique identifier of team"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.team_id)) > 0
-    error_message = "team_id must not be empty."
+    condition     = length(trimspace(var.team-id)) > 0
+    error_message = "team-id must not be empty."
   }
 }
 
@@ -15,13 +15,13 @@ variable "description" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "Tag name as it appears to the user in Microsoft Teams."
   type        = string
   default     = null
 }
 
-variable "member_count" {
+variable "memberCount" {
   description = "The number of users assigned to the tag."
   type        = number
   default     = null
@@ -45,18 +45,18 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "tag_type" {
+variable "tagType" {
   description = "The type of tag. Default is standard."
   type        = string
   default     = null
 
   validation {
-    condition     = var.tag_type == null ? true : contains(["standard"], var.tag_type)
-    error_message = "tag_type must be one of the documented enum values."
+    condition     = var.tagType == null ? true : contains(["standard"], var.tagType)
+    error_message = "tagType must be one of the documented enum values."
   }
 }
 
-variable "team_id_2" {
+variable "teamId" {
   description = "ID of the team in which the tag is defined."
   type        = string
   default     = null

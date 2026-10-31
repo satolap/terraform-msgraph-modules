@@ -1,4 +1,4 @@
-variable "audio_routing_groups" {
+variable "audioRoutingGroups" {
   description = "Microsoft Graph audioRoutingGroups property."
   type = list(object({
     odata_type  = optional(string, "#microsoft.graph.audioRoutingGroup")
@@ -9,30 +9,30 @@ variable "audio_routing_groups" {
   default = null
 
   validation {
-    condition     = (var.audio_routing_groups == null ? true : alltrue([alltrue([for input0 in var.audio_routing_groups : (input0 == null ? true : alltrue([(input0["routingMode"] == null ? true : alltrue([(input0["routingMode"] == null ? true : contains(["oneToOne", "multicast"], input0["routingMode"]))]))]))])]))
-    error_message = "audio_routing_groups: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.audioRoutingGroups == null ? true : alltrue([alltrue([for input0 in var.audioRoutingGroups : (input0 == null ? true : alltrue([(input0["routingMode"] == null ? true : alltrue([(input0["routingMode"] == null ? true : contains(["oneToOne", "multicast"], input0["routingMode"]))]))]))])]))
+    error_message = "audioRoutingGroups: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "call_chain_id" {
+variable "callChainId" {
   description = "A unique identifier for all the participant calls in a conference or a unique identifier for two participant calls in a P2P call.  This identifier must be copied over from Microsoft.Graph.Call.CallChainId."
   type        = string
   default     = null
 }
 
-variable "call_options" {
+variable "callOptions" {
   description = "Contains the optional features for the call."
   type        = any
   default     = null
 }
 
-variable "callback_uri" {
+variable "callbackUri" {
   description = "The callback URL on which callbacks are delivered. Must be an HTTPS URL."
   type        = string
   default     = null
 }
 
-variable "chat_info" {
+variable "chatInfo" {
   description = "The chat information. Required information for joining a meeting."
   type = object({
     odata_type          = optional(string, "#microsoft.graph.chatInfo")
@@ -43,7 +43,7 @@ variable "chat_info" {
   default = null
 }
 
-variable "content_sharing_sessions" {
+variable "contentSharingSessions" {
   description = "Microsoft Graph contentSharingSessions property."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.contentSharingSession")
@@ -60,7 +60,7 @@ variable "graph_source" {
   default = null
 }
 
-variable "incoming_context" {
+variable "incomingContext" {
   description = "Call context associated with an incoming call."
   type = object({
     odata_type = optional(string, "#microsoft.graph.incomingContext")
@@ -70,19 +70,19 @@ variable "incoming_context" {
   default = null
 }
 
-variable "media_config" {
+variable "mediaConfig" {
   description = "The media configuration. Required."
   type        = any
   default     = null
 }
 
-variable "meeting_info" {
+variable "meetingInfo" {
   description = "The meeting information. Required information for meeting scenarios."
   type        = any
   default     = null
 }
 
-variable "my_participant_id" {
+variable "myParticipantId" {
   description = "Microsoft Graph myParticipantId property."
   type        = string
   default     = null
@@ -144,14 +144,14 @@ variable "participants" {
   }
 }
 
-variable "requested_modalities" {
+variable "requestedModalities" {
   description = "The list of requested modalities. The possible values are: unknown, audio, video, videoBasedScreenSharing, data."
   type        = list(string)
   default     = null
 
   validation {
-    condition     = (var.requested_modalities == null ? true : alltrue([alltrue([for input0 in var.requested_modalities : (input0 == null ? true : alltrue([(input0 == null ? true : contains(["audio", "video", "videoBasedScreenSharing", "data"], input0))]))])]))
-    error_message = "requested_modalities: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.requestedModalities == null ? true : alltrue([alltrue([for input0 in var.requestedModalities : (input0 == null ? true : alltrue([(input0 == null ? true : contains(["audio", "video", "videoBasedScreenSharing", "data"], input0))]))])]))
+    error_message = "requestedModalities: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
@@ -174,13 +174,13 @@ variable "targets" {
   default = null
 }
 
-variable "tenant_id" {
+variable "tenantId" {
   description = "Microsoft Graph tenantId property."
   type        = string
   default     = null
 }
 
-variable "tone_info" {
+variable "toneInfo" {
   description = "Microsoft Graph toneInfo property."
   type = object({
     odata_type = optional(string, "#microsoft.graph.toneInfo")
@@ -190,8 +190,8 @@ variable "tone_info" {
   default = null
 
   validation {
-    condition     = (var.tone_info == null ? true : alltrue([(var.tone_info["tone"] == null ? true : alltrue([(var.tone_info["tone"] == null ? true : contains(["tone0", "tone1", "tone2", "tone3", "tone4", "tone5", "tone6", "tone7", "tone8", "tone9", "star", "pound", "a", "b", "c", "d", "flash"], var.tone_info["tone"]))]))]))
-    error_message = "tone_info: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.toneInfo == null ? true : alltrue([(var.toneInfo["tone"] == null ? true : alltrue([(var.toneInfo["tone"] == null ? true : contains(["tone0", "tone1", "tone2", "tone3", "tone4", "tone5", "tone6", "tone7", "tone8", "tone9", "star", "pound", "a", "b", "c", "d", "flash"], var.toneInfo["tone"]))]))]))
+    error_message = "toneInfo: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 

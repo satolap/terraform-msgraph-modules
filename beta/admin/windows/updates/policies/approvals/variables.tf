@@ -1,15 +1,15 @@
-variable "policy_id" {
+variable "policy-id" {
   description = "The unique identifier of policy"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.policy_id)) > 0
-    error_message = "policy_id must not be empty."
+    condition     = length(trimspace(var.policy-id)) > 0
+    error_message = "policy-id must not be empty."
   }
 }
 
-variable "catalog_entry_id" {
+variable "catalogEntryId" {
   description = "The catalog entry ID to approve."
   type        = string
   default     = null

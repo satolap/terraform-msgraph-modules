@@ -42,10 +42,10 @@ run "typed_request" {
   command = plan
 
   variables {
-    department        = "example"
-    account_enabled   = false
-    mailing_address   = { "city" = null }
-    assigned_licenses = [{}]
+    department       = "example"
+    accountEnabled   = false
+    mailingAddress   = { "city" = null }
+    assignedLicenses = [{}]
   }
 
   assert {
@@ -73,10 +73,10 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    external_source = "__graphmodules_invalid_enum__"
+    externalSource = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.external_source]
+  expect_failures = [var.externalSource]
 }
 
 run "timeouts_unset_sends_no_block" {

@@ -8,7 +8,7 @@ mock_provider "msgraph" {
 }
 
 variables {
-  application_id = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"
+  application-id = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"
   name           = "github-main"
   issuer         = "https://token.actions.githubusercontent.com"
   subject        = "repo:example-org/example-repo:ref:refs/heads/main"
@@ -33,7 +33,7 @@ run "creates_only_one_v1_child_with_default_audience" {
 
 run "parent_guid_case_change_keeps_credential" {
   command = apply
-  variables { application_id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa" }
+  variables { application-id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa" }
   override_resource {
     target = msgraph_resource.credential
     values = {
@@ -99,7 +99,7 @@ run "name_change_replaces_credential" {
 run "parent_change_replaces_credential" {
   command = apply
   variables {
-    application_id = "BBBBBBBB-BBBB-4BBB-8BBB-BBBBBBBBBBBB"
+    application-id = "BBBBBBBB-BBBB-4BBB-8BBB-BBBBBBBBBBBB"
     name           = "github-production"
   }
   override_resource {
@@ -118,7 +118,7 @@ run "parent_change_replaces_credential" {
 run "name_case_is_significant_and_replaces" {
   command = apply
   variables {
-    application_id = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+    application-id = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
     name           = "GitHub-Production"
   }
   override_resource {

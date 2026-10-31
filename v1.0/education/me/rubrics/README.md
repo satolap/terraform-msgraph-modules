@@ -20,7 +20,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -49,7 +49,7 @@ This module has no reviewed replication retry.
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
 | `description` | `description` | `object({       odata_type = optional(string, "#microsoft.graph.educationItemBody")       content = optional(string)       contentType = optional(string)     })` | no | no | in place |
-| `display_name` | `displayName` | `string` | no | no | in place |
+| `displayName` | `displayName` | `string` | no | no | in place |
 | `grading` | `grading` | `any` | no | no | in place |
 | `levels` | `levels` | `list(object({       odata_type = optional(string, "#microsoft.graph.rubricLevel")       description = optional(object({       odata_type = optional(string, "#microsoft.graph.educationItemBody")       content = optional(string)       contentType = optional(string)     }))       displayName = optional(string)       grading = optional(any)       levelId = optional(string)     }))` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |

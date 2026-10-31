@@ -11,13 +11,13 @@ locals {
   # every one of them is updated in place. The for expressions keep a null input out of the body.
   body = merge(
     {
-      displayName = var.display_name
+      displayName = var.displayName
       description = var.description
       endpointConfiguration = {
         "@odata.type"        = local.odata.endpoint
-        subscriptionId       = var.logic_app.subscription_id
-        resourceGroupName    = var.logic_app.resource_group_name
-        logicAppWorkflowName = var.logic_app.logic_app_workflow_name
+        subscriptionId       = var.logic_app.subscriptionId
+        resourceGroupName    = var.logic_app.resourceGroupName
+        logicAppWorkflowName = var.logic_app.logicAppWorkflowName
       }
       authenticationConfiguration = {
         "@odata.type" = local.odata.authentication
@@ -71,8 +71,8 @@ resource "msgraph_resource" "extension" {
 
   lifecycle {
     precondition {
-      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.display_name))
-      error_message = "display_name \"${var.display_name}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set display_name to a value that matches, or change name_pattern."
+      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.displayName))
+      error_message = "displayName \"${var.displayName}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set displayName to a value that matches, or change name_pattern."
     }
   }
 }

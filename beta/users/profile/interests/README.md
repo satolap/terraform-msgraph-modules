@@ -19,11 +19,11 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//beta/users/profile/interests"
   version = "<version>"
 
-  user_id = "parent-object-id"
+  user-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -51,23 +51,23 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `user_id` | URL parameter `user-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `allowed_audiences` | `allowedAudiences` | `string` | no | no | in place |
+| `user-id` | URL parameter `user-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `allowedAudiences` | `allowedAudiences` | `string` | no | no | in place |
 | `categories` | `categories` | `list(string)` | no | no | in place |
-| `collaboration_tags` | `collaborationTags` | `list(string)` | no | no | in place |
-| `created_by` | `createdBy` | `any` | no | no | in place |
-| `created_date_time` | `createdDateTime` | `string` | no | no | in place |
+| `collaborationTags` | `collaborationTags` | `list(string)` | no | no | in place |
+| `createdBy` | `createdBy` | `any` | no | no | in place |
+| `createdDateTime` | `createdDateTime` | `string` | no | no | in place |
 | `description` | `description` | `string` | no | no | in place |
-| `display_name` | `displayName` | `string` | no | no | in place |
+| `displayName` | `displayName` | `string` | no | no | in place |
 | `graph_source` | `source` | `object({       odata_type = optional(string, "#microsoft.graph.personDataSources")       type = optional(list(string))     })` | no | no | in place |
 | `inference` | `inference` | `object({       odata_type = optional(string, "#microsoft.graph.inferenceData")       confidenceScore = optional(any)       userHasVerifiedAccuracy = optional(bool)     })` | no | no | in place |
-| `is_searchable` | `isSearchable` | `bool` | no | no | in place |
-| `last_modified_by` | `lastModifiedBy` | `any` | no | no | in place |
-| `last_modified_date_time` | `lastModifiedDateTime` | `string` | no | no | in place |
+| `isSearchable` | `isSearchable` | `bool` | no | no | in place |
+| `lastModifiedBy` | `lastModifiedBy` | `any` | no | no | in place |
+| `lastModifiedDateTime` | `lastModifiedDateTime` | `string` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
 | `sources` | `sources` | `list(object({       odata_type = optional(string, "#microsoft.graph.profileSourceAnnotation")       isDefaultSource = optional(bool)       properties = optional(list(string))       sourceId = optional(string)     }))` | no | no | in place |
-| `thumbnail_url` | `thumbnailUrl` | `string` | no | no | in place |
-| `web_url` | `webUrl` | `string` | no | no | in place |
+| `thumbnailUrl` | `thumbnailUrl` | `string` | no | no | in place |
+| `webUrl` | `webUrl` | `string` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

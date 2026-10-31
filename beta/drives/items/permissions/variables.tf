@@ -1,26 +1,26 @@
-variable "drive_id" {
+variable "drive-id" {
   description = "The unique identifier of drive"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.drive_id)) > 0
-    error_message = "drive_id must not be empty."
+    condition     = length(trimspace(var.drive-id)) > 0
+    error_message = "drive-id must not be empty."
   }
 }
 
-variable "drive_item_id" {
+variable "driveItem-id" {
   description = "The unique identifier of driveItem"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.drive_item_id)) > 0
-    error_message = "drive_item_id must not be empty."
+    condition     = length(trimspace(var.driveItem-id)) > 0
+    error_message = "driveItem-id must not be empty."
   }
 }
 
-variable "expiration_date_time" {
+variable "expirationDateTime" {
   description = "A format of yyyy-MM-ddTHH:mm:ssZ of DateTimeOffset indicates the expiration time of the permission. DateTime.MinValue indicates there's no expiration set for this permission. Optional."
   type        = string
   default     = null

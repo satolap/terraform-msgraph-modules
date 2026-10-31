@@ -1,15 +1,15 @@
-variable "team_id" {
+variable "team-id" {
   description = "The unique identifier of team"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.team_id)) > 0
-    error_message = "team_id must not be empty."
+    condition     = length(trimspace(var.team-id)) > 0
+    error_message = "team-id must not be empty."
   }
 }
 
-variable "all_members" {
+variable "allMembers" {
   description = "A collection of membership records associated with the channel. It includes both direct and indirect members of shared channels."
   type        = any
   default     = null
@@ -21,13 +21,13 @@ variable "description" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "Channel name as it appears to the user in Microsoft Teams. The maximum length is 50 characters."
   type        = string
   default     = null
 }
 
-variable "enabled_apps" {
+variable "enabledApps" {
   description = "A collection of enabled apps in the channel."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.teamsApp")
@@ -59,37 +59,37 @@ variable "enabled_apps" {
   default = null
 
   validation {
-    condition     = (var.enabled_apps == null ? true : alltrue([alltrue([for input0 in var.enabled_apps : (input0 == null ? true : alltrue([(input0["appDefinitions"] == null ? true : alltrue([alltrue([for input2 in input0["appDefinitions"] : (input2 == null ? true : alltrue([(input2["allowedInstallationScopes"] == null ? true : alltrue([(input2["allowedInstallationScopes"] == null ? true : try(alltrue([for value in split(",", input2["allowedInstallationScopes"]) : contains(["team", "groupchat", "personal"], lower(trimspace(value)))]), false))])), (input2["publishingState"] == null ? true : alltrue([(input2["publishingState"] == null ? true : contains(["submitted", "rejected", "published"], input2["publishingState"]))]))]))])]))]))])]))
-    error_message = "enabled_apps: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.enabledApps == null ? true : alltrue([alltrue([for input0 in var.enabledApps : (input0 == null ? true : alltrue([(input0["appDefinitions"] == null ? true : alltrue([alltrue([for input2 in input0["appDefinitions"] : (input2 == null ? true : alltrue([(input2["allowedInstallationScopes"] == null ? true : alltrue([(input2["allowedInstallationScopes"] == null ? true : try(alltrue([for value in split(",", input2["allowedInstallationScopes"]) : contains(["team", "groupchat", "personal"], lower(trimspace(value)))]), false))])), (input2["publishingState"] == null ? true : alltrue([(input2["publishingState"] == null ? true : contains(["submitted", "rejected", "published"], input2["publishingState"]))]))]))])]))]))])]))
+    error_message = "enabledApps: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "files_folder" {
+variable "filesFolder" {
   description = "Metadata for the location where the channel's files are stored."
   type        = any
   default     = null
 }
 
-variable "is_favorite_by_default" {
+variable "isFavoriteByDefault" {
   description = "Indicates whether the channel should be marked as recommended for all members of the team to show in their channel list. Note: All recommended channels automatically show in the channels list for education and frontline worker users. The property can only be set programmatically via the Create team method. The default value is false."
   type        = bool
   default     = null
 }
 
-variable "joined_users" {
+variable "joinedUsers" {
   description = "Microsoft Graph joinedUsers property."
   type        = any
   default     = null
 }
 
-variable "layout_type" {
+variable "layoutType" {
   description = "The layout type of the channel. It can be set during creation and updated later. The possible values are: post, chat, unknownFutureValue. The default value is post. Channels with the post layout use a traditional post‑reply conversation format, and channels with the chat layout provide a chat‑like threading experience similar to group chats."
   type        = string
   default     = null
 
   validation {
-    condition     = var.layout_type == null ? true : contains(["post", "chat"], var.layout_type)
-    error_message = "layout_type must be one of the documented enum values."
+    condition     = var.layoutType == null ? true : contains(["post", "chat"], var.layoutType)
+    error_message = "layoutType must be one of the documented enum values."
   }
 }
 
@@ -99,14 +99,14 @@ variable "members" {
   default     = null
 }
 
-variable "membership_type" {
+variable "membershipType" {
   description = "The type of the channel. Can be set during creation and can't be changed. The possible values are: standard, private, unknownFutureValue, shared. The default value is standard. Use the Prefer: include-unknown-enum-members request header to get the following members in this evolvable enum: shared."
   type        = string
   default     = null
 
   validation {
-    condition     = var.membership_type == null ? true : contains(["standard", "private"], var.membership_type)
-    error_message = "membership_type must be one of the documented enum values."
+    condition     = var.membershipType == null ? true : contains(["standard", "private"], var.membershipType)
+    error_message = "membershipType must be one of the documented enum values."
   }
 }
 
@@ -116,18 +116,18 @@ variable "messages" {
   default     = null
 }
 
-variable "migration_mode" {
+variable "migrationMode" {
   description = "Indicates whether a channel is in migration mode. This value is null for channels that never entered migration mode. The possible values are: inProgress, completed, unknownFutureValue."
   type        = string
   default     = null
 
   validation {
-    condition     = var.migration_mode == null ? true : contains(["inProgress", "completed"], var.migration_mode)
-    error_message = "migration_mode must be one of the documented enum values."
+    condition     = var.migrationMode == null ? true : contains(["inProgress", "completed"], var.migrationMode)
+    error_message = "migrationMode must be one of the documented enum values."
   }
 }
 
-variable "moderation_settings" {
+variable "moderationSettings" {
   description = "Settings to configure channel moderation to control who can start new posts and reply to posts in that channel."
   type = object({
     odata_type                    = optional(string, "#microsoft.graph.channelModerationSettings")
@@ -139,8 +139,8 @@ variable "moderation_settings" {
   default = null
 
   validation {
-    condition     = (var.moderation_settings == null ? true : alltrue([(var.moderation_settings["replyRestriction"] == null ? true : alltrue([(var.moderation_settings["replyRestriction"] == null ? true : contains(["everyone", "authorAndModerators"], var.moderation_settings["replyRestriction"]))])), (var.moderation_settings["userNewMessageRestriction"] == null ? true : alltrue([(var.moderation_settings["userNewMessageRestriction"] == null ? true : contains(["everyone", "everyoneExceptGuests", "moderators"], var.moderation_settings["userNewMessageRestriction"]))]))]))
-    error_message = "moderation_settings: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.moderationSettings == null ? true : alltrue([(var.moderationSettings["replyRestriction"] == null ? true : alltrue([(var.moderationSettings["replyRestriction"] == null ? true : contains(["everyone", "authorAndModerators"], var.moderationSettings["replyRestriction"]))])), (var.moderationSettings["userNewMessageRestriction"] == null ? true : alltrue([(var.moderationSettings["userNewMessageRestriction"] == null ? true : contains(["everyone", "everyoneExceptGuests", "moderators"], var.moderationSettings["userNewMessageRestriction"]))]))]))
+    error_message = "moderationSettings: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
@@ -151,13 +151,13 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "original_created_date_time" {
+variable "originalCreatedDateTime" {
   description = "Timestamp of the original creation time for the channel. The value is null if the channel never entered migration mode."
   type        = string
   default     = null
 }
 
-variable "shared_with_teams" {
+variable "sharedWithTeams" {
   description = "A collection of teams with which a channel is shared."
   type = list(object({
     odata_type     = optional(string, "#microsoft.graph.sharedWithChannelTeamInfo")
@@ -202,7 +202,7 @@ variable "tabs" {
   default = null
 }
 
-variable "tenant_id" {
+variable "tenantId" {
   description = "The ID of the Microsoft Entra tenant."
   type        = string
   default     = null

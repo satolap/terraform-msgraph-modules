@@ -5,7 +5,7 @@ output "id" {
 
 output "display_name" {
   description = "The display name of the extension, as configured."
-  value       = var.display_name
+  value       = var.displayName
 }
 
 output "reply_mode" {

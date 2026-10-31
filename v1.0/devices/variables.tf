@@ -1,10 +1,10 @@
-variable "account_enabled" {
+variable "accountEnabled" {
   description = "true if the account is enabled; otherwise, false. Required. Default is true.  Supports $filter (eq, ne, not, in). Only callers with at least the Cloud Device Administrator role can set this property."
   type        = bool
   default     = null
 }
 
-variable "alternative_security_ids" {
+variable "alternativeSecurityIds" {
   description = "For internal use only. Not nullable. Supports $filter (eq, not, ge, le)."
   type = list(object({
     odata_type       = optional(string, "#microsoft.graph.alternativeSecurityId")
@@ -15,73 +15,73 @@ variable "alternative_security_ids" {
   default = null
 }
 
-variable "deleted_date_time" {
+variable "deletedDateTime" {
   description = "Date and time when this object was deleted. Always null when the object hasn't been deleted."
   type        = string
   default     = null
 }
 
-variable "device_category" {
+variable "deviceCategory" {
   description = "User-defined property set by Intune to automatically add devices to groups and simplify managing devices."
   type        = string
   default     = null
 }
 
-variable "device_id" {
+variable "deviceId" {
   description = "Unique identifier set by Azure Device Registration Service at the time of registration. This alternate key can be used to reference the device object. Supports $filter (eq, ne, not, startsWith)."
   type        = string
   default     = null
 }
 
-variable "device_metadata" {
+variable "deviceMetadata" {
   description = "For internal use only. Set to null."
   type        = string
   default     = null
 }
 
-variable "device_ownership" {
+variable "deviceOwnership" {
   description = "Ownership of the device. Intune sets this property. The possible values are: unknown, company, personal."
   type        = string
   default     = null
 }
 
-variable "device_version" {
+variable "deviceVersion" {
   description = "For internal use only."
   type        = number
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The display name for the device. Maximum length is 256 characters. Required. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values), $search, and $orderby."
   type        = string
   default     = null
 }
 
-variable "enrollment_profile_name" {
+variable "enrollmentProfileName" {
   description = "Enrollment profile applied to the device. For example, Apple Device Enrollment Profile, Device enrollment - Corporate device identifiers, or Windows Autopilot profile name. This property is set by Intune."
   type        = string
   default     = null
 }
 
-variable "enrollment_type" {
+variable "enrollmentType" {
   description = "Enrollment type of the device. Intune sets this property. The possible values are: unknown, userEnrollment, deviceEnrollmentManager, appleBulkWithUser, appleBulkWithoutUser, windowsAzureADJoin, windowsBulkUserless, windowsAutoEnrollment, windowsBulkAzureDomainJoin, windowsCoManagement, windowsAzureADJoinUsingDeviceAuth,appleUserEnrollment, appleUserEnrollmentWithServiceAccount. NOTE: This property might return other values apart from those listed."
   type        = string
   default     = null
 }
 
-variable "is_managed" {
+variable "isManaged" {
   description = "true if the device is managed by a Mobile Device Management (MDM) app; otherwise, false. This can only be updated by Intune for any device OS type or by an approved MDM app for Windows OS devices. Supports $filter (eq, ne, not)."
   type        = bool
   default     = null
 }
 
-variable "is_rooted" {
+variable "isRooted" {
   description = "true if the device is rooted or jail-broken. This property can only be updated by Intune."
   type        = bool
   default     = null
 }
 
-variable "management_type" {
+variable "managementType" {
   description = "The management channel of the device. This property is set by Intune. The possible values are: eas, mdm, easMdm, intuneClient, easIntuneClient, configurationManagerClient, configurationManagerClientMdm, configurationManagerClientMdmEas, unknown, jamf, googleCloudDevicePolicyController."
   type        = string
   default     = null
@@ -94,37 +94,37 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "operating_system" {
+variable "operatingSystem" {
   description = "The type of operating system on the device. Required. Supports $filter (eq, ne, not, ge, le, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "operating_system_version" {
+variable "operatingSystemVersion" {
   description = "The version of the operating system on the device. Required. Supports $filter (eq, ne, not, ge, le, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "physical_ids" {
+variable "physicalIds" {
   description = "For internal use only. Not nullable. Supports $filter (eq, not, ge, le, startsWith,/$count eq 0, /$count ne 0)."
   type        = list(string)
   default     = null
 }
 
-variable "profile_type" {
+variable "profileType" {
   description = "The profile type of the device. Possible values: RegisteredDevice (default), SecureVM, Printer, Shared, IoT."
   type        = string
   default     = null
 }
 
-variable "system_labels" {
+variable "systemLabels" {
   description = "List of labels applied to the device by the system. Supports $filter (/$count eq 0, /$count ne 0)."
   type        = list(string)
   default     = null
 }
 
-variable "transitive_member_of" {
+variable "transitiveMemberOf" {
   description = "Groups and administrative units that the device is a member of. This operation is transitive. Supports $expand."
   type        = any
   default     = null

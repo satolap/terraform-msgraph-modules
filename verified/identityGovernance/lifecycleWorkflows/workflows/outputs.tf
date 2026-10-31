@@ -10,7 +10,7 @@ output "version" {
 
 output "display_name" {
   description = "The display name of the workflow, as configured."
-  value       = var.display_name
+  value       = var.displayName
 }
 
 output "category" {
@@ -20,12 +20,12 @@ output "category" {
 
 output "is_enabled" {
   description = "Whether the workflow is enabled, as configured."
-  value       = var.is_enabled
+  value       = var.isEnabled
 }
 
 output "is_scheduling_enabled" {
   description = "Whether scheduling is enabled, as configured."
-  value       = var.is_scheduling_enabled
+  value       = var.isSchedulingEnabled
 }
 
 output "request_body" {

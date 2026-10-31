@@ -28,7 +28,7 @@ mock_provider "msgraph" {
 
 variables {
   acknowledge_secret_in_plan_output = true
-  service_principal_id              = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"
+  servicePrincipal-id               = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"
   displayName                       = "Automation credential"
 }
 
@@ -52,8 +52,8 @@ run "rejects_long_label" {
 
 run "rejects_object_id" {
   command = plan
-  variables { service_principal_id = "not-a-guid" }
-  expect_failures = [var.service_principal_id]
+  variables { servicePrincipal-id = "not-a-guid" }
+  expect_failures = [var.servicePrincipal-id]
 }
 
 run "rejects_empty_rotation" {

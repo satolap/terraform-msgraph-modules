@@ -27,7 +27,7 @@ variable "additional_description" {
 }
 
 variable "identity_sources" {
-  description = "The tenants and domains whose users belong to the connected organization, passed to the connected-organizations module: { type = \"tenant\", tenant_id, display_name } for a Microsoft Entra tenant, { type = \"tenant_domain\", domain_name } for a tenant that the module looks up by one of its domains during the plan, and { type = \"domain\", domain_name, display_name } for a domain without a Microsoft Entra tenant, whose users sign in with a one-time passcode. That module validates the list."
+  description = "The tenants and domains whose users belong to the connected organization, mapped to the attributes of the connected-organizations module (tenantId, domainName, displayName; this composition keeps its own snake_case names): { type = \"tenant\", tenant_id, display_name } for a Microsoft Entra tenant, { type = \"tenant_domain\", domain_name } for a tenant that the module looks up by one of its domains during the plan, and { type = \"domain\", domain_name, display_name } for a domain without a Microsoft Entra tenant, whose users sign in with a one-time passcode. That module validates the list."
   type = list(object({
     type         = string
     tenant_id    = optional(string)
@@ -225,7 +225,7 @@ variable "custom_extensions" {
   description = <<-EOT
     Logic App custom extensions created in the catalog and bound to the policies, keyed by a
     name of your choice. logic_app names an existing Consumption Logic App, as in the
-    catalogs/custom-extensions module. extension_type is "request_workflow" (the default)
+    catalogs/customWorkflowExtensions module (which takes subscriptionId, resourceGroupName, logicAppWorkflowName and url; this composition maps its snake_case names to them). extension_type is "request_workflow" (the default)
     or "assignment_workflow". callback = { timeout = "PT1H" } makes a request workflow
     extension launch and wait. stages lists the policy stages that call the extension, such
     as "assignmentRequestGranted" and "assignmentRequestRemoved". policies lists the

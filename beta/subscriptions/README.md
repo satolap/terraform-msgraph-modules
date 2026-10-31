@@ -5,7 +5,7 @@
 
 This module's state and saved plans retain these declared values:
 
-Sensitive inputs: `additional_properties`, `web_push_encryption_secret`.
+Sensitive inputs: `additional_properties`, `webPushEncryptionSecret`.
 Sensitive outputs: `response`.
 
 Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
@@ -32,36 +32,36 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//beta/subscriptions"
   version = "<version>"
 
-  change_type = "example"
-  expiration_date_time = "2026-01-01T00:00:00Z"
-  notification_url = "example"
+  changeType = "example"
+  expirationDateTime = "2026-01-01T00:00:00Z"
+  notificationUrl = "example"
   resource = "example"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Replacement on change
 
-Microsoft Graph updates only `expiration_date_time` and `notification_url` in place; the generation notes cite the source. A change to any other input, set as a typed input or as the same key in `additional_properties`, plans a destroy and a create of `msgraph_resource.this` through `terraform_data.immutable` and `replace_triggered_by`, so `terraform apply -replace` is not needed. Terraform deletes the old object before it creates the new one (`create_before_destroy` is not set). The replacement has a new `id`, and anything that stored the old `id` must read the new one. `terraform_data.immutable` holds the values below and makes no API call.
+Microsoft Graph updates only `expirationDateTime` and `notificationUrl` in place; the generation notes cite the source. A change to any other input, set as a typed input or as the same key in `additional_properties`, plans a destroy and a create of `msgraph_resource.this` through `terraform_data.immutable` and `replace_triggered_by`, so `terraform apply -replace` is not needed. Terraform deletes the old object before it creates the new one (`create_before_destroy` is not set). The replacement has a new `id`, and anything that stored the old `id` must read the new one. `terraform_data.immutable` holds the values below and makes no API call.
 
 | Input | Graph property |
 | --- | --- |
 | `odata_type` | `@odata.type` |
-| `change_type` | `changeType` |
-| `client_state` | `clientState` |
-| `encryption_certificate` | `encryptionCertificate` |
-| `encryption_certificate_id` | `encryptionCertificateId` |
-| `include_resource_data` | `includeResourceData` |
-| `latest_supported_tls_version` | `latestSupportedTlsVersion` |
-| `lifecycle_notification_url` | `lifecycleNotificationUrl` |
-| `notification_content_type` | `notificationContentType` |
-| `notification_query_options` | `notificationQueryOptions` |
-| `notification_url_app_id` | `notificationUrlAppId` |
+| `changeType` | `changeType` |
+| `clientState` | `clientState` |
+| `encryptionCertificate` | `encryptionCertificate` |
+| `encryptionCertificateId` | `encryptionCertificateId` |
+| `includeResourceData` | `includeResourceData` |
+| `latestSupportedTlsVersion` | `latestSupportedTlsVersion` |
+| `lifecycleNotificationUrl` | `lifecycleNotificationUrl` |
+| `notificationContentType` | `notificationContentType` |
+| `notificationQueryOptions` | `notificationQueryOptions` |
+| `notificationUrlAppId` | `notificationUrlAppId` |
 | `resource` | `resource` |
-| `vapid_public_key` | `vapidPublicKey` |
-| `web_push_encryption_p256dh_public_key` | `webPushEncryptionP256dhPublicKey` |
-| `web_push_encryption_secret` | `webPushEncryptionSecret` |
+| `vapidPublicKey` | `vapidPublicKey` |
+| `webPushEncryptionP256dhPublicKey` | `webPushEncryptionP256dhPublicKey` |
+| `webPushEncryptionSecret` | `webPushEncryptionSecret` |
 
 Any other key of `additional_properties` replaces the object too when its value changes, for example a writable property that the pinned schema lacks: `terraform_data.immutable` holds every non-null key that is not a typed input. The keys that update in place (`expirationDateTime`, `notificationUrl`) never replace the object. A value of a replacing key that is unknown at plan time plans a replacement, whether it is an input in the table or a key of `additional_properties`; an unknown value of a key that updates in place still plans an in-place update.
 
@@ -93,23 +93,23 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `change_type` | `changeType` | `string` | yes | no | replaces object |
-| `expiration_date_time` | `expirationDateTime` | `string` | yes | no | in place |
-| `notification_url` | `notificationUrl` | `string` | yes | no | in place |
+| `changeType` | `changeType` | `string` | yes | no | replaces object |
+| `expirationDateTime` | `expirationDateTime` | `string` | yes | no | in place |
+| `notificationUrl` | `notificationUrl` | `string` | yes | no | in place |
 | `resource` | `resource` | `string` | yes | no | replaces object |
-| `client_state` | `clientState` | `string` | no | no | replaces object |
-| `encryption_certificate` | `encryptionCertificate` | `string` | no | no | replaces object |
-| `encryption_certificate_id` | `encryptionCertificateId` | `string` | no | no | replaces object |
-| `include_resource_data` | `includeResourceData` | `bool` | no | no | replaces object |
-| `latest_supported_tls_version` | `latestSupportedTlsVersion` | `string` | no | no | replaces object |
-| `lifecycle_notification_url` | `lifecycleNotificationUrl` | `string` | no | no | replaces object |
-| `notification_content_type` | `notificationContentType` | `string` | no | no | replaces object |
-| `notification_query_options` | `notificationQueryOptions` | `string` | no | no | replaces object |
-| `notification_url_app_id` | `notificationUrlAppId` | `string` | no | no | replaces object |
+| `clientState` | `clientState` | `string` | no | no | replaces object |
+| `encryptionCertificate` | `encryptionCertificate` | `string` | no | no | replaces object |
+| `encryptionCertificateId` | `encryptionCertificateId` | `string` | no | no | replaces object |
+| `includeResourceData` | `includeResourceData` | `bool` | no | no | replaces object |
+| `latestSupportedTlsVersion` | `latestSupportedTlsVersion` | `string` | no | no | replaces object |
+| `lifecycleNotificationUrl` | `lifecycleNotificationUrl` | `string` | no | no | replaces object |
+| `notificationContentType` | `notificationContentType` | `string` | no | no | replaces object |
+| `notificationQueryOptions` | `notificationQueryOptions` | `string` | no | no | replaces object |
+| `notificationUrlAppId` | `notificationUrlAppId` | `string` | no | no | replaces object |
 | `odata_type` | `@odata.type` | `string` | no | no | replaces object |
-| `vapid_public_key` | `vapidPublicKey` | `string` | no | no | replaces object |
-| `web_push_encryption_p256dh_public_key` | `webPushEncryptionP256dhPublicKey` | `string` | no | no | replaces object |
-| `web_push_encryption_secret` | `webPushEncryptionSecret` | `string` | no | yes | replaces object |
+| `vapidPublicKey` | `vapidPublicKey` | `string` | no | no | replaces object |
+| `webPushEncryptionP256dhPublicKey` | `webPushEncryptionP256dhPublicKey` | `string` | no | no | replaces object |
+| `webPushEncryptionSecret` | `webPushEncryptionSecret` | `string` | no | yes | replaces object |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | replaces object, except keys `expirationDateTime`, `notificationUrl` |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

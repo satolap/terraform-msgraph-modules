@@ -1,4 +1,4 @@
-variable "assigned_sensitivity_label" {
+variable "assignedSensitivityLabel" {
   description = "The sensitivity label applied to the roster. If mandatory labeling is enabled for the user and no label is specified, the user can't create the roster. Also, if labels are mandatory for the user, the user can't change the label of the roster to null. The possible values are: standard, privileged, auto, unknownFutureValue."
   type = object({
     odata_type         = optional(string, "#microsoft.graph.sensitivityLabelAssignment")
@@ -9,8 +9,8 @@ variable "assigned_sensitivity_label" {
   default = null
 
   validation {
-    condition     = (var.assigned_sensitivity_label == null ? true : alltrue([(var.assigned_sensitivity_label["assignmentMethod"] == null ? true : alltrue([(var.assigned_sensitivity_label["assignmentMethod"] == null ? true : contains(["standard", "privileged", "auto"], var.assigned_sensitivity_label["assignmentMethod"]))]))]))
-    error_message = "assigned_sensitivity_label: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.assignedSensitivityLabel == null ? true : alltrue([(var.assignedSensitivityLabel["assignmentMethod"] == null ? true : alltrue([(var.assignedSensitivityLabel["assignmentMethod"] == null ? true : contains(["standard", "privileged", "auto"], var.assignedSensitivityLabel["assignmentMethod"]))]))]))
+    error_message = "assignedSensitivityLabel: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 

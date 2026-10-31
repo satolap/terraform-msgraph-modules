@@ -1,4 +1,4 @@
-variable "assistant_name" {
+variable "assistantName" {
   description = "The name of the contact's assistant."
   type        = string
   default     = null
@@ -22,13 +22,13 @@ variable "children" {
   default     = null
 }
 
-variable "company_name" {
+variable "companyName" {
   description = "The name of the contact's company."
   type        = string
   default     = null
 }
 
-variable "created_date_time" {
+variable "createdDateTime" {
   description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
@@ -40,13 +40,13 @@ variable "department" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The contact's display name. You can specify the display name in a create or update operation. Later updates to other properties might cause an automatically generated value to overwrite the displayName value you specified. To preserve a pre-existing value, always include it as displayName in an update operation."
   type        = string
   default     = null
 }
 
-variable "email_addresses" {
+variable "emailAddresses" {
   description = "The contact's email addresses."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.typedEmailAddress")
@@ -58,8 +58,8 @@ variable "email_addresses" {
   default = null
 
   validation {
-    condition     = (var.email_addresses == null ? true : alltrue([alltrue([for input0 in var.email_addresses : (input0 == null ? true : alltrue([(input0["type"] == null ? true : alltrue([(input0["type"] == null ? true : contains(["unknown", "work", "personal", "main", "other"], input0["type"]))]))]))])]))
-    error_message = "email_addresses: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.emailAddresses == null ? true : alltrue([alltrue([for input0 in var.emailAddresses : (input0 == null ? true : alltrue([(input0["type"] == null ? true : alltrue([(input0["type"] == null ? true : contains(["unknown", "work", "personal", "main", "other"], input0["type"]))]))]))])]))
+    error_message = "emailAddresses: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
@@ -69,7 +69,7 @@ variable "extensions" {
   default     = null
 }
 
-variable "file_as" {
+variable "fileAs" {
   description = "The name the contact is filed under."
   type        = string
   default     = null
@@ -116,13 +116,13 @@ variable "generation" {
   default     = null
 }
 
-variable "given_name" {
+variable "givenName" {
   description = "The contact's given name."
   type        = string
   default     = null
 }
 
-variable "im_addresses" {
+variable "imAddresses" {
   description = "The contact's instant messaging (IM) addresses."
   type        = list(string)
   default     = null
@@ -134,19 +134,19 @@ variable "initials" {
   default     = null
 }
 
-variable "is_favorite" {
+variable "isFavorite" {
   description = "Microsoft Graph isFavorite property."
   type        = bool
   default     = null
 }
 
-variable "job_title" {
+variable "jobTitle" {
   description = "The contact’s job title."
   type        = string
   default     = null
 }
 
-variable "last_modified_date_time" {
+variable "lastModifiedDateTime" {
   description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
@@ -158,13 +158,13 @@ variable "manager" {
   default     = null
 }
 
-variable "middle_name" {
+variable "middleName" {
   description = "The contact's middle name."
   type        = string
   default     = null
 }
 
-variable "nick_name" {
+variable "nickName" {
   description = "The contact's nickname."
   type        = string
   default     = null
@@ -177,19 +177,19 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "office_location" {
+variable "officeLocation" {
   description = "The location of the contact's office."
   type        = string
   default     = null
 }
 
-variable "parent_folder_id" {
+variable "parentFolderId" {
   description = "The ID of the contact's parent folder."
   type        = string
   default     = null
 }
 
-variable "personal_notes" {
+variable "personalNotes" {
   description = "The user's notes about the contact."
   type        = string
   default     = null
@@ -216,7 +216,7 @@ variable "photo" {
   default     = null
 }
 
-variable "postal_addresses" {
+variable "postalAddresses" {
   description = "Addresses associated with the contact, for example, home address and business address."
   type = list(object({
     odata_type      = optional(string, "#microsoft.graph.physicalAddress")
@@ -231,12 +231,12 @@ variable "postal_addresses" {
   default = null
 
   validation {
-    condition     = (var.postal_addresses == null ? true : alltrue([alltrue([for input0 in var.postal_addresses : (input0 == null ? true : alltrue([(input0["type"] == null ? true : alltrue([(input0["type"] == null ? true : contains(["unknown", "home", "business", "other"], input0["type"]))]))]))])]))
-    error_message = "postal_addresses: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.postalAddresses == null ? true : alltrue([alltrue([for input0 in var.postalAddresses : (input0 == null ? true : alltrue([(input0["type"] == null ? true : alltrue([(input0["type"] == null ? true : contains(["unknown", "home", "business", "other"], input0["type"]))]))]))])]))
+    error_message = "postalAddresses: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "primary_email_address" {
+variable "primaryEmailAddress" {
   description = "The primary email address of the contact."
   type        = any
   default     = null
@@ -248,13 +248,13 @@ variable "profession" {
   default     = null
 }
 
-variable "secondary_email_address" {
+variable "secondaryEmailAddress" {
   description = "The secondary email address of the contact."
   type        = any
   default     = null
 }
 
-variable "spouse_name" {
+variable "spouseName" {
   description = "The name of the contact's spouse/partner."
   type        = string
   default     = null
@@ -266,7 +266,7 @@ variable "surname" {
   default     = null
 }
 
-variable "tertiary_email_address" {
+variable "tertiaryEmailAddress" {
   description = "The tertiary email address of the contact."
   type        = any
   default     = null
@@ -294,25 +294,25 @@ variable "websites" {
   }
 }
 
-variable "wedding_anniversary" {
+variable "weddingAnniversary" {
   description = "The contact's wedding anniversary."
   type        = string
   default     = null
 }
 
-variable "yomi_company_name" {
+variable "yomiCompanyName" {
   description = "The phonetic Japanese company name of the contact."
   type        = string
   default     = null
 }
 
-variable "yomi_given_name" {
+variable "yomiGivenName" {
   description = "The phonetic Japanese given name (first name) of the contact."
   type        = string
   default     = null
 }
 
-variable "yomi_surname" {
+variable "yomiSurname" {
   description = "The phonetic Japanese surname (last name)  of the contact."
   type        = string
   default     = null

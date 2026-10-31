@@ -51,7 +51,7 @@ module "password" {
   source  = "satolap/modules/msgraph//verified/applications/passwordCredentials"
   version = "<version>"
 
-  application_id   = module.application.id
+  application-id   = module.application.id
   displayName      = "Automation credential"
   rotation_trigger = "generation-1"
 
@@ -251,7 +251,7 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 | Name | Description | Type | Default | On change |
 | --- | --- | --- | --- | --- |
-| application_id | Application object ID | `string` | required | replaces `msgraph_resource_action.remove`; replaces `msgraph_resource_action.add` |
+| application-id | Application object ID | `string` | required | replaces `msgraph_resource_action.remove`; replaces `msgraph_resource_action.add` |
 | displayName | Password label, 1-256 characters | `string` | required | replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes |
 | startDateTime | UTC validity start; null means now | `string` | `null` | replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes |
 | endDateTime | UTC expiration; null means start + 2 years | `string` | `null` | replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes |
@@ -272,10 +272,44 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
 
-- `application_id`: replaces `msgraph_resource_action.remove`; replaces `msgraph_resource_action.add`.
+- `application-id`: replaces `msgraph_resource_action.remove`; replaces `msgraph_resource_action.add`.
 - `displayName`: replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes.
 - `startDateTime`: replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes.
 - `endDateTime`: replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes.
 - `rotation_trigger`: replaces `msgraph_resource_action.remove`; replaces `msgraph_resource_action.add`.
 - `acknowledge_secret_in_plan_output`: no object change (validation or timing only).
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /applications/{id}/addPassword` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `POST /applications/{id}/addPassword` | DelegatedPersonal | `Application.ReadWrite.All` | - | - |
+| `POST /applications/{id}/addPassword` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+| `POST /applications/{id}/removePassword` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `POST /applications/{id}/removePassword` | DelegatedPersonal | `Application.ReadWrite.All` | - | - |
+| `POST /applications/{id}/removePassword` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+| `GET /applications/{id}` | DelegatedWork | `Application.Read.All` | - | - |
+| `GET /applications/{id}` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `GET /applications/{id}` | DelegatedPersonal | `Application.Read.All` | - | - |
+| `GET /applications/{id}` | DelegatedPersonal | `Application.ReadWrite.All` | - | - |
+| `GET /applications/{id}` | Application | `Application.Read.All` | - | - |
+| `GET /applications/{id}` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /applications/{id}/addPassword` | `passwordCredential` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `POST /applications/{id}/removePassword` | `keyId` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `GET /applications/{id}` | `id`, `passwordCredentials` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

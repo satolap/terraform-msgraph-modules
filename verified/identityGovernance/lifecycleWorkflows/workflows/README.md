@@ -25,40 +25,40 @@ that does not belong to the workflow's category all fail the plan.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "onboard_marketing" {
   source  = "satolap/modules/msgraph//verified/identityGovernance/lifecycleWorkflows/workflows"
   version = "<version>"
 
-  display_name = "Onboard marketing new hires"
-  description  = "Enable the account and welcome the new hire on the hire date"
-  category     = "joiner"
+  displayName = "Onboard marketing new hires"
+  description = "Enable the account and welcome the new hire on the hire date"
+  category    = "joiner"
 
   execution_conditions = {
     type       = "trigger_and_scope"
     scope_rule = "(department eq 'Marketing')"
     trigger = {
-      time_based_attribute = "employeeHireDate"
-      offset_in_days       = 0
+      timeBasedAttribute = "employeeHireDate"
+      offsetInDays       = 0
     }
   }
 
   tasks = [
     {
       task         = "enable_user_account"
-      display_name = "Enable user account"
+      displayName = "Enable user account"
     },
     {
       task         = "send_welcome_email"
-      display_name = "Send welcome email"
+      displayName = "Send welcome email"
       arguments    = { locale = "en-us", to = "User" }
     },
   ]
 
   # Created disabled. To run it, set all three of these after reviewing the plan:
-  # is_enabled = true, is_scheduling_enabled = true, activation_opt_in = true.
+  # isEnabled = true, isSchedulingEnabled = true, activation_opt_in = true.
 }
 ```
 
@@ -70,15 +70,15 @@ module "notify_integration" {
   source  = "satolap/modules/msgraph//verified/identityGovernance/lifecycleWorkflows/workflows"
   version = "<version>"
 
-  display_name = "Notify the integration on hire"
-  category     = "joiner"
+  displayName = "Notify the integration on hire"
+  category    = "joiner"
 
   execution_conditions = { type = "on_demand" }
 
   tasks = [
     {
       task         = "run_a_custom_task_extension"
-      display_name = "Notify the integration"
+      displayName = "Notify the integration"
       arguments    = { customTaskExtensionID = module.manager_access.id }
     },
   ]
@@ -95,20 +95,20 @@ module "offboard_leaver" {
   source  = "satolap/modules/msgraph//verified/identityGovernance/lifecycleWorkflows/workflows"
   version = "<version>"
 
-  display_name = "Offboard leavers"
-  category     = "leaver"
+  displayName = "Offboard leavers"
+  category    = "leaver"
 
   execution_conditions = { type = "on_demand" }
 
   tasks = [
     {
       task         = "disable_user_account"
-      display_name = "Disable user account"
+      displayName = "Disable user account"
       arguments    = { disableOnPremisesAccount = "false" }
     },
     {
       task         = "revoke_all_refresh_tokens_for_user"
-      display_name = "Revoke refresh tokens"
+      displayName = "Revoke refresh tokens"
     },
   ]
 
@@ -164,7 +164,7 @@ pinned Learn page.
 
 ## Activation
 
-`is_enabled` and `is_scheduling_enabled` default to `false` and are independent: enabling
+`isEnabled` and `isSchedulingEnabled` default to `false` and are independent: enabling
 either one needs `activation_opt_in = true`. For a `trigger_and_scope` workflow the scope rule
 is required and must not be empty; the module does not parse the rule, so it cannot tell
 whether it selects few users, and the rule is the only bound on the population. An `on_demand`
@@ -180,7 +180,7 @@ the [createNewVersion](https://learn.microsoft.com/en-us/graph/api/identitygover
 action. Learn also documents a task PATCH for a task's `displayName` and `description`. This
 module sends no action and no task PATCH, so:
 
-- A change of `display_name`, `description`, `is_enabled` or `is_scheduling_enabled` updates
+- A change of `displayName`, `description`, `isEnabled` or `isSchedulingEnabled` updates
   the workflow in place and keeps its ID.
 - A change of `category`, `execution_conditions` or **anything in `tasks`, including only a
   task's display name or description**, **replaces the workflow**
@@ -201,7 +201,7 @@ stops after the delete and the old workflow has to be restored or renamed outsid
 Before changing the category, the execution conditions or the tasks of a workflow that has run
 or is enabled:
 
-1. Apply a change that sets `is_enabled = false` and `is_scheduling_enabled = false` first, in a
+1. Apply a change that sets `isEnabled = false` and `isSchedulingEnabled = false` first, in a
    separate apply, so that no run starts while the workflow is being replaced.
 2. Read the plan and check that it shows the workflow as replaced, not updated.
 3. Export anything you need from the run history, because the replacement does not carry it.
@@ -270,17 +270,17 @@ Sources: [Lifecycle workflows license requirements](https://learn.microsoft.com/
 
 | Name | Description | Type | Default | Required | On change |
 |------|-------------|------|---------|----------| --- |
-| display_name | Display name of the workflow; updated in place | `string` | n/a | yes | in place |
+| displayName | Display name of the workflow; updated in place | `string` | n/a | yes | in place |
 | category | `joiner`, `leaver` or `mover`; a change replaces the workflow | `string` | n/a | yes | replaces `msgraph_resource.workflow` |
 | execution_conditions | `trigger_and_scope` (with `scope_rule` and a time-based `trigger`) or `on_demand`; a change replaces the workflow | `object` | n/a | yes | replaces `msgraph_resource.workflow` when its effect on `local.execution_conditions_body` changes |
 | tasks | Built-in tasks by key, in order, with arguments; a change replaces the workflow | `list(object)` | n/a | yes | replaces `msgraph_resource.workflow` when its effect on `local.tasks_body` changes |
 | description | Description of the workflow; updated in place | `string` | `""` | no | in place |
-| is_enabled | Whether the workflow is enabled; needs `activation_opt_in` | `bool` | `false` | no | in place |
-| is_scheduling_enabled | Whether scheduling is enabled; needs `activation_opt_in` | `bool` | `false` | no | in place |
+| isEnabled | Whether the workflow is enabled; needs `activation_opt_in` | `bool` | `false` | no | in place |
+| isSchedulingEnabled | Whether scheduling is enabled; needs `activation_opt_in` | `bool` | `false` | no | in place |
 | activation_opt_in | Explicit opt-in before either flag may be true | `bool` | `false` | no | no object change (validation or timing only) |
 | acknowledge_dangerous_tasks | Explicit acknowledgement for tasks that disable or delete a user or remove access | `bool` | `false` | no | no object change (validation or timing only) |
 | acknowledged_custom_task_extension_ids | IDs of the custom task extensions the reviewer accepted; must equal the extension IDs the tasks run | `set(string)` | `[]` | no | no object change (validation or timing only) |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that displayName must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
 
 ## Outputs
 
@@ -320,15 +320,48 @@ prerequisites, bounded assertions and the acceptance that remains outstanding.
 
 Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
 
-- `display_name`: in place.
+- `displayName`: in place.
 - `description`: in place.
 - `category`: replaces `msgraph_resource.workflow`.
 - `execution_conditions`: replaces `msgraph_resource.workflow` when its effect on `local.execution_conditions_body` changes.
 - `tasks`: replaces `msgraph_resource.workflow` when its effect on `local.tasks_body` changes.
-- `is_enabled`: in place.
-- `is_scheduling_enabled`: in place.
+- `isEnabled`: in place.
+- `isSchedulingEnabled`: in place.
 - `activation_opt_in`: no object change (validation or timing only).
 - `acknowledge_dangerous_tasks`: no object change (validation or timing only).
 - `acknowledged_custom_task_extension_ids`: no object change (validation or timing only).
 - `name_pattern`: no object change (validation or timing only).
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /identityGovernance/lifecycleWorkflows/workflows` | DelegatedWork | `LifecycleWorkflows-Workflow.ReadWrite.All` | - | - |
+| `POST /identityGovernance/lifecycleWorkflows/workflows` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/lifecycleWorkflows/workflows` | Application | `LifecycleWorkflows-Workflow.ReadWrite.All` | - | - |
+| `GET /identityGovernance/lifecycleWorkflows/workflows/{id}` | DelegatedWork | `LifecycleWorkflows-Workflow.ReadBasic.All` | - | - |
+| `GET /identityGovernance/lifecycleWorkflows/workflows/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/lifecycleWorkflows/workflows/{id}` | Application | `LifecycleWorkflows-Workflow.ReadBasic.All` | - | - |
+| `DELETE /identityGovernance/lifecycleWorkflows/workflows/{id}` | DelegatedWork | `LifecycleWorkflows-Workflow.ReadWrite.All` | - | - |
+| `DELETE /identityGovernance/lifecycleWorkflows/workflows/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /identityGovernance/lifecycleWorkflows/workflows/{id}` | Application | `LifecycleWorkflows-Workflow.ReadWrite.All` | - | - |
+| `PATCH /identityGovernance/lifecycleWorkflows/workflows/{id}` | DelegatedWork | `LifecycleWorkflows-Workflow.ReadWrite.All` | - | - |
+| `PATCH /identityGovernance/lifecycleWorkflows/workflows/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /identityGovernance/lifecycleWorkflows/workflows/{id}` | Application | `LifecycleWorkflows-Workflow.ReadWrite.All` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /identityGovernance/lifecycleWorkflows/workflows` | `category`, `description`, `displayName`, `executionConditions`, `isEnabled`, `isSchedulingEnabled`, `tasks` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /identityGovernance/lifecycleWorkflows/workflows/{id}` | `category`, `description`, `displayName`, `executionConditions`, `isEnabled`, `isSchedulingEnabled`, `tasks` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

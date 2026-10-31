@@ -1,16 +1,16 @@
-variable "account_enabled" {
+variable "accountEnabled" {
   description = "true if the account is enabled; otherwise, false. Default is true.  Supports $filter (eq, ne, not, in). Only callers with at least the Cloud Device Administrator role can set this property."
   type        = bool
   default     = null
 }
 
-variable "alternative_names" {
+variable "alternativeNames" {
   description = "List of alternative names for the device."
   type        = list(string)
   default     = null
 }
 
-variable "alternative_security_ids" {
+variable "alternativeSecurityIds" {
   description = "For internal use only. Not nullable. Supports $filter (eq, not, ge, le)."
   type = list(object({
     odata_type       = optional(string, "#microsoft.graph.alternativeSecurityId")
@@ -21,7 +21,7 @@ variable "alternative_security_ids" {
   default = null
 }
 
-variable "cloud_licensing" {
+variable "cloudLicensing" {
   description = "The cloud licensing relationships for this device, including assignments, usage rights, and waiting members."
   type = object({
     odata_type = optional(string, "#microsoft.graph.cloudLicensing.deviceCloudLicensing")
@@ -66,8 +66,8 @@ variable "cloud_licensing" {
   default = null
 
   validation {
-    condition     = (var.cloud_licensing == null ? true : alltrue([(var.cloud_licensing["usageRights"] == null ? true : alltrue([alltrue([for input1 in var.cloud_licensing["usageRights"] : (input1 == null ? true : alltrue([(input1["allotments"] == null ? true : alltrue([alltrue([for input3 in input1["allotments"] : (input3 == null ? true : alltrue([(input3["assignableTo"] == null ? true : alltrue([(input3["assignableTo"] == null ? true : try(alltrue([for value in split(",", input3["assignableTo"]) : contains(["none", "user", "group", "device"], lower(trimspace(value)))]), false))]))]))])]))]))])])), (var.cloud_licensing["waitingMembers"] == null ? true : alltrue([alltrue([for input1 in var.cloud_licensing["waitingMembers"] : (input1 == null ? true : alltrue([(input1["allotment"] == null ? true : alltrue([(input1["allotment"]["assignableTo"] == null ? true : alltrue([(input1["allotment"]["assignableTo"] == null ? true : try(alltrue([for value in split(",", input1["allotment"]["assignableTo"]) : contains(["none", "user", "group", "device"], lower(trimspace(value)))]), false))]))]))]))])]))]))
-    error_message = "cloud_licensing: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.cloudLicensing == null ? true : alltrue([(var.cloudLicensing["usageRights"] == null ? true : alltrue([alltrue([for input1 in var.cloudLicensing["usageRights"] : (input1 == null ? true : alltrue([(input1["allotments"] == null ? true : alltrue([alltrue([for input3 in input1["allotments"] : (input3 == null ? true : alltrue([(input3["assignableTo"] == null ? true : alltrue([(input3["assignableTo"] == null ? true : try(alltrue([for value in split(",", input3["assignableTo"]) : contains(["none", "user", "group", "device"], lower(trimspace(value)))]), false))]))]))])]))]))])])), (var.cloudLicensing["waitingMembers"] == null ? true : alltrue([alltrue([for input1 in var.cloudLicensing["waitingMembers"] : (input1 == null ? true : alltrue([(input1["allotment"] == null ? true : alltrue([(input1["allotment"]["assignableTo"] == null ? true : alltrue([(input1["allotment"]["assignableTo"] == null ? true : try(alltrue([for value in split(",", input1["allotment"]["assignableTo"]) : contains(["none", "user", "group", "device"], lower(trimspace(value)))]), false))]))]))]))])]))]))
+    error_message = "cloudLicensing: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
@@ -88,67 +88,67 @@ variable "commands" {
   default = null
 }
 
-variable "deleted_date_time" {
+variable "deletedDateTime" {
   description = "Date and time when this object was deleted. Always null when the object hasn't been deleted."
   type        = string
   default     = null
 }
 
-variable "device_category" {
+variable "deviceCategory" {
   description = "User-defined property set by Intune to automatically add devices to groups and simplify managing devices."
   type        = string
   default     = null
 }
 
-variable "device_id" {
+variable "deviceId" {
   description = "Unique identifier set by Azure Device Registration Service at the time of registration. This ID is an alternate key that can be used to reference the device object. Also supports $filter (eq, ne, not, startsWith)."
   type        = string
   default     = null
 }
 
-variable "device_metadata" {
+variable "deviceMetadata" {
   description = "For internal use only. Set to null."
   type        = string
   default     = null
 }
 
-variable "device_ownership" {
+variable "deviceOwnership" {
   description = "Ownership of the device. Intune sets this property. The possible values are: unknown, company, personal."
   type        = string
   default     = null
 }
 
-variable "device_version" {
+variable "deviceVersion" {
   description = "For internal use only."
   type        = number
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The display name for the device. Maximum length is 256 characters. Required. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq on null values), $search, and $orderby."
   type        = string
   default     = null
 }
 
-variable "domain_name" {
+variable "domainName" {
   description = "The on-premises domain name of Microsoft Entra hybrid joined devices. Intune sets this property."
   type        = string
   default     = null
 }
 
-variable "enrollment_profile_name" {
+variable "enrollmentProfileName" {
   description = "Enrollment profile applied to the device. For example, Apple Device Enrollment Profile, Device enrollment - Corporate device identifiers, or Windows Autopilot profile name. Intune sets this property."
   type        = string
   default     = null
 }
 
-variable "enrollment_type" {
+variable "enrollmentType" {
   description = "Enrollment type of the device. Intune sets this property. The possible values are: unknown, userEnrollment, deviceEnrollmentManager, appleBulkWithUser, appleBulkWithoutUser, windowsAzureADJoin, windowsBulkUserless, windowsAutoEnrollment, windowsBulkAzureDomainJoin, windowsCoManagement, windowsAzureADJoinUsingDeviceAuth,appleUserEnrollment, appleUserEnrollmentWithServiceAccount. NOTE: This property might return other values apart from those listed."
   type        = string
   default     = null
 }
 
-variable "extension_attributes" {
+variable "extensionAttributes" {
   description = "Contains extension attributes 1-15 for the device. The individual extension attributes aren't selectable. These properties are mastered in cloud and can be set during creation or update of a device object in Microsoft Entra ID. Supports $filter (eq, not, startsWith, and eq on null values)."
   type = object({
     odata_type           = optional(string, "#microsoft.graph.onPremisesExtensionAttributes")
@@ -177,13 +177,13 @@ variable "hostnames" {
   default     = null
 }
 
-variable "is_managed" {
+variable "isManaged" {
   description = "true if the device is managed by a Mobile Device Management (MDM) app; otherwise, false. This can only be updated by Intune for any device OS type or by an approved MDM app for Windows OS devices. Supports $filter (eq, ne, not)."
   type        = bool
   default     = null
 }
 
-variable "is_rooted" {
+variable "isRooted" {
   description = "true if the device is rooted or jail-broken. This property can only be updated by Intune."
   type        = bool
   default     = null
@@ -195,7 +195,7 @@ variable "kind" {
   default     = null
 }
 
-variable "management_type" {
+variable "managementType" {
   description = "Management channel of the device. Intune sets this property. The possible values are: eas, mdm, easMdm, intuneClient, easIntuneClient, configurationManagerClient, configurationManagerClientMdm, configurationManagerClientMdmEas, unknown, jamf, googleCloudDevicePolicyController."
   type        = string
   default     = null
@@ -214,19 +214,19 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "operating_system" {
+variable "operatingSystem" {
   description = "The type of operating system on the device. Required. Supports $filter (eq, ne, not, ge, le, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "operating_system_version" {
+variable "operatingSystemVersion" {
   description = "Operating system version of the device. Required. Supports $filter (eq, ne, not, ge, le, startsWith, and eq on null values)."
   type        = string
   default     = null
 }
 
-variable "physical_ids" {
+variable "physicalIds" {
   description = "For internal use only. Not nullable. Supports $filter (eq, not, ge, le, startsWith, /$count eq 0, /$count ne 0."
   type        = list(string)
   default     = null
@@ -238,7 +238,7 @@ variable "platform" {
   default     = null
 }
 
-variable "profile_type" {
+variable "profileType" {
   description = "The profile type of the device. Possible values: RegisteredDevice (default), SecureVM, Printer, Shared, IoT."
   type        = string
   default     = null
@@ -250,19 +250,19 @@ variable "status" {
   default     = null
 }
 
-variable "system_labels" {
+variable "systemLabels" {
   description = "List of labels applied to the device by the system. Supports $filter (/$count eq 0, /$count ne 0)."
   type        = list(string)
   default     = null
 }
 
-variable "transitive_member_of" {
+variable "transitiveMemberOf" {
   description = "Groups and administrative units that this device is a member of. This operation is transitive. Supports $expand."
   type        = any
   default     = null
 }
 
-variable "usage_rights" {
+variable "usageRights" {
   description = "Represents the usage rights a device has been granted."
   type = list(object({
     odata_type        = optional(string, "#microsoft.graph.usageRight")
@@ -273,8 +273,8 @@ variable "usage_rights" {
   default = null
 
   validation {
-    condition     = (var.usage_rights == null ? true : alltrue([alltrue([for input0 in var.usage_rights : (input0 == null ? true : alltrue([(input0["state"] == null ? true : alltrue([(input0["state"] == null ? true : contains(["active", "inactive", "warning", "suspended"], input0["state"]))]))]))])]))
-    error_message = "usage_rights: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.usageRights == null ? true : alltrue([alltrue([for input0 in var.usageRights : (input0 == null ? true : alltrue([(input0["state"] == null ? true : alltrue([(input0["state"] == null ? true : contains(["active", "inactive", "warning", "suspended"], input0["state"]))]))]))])]))
+    error_message = "usageRights: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 

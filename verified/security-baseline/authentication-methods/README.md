@@ -279,3 +279,63 @@ Terraform plans compare configuration and refreshed provider state. A plan that 
 - `phone_methods_group_id`: in place.
 - `restore_previous_state`: creates or deletes `msgraph_update_resource.object` instances; not replaced or moved: the update targets the existing object; recreate it to move it.
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `PATCH /policies/authenticationMethodsPolicy` | DelegatedWork | `Policy.ReadWrite.AuthenticationMethod` | - | - |
+| `PATCH /policies/authenticationMethodsPolicy` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /policies/authenticationMethodsPolicy` | Application | `Policy.ReadWrite.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationMethodsPolicy` | DelegatedWork | `Policy.Read.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationMethodsPolicy` | DelegatedWork | `Policy.ReadWrite.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationMethodsPolicy` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /policies/authenticationMethodsPolicy` | Application | `Policy.Read.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationMethodsPolicy` | Application | `Policy.ReadWrite.AuthenticationMethod` | - | - |
+| `PATCH /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/fido2` | DelegatedWork | `Policy.ReadWrite.AuthenticationMethod` | - | - |
+| `PATCH /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/fido2` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/fido2` | Application | `Policy.ReadWrite.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/fido2` | DelegatedWork | `Policy.Read.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/fido2` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/fido2` | Application | `Policy.Read.AuthenticationMethod` | - | - |
+| `PATCH /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/microsoftAuthenticator` | DelegatedWork | `Policy.ReadWrite.AuthenticationMethod` | - | - |
+| `PATCH /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/microsoftAuthenticator` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/microsoftAuthenticator` | Application | `Policy.ReadWrite.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/microsoftAuthenticator` | DelegatedWork | `Policy.Read.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/microsoftAuthenticator` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/microsoftAuthenticator` | Application | `Policy.Read.AuthenticationMethod` | - | - |
+| `PATCH /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/sms` | DelegatedWork | `Policy.ReadWrite.AuthenticationMethod` | - | - |
+| `PATCH /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/sms` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/sms` | Application | `Policy.ReadWrite.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/sms` | DelegatedWork | `Policy.Read.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/sms` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/sms` | Application | `Policy.Read.AuthenticationMethod` | - | - |
+| `PATCH /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/voice` | DelegatedWork | `Policy.ReadWrite.AuthenticationMethod` | - | - |
+| `PATCH /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/voice` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/voice` | Application | `Policy.ReadWrite.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/voice` | DelegatedWork | `Policy.Read.AuthenticationMethod` | - | - |
+| `GET /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/voice` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /policies/authenticationMethodsPolicy/authenticationMethodConfigurations/voice` | Application | `Policy.Read.AuthenticationMethod` | - | - |
+| `GET /policies/identitySecurityDefaultsEnforcementPolicy` | DelegatedWork | `Policy.Read.All` | - | - |
+| `GET /policies/identitySecurityDefaultsEnforcementPolicy` | DelegatedWork | `Policy.ReadWrite.SecurityDefaults` | `Policy.Read.All` | - |
+| `GET /policies/identitySecurityDefaultsEnforcementPolicy` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /policies/identitySecurityDefaultsEnforcementPolicy` | Application | `Policy.Read.All` | - | - |
+| `GET /policies/identitySecurityDefaultsEnforcementPolicy` | Application | `Policy.ReadWrite.SecurityDefaults` | `Policy.Read.All` | - |
+| `GET /subscribedSkus` | DelegatedWork | `LicenseAssignment.Read.All` | - | - |
+| `GET /subscribedSkus` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /subscribedSkus` | Application | `LicenseAssignment.Read.All` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `GET /subscribedSkus` | `capabilityStatus`, `prepaidUnits`, `servicePlans`, `skuId`, `skuPartNumber` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

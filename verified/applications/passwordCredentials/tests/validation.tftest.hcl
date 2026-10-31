@@ -28,7 +28,7 @@ mock_provider "msgraph" {
 
 variables {
   acknowledge_secret_in_plan_output = true
-  application_id                    = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"
+  application-id                    = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"
   displayName                       = "Automation credential"
 }
 
@@ -52,8 +52,8 @@ run "rejects_long_label" {
 
 run "rejects_object_id" {
   command = plan
-  variables { application_id = "not-a-guid" }
-  expect_failures = [var.application_id]
+  variables { application-id = "not-a-guid" }
+  expect_failures = [var.application-id]
 }
 
 run "rejects_empty_rotation" {

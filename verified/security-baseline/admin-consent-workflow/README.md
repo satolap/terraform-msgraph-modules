@@ -218,3 +218,34 @@ Terraform plans compare configuration and refreshed provider state. A plan that 
 - `request_duration_in_days`: in place.
 - `restore_previous_state`: in place.
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `PUT /policies/adminConsentRequestPolicy` | DelegatedWork | `Policy.ReadWrite.ConsentRequest` | - | - |
+| `PUT /policies/adminConsentRequestPolicy` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PUT /policies/adminConsentRequestPolicy` | Application | `Policy.ReadWrite.ConsentRequest` | - | - |
+| `GET /policies/adminConsentRequestPolicy` | DelegatedWork | `Policy.Read.All` | - | - |
+| `GET /policies/adminConsentRequestPolicy` | DelegatedWork | `Policy.ReadWrite.ConsentRequest` | - | - |
+| `GET /policies/adminConsentRequestPolicy` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /policies/adminConsentRequestPolicy` | Application | `Policy.Read.All` | - | - |
+| `GET /policies/adminConsentRequestPolicy` | Application | `Policy.ReadWrite.ConsentRequest` | - | - |
+| `GET /subscribedSkus` | DelegatedWork | `LicenseAssignment.Read.All` | - | - |
+| `GET /subscribedSkus` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /subscribedSkus` | Application | `LicenseAssignment.Read.All` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `GET /subscribedSkus` | `capabilityStatus`, `prepaidUnits`, `servicePlans`, `skuId`, `skuPartNumber` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

@@ -11,7 +11,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "users/${urlencode(var.user_id)}/todo/lists/${urlencode(var.todo_task_list_id)}/extensions"
+  url                     = "users/${urlencode(var.user-id)}/todo/lists/${urlencode(var.todoTaskList-id)}/extensions"
   api_version             = "beta"
   update_method           = "PATCH"
   body                    = local.body

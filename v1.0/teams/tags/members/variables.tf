@@ -1,26 +1,26 @@
-variable "team_id" {
+variable "team-id" {
   description = "The unique identifier of team"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.team_id)) > 0
-    error_message = "team_id must not be empty."
+    condition     = length(trimspace(var.team-id)) > 0
+    error_message = "team-id must not be empty."
   }
 }
 
-variable "teamwork_tag_id" {
+variable "teamworkTag-id" {
   description = "The unique identifier of teamworkTag"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.teamwork_tag_id)) > 0
-    error_message = "teamwork_tag_id must not be empty."
+    condition     = length(trimspace(var.teamworkTag-id)) > 0
+    error_message = "teamworkTag-id must not be empty."
   }
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The member's display name."
   type        = string
   default     = null
@@ -33,13 +33,13 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "tenant_id" {
+variable "tenantId" {
   description = "The ID of the tenant that the tag member is a part of."
   type        = string
   default     = null
 }
 
-variable "user_id" {
+variable "userId" {
   description = "The user ID of the member."
   type        = string
   default     = null

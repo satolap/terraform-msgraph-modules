@@ -280,3 +280,70 @@ Terraform plans compare configuration and refreshed provider state. A plan that 
 - `additional_admin_role_template_ids`: in place.
 - `exclude_directory_sync_accounts`: in place.
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `PATCH /policies/identitySecurityDefaultsEnforcementPolicy` | DelegatedWork | `Policy.Read.All` | - | - |
+| `PATCH /policies/identitySecurityDefaultsEnforcementPolicy` | DelegatedWork | `Policy.ReadWrite.SecurityDefaults` | `Policy.Read.All` | - |
+| `PATCH /policies/identitySecurityDefaultsEnforcementPolicy` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /policies/identitySecurityDefaultsEnforcementPolicy` | Application | `Policy.Read.All` | - | - |
+| `PATCH /policies/identitySecurityDefaultsEnforcementPolicy` | Application | `Policy.ReadWrite.SecurityDefaults` | `Policy.Read.All` | - |
+| `GET /policies/identitySecurityDefaultsEnforcementPolicy` | DelegatedWork | `Policy.Read.All` | - | - |
+| `GET /policies/identitySecurityDefaultsEnforcementPolicy` | DelegatedWork | `Policy.ReadWrite.SecurityDefaults` | `Policy.Read.All` | - |
+| `GET /policies/identitySecurityDefaultsEnforcementPolicy` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /policies/identitySecurityDefaultsEnforcementPolicy` | Application | `Policy.Read.All` | - | - |
+| `GET /policies/identitySecurityDefaultsEnforcementPolicy` | Application | `Policy.ReadWrite.SecurityDefaults` | `Policy.Read.All` | - |
+| `POST /identity/conditionalAccess/policies` | DelegatedWork | `Application.Read.All` | - | - |
+| `POST /identity/conditionalAccess/policies` | DelegatedWork | `Policy.Read.All` | - | - |
+| `POST /identity/conditionalAccess/policies` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identity/conditionalAccess/policies` | Application | `Policy.Read.All` | - | - |
+| `GET /identity/conditionalAccess/policies/{id}` | DelegatedWork | `Policy.Read.All` | - | - |
+| `GET /identity/conditionalAccess/policies/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identity/conditionalAccess/policies/{id}` | Application | `Policy.Read.All` | - | - |
+| `DELETE /identity/conditionalAccess/policies/{id}` | DelegatedWork | `Policy.Read.All` | - | - |
+| `DELETE /identity/conditionalAccess/policies/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /identity/conditionalAccess/policies/{id}` | Application | `Policy.Read.All` | - | - |
+| `PATCH /identity/conditionalAccess/policies/{id}` | DelegatedWork | `Application.Read.All` | - | - |
+| `PATCH /identity/conditionalAccess/policies/{id}` | DelegatedWork | `Policy.Read.All` | - | - |
+| `PATCH /identity/conditionalAccess/policies/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /identity/conditionalAccess/policies/{id}` | Application | `Policy.Read.All` | - | - |
+| `GET /identity/conditionalAccess/policies` | DelegatedWork | `Policy.Read.All` | - | - |
+| `GET /identity/conditionalAccess/policies` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identity/conditionalAccess/policies` | Application | `Policy.Read.All` | - | - |
+| `GET /subscribedSkus` | DelegatedWork | `LicenseAssignment.Read.All` | - | - |
+| `GET /subscribedSkus` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /subscribedSkus` | Application | `LicenseAssignment.Read.All` | - | - |
+| `GET /users` | DelegatedWork | `User.ReadBasic.All` | - | - |
+| `GET /users` | DelegatedWork | `User.ReadWrite.All` | - | - |
+| `GET /users` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /users` | Application | `User.ReadBasic.All` | - | - |
+| `GET /users` | Application | `User.ReadWrite.All` | - | - |
+| `GET /groups` | DelegatedWork | `Group-NestingSupport.ReadWrite.All` | - | - |
+| `GET /groups` | DelegatedWork | `Group.ReadBasic.All` | - | - |
+| `GET /groups` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /groups` | Application | `Group-NestingSupport.ReadWrite.All` | - | - |
+| `GET /groups` | Application | `Group.ReadBasic.All` | - | - |
+| `GET /groups/{id}/members` | DelegatedWork | `GroupMember.ReadBasic.All` | - | - |
+| `GET /groups/{id}/members` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /groups/{id}/members` | Application | `GroupMember.ReadBasic.All` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `PATCH /policies/identitySecurityDefaultsEnforcementPolicy` | `isEnabled` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `GET /subscribedSkus` | `capabilityStatus`, `prepaidUnits`, `servicePlans`, `skuId`, `skuPartNumber` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `GET /users` | `accountEnabled`, `id`, `onPremisesSyncEnabled`, `userPrincipalName`, `userType` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `GET /groups` | `displayName`, `groupTypes`, `id`, `isAssignableToRole`, `securityEnabled` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `GET /groups/{id}/members` | `id` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

@@ -1,16 +1,16 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "allowedOnlineMeetingProviders" = (var.allowed_online_meeting_providers == null ? null : [for item0 in var.allowed_online_meeting_providers : item0 if item0 != null])
-    "calendarPermissions"           = (var.calendar_permissions == null ? null : [for item0 in var.calendar_permissions : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "allowedRoles" = (item0["allowedRoles"] == null ? null : [for item2 in item0["allowedRoles"] : item2 if item2 != null]), "isInsideOrganization" = item0["isInsideOrganization"], "isRemovable" = item0["isRemovable"], "role" = item0["role"] } : key1 => value1 if value1 != null }) if item0 != null])
-    "canEdit"                       = var.can_edit
-    "canShare"                      = var.can_share
-    "canViewPrivateItems"           = var.can_view_private_items
+    "allowedOnlineMeetingProviders" = (var.allowedOnlineMeetingProviders == null ? null : [for item0 in var.allowedOnlineMeetingProviders : item0 if item0 != null])
+    "calendarPermissions"           = (var.calendarPermissions == null ? null : [for item0 in var.calendarPermissions : (item0 == null ? null : { for key1, value1 in { "@odata.type" = item0["odata_type"], "allowedRoles" = (item0["allowedRoles"] == null ? null : [for item2 in item0["allowedRoles"] : item2 if item2 != null]), "isInsideOrganization" = item0["isInsideOrganization"], "isRemovable" = item0["isRemovable"], "role" = item0["role"] } : key1 => value1 if value1 != null }) if item0 != null])
+    "canEdit"                       = var.canEdit
+    "canShare"                      = var.canShare
+    "canViewPrivateItems"           = var.canViewPrivateItems
     "color"                         = var.color
-    "defaultOnlineMeetingProvider"  = var.default_online_meeting_provider
-    "isDefaultCalendar"             = var.is_default_calendar
-    "isRemovable"                   = var.is_removable
-    "isTallyingResponses"           = var.is_tallying_responses
+    "defaultOnlineMeetingProvider"  = var.defaultOnlineMeetingProvider
+    "isDefaultCalendar"             = var.isDefaultCalendar
+    "isRemovable"                   = var.isRemovable
+    "isTallyingResponses"           = var.isTallyingResponses
     "name"                          = var.name
     "@odata.type"                   = var.odata_type
     "owner"                         = (var.owner == null ? null : { for key0, value0 in { "@odata.type" = var.owner["odata_type"], "address" = var.owner["address"], "name" = var.owner["name"] } : key0 => value0 if value0 != null })

@@ -22,8 +22,8 @@ Catalogs, access packages and assignment policies configure an entitlement. They
 person received or lost access. This module closes that gap: it reports whether the **request**
 was delivered, resolves the **assignment** it produced, and removes only that assignment. It does not
 create the package or the policy; take their IDs from the
-[access-packages](../../../identity-governance/entitlement-management/access-packages/README.md)
-and [assignment-policies](../../../identity-governance/entitlement-management/assignment-policies/README.md)
+[access-packages](../../../identityGovernance/entitlementManagement/accessPackages/README.md)
+and [assignment-policies](../../../identityGovernance/entitlementManagement/assignmentPolicies/README.md)
 modules.
 
 Status: **offline-verified only**. The behavior below is established by mocked Terraform tests and by
@@ -121,7 +121,7 @@ The assignment policy decides how a request is processed, and this module does n
 - It never approves a request, skips an approval stage or sets a requestor. A policy that requires
   approval leaves the request in `pendingApproval`; the module reports `pending`.
 - Custom-extension callouts configured on the policy (see the
-  [assignment-policies](../../../identity-governance/entitlement-management/assignment-policies/README.md)
+  [assignment-policies](../../../identityGovernance/entitlementManagement/assignmentPolicies/README.md)
   `custom_extension_stage_settings` input and the catalog custom-extensions module) run as part of
   delivery. A request waiting on one is `pending`; one that the extension fails is
   `failed`. This module configures no callout and has no input for one.
@@ -197,19 +197,19 @@ place. Use it only when something else owns removal.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 An employee, taking the package and policy from the modules that create them:
 
 ```hcl
 module "engineering_access" {
-  source  = "satolap/modules/msgraph//verified/identity-governance/entitlement-management/access-packages"
+  source  = "satolap/modules/msgraph//verified/identityGovernance/entitlementManagement/accessPackages"
   version = "<version>"
   # ...
 }
 
 module "engineering_policy" {
-  source  = "satolap/modules/msgraph//verified/identity-governance/entitlement-management/assignment-policies"
+  source  = "satolap/modules/msgraph//verified/identityGovernance/entitlementManagement/assignmentPolicies"
   version = "<version>"
   # ...
 }
@@ -258,7 +258,7 @@ Extending a delivered assignment:
 
 ```hcl
   schedule_update = {
-    expiration = { type = "afterDateTime", end_date_time = "2027-06-30T00:00:00Z" }
+    expiration = { type = "afterDateTime", endDateTime = "2027-06-30T00:00:00Z" }
   }
 ```
 
@@ -395,8 +395,8 @@ Until a run succeeds, `runtime_evidence` stays `not_verified`.
 | access_package_id | ID of the access package | `string` | n/a | yes | replaces `msgraph_resource_action.update`; replaces `msgraph_resource_action.add`; changes `null_resource.remove_on_destroy`; see the module notes |
 | assignment_policy_id | ID of the assignment policy, which must belong to the package | `string` | n/a | yes | replaces `msgraph_resource_action.update`; replaces `msgraph_resource_action.add`; changes `null_resource.remove_on_destroy`; see the module notes |
 | justification | Justification sent with `adminAdd` and `adminUpdate` | `string` | `"Managed by Terraform"` | no | kept from creation: a change is refused or ignored (see notes) |
-| schedule | Optional schedule sent with `adminAdd`: `start_date_time` and `expiration` (`noExpiration`, `afterDateTime` with `end_date_time`, `afterDuration` with `duration`); captured at send time | `object` | `null` | no | kept from creation: a change is refused or ignored (see notes) |
-| schedule_update | Optional `adminUpdate` of the delivered assignment, same shape as `schedule` | `object` | `null` | no | replaces `msgraph_resource_action.update`; creates or deletes `msgraph_resource_action.update` instances |
+| schedule | Optional schedule sent with `adminAdd`: `startDateTime` and `expiration` (`noExpiration`, `afterDateTime` with `endDateTime`, `afterDuration` with `duration`); captured at send time | `object` | `null` | no | kept from creation: a change is refused or ignored (see notes) |
+| schedule_update | Optional `adminUpdate` of the delivered assignment, same shape as `schedule` | `object` | `null` | no | replaces `msgraph_resource_action.update` when its effect on `local.stored_schedule_update` changes; creates or deletes `msgraph_resource_action.update` instances |
 | adopt_assignment_id | Existing assignment to adopt instead of sending `adminAdd` | `string` | `null` | no | replaces `msgraph_resource_action.update`; replaces `msgraph_resource_action.add`; creates or deletes `msgraph_resource_action.add` instances; changes `null_resource.remove_on_destroy`; see the module notes |
 | revoke_adopted_assignment_on_destroy | Whether destroy revokes an adopted assignment | `bool` | `false` | no | changes `null_resource.remove_on_destroy`; see the module notes |
 | replacement_token | Changing it revokes the assignment and requests access again | `string` | `null` | no | replaces `msgraph_resource_action.update`; replaces `msgraph_resource_action.add`; changes `null_resource.remove_on_destroy`; see the module notes |
@@ -447,10 +447,50 @@ Terraform plans compare configuration and refreshed provider state. A plan that 
 - `assignment_policy_id`: replaces `msgraph_resource_action.update`; replaces `msgraph_resource_action.add`; changes `null_resource.remove_on_destroy`; see the module notes.
 - `justification`: kept from creation: a change is refused or ignored (see notes).
 - `schedule`: kept from creation: a change is refused or ignored (see notes).
-- `schedule_update`: replaces `msgraph_resource_action.update`; creates or deletes `msgraph_resource_action.update` instances.
+- `schedule_update`: replaces `msgraph_resource_action.update` when its effect on `local.stored_schedule_update` changes; creates or deletes `msgraph_resource_action.update` instances.
 - `adopt_assignment_id`: replaces `msgraph_resource_action.update`; replaces `msgraph_resource_action.add`; creates or deletes `msgraph_resource_action.add` instances; changes `null_resource.remove_on_destroy`; see the module notes.
 - `revoke_adopted_assignment_on_destroy`: changes `null_resource.remove_on_destroy`; see the module notes.
 - `replacement_token`: replaces `msgraph_resource_action.update`; replaces `msgraph_resource_action.add`; changes `null_resource.remove_on_destroy`; see the module notes.
 - `verification_delay_seconds`: no object change (validation or timing only).
 - `require_delivery`: no object change (validation or timing only).
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /identityGovernance/entitlementManagement/assignmentRequests` | DelegatedWork | `EntitlementMgmt-SubjectAccess.ReadWrite` | - | - |
+| `POST /identityGovernance/entitlementManagement/assignmentRequests` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/entitlementManagement/assignmentRequests` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/assignmentRequests/{id}` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/assignmentRequests/{id}` | DelegatedWork | `EntitlementManagement.ReadWrite.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/assignmentRequests/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/assignmentRequests/{id}` | Application | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/assignmentRequests/{id}` | Application | `EntitlementManagement.ReadWrite.All` | - | - |
+| `POST /identityGovernance/entitlementManagement/assignmentRequests/{id}/cancel` | DelegatedWork | `EntitlementMgmt-SubjectAccess.ReadWrite` | - | - |
+| `POST /identityGovernance/entitlementManagement/assignmentRequests/{id}/cancel` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identityGovernance/entitlementManagement/assignmentRequests/{id}/cancel` | Application | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/assignments` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/assignments` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/assignments` | Application | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/assignments/{id}` | DelegatedWork | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/assignments/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identityGovernance/entitlementManagement/assignments/{id}` | Application | `EntitlementManagement.Read.All` | - | - |
+| `GET /identityGovernance/entitlementManagement/assignmentRequests/request-id-not-returned` | DelegatedWork | Unknown / not annotated | - | The readback fallback contains a literal missing-request sentinel, not a proven object ID. The pin annotates the parameterized item path, not this concrete failure-path URI; do not silently substitute an ID or infer a permission grant. |
+| `GET /identityGovernance/entitlementManagement/assignmentRequests/request-id-not-returned` | DelegatedPersonal | Unknown / not annotated | - | The readback fallback contains a literal missing-request sentinel, not a proven object ID. The pin annotates the parameterized item path, not this concrete failure-path URI; do not silently substitute an ID or infer a permission grant. |
+| `GET /identityGovernance/entitlementManagement/assignmentRequests/request-id-not-returned` | Application | Unknown / not annotated | - | The readback fallback contains a literal missing-request sentinel, not a proven object ID. The pin annotates the parameterized item path, not this concrete failure-path URI; do not silently substitute an ID or infer a permission grant. |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /identityGovernance/entitlementManagement/assignmentRequests` | `assignment`, `justification`, `requestType`, `schedule` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

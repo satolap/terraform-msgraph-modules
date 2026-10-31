@@ -1,0 +1,205 @@
+# Conditional Access country named locations
+
+<!-- uses-beta:start -->
+Uses beta: **no**. This module and its local child modules do not select beta.
+<!-- uses-beta:end -->
+
+<!-- live-status:start -->
+Assurance: **verified live-accepted** (2026-10-24, commit `344ecc7e`). Acceptance covers the recorded run and configuration.
+
+![live Dev: passed 2026-10-24](https://img.shields.io/badge/live%20Dev-passed%202026--10--24-brightgreen)
+<!-- live-status:end -->
+
+Creates a Microsoft Entra country named location (`#microsoft.graph.countryNamedLocation` at
+`identity/conditionalAccess/namedLocations`) via the `microsoft/msgraph` Terraform provider.
+Conditional Access policies reference the location's `id` in their location condition.
+
+The module sends the derived `@odata.type` on create and on every update, as Microsoft Graph
+requires. Changing `countryLookupMethod` replaces the location, because the update API does
+not list that property; the replacement is created before the old location is deleted.
+
+## Usage
+
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+
+```hcl
+module "blocked_regions" {
+  source  = "satolap/modules/msgraph//verified/identity/conditionalAccess/namedLocations/countryNamedLocation"
+  version = "<version>"
+
+  displayName         = "Blocked regions"
+  countriesAndRegions = ["CA", "IN"]
+}
+```
+
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 1.11.0 |
+| msgraph | >= 0.5.0 |
+
+`microsoft/msgraph` 0.5.0 is the first release that sends a changed nested object in full on
+update; earlier releases are not supported by this module.
+
+The module sets minimum versions only. Azure Verified Modules also require a maximum major
+version (TFNFR25, TFNFR26); this module follows HashiCorp's guidance for reusable modules
+instead, which is to "constrain only their minimum allowed versions of Terraform and
+providers"
+([Version constraints](https://developer.hashicorp.com/terraform/language/expressions/version-constraints)).
+The provider is 0.x, so a minor release can break the module; the release manifest records
+the provider version it was tested with. Set upper bounds in your root module.
+
+Only the Microsoft Graph v1.0 API is supported: `api_version = "beta"` fails at plan, because
+Microsoft does not support beta APIs in production applications. Switching an existing named
+location from `"beta"` to `"v1.0"` plans one in-place update; it sends no PATCH request and
+reads the named location back through v1.0, so the apply fails if v1.0 cannot read it (not
+verified).
+
+| Operation | Least privileged application permissions | Least privileged delegated roles |
+| --- | --- | --- |
+| [Create](https://learn.microsoft.com/en-us/graph/api/conditionalaccessroot-post-namedlocations?view=graph-rest-1.0) | `Policy.Read.All` and `Policy.ReadWrite.ConditionalAccess` | Conditional Access Administrator or Security Administrator |
+| [Update](https://learn.microsoft.com/en-us/graph/api/countrynamedlocation-update?view=graph-rest-1.0) | `Policy.Read.All` and `Policy.ReadWrite.ConditionalAccess` | Conditional Access Administrator or Security Administrator |
+| [Delete](https://learn.microsoft.com/en-us/graph/api/namedlocation-delete?view=graph-rest-1.0) | `Policy.Read.All` and `Policy.ReadWrite.ConditionalAccess` | Conditional Access Administrator or Security Administrator |
+| [Read](https://learn.microsoft.com/en-us/graph/api/namedlocation-get?view=graph-rest-1.0) (refresh) | `Policy.Read.All` | Conditional Access Administrator, Security Administrator, Security Reader or Global Reader |
+
+Delegated callers also need the `Policy.Read.All` and `Policy.ReadWrite.ConditionalAccess`
+scopes in their token.
+
+## Lookup method and report-only side effects
+
+- `clientIpAddress` (default) maps the sign-in IP address to a country or region.
+- `authenticatorAppGps` uses the Microsoft Authenticator app. Users can be prompted every hour
+  to share their location, and "a Conditional Access policy with GPS-based named locations in
+  report-only mode prompts users to share their GPS location, not sharing this information may
+  result in a block"
+  ([Network assignment](https://learn.microsoft.com/en-us/entra/identity/conditional-access/concept-assignment-network#countries)).
+  Use it only for sensitive apps where that is acceptable. It is not supported in the
+  Microsoft Cloud for US Government.
+- `includeUnknownCountriesAndRegions = true` also matches IP addresses that do not map to a
+  country or region. Learn describes it for IP-based lookup only; its effect with
+  `authenticatorAppGps` is not documented.
+
+## Limits and lifecycle
+
+- Deleted named locations are soft-deleted and can be restored for 30 days
+  ([Recover from deletions](https://learn.microsoft.com/en-us/entra/architecture/recover-from-deletions)).
+- A location that a policy still references should be destroyed after that policy. Pass the
+  location's `id` output to the policy so that Terraform orders the destroy. That ordering
+  works only within one state: keep each location in the same state as every policy that
+  references it, or change the reference in the other state first. What Microsoft Graph
+  does when a referenced location is deleted (refuse, or delete and leave the policy
+  pointing at nothing) is not documented and not tested here. A block policy that excludes
+  only this location would then apply everywhere (inference).
+- **After a failed replacement, do not rerun a plain apply.** If an apply that changed
+  `countryLookupMethod` fails, Terraform has already recorded the new method in its
+  replacement trigger, so the retry updates the old location in place with a property the
+  update API does not list, and the old method can stay in force. If the new location was
+  created but could not be read back, it also exists outside the state. Look for a location
+  with the same display name, delete the one that is not in state, then run
+  `terraform apply -replace='<module address>.msgraph_resource.named_location'`, and check
+  that the `country_lookup_method` output matches the configuration.
+- Learn states the 195 named location limit for IP locations only; whether country locations
+  count towards it is not documented.
+- **Create, update and delete timeouts of at least `15s`.** After each request the provider
+  waits for three consistent reads 5 seconds apart, within the same timeout, so a value
+  under 10 seconds always fails after the request was sent, and the module rejects values
+  under `15s`. A create that fails this way leaves the named location in Microsoft Graph but
+  not in the state (inference from the provider code). The provider already retries status
+  codes 408, 429, 500, 502, 503 and 504 by itself, and those retries count against the
+  timeouts.
+
+## Independent checks
+
+No [Maester](https://maester.dev/) test in 2.3.0 reads a country named location or its lookup
+method, so there is no scanner row to look for; the prompts of a GPS-based location show in the
+sign-in logs instead. The policies that reference the location are covered by the checks listed
+in the policies module README.
+
+<!-- licensing:begin -->
+## Licensing and prerequisites
+
+Reviewed against public Microsoft documentation on 2026-09-18. Requirements depend on the features an input enables and on who benefits; a successful API call does not establish entitlement. Live test status: not verified in a licensed tenant.
+
+Before deployment, check the requirements of the features you enable and the users who benefit. You can inspect tenant subscriptions with `GET /subscribedSkus`; this requires `Organization.Read.All` or `LicenseAssignment.Read.All` ([List subscribedSkus](https://learn.microsoft.com/en-us/graph/api/subscribedsku-list?view=graph-rest-1.0)).
+
+| Applies when | Feature | Requirement | Who needs coverage | Assignment / capacity | Confidence |
+| --- | --- | --- | --- | --- | --- |
+| Always | CONDITIONAL-ACCESS | Conditional Access requires Microsoft Entra ID P1. Risk-based policies (sign-in risk and user risk) also need Microsoft Entra ID Protection, a Microsoft Entra ID P2 feature, which is a separate rule. When the licenses expire, existing policies are not disabled or deleted; they can be viewed and deleted but no longer updated. Any of: Microsoft Entra ID P1 (`AAD_PREMIUM`). | Users in scope of the policies; the reviewed pages state the tenant requirement without a per-user counting rule, so review coverage against the product terms | direct / per_tenant | documented |
+
+Notes:
+
+- Named locations are configured under Conditional Access and take effect only through a policy that references them. The reviewed pages state no separate licence rule for named locations; the CONDITIONAL-ACCESS rule is applied to them by inference.
+- The Conditional Access rules were reviewed against Microsoft Learn on 2026-09-29, which is later than the review date stated above.
+
+Sources: [Conditional Access license requirements](https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview#license-requirements), [Microsoft Entra Conditional Access licensing](https://learn.microsoft.com/en-us/entra/fundamentals/licensing#microsoft-entra-conditional-access).
+<!-- licensing:end -->
+
+## Inputs
+
+| Name | Description | Type | Default | Required | On change |
+|------|-------------|------|---------|----------| --- |
+| displayName | Display name of the location | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that displayName must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| countriesAndRegions | Two-letter upper-case codes, at least one | `set(string)` | n/a | yes | in place |
+| includeUnknownCountriesAndRegions | Also match addresses without a country or region | `bool` | `false` | no | in place |
+| countryLookupMethod | `clientIpAddress` or `authenticatorAppGps`; a change replaces the location | `string` | `"clientIpAddress"` | no | replaces `msgraph_resource.named_location` |
+| api_version | Graph API version; only `v1.0` is supported | `string` | `"v1.0"` | no | in place |
+| timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; create, update and delete at least `15s`; retries count against them | `object` | `{}` (`10m` for create, update and delete; the provider default for read) | no | no object change (validation or timing only) |
+
+## Outputs
+
+| Name | Description | Known in plan after an update |
+|------|-------------| --- |
+| id | The ID of the named location, for a policy's location condition | yes |
+| display_name | The display name Microsoft Graph returned on the last read | no |
+| countries_and_regions | The codes Microsoft Graph returned on the last read, sorted | no |
+| include_unknown_countries_and_regions | The unknown-countries flag Microsoft Graph returned on the last read | no |
+| country_lookup_method | The lookup method Microsoft Graph returned on the last read | no |
+
+<!-- drift:start -->
+## Drift and out-of-band changes
+
+Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
+
+- `displayName`: in place.
+- `countriesAndRegions`: in place.
+- `includeUnknownCountriesAndRegions`: in place.
+- `countryLookupMethod`: replaces `msgraph_resource.named_location`.
+- `api_version`: in place.
+- `timeouts`: no object change (validation or timing only).
+- `name_pattern`: no object change (validation or timing only).
+<!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /identity/conditionalAccess/namedLocations` | DelegatedWork | `Policy.Read.All` | - | - |
+| `POST /identity/conditionalAccess/namedLocations` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /identity/conditionalAccess/namedLocations` | Application | `Policy.Read.All` | - | - |
+| `GET /identity/conditionalAccess/namedLocations/{id}` | DelegatedWork | `Policy.Read.All` | - | - |
+| `GET /identity/conditionalAccess/namedLocations/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /identity/conditionalAccess/namedLocations/{id}` | Application | `Policy.Read.All` | - | - |
+| `DELETE /identity/conditionalAccess/namedLocations/{id}` | DelegatedWork | `Policy.Read.All` | - | - |
+| `DELETE /identity/conditionalAccess/namedLocations/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /identity/conditionalAccess/namedLocations/{id}` | Application | `Policy.Read.All` | - | - |
+| `PATCH /identity/conditionalAccess/namedLocations/{id}` | DelegatedWork | `Policy.Read.All` | - | - |
+| `PATCH /identity/conditionalAccess/namedLocations/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `PATCH /identity/conditionalAccess/namedLocations/{id}` | Application | `Policy.Read.All` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /identity/conditionalAccess/namedLocations` | `@odata.type`, `countriesAndRegions`, `countryLookupMethod`, `displayName`, `includeUnknownCountriesAndRegions` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /identity/conditionalAccess/namedLocations/{id}` | `@odata.type`, `countriesAndRegions`, `countryLookupMethod`, `displayName`, `includeUnknownCountriesAndRegions` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

@@ -27,13 +27,13 @@ variable "subject" {
   default = "system:serviceaccount:tftest:initial"
 }
 module "application" {
-  source       = "../../../.."
-  display_name = "tftest-fic-${terraform_data.suffix.output}"
+  source      = "../../../.."
+  displayName = "tftest-fic-${terraform_data.suffix.output}"
 }
 # No API permissions or service principal: these credentials cannot grant API access.
 module "sibling" {
   source         = "../../.."
-  application_id = module.application.id
+  application-id = module.application.id
   name           = "tftest-sibling"
   issuer         = "https://issuer.example.invalid"
   subject        = "system:serviceaccount:tftest:sibling"
@@ -41,7 +41,7 @@ module "sibling" {
 module "credential" {
   source         = "../../.."
   count          = var.enabled ? 1 : 0
-  application_id = module.application.id
+  application-id = module.application.id
   name           = "tftest-credential"
   issuer         = "https://issuer.example.invalid"
   subject        = var.subject

@@ -31,7 +31,7 @@ mock_provider "msgraph" {
 }
 
 variables {
-  external_user_lifecycle_action = "none"
+  externalUserLifecycleAction = "none"
 }
 
 run "reads_the_singleton" {
@@ -89,7 +89,7 @@ run "a_matching_value_is_a_no_op" {
   command = plan
 
   variables {
-    external_user_lifecycle_action = "blockSignIn"
+    externalUserLifecycleAction = "blockSignIn"
   }
 
   assert {
@@ -102,7 +102,7 @@ run "the_enum_comparison_is_exact_like_the_providers" {
   command = plan
 
   variables {
-    external_user_lifecycle_action = "blockSignIn"
+    externalUserLifecycleAction = "blockSignIn"
   }
 
   override_data {
@@ -127,9 +127,9 @@ run "delete_action_with_duration_and_acknowledgement" {
   command = plan
 
   variables {
-    external_user_lifecycle_action                     = "blockSignInAndDelete"
-    duration_until_external_user_deleted_after_blocked = "P30D"
-    allow_external_user_deletion                       = true
+    externalUserLifecycleAction                  = "blockSignInAndDelete"
+    durationUntilExternalUserDeletedAfterBlocked = "P30D"
+    allow_external_user_deletion                 = true
   }
 
   assert {
@@ -147,9 +147,9 @@ run "duration_only_update_is_a_partial_update" {
   command = plan
 
   variables {
-    external_user_lifecycle_action                     = "blockSignInAndDelete"
-    duration_until_external_user_deleted_after_blocked = "P90D"
-    allow_external_user_deletion                       = true
+    externalUserLifecycleAction                  = "blockSignInAndDelete"
+    durationUntilExternalUserDeletedAfterBlocked = "P90D"
+    allow_external_user_deletion                 = true
   }
 
   override_data {
@@ -188,7 +188,7 @@ run "the_settings_output_is_the_read_back_not_the_input" {
   }
 
   assert {
-    condition     = output.settings.externalUserLifecycleAction == "blockSignIn" && var.external_user_lifecycle_action == "none"
+    condition     = output.settings.externalUserLifecycleAction == "blockSignIn" && var.externalUserLifecycleAction == "none"
     error_message = "The settings output must be the read after the apply, not the input."
   }
 }
@@ -197,7 +197,7 @@ run "no_input_owns_nothing_and_fails" {
   command = plan
 
   variables {
-    external_user_lifecycle_action = null
+    externalUserLifecycleAction = null
   }
 
   expect_failures = [msgraph_update_resource.this]

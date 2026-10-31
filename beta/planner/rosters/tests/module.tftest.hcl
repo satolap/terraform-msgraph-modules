@@ -42,8 +42,8 @@ run "typed_request" {
   command = plan
 
   variables {
-    assigned_sensitivity_label = { "assignmentMethod" = null }
-    members                    = [{}]
+    assignedSensitivityLabel = { "assignmentMethod" = null }
+    members                  = [{}]
   }
 
   assert {

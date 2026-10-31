@@ -22,7 +22,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -50,26 +50,26 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `audio_routing_groups` | `audioRoutingGroups` | `list(object({       odata_type = optional(string, "#microsoft.graph.audioRoutingGroup")       receivers = optional(list(string))       routingMode = optional(string)       sources = optional(list(string))     }))` | no | no | in place |
-| `call_chain_id` | `callChainId` | `string` | no | no | in place |
-| `call_options` | `callOptions` | `any` | no | no | in place |
-| `callback_uri` | `callbackUri` | `string` | no | no | in place |
-| `chat_info` | `chatInfo` | `object({       odata_type = optional(string, "#microsoft.graph.chatInfo")       messageId = optional(string)       replyChainMessageId = optional(string)       threadId = optional(string)     })` | no | no | in place |
-| `content_sharing_sessions` | `contentSharingSessions` | `list(object({       odata_type = optional(string, "#microsoft.graph.contentSharingSession")       pngOfCurrentSlide = optional(string)       presenterParticipantId = optional(string)     }))` | no | no | in place |
+| `audioRoutingGroups` | `audioRoutingGroups` | `list(object({       odata_type = optional(string, "#microsoft.graph.audioRoutingGroup")       receivers = optional(list(string))       routingMode = optional(string)       sources = optional(list(string))     }))` | no | no | in place |
+| `callChainId` | `callChainId` | `string` | no | no | in place |
+| `callOptions` | `callOptions` | `any` | no | no | in place |
+| `callbackUri` | `callbackUri` | `string` | no | no | in place |
+| `chatInfo` | `chatInfo` | `object({       odata_type = optional(string, "#microsoft.graph.chatInfo")       messageId = optional(string)       replyChainMessageId = optional(string)       threadId = optional(string)     })` | no | no | in place |
+| `contentSharingSessions` | `contentSharingSessions` | `list(object({       odata_type = optional(string, "#microsoft.graph.contentSharingSession")       pngOfCurrentSlide = optional(string)       presenterParticipantId = optional(string)     }))` | no | no | in place |
 | `graph_source` | `source` | `object({       odata_type = optional(string, "#microsoft.graph.participantInfo")       identity = optional(any)       nonAnonymizedIdentity = optional(any)     })` | no | no | in place |
-| `media_config` | `mediaConfig` | `any` | no | no | in place |
-| `meeting_info` | `meetingInfo` | `any` | no | no | in place |
-| `my_participant_id` | `myParticipantId` | `string` | no | no | in place |
+| `mediaConfig` | `mediaConfig` | `any` | no | no | in place |
+| `meetingInfo` | `meetingInfo` | `any` | no | no | in place |
+| `myParticipantId` | `myParticipantId` | `string` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |
 | `operations` | `operations` | `any` | no | no | in place |
 | `participants` | `participants` | `list(object({       odata_type = optional(string, "#microsoft.graph.participant")       info = optional(object({       odata_type = optional(string, "#microsoft.graph.participantInfo")       identity = optional(any)       nonAnonymizedIdentity = optional(any)     }))       isIdentityAnonymized = optional(bool)       isInLobby = optional(bool)       isMuted = optional(bool)       mediaStreams = optional(list(object({       odata_type = optional(string, "#microsoft.graph.mediaStream")       direction = optional(string)       label = optional(string)       mediaType = optional(string)       serverMuted = optional(bool)       sourceId = optional(string)     })))       metadata = optional(string)       preferredDisplayName = optional(string)       recordingInfo = optional(object({       odata_type = optional(string, "#microsoft.graph.recordingInfo")       initiatedBy = optional(object({       odata_type = optional(string, "#microsoft.graph.participantInfo")       identity = optional(any)       nonAnonymizedIdentity = optional(any)     }))       initiator = optional(any)       recordingStatus = optional(string)     }))       removedState = optional(object({       odata_type = optional(string, "#microsoft.graph.removedState")       reason = optional(string)     }))       restrictedExperience = optional(object({       odata_type = optional(string, "#microsoft.graph.onlineMeetingRestricted")       contentSharingDisabled = optional(string)       videoDisabled = optional(string)     }))       rosterSequenceNumber = optional(number)       syntheticMediaDetection = optional(object({       odata_type = optional(string, "#microsoft.graph.syntheticMediaDetectionInfo")       detectionId = optional(string)       detectorBot = optional(string)       isParticipantTrusted = optional(bool)       syntheticConfidence = optional(any)     }))     }))` | no | no | in place |
-| `requested_modalities` | `requestedModalities` | `list(string)` | no | no | in place |
-| `ringing_timeout_in_seconds` | `ringingTimeoutInSeconds` | `number` | no | no | in place |
-| `routing_policies` | `routingPolicies` | `list(string)` | no | no | in place |
+| `requestedModalities` | `requestedModalities` | `list(string)` | no | no | in place |
+| `ringingTimeoutInSeconds` | `ringingTimeoutInSeconds` | `number` | no | no | in place |
+| `routingPolicies` | `routingPolicies` | `list(string)` | no | no | in place |
 | `subject` | `subject` | `string` | no | no | in place |
 | `targets` | `targets` | `list(object({       odata_type = optional(string, "#microsoft.graph.invitationParticipantInfo")       endpointType = optional(string)       hidden = optional(bool)       identity = optional(any)       participantId = optional(string)       removeFromDefaultAudioRoutingGroup = optional(bool)       replacesCallId = optional(string)     }))` | no | no | in place |
-| `termination_reason` | `terminationReason` | `string` | no | no | in place |
-| `tone_info` | `toneInfo` | `object({       odata_type = optional(string, "#microsoft.graph.toneInfo")       sequenceId = optional(number)       tone = optional(string)     })` | no | no | in place |
+| `terminationReason` | `terminationReason` | `string` | no | no | in place |
+| `toneInfo` | `toneInfo` | `object({       odata_type = optional(string, "#microsoft.graph.toneInfo")       sequenceId = optional(number)       tone = optional(string)     })` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 
 Explicit typed inputs take precedence over additional properties. Optional null values are omitted recursively from typed object inputs; untyped values must be supplied without nested nulls. To add undocumented fields inside an optional object, omit its typed input and pass the complete object in `additional_properties`. Nested object keys retain Graph spelling when valid Terraform identifiers; special keys such as `@odata.type` use `odata_type`. Graph type discriminators have schema-derived defaults.

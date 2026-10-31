@@ -6,7 +6,7 @@
 This module's state and saved plans retain these declared values:
 
 Sensitive outputs: `secretText`.
-Potential personal-data inputs: `service_principal_id`.
+Potential personal-data inputs: `servicePrincipal-id`.
 
 Protect these values with an encrypted remote backend and least-privilege access to state, plans and backups. `sensitive` is presentation redaction, not encryption; provider resource values can still appear in plan/show output. Do not publish plan output in CI logs or PR comments for secret-bearing roots; keep saved plans short-lived and rotate credentials after exposure.
 
@@ -52,9 +52,9 @@ module "password" {
   source  = "satolap/modules/msgraph//verified/servicePrincipals/passwordCredentials"
   version = "<version>"
 
-  service_principal_id = module.service_principal.id
-  displayName          = "Automation credential"
-  rotation_trigger     = "generation-1"
+  servicePrincipal-id = module.service_principal.id
+  displayName         = "Automation credential"
+  rotation_trigger    = "generation-1"
 
   acknowledge_secret_in_plan_output = true
 }
@@ -257,7 +257,7 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 | Name | Description | Type | Default | On change |
 | --- | --- | --- | --- | --- |
-| service_principal_id | Service principal object ID | `string` | required | replaces `msgraph_resource_action.remove`; replaces `msgraph_resource_action.add` |
+| servicePrincipal-id | Service principal object ID | `string` | required | replaces `msgraph_resource_action.remove`; replaces `msgraph_resource_action.add` |
 | displayName | Password label, 1-256 characters | `string` | required | replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes |
 | startDateTime | UTC validity start; null means now | `string` | `null` | replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes |
 | endDateTime | UTC expiration; null means start + 2 years | `string` | `null` | replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes |
@@ -278,10 +278,43 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
 
-- `service_principal_id`: replaces `msgraph_resource_action.remove`; replaces `msgraph_resource_action.add`.
+- `servicePrincipal-id`: replaces `msgraph_resource_action.remove`; replaces `msgraph_resource_action.add`.
 - `displayName`: replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes.
 - `startDateTime`: replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes.
 - `endDateTime`: replaces `msgraph_resource_action.remove` when its effect on `local.password` changes; replaces `msgraph_resource_action.add` when its effect on `local.password` changes.
 - `rotation_trigger`: replaces `msgraph_resource_action.remove`; replaces `msgraph_resource_action.add`.
 - `acknowledge_secret_in_plan_output`: no object change (validation or timing only).
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /servicePrincipals/{id}/addPassword` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `POST /servicePrincipals/{id}/addPassword` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /servicePrincipals/{id}/addPassword` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+| `POST /servicePrincipals/{id}/removePassword` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `POST /servicePrincipals/{id}/removePassword` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /servicePrincipals/{id}/removePassword` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+| `GET /servicePrincipals/{id}` | DelegatedWork | `Application.Read.All` | - | - |
+| `GET /servicePrincipals/{id}` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `GET /servicePrincipals/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /servicePrincipals/{id}` | Application | `Application.Read.All` | - | - |
+| `GET /servicePrincipals/{id}` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /servicePrincipals/{id}/addPassword` | `passwordCredential` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `POST /servicePrincipals/{id}/removePassword` | `keyId` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `GET /servicePrincipals/{id}` | `id`, `passwordCredentials` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

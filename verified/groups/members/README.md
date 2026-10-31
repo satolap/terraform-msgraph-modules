@@ -32,7 +32,7 @@ of a group equal to a list on every apply.
 in `member_ids` that the group lacks and removes every direct member that `member_ids` does not
 name: users, nested groups, devices, service principals and organizational contacts, including
 members added in the admin center or by any other tool or process. An empty list removes every
-member. Destroying the module or changing `group_id` removes members too; see
+member. Destroying the module or changing `group-id` removes members too; see
 [Limits and lifecycle](#limits-and-lifecycle). Do not use it on a group whose membership another
 process also manages, such as an access package that grants the group's member role or another
 automation: each would undo the other's changes.
@@ -57,20 +57,20 @@ What the module manages, and what it does not:
 - **Retries the replication delay.** A member added right after the group was created can fail
   with a documented `400 Bad Request` until the group has replicated. The module retries that
   error, and only that error, until the create or update timeout.
-- **IDs in lower case.** The module uses `group_id` and every member ID in lower case, so a
+- **IDs in lower case.** The module uses `group-id` and every member ID in lower case, so a
   change of case alone plans nothing.
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "fabrikam_sponsors" {
   source  = "satolap/modules/msgraph//verified/groups"
   version = "<version>"
 
-  display_name  = "Fabrikam sponsors"
-  mail_nickname = "fabrikam-sponsors"
+  displayName  = "Fabrikam sponsors"
+  mailNickname = "fabrikam-sponsors"
   # Leave member_ids unset: the members module below manages the members.
 }
 
@@ -78,7 +78,7 @@ module "fabrikam_sponsor_members" {
   source  = "satolap/modules/msgraph//verified/groups/members"
   version = "<version>"
 
-  group_id   = module.fabrikam_sponsors.id
+  group-id   = module.fabrikam_sponsors.id
   member_ids = [module.sponsor_one.id, module.sponsor_two.id]
 }
 ```
@@ -90,7 +90,7 @@ module "automation_members" {
   source  = "satolap/modules/msgraph//verified/groups/members"
   version = "<version>"
 
-  group_id    = var.automation_group_id
+  group-id    = var.automation_group_id
   member_ids  = [module.deployment_identity.id, module.operator.id]
   api_version = "beta"
 }
@@ -181,7 +181,7 @@ subject to change and that their use in production applications is not supported
   for the module call or `terraform state rm`. When the group is
   destroyed in the same apply, Terraform removes the members first, because the collection
   depends on the group ID.
-- **Changing `group_id` replaces the collection.** The provider replaces the collection when its
+- **Changing `group-id` replaces the collection.** The provider replaces the collection when its
   url changes. The old collection is destroyed first: every member of the old group that the state
   lists is removed, then `member_ids` are added to the new group. If the old group no longer
   exists, the refresh finds it gone and drops it from the state.
@@ -216,7 +216,7 @@ subject to change and that their use in production applications is not supported
 - **Order and case.** Order does not matter: the provider ignores a change of order. A GUID has no
   case, but the provider compares member IDs as written and stores them as Graph returns them, so
   the module uses every ID in lower case.
-- **Unknown IDs.** A `group_id` or member ID that is known only after apply, such as the ID of a
+- **Unknown IDs.** A `group-id` or member ID that is known only after apply, such as the ID of a
   group created in the same apply, plans the collection with an unknown url or list; the requests
   are sent after the group exists.
 
@@ -231,7 +231,7 @@ only. These checks are pending:
    organizational contact, and a service principal on beta.
 3. A service principal on v1.0: the plan that shows it missing and the `400` on the next apply.
 4. The case of member IDs in the list response.
-5. A destroy, a `removed` block with `destroy = false`, and a change of `group_id`.
+5. A destroy, a `removed` block with `destroy = false`, and a change of `group-id`.
 6. Import, the first plan after an import, and a first apply on a group that already has members.
 7. The responses for a dynamic, mail-enabled, synchronized and role-assignable group, and for a
    non-user member of a Microsoft 365 group.
@@ -265,7 +265,7 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 | Name | Description | Type | Default | Required | On change |
 |------|-------------|------|---------|----------| --- |
-| group_id | Object ID of the existing group; a change replaces the collection, a change of case alone does not | `string` | n/a | yes | replaces `msgraph_resource_collection.this` |
+| group-id | Object ID of the existing group; a change replaces the collection, a change of case alone does not | `string` | n/a | yes | replaces `msgraph_resource_collection.this` |
 | member_ids | Object IDs of every direct member; authoritative, may be empty, not null; GUIDs, each named once (case-insensitive) | `list(string)` | n/a | yes | adds or removes relationships of `msgraph_resource_collection.this` |
 | api_version | `v1.0` or `beta`; use `beta` when a member can be a service principal | `string` | `"v1.0"` | no | replaces `msgraph_resource_collection.this` |
 | timeouts | `create`, `read`, `update` and `delete` timeouts, such as `30m`; null keeps the provider's default; the replication delay retry counts against them | `object` | `{}` (provider defaults) | no | no object change (validation or timing only) |
@@ -296,8 +296,33 @@ There is no live suite yet; see [Live test status](#live-test-status).
 
 Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
 
-- `group_id`: replaces `msgraph_resource_collection.this`.
+- `group-id`: replaces `msgraph_resource_collection.this`.
 - `member_ids`: adds or removes relationships of `msgraph_resource_collection.this`.
 - `api_version`: replaces `msgraph_resource_collection.this`.
 - `timeouts`: no object change (validation or timing only).
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `GET /groups/{id}/members` | DelegatedWork | `GroupMember.ReadBasic.All` | - | - |
+| `GET /groups/{id}/members` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /groups/{id}/members` | Application | `GroupMember.ReadBasic.All` | - | - |
+| `POST /groups/{id}/members/$ref` | DelegatedWork | Unknown / not annotated | - | The pin has GET and DELETE membership entries but no POST under either members or members/$ref. Do not treat the group's property-specific nesting annotation as a general membership grant. |
+| `POST /groups/{id}/members/$ref` | DelegatedPersonal | Unknown / not annotated | - | The pin has GET and DELETE membership entries but no POST under either members or members/$ref. Do not treat the group's property-specific nesting annotation as a general membership grant. |
+| `POST /groups/{id}/members/$ref` | Application | Unknown / not annotated | - | The pin has GET and DELETE membership entries but no POST under either members or members/$ref. Do not treat the group's property-specific nesting annotation as a general membership grant. |
+| `DELETE /groups/{id}/members/{id}/$ref` | DelegatedWork | `GroupMember.ReadWrite.All` | - | - |
+| `DELETE /groups/{id}/members/{id}/$ref` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /groups/{id}/members/{id}/$ref` | Application | `GroupMember.ReadWrite.All` | - | - |
+
+DevX uses equivalent route spellings for these requests (the inventory retains both):
+
+- `DELETE /groups/{id}/members/{id}/$ref` -> `/groups/{id}/members/{id}`.
+<!-- permissions:end -->

@@ -16,7 +16,7 @@ Creates a Microsoft Entra ID application registration (`applications`) via the
 An application registration defines the app and its **app roles**. To make the app usable in a
 tenant — and to add it to an entitlement management catalog as a resource
 (`resource_origin_system = "AadApplication"`) — you also need a **service principal** for it:
-create one with the `service-principals` module, passing this module's `app_id` output.
+create one with the `servicePrincipals` module, passing this module's `app_id` output.
 
 The app roles you define here are exactly the roles that can be granted through an access
 package: each role's `id` (a GUID) is the `role_origin_id` consumed by the
@@ -24,20 +24,20 @@ package: each role's `id` (a GUID) is the `role_origin_id` consumed by the
 
 ## Usage
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one.
 
 ```hcl
 module "internal_app" {
   source  = "satolap/modules/msgraph//verified/applications"
   version = "<version>"
 
-  display_name     = "Internal Tool"
-  sign_in_audience = "AzureADMyOrg"
+  displayName    = "Internal Tool"
+  signInAudience = "AzureADMyOrg"
 
   app_roles = [
     {
       id           = "8b3a0c4d-2f1e-4c9a-9b7e-1234567890ab" # generate a unique GUID
-      display_name = "Contributor"
+      displayName = "Contributor"
       description  = "Can contribute to the internal tool"
       value        = "Contributor"
     },
@@ -45,10 +45,10 @@ module "internal_app" {
 }
 
 module "internal_app_sp" {
-  source  = "satolap/modules/msgraph//verified/service-principals"
+  source  = "satolap/modules/msgraph//verified/servicePrincipals"
   version = "<version>"
 
-  app_id = module.internal_app.app_id
+  appId = module.internal_app.app_id
 }
 ```
 
@@ -66,7 +66,7 @@ input before upgrading. Review the Terraform plan before applying. Omission
 does not promise import/drift behavior; provider-backed verification remains
 pending. Microsoft describes PATCH omission in [Update application](https://learn.microsoft.com/en-us/graph/api/application-update?view=graph-rest-1.0).
 
-Remove app roles in two stages: first keep the role IDs and set `is_enabled = false`,
+Remove app roles in two stages: first keep the role IDs and set `isEnabled = false`,
 then apply; in a subsequent apply, remove those disabled roles from `app_roles`
 (or use `[]` to request removal of all roles). Retain any roles that should remain.
 One apply does not automatically disable and remove roles. See Microsoft's
@@ -109,9 +109,9 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 | Name | Description | Type | Default | Required | On change |
 |------|-------------|------|---------|----------| --- |
-| display_name | Display name (1-120 characters) | `string` | n/a | yes | in place |
-| name_pattern | Regular expression (RE2, not anchored unless it says so) that display_name must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
-| sign_in_audience | Supported account types | `string` | `"AzureADMyOrg"` | no | in place |
+| displayName | Display name (1-120 characters) | `string` | n/a | yes | in place |
+| name_pattern | Regular expression (RE2, not anchored unless it says so) that displayName must match, or the plan fails; null accepts any name | `string` | `null` | no | no object change (validation or timing only) |
+| signInAudience | Supported account types | `string` | `"AzureADMyOrg"` | no | in place |
 | description | Free-text description | `string` | `null` | no | in place |
 | notes | Management notes | `string` | `null` | no | in place |
 | tags | Categorization tags | `list(string)` | `null` | no | in place |
@@ -126,13 +126,13 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 | Name | Description | Known in plan after an update |
 |------|-------------| --- |
 | id | The object ID of the application registration | yes |
-| app_id | The application (client) ID — feed to `service-principals` | yes |
+| app_id | The application (client) ID — feed to `servicePrincipals` | yes |
 | display_name | The display name of the application | no |
 | app_role_ids | Map of app role `value` → `id` (GUID), for `role_origin_id` | yes |
 
 `app_id` is pinned at creation in `terraform_data.app_id`, so it stays known when an
 in-place update, such as a rename, plans the provider's read-back as unknown. A
-`service-principals` module fed from it is therefore not replaced by a rename. The
+`servicePrincipals` module fed from it is therefore not replaced by a rename. The
 value is refreshed whenever the application's object ID changes: when it is
 replaced, and when it is created afresh after leaving the state. Upgrading adds that
 one Terraform-only resource to the plan and changes nothing in Entra ID, provided the
@@ -146,8 +146,8 @@ no service principal.
 
 Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
 
-- `display_name`: in place.
-- `sign_in_audience`: in place.
+- `displayName`: in place.
+- `signInAudience`: in place.
 - `description`: in place.
 - `notes`: in place.
 - `tags`: in place.
@@ -165,23 +165,34 @@ Terraform plans compare configuration and refreshed provider state. A plan that 
 Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
 The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
 
-| Operation | Authentication | Least-privilege alternative | AlsoRequires |
-| --- | --- | --- | --- |
-| `POST /applications` | DelegatedWork | `AppRegistration.Create` | — |
-| `POST /applications` | DelegatedWork | `Application.ReadWrite.All` | — |
-| `POST /applications` | DelegatedPersonal | `Application.ReadWrite.All` | — |
-| `POST /applications` | Application | `AppRegistration.Create` | — |
-| `POST /applications` | Application | `Application.ReadWrite.OwnedBy` | — |
-| `GET /applications/{id}` | DelegatedWork | `Application.Read.All` | — |
-| `GET /applications/{id}` | DelegatedWork | `Application.ReadWrite.All` | — |
-| `GET /applications/{id}` | DelegatedPersonal | `Application.Read.All` | — |
-| `GET /applications/{id}` | DelegatedPersonal | `Application.ReadWrite.All` | — |
-| `GET /applications/{id}` | Application | `Application.Read.All` | — |
-| `GET /applications/{id}` | Application | `Application.ReadWrite.OwnedBy` | — |
-| `PATCH /applications/{id}` | DelegatedWork | `Application.ReadWrite.All` | — |
-| `PATCH /applications/{id}` | DelegatedPersonal | `Application.ReadWrite.All` | — |
-| `PATCH /applications/{id}` | Application | `Application.ReadWrite.OwnedBy` | — |
-| `DELETE /applications/{id}` | DelegatedWork | `Application.ReadWrite.All` | — |
-| `DELETE /applications/{id}` | DelegatedPersonal | `Application.ReadWrite.All` | — |
-| `DELETE /applications/{id}` | Application | `Application.ReadWrite.OwnedBy` | — |
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /applications` | DelegatedWork | `AppRegistration.Create` | - | - |
+| `POST /applications` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `POST /applications` | DelegatedPersonal | `Application.ReadWrite.All` | - | - |
+| `POST /applications` | Application | `AppRegistration.Create` | - | - |
+| `POST /applications` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+| `GET /applications/{id}` | DelegatedWork | `Application.Read.All` | - | - |
+| `GET /applications/{id}` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `GET /applications/{id}` | DelegatedPersonal | `Application.Read.All` | - | - |
+| `GET /applications/{id}` | DelegatedPersonal | `Application.ReadWrite.All` | - | - |
+| `GET /applications/{id}` | Application | `Application.Read.All` | - | - |
+| `GET /applications/{id}` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+| `DELETE /applications/{id}` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `DELETE /applications/{id}` | DelegatedPersonal | `Application.ReadWrite.All` | - | - |
+| `DELETE /applications/{id}` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+| `PATCH /applications/{id}` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `PATCH /applications/{id}` | DelegatedPersonal | `Application.ReadWrite.All` | - | - |
+| `PATCH /applications/{id}` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /applications` | `appRoles`, `description`, `displayName`, `notes`, `publicClient`, `signInAudience`, `spa`, `tags`, `web` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /applications/{id}` | `appRoles`, `description`, `displayName`, `notes`, `publicClient`, `signInAudience`, `spa`, `tags`, `web` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
 <!-- permissions:end -->

@@ -27,8 +27,8 @@ mock_provider "msgraph" {
 }
 
 variables {
-  service_principal_id = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"
-  displayName          = "Automation credential"
+  servicePrincipal-id = "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA"
+  displayName         = "Automation credential"
 }
 
 run "rejects_use_without_explicit_acknowledgement" {

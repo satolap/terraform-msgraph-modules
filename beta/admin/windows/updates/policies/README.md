@@ -23,7 +23,7 @@ module "graph_resource" {
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -52,11 +52,11 @@ This module has no reviewed replication retry.
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
 | `odata_type` | `@odata.type` | `string` | yes | no | in place |
-| `applicable_content` | `applicableContent` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.applicableContent")       catalogEntry = optional(any)       catalogEntryId = optional(string)       matchedDevices = optional(list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.applicableContentDeviceMatch")       deviceId = optional(string)       recommendedBy = optional(list(string))     })))     }))` | no | no | in place |
-| `approval_rules` | `approvalRules` | `any` | no | no | in place |
+| `applicableContent` | `applicableContent` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.applicableContent")       catalogEntry = optional(any)       catalogEntryId = optional(string)       matchedDevices = optional(list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.applicableContentDeviceMatch")       deviceId = optional(string)       recommendedBy = optional(list(string))     })))     }))` | no | no | in place |
+| `approvalRules` | `approvalRules` | `any` | no | no | in place |
 | `approvals` | `approvals` | `list(object({       odata_type = optional(string, "#microsoft.graph.windowsUpdates.policyApproval")       catalogEntryId = optional(string)       status = optional(string)     }))` | no | no | in place |
 | `description` | `description` | `string` | no | no | in place |
-| `display_name` | `displayName` | `string` | no | no | in place |
+| `displayName` | `displayName` | `string` | no | no | in place |
 | `rings` | `rings` | `any` | no | no | in place |
 | `additional_properties` | Additional writable API properties | `any` | no | yes | in place |
 

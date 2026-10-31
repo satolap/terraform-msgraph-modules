@@ -32,11 +32,11 @@ module "graph_resource" {
   source  = "satolap/modules/msgraph//beta/organization/branding/themes"
   version = "<version>"
 
-  organization_id = "parent-object-id"
+  organization-id = "parent-object-id"
 }
 ```
 
-Replace `<version>` with a release version, such as `1.0.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
+Replace `<version>` with a release version, such as `0.5.0`; the [terraform-msgraph-modules README](https://github.com/satolap/terraform-msgraph-modules#install-a-module-from-the-terraform-registry) explains how to choose one. Configure the Microsoft/msgraph provider in the calling root module using your chosen authentication method. Terraform >= 1.11 and Microsoft/msgraph >= 0.4, < 1.0 are required.
 
 ## Read-back and drift
 
@@ -64,8 +64,8 @@ This module has no reviewed replication retry.
 
 | Input | Graph property | Type | Required | Sensitive | On change |
 | --- | --- | --- | --- | --- | --- |
-| `organization_id` | URL parameter `organization-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
-| `is_default_theme` | `isDefaultTheme` | `bool` | no | no | in place |
+| `organization-id` | URL parameter `organization-id` | `string` | yes | no | not replaced or moved: the update targets the existing object; recreate it to move it |
+| `isDefaultTheme` | `isDefaultTheme` | `bool` | no | no | in place |
 | `localizations` | `localizations` | `list(object({       odata_type = optional(string, "#microsoft.graph.organizationalBrandingThemeLocalization")       accountResetCredentials = optional(object({       odata_type = optional(string, "#microsoft.graph.loginPageBrandingVisualElement")       customText = optional(string)       customUrl = optional(string)       isHidden = optional(bool)     }))       backgroundImage = optional(string)       bannerLogo = optional(string)       cannotAccessYourAccount = optional(object({       odata_type = optional(string, "#microsoft.graph.loginPageBrandingVisualElement")       customText = optional(string)       customUrl = optional(string)       isHidden = optional(bool)     }))       contentCustomization = optional(object({       odata_type = optional(string, "#microsoft.graph.contentCustomization")       attributeCollection = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       attributeCollectionRelativeUrl = optional(string)       registrationCampaign = optional(list(object({       odata_type = optional(string, "#microsoft.graph.keyValue")       key = optional(string)       value = optional(string)     })))       registrationCampaignRelativeUrl = optional(string)     }))       customCSS = optional(string)       favicon = optional(string)       forgotMyPassword = optional(object({       odata_type = optional(string, "#microsoft.graph.loginPageBrandingVisualElement")       customText = optional(string)       customUrl = optional(string)       isHidden = optional(bool)     }))       headerBackgroundColor = optional(string)       headerLogo = optional(string)       locale = optional(string)       loginPageLayoutConfiguration = optional(object({       odata_type = optional(string, "#microsoft.graph.loginPageLayoutConfiguration")       isFooterShown = optional(bool)       isHeaderShown = optional(bool)       layoutTemplateType = optional(string)     }))       pageBackgroundColor = optional(string)       privacyAndCookies = optional(object({       odata_type = optional(string, "#microsoft.graph.loginPageBrandingVisualElement")       customText = optional(string)       customUrl = optional(string)       isHidden = optional(bool)     }))       resetItNow = optional(object({       odata_type = optional(string, "#microsoft.graph.loginPageBrandingVisualElement")       customText = optional(string)       customUrl = optional(string)       isHidden = optional(bool)     }))       signInPageText = optional(string)       squareLogo = optional(string)       squareLogoDark = optional(string)       termsOfUse = optional(object({       odata_type = optional(string, "#microsoft.graph.loginPageBrandingVisualElement")       customText = optional(string)       customUrl = optional(string)       isHidden = optional(bool)     }))       usernameHintText = optional(string)     }))` | no | yes | in place |
 | `name` | `name` | `string` | no | no | in place |
 | `odata_type` | `@odata.type` | `string` | no | no | in place |

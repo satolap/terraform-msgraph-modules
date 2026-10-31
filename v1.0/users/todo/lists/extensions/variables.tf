@@ -1,22 +1,22 @@
-variable "user_id" {
+variable "user-id" {
   description = "The unique identifier of user"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.user_id)) > 0
-    error_message = "user_id must not be empty."
+    condition     = length(trimspace(var.user-id)) > 0
+    error_message = "user-id must not be empty."
   }
 }
 
-variable "todo_task_list_id" {
+variable "todoTaskList-id" {
   description = "The unique identifier of todoTaskList"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.todo_task_list_id)) > 0
-    error_message = "todo_task_list_id must not be empty."
+    condition     = length(trimspace(var.todoTaskList-id)) > 0
+    error_message = "todoTaskList-id must not be empty."
   }
 }
 

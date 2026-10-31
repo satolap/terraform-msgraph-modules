@@ -11,10 +11,10 @@ mock_provider "msgraph" {
 }
 
 variables {
-  user_principal_name = "jane@contoso.onmicrosoft.com"
-  display_name        = "Jane Doe"
-  mail_nickname       = "jane"
-  password            = "Sup3r-Secret-Pass!"
+  userPrincipalName = "jane@contoso.onmicrosoft.com"
+  displayName       = "Jane Doe"
+  mailNickname      = "jane"
+  password          = "Sup3r-Secret-Pass!"
 }
 
 # name_pattern: optional, null by default. When set, display_name must match it
@@ -24,7 +24,7 @@ run "accepts_any_display_name_without_name_pattern" {
   command = apply
 
   variables {
-    display_name = "Not following any convention"
+    displayName = "Not following any convention"
   }
 
   assert {
@@ -37,7 +37,7 @@ run "accepts_a_display_name_that_matches_name_pattern" {
   command = apply
 
   variables {
-    display_name = "Example ORG-DEV-Name"
+    displayName  = "Example ORG-DEV-Name"
     name_pattern = "ORG-(DEV|PRD)-"
   }
 
@@ -51,7 +51,7 @@ run "rejects_a_display_name_that_does_not_match_name_pattern" {
   command = plan
 
   variables {
-    display_name = "Example without the prefix"
+    displayName  = "Example without the prefix"
     name_pattern = "^ORG-(DEV|PRD)-"
   }
 
@@ -74,7 +74,7 @@ run "accepts_a_mail_nickname_that_matches_mail_nickname_pattern" {
   command = apply
 
   variables {
-    mail_nickname         = "prefix-org-dev-example"
+    mailNickname          = "prefix-org-dev-example"
     mail_nickname_pattern = "org-(dev|prd)-"
   }
 
@@ -88,7 +88,7 @@ run "rejects_a_mail_nickname_that_does_not_match_mail_nickname_pattern" {
   command = plan
 
   variables {
-    mail_nickname         = "example"
+    mailNickname          = "example"
     mail_nickname_pattern = "^org-(dev|prd)-"
   }
 

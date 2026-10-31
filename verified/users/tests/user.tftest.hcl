@@ -29,10 +29,10 @@ run "rejects_non_object_additional_properties" {
 }
 
 variables {
-  user_principal_name = "jane@contoso.onmicrosoft.com"
-  display_name        = "Jane Doe"
-  mail_nickname       = "jane"
-  password            = "Sup3r-Secret-Pass!"
+  userPrincipalName = "jane@contoso.onmicrosoft.com"
+  displayName       = "Jane Doe"
+  mailNickname      = "jane"
+  password          = "Sup3r-Secret-Pass!"
 }
 
 run "creates_user" {
@@ -78,9 +78,9 @@ run "merges_optional_and_additional_properties" {
   command = apply
 
   variables {
-    given_name     = "Jane"
-    surname        = "Doe"
-    usage_location = "US"
+    givenName     = "Jane"
+    surname       = "Doe"
+    usageLocation = "US"
 
     # mixed value types prove additional_properties is typed as `any`
     additional_properties = {
@@ -114,28 +114,28 @@ run "rejects_invalid_upn" {
   command = plan
 
   variables {
-    user_principal_name = "not-a-upn"
+    userPrincipalName = "not-a-upn"
   }
 
-  expect_failures = [var.user_principal_name]
+  expect_failures = [var.userPrincipalName]
 }
 
 run "rejects_invalid_usage_location" {
   command = plan
 
   variables {
-    usage_location = "usa"
+    usageLocation = "usa"
   }
 
-  expect_failures = [var.usage_location]
+  expect_failures = [var.usageLocation]
 }
 
 run "rejects_empty_display_name" {
   command = plan
 
   variables {
-    display_name = ""
+    displayName = ""
   }
 
-  expect_failures = [var.display_name]
+  expect_failures = [var.displayName]
 }

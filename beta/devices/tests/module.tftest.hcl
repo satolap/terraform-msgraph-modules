@@ -42,11 +42,11 @@ run "typed_request" {
   command = plan
 
   variables {
-    deleted_date_time = "2026-01-01T00:00:00Z"
-    account_enabled   = false
-    device_version    = -2147483648
-    cloud_licensing   = { "assignments" = null }
-    alternative_names = ["example"]
+    deletedDateTime  = "2026-01-01T00:00:00Z"
+    accountEnabled   = false
+    deviceVersion    = -2147483648
+    cloudLicensing   = { "assignments" = null }
+    alternativeNames = ["example"]
   }
 
   assert {

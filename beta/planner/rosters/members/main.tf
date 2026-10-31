@@ -3,8 +3,8 @@ locals {
   typed_body = { for key, value in {
     "@odata.type" = var.odata_type
     "roles"       = (var.roles == null ? null : [for item0 in var.roles : item0 if item0 != null])
-    "tenantId"    = var.tenant_id
-    "userId"      = var.user_id
+    "tenantId"    = var.tenantId
+    "userId"      = var.userId
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }
@@ -14,7 +14,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "planner/rosters/${urlencode(var.planner_roster_id)}/members"
+  url                     = "planner/rosters/${urlencode(var.plannerRoster-id)}/members"
   api_version             = "beta"
   update_method           = "PATCH"
   body                    = local.body

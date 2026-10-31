@@ -25,8 +25,8 @@ locals {
         }
         trigger = {
           "@odata.type"      = local.odata.trigger
-          timeBasedAttribute = try(var.execution_conditions.trigger.time_based_attribute, null)
-          offsetInDays       = try(var.execution_conditions.trigger.offset_in_days, null)
+          timeBasedAttribute = try(var.execution_conditions.trigger.timeBasedAttribute, null)
+          offsetInDays       = try(var.execution_conditions.trigger.offsetInDays, null)
         }
       } : key => value if local.is_trigger_and_scope
     },
@@ -37,10 +37,10 @@ locals {
   tasks_body = [
     for t in var.tasks : {
       taskDefinitionId = try(local.catalogue[t.task].id, null)
-      displayName      = t.display_name
+      displayName      = t.displayName
       description      = t.description
-      continueOnError  = t.continue_on_error
-      isEnabled        = t.is_enabled
+      continueOnError  = t.continueOnError
+      isEnabled        = t.isEnabled
       arguments        = [for name in sort(keys(t.arguments)) : { name = name, value = t.arguments[name] }]
     }
   ]
@@ -52,10 +52,10 @@ locals {
   # administrationScopeTargets is not sent: Learn shows it only in createNewVersion examples.
   body = {
     category            = var.category
-    displayName         = var.display_name
+    displayName         = var.displayName
     description         = var.description
-    isEnabled           = var.is_enabled
-    isSchedulingEnabled = var.is_scheduling_enabled
+    isEnabled           = var.isEnabled
+    isSchedulingEnabled = var.isSchedulingEnabled
     executionConditions = local.execution_conditions_body
     tasks               = local.tasks_body
   }
@@ -69,7 +69,7 @@ locals {
     for t in var.tasks : lower(try(t.arguments["customTaskExtensionID"], "")) if !try(local.catalogue[t.task].selectable, true)
   ]))
   acknowledged_custom_task_extension_ids = sort(distinct([for id in var.acknowledged_custom_task_extension_ids : lower(id)]))
-  is_activating                          = var.is_enabled || var.is_scheduling_enabled
+  is_activating                          = var.isEnabled || var.isSchedulingEnabled
 }
 
 # The properties that a PATCH cannot change. Learn documents that changing them needs the
@@ -122,13 +122,13 @@ resource "msgraph_resource" "workflow" {
     ignore_changes = [body.tasks, body.executionConditions]
 
     precondition {
-      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.display_name))
-      error_message = "display_name \"${var.display_name}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set display_name to a value that matches, or change name_pattern."
+      condition     = var.name_pattern == null || can(regex(var.name_pattern, var.displayName))
+      error_message = "displayName \"${var.displayName}\" does not match name_pattern \"${var.name_pattern == null ? "" : var.name_pattern}\". Set displayName to a value that matches, or change name_pattern."
     }
 
     precondition {
       condition     = !local.is_activating || var.activation_opt_in
-      error_message = "Enabling is_enabled or is_scheduling_enabled needs activation_opt_in = true. Both default to false so that a workflow is created without running."
+      error_message = "Enabling isEnabled or isSchedulingEnabled needs activation_opt_in = true. Both default to false so that a workflow is created without running."
     }
 
     # The acknowledgement names the extensions, so a new or changed extension ID needs a fresh

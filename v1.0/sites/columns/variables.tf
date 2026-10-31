@@ -1,11 +1,11 @@
-variable "site_id" {
+variable "site-id" {
   description = "The unique identifier of site"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.site_id)) > 0
-    error_message = "site_id must not be empty."
+    condition     = length(trimspace(var.site-id)) > 0
+    error_message = "site-id must not be empty."
   }
 }
 
@@ -37,13 +37,13 @@ variable "choice" {
   default = null
 }
 
-variable "column_group" {
+variable "columnGroup" {
   description = "For site columns, the name of the group this column belongs to. Helps organize related columns."
   type        = string
   default     = null
 }
 
-variable "content_approval_status" {
+variable "contentApprovalStatus" {
   description = "This column stores content approval status."
   type        = any
   default     = null
@@ -58,7 +58,7 @@ variable "currency" {
   default = null
 }
 
-variable "date_time" {
+variable "dateTime" {
   description = "This column stores DateTime values."
   type = object({
     odata_type = optional(string, "#microsoft.graph.dateTimeColumn")
@@ -68,7 +68,7 @@ variable "date_time" {
   default = null
 }
 
-variable "default_value" {
+variable "defaultValue" {
   description = "The default value for this column."
   type = object({
     odata_type = optional(string, "#microsoft.graph.defaultColumnValue")
@@ -84,13 +84,13 @@ variable "description" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The user-facing name of the column."
   type        = string
   default     = null
 }
 
-variable "enforce_unique_values" {
+variable "enforceUniqueValues" {
   description = "If true, no two list items may have the same value for this column."
   type        = bool
   default     = null
@@ -108,7 +108,7 @@ variable "hidden" {
   default     = null
 }
 
-variable "hyperlink_or_picture" {
+variable "hyperlinkOrPicture" {
   description = "This column stores hyperlink or picture values."
   type = object({
     odata_type = optional(string, "#microsoft.graph.hyperlinkOrPictureColumn")
@@ -123,13 +123,13 @@ variable "indexed" {
   default     = null
 }
 
-variable "is_deletable" {
+variable "isDeletable" {
   description = "Indicates whether this column can be deleted."
   type        = bool
   default     = null
 }
 
-variable "is_sealed" {
+variable "isSealed" {
   description = "Specifies whether the column can be changed."
   type        = bool
   default     = null
@@ -173,7 +173,7 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "person_or_group" {
+variable "personOrGroup" {
   description = "This column stores Person or Group values."
   type = object({
     odata_type             = optional(string, "#microsoft.graph.personOrGroupColumn")
@@ -184,13 +184,13 @@ variable "person_or_group" {
   default = null
 }
 
-variable "propagate_changes" {
+variable "propagateChanges" {
   description = "If 'true', changes to this column will be propagated to lists that implement the column."
   type        = bool
   default     = null
 }
 
-variable "read_only" {
+variable "readOnly" {
   description = "Specifies whether the column values can be modified."
   type        = bool
   default     = null
@@ -202,7 +202,7 @@ variable "required" {
   default     = null
 }
 
-variable "source_column" {
+variable "sourceColumn" {
   description = "The source column for the content type column."
   type        = any
   default     = null

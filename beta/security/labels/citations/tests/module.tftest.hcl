@@ -42,7 +42,7 @@ run "typed_request" {
   command = plan
 
   variables {
-    citation_jurisdiction = "example"
+    citationJurisdiction = "example"
   }
 
   assert {

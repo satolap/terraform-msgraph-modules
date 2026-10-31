@@ -1,11 +1,11 @@
-variable "planner_roster_id" {
+variable "plannerRoster-id" {
   description = "The unique identifier of plannerRoster"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.planner_roster_id)) > 0
-    error_message = "planner_roster_id must not be empty."
+    condition     = length(trimspace(var.plannerRoster-id)) > 0
+    error_message = "plannerRoster-id must not be empty."
   }
 }
 
@@ -22,13 +22,13 @@ variable "roles" {
   default     = null
 }
 
-variable "tenant_id" {
+variable "tenantId" {
   description = "Identifier of the tenant the user belongs to. Currently only the users from the same tenant can be added to a plannerRoster."
   type        = string
   default     = null
 }
 
-variable "user_id" {
+variable "userId" {
   description = "Identifier of the user."
   type        = string
   default     = null

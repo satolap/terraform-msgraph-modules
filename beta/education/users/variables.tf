@@ -1,10 +1,10 @@
-variable "account_enabled" {
+variable "accountEnabled" {
   description = "True if the account is enabled; otherwise, false. This property is required when a user is created. Supports /$filter."
   type        = bool
   default     = null
 }
 
-variable "assigned_licenses" {
+variable "assignedLicenses" {
   description = "The licenses that are assigned to the user. Not nullable."
   type = list(object({
     odata_type    = optional(string, "#microsoft.graph.assignedLicense")
@@ -54,7 +54,7 @@ variable "assignments" {
   }
 }
 
-variable "business_phones" {
+variable "businessPhones" {
   description = "The telephone numbers for the user. Note: Although this is a string collection, only one number can be set for this property."
   type        = list(string)
   default     = null
@@ -321,7 +321,7 @@ variable "classes" {
   }
 }
 
-variable "created_by" {
+variable "createdBy" {
   description = "Entity who created the user."
   type        = any
   default     = null
@@ -333,42 +333,42 @@ variable "department" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The name displayed in the address book for the user. Supports $filter and $orderby."
   type        = string
   default     = null
 }
 
-variable "external_source" {
+variable "externalSource" {
   description = "The type of external source this resource was generated from (automatically determined from externalSourceDetail). The possible values are: sis, lms, or manual."
   type        = string
   default     = null
 
   validation {
-    condition     = var.external_source == null ? true : contains(["sis", "manual"], var.external_source)
-    error_message = "external_source must be one of the documented enum values."
+    condition     = var.externalSource == null ? true : contains(["sis", "manual"], var.externalSource)
+    error_message = "externalSource must be one of the documented enum values."
   }
 }
 
-variable "external_source_detail" {
+variable "externalSourceDetail" {
   description = "The name of the external source this resource was generated from."
   type        = string
   default     = null
 }
 
-variable "given_name" {
+variable "givenName" {
   description = "The given name (first name) of the user. Supports /$filter."
   type        = string
   default     = null
 }
 
-variable "mail_nickname" {
+variable "mailNickname" {
   description = "The mail alias for the user. This property must be specified when a user is created. Supports /$filter."
   type        = string
   default     = null
 }
 
-variable "mailing_address" {
+variable "mailingAddress" {
   description = "Mail address of user. Note: type and postOfficeBox aren't supported for educationUser resources."
   type = object({
     odata_type      = optional(string, "#microsoft.graph.physicalAddress")
@@ -383,18 +383,18 @@ variable "mailing_address" {
   default = null
 
   validation {
-    condition     = (var.mailing_address == null ? true : alltrue([(var.mailing_address["type"] == null ? true : alltrue([(var.mailing_address["type"] == null ? true : contains(["unknown", "home", "business", "other"], var.mailing_address["type"]))]))]))
-    error_message = "mailing_address: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.mailingAddress == null ? true : alltrue([(var.mailingAddress["type"] == null ? true : alltrue([(var.mailingAddress["type"] == null ? true : contains(["unknown", "home", "business", "other"], var.mailingAddress["type"]))]))]))
+    error_message = "mailingAddress: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "middle_name" {
+variable "middleName" {
   description = "The middle name of user."
   type        = string
   default     = null
 }
 
-variable "mobile_phone" {
+variable "mobilePhone" {
   description = "The primary cellular telephone number for the user."
   type        = string
   default     = null
@@ -407,13 +407,13 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "office_location" {
+variable "officeLocation" {
   description = "The office location for the user."
   type        = string
   default     = null
 }
 
-variable "on_premises_info" {
+variable "onPremisesInfo" {
   description = "Additional information used to associate the Microsoft Entra user with its Active Directory counterpart."
   type = object({
     odata_type  = optional(string, "#microsoft.graph.educationOnPremisesInfo")
@@ -422,14 +422,14 @@ variable "on_premises_info" {
   default = null
 }
 
-variable "password_policies" {
+variable "passwordPolicies" {
   description = "Specifies password policies for the user. For more details, see the standard [user] resource."
   type        = string
   default     = null
   sensitive   = true
 }
 
-variable "password_profile" {
+variable "passwordProfile" {
   description = "Specifies the password profile for the user. The profile contains the user's password. This property is required when a user is created. For more details, see the standard [user] resource."
   type = object({
     odata_type                           = optional(string, "#microsoft.graph.passwordProfile")
@@ -441,31 +441,31 @@ variable "password_profile" {
   sensitive = true
 }
 
-variable "preferred_language" {
+variable "preferredLanguage" {
   description = "The preferred language for the user. Should follow ISO 639-1 Code; for example, 'en-US'."
   type        = string
   default     = null
 }
 
-variable "primary_role" {
+variable "primaryRole" {
   description = "Microsoft Graph primaryRole property."
   type        = string
   default     = null
 
   validation {
-    condition     = var.primary_role == null ? true : contains(["student", "teacher", "none"], var.primary_role)
-    error_message = "primary_role must be one of the documented enum values."
+    condition     = var.primaryRole == null ? true : contains(["student", "teacher", "none"], var.primaryRole)
+    error_message = "primaryRole must be one of the documented enum values."
   }
 }
 
-variable "refresh_tokens_valid_from_date_time" {
+variable "refreshTokensValidFromDateTime" {
   description = "Microsoft Graph refreshTokensValidFromDateTime property."
   type        = string
   default     = null
   sensitive   = true
 }
 
-variable "related_contacts" {
+variable "relatedContacts" {
   description = "Related records related to the user. Possible relationships are parent, relative, aide, doctor, guardian, child, other, unknownFutureValue"
   type = list(object({
     odata_type    = optional(string, "#microsoft.graph.relatedContact")
@@ -479,12 +479,12 @@ variable "related_contacts" {
   default = null
 
   validation {
-    condition     = (var.related_contacts == null ? true : alltrue([alltrue([for input0 in var.related_contacts : (input0 == null ? true : alltrue([(input0["relationship"] == null ? true : alltrue([(input0["relationship"] == null ? true : contains(["parent", "relative", "aide", "doctor", "guardian", "child", "other"], input0["relationship"]))]))]))])]))
-    error_message = "related_contacts: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.relatedContacts == null ? true : alltrue([alltrue([for input0 in var.relatedContacts : (input0 == null ? true : alltrue([(input0["relationship"] == null ? true : alltrue([(input0["relationship"] == null ? true : contains(["parent", "relative", "aide", "doctor", "guardian", "child", "other"], input0["relationship"]))]))]))])]))
+    error_message = "relatedContacts: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "residence_address" {
+variable "residenceAddress" {
   description = "Address where user lives. Note: type and postOfficeBox aren't supported for educationUser resources."
   type = object({
     odata_type      = optional(string, "#microsoft.graph.physicalAddress")
@@ -499,8 +499,8 @@ variable "residence_address" {
   default = null
 
   validation {
-    condition     = (var.residence_address == null ? true : alltrue([(var.residence_address["type"] == null ? true : alltrue([(var.residence_address["type"] == null ? true : contains(["unknown", "home", "business", "other"], var.residence_address["type"]))]))]))
-    error_message = "residence_address: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.residenceAddress == null ? true : alltrue([(var.residenceAddress["type"] == null ? true : alltrue([(var.residenceAddress["type"] == null ? true : contains(["unknown", "home", "business", "other"], var.residenceAddress["type"]))]))]))
+    error_message = "residenceAddress: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
@@ -699,7 +699,7 @@ variable "schools" {
   }
 }
 
-variable "show_in_address_list" {
+variable "showInAddressList" {
   description = "Microsoft Graph showInAddressList property."
   type        = bool
   default     = null
@@ -730,7 +730,7 @@ variable "surname" {
   default     = null
 }
 
-variable "taught_classes" {
+variable "taughtClasses" {
   description = "Classes for which the user is a teacher."
   type = list(object({
     odata_type = optional(string, "#microsoft.graph.educationClass")
@@ -986,8 +986,8 @@ variable "taught_classes" {
   sensitive = true
 
   validation {
-    condition     = (var.taught_classes == null ? true : alltrue([alltrue([for input0 in var.taught_classes : (input0 == null ? true : alltrue([(input0["assignments"] == null ? true : alltrue([alltrue([for input2 in input0["assignments"] : (input2 == null ? true : alltrue([(input2["addToCalendarAction"] == null ? true : alltrue([(input2["addToCalendarAction"] == null ? true : contains(["none", "studentsAndPublisher", "studentsAndTeamOwners"], input2["addToCalendarAction"]))])), (input2["addedStudentAction"] == null ? true : alltrue([(input2["addedStudentAction"] == null ? true : contains(["none", "assignIfOpen"], input2["addedStudentAction"]))])), (input2["instructions"] == null ? true : alltrue([(input2["instructions"]["contentType"] == null ? true : alltrue([(input2["instructions"]["contentType"] == null ? true : contains(["text", "html"], input2["instructions"]["contentType"]))]))]))]))])])), (input0["externalSource"] == null ? true : alltrue([(input0["externalSource"] == null ? true : contains(["sis", "manual"], input0["externalSource"]))])), (input0["members"] == null ? true : alltrue([alltrue([for input2 in input0["members"] : (input2 == null ? true : alltrue([(input2["externalSource"] == null ? true : alltrue([(input2["externalSource"] == null ? true : contains(["sis", "manual"], input2["externalSource"]))])), (input2["mailingAddress"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["mailingAddress"]["type"]))]))])), (input2["primaryRole"] == null ? true : alltrue([(input2["primaryRole"] == null ? true : contains(["student", "teacher", "none"], input2["primaryRole"]))])), (input2["residenceAddress"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["residenceAddress"]["type"]))]))])), (input2["student"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : contains(["female", "male", "other"], input2["student"]["gender"]))]))]))]))])])), (input0["schools"] == null ? true : alltrue([alltrue([for input2 in input0["schools"] : (input2 == null ? true : alltrue([(input2["address"] == null ? true : alltrue([(input2["address"]["type"] == null ? true : alltrue([(input2["address"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["address"]["type"]))]))])), (input2["externalSource"] == null ? true : alltrue([(input2["externalSource"] == null ? true : contains(["sis", "manual"], input2["externalSource"]))]))]))])])), (input0["teachers"] == null ? true : alltrue([alltrue([for input2 in input0["teachers"] : (input2 == null ? true : alltrue([(input2["externalSource"] == null ? true : alltrue([(input2["externalSource"] == null ? true : contains(["sis", "manual"], input2["externalSource"]))])), (input2["mailingAddress"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["mailingAddress"]["type"]))]))])), (input2["primaryRole"] == null ? true : alltrue([(input2["primaryRole"] == null ? true : contains(["student", "teacher", "none"], input2["primaryRole"]))])), (input2["residenceAddress"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["residenceAddress"]["type"]))]))])), (input2["student"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : contains(["female", "male", "other"], input2["student"]["gender"]))]))]))]))])]))]))])]))
-    error_message = "taught_classes: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.taughtClasses == null ? true : alltrue([alltrue([for input0 in var.taughtClasses : (input0 == null ? true : alltrue([(input0["assignments"] == null ? true : alltrue([alltrue([for input2 in input0["assignments"] : (input2 == null ? true : alltrue([(input2["addToCalendarAction"] == null ? true : alltrue([(input2["addToCalendarAction"] == null ? true : contains(["none", "studentsAndPublisher", "studentsAndTeamOwners"], input2["addToCalendarAction"]))])), (input2["addedStudentAction"] == null ? true : alltrue([(input2["addedStudentAction"] == null ? true : contains(["none", "assignIfOpen"], input2["addedStudentAction"]))])), (input2["instructions"] == null ? true : alltrue([(input2["instructions"]["contentType"] == null ? true : alltrue([(input2["instructions"]["contentType"] == null ? true : contains(["text", "html"], input2["instructions"]["contentType"]))]))]))]))])])), (input0["externalSource"] == null ? true : alltrue([(input0["externalSource"] == null ? true : contains(["sis", "manual"], input0["externalSource"]))])), (input0["members"] == null ? true : alltrue([alltrue([for input2 in input0["members"] : (input2 == null ? true : alltrue([(input2["externalSource"] == null ? true : alltrue([(input2["externalSource"] == null ? true : contains(["sis", "manual"], input2["externalSource"]))])), (input2["mailingAddress"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["mailingAddress"]["type"]))]))])), (input2["primaryRole"] == null ? true : alltrue([(input2["primaryRole"] == null ? true : contains(["student", "teacher", "none"], input2["primaryRole"]))])), (input2["residenceAddress"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["residenceAddress"]["type"]))]))])), (input2["student"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : contains(["female", "male", "other"], input2["student"]["gender"]))]))]))]))])])), (input0["schools"] == null ? true : alltrue([alltrue([for input2 in input0["schools"] : (input2 == null ? true : alltrue([(input2["address"] == null ? true : alltrue([(input2["address"]["type"] == null ? true : alltrue([(input2["address"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["address"]["type"]))]))])), (input2["externalSource"] == null ? true : alltrue([(input2["externalSource"] == null ? true : contains(["sis", "manual"], input2["externalSource"]))]))]))])])), (input0["teachers"] == null ? true : alltrue([alltrue([for input2 in input0["teachers"] : (input2 == null ? true : alltrue([(input2["externalSource"] == null ? true : alltrue([(input2["externalSource"] == null ? true : contains(["sis", "manual"], input2["externalSource"]))])), (input2["mailingAddress"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : alltrue([(input2["mailingAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["mailingAddress"]["type"]))]))])), (input2["primaryRole"] == null ? true : alltrue([(input2["primaryRole"] == null ? true : contains(["student", "teacher", "none"], input2["primaryRole"]))])), (input2["residenceAddress"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : alltrue([(input2["residenceAddress"]["type"] == null ? true : contains(["unknown", "home", "business", "other"], input2["residenceAddress"]["type"]))]))])), (input2["student"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : alltrue([(input2["student"]["gender"] == null ? true : contains(["female", "male", "other"], input2["student"]["gender"]))]))]))]))])]))]))])]))
+    error_message = "taughtClasses: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
@@ -1001,7 +1001,7 @@ variable "teacher" {
   default = null
 }
 
-variable "usage_location" {
+variable "usageLocation" {
   description = "A two-letter country code ([ISO 3166 Alpha-2]). Required for users who are assigned licenses. Not nullable. Supports /$filter."
   type        = string
   default     = null
@@ -1013,13 +1013,13 @@ variable "user" {
   default     = null
 }
 
-variable "user_principal_name" {
+variable "userPrincipalName" {
   description = "The user principal name (UPN) for the user. Supports $filter and $orderby. For more details, see the standard [user] resource."
   type        = string
   default     = null
 }
 
-variable "user_type" {
+variable "userType" {
   description = "A string value that can be used to classify user types in your directory, such as 'Member' and 'Guest'. Supports /$filter."
   type        = string
   default     = null

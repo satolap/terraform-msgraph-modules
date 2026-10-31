@@ -5,7 +5,7 @@ run "minimal_request" {
   command = plan
 
   variables {
-    team_id = "test-parent-id"
+    team-id = "test-parent-id"
   }
 
   assert {
@@ -33,7 +33,7 @@ run "selected_response_is_opt_in" {
   command = plan
 
   variables {
-    team_id         = "test-parent-id"
+    team-id         = "test-parent-id"
     select_response = true
   }
 
@@ -47,11 +47,11 @@ run "typed_request" {
   command = plan
 
   variables {
-    team_id                = "test-parent-id"
-    description            = "example"
-    is_favorite_by_default = false
-    summary                = { "guestsCount" = null }
-    all_members            = [{}]
+    team-id             = "test-parent-id"
+    description         = "example"
+    isFavoriteByDefault = false
+    summary             = { "guestsCount" = null }
+    allMembers          = [{}]
   }
 
   assert {
@@ -79,18 +79,18 @@ run "invalid_enum" {
   command = plan
 
   variables {
-    team_id     = "test-parent-id"
-    layout_type = "__graphmodules_invalid_enum__"
+    team-id    = "test-parent-id"
+    layoutType = "__graphmodules_invalid_enum__"
   }
 
-  expect_failures = [var.layout_type]
+  expect_failures = [var.layoutType]
 }
 
 run "timeouts_unset_sends_no_block" {
   command = plan
 
   variables {
-    team_id = "test-parent-id"
+    team-id = "test-parent-id"
   }
 
   assert {
@@ -103,7 +103,7 @@ run "timeouts_are_passed_through" {
   command = plan
 
   variables {
-    team_id  = "test-parent-id"
+    team-id  = "test-parent-id"
     timeouts = { create = "45m", update = "20m", read = "7m" }
   }
 
@@ -117,7 +117,7 @@ run "timeouts_below_the_minimum" {
   command = plan
 
   variables {
-    team_id  = "test-parent-id"
+    team-id  = "test-parent-id"
     timeouts = { create = "10s" }
   }
 
@@ -128,7 +128,7 @@ run "timeouts_with_an_invalid_duration" {
   command = plan
 
   variables {
-    team_id  = "test-parent-id"
+    team-id  = "test-parent-id"
     timeouts = { update = "soon" }
   }
 
@@ -139,7 +139,7 @@ run "timeouts_of_zero" {
   command = plan
 
   variables {
-    team_id  = "test-parent-id"
+    team-id  = "test-parent-id"
     timeouts = { delete = "0s" }
   }
 

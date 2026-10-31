@@ -1,16 +1,16 @@
-variable "display_name" {
+variable "displayName" {
   description = "Name of the access review series (displayName). Reviewers see it."
   type        = string
   nullable    = false
 
   validation {
-    condition     = trimspace(var.display_name) != ""
-    error_message = "display_name must not be empty."
+    condition     = trimspace(var.displayName) != ""
+    error_message = "displayName must not be empty."
   }
 }
 
 variable "name_pattern" {
-  description = "Regular expression (RE2 syntax, not anchored unless it says so) that display_name must match, such as the pattern of a naming convention. When it is set and display_name does not match, the plan fails. Null, the default, accepts any display_name."
+  description = "Regular expression (RE2 syntax, not anchored unless it says so) that displayName must match, such as the pattern of a naming convention. When it is set and displayName does not match, the plan fails. Null, the default, accepts any displayName."
   type        = string
   default     = null
 
@@ -20,30 +20,30 @@ variable "name_pattern" {
   }
 }
 
-variable "description_for_admins" {
+variable "descriptionForAdmins" {
   description = "Context of the review for administrators (descriptionForAdmins). Required by the create request."
   type        = string
   nullable    = false
 
   validation {
-    condition     = trimspace(var.description_for_admins) != ""
-    error_message = "description_for_admins must not be empty; Microsoft Graph requires it on create."
+    condition     = trimspace(var.descriptionForAdmins) != ""
+    error_message = "descriptionForAdmins must not be empty; Microsoft Graph requires it on create."
   }
 }
 
-variable "description_for_reviewers" {
+variable "descriptionForReviewers" {
   description = "Context of the review for reviewers (descriptionForReviewers). Required by the create request, at most 256 characters (the limit Microsoft Learn gives for reviewer email notifications)."
   type        = string
   nullable    = false
 
   validation {
-    condition     = trimspace(var.description_for_reviewers) != ""
-    error_message = "description_for_reviewers must not be empty; Microsoft Graph requires it on create."
+    condition     = trimspace(var.descriptionForReviewers) != ""
+    error_message = "descriptionForReviewers must not be empty; Microsoft Graph requires it on create."
   }
 
   validation {
-    condition     = length(var.description_for_reviewers) <= 256
-    error_message = "description_for_reviewers must be at most 256 characters, the limit Microsoft Learn gives for reviewer email notifications."
+    condition     = length(var.descriptionForReviewers) <= 256
+    error_message = "descriptionForReviewers must be at most 256 characters, the limit Microsoft Learn gives for reviewer email notifications."
   }
 }
 
@@ -120,12 +120,14 @@ variable "start_date" {
 }
 
 variable "recurrence" {
-  description = "How the series repeats. type is \"weekly\" or \"absoluteMonthly\", the only types Microsoft Learn lists as supported; interval is the number of weeks or months between instances. day_of_month (1 to 28) is required for absoluteMonthly and must be null for weekly. number_of_occurrences null means the series never ends (range type noEnd); a number of at least 1 ends it after that many instances (range type numbered)."
+  description = "How the series repeats. type is \"weekly\" or \"absoluteMonthly\", the only types Microsoft Learn lists as supported; interval is the number of weeks or months between instances. dayOfMonth (1 to 28) is required for absoluteMonthly and must be null for weekly. numberOfOccurrences null means the series never ends (range type noEnd); a number of at least 1 ends it after that many instances (range type numbered)."
   type = object({
     type                  = string
     interval              = number
-    day_of_month          = optional(number)
-    number_of_occurrences = optional(number)
+    dayOfMonth            = optional(number)
+    day_of_month          = optional(any)
+    numberOfOccurrences   = optional(number)
+    number_of_occurrences = optional(any)
   })
   nullable = false
 
@@ -141,14 +143,21 @@ variable "recurrence" {
 
   validation {
     condition = var.recurrence.type == "absoluteMonthly" ? (
-      var.recurrence.day_of_month != null && try(var.recurrence.day_of_month == floor(var.recurrence.day_of_month) && var.recurrence.day_of_month >= 1 && var.recurrence.day_of_month <= 28, false)
-    ) : var.recurrence.day_of_month == null
-    error_message = "recurrence.day_of_month is required for absoluteMonthly, a whole number from 1 to 28, and must be null for weekly."
+      var.recurrence.dayOfMonth != null && try(var.recurrence.dayOfMonth == floor(var.recurrence.dayOfMonth) && var.recurrence.dayOfMonth >= 1 && var.recurrence.dayOfMonth <= 28, false)
+    ) : var.recurrence.dayOfMonth == null
+    error_message = "recurrence.dayOfMonth is required for absoluteMonthly, a whole number from 1 to 28, and must be null for weekly."
   }
 
   validation {
-    condition     = var.recurrence.number_of_occurrences == null || try(var.recurrence.number_of_occurrences == floor(var.recurrence.number_of_occurrences) && var.recurrence.number_of_occurrences >= 1, false)
-    error_message = "recurrence.number_of_occurrences must be null or a whole number of at least 1."
+    condition     = var.recurrence.numberOfOccurrences == null || try(var.recurrence.numberOfOccurrences == floor(var.recurrence.numberOfOccurrences) && var.recurrence.numberOfOccurrences >= 1, false)
+    error_message = "recurrence.numberOfOccurrences must be null or a whole number of at least 1."
+  }
+
+  # legacy-names guard: v4.0.0 spelled these attributes in snake_case; the object type would otherwise
+  # drop them and fall back to the default.
+  validation {
+    condition     = !can(regex("\"(day_of_month|number_of_occurrences)\":[^n]", jsonencode(var.recurrence)))
+    error_message = "recurrence no longer accepts the v4.0.0 snake_case attribute names; rename them to Graph's names (day_of_month -> dayOfMonth, number_of_occurrences -> numberOfOccurrences). An old name that is silently dropped would fall back to its default."
   }
 }
 

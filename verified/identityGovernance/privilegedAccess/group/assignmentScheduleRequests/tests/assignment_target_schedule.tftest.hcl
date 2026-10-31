@@ -24,9 +24,9 @@ mock_provider "msgraph" {
 }
 
 variables {
-  principal_id                  = "11111111-1111-1111-1111-111111111111"
-  group_id                      = "22222222-2222-2222-2222-222222222222"
-  access_id                     = "owner"
+  principalId                   = "11111111-1111-1111-1111-111111111111"
+  groupId                       = "22222222-2222-2222-2222-222222222222"
+  accessId                      = "owner"
   justification                 = "Offline contract test"
   start_date_time               = "2099-01-01T00:00:00Z"
   end_date_time                 = "2099-01-01T08:00:00Z"

@@ -1,11 +1,11 @@
-variable "group_id" {
+variable "group-id" {
   description = "The unique identifier of group"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.group_id)) > 0
-    error_message = "group_id must not be empty."
+    condition     = length(trimspace(var.group-id)) > 0
+    error_message = "group-id must not be empty."
   }
 }
 
@@ -15,7 +15,7 @@ variable "content" {
   default     = null
 }
 
-variable "created_date_time" {
+variable "createdDateTime" {
   description = "Microsoft Graph createdDateTime property."
   type        = string
   default     = null
@@ -40,7 +40,7 @@ variable "title" {
   default     = null
 }
 
-variable "user_tags" {
+variable "userTags" {
   description = "Microsoft Graph userTags property."
   type        = list(string)
   default     = null

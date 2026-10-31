@@ -1,16 +1,16 @@
-variable "closed_by" {
+variable "closedBy" {
   description = "The user who closed the case."
   type        = any
   default     = null
 }
 
-variable "closed_date_time" {
+variable "closedDateTime" {
   description = "The date and time when the case was closed. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
 }
 
-variable "created_date_time" {
+variable "createdDateTime" {
   description = "The date and time when the entity was created. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
@@ -161,31 +161,31 @@ variable "description" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The case name."
   type        = string
   default     = null
 }
 
-variable "external_id" {
+variable "externalId" {
   description = "The external case number for customer reference."
   type        = string
   default     = null
 }
 
-variable "last_modified_by" {
+variable "lastModifiedBy" {
   description = "The last user who modified the entity."
   type        = any
   default     = null
 }
 
-variable "last_modified_date_time" {
+variable "lastModifiedDateTime" {
   description = "The latest date and time when the case was modified. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z"
   type        = string
   default     = null
 }
 
-variable "legal_holds" {
+variable "legalHolds" {
   description = "Returns a list of case legalHold objects for this case.  Nullable."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.ediscovery.legalHold")
@@ -319,12 +319,12 @@ variable "legal_holds" {
   default = null
 
   validation {
-    condition     = (var.legal_holds == null ? true : alltrue([alltrue([for input0 in var.legal_holds : (input0 == null ? true : alltrue([(input0["siteSources"] == null ? true : alltrue([alltrue([for input2 in input0["siteSources"] : (input2 == null ? true : alltrue([(input2["holdStatus"] == null ? true : alltrue([(input2["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input2["holdStatus"]))])), (input2["site"] == null ? true : alltrue([(input2["site"]["lockState"] == null ? true : alltrue([(input2["site"]["lockState"] == null ? true : contains(["unlocked", "lockedReadOnly", "lockedNoAccess", "lockedNoAdditions"], input2["site"]["lockState"]))])), (input2["site"]["template"] == null ? true : alltrue([(input2["site"]["template"] == null ? true : contains(["sitepagepublishing", "sts"], input2["site"]["template"]))]))]))]))])])), (input0["status"] == null ? true : alltrue([(input0["status"] == null ? true : contains(["Pending", "Error", "Success", "UnknownFutureValue"], input0["status"]))])), (input0["unifiedGroupSources"] == null ? true : alltrue([alltrue([for input2 in input0["unifiedGroupSources"] : (input2 == null ? true : alltrue([(input2["group"] == null ? true : alltrue([(input2["group"]["accessType"] == null ? true : alltrue([(input2["group"]["accessType"] == null ? true : contains(["none", "private", "secret", "public"], input2["group"]["accessType"]))]))])), (input2["holdStatus"] == null ? true : alltrue([(input2["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input2["holdStatus"]))])), (input2["includedSources"] == null ? true : alltrue([(input2["includedSources"] == null ? true : try(alltrue([for value in split(",", input2["includedSources"]) : contains(["mailbox", "site"], lower(trimspace(value)))]), false))]))]))])])), (input0["userSources"] == null ? true : alltrue([alltrue([for input2 in input0["userSources"] : (input2 == null ? true : alltrue([(input2["holdStatus"] == null ? true : alltrue([(input2["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input2["holdStatus"]))])), (input2["includedSources"] == null ? true : alltrue([(input2["includedSources"] == null ? true : try(alltrue([for value in split(",", input2["includedSources"]) : contains(["mailbox", "site"], lower(trimspace(value)))]), false))]))]))])]))]))])]))
-    error_message = "legal_holds: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.legalHolds == null ? true : alltrue([alltrue([for input0 in var.legalHolds : (input0 == null ? true : alltrue([(input0["siteSources"] == null ? true : alltrue([alltrue([for input2 in input0["siteSources"] : (input2 == null ? true : alltrue([(input2["holdStatus"] == null ? true : alltrue([(input2["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input2["holdStatus"]))])), (input2["site"] == null ? true : alltrue([(input2["site"]["lockState"] == null ? true : alltrue([(input2["site"]["lockState"] == null ? true : contains(["unlocked", "lockedReadOnly", "lockedNoAccess", "lockedNoAdditions"], input2["site"]["lockState"]))])), (input2["site"]["template"] == null ? true : alltrue([(input2["site"]["template"] == null ? true : contains(["sitepagepublishing", "sts"], input2["site"]["template"]))]))]))]))])])), (input0["status"] == null ? true : alltrue([(input0["status"] == null ? true : contains(["Pending", "Error", "Success", "UnknownFutureValue"], input0["status"]))])), (input0["unifiedGroupSources"] == null ? true : alltrue([alltrue([for input2 in input0["unifiedGroupSources"] : (input2 == null ? true : alltrue([(input2["group"] == null ? true : alltrue([(input2["group"]["accessType"] == null ? true : alltrue([(input2["group"]["accessType"] == null ? true : contains(["none", "private", "secret", "public"], input2["group"]["accessType"]))]))])), (input2["holdStatus"] == null ? true : alltrue([(input2["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input2["holdStatus"]))])), (input2["includedSources"] == null ? true : alltrue([(input2["includedSources"] == null ? true : try(alltrue([for value in split(",", input2["includedSources"]) : contains(["mailbox", "site"], lower(trimspace(value)))]), false))]))]))])])), (input0["userSources"] == null ? true : alltrue([alltrue([for input2 in input0["userSources"] : (input2 == null ? true : alltrue([(input2["holdStatus"] == null ? true : alltrue([(input2["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input2["holdStatus"]))])), (input2["includedSources"] == null ? true : alltrue([(input2["includedSources"] == null ? true : try(alltrue([for value in split(",", input2["includedSources"]) : contains(["mailbox", "site"], lower(trimspace(value)))]), false))]))]))])]))]))])]))
+    error_message = "legalHolds: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
-variable "noncustodial_data_sources" {
+variable "noncustodialDataSources" {
   description = "Returns a list of case noncustodialDataSource objects for this case.  Nullable."
   type = list(object({
     odata_type           = optional(string, "#microsoft.graph.ediscovery.noncustodialDataSource")
@@ -341,8 +341,8 @@ variable "noncustodial_data_sources" {
   default = null
 
   validation {
-    condition     = (var.noncustodial_data_sources == null ? true : alltrue([alltrue([for input0 in var.noncustodial_data_sources : (input0 == null ? true : alltrue([(input0["holdStatus"] == null ? true : alltrue([(input0["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input0["holdStatus"]))])), (input0["status"] == null ? true : alltrue([(input0["status"] == null ? true : contains(["Active", "Released", "UnknownFutureValue"], input0["status"]))]))]))])]))
-    error_message = "noncustodial_data_sources: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.noncustodialDataSources == null ? true : alltrue([alltrue([for input0 in var.noncustodialDataSources : (input0 == null ? true : alltrue([(input0["holdStatus"] == null ? true : alltrue([(input0["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input0["holdStatus"]))])), (input0["status"] == null ? true : alltrue([(input0["status"] == null ? true : contains(["Active", "Released", "UnknownFutureValue"], input0["status"]))]))]))])]))
+    error_message = "noncustodialDataSources: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 
@@ -365,7 +365,7 @@ variable "settings" {
   default     = null
 }
 
-variable "source_collections" {
+variable "sourceCollections" {
   description = "Returns a list of sourceCollection objects associated with this case."
   type = list(object({
     odata_type                      = optional(string, "#microsoft.graph.ediscovery.sourceCollection")
@@ -397,8 +397,8 @@ variable "source_collections" {
   default = null
 
   validation {
-    condition     = (var.source_collections == null ? true : alltrue([alltrue([for input0 in var.source_collections : (input0 == null ? true : alltrue([(input0["dataSourceScopes"] == null ? true : alltrue([(input0["dataSourceScopes"] == null ? true : try(alltrue([for value in split(",", input0["dataSourceScopes"]) : contains(["none", "alltenantmailboxes", "alltenantsites", "allcasecustodians", "allcasenoncustodialdatasources"], lower(trimspace(value)))]), false))])), (input0["noncustodialSources"] == null ? true : alltrue([alltrue([for input2 in input0["noncustodialSources"] : (input2 == null ? true : alltrue([(input2["holdStatus"] == null ? true : alltrue([(input2["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input2["holdStatus"]))])), (input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["Active", "Released", "UnknownFutureValue"], input2["status"]))]))]))])]))]))])]))
-    error_message = "source_collections: nested required attributes must be non-null and enum values must be supported input members."
+    condition     = (var.sourceCollections == null ? true : alltrue([alltrue([for input0 in var.sourceCollections : (input0 == null ? true : alltrue([(input0["dataSourceScopes"] == null ? true : alltrue([(input0["dataSourceScopes"] == null ? true : try(alltrue([for value in split(",", input0["dataSourceScopes"]) : contains(["none", "alltenantmailboxes", "alltenantsites", "allcasecustodians", "allcasenoncustodialdatasources"], lower(trimspace(value)))]), false))])), (input0["noncustodialSources"] == null ? true : alltrue([alltrue([for input2 in input0["noncustodialSources"] : (input2 == null ? true : alltrue([(input2["holdStatus"] == null ? true : alltrue([(input2["holdStatus"] == null ? true : contains(["notApplied", "applied", "applying", "removing", "partial"], input2["holdStatus"]))])), (input2["status"] == null ? true : alltrue([(input2["status"] == null ? true : contains(["Active", "Released", "UnknownFutureValue"], input2["status"]))]))]))])]))]))])]))
+    error_message = "sourceCollections: nested required attributes must be non-null and enum values must be supported input members."
   }
 }
 

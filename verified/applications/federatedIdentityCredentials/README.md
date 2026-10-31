@@ -29,7 +29,7 @@ module "github_main" {
   source  = "satolap/modules/msgraph//verified/applications/federatedIdentityCredentials"
   version = "<version>"
 
-  application_id = module.application.id # object ID, not application/client appId
+  application-id = module.application.id # object ID, not application/client appId
   name           = "github-main"
   issuer         = "https://token.actions.githubusercontent.com"
   subject        = "repo:example-org/example-repo:ref:refs/heads/main"
@@ -105,7 +105,7 @@ remains subject to the acceptance runbook below.
 This is an ordinary `msgraph_resource` child with item GET, PATCH and DELETE, rather than
 a one-shot request/action. Creation POST is never used for an in-place update. `issuer`,
 `subject`, `audiences` and a non-null `description` update with PATCH and retain the
-credential ID. Changing `name` or the normalized `application_id` explicitly replaces
+credential ID. Changing `name` or the normalized `application-id` explicitly replaces
 the credential through `terraform_data.immutable`; a case-only application GUID change
 does nothing. Identity names and external claims are never lower-cased.
 
@@ -194,7 +194,7 @@ Sources: [Create user](https://learn.microsoft.com/en-us/graph/api/user-post-use
 
 | Name | Description | Type | Default | On change |
 | --- | --- | --- | --- | --- |
-| application_id | Existing application object GUID, normalized to lower case | `string` | required | replaces `msgraph_resource.credential` |
+| application-id | Existing application object GUID, normalized to lower case | `string` | required | replaces `msgraph_resource.credential` |
 | name | Unique immutable credential name within the documented module subset | `string` | required | replaces `msgraph_resource.credential` |
 | issuer | Exact trusted issuer HTTPS URL, at most 600 characters | `string` | required | in place |
 | subject | Exact external token subject, 1 to 600 characters | `string` | required | in place |
@@ -245,10 +245,43 @@ the live probe must establish the actual response shape before acceptance.
 
 Terraform plans compare configuration and refreshed provider state. A plan that changes one of these inputs proposes its declared effect; review the plan before applying. The consumer guide explains refresh limits and emergency reconciliation.
 
-- `application_id`: replaces `msgraph_resource.credential`.
+- `application-id`: replaces `msgraph_resource.credential`.
 - `name`: replaces `msgraph_resource.credential`.
 - `issuer`: in place.
 - `subject`: in place.
 - `audiences`: in place.
 - `description`: in place.
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /applications/{id}/federatedIdentityCredentials` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `POST /applications/{id}/federatedIdentityCredentials` | DelegatedPersonal | `Application.ReadWrite.All` | - | - |
+| `POST /applications/{id}/federatedIdentityCredentials` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+| `GET /applications/{id}/federatedIdentityCredentials/{id}` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `GET /applications/{id}/federatedIdentityCredentials/{id}` | DelegatedPersonal | `Application.ReadWrite.All` | - | - |
+| `GET /applications/{id}/federatedIdentityCredentials/{id}` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+| `DELETE /applications/{id}/federatedIdentityCredentials/{id}` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `DELETE /applications/{id}/federatedIdentityCredentials/{id}` | DelegatedPersonal | `Application.ReadWrite.All` | - | - |
+| `DELETE /applications/{id}/federatedIdentityCredentials/{id}` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+| `PATCH /applications/{id}/federatedIdentityCredentials/{id}` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `PATCH /applications/{id}/federatedIdentityCredentials/{id}` | DelegatedPersonal | `Application.ReadWrite.All` | - | - |
+| `PATCH /applications/{id}/federatedIdentityCredentials/{id}` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /applications/{id}/federatedIdentityCredentials` | `audiences`, `description`, `issuer`, `name`, `subject` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `PATCH /applications/{id}/federatedIdentityCredentials/{id}` | `audiences`, `description`, `issuer`, `name`, `subject` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

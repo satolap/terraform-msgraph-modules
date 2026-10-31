@@ -1,22 +1,22 @@
-variable "education_class_id" {
+variable "educationClass-id" {
   description = "The unique identifier of educationClass"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.education_class_id)) > 0
-    error_message = "education_class_id must not be empty."
+    condition     = length(trimspace(var.educationClass-id)) > 0
+    error_message = "educationClass-id must not be empty."
   }
 }
 
-variable "education_module_id" {
+variable "educationModule-id" {
   description = "The unique identifier of educationModule"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.education_module_id)) > 0
-    error_message = "education_module_id must not be empty."
+    condition     = length(trimspace(var.educationModule-id)) > 0
+    error_message = "educationModule-id must not be empty."
   }
 }
 

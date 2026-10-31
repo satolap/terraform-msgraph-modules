@@ -1,44 +1,44 @@
-variable "group_id" {
+variable "group-id" {
   description = "The unique identifier of group"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.group_id)) > 0
-    error_message = "group_id must not be empty."
+    condition     = length(trimspace(var.group-id)) > 0
+    error_message = "group-id must not be empty."
   }
 }
 
-variable "conversation_id" {
+variable "conversation-id" {
   description = "The unique identifier of conversation"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.conversation_id)) > 0
-    error_message = "conversation_id must not be empty."
+    condition     = length(trimspace(var.conversation-id)) > 0
+    error_message = "conversation-id must not be empty."
   }
 }
 
-variable "cc_recipients" {
+variable "ccRecipients" {
   description = "The Cc: recipients for the thread. Returned only on $select."
   type        = any
   default     = null
 }
 
-variable "has_attachments" {
+variable "hasAttachments" {
   description = "Indicates whether any of the posts within this thread has at least one attachment. Returned by default."
   type        = bool
   default     = null
 }
 
-variable "is_locked" {
+variable "isLocked" {
   description = "Indicates if the thread is locked. Returned by default."
   type        = bool
   default     = null
 }
 
-variable "last_delivered_date_time" {
+variable "lastDeliveredDateTime" {
   description = "The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Returned by default."
   type        = string
   default     = null
@@ -95,7 +95,7 @@ variable "preview" {
   default     = null
 }
 
-variable "to_recipients" {
+variable "toRecipients" {
   description = "The To: recipients for the thread. Returned only on $select."
   type        = any
   default     = null
@@ -107,7 +107,7 @@ variable "topic" {
   default     = null
 }
 
-variable "unique_senders" {
+variable "uniqueSenders" {
   description = "All the users that sent a message to this thread. Returned by default."
   type        = list(string)
   default     = null

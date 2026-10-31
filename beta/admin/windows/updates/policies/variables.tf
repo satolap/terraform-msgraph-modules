@@ -9,7 +9,7 @@ variable "odata_type" {
   }
 }
 
-variable "applicable_content" {
+variable "applicableContent" {
   description = "Represents content applicable for offering to the related collection of devices."
   type = list(object({
     odata_type     = optional(string, "#microsoft.graph.windowsUpdates.applicableContent")
@@ -24,7 +24,7 @@ variable "applicable_content" {
   default = null
 }
 
-variable "approval_rules" {
+variable "approvalRules" {
   description = "The approved rule of the policy that determines which published content matches the rule on an ongoing basis."
   type        = any
   default     = null
@@ -51,7 +51,7 @@ variable "description" {
   default     = null
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The policy display name. The maximum length is 200 characters."
   type        = string
   default     = null

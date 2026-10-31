@@ -11,12 +11,12 @@ mock_provider "msgraph" {
 }
 
 variables {
-  display_name = "Example ORG-DEV-Extension"
+  displayName = "Example ORG-DEV-Extension"
 
   logic_app = {
-    subscription_id         = "11111111-1111-4111-8111-111111111111"
-    resource_group_name     = "rg-example"
-    logic_app_workflow_name = "example-logic-app"
+    subscriptionId       = "11111111-1111-4111-8111-111111111111"
+    resourceGroupName    = "rg-example"
+    logicAppWorkflowName = "example-logic-app"
   }
 
   authentication_resource_id = "22222222-2222-4222-8222-222222222222"
@@ -26,7 +26,7 @@ run "accepts_any_display_name_without_name_pattern" {
   command = plan
 
   variables {
-    display_name = "Not following any convention"
+    displayName = "Not following any convention"
   }
 
   assert {

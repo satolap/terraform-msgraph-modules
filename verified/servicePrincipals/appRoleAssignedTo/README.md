@@ -325,3 +325,43 @@ Terraform plans compare configuration and refreshed provider state. A plan that 
 - `appRoleId`: replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.assignment` when its effect on `local.app_role_id` changes.
 - `appRoleValue`: replaces `msgraph_resource_action.remove` (its destroy deletes the previous ID); replaces `msgraph_resource_action.assignment`.
 <!-- drift:end -->
+
+<!-- permissions:begin -->
+## Per-operation permissions
+
+Source: [Graph DevX map](https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/56e1917fe45fb7c52c2d9845f569c2ffdb39e4d9/permissions/new/permissions.json) (SHA-256 `4d7dee52659b1d6424bce0b26603302081d39ef9e149bc5fb50de4273b3d3514`).
+The map is shared by v1.0 and beta; it does not certify API-version support. Rows show the source's least-privilege annotations, not live-tested consent. Choose an alternative for your authentication type; do not grant every listed scope. AlsoRequires lists additional scope alternatives attached to that row. Missing annotations are unknown, not evidence that an operation needs no permission. Keep the module's documented role, property-specific and tenant restrictions.
+
+Derived from this module's Terraform sources, including optional guards, destroy actions and local child modules. The checked inventory is `docs/permissions/verified-operations.json`. These are potential requests, not a preflight scope list. A provider primitive may expose an update that Graph does not support. Source paths and conditions are retained in the inventory.
+
+| Operation | Authentication | Least-privilege alternative | AlsoRequires | Unknown reason |
+| --- | --- | --- | --- | --- |
+| `POST /servicePrincipals/{id}/appRoleAssignedTo` | DelegatedWork | `AppRoleAssignment.ReadWrite.All` | `Application.Read.All` or `Directory.Read.All` | - |
+| `POST /servicePrincipals/{id}/appRoleAssignedTo` | DelegatedWork | `Application.Read.All` | `AppRoleAssignment.ReadWrite.All` | - |
+| `POST /servicePrincipals/{id}/appRoleAssignedTo` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `POST /servicePrincipals/{id}/appRoleAssignedTo` | Application | `AppRoleAssignment.ReadWrite.All` | `Application.Read.All` or `Directory.Read.All` | - |
+| `POST /servicePrincipals/{id}/appRoleAssignedTo` | Application | `Application.Read.All` | `AppRoleAssignment.ReadWrite.All` | - |
+| `DELETE /servicePrincipals/{id}/appRoleAssignedTo` | DelegatedWork | Unknown / not annotated | - | The empty assignment-ID fallback produces a collection URI, not an item deletion. DevX annotates individual assignment deletion, not collection DELETE; this conservative failure-path candidate establishes neither bulk deletion support nor a permission grant. |
+| `DELETE /servicePrincipals/{id}/appRoleAssignedTo` | DelegatedPersonal | Unknown / not annotated | - | The empty assignment-ID fallback produces a collection URI, not an item deletion. DevX annotates individual assignment deletion, not collection DELETE; this conservative failure-path candidate establishes neither bulk deletion support nor a permission grant. |
+| `DELETE /servicePrincipals/{id}/appRoleAssignedTo` | Application | Unknown / not annotated | - | The empty assignment-ID fallback produces a collection URI, not an item deletion. DevX annotates individual assignment deletion, not collection DELETE; this conservative failure-path candidate establishes neither bulk deletion support nor a permission grant. |
+| `DELETE /servicePrincipals/{id}/appRoleAssignedTo/{id}` | DelegatedWork | `AppRoleAssignment.ReadWrite.All` | - | - |
+| `DELETE /servicePrincipals/{id}/appRoleAssignedTo/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `DELETE /servicePrincipals/{id}/appRoleAssignedTo/{id}` | Application | `AppRoleAssignment.ReadWrite.All` | - | - |
+| `GET /servicePrincipals/{id}` | DelegatedWork | `Application.Read.All` | - | - |
+| `GET /servicePrincipals/{id}` | DelegatedWork | `Application.ReadWrite.All` | - | - |
+| `GET /servicePrincipals/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pinned DevX entry omits this authentication scheme; support is not inferred. |
+| `GET /servicePrincipals/{id}` | Application | `Application.Read.All` | - | - |
+| `GET /servicePrincipals/{id}` | Application | `Application.ReadWrite.OwnedBy` | - | - |
+| `GET /servicePrincipals/{id}/appRoleAssignedTo/{id}` | DelegatedWork | Unknown / not annotated | - | The pin annotates collection GET and item DELETE, not the exact item GET used for assignment verification. Collection grants are not substituted. |
+| `GET /servicePrincipals/{id}/appRoleAssignedTo/{id}` | DelegatedPersonal | Unknown / not annotated | - | The pin annotates collection GET and item DELETE, not the exact item GET used for assignment verification. Collection grants are not substituted. |
+| `GET /servicePrincipals/{id}/appRoleAssignedTo/{id}` | Application | Unknown / not annotated | - | The pin annotates collection GET and item DELETE, not the exact item GET used for assignment verification. Collection grants are not substituted. |
+
+### Property-specific coverage
+
+Route annotations do not establish that the listed scopes cover every selected or writable property. Dynamic bodies, additional properties and default responses remain unbounded. Keep the reviewed permission guidance above; in particular, a group-nesting scope is not general group-property access. The pin's method/path entries do not distinguish property grants from navigation or sub-resource operations; property coverage stays unknown.
+
+| Operation | Properties | Source evidence |
+| --- | --- | --- |
+| `POST /servicePrincipals/{id}/appRoleAssignedTo` | `appRoleId`, `principalId`, `resourceId` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+| `GET /servicePrincipals/{id}` | `appRoles`, `id` | Unknown: the pinned DevX method/path entries do not establish property-specific grants; route annotations alone do not prove coverage. |
+<!-- permissions:end -->

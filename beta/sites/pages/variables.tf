@@ -1,15 +1,15 @@
-variable "site_id" {
+variable "site-id" {
   description = "The unique identifier of site"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.site_id)) > 0
-    error_message = "site_id must not be empty."
+    condition     = length(trimspace(var.site-id)) > 0
+    error_message = "site-id must not be empty."
   }
 }
 
-variable "created_by_user" {
+variable "createdByUser" {
   description = "Microsoft Graph createdByUser property."
   type        = any
   default     = null
@@ -21,7 +21,7 @@ variable "description" {
   default     = null
 }
 
-variable "last_modified_by_user" {
+variable "lastModifiedByUser" {
   description = "Microsoft Graph lastModifiedByUser property."
   type        = any
   default     = null
@@ -40,18 +40,18 @@ variable "odata_type" {
   nullable    = false
 }
 
-variable "page_layout" {
+variable "pageLayout" {
   description = "The name of the page layout of the page. The possible values are: microsoftReserved, article, home, unknownFutureValue, newsLink. Use the Prefer: include-unknown-enum-members request header to get the following members in this evolvable enum: newsLink."
   type        = string
   default     = null
 
   validation {
-    condition     = var.page_layout == null ? true : contains(["microsoftReserved", "article", "home"], var.page_layout)
-    error_message = "page_layout must be one of the documented enum values."
+    condition     = var.pageLayout == null ? true : contains(["microsoftReserved", "article", "home"], var.pageLayout)
+    error_message = "pageLayout must be one of the documented enum values."
   }
 }
 
-variable "parent_reference" {
+variable "parentReference" {
   description = "Parent information, if the item has a parent. Read-write."
   type = object({
     odata_type = optional(string, "#microsoft.graph.itemReference")
@@ -62,7 +62,7 @@ variable "parent_reference" {
   default = null
 }
 
-variable "publishing_state" {
+variable "publishingState" {
   description = "The publishing status and the MM.mm version of the page."
   type = object({
     odata_type   = optional(string, "#microsoft.graph.publicationFacet")

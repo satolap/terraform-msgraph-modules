@@ -13,7 +13,7 @@ variable "description" {
   }
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The name of this rubric."
   type        = string
   default     = null

@@ -8,7 +8,7 @@ locals {
   # group ID is part of the url, and the provider replaces the collection when
   # the url changes, so it is lower-cased too: a change of case alone must
   # plan nothing.
-  group_id   = lower(var.group_id)
+  group_id   = lower(var.group-id)
   member_ids = [for id in var.member_ids : lower(id)]
 
   # Microsoft Learn documents that adding a member to a group created moments

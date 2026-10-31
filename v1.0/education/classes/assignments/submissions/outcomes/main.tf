@@ -2,8 +2,8 @@
 locals {
   typed_body = { for key, value in {
     "@odata.type"          = var.odata_type
-    "lastModifiedBy"       = var.last_modified_by
-    "lastModifiedDateTime" = var.last_modified_date_time
+    "lastModifiedBy"       = var.lastModifiedBy
+    "lastModifiedDateTime" = var.lastModifiedDateTime
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }
@@ -13,7 +13,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "education/classes/${urlencode(var.education_class_id)}/assignments/${urlencode(var.education_assignment_id)}/submissions/${urlencode(var.education_submission_id)}/outcomes"
+  url                     = "education/classes/${urlencode(var.educationClass-id)}/assignments/${urlencode(var.educationAssignment-id)}/submissions/${urlencode(var.educationSubmission-id)}/outcomes"
   api_version             = "v1.0"
   update_method           = "PATCH"
   body                    = local.body

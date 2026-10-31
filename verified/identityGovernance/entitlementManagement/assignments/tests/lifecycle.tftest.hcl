@@ -363,8 +363,8 @@ run "an_update_that_waits_for_approval_fails_when_delivery_is_required" {
   variables {
     schedule_update = {
       expiration = {
-        type          = "afterDateTime"
-        end_date_time = "2027-06-01T00:00:00Z"
+        type        = "afterDateTime"
+        endDateTime = "2027-06-01T00:00:00Z"
       }
     }
   }

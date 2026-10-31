@@ -1,22 +1,22 @@
-variable "team_id" {
+variable "team-id" {
   description = "The unique identifier of team"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.team_id)) > 0
-    error_message = "team_id must not be empty."
+    condition     = length(trimspace(var.team-id)) > 0
+    error_message = "team-id must not be empty."
   }
 }
 
-variable "channel_id" {
+variable "channel-id" {
   description = "The unique identifier of channel"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.channel_id)) > 0
-    error_message = "channel_id must not be empty."
+    condition     = length(trimspace(var.channel-id)) > 0
+    error_message = "channel-id must not be empty."
   }
 }
 
@@ -31,7 +31,7 @@ variable "odata_type" {
   }
 }
 
-variable "display_name" {
+variable "displayName" {
   description = "The display name of the user."
   type        = string
   default     = null
@@ -43,7 +43,7 @@ variable "roles" {
   default     = null
 }
 
-variable "visible_history_start_date_time" {
+variable "visibleHistoryStartDateTime" {
   description = "The timestamp denoting how far back a conversation's history is shared with the conversation member. This property is settable only for members of a chat."
   type        = string
   default     = null

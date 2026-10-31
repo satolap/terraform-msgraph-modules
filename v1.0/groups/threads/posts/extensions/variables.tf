@@ -1,33 +1,33 @@
-variable "group_id" {
+variable "group-id" {
   description = "The unique identifier of group"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.group_id)) > 0
-    error_message = "group_id must not be empty."
+    condition     = length(trimspace(var.group-id)) > 0
+    error_message = "group-id must not be empty."
   }
 }
 
-variable "conversation_thread_id" {
+variable "conversationThread-id" {
   description = "The unique identifier of conversationThread"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.conversation_thread_id)) > 0
-    error_message = "conversation_thread_id must not be empty."
+    condition     = length(trimspace(var.conversationThread-id)) > 0
+    error_message = "conversationThread-id must not be empty."
   }
 }
 
-variable "post_id" {
+variable "post-id" {
   description = "The unique identifier of post"
   type        = string
   nullable    = false
 
   validation {
-    condition     = length(trimspace(var.post_id)) > 0
-    error_message = "post_id must not be empty."
+    condition     = length(trimspace(var.post-id)) > 0
+    error_message = "post-id must not be empty."
   }
 }
 

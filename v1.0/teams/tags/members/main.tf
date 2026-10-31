@@ -1,10 +1,10 @@
 # Generated from pinned Microsoft Graph sources; do not edit.
 locals {
   typed_body = { for key, value in {
-    "displayName" = var.display_name
+    "displayName" = var.displayName
     "@odata.type" = var.odata_type
-    "tenantId"    = var.tenant_id
-    "userId"      = var.user_id
+    "tenantId"    = var.tenantId
+    "userId"      = var.userId
   } : key => value if value != null }
   body = merge({ for key, value in var.additional_properties : key => value if value != null }, local.typed_body)
 }
@@ -14,7 +14,7 @@ locals {
 }
 
 resource "msgraph_resource" "this" {
-  url                     = "teams/${urlencode(var.team_id)}/tags/${urlencode(var.teamwork_tag_id)}/members"
+  url                     = "teams/${urlencode(var.team-id)}/tags/${urlencode(var.teamworkTag-id)}/members"
   api_version             = "v1.0"
   update_method           = "PATCH"
   body                    = local.body

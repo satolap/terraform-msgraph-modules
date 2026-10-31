@@ -42,11 +42,11 @@ run "typed_request" {
   command = plan
 
   variables {
-    authentication_type                  = "example"
-    is_admin_managed                     = false
-    password_notification_window_in_days = -2147483648
-    state                                = { "lastActionDateTime" = null }
-    federation_configuration             = [{}]
+    authenticationType               = "example"
+    isAdminManaged                   = false
+    passwordNotificationWindowInDays = -2147483648
+    state                            = { "lastActionDateTime" = null }
+    federationConfiguration          = [{}]
   }
 
   assert {

@@ -26,7 +26,7 @@ mock_provider "msgraph" {
 }
 
 variables {
-  external_user_lifecycle_action = "none"
+  externalUserLifecycleAction = "none"
 }
 
 run "first_apply" {

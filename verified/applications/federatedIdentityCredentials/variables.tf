@@ -1,11 +1,11 @@
-variable "application_id" {
+variable "application-id" {
   description = "Object ID (not client/appId) of the existing application. A different GUID replaces this credential; a case-only change does not. The application and its other credentials are not managed here."
   type        = string
   nullable    = false
 
   validation {
-    condition     = can(regex("^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$", var.application_id))
-    error_message = "application_id must be an application object ID (a GUID), not a client ID selector or URL."
+    condition     = can(regex("^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$", var.application-id))
+    error_message = "application-id must be an application object ID (a GUID), not a client ID selector or URL."
   }
 }
 

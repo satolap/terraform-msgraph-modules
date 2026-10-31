@@ -231,16 +231,16 @@ run "defaults_build_the_whole_setup" {
   assert {
     condition = jsonencode(local.approval_stages) == jsonencode([
       {
-        approval_timeout_in_days           = 14
-        is_approver_justification_required = true
-        primary_approvers                  = [{ type = "externalSponsors" }]
-        fallback_primary_approvers         = [{ type = "groupMembers", id = "11111111-0000-0000-0000-000000000002" }]
+        approval_timeout_in_days        = 14
+        isApproverJustificationRequired = true
+        primaryApprovers                = [{ type = "externalSponsors" }]
+        fallbackPrimaryApprovers        = [{ type = "groupMembers", id = "11111111-0000-0000-0000-000000000002" }]
       },
       {
-        approval_timeout_in_days           = 14
-        is_approver_justification_required = true
-        primary_approvers                  = [{ type = "internalSponsors" }]
-        fallback_primary_approvers         = [{ type = "groupMembers", id = "11111111-0000-0000-0000-000000000003" }]
+        approval_timeout_in_days        = 14
+        isApproverJustificationRequired = true
+        primaryApprovers                = [{ type = "internalSponsors" }]
+        fallbackPrimaryApprovers        = [{ type = "groupMembers", id = "11111111-0000-0000-0000-000000000003" }]
       },
     ])
     error_message = "By default the external sponsors approve first and the internal sponsors second, each with their group as fallback approvers."
@@ -248,10 +248,10 @@ run "defaults_build_the_whole_setup" {
 
   assert {
     condition = jsonencode(local.requests_policy_approval_settings) == jsonencode({
-      is_approval_required_for_add        = true
-      is_approval_required_for_update     = true
-      is_requestor_justification_required = true
-      stages                              = local.approval_stages
+      isApprovalRequiredForAdd         = true
+      isApprovalRequiredForUpdate      = true
+      isRequestorJustificationRequired = true
+      stages                           = local.approval_stages
     })
     error_message = "Approval must be required for new and updated requests, with justification."
   }
@@ -263,10 +263,10 @@ run "defaults_build_the_whole_setup" {
 
   assert {
     condition = jsonencode(local.requests_policy_requestor_settings) == jsonencode({
-      allow_custom_assignment_schedule     = true
-      enable_targets_to_self_add_access    = true
-      enable_targets_to_self_update_access = true
-      enable_targets_to_self_remove_access = true
+      allowCustomAssignmentSchedule   = true
+      enableTargetsToSelfAddAccess    = true
+      enableTargetsToSelfUpdateAccess = true
+      enableTargetsToSelfRemoveAccess = true
     })
     error_message = "Users of the organization must be able to request, extend and remove their own access."
   }
@@ -408,7 +408,7 @@ run "access_review_internal_approval_only_and_no_expiration" {
   }
 
   assert {
-    condition     = length(local.approval_stages) == 1 && jsonencode(local.approval_stages[0].primary_approvers) == jsonencode([{ type = "internalSponsors" }])
+    condition     = length(local.approval_stages) == 1 && jsonencode(local.approval_stages[0].primaryApprovers) == jsonencode([{ type = "internalSponsors" }])
     error_message = "approval_stages must select and order the stages."
   }
 
@@ -419,15 +419,15 @@ run "access_review_internal_approval_only_and_no_expiration" {
 
   assert {
     condition = jsonencode(local.review_settings) == jsonencode({
-      is_enabled                         = true
-      expiration_behavior                = "removeAccess"
-      is_recommendation_enabled          = true
-      is_reviewer_justification_required = true
-      is_self_review                     = false
-      primary_reviewers                  = [{ type = "groupMembers", id = "11111111-0000-0000-0000-000000000003" }]
-      fallback_reviewers                 = []
+      isEnabled                       = true
+      expirationBehavior              = "removeAccess"
+      isRecommendationEnabled         = true
+      isReviewerJustificationRequired = true
+      isSelfReview                    = false
+      primaryReviewers                = [{ type = "groupMembers", id = "11111111-0000-0000-0000-000000000003" }]
+      fallbackReviewers               = []
       schedule = {
-        start_date_time  = "2026-11-01T00:00:00Z"
+        startDateTime    = "2026-11-01T00:00:00Z"
         duration_in_days = 25
         recurrence       = { type = "absoluteMonthly", interval = 3 }
       }
@@ -454,7 +454,7 @@ run "external_sponsor_access_expires_and_can_be_extended" {
   }
 
   assert {
-    condition     = local.external_sponsor_policy_requestor_settings.enable_targets_to_self_update_access && local.external_sponsor_policy_requestor_settings.enable_targets_to_self_remove_access
+    condition     = local.external_sponsor_policy_requestor_settings.enableTargetsToSelfUpdateAccess && local.external_sponsor_policy_requestor_settings.enableTargetsToSelfRemoveAccess
     error_message = "Current sponsors must be able to extend and remove their own access."
   }
 }
@@ -493,7 +493,7 @@ run "access_review_can_be_turned_off" {
   }
 
   assert {
-    condition     = local.review_settings.is_enabled == false
+    condition     = local.review_settings.isEnabled == false
     error_message = "access_review.enabled = false must send isEnabled = false, so that the reviews stop."
   }
 
@@ -508,7 +508,7 @@ run "no_approval_stages_requires_no_approval" {
   }
 
   assert {
-    condition     = local.requests_policy_approval_settings.is_approval_required_for_add == false && local.requests_policy_approval_settings.is_approval_required_for_update == false && length(local.requests_policy_approval_settings.stages) == 0
+    condition     = local.requests_policy_approval_settings.isApprovalRequiredForAdd == false && local.requests_policy_approval_settings.isApprovalRequiredForUpdate == false && length(local.requests_policy_approval_settings.stages) == 0
     error_message = "An empty approval_stages must require no approval."
   }
 }
