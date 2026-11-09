@@ -66,25 +66,51 @@ APIs are previews and can change incompatibly; see Microsoft's
 The verified modules focus on Microsoft Entra ID directory objects, entitlement
 management workflows, and Conditional Access:
 
-| Microsoft Graph area | Resource or workflow | Terraform module |
-| --- | --- | --- |
-| Users | `/users` | [`verified/users`](verified/users) |
-| Groups | `/groups`, owners, and members | [`verified/groups`](verified/groups) |
-| Groups | Group members as one authoritative collection | [`verified/groups/members`](verified/groups/members) |
-| Directory | Administrative units | [`verified/directory/administrative-units`](verified/directory/administrative-units) |
-| Applications | `/applications` | [`verified/applications`](verified/applications) |
-| Applications | `/servicePrincipals` | [`verified/service-principals`](verified/service-principals) |
-| Identity governance | Entitlement-management catalogs | [`verified/identity-governance/entitlement-management/catalogs`](verified/identity-governance/entitlement-management/catalogs) |
-| Identity governance | Catalog resources | [`verified/identity-governance/entitlement-management/catalogs/resources`](verified/identity-governance/entitlement-management/catalogs/resources) |
-| Identity governance | Catalog custom extensions | [`verified/identity-governance/entitlement-management/catalogs/custom-extensions`](verified/identity-governance/entitlement-management/catalogs/custom-extensions) |
-| Identity governance | Access packages | [`verified/identity-governance/entitlement-management/access-packages`](verified/identity-governance/entitlement-management/access-packages) |
-| Identity governance | Access-package resource role scopes | [`verified/identity-governance/entitlement-management/access-packages/resource-role-scopes`](verified/identity-governance/entitlement-management/access-packages/resource-role-scopes) |
-| Identity governance | Assignment policies | [`verified/identity-governance/entitlement-management/assignment-policies`](verified/identity-governance/entitlement-management/assignment-policies) |
-| Identity governance | Connected organizations | [`verified/identity-governance/entitlement-management/connected-organizations`](verified/identity-governance/entitlement-management/connected-organizations) |
-| Conditional Access | Policies, report-only by default, with mandatory break-glass exclusions | [`verified/identity/conditional-access/policies`](verified/identity/conditional-access/policies) |
-| Conditional Access | IP named locations (IPv4 and IPv6) | [`verified/identity/conditional-access/named-locations/ip-ranges`](verified/identity/conditional-access/named-locations/ip-ranges) |
-| Conditional Access | Country and region named locations | [`verified/identity/conditional-access/named-locations/countries`](verified/identity/conditional-access/named-locations/countries) |
-| Naming | Object names rendered from a naming convention | [`verified/naming`](verified/naming) |
+| Microsoft Graph area | Terraform module |
+| --- | --- |
+| Directory | [`verified/directory/administrativeUnits`](verified/directory/administrativeUnits) |
+| Directory | [`verified/groups`](verified/groups) |
+| Directory | [`verified/groups/members`](verified/groups/members) |
+| Directory | [`verified/naming`](verified/naming) |
+| Directory | [`verified/users`](verified/users) |
+| Applications | [`verified/applications`](verified/applications) |
+| Applications | [`verified/applications/federatedIdentityCredentials`](verified/applications/federatedIdentityCredentials) |
+| Applications | [`verified/applications/passwordCredentials`](verified/applications/passwordCredentials) |
+| Applications | [`verified/oauth2PermissionGrants`](verified/oauth2PermissionGrants) |
+| Applications | [`verified/servicePrincipals`](verified/servicePrincipals) |
+| Applications | [`verified/servicePrincipals/appRoleAssignedTo`](verified/servicePrincipals/appRoleAssignedTo) |
+| Applications | [`verified/servicePrincipals/passwordCredentials`](verified/servicePrincipals/passwordCredentials) |
+| Entitlement management | [`verified/compositions/connected-organization-access`](verified/compositions/connected-organization-access) |
+| Entitlement management | [`verified/identityGovernance/entitlementManagement/accessPackages`](verified/identityGovernance/entitlementManagement/accessPackages) |
+| Entitlement management | [`verified/identityGovernance/entitlementManagement/accessPackages/resourceRoleScopes`](verified/identityGovernance/entitlementManagement/accessPackages/resourceRoleScopes) |
+| Entitlement management | [`verified/identityGovernance/entitlementManagement/assignmentPolicies`](verified/identityGovernance/entitlementManagement/assignmentPolicies) |
+| Entitlement management | [`verified/identityGovernance/entitlementManagement/assignments`](verified/identityGovernance/entitlementManagement/assignments) |
+| Entitlement management | [`verified/identityGovernance/entitlementManagement/catalogs`](verified/identityGovernance/entitlementManagement/catalogs) |
+| Entitlement management | [`verified/identityGovernance/entitlementManagement/catalogs/customWorkflowExtensions`](verified/identityGovernance/entitlementManagement/catalogs/customWorkflowExtensions) |
+| Entitlement management | [`verified/identityGovernance/entitlementManagement/catalogs/resources`](verified/identityGovernance/entitlementManagement/catalogs/resources) |
+| Entitlement management | [`verified/identityGovernance/entitlementManagement/connectedOrganizations`](verified/identityGovernance/entitlementManagement/connectedOrganizations) |
+| Entitlement management | [`verified/identityGovernance/entitlementManagement/settings`](verified/identityGovernance/entitlementManagement/settings) |
+| Identity governance | [`verified/identityGovernance/accessReviews/definitions`](verified/identityGovernance/accessReviews/definitions) |
+| Identity governance | [`verified/identityGovernance/lifecycleWorkflows/customTaskExtensions`](verified/identityGovernance/lifecycleWorkflows/customTaskExtensions) |
+| Identity governance | [`verified/identityGovernance/lifecycleWorkflows/workflows`](verified/identityGovernance/lifecycleWorkflows/workflows) |
+| Identity governance | [`verified/identityGovernance/privilegedAccess/group/assignmentScheduleRequests`](verified/identityGovernance/privilegedAccess/group/assignmentScheduleRequests) |
+| Identity governance | [`verified/identityGovernance/privilegedAccess/group/eligibilityScheduleRequests`](verified/identityGovernance/privilegedAccess/group/eligibilityScheduleRequests) |
+| Identity governance | [`verified/identityGovernance/termsOfUse/agreements`](verified/identityGovernance/termsOfUse/agreements) |
+| Role management | [`verified/roleManagement/directory/roleAssignments`](verified/roleManagement/directory/roleAssignments) |
+| Role management | [`verified/roleManagement/directory/roleDefinitions`](verified/roleManagement/directory/roleDefinitions) |
+| Role management | [`verified/roleManagement/directory/roleSchedules`](verified/roleManagement/directory/roleSchedules) |
+| Role management | [`verified/roleManagement/entitlementManagement/roleAssignments`](verified/roleManagement/entitlementManagement/roleAssignments) |
+| Conditional Access and policies | [`verified/identity/conditionalAccess/namedLocations/countryNamedLocation`](verified/identity/conditionalAccess/namedLocations/countryNamedLocation) |
+| Conditional Access and policies | [`verified/identity/conditionalAccess/namedLocations/ipNamedLocation`](verified/identity/conditionalAccess/namedLocations/ipNamedLocation) |
+| Conditional Access and policies | [`verified/identity/conditionalAccess/policies`](verified/identity/conditionalAccess/policies) |
+| Conditional Access and policies | [`verified/policies/authenticationStrengthPolicies`](verified/policies/authenticationStrengthPolicies) |
+| Security baseline | [`verified/security-baseline/admin-consent-workflow`](verified/security-baseline/admin-consent-workflow) |
+| Security baseline | [`verified/security-baseline/authentication-methods`](verified/security-baseline/authentication-methods) |
+| Security baseline | [`verified/security-baseline/authorization-policy`](verified/security-baseline/authorization-policy) |
+| Security baseline | [`verified/security-baseline/conditional-access-p1`](verified/security-baseline/conditional-access-p1) |
+| Security baseline | [`verified/security-baseline/emergency-access-guard`](verified/security-baseline/emergency-access-guard) |
+| Security baseline | [`verified/security-baseline/emergency-access-guard/verify`](verified/security-baseline/emergency-access-guard/verify) |
+| Security baseline | [`verified/security-baseline/licence-guard`](verified/security-baseline/licence-guard) |
 
 Verified modules expose higher-level Terraform inputs and outputs while preserving
 Microsoft Graph identifiers for composition. Their READMEs document required
@@ -100,7 +126,7 @@ terraform {
   required_providers {
     msgraph = {
       source  = "microsoft/msgraph"
-      version = ">= 0.4.0, < 1.0.0"
+      version = ">= 0.4.0, < 0.7.0"
     }
   }
 }
@@ -109,18 +135,18 @@ provider "msgraph" {}
 
 module "application" {
   source  = "satolap/modules/msgraph//v1.0/applications"
-  version = "1.0.0"
+  version = "~> 0.5.0"
 
-  display_name = "Example application"
+  displayName = "Example application"
 }
 
 module "engineering_group" {
   source  = "satolap/modules/msgraph//verified/groups"
-  version = "1.0.0"
+  version = "~> 0.5.0"
 
-  display_name     = "Engineering"
-  mail_nickname    = "engineering"
-  security_enabled = true
+  displayName     = "Engineering"
+  mailNickname    = "engineering"
+  securityEnabled = true
 }
 ```
 
@@ -135,11 +161,13 @@ satolap/modules/msgraph//verified/<module-path>
 `<graph-route>` is the module's directory in the catalog, and `<module-path>` is
 the path after `verified/` in the verified module table above. Each release is one
 version that covers both generated catalogs and the verified modules; its tag is
-`v<version>`, for example `v1.0.0`. Versions follow the release gate's interface
+`v<version>`, for example `v0.5.0`. Versions follow the release gate's interface
 changes: a release with breaking changes, which a reviewed release decision must
-accept, is a major version; one with other interface changes or notices is a minor
-version; one without findings is a patch version. Read the "Breaking changes and
-migration" section of each new major version's release notes before upgrading.
+accept, is a major version (while the major version is 0, a minor version); one with
+other interface changes or notices is a minor version; one without findings is a patch
+version. Pin a patch-only constraint such as `~> 0.5.0` to take only fixes. Read the "Breaking changes and
+migration" section of each new major version's (on the 0.x line, each new minor version's) release
+notes before upgrading.
 
 Terraform downloads the whole catalog once for every module call, even though each
 call uses one directory, so a first `terraform init` downloads the catalog for each
@@ -159,7 +187,7 @@ Connect authentication; choose the method described in the
 A Git source pins the same release by its tag:
 
 ```text
-git::https://github.com/satolap/terraform-msgraph-modules.git//v1.0/<graph-route>?ref=v1.0.0
+git::https://github.com/satolap/terraform-msgraph-modules.git//v1.0/<graph-route>?ref=v0.5.0
 ```
 
 For evaluation and non-production use, `?ref=latest` follows new releases without
@@ -238,8 +266,7 @@ tag is created:
 
 A daily scheduled workflow rebuilds every published release the same way and fails
 if its tag commit or any asset's SHA-256 digest no longer matches the GitHub Release,
-if an asset of a release newer than v4.0.0 has no valid attestation from the release
-workflow, or if the `latest` branch points anywhere other than the GitHub Latest release.
+or if the `latest` branch points anywhere other than the GitHub Latest release.
 
 Mock tests and schema validation do not prove that a caller has the required
 Microsoft Graph permissions, license, or tenant configuration. Endpoint READMEs
